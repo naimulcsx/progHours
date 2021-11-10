@@ -12,10 +12,12 @@
     "web-vitals": "^1.0.1"
   },
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "cra-start": "react-scripts start",
+    "cra-build": "react-scripts build",
+    "cra-test": "react-scripts test",
+    "cra-eject": "react-scripts eject",
+    "tw-start": "npx tailwindcss -o src/App.css --watch --jit --purge='src/**/*.js'",
+    "dev": "concurrently 'npm run cra-start' 'npm run tw-start'"
   },
   "eslintConfig": {
     "extends": [
@@ -36,7 +38,11 @@
     ]
   },
   "devDependencies": {
-    "prettier": "^2.4.1"
+    "autoprefixer": "^10.4.0",
+    "concurrently": "^6.3.0",
+    "postcss": "^8.3.11",
+    "prettier": "^2.4.1",
+    "tailwindcss": "^2.2.19"
   },
   "prettier": {
     "semi": false,
