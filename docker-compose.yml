@@ -1,0 +1,11 @@
+version: "3"
+services:
+  client-app:
+    build: ./client
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./client:/home/node/client
+      - /home/node/client/node_modules
+    environment:
+      - PORT=3000
