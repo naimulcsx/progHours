@@ -17,6 +17,8 @@ services:
   reverse_proxy:
     restart: unless-stopped
     image: nginx:1.21.4
+    ports:
+      - 80:80
     depends_on:
       - api_server
       - client_app
