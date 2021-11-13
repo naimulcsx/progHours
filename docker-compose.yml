@@ -7,3 +7,17 @@ services:
     volumes:
       - ./client:/home/node/client
       - /home/node/client/node_modules
+    networks:
+      - mern-app
+  api-server:
+    build: ./server
+    ports:
+      - "4000:4000"
+    volumes:
+      - ./server:/home/node/server
+      - /home/node/server/node_modules
+    networks:
+      - mern-app
+networks:
+  mern-app:
+    driver: bridge
