@@ -7,5 +7,3 @@ services:
     volumes:
       - ./client:/home/node/client
       - /home/node/client/node_modules
-    environment:
-      - PORT=3000
