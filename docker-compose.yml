@@ -1,23 +1,29 @@
 version: "3"
 services:
-  client-app:
+  client_app:
     build: ./client
-    ports:
-      - "3000:3000"
     volumes:
       - ./client:/home/node/client
       - /home/node/client/node_modules
     networks:
-      - mern-app
-  api-server:
+      - mern_app
+  api_server:
     build: ./server
-    ports:
-      - "4000:4000"
     volumes:
       - ./server:/home/node/server
       - /home/node/server/node_modules
     networks:
-      - mern-app
+      - mern_app
+  reverse_proxy:
+    restart: unless-stopped
+    image: nginx:1.21.4
+    depends_on:
+      - api_server
+      - client_app
+    volumes:
+      - ./nginx/default.conf:/etc/nginx/conf.d/default.conf
+    networks:
+      - mern_app
 networks:
-  mern-app:
+  mern_app:
     driver: bridge
