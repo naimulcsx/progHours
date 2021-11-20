@@ -6,6 +6,7 @@ const app = express()
  */
 const swaggerUI = require("swagger-ui-express")
 const swaggerJSDoc = require("swagger-jsdoc")
+const swaggerRedirectFix = require("./middlewares/swaggerRedirectFix")
 const specs = swaggerJSDoc({
   definition: {
     openapi: "3.0.0",
@@ -18,8 +19,7 @@ const specs = swaggerJSDoc({
   },
   apis: ["./routes/*.js"],
 })
-
-app.use("/docs", swaggerUI.serve, swaggerUI.setup(specs))
+app.use("/docs/", swaggerRedirectFix, swaggerUI.serve, swaggerUI.setup(specs))
 
 app.get("/", (req, res) => {
   res.send("hello worldss")
