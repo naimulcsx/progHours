@@ -372,7 +372,7 @@ ul {
  */
 
 html {
-  font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+  font-family: Manrope, sans-serif;
   /* 1 */
   line-height: 1.5;
   /* 2 */
@@ -589,7 +589,113 @@ video {
   display: none;
 }
 
-.text-blue-500 {
+.mx-auto {
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.mb-6 {
+  margin-bottom: 1.5rem;
+}
+
+.flex {
+  display: flex;
+}
+
+.h-8 {
+  height: 2rem;
+}
+
+.min-h-screen {
+  min-height: 100vh;
+}
+
+.w-full {
+  width: 100%;
+}
+
+.w-8 {
+  width: 2rem;
+}
+
+.max-w-md {
+  max-width: 28rem;
+}
+
+.items-center {
+  align-items: center;
+}
+
+.justify-center {
+  justify-content: center;
+}
+
+.space-x-2 > :not([hidden]) ~ :not([hidden]) {
+  --tw-space-x-reverse: 0;
+  margin-right: calc(0.5rem * var(--tw-space-x-reverse));
+  margin-left: calc(0.5rem * calc(1 - var(--tw-space-x-reverse)));
+}
+
+.rounded {
+  border-radius: 0.25rem;
+}
+
+.bg-gray-100 {
+  --tw-bg-opacity: 1;
+  background-color: rgba(243, 244, 246, var(--tw-bg-opacity));
+}
+
+.bg-white {
+  --tw-bg-opacity: 1;
+  background-color: rgba(255, 255, 255, var(--tw-bg-opacity));
+}
+
+.p-10 {
+  padding: 2.5rem;
+}
+
+.text-xl {
+  font-size: 1.25rem;
+  line-height: 1.75rem;
+}
+
+.font-bold {
+  font-weight: 700;
+}
+
+.text-primary {
   --tw-text-opacity: 1;
-  color: rgba(59, 130, 246, var(--tw-text-opacity));
+  color: rgba(85, 66, 246, var(--tw-text-opacity));
+}
+
+/* Default styles */
+
+body {
+  --tw-text-opacity: 1;
+  color: rgba(75, 85, 99, var(--tw-text-opacity));
+}
+
+h1, h2, h3, h4, h5, h6 {
+  --tw-text-opacity: 1;
+  color: rgba(17, 24, 39, var(--tw-text-opacity));
+}
+
+h1 {
+  font-size: 3rem;
+  line-height: 1;
+}
+
+h2 {
+  font-size: 2.25rem;
+  line-height: 2.5rem;
+}
+
+h3 {
+  font-size: 1.875rem;
+  line-height: 2.25rem;
+}
+
+h4 {
+  font-size: 1.5rem;
+  line-height: 2rem;
 }

@@ -1,5 +1,11 @@
+import AuthContainer from "components/AuthContainer"
+
 const Login = () => {
-  return <div> Login Page </div>
+  return (
+    <AuthContainer>
+      <h2>Login to Account</h2>
+    </AuthContainer>
+  )
 }
 
 export default Login
