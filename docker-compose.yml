@@ -1,6 +1,7 @@
 version: "3"
 services:
   client_app:
+    container_name: client_app
     build: ./client
     volumes:
       - ./client:/home/node/client
@@ -8,6 +9,7 @@ services:
     networks:
       - mern_app
   api_server:
+    container_name: api_server
     build: ./server
     volumes:
       - ./server:/home/node/server
@@ -15,6 +17,7 @@ services:
     networks:
       - mern_app
   reverse_proxy:
+    container_name: ngnix
     restart: unless-stopped
     image: nginx:1.21.4
     ports:
