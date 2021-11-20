@@ -1,5 +1,5 @@
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom"
-import "./App.css"
+import "./styles/App.css"
 
 // Import auth pages
 import Login from "pages/auth/Login"
