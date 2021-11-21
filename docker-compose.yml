@@ -11,9 +11,24 @@ services:
   api_server:
     container_name: api_server
     build: ./server
+    environment:
+      - DATABASE_URL=postgres://user:pass@db_server:5432/db
+      - NODE_ENV=development
     volumes:
       - ./server:/home/node/server
       - /home/node/server/node_modules
+    networks:
+      - mern_app
+  db_server:
+    container_name: db_server
+    image: postgres:14
+    restart: always
+    environment:
+      - POSTGRES_USER=user
+      - POSTGRES_PASSWORD=pass
+      - POSTGRES_DB=db
+    volumes:
+      - ./.pg-data/postgresql/data:/var/lib/postgresql/data
     networks:
       - mern_app
   reverse_proxy:
