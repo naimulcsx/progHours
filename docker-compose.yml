@@ -17,6 +17,8 @@ services:
     volumes:
       - ./server:/home/node/server
       - /home/node/server/node_modules
+    depends_on:
+      - db_server
     networks:
       - mern_app
   db_server:
