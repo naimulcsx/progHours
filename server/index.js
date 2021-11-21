@@ -21,8 +21,30 @@ const specs = swaggerJSDoc({
 })
 app.use("/docs/", swaggerRedirectFix, swaggerUI.serve, swaggerUI.setup(specs))
 
+/**
+ * Setup application routes
+ */
+
 app.get("/", (req, res) => {
   res.send("hello worldss")
 })
 
+const { User } = require("./models")
+
+app.get("/create-user", (req, res) => {
+  User.create({
+    firstName: "Naimul",
+    lastName: "Haque",
+  })
+    .then(() => {
+      res.send("Successfully created user")
+    })
+    .catch((err) => {
+      res.json(err)
+    })
+})
+
+/**
+ * Listen for requests
+ */
 app.listen(4000, () => console.log("server listening on port 4000"))
