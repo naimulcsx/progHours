@@ -29,7 +29,7 @@ app.get("/", (req, res) => {
   res.send("hello worldss")
 })
 
-const { User } = require("./model").models
+const { User } = require("./models")
 
 app.get("/create-user", (req, res) => {
   User.create({
