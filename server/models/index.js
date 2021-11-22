@@ -15,5 +15,6 @@ sequelize
 /**
  * Register the models
  */
-require("./User")(sequelize).sync()
+require("./User")(sequelize)
+sequelize.sync({ force: true })
 module.exports = sequelize.models
