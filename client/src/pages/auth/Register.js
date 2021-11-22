@@ -1,9 +1,13 @@
 import AuthContainer from "components/AuthContainer"
 import { Link } from "react-router-dom"
+import { Helmet } from "react-helmet"
 
 const Register = () => {
   return (
     <AuthContainer>
+      <Helmet>
+        <title>Create New Account</title>
+      </Helmet>
       <div className="space-y-2">
         <h2>Create New Account</h2>
         <p>
