@@ -3,3 +3,6 @@
 
 # ignore postgresql data
 .pg-data
+
+# misc
+.DS_STORE
