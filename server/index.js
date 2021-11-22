@@ -2,6 +2,11 @@ const express = require("express")
 const app = express()
 
 /**
+ * Allow JSON body parsing
+ */
+app.use(express.json())
+
+/**
  * Swagger UI Setup
  */
 const swaggerUI = require("swagger-ui-express")
@@ -24,25 +29,8 @@ app.use("/docs/", swaggerRedirectFix, swaggerUI.serve, swaggerUI.setup(specs))
 /**
  * Setup application routes
  */
-
-app.get("/", (req, res) => {
-  res.send("hello worldss")
-})
-
-const { User } = require("./models")
-
-app.get("/create-user", (req, res) => {
-  User.create({
-    firstName: "Naimul",
-    lastName: "Haque",
-  })
-    .then(() => {
-      res.send("Successfully created user")
-    })
-    .catch((err) => {
-      res.json(err)
-    })
-})
+const authRoutes = require("./routes/authRoutes")
+app.use("/auth", authRoutes)
 
 /**
  * Listen for requests
