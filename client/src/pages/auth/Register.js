@@ -8,7 +8,7 @@ const Register = () => {
       <Helmet>
         <title>Create New Account</title>
       </Helmet>
-      <div className="space-y-2">
+      <div className="space-y-3">
         <h2>Create New Account</h2>
         <p>
           Already have an account?
