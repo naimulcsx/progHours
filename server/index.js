@@ -21,10 +21,20 @@ const specs = swaggerJSDoc({
       description:
         "A one-stop training tool for coaches and competitive programmers. 🔥",
     },
+    servers: [
+      {
+        url: "/api",
+      },
+    ],
   },
-  apis: ["./routes/*.js"],
+  apis: ["./routes/*.js", "./models/*.js"],
 })
-app.use("/docs/", swaggerRedirectFix, swaggerUI.serve, swaggerUI.setup(specs))
+app.use(
+  "/docs/",
+  swaggerRedirectFix,
+  swaggerUI.serve,
+  swaggerUI.setup(specs, { explorer: true })
+)
 
 /**
  * Setup application routes
