@@ -16,5 +16,7 @@ exports.register = async (req, res) => {
 }
 
 exports.login = async (req, res) => {
-  res.send("Login route")
+  res.send({
+    message: "Login route",
+  })
 }
