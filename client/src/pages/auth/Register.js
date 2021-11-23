@@ -6,7 +6,7 @@ const Register = () => {
   return (
     <AuthContainer>
       <Helmet>
-        <title>Create New Account</title>
+        <title>Register</title>
       </Helmet>
       <div className="space-y-3">
         <h2>Create New Account</h2>

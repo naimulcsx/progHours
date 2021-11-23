@@ -1,9 +1,13 @@
 import AuthContainer from "components/AuthContainer"
+import { Helmet } from "react-helmet"
 import { Link } from "react-router-dom"
 
 const Login = () => {
   return (
     <AuthContainer>
+      <Helmet>
+        <title>Login</title>
+      </Helmet>
       <div className="space-y-3">
         <h2>Login to Account</h2>
         <p>
