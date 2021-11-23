@@ -1,5 +1,31 @@
 const { DataTypes } = require("sequelize")
 
+/**
+ *  @swagger
+ *  components:
+ *    schemas:
+ *      user:
+ *        type: object
+ *        required:
+ *          - uid
+ *          - name
+ *          - email
+ *          - password
+ *        properties:
+ *          id:
+ *            type: integer
+ *          uid:
+ *            type: string
+ *          name:
+ *            type: string
+ *          email:
+ *            type: string
+ *          password:
+ *            type: string
+ *          role:
+ *            type: shortint
+ */
+
 module.exports = (sequelize) => {
   const User = sequelize.define(
     "User",
