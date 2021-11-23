@@ -9,6 +9,10 @@ module.exports = {
       colors: {
         primary: "#5542F6",
       },
+      boxShadow: {
+        "input-none": "0 1px 0 #fff",
+        "input-primary": "0 1px 0 #5542F6",
+      },
     },
   },
   variants: {

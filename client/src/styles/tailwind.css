@@ -28,3 +28,23 @@ h3 {
 h4 {
   @apply text-2xl;
 }
+
+/* form styles */
+.form-group {
+  @apply relative;
+}
+.form-group label {
+  @apply absolute left-0 transition-all duration-200 top-2;
+}
+.form-group input {
+  @apply w-full pt-5 pb-1 border-b;
+  @apply hover:shadow-input-primary;
+  @apply focus:outline-none focus:border-b focus:border-primary focus:shadow-input-primary;
+}
+.form-group input:focus + label,
+.form-group input:not(:placeholder-shown) + label {
+  @apply text-sm -top-1 text-primary;
+}
+.btn-primary {
+  @apply w-full px-5 py-3 font-semibold text-white border rounded bg-primary;
+}
