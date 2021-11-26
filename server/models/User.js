@@ -1,4 +1,5 @@
 const { DataTypes } = require("sequelize")
+const bcrypt = require("bcrypt")
 
 /**
  *  @swagger
@@ -63,8 +64,19 @@ module.exports = (sequelize) => {
     },
     {
       updatedAt: false,
-      underscored: true,
+      underscored: true /** This makes table name and property names lowercase */,
     }
   )
+  /**
+   * Hash the password before inserting into table
+   */
+  User.beforeCreate(async (user, options) => {
+    try {
+      const hash = await bcrypt.hash(user.password, 10)
+      user.password = hash
+    } catch (error) {
+      throw new Error(error)
+    }
+  })
   return User
 }
