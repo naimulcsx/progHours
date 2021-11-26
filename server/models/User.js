@@ -68,6 +68,13 @@ module.exports = (sequelize) => {
     }
   )
   /**
+   * Validate password instance method
+   * ! ARROW FUNCTION WILL NOT WORK
+   */
+  User.prototype.validatePassword = function (password) {
+    return bcrypt.compare(password, this.password)
+  }
+  /**
    * Hash the password before inserting into table
    */
   User.beforeCreate(async (user, options) => {
