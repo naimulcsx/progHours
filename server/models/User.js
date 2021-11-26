@@ -33,7 +33,10 @@ module.exports = (sequelize) => {
       uid: {
         type: DataTypes.STRING,
         allowNull: false,
-        unique: true,
+        unique: {
+          args: true,
+          msg: "User already exists",
+        },
       },
       name: {
         type: DataTypes.STRING,
