@@ -13,6 +13,7 @@
     "nodemon": "^2.0.15"
   },
   "dependencies": {
+    "bcrypt": "^5.0.1",
     "express": "^4.17.1",
     "pg": "^8.7.1",
     "sequelize": "^6.12.0-alpha.1",
