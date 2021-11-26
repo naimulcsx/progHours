@@ -34,7 +34,7 @@ h4 {
   @apply relative;
 }
 .form-group label {
-  @apply absolute left-0 transition-all duration-200 top-2;
+  @apply absolute left-0 transition-all duration-200 top-3;
 }
 .form-group input {
   @apply w-full pt-5 pb-1 border-b;
@@ -47,4 +47,12 @@ h4 {
 }
 .btn-primary {
   @apply w-full px-5 py-3 font-semibold text-white border rounded bg-primary;
+}
+.form-group .error-message {
+  @apply mt-1 text-sm text-red-500;
+}
+
+/* Toast styles */
+.toast {
+  @apply font-sans text-sm shadow;
 }
