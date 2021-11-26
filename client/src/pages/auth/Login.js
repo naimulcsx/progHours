@@ -1,8 +1,29 @@
 import AuthContainer from "components/AuthContainer"
-import { Helmet } from "react-helmet"
+import { Helmet } from "react-helmet-async"
 import { Link } from "react-router-dom"
+import { useFormik } from "formik"
+import * as Yup from "yup"
+
+const loginSchema = Yup.object().shape({
+  uid: Yup.string()
+    .trim()
+    .required("University ID is required")
+    .length(7, "Invalid University ID"),
+  password: Yup.string().trim().required("Password is required"),
+})
 
 const Login = () => {
+  const formik = useFormik({
+    initialValues: {
+      uid: "",
+      password: "",
+    },
+    validationSchema: loginSchema,
+    onSubmit: async (values) => {
+      console.log(values)
+    },
+  })
+  const hasError = (field) => formik.touched[field] && formik.errors[field]
   return (
     <AuthContainer>
       <Helmet>
@@ -17,17 +38,33 @@ const Login = () => {
           </Link>
         </p>
       </div>
-      <form action="" className="mt-8 space-y-4">
+      <form onSubmit={formik.handleSubmit} className="mt-8 space-y-4">
         <div className="form-group">
-          <input id="fullName" type="text" placeholder=" " />
-          <label htmlFor="fullName">University ID</label>
+          <input
+            id="uid"
+            type="text"
+            placeholder=" "
+            {...formik.getFieldProps("uid")}
+          />
+          <label htmlFor="uid">University ID</label>
+          {hasError("uid") && (
+            <div className="error-message">{formik.errors.uid}</div>
+          )}
         </div>
         <div className="form-group">
-          <input id="password" type="password" placeholder=" " />
+          <input
+            id="password"
+            type="password"
+            placeholder=" "
+            {...formik.getFieldProps("password")}
+          />
           <label htmlFor="password">Password</label>
+          {hasError("password") && (
+            <div className="error-message">{formik.errors.password}</div>
+          )}
         </div>
         <div>
-          <button type="submit" class="mt-6 block btn-primary">
+          <button type="submit" className="block mt-6 btn-primary">
             Login
           </button>
         </div>
