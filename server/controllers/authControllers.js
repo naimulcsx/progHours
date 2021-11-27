@@ -43,9 +43,8 @@ exports.login = async (req, res) => {
       process.env.ACCESS_TOKEN_SECRET
     )
     // send the acessToken to client
-    res.send({
+    res.cookie("accessToken", accessToken).send({
       status: "success",
-      accessToken,
     })
   } catch (err) {
     res.json(err.response)
