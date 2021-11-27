@@ -28,7 +28,7 @@ const Login = () => {
         localStorage.setItem("isLoggedIn", 1)
         localStorage.setItem("role", 0)
         navigate("/dashboard")
-        toast("Successfully logged in")
+        toast.success("Successfully logged in", { className: "toast" })
       } catch (error) {
         const { data } = error.response
         console.log(data)
