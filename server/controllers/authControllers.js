@@ -1,4 +1,5 @@
 const { User } = require("../models")
+const jwt = require("jsonwebtoken")
 
 exports.register = async (req, res) => {
   const { name, password, uid, email } = req.body
@@ -9,7 +10,10 @@ exports.register = async (req, res) => {
       uid,
       email,
     })
-    res.json(newUser)
+    res.json({
+      status: "success",
+      user: newUser,
+    })
   } catch (err) {
     res.status(400).json(err)
   }
@@ -34,9 +38,15 @@ exports.login = async (req, res) => {
       })
     }
     // if user exists and password is correct
+    // const token = jwt.sign({})
+    const accessToken = jwt.sign(
+      { uid: uid, name: user.name },
+      process.env.ACCESS_TOKEN_SECRET
+    )
+    // send the acessToken to client
     res.status(200).json({
       status: "success",
-      token: "TOKEN_GOES_HERE",
+      accessToken,
     })
   } catch (err) {
     res.json(err.response)
