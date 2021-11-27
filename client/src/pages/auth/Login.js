@@ -1,6 +1,6 @@
 import AuthContainer from "components/AuthContainer"
 import { Helmet } from "react-helmet-async"
-import { Link } from "react-router-dom"
+import { Link, useNavigate } from "react-router-dom"
 import { useFormik } from "formik"
 import * as Yup from "yup"
 import axios from "axios"
@@ -15,6 +15,7 @@ const loginSchema = Yup.object().shape({
 })
 
 const Login = () => {
+  const navigate = useNavigate()
   const formik = useFormik({
     initialValues: {
       uid: "",
@@ -23,11 +24,14 @@ const Login = () => {
     validationSchema: loginSchema,
     onSubmit: async (values) => {
       try {
-        const response = await axios.post("/api/auth/login", values)
-        const { accessToken } = response.data
-        localStorage.setItem("token", accessToken)
+        await axios.post("/api/auth/login", values)
+        localStorage.setItem("isLoggedIn", 1)
+        localStorage.setItem("role", 0)
+        navigate("/dashboard")
+        toast("Successfully logged in")
       } catch (error) {
         const { data } = error.response
+        console.log(data)
         toast.error(data.message, { className: "toast" })
       }
     },
