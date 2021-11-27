@@ -38,13 +38,12 @@ exports.login = async (req, res) => {
       })
     }
     // if user exists and password is correct
-    // const token = jwt.sign({})
     const accessToken = jwt.sign(
       { uid: uid, name: user.name },
       process.env.ACCESS_TOKEN_SECRET
     )
     // send the acessToken to client
-    res.status(200).json({
+    res.send({
       status: "success",
       accessToken,
     })

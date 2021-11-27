@@ -24,7 +24,8 @@ const Login = () => {
     onSubmit: async (values) => {
       try {
         const response = await axios.post("/api/auth/login", values)
-        console.log(response)
+        const { accessToken } = response.data
+        localStorage.setItem("token", accessToken)
       } catch (error) {
         const { data } = error.response
         toast.error(data.message, { className: "toast" })
