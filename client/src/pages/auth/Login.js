@@ -3,6 +3,8 @@ import { Helmet } from "react-helmet-async"
 import { Link } from "react-router-dom"
 import { useFormik } from "formik"
 import * as Yup from "yup"
+import axios from "axios"
+import { toast } from "react-toastify"
 
 const loginSchema = Yup.object().shape({
   uid: Yup.string()
@@ -20,7 +22,14 @@ const Login = () => {
     },
     validationSchema: loginSchema,
     onSubmit: async (values) => {
-      console.log(values)
+      try {
+        const response = await axios.post("/api/auth/login", values)
+        const { accessToken } = response.data
+        localStorage.setItem("token", accessToken)
+      } catch (error) {
+        const { data } = error.response
+        toast.error(data.message, { className: "toast" })
+      }
     },
   })
   const hasError = (field) => formik.touched[field] && formik.errors[field]

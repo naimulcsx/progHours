@@ -1,4 +1,5 @@
 const { DataTypes } = require("sequelize")
+const bcrypt = require("bcrypt")
 
 /**
  *  @swagger
@@ -33,7 +34,10 @@ module.exports = (sequelize) => {
       uid: {
         type: DataTypes.STRING,
         allowNull: false,
-        unique: true,
+        unique: {
+          args: true,
+          msg: "User already exists",
+        },
       },
       name: {
         type: DataTypes.STRING,
@@ -60,8 +64,26 @@ module.exports = (sequelize) => {
     },
     {
       updatedAt: false,
-      underscored: true,
+      underscored: true /** This makes table name and property names lowercase */,
     }
   )
+  /**
+   * Validate password instance method
+   * ! ARROW FUNCTION WILL NOT WORK
+   */
+  User.prototype.validatePassword = function (password) {
+    return bcrypt.compare(password, this.password)
+  }
+  /**
+   * Hash the password before inserting into table
+   */
+  User.beforeCreate(async (user, options) => {
+    try {
+      const hash = await bcrypt.hash(user.password, 10)
+      user.password = hash
+    } catch (error) {
+      throw new Error(error)
+    }
+  })
   return User
 }
