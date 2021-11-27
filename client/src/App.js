@@ -1,25 +1,19 @@
-import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom"
+import { useRoutes } from "react-router-dom"
 import { HelmetProvider } from "react-helmet-async"
 import { ToastContainer } from "react-toastify"
 
 import "react-toastify/dist/ReactToastify.css"
 import "./styles/App.css"
 
-// Import auth pages
-import Login from "pages/auth/Login"
-import Register from "pages/auth/Register"
+// import routes
+import routes from "./routes"
 
 function App() {
+  const isLoggedIn = localStorage.getItem("isLoggedIn")
+  const routing = useRoutes(routes(isLoggedIn))
   return (
     <HelmetProvider>
-      <BrowserRouter>
-        <Routes>
-          <Route path="/" element={<Navigate to="/login" />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/register" element={<Register />}></Route>
-        </Routes>
-      </BrowserRouter>
-      <ToastContainer />
+      {routing} <ToastContainer />
     </HelmetProvider>
   )
 }
