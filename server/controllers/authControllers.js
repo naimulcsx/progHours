@@ -1,7 +1,7 @@
 const { User } = require("../models")
 const jwt = require("jsonwebtoken")
 
-exports.register = async (req, res) => {
+const register = async (req, res) => {
   const { name, password, uid, email } = req.body
   try {
     const newUser = await User.create({
@@ -19,7 +19,7 @@ exports.register = async (req, res) => {
   }
 }
 
-exports.login = async (req, res) => {
+const login = async (req, res) => {
   const { uid, password } = req.body
   try {
     // check if user exists
@@ -50,3 +50,11 @@ exports.login = async (req, res) => {
     res.json(err.response)
   }
 }
+
+const logout = (req, res) => {
+  res.cookie("accessToken", "", { expires: new Date(Date.now() - 100) }).json({
+    type: "success",
+  })
+}
+
+module.exports = { register, login, logout }

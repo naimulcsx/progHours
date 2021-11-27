@@ -1,7 +1,7 @@
 const express = require("express")
 const router = express.Router()
 
-const { register, login } = require("../controllers/authControllers")
+const { register, login, logout } = require("../controllers/authControllers")
 
 /**
  *  @swagger
@@ -27,5 +27,7 @@ router.route("/register").post(register)
  *        - name: Authentication
  */
 router.route("/login").post(login)
+
+router.route("/logout").get(logout)
 
 module.exports = router
