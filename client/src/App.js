@@ -13,7 +13,7 @@ function App() {
   const routing = useRoutes(routes(isLoggedIn))
   return (
     <HelmetProvider>
-      {routing} <ToastContainer />
+      {routing} <ToastContainer theme="colored" autoClose={2000} />
     </HelmetProvider>
   )
 }

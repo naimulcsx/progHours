@@ -35,7 +35,7 @@ const Register = () => {
         // redirect to the login page
         navigate("/login")
         // create a toast
-        toast("Account successfully created")
+        toast.success("Account successfully created")
       } catch (error) {
         const { data } = error.response
         data.errors.forEach(({ message }) => {
