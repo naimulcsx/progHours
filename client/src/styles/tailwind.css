@@ -7,6 +7,18 @@ body {
   @apply text-gray-600;
 }
 
+.p1 {
+  @apply leading-9 text-lg text-white;
+}
+
+.p2 {
+  @apply leading-9 text-primaryDark;
+}
+
+.p3 {
+  @apply leading-9 text-lg text-secondaryDark;
+}
+
 h1,
 h2,
 h3,
@@ -29,6 +41,10 @@ h4 {
   @apply text-2xl;
 }
 
+.active {
+  @apply bg-primary bg-opacity-10 fill-current text-primary;
+}
+
 /* form styles */
 .form-group {
   @apply relative;
@@ -45,11 +61,17 @@ h4 {
 .form-group input:not(:placeholder-shown) + label {
   @apply text-sm -top-1 text-primary;
 }
-.btn-primary {
-  @apply w-full px-5 py-3 font-semibold text-white border rounded bg-primary;
-}
+
 .form-group .error-message {
   @apply mt-1 text-sm text-red-500;
+}
+
+.btn-primary {
+  @apply px-5 py-3 font-semibold text-white border rounded-md bg-primary;
+}
+
+.btn-outline-primary {
+  @apply text-center text-lg text-primaryDark border border-borderColor rounded-md py-3 px-5;
 }
 
 /* Toast styles */

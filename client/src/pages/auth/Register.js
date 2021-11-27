@@ -119,7 +119,7 @@ const Register = () => {
             By clicking below to signup, you're agreeing to our terms of
             service.
           </p>
-          <button type="submit" className="block btn-primary">
+          <button type="submit" className="block btn-primary w-full">
             Register
           </button>
         </div>
