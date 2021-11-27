@@ -42,7 +42,7 @@ exports.login = async (req, res) => {
       { uid: uid, name: user.name },
       process.env.ACCESS_TOKEN_SECRET
     )
-    // send the acessToken to client
+    // send the accessToken to client
     res.cookie("accessToken", accessToken).send({
       status: "success",
     })
