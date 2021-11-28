@@ -8,7 +8,7 @@ body {
 }
 
 .p1 {
-  @apply leading-9 text-lg text-white;
+  @apply text-lg leading-9 text-white;
 }
 
 .p2 {
@@ -16,7 +16,7 @@ body {
 }
 
 .p3 {
-  @apply leading-9 text-lg text-secondaryDark;
+  @apply text-lg leading-9 text-secondaryDark;
 }
 
 h1,
@@ -39,10 +39,6 @@ h3 {
 }
 h4 {
   @apply text-2xl;
-}
-
-.active {
-  @apply bg-primary bg-opacity-10 fill-current text-primary;
 }
 
 /* form styles */
@@ -71,10 +67,24 @@ h4 {
 }
 
 .btn-outline-primary {
-  @apply text-center text-lg text-primaryDark border border-borderColor rounded-md py-3 px-5;
+  @apply px-5 py-3 text-lg text-center border rounded-md text-primaryDark border-borderColor;
 }
 
 /* Toast styles */
 .toast {
   @apply font-sans text-sm shadow;
+}
+
+/* Navbar link styles */
+.nav-item {
+  @apply flex items-center px-3 py-3 rounded;
+}
+.nav-item svg {
+  @apply w-6 h-6 mr-2 text-gray-500 fill-current;
+}
+.nav-item.active {
+  @apply fill-current bg-primary bg-opacity-10 text-primary;
+}
+.nav-item.active svg {
+  @apply fill-current text-primary;
 }

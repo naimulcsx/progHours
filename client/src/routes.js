@@ -6,6 +6,7 @@ import DashboardHome from "pages/dashboard/Home"
 import { toast } from "react-toastify"
 import { useEffect } from "react"
 import AccountSettings from "pages/settings/AccountSettings"
+import ProfileSettings from "pages/settings/Profile"
 
 const AccessDenied = () => {
   useEffect(() => {
@@ -31,7 +32,19 @@ const routes = (isLoggedIn) => [
   },
   {
     path: "/settings",
-    element: isLoggedIn ? <AccountSettings /> : <AccessDenied />,
+    element: isLoggedIn ? (
+      <Navigate to="/settings/profile" />
+    ) : (
+      <AccessDenied />
+    ),
+  },
+  {
+    path: "/settings/profile",
+    element: <ProfileSettings />,
+  },
+  {
+    path: "/settings/account",
+    element: <AccountSettings />,
   },
 ]
 
