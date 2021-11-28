@@ -5,6 +5,7 @@ import Register from "pages/auth/Register"
 import DashboardHome from "pages/dashboard/Home"
 import { toast } from "react-toastify"
 import { useEffect } from "react"
+import AccountSettings from "pages/settings/AccountSettings"
 
 const AccessDenied = () => {
   useEffect(() => {
@@ -27,6 +28,10 @@ const routes = (isLoggedIn) => [
   {
     path: "/dashboard",
     element: isLoggedIn ? <DashboardHome /> : <AccessDenied />,
+  },
+  {
+    path: "/settings",
+    element: isLoggedIn ? <AccountSettings /> : <AccessDenied />,
   },
 ]
 

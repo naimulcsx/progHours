@@ -6,8 +6,6 @@ import * as Yup from "yup"
 import axios from "axios"
 import { toast } from "react-toastify"
 
-import { InputField } from "components/base/InputBox"
-
 const loginSchema = Yup.object().shape({
   uid: Yup.string()
     .trim()
@@ -54,24 +52,32 @@ const Login = () => {
         </p>
       </div>
       <form onSubmit={formik.handleSubmit} className="mt-8 space-y-4">
-        <InputField
-          label="University ID"
-          id="uid"
-          formik={formik}
-          hasError={hasError("uid")}
-          msg={formik.errors.uid}
-        />
-
-        <InputField
-          label="Password"
-          id="password"
-          type="password"
-          formik={formik}
-          hasError={hasError("password")}
-          msg={formik.errors.password}
-        />
+        <div className="form-group">
+          <input
+            id="uid"
+            type="text"
+            placeholder=" "
+            {...formik.getFieldProps("uid")}
+          />
+          <label htmlFor="uid">University ID</label>
+          {hasError("uid") && (
+            <div className="error-message">{formik.errors.uid}</div>
+          )}
+        </div>
+        <div className="form-group">
+          <input
+            id="password"
+            type="password"
+            placeholder=" "
+            {...formik.getFieldProps("password")}
+          />
+          <label htmlFor="password">Password</label>
+          {hasError("password") && (
+            <div className="error-message">{formik.errors.password}</div>
+          )}
+        </div>
         <div>
-          <button type="submit" className="block mt-6 btn-primary w-full">
+          <button type="submit" className="block mt-6 btn-primary">
             Login
           </button>
         </div>
