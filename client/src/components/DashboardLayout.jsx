@@ -1,19 +1,29 @@
-import { IoMdStats, IoMdSettings } from "react-icons/io"
-import Navbar from "./Navbar"
+import { useNavigate } from "react-router"
 import NavLink from "./NavLink"
+import clearAuthData from "utils/clearAuthData"
+import { toast } from "react-toastify"
+import Avatar from "react-avatar"
 
+// import logo and icons
+import Logo from "./Logo"
+import { IoMdSettings } from "react-icons/io"
 import { MdLeaderboard, MdOutlineListAlt } from "react-icons/md"
 import { ImStatsDots } from "react-icons/im"
-import Logo from "./Logo"
 
 const DashboardSidebar = () => {
+  const user = localStorage.getItem("name")
+  const navigate = useNavigate()
+  const handleLogout = async () => {
+    await clearAuthData()
+    toast.success("Logged out", { className: "toast" })
+    navigate("/login")
+  }
   return (
     <div className="max-w-[280px] w-full h-[100vh] px-6 py-4 fixed z-20 top-0 left-0 bottom-0 bg-white">
       {/* logo   */}
       <Logo />
-
       {/* sidebar links */}
-      <div className="pt-16">
+      <div className="flex flex-col justify-between h-full pt-16">
         <nav>
           <ul className="space-y-1">
             <NavLink Icon={ImStatsDots} to="/dashboard/home">
@@ -30,6 +40,19 @@ const DashboardSidebar = () => {
             </NavLink>
           </ul>
         </nav>
+        <div className="mb-12">
+          <div>
+            <div className="flex items-start space-x-3">
+              <Avatar size="40px" name={user} round />
+              <div>
+                <h6 className="font-medium">{user}</h6>
+                <button className="text-sm" onClick={handleLogout}>
+                  Logout
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   )
