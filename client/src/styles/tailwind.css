@@ -7,6 +7,18 @@ body {
   @apply text-gray-600;
 }
 
+.p1 {
+  @apply text-lg leading-9 text-white;
+}
+
+.p2 {
+  @apply leading-9 text-primaryDark;
+}
+
+.p3 {
+  @apply text-lg leading-9 text-secondaryDark;
+}
+
 h1,
 h2,
 h3,
@@ -45,14 +57,34 @@ h4 {
 .form-group input:not(:placeholder-shown) + label {
   @apply text-sm -top-1 text-primary;
 }
-.btn-primary {
-  @apply w-full px-5 py-3 font-semibold text-white border rounded bg-primary;
-}
+
 .form-group .error-message {
   @apply mt-1 text-sm text-red-500;
+}
+
+.btn-primary {
+  @apply px-5 py-3 font-semibold text-white border rounded-md bg-primary;
+}
+
+.btn-outline-primary {
+  @apply px-5 py-3 text-lg text-center border rounded-md text-primaryDark border-borderColor;
 }
 
 /* Toast styles */
 .toast {
   @apply font-sans text-sm shadow;
+}
+
+/* Navbar link styles */
+.nav-item {
+  @apply flex items-center px-3 py-3 rounded;
+}
+.nav-item svg {
+  @apply w-6 h-6 mr-2 text-gray-500 fill-current;
+}
+.nav-item.active {
+  @apply fill-current bg-primary bg-opacity-10 text-primary;
+}
+.nav-item.active svg {
+  @apply fill-current text-primary;
 }
