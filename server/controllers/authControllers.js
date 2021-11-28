@@ -45,6 +45,10 @@ const login = async (req, res) => {
     // send the accessToken to client
     res.cookie("accessToken", accessToken).send({
       status: "success",
+      user: {
+        uid,
+        name: user.name,
+      },
     })
   } catch (err) {
     res.json(err.response)

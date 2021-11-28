@@ -24,9 +24,11 @@ const Login = () => {
     validationSchema: loginSchema,
     onSubmit: async (values) => {
       try {
-        await axios.post("/api/auth/login", values)
+        const { data } = await axios.post("/api/auth/login", values)
+        const { user } = data
         localStorage.setItem("isLoggedIn", 1)
         localStorage.setItem("role", 0)
+        localStorage.setItem("name", user.name)
         navigate("/dashboard")
         toast.success("Successfully logged in", { className: "toast" })
       } catch (error) {

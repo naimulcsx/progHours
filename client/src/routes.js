@@ -28,6 +28,10 @@ const routes = (isLoggedIn) => [
   },
   {
     path: "/dashboard",
+    element: isLoggedIn ? <Navigate to="/dashboard/home" /> : <AccessDenied />,
+  },
+  {
+    path: "/dashboard/home",
     element: isLoggedIn ? <DashboardHome /> : <AccessDenied />,
   },
   {
