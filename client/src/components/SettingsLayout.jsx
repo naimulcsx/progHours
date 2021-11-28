@@ -1,5 +1,5 @@
 import Navbar from "./Navbar"
-import { BsFilePersonFill } from "react-icons/bs"
+import { IoMdPerson, IoMdSettings } from "react-icons/io"
 import NavLink from "./NavLink"
 
 const SettingsLayout = ({ children }) => {
@@ -13,10 +13,10 @@ const SettingsLayout = ({ children }) => {
           <p className="mt-2 text-gray-500">Update and manage your account</p>
           <nav className="mt-8">
             <ul className="space-y-2">
-              <NavLink Icon={BsFilePersonFill} to="/settings/profile">
+              <NavLink Icon={IoMdPerson} to="/settings/profile">
                 Profile
               </NavLink>
-              <NavLink Icon={BsFilePersonFill} to="/settings/account">
+              <NavLink Icon={IoMdSettings} to="/settings/account">
                 Account Settings
               </NavLink>
             </ul>
