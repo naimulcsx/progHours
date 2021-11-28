@@ -1,3 +1,4 @@
+import Dashboardlayout from "components/DashboardLayout"
 import { useNavigate } from "react-router"
 import { toast } from "react-toastify"
 import clearAuthData from "utils/clearAuthData"
@@ -10,10 +11,10 @@ const DashboardHome = () => {
     navigate("/login")
   }
   return (
-    <div>
+    <Dashboardlayout>
       <p>Welcome to secrect page</p>
       <button onClick={handleLogout}>Logout</button>
-    </div>
+    </Dashboardlayout>
   )
 }
 

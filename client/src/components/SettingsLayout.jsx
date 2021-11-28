@@ -6,7 +6,7 @@ const SettingsLayout = ({ children }) => {
   return (
     <div className="min-h-screen bg-light">
       <Navbar />
-      <div className="grid items-start max-w-6xl grid-cols-7 gap-20 px-4 mx-auto mt-24">
+      <div className="grid items-start max-w-6xl grid-cols-7 gap-20 px-4 pt-40 mx-auto">
         {/* sidebar */}
         <div className="col-span-2">
           <h2>Settings</h2>
