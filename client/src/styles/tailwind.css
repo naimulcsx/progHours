@@ -98,7 +98,7 @@ h6 {
 
 /* Settings form styles */
 .settings-form {
-  @apply flex flex-col border-b border-borderColor py-12;
+  @apply flex flex-col border-b border-borderColor py-10;
 }
 
 .input-box {

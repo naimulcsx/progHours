@@ -22,7 +22,7 @@ const AccountSettings = () => {
       <h3>Account Settings</h3>
 
       <div className="">
-        <form className="settings-form">
+        <div className="settings-form">
           <div className="flex-1 space-y-2">
             <h6 className="font-semibold pb-2">University ID</h6>
             <input className="input-box" />
@@ -33,9 +33,9 @@ const AccountSettings = () => {
               Save
             </button>
           </div>
-        </form>
+        </div>
 
-        <form className="settings-form">
+        <div className="settings-form">
           <div className="flex-1 space-y-1">
             <h6 className="font-semibold pb-2">
               Please enter your full name, or a display name you are comfortable
@@ -49,9 +49,9 @@ const AccountSettings = () => {
               Save
             </button>
           </div>
-        </form>
+        </div>
 
-        <form className="settings-form">
+        <div className="settings-form">
           <div className="flex-1 space-y-2">
             <h6 className="font-semibold pb-2">
               Please enter the email address you want to use to log in
@@ -64,14 +64,31 @@ const AccountSettings = () => {
               Save
             </button>
           </div>
-        </form>
+        </div>
 
-        <form className="settings-form">
-          <div className="flex-1 space-y-2">
+        <div className="settings-form">
+          <h4 className="font-semibold">Change your Password</h4>
+          <div className="flex-1 space-y-8 mt-12">
+            <div>
             <h6 className="font-semibold pb-2">
-              Please enter the password you want to use to log in
+              Current Password
             </h6>
             <input className="input-box" />
+            </div>
+
+          <div>
+          <h6 className="font-semibold pb-2">
+              New Password
+            </h6>
+            <input className="input-box" />
+
+          </div>
+           <div>
+           <h6 className="font-semibold pb-2">
+              Confirm Password
+            </h6>
+            <input className="input-box" />
+           </div>
           </div>
 
           <div className="flex justify-end mt-4">
@@ -79,7 +96,7 @@ const AccountSettings = () => {
               Save
             </button>
           </div>
-        </form>
+        </div>
       </div>
     </SettingsLayout>
   )
