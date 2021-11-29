@@ -102,5 +102,5 @@ h6 {
 }
 
 .input-box {
-  @apply w-full text-lg border-2 border-gray-300 focus:outline-none focus:border-2 focus:border-primary py-1 px-4 rounded-md;
+  @apply w-full text-lg border-2 border-gray-200 focus:outline-none focus:border-2 focus:border-primary py-1 px-4 rounded-md;
 }
