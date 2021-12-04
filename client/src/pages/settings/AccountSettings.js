@@ -4,32 +4,27 @@ import InputField from "components/InputField"
 const AccountSettings = () => {
   return (
     <SettingsLayout>
-      <h3>Change Account Settings</h3>
-
-      <div className="">
-        <InputField id="email" label="Email" />
-
-        <div className="flex justify-end mt-4">
-          <button type="submit" className="py-1 btn-outline-primary">
-            Save
+      <form className="space-y-12">
+        <div className="space-y-6">
+          <h3 className="mb-8">Change Account Settings</h3>
+          <InputField id="email" label="Email" />
+        </div>
+        <div className="space-y-6">
+          <h3 className="mb-8">Change your Password</h3>
+          <InputField id="curr-pass" label="Current Password" />
+          <InputField id="new-pass" label="New Password" />
+          <InputField id="confirm-pass" label="Confirm Password" />
+        </div>
+        {/* save buttons */}
+        <div className="flex items-center space-x-6">
+          <button className="py-3 btn-outline-primary" type="button">
+            Cancel
+          </button>
+          <button className="btn-primary" type="submit">
+            Save Changes
           </button>
         </div>
-
-        <div className="settings-form">
-          <h3 className="font-semibold">Change your Password</h3>
-          <div className="flex-1 mt-12 space-y-8">
-            <InputField id="curr-pass" label="Current Password" />
-            <InputField id="new-pass" label="New Password" />
-            <InputField id="confirm-pass" label="Confirm Password" />
-          </div>
-
-          <div className="flex justify-end mt-4">
-            <button type="submit" className="py-1 btn-outline-primary">
-              Save
-            </button>
-          </div>
-        </div>
-      </div>
+      </form>
     </SettingsLayout>
   )
 }

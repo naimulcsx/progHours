@@ -43,7 +43,7 @@ const EditProfile = () => {
         <div className="col-span-2">
           <form className="mt-10 space-y-12" onSubmit={formik.handleSubmit}>
             {/* edit profile: for name, email and uid  */}
-            <div className="space-y-4">
+            <div className="space-y-6">
               <h3 className="mb-8">Edit your profile</h3>
               <InputField
                 id="name"
@@ -62,7 +62,7 @@ const EditProfile = () => {
             </div>
 
             {/* edit profile: online judge handles */}
-            <div className="space-y-4">
+            <div className="space-y-6">
               <h3 className="mb-8">Online Judge Handles</h3>
               <InputField
                 id="codeforces"
