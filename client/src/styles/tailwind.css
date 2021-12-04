@@ -19,7 +19,7 @@ body {
   @apply text-lg leading-9 text-secondaryDark;
 }
 
-h1,
+/* h1,
 h2,
 h3,
 h4,
@@ -70,7 +70,7 @@ h6 {
 
 /*Button Styles*/
 .btn-primary {
-  @apply px-5 py-3 font-semibold text-white border rounded-md bg-primary;
+  @apply px-5 py-2 font-semibold text-white border rounded-md bg-primary;
 }
 
 .btn-outline-primary {
@@ -104,3 +104,12 @@ h6 {
 .input-box {
   @apply w-full px-4 py-1 text-lg border-2 border-gray-200 rounded-md focus:outline-none focus:border-2 focus:border-primary;
 }
+
+/* .bg-profile {
+  background-image: linear-gradient(to left, rgb(95, 78, 244), rgb(95, 78, 244)),
+    url("/image/profile-bg.png");
+
+  background-size: cover;
+  background-position: center center;
+  height: 450px;
+} */
