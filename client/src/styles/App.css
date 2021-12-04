@@ -609,20 +609,20 @@ video {
   left: 0px;
 }
 
-.right-0 {
-  right: 0px;
-}
-
 .bottom-0 {
   bottom: 0px;
 }
 
-.z-30 {
-  z-index: 30;
+.right-0 {
+  right: 0px;
 }
 
 .z-20 {
   z-index: 20;
+}
+
+.z-30 {
+  z-index: 30;
 }
 
 .col-span-2 {
@@ -677,10 +677,6 @@ video {
 
 .mt-10 {
   margin-top: 2.5rem;
-}
-
-.mb-24 {
-  margin-bottom: 6rem;
 }
 
 .block {
@@ -767,12 +763,6 @@ video {
   gap: 2rem;
 }
 
-.space-x-4 > :not([hidden]) ~ :not([hidden]) {
-  --tw-space-x-reverse: 0;
-  margin-right: calc(1rem * var(--tw-space-x-reverse));
-  margin-left: calc(1rem * calc(1 - var(--tw-space-x-reverse)));
-}
-
 .space-y-1 > :not([hidden]) ~ :not([hidden]) {
   --tw-space-y-reverse: 0;
   margin-top: calc(0.25rem * calc(1 - var(--tw-space-y-reverse)));
@@ -789,6 +779,12 @@ video {
   --tw-space-x-reverse: 0;
   margin-right: calc(0.5rem * var(--tw-space-x-reverse));
   margin-left: calc(0.5rem * calc(1 - var(--tw-space-x-reverse)));
+}
+
+.space-x-4 > :not([hidden]) ~ :not([hidden]) {
+  --tw-space-x-reverse: 0;
+  margin-right: calc(1rem * var(--tw-space-x-reverse));
+  margin-left: calc(1rem * calc(1 - var(--tw-space-x-reverse)));
 }
 
 .space-y-2 > :not([hidden]) ~ :not([hidden]) {
@@ -831,14 +827,14 @@ video {
   border-radius: 0.25rem;
 }
 
-.bg-white {
-  --tw-bg-opacity: 1;
-  background-color: rgba(255, 255, 255, var(--tw-bg-opacity));
-}
-
 .bg-light {
   --tw-bg-opacity: 1;
   background-color: rgba(248, 247, 250, var(--tw-bg-opacity));
+}
+
+.bg-white {
+  --tw-bg-opacity: 1;
+  background-color: rgba(255, 255, 255, var(--tw-bg-opacity));
 }
 
 .p-10 {
@@ -882,12 +878,12 @@ video {
   padding-top: 10rem;
 }
 
-.pb-2 {
-  padding-bottom: 0.5rem;
-}
-
 .pb-24 {
   padding-bottom: 6rem;
+}
+
+.pb-2 {
+  padding-bottom: 0.5rem;
 }
 
 .text-sm {
@@ -957,6 +953,7 @@ body {
 }
 
 h1, h2, h3, h4, h5, h6 {
+  font-weight: 600;
   --tw-text-opacity: 1;
   color: rgba(17, 24, 39, var(--tw-text-opacity));
 }
@@ -1158,10 +1155,10 @@ h6 {
   border-width: 2px;
   --tw-border-opacity: 1;
   border-color: rgba(229, 231, 235, var(--tw-border-opacity));
-  padding-top: 0.25rem;
-  padding-bottom: 0.25rem;
   padding-left: 1rem;
   padding-right: 1rem;
+  padding-top: 0.25rem;
+  padding-bottom: 0.25rem;
   font-size: 1.125rem;
   line-height: 1.75rem;
 }
