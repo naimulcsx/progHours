@@ -74,7 +74,7 @@ h6 {
 }
 
 .btn-outline-primary {
-  @apply px-5 text-lg text-center transition-all duration-300 border rounded-md text-primaryDark border-borderColor hover:bg-primary hover:text-white;
+  @apply px-5 text-center transition-all duration-300 border rounded-md text-primaryDark border-borderColor hover:bg-primary hover:text-white;
 }
 
 /* Toast styles */
