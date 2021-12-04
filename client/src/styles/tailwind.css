@@ -25,7 +25,7 @@ h3,
 h4,
 h5,
 h6 {
-  @apply text-gray-900;
+  @apply font-semibold text-gray-900;
 }
 
 h1 {
@@ -68,12 +68,13 @@ h6 {
   @apply mt-1 text-sm text-red-500;
 }
 
+/*Button Styles*/
 .btn-primary {
   @apply px-5 py-3 font-semibold text-white border rounded-md bg-primary;
 }
 
 .btn-outline-primary {
-  @apply px-5 py-3 text-lg text-center border rounded-md text-primaryDark border-borderColor;
+  @apply px-5 text-center transition-all duration-300 border rounded-md text-primaryDark border-borderColor hover:bg-primary hover:text-white;
 }
 
 /* Toast styles */
@@ -93,4 +94,13 @@ h6 {
 }
 .nav-item.active svg {
   @apply fill-current text-primary;
+}
+
+/* Settings form styles */
+.settings-form {
+  @apply flex flex-col py-10 border-b border-borderColor;
+}
+
+.input-box {
+  @apply w-full px-4 py-1 text-lg border-2 border-gray-200 rounded-md focus:outline-none focus:border-2 focus:border-primary;
 }
