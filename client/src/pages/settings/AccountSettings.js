@@ -1,20 +1,5 @@
 import SettingsLayout from "components/SettingsLayout"
-
-// const settingsSchema = Yup.object().shape({
-//   uuid: Yup.string().trim(),
-//   name: Yup.string().trim(),
-//   password: Yup.string().trim().min(8, "Password must be 8 characters long"),
-//   email: Yup.string().email("Invalid email"),
-// })
-
-// const InputBox = ({ label }) => {
-//   return (
-//     <div className="flex-1 space-y-2">
-//       <h6 className="font-semibold pb-2">{label}</h6>
-//       <input className="input-box" />
-//     </div>
-//   )
-// }
+import InputField from "components/InputField"
 
 const AccountSettings = () => {
   return (
@@ -24,8 +9,7 @@ const AccountSettings = () => {
       <div className="">
         <div className="settings-form">
           <div className="flex-1 space-y-2">
-            <h6 className="font-semibold pb-2">University ID</h6>
-            <input className="input-box" />
+            <InputField id="uuid"  label="University ID" />
           </div>
 
           <div className="flex justify-end mt-4">
@@ -41,7 +25,7 @@ const AccountSettings = () => {
               Please enter your full name, or a display name you are comfortable
               with.
             </h6>
-            <input className="input-box" />
+            <InputField id="name"  label="Full Name" />
           </div>
 
           <div className="flex justify-end mt-4">
@@ -56,7 +40,7 @@ const AccountSettings = () => {
             <h6 className="font-semibold pb-2">
               Please enter the email address you want to use to log in
             </h6>
-            <input className="input-box" />
+            <InputField id="email"  label="Email" />
           </div>
 
           <div className="flex justify-end mt-4">
@@ -69,26 +53,9 @@ const AccountSettings = () => {
         <div className="settings-form">
           <h4 className="font-semibold">Change your Password</h4>
           <div className="flex-1 space-y-8 mt-12">
-            <div>
-            <h6 className="font-semibold pb-2">
-              Current Password
-            </h6>
-            <input className="input-box" />
-            </div>
-
-          <div>
-          <h6 className="font-semibold pb-2">
-              New Password
-            </h6>
-            <input className="input-box" />
-
-          </div>
-           <div>
-           <h6 className="font-semibold pb-2">
-              Confirm Password
-            </h6>
-            <input className="input-box" />
-           </div>
+            <InputField id="curr-pass"  label="Current Password" />
+            <InputField id="new-pass"  label="New Password" />
+            <InputField id="confirm-pass"  label="Confirm Password" />
           </div>
 
           <div className="flex justify-end mt-4">
