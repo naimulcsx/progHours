@@ -90,7 +90,7 @@ h6 {
   @apply w-6 h-6 mr-2 text-gray-500 fill-current;
 }
 .nav-item.active {
-  @apply fill-current bg-primary bg-opacity-10 text-primary;
+  @apply fill-current bg-primary bg-opacity-10 text-primary shadow-inner;
 }
 .nav-item.active svg {
   @apply fill-current text-primary;
