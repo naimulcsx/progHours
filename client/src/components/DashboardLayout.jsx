@@ -9,6 +9,7 @@ import Logo from "./Logo"
 import { IoMdSettings } from "react-icons/io"
 import { MdLeaderboard, MdOutlineListAlt } from "react-icons/md"
 import { ImStatsDots } from "react-icons/im"
+import { IoLogOutOutline } from 'react-icons/io5'
 
 const DashboardSidebar = () => {
   const user = localStorage.getItem("name")
@@ -45,9 +46,10 @@ const DashboardSidebar = () => {
             <div className="flex items-start space-x-3">
               <Avatar size="40px" name={user} round />
               <div>
-                <h6 className="font-medium">{user}</h6>
-                <button className="text-sm" onClick={handleLogout}>
-                  Logout
+                <h6 className="font-medium text-xl">{user}</h6>
+                <button className="text-red-500 text-sm mt-1 flex items-center space-x-1" onClick={handleLogout}>
+                  <IoLogOutOutline size={20} />
+                  <span>Logout</span>
                 </button>
               </div>
             </div>
