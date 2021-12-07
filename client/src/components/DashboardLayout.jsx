@@ -1,4 +1,4 @@
-import { useNavigate } from "react-router"
+import { Link, useNavigate } from "react-router-dom"
 import NavLink from "./NavLink"
 import clearAuthData from "utils/clearAuthData"
 import { toast } from "react-toastify"
@@ -9,7 +9,8 @@ import Logo from "./Logo"
 import { IoMdSettings } from "react-icons/io"
 import { MdLeaderboard, MdOutlineListAlt } from "react-icons/md"
 import { ImStatsDots } from "react-icons/im"
-import { IoLogOutOutline } from 'react-icons/io5'
+import { IoLogOutOutline } from "react-icons/io5"
+import Navbar from "./Navbar"
 
 const DashboardSidebar = () => {
   const user = localStorage.getItem("name")
@@ -20,7 +21,7 @@ const DashboardSidebar = () => {
     navigate("/login")
   }
   return (
-    <div className="max-w-[280px] w-full h-[100vh] px-6 py-4 fixed z-20 top-0 left-0 bottom-0 bg-white shadow">
+    <div className="max-w-[280px] w-full h-[100vh] px-6 py-4 fixed z-50 top-0 left-0 bottom-0 bg-white shadow">
       {/* logo   */}
       <Logo />
       {/* sidebar links */}
@@ -46,8 +47,11 @@ const DashboardSidebar = () => {
             <div className="flex items-start space-x-3">
               <Avatar size="40px" name={user} round />
               <div>
-                <h6 className="font-medium text-xl">{user}</h6>
-                <button className="text-red-500 text-sm mt-1 flex items-center space-x-1" onClick={handleLogout}>
+                <h6 className="text-xl font-medium">{user}</h6>
+                <button
+                  className="flex items-center mt-1 space-x-1 text-sm text-red-500"
+                  onClick={handleLogout}
+                >
                   <IoLogOutOutline size={20} />
                   <span>Logout</span>
                 </button>
@@ -62,9 +66,11 @@ const DashboardSidebar = () => {
 
 const Dashboardlayout = ({ children }) => {
   return (
-    <div className="min-h-screen bg-light">
+    <div className="min-h-screen">
+      <Navbar />
       <DashboardSidebar />
-      <div className="ml-[280px] px-6">{children}</div>
+      {/* dashboard main contents */}
+      <div className="ml-[280px] bg-light min-h-screen px-6">{children}</div>
     </div>
   )
 }
