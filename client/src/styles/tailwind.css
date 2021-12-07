@@ -84,7 +84,7 @@ h6 {
 
 /* Navbar link styles */
 .nav-item {
-  @apply flex items-center px-3 py-3 rounded;
+  @apply flex items-center px-5 py-3 rounded-lg;
 }
 .nav-item svg {
   @apply w-6 h-6 mr-2 text-gray-500 fill-current;
