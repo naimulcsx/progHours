@@ -22,7 +22,7 @@ const SettingsLayout = ({ children }) => {
             </ul>
           </nav>
         </div>
-        <div className="col-span-5 p-12 bg-white rounded shadow">
+        <div className="col-span-5 p-12 bg-white rounded-lg shadow">
           {children}
         </div>
       </div>
