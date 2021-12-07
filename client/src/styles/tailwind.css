@@ -74,7 +74,7 @@ h6 {
 }
 
 .btn-outline {
-  @apply px-5 py-2 text-center transition-all duration-300 border rounded-md text-gray-600 border border-gray-200 hover:border-red-500 hover:bg-red-500 hover:text-white;
+  @apply px-5 py-2 text-center text-gray-600 transition-all duration-300 border border-gray-200 rounded-md hover:border-red-500 hover:bg-red-500 hover:text-white;
 }
 
 /* Toast styles */
@@ -87,13 +87,13 @@ h6 {
   @apply flex items-center px-5 py-3 rounded-lg;
 }
 .nav-item svg {
-  @apply w-6 h-6 mr-2 text-gray-500 fill-current;
+  @apply w-6 h-6 mr-2 text-gray-500;
 }
 .nav-item.active {
-  @apply fill-current bg-primary bg-opacity-10 font-medium text-primary shadow-inner;
+  @apply font-medium shadow-inner bg-primary bg-opacity-10 text-primary;
 }
 .nav-item.active svg {
-  @apply fill-current text-primary;
+  @apply text-primary;
 }
 
 /* Settings form styles */

@@ -1,6 +1,6 @@
 import Navbar from "./Navbar"
-import { IoMdPerson, IoMdSettings } from "react-icons/io"
 import NavLink from "./NavLink"
+import { UserIcon, SettingsIcon } from "./Icons"
 
 const SettingsLayout = ({ children }) => {
   return (
@@ -13,10 +13,10 @@ const SettingsLayout = ({ children }) => {
           <p className="mt-2 text-gray-500">Update and manage your account</p>
           <nav className="mt-8">
             <ul className="space-y-2">
-              <NavLink Icon={IoMdPerson} to="/settings/profile">
+              <NavLink Icon={UserIcon} to="/settings/profile">
                 Profile
               </NavLink>
-              <NavLink Icon={IoMdSettings} to="/settings/account">
+              <NavLink Icon={SettingsIcon} to="/settings/account">
                 Account Settings
               </NavLink>
             </ul>

@@ -1,6 +1,11 @@
-import { BiChevronDown, BiChevronUp } from "react-icons/bi"
-import { IoLogOutOutline, IoSettingsOutline } from "react-icons/io5"
-import { HiOutlineUser } from "react-icons/hi"
+import {
+  ChevronDownIcon,
+  ChevronUpIcon,
+  LogoutIcon,
+  UserIcon,
+  SettingsIcon,
+} from "./Icons"
+
 import { Menu, Transition } from "@headlessui/react"
 import { Link } from "react-router-dom"
 import useLogout from "hooks/useLogout"
@@ -13,9 +18,9 @@ function DropdownMenu() {
         <>
           <Menu.Button>
             {!open ? (
-              <BiChevronDown color="gray" size={24} />
+              <ChevronDownIcon color="gray" size={24} />
             ) : (
-              <BiChevronUp color="gray" size={24} />
+              <ChevronUpIcon color="gray" size={24} />
             )}
           </Menu.Button>
           <Transition
@@ -39,7 +44,7 @@ function DropdownMenu() {
                     } group flex rounded-md items-center w-full px-2 py-2 text-sm font-medium`}
                     to="/profile"
                   >
-                    <HiOutlineUser size={18} className="mr-1" />
+                    <UserIcon size={18} className="mr-2" />
                     Profile
                   </Link>
                 )}
@@ -54,7 +59,7 @@ function DropdownMenu() {
                     } group flex rounded-md items-center w-full px-2 py-2 text-sm font-medium`}
                     to="/settings"
                   >
-                    <IoSettingsOutline size={18} className="mr-1" />
+                    <SettingsIcon size={18} className="mr-2" />
                     Settings
                   </Link>
                 )}
@@ -69,7 +74,7 @@ function DropdownMenu() {
                     } group flex rounded-md items-center w-full px-2 py-2 text-sm font-medium`}
                     onClick={handleClick}
                   >
-                    <IoLogOutOutline size={18} className="mr-1" />
+                    <LogoutIcon size={18} className="mr-2" />
                     Logout
                   </button>
                 )}
