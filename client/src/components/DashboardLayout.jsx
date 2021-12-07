@@ -19,7 +19,7 @@ const DashboardSidebar = () => {
     navigate("/login")
   }
   return (
-    <div className="max-w-[280px] w-full h-[100vh] px-6 py-4 fixed z-20 top-0 left-0 bottom-0 bg-white">
+    <div className="max-w-[280px] w-full h-[100vh] px-6 py-4 fixed z-20 top-0 left-0 bottom-0 bg-white shadow">
       {/* logo   */}
       <Logo />
       {/* sidebar links */}
