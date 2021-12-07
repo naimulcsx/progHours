@@ -41,7 +41,7 @@ const EditProfile = () => {
     <SettingsLayout>
       <div className="grid items-start grid-cols-3 gap-8">
         <div className="col-span-2">
-          <form className="mt-10 space-y-12" onSubmit={formik.handleSubmit}>
+          <form className="space-y-12" onSubmit={formik.handleSubmit}>
             {/* edit profile: for name, email and uid  */}
             <div className="space-y-6">
               <h3 className="mb-8">Edit your profile</h3>
@@ -81,7 +81,7 @@ const EditProfile = () => {
 
             {/* save buttons */}
             <div className="flex items-center space-x-6">
-              <button className="py-3 btn-outline-primary" type="button">
+              <button className="py-3 btn-outline" type="button">
                 Cancel
               </button>
               <button className="btn-primary" type="submit">

@@ -4,7 +4,7 @@
 
 /* Default styles */
 body {
-  @apply text-gray-600;
+  @apply text-gray-700;
 }
 
 .p1 {
@@ -73,8 +73,8 @@ h6 {
   @apply px-5 py-2 font-semibold text-white border rounded-md bg-primary;
 }
 
-.btn-outline-primary {
-  @apply px-5 text-center transition-all duration-300 border rounded-md text-primaryDark border-borderColor hover:bg-primary hover:text-white;
+.btn-outline {
+  @apply px-5 py-2 text-center transition-all duration-300 border rounded-md text-gray-600 border border-gray-200 hover:border-red-500 hover:bg-red-500 hover:text-white;
 }
 
 /* Toast styles */
@@ -84,13 +84,13 @@ h6 {
 
 /* Navbar link styles */
 .nav-item {
-  @apply flex items-center px-3 py-3 rounded;
+  @apply flex items-center px-5 py-3 rounded-lg;
 }
 .nav-item svg {
   @apply w-6 h-6 mr-2 text-gray-500 fill-current;
 }
 .nav-item.active {
-  @apply fill-current bg-primary bg-opacity-10 text-primary;
+  @apply fill-current bg-primary bg-opacity-10 font-medium text-primary shadow-inner;
 }
 .nav-item.active svg {
   @apply fill-current text-primary;
