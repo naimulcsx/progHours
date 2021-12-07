@@ -5,10 +5,14 @@ import useLogout from "hooks/useLogout"
 
 // import logo and icons
 import Logo from "./Logo"
-import { IoMdSettings } from "react-icons/io"
-import { MdLeaderboard, MdOutlineListAlt } from "react-icons/md"
-import { ImStatsDots } from "react-icons/im"
-import { IoLogOutOutline } from "react-icons/io5"
+
+import {
+  DashboardIcon,
+  LeaderboardIcon,
+  TrackingIcon,
+  SettingsIcon,
+  LogoutIcon,
+} from "./Icons"
 
 const DashboardSidebar = () => {
   const user = localStorage.getItem("name")
@@ -21,16 +25,16 @@ const DashboardSidebar = () => {
       <div className="flex flex-col justify-between h-full pt-16">
         <nav>
           <ul className="space-y-1">
-            <NavLink Icon={ImStatsDots} to="/dashboard/home">
+            <NavLink Icon={DashboardIcon} to="/dashboard/home">
               Dashboard
             </NavLink>
-            <NavLink Icon={MdOutlineListAlt} to="/dashboard/tracking">
+            <NavLink Icon={TrackingIcon} to="/dashboard/tracking">
               Tracking Sheet
             </NavLink>
-            <NavLink Icon={MdLeaderboard} to="/leaderboard">
+            <NavLink Icon={LeaderboardIcon} to="/leaderboard">
               Leaderboard
             </NavLink>
-            <NavLink Icon={IoMdSettings} to="/settings">
+            <NavLink Icon={SettingsIcon} to="/settings">
               Settings
             </NavLink>
           </ul>
@@ -45,7 +49,7 @@ const DashboardSidebar = () => {
                   className="flex items-center mt-1 space-x-1 text-sm text-red-500"
                   onClick={handleLogout}
                 >
-                  <IoLogOutOutline size={20} />
+                  <LogoutIcon size={20} />
                   <span>Logout</span>
                 </button>
               </div>
