@@ -1,8 +1,7 @@
-import { Link, useNavigate } from "react-router-dom"
 import NavLink from "./NavLink"
-import clearAuthData from "utils/clearAuthData"
-import { toast } from "react-toastify"
+import Navbar from "./Navbar"
 import Avatar from "react-avatar"
+import useLogout from "hooks/useLogout"
 
 // import logo and icons
 import Logo from "./Logo"
@@ -10,16 +9,10 @@ import { IoMdSettings } from "react-icons/io"
 import { MdLeaderboard, MdOutlineListAlt } from "react-icons/md"
 import { ImStatsDots } from "react-icons/im"
 import { IoLogOutOutline } from "react-icons/io5"
-import Navbar from "./Navbar"
 
 const DashboardSidebar = () => {
   const user = localStorage.getItem("name")
-  const navigate = useNavigate()
-  const handleLogout = async () => {
-    await clearAuthData()
-    toast.success("Logged out", { className: "toast" })
-    navigate("/login")
-  }
+  const handleLogout = useLogout()
   return (
     <div className="max-w-[280px] w-full h-[100vh] px-6 py-4 fixed z-50 top-0 left-0 bottom-0 bg-white shadow">
       {/* logo   */}
