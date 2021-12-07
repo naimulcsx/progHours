@@ -17,7 +17,7 @@ const AccountSettings = () => {
         </div>
         {/* save buttons */}
         <div className="flex items-center space-x-6">
-          <button className="py-3 btn-outline-primary" type="button">
+          <button className="py-3 btn-outline" type="button">
             Cancel
           </button>
           <button className="btn-primary" type="submit">

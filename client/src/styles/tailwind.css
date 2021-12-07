@@ -73,8 +73,8 @@ h6 {
   @apply px-5 py-2 font-semibold text-white border rounded-md bg-primary;
 }
 
-.btn-outline-primary {
-  @apply px-5 text-center transition-all duration-300 border rounded-md text-primaryDark border-borderColor hover:bg-primary hover:text-white;
+.btn-outline {
+  @apply px-5 py-2 text-center transition-all duration-300 border rounded-md text-gray-600 border border-gray-200 hover:border-red-500 hover:bg-red-500 hover:text-white;
 }
 
 /* Toast styles */
