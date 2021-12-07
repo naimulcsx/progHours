@@ -3,7 +3,7 @@ module.exports = {
   darkMode: false, // or 'media' or 'class'
   theme: {
     fontFamily: {
-      sans: ["Manrope", "sans-serif"],
+      sans: ["Roboto", "sans-serif"],
     },
     screens: {
       sm: "640px",

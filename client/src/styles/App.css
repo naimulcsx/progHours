@@ -372,7 +372,7 @@ ul {
  */
 
 html {
-  font-family: Manrope, sans-serif;
+  font-family: Roboto, sans-serif;
   /* 1 */
   line-height: 1.5;
   /* 2 */
@@ -451,6 +451,11 @@ img {
 
 textarea {
   resize: vertical;
+}
+
+input::-webkit-input-placeholder, textarea::-webkit-input-placeholder {
+  opacity: 1;
+  color: #9ca3af;
 }
 
 input:-ms-input-placeholder, textarea:-ms-input-placeholder {
@@ -633,68 +638,24 @@ video {
   right: 0px;
 }
 
-.-top-20 {
-  top: -5rem;
-}
-
-.top-20 {
-  top: 5rem;
-}
-
-.left-20 {
-  left: 5rem;
-}
-
-.left-60 {
-  left: 15rem;
-}
-
-.right-20 {
-  right: 5rem;
-}
-
-.right-10 {
-  right: 2.5rem;
-}
-
-.right-12 {
-  right: 3rem;
-}
-
-.right-4 {
-  right: 1rem;
-}
-
 .top-10 {
   top: 2.5rem;
 }
 
-.top-12 {
-  top: 3rem;
-}
-
-.right-2 {
-  right: 0.5rem;
-}
-
-.top-16 {
-  top: 4rem;
-}
-
-.top-6 {
-  top: 1.5rem;
+.-top-20 {
+  top: -5rem;
 }
 
 .z-20 {
   z-index: 20;
 }
 
-.z-30 {
-  z-index: 30;
-}
-
 .z-50 {
   z-index: 50;
+}
+
+.z-30 {
+  z-index: 30;
 }
 
 .col-span-2 {
@@ -904,11 +865,6 @@ video {
   border-bottom-width: calc(1px * var(--tw-divide-y-reverse));
 }
 
-.divide-gray-500 > :not([hidden]) ~ :not([hidden]) {
-  --tw-divide-opacity: 1;
-  border-color: rgba(107, 114, 128, var(--tw-divide-opacity));
-}
-
 .divide-gray-200 > :not([hidden]) ~ :not([hidden]) {
   --tw-divide-opacity: 1;
   border-color: rgba(229, 231, 235, var(--tw-divide-opacity));
@@ -916,6 +872,10 @@ video {
 
 .rounded {
   border-radius: 0.25rem;
+}
+
+.rounded-lg {
+  border-radius: 0.5rem;
 }
 
 .rounded-md {
@@ -926,26 +886,18 @@ video {
   border-radius: 9999px;
 }
 
-.rounded-lg {
-  border-radius: 0.5rem;
-}
-
 .border {
   border-width: 1px;
-}
-
-.border-b {
-  border-bottom-width: 1px;
-}
-
-.border-borderColor {
-  --tw-border-opacity: 1;
-  border-color: rgba(235, 234, 237, var(--tw-border-opacity));
 }
 
 .border-gray-200 {
   --tw-border-opacity: 1;
   border-color: rgba(229, 231, 235, var(--tw-border-opacity));
+}
+
+.border-borderColor {
+  --tw-border-opacity: 1;
+  border-color: rgba(235, 234, 237, var(--tw-border-opacity));
 }
 
 .bg-light {
@@ -961,11 +913,6 @@ video {
 .bg-primary {
   --tw-bg-opacity: 1;
   background-color: rgba(85, 66, 246, var(--tw-bg-opacity));
-}
-
-.bg-red-200 {
-  --tw-bg-opacity: 1;
-  background-color: rgba(254, 202, 202, var(--tw-bg-opacity));
 }
 
 .bg-opacity-10 {
@@ -984,14 +931,6 @@ video {
   padding: 3rem;
 }
 
-.p-20 {
-  padding: 5rem;
-}
-
-.p-4 {
-  padding: 1rem;
-}
-
 .px-6 {
   padding-left: 1.5rem;
   padding-right: 1.5rem;
@@ -1000,6 +939,11 @@ video {
 .py-4 {
   padding-top: 1rem;
   padding-bottom: 1rem;
+}
+
+.py-3 {
+  padding-top: 0.75rem;
+  padding-bottom: 0.75rem;
 }
 
 .py-5 {
@@ -1020,16 +964,6 @@ video {
 .py-48 {
   padding-top: 12rem;
   padding-bottom: 12rem;
-}
-
-.py-3 {
-  padding-top: 0.75rem;
-  padding-bottom: 0.75rem;
-}
-
-.py-2 {
-  padding-top: 0.5rem;
-  padding-bottom: 0.5rem;
 }
 
 .pt-16 {
@@ -1075,6 +1009,11 @@ video {
   font-weight: 700;
 }
 
+.text-gray-600 {
+  --tw-text-opacity: 1;
+  color: rgba(75, 85, 99, var(--tw-text-opacity));
+}
+
 .text-primary {
   --tw-text-opacity: 1;
   color: rgba(85, 66, 246, var(--tw-text-opacity));
@@ -1100,16 +1039,6 @@ video {
   color: rgba(255, 255, 255, var(--tw-text-opacity));
 }
 
-.text-gray-400 {
-  --tw-text-opacity: 1;
-  color: rgba(156, 163, 175, var(--tw-text-opacity));
-}
-
-.text-gray-600 {
-  --tw-text-opacity: 1;
-  color: rgba(75, 85, 99, var(--tw-text-opacity));
-}
-
 .shadow {
   --tw-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
   box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
@@ -1121,7 +1050,9 @@ video {
 }
 
 .transition-transform {
+  transition-property: -webkit-transform;
   transition-property: transform;
+  transition-property: transform, -webkit-transform;
   transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
   transition-duration: 150ms;
 }
@@ -1299,7 +1230,7 @@ h6 {
 /* Toast styles */
 
 .toast {
-  font-family: Manrope, sans-serif;
+  font-family: Roboto, sans-serif;
   font-size: 0.875rem;
   line-height: 1.25rem;
   --tw-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
@@ -1387,9 +1318,11 @@ h6 {
 
 .hover\:-translate-y-4:hover {
   --tw-translate-y: -1rem;
-  transform: var(--tw-transform);
+  -webkit-transform: var(--tw-transform);
+          transform: var(--tw-transform);
 }
 
 .hover\:transform:hover {
-  transform: var(--tw-transform);
+  -webkit-transform: var(--tw-transform);
+          transform: var(--tw-transform);
 }
