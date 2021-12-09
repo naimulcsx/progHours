@@ -8,6 +8,7 @@ import { useEffect } from "react"
 import AccountSettings from "pages/settings/AccountSettings"
 import ProfileSettings from "pages/settings/ProfileSettings"
 import Profile from "pages/profile"
+import TrackingSheet from "pages/dashboard/Tracking"
 
 const AccessDenied = () => {
   useEffect(() => {
@@ -34,6 +35,10 @@ const routes = (isLoggedIn) => [
   {
     path: "/dashboard/home",
     element: isLoggedIn ? <DashboardHome /> : <AccessDenied />,
+  },
+  {
+    path: "/dashboard/tracking",
+    element: isLoggedIn ? <TrackingSheet /> : <AccessDenied />,
   },
   {
     path: "/settings",

@@ -1,8 +1,12 @@
 import {
   IoLogOutOutline as LogoutIcon,
   IoSettingsOutline as SettingsIcon,
+  IoListOutline as ListViewIcon,
 } from "react-icons/io5"
-import { HiOutlineUser as UserIcon } from "react-icons/hi"
+import {
+  HiOutlineUser as UserIcon,
+  HiOutlinePlusSm as PlusIcon,
+} from "react-icons/hi"
 import {
   BiChevronDown as ChevronDownIcon,
   BiChevronUp as ChevronUpIcon,
@@ -10,6 +14,7 @@ import {
 } from "react-icons/bi"
 import { RiAppsLine as DashboardIcon } from "react-icons/ri"
 import { MdOutlineListAlt as TrackingIcon } from "react-icons/md"
+import { CgMenuGridO as GridViewIcon } from "react-icons/cg"
 
 const LogoIcon = ({ width, height }) => {
   return (
@@ -47,4 +52,7 @@ export {
   DashboardIcon,
   LeaderboardIcon,
   TrackingIcon,
+  ListViewIcon,
+  GridViewIcon,
+  PlusIcon,
 }
