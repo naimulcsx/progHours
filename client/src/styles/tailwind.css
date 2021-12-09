@@ -2,6 +2,16 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Profile styles */
+/* .bg-profile {
+  background-image: linear-gradient(to left, rgb(95, 78, 244), rgb(95, 78, 244)),
+    url("/image/profile-bg.png");
+
+  background-size: cover;
+  background-position: center center;
+  height: 450px;
+} */
+
 /* Default styles */
 body {
   @apply text-gray-700;
@@ -98,18 +108,35 @@ h6 {
 
 /* Settings form styles */
 .settings-form {
-  @apply flex flex-col py-10 border-b border-borderColor;
+  @apply flex flex-col py-10 border-b border-lightGrey;
 }
 
 .input-box {
   @apply w-full px-4 py-1 text-lg border-2 border-gray-200 rounded-md focus:outline-none focus:border-2 focus:border-primary;
 }
 
-/* .bg-profile {
-  background-image: linear-gradient(to left, rgb(95, 78, 244), rgb(95, 78, 244)),
-    url("/image/profile-bg.png");
+/* table styles */
 
-  background-size: cover;
-  background-position: center center;
-  height: 450px;
-} */
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+table th,
+table tr {
+  text-align: left;
+}
+
+table tr {
+  /* border-top: 1px solid #ebeaed; */
+  border-bottom: 1px solid #ebeaed;
+}
+
+table td,
+table th {
+  padding: 1.1rem 0;
+}
+
+table tbody tr td:first-child {
+  padding-right: 3rem;
+}
