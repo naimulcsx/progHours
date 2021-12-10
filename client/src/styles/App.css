@@ -947,8 +947,17 @@ video {
   border-width: 1px;
 }
 
+.border-r {
+  border-right-width: 1px;
+}
+
 .border-r-0 {
   border-right-width: 0px;
+}
+
+.border-gray-100 {
+  --tw-border-opacity: 1;
+  border-color: rgba(243, 244, 246, var(--tw-border-opacity));
 }
 
 .border-lightGrey {
@@ -1463,8 +1472,6 @@ h6 {
   font-weight: 500;
   --tw-text-opacity: 1;
   color: rgba(85, 66, 246, var(--tw-text-opacity));
-  --tw-shadow: inset 0 2px 4px 0 rgba(0, 0, 0, 0.06);
-  box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
 }
 
 .nav-item.active svg {
@@ -1520,7 +1527,9 @@ table tr {
 
 table tr {
   /* border-top: 1px solid #ebeaed; */
-  border-bottom: 1px solid #ebeaed;
+  border-bottom-width: 1px;
+  --tw-border-opacity: 1;
+  border-color: rgba(243, 244, 246, var(--tw-border-opacity));
 }
 
 table td, table th {

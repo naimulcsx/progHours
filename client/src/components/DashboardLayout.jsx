@@ -18,7 +18,7 @@ const DashboardSidebar = () => {
   const user = localStorage.getItem("name")
   const handleLogout = useLogout()
   return (
-    <div className="max-w-[280px] w-full h-[100vh] px-6 py-4 fixed z-50 top-0 left-0 bottom-0 bg-white shadow">
+    <div className="max-w-[280px] w-full h-[100vh] px-6 py-4 fixed z-50 top-0 left-0 bottom-0 bg-white border-r border-gray-100">
       {/* logo   */}
       <Logo />
       {/* sidebar links */}

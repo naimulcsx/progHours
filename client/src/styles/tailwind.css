@@ -100,7 +100,7 @@ h6 {
   @apply w-6 h-6 mr-2 text-gray-500;
 }
 .nav-item.active {
-  @apply font-medium shadow-inner bg-primary bg-opacity-10 text-primary;
+  @apply font-medium bg-primary bg-opacity-10 text-primary;
 }
 .nav-item.active svg {
   @apply text-primary;
@@ -129,7 +129,7 @@ table tr {
 
 table tr {
   /* border-top: 1px solid #ebeaed; */
-  border-bottom: 1px solid #ebeaed;
+  @apply border-b border-gray-100;
 }
 
 table td,
