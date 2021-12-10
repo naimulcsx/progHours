@@ -5,7 +5,7 @@ import { MdWatchLater } from "react-icons/md"
 
 const Box = ({ title, icon, result, progress, today }) => {
   return (
-    <div className="hover:transform hover:-translate-y-4 transition-transform duration-500 flex bg-white rounded-md items-start space-x-4 border border-borderColor py-5 px-8">
+    <div className="hover:transform hover:-translate-y-4 transition-transform duration-500 flex bg-white rounded-md items-start space-x-4 border border-lightGrey py-5 px-8">
       <div className="bg-primary p-3 rounded-full bg-opacity-10 text-primary">
         {icon}
       </div>
