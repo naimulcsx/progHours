@@ -134,7 +134,7 @@ table tr {
 
 table td,
 table th {
-  padding: 1.1rem 0;
+  @apply px-6 py-4;
 }
 
 table tbody tr td:first-child {

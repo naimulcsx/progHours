@@ -617,40 +617,6 @@ video {
   --tw-shadow: 0 0 #0000;
 }
 
-.container {
-  width: 100%;
-}
-
-@media (min-width: 640px) {
-  .container {
-    max-width: 640px;
-  }
-}
-
-@media (min-width: 768px) {
-  .container {
-    max-width: 768px;
-  }
-}
-
-@media (min-width: 1024px) {
-  .container {
-    max-width: 1024px;
-  }
-}
-
-@media (min-width: 1280px) {
-  .container {
-    max-width: 1280px;
-  }
-}
-
-@media (min-width: 1536px) {
-  .container {
-    max-width: 1536px;
-  }
-}
-
 .fixed {
   position: fixed;
 }
@@ -772,14 +738,6 @@ video {
   height: 100%;
 }
 
-.h-4 {
-  height: 1rem;
-}
-
-.h-3 {
-  height: 0.75rem;
-}
-
 .h-2 {
   height: 0.5rem;
 }
@@ -796,16 +754,8 @@ video {
   width: 14rem;
 }
 
-.w-16 {
-  width: 4rem;
-}
-
-.w-4 {
-  width: 1rem;
-}
-
-.w-3 {
-  width: 0.75rem;
+.w-12 {
+  width: 3rem;
 }
 
 .w-2 {
@@ -822,10 +772,6 @@ video {
 
 .max-w-6xl {
   max-width: 72rem;
-}
-
-.max-w-screen-lg {
-  max-width: 1024px;
 }
 
 .origin-top-right {
@@ -1030,6 +976,11 @@ video {
   background-color: rgba(170, 243, 178, var(--tw-bg-opacity));
 }
 
+.bg-blue-400 {
+  --tw-bg-opacity: 1;
+  background-color: rgba(96, 165, 250, var(--tw-bg-opacity));
+}
+
 .bg-sky {
   --tw-bg-opacity: 1;
   background-color: rgba(0, 165, 255, var(--tw-bg-opacity));
@@ -1038,11 +989,6 @@ video {
 .bg-orange {
   --tw-bg-opacity: 1;
   background-color: rgba(255, 92, 0, var(--tw-bg-opacity));
-}
-
-.bg-blue-400 {
-  --tw-bg-opacity: 1;
-  background-color: rgba(96, 165, 250, var(--tw-bg-opacity));
 }
 
 .bg-opacity-10 {
@@ -1065,10 +1011,6 @@ video {
   padding: 0.75rem;
 }
 
-.p-1 {
-  padding: 0.25rem;
-}
-
 .px-6 {
   padding-left: 1.5rem;
   padding-right: 1.5rem;
@@ -1077,6 +1019,11 @@ video {
 .py-4 {
   padding-top: 1rem;
   padding-bottom: 1rem;
+}
+
+.px-20 {
+  padding-left: 5rem;
+  padding-right: 5rem;
 }
 
 .px-2 {
@@ -1104,9 +1051,9 @@ video {
   padding-right: 1rem;
 }
 
-.px-5 {
-  padding-left: 1.25rem;
-  padding-right: 1.25rem;
+.py-1 {
+  padding-top: 0.25rem;
+  padding-bottom: 0.25rem;
 }
 
 .py-48 {
@@ -1117,21 +1064,6 @@ video {
 .py-3 {
   padding-top: 0.75rem;
   padding-bottom: 0.75rem;
-}
-
-.px-20 {
-  padding-left: 5rem;
-  padding-right: 5rem;
-}
-
-.px-32 {
-  padding-left: 8rem;
-  padding-right: 8rem;
-}
-
-.py-1 {
-  padding-top: 0.25rem;
-  padding-bottom: 0.25rem;
 }
 
 .pt-16 {
@@ -1188,10 +1120,6 @@ video {
 
 .font-bold {
   font-weight: 700;
-}
-
-.font-semibold {
-  font-weight: 600;
 }
 
 .tracking-wider {
@@ -1595,9 +1523,11 @@ table tr {
   border-bottom: 1px solid #ebeaed;
 }
 
-table td,
-table th {
-  padding: 1.1rem 0;
+table td, table th {
+  padding-left: 1.5rem;
+  padding-right: 1.5rem;
+  padding-top: 1rem;
+  padding-bottom: 1rem;
 }
 
 table tbody tr td:first-child {

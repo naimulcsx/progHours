@@ -38,11 +38,10 @@ function ProblemBox({ image, problemNo, problemTitle }) {
   return (
     <div className="flex items-center space-x-4">
       <div className="">
-        <img src={`/image/${image}`} className="object-cover w-16" alt="" />
+        <img src={`/image/${image}`} className="object-cover w-12" alt="" />
       </div>
-
       <div>
-        <h5>{problemNo}</h5>
+        <h6 className="font-medium">{problemNo}</h6>
         <p>{problemTitle}</p>
       </div>
     </div>
@@ -65,7 +64,7 @@ const TrackingTable = () => {
         </thead>
         <tbody>
           {problemStats.map((list, index) => (
-            <tr key={index}>
+            <tr key={index} className="bg-white">
               <td>{index + 1}</td>
               <td>
                 <ProblemBox
@@ -75,14 +74,14 @@ const TrackingTable = () => {
                 />
               </td>
               <td>
-                <span className="px-4 py-2 font-semibold rounded-md bg-lightGreen text-green">
+                <span className="px-4 py-2 rounded-md bg-lightGreen text-green">
                   {list.verdict}
                 </span>
               </td>
               <td>
                 <div className="flex items-center space-x-4">
                   <div className="w-2 h-2 bg-blue-400"></div>
-                  <p className="font-semibold ">{list.solveTime}</p>
+                  <p className="">{list.solveTime}</p>
                 </div>
               </td>
               <td>
@@ -97,7 +96,7 @@ const TrackingTable = () => {
               </td>
               <td>
                 <div className="">
-                  <p className="font-semibold">{list.date.day}</p>
+                  <p className="font-medium">{list.date.day}</p>
                   <p className="text-secondaryDark">{list.date.time}</p>
                 </div>
               </td>
