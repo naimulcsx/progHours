@@ -3,7 +3,7 @@ import { HelmetProvider } from "react-helmet-async"
 import { ToastContainer } from "react-toastify"
 
 import "react-toastify/dist/ReactToastify.css"
-import "./styles/App.css"
+import "styles/App.css"
 
 // import routes
 import routes from "./routes"

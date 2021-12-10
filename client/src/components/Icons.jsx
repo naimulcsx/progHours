@@ -6,7 +6,7 @@ import {
 import {
   HiOutlineUser as UserIcon,
   HiOutlinePlusSm as PlusIcon,
-  HiOutlineDotsVertical as ThreeDots,
+  HiOutlineDotsVertical as VerticalDotsIcon,
   HiOutlineArrowNarrowDown as ArrowDown,
 } from "react-icons/hi"
 import {
@@ -57,6 +57,5 @@ export {
   ListViewIcon,
   GridViewIcon,
   PlusIcon,
-  ThreeDots,
-  ArrowDown,
+  VerticalDotsIcon,
 }

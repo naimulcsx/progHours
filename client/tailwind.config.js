@@ -23,6 +23,7 @@ module.exports = {
         orange: "#FF5C00",
         green: "#0F7432",
         lightGreen: "#AAF3B2",
+        dark: "#0a0347",
       },
       boxShadow: {
         "input-none": "0 1px 0 #fff",

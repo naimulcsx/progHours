@@ -1,52 +1,23 @@
-import { ThreeDots, ArrowDown } from "./Icons"
+import { VerticalDotsIcon } from "./Icons"
 
 const problemStats = [
   {
-    problemBoxs: {
-      image: "codeforces.png",
-      problemNo: "CF-1366C",
-      problemTitle: "Palindromic Paths",
-    },
-
+    pid: "CF-1366C",
+    problemName: "Palindromic Paths",
+    judgeName: "CODEFORCES",
     verdict: "AC",
-    solveTime: "54 mins",
+    solveTime: 54,
     tags: ["Number Theory", "Greedy"],
-    date: {
-      day: "Thu, 20 Feb 2021",
-      time: "9:38 AM",
-    },
   },
-
   {
-    problemBoxs: {
-      image: "codeforces.png",
-      problemNo: "CF-1366C",
-      problemTitle: "Palindromic Paths",
-    },
-
+    pid: "CF-1366C",
+    problemName: "Palindromic Paths",
+    judgeName: "CODEFORCES",
     verdict: "AC",
-    solveTime: "54 mins",
+    solveTime: 54,
     tags: ["Number Theory", "Greedy"],
-    date: {
-      day: "Thu, 20 Feb 2021",
-      time: "9:38 AM",
-    },
   },
 ]
-
-function ProblemBox({ image, problemNo, problemTitle }) {
-  return (
-    <div className="flex items-center space-x-4">
-      <div className="">
-        <img src={`/image/${image}`} className="object-cover w-12" alt="" />
-      </div>
-      <div>
-        <h6 className="font-medium">{problemNo}</h6>
-        <p>{problemTitle}</p>
-      </div>
-    </div>
-  )
-}
 
 const TrackingTable = () => {
   return (
@@ -63,25 +34,31 @@ const TrackingTable = () => {
           </tr>
         </thead>
         <tbody>
-          {problemStats.map((list, index) => (
+          {problemStats.map((problem, index) => (
             <tr key={index} className="bg-white">
+              {/* id */}
               <td>{index + 1}</td>
+
+              {/* problem info */}
               <td>
-                <ProblemBox
-                  image={list.problemBoxs.image}
-                  problemNo={list.problemBoxs.problemNo}
-                  problemTitle={list.problemBoxs.problemTitle}
-                />
+                <div className="flex items-center space-x-4">
+                  {/* replace with judge image */}
+                  <div className="w-10 h-10 bg-purple-300 rounded-full"></div>
+                  <div>
+                    <h6 className="font-medium">{problem.pid}</h6>
+                    <p>{problem.problemName}</p>
+                  </div>
+                </div>
               </td>
               <td>
-                <span className="px-4 py-2 rounded-md bg-lightGreen text-green">
-                  {list.verdict}
+                <span className="px-2 py-1 text-sm font-medium rounded-md bg-lightGreen text-green">
+                  {problem.verdict}
                 </span>
               </td>
               <td>
                 <div className="flex items-center space-x-4">
                   <div className="w-2 h-2 bg-blue-400"></div>
-                  <p className="">{list.solveTime}</p>
+                  <p className="">{problem.solveTime}</p>
                 </div>
               </td>
               <td>
@@ -94,14 +71,9 @@ const TrackingTable = () => {
                   </div>
                 </div>
               </td>
+              <td>{new Date(Date.now()).toDateString()}</td>
               <td>
-                <div className="">
-                  <p className="font-medium">{list.date.day}</p>
-                  <p className="text-secondaryDark">{list.date.time}</p>
-                </div>
-              </td>
-              <td>
-                <ThreeDots size={25} />
+                <VerticalDotsIcon size={24} />
               </td>
             </tr>
           ))}
