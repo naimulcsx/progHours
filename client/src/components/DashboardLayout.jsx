@@ -67,7 +67,7 @@ const Dashboardlayout = ({ children }) => {
       <Navbar />
       <DashboardSidebar />
       {/* dashboard main contents */}
-      <div className="ml-[280px] bg-light min-h-screen px-6">{children}</div>
+      <div className="ml-[280px] bg-light min-h-screen px-20">{children}</div>
     </div>
   )
 }

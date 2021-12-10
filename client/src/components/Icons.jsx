@@ -14,10 +14,7 @@ import {
   BiChevronUp as ChevronUpIcon,
   BiLineChart as LeaderboardIcon,
 } from "react-icons/bi"
-import {
-  RiAppsLine as DashboardIcon,
-  RiCheckboxBlankFill as RectangleBox,
-} from "react-icons/ri"
+import { RiAppsLine as DashboardIcon } from "react-icons/ri"
 import { MdOutlineListAlt as TrackingIcon } from "react-icons/md"
 import { CgMenuGridO as GridViewIcon } from "react-icons/cg"
 
@@ -60,7 +57,6 @@ export {
   ListViewIcon,
   GridViewIcon,
   PlusIcon,
-  RectangleBox,
   ThreeDots,
   ArrowDown,
 }
