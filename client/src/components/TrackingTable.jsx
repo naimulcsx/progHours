@@ -49,10 +49,6 @@ function ProblemBox({ image, problemNo, problemTitle }) {
   )
 }
 
-function TagBox({ color, text }) {
-  return <div className={`bg-opacity-10 ${color} p-2 rounded-md`}>{text}</div>
-}
-
 const TrackingTable = () => {
   return (
     <div className="pt-12">
