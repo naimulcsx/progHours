@@ -80,7 +80,7 @@ h6 {
 
 /*Button Styles*/
 .btn-primary {
-  @apply px-5 py-2 font-semibold text-white border rounded-md bg-primary;
+  @apply px-5 py-2 font-semibold text-white rounded-md bg-primary;
 }
 
 .btn-outline {
