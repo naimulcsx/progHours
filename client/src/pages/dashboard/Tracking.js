@@ -1,6 +1,6 @@
 import Dashboardlayout from "components/DashboardLayout"
 import { GridViewIcon, ListViewIcon, PlusIcon } from "components/Icons"
-import TrackingTable from "components/TrackingTable"
+import TrackingTable from "components/tracking/Table"
 
 export default function TrackingSheet() {
   return (
@@ -11,14 +11,14 @@ export default function TrackingSheet() {
           <h3>Tracking Sheet</h3>
           <div className="flex items-center space-x-5">
             <div className="flex items-center text-primary">
-              <div className="border p-2 border-lightGrey border-r-0 rounded-l-md">
+              <div className="p-2 border border-r-0 border-lightGrey rounded-l-md">
                 <GridViewIcon size={20} />
               </div>
-              <div className="border p-2 border-lightGrey rounded-r-md">
+              <div className="p-2 border border-lightGrey rounded-r-md">
                 <ListViewIcon size={20} />
               </div>
             </div>
-            <button type="button" className="btn-primary flex items-center">
+            <button type="button" className="flex items-center btn-primary">
               <PlusIcon size={25} /> <span>New Entry</span>
             </button>
           </div>
