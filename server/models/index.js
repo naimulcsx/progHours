@@ -16,5 +16,8 @@ sequelize
  * Register the models
  */
 require("./User")(sequelize)
+require("./Problem")(sequelize)
+
 sequelize.sync()
+
 module.exports = sequelize.models
