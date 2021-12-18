@@ -4,7 +4,7 @@ const { DataTypes } = require("sequelize")
  * @swagger
  * components:
  *   schemas:
- *     problem:
+ *     onlineJudge:
  *       type: object
  *       required:
  *         - name

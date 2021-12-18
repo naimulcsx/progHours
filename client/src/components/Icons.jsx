@@ -58,4 +58,5 @@ export {
   GridViewIcon,
   PlusIcon,
   VerticalDotsIcon,
+  ArrowDown,
 }

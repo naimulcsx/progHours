@@ -4,7 +4,7 @@ const { DataTypes } = require("sequelize")
  * @swagger
  * components:
  *   schemas:
- *     problem:
+ *     handle:
  *       type: object
  *       required:
  *         - value
@@ -30,11 +30,13 @@ module.exports = (sequelize) => {
       },
       userId: {
         type: DataTypes.INTEGER,
-        allowNull: false,
+        references: "users",
+        referencesKey: "id",
       },
       judgeId: {
         type: DataTypes.INTEGER,
-        allowNull: false,
+        references: "online_judges",
+        referencesKey: "id",
       },
     },
     {

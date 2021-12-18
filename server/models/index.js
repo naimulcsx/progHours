@@ -17,6 +17,10 @@ sequelize
  */
 require("./User")(sequelize)
 require("./Problem")(sequelize)
+require("./Handle")(sequelize)
+require("./OnlineJudge")(sequelize)
+require("./Tag")(sequelize)
+require("./ProblemTag")(sequelize)
 
 sequelize.sync()
 

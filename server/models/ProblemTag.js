@@ -4,32 +4,33 @@ const { DataTypes } = require("sequelize")
  * @swagger
  * components:
  *   schemas:
- *     tag:
+ *     problemTag:
  *       type: object
  *       required:
- *         - name
- *         - parentId
+ *         - problemId
+ *         - tagId
  *       properties:
  *         id:
  *           type: integer
- *         name:
- *           type: string
- *         parentId:
+ *         problemId:
+ *           type: integer
+ *         tagId:
  *           type: integer
  */
 
 module.exports = (sequelize) => {
-  const Tag = sequelize.define(
-    "Tag",
+  const ProblemTag = sequelize.define(
+    "ProblemTag",
     {
-      name: {
-        type: DataTypes.STRING,
-        allowNull: false,
-        trim: true,
-      },
-      parentId: {
+      problemId: {
         type: DataTypes.INTEGER,
-        allowNull: false,
+        references: "problems",
+        referencesKey: "id",
+      },
+      tagId: {
+        type: DataTypes.INTEGER,
+        references: "tags",
+        referencesKey: "id",
       },
     },
     {
@@ -38,5 +39,5 @@ module.exports = (sequelize) => {
     }
   )
 
-  return Tag
+  return ProblemTag
 }

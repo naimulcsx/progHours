@@ -40,7 +40,8 @@ module.exports = (sequelize) => {
       },
       judgeId: {
         type: DataTypes.INTEGER,
-        allowNull: false,
+        references: "online_judges",
+        referencesKey: "id",
       },
     },
     {
