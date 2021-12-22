@@ -6,6 +6,8 @@ services:
     volumes:
       - ./client:/home/node/client
       - /home/node/client/node_modules
+    depends_on:
+      - api_server
     networks:
       - mern_app
   api_server:
@@ -44,6 +46,8 @@ services:
       - PGADMIN_DEFAULT_PASSWORD=SuperSecret
     volumes:
       - ./.pg-data/pgadmin/servers.json:/pgadmin4/servers.json
+    depends_on:
+      - db_server
     networks:
       - mern_app
   reverse_proxy:
