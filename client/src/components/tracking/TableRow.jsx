@@ -1,8 +1,9 @@
 import { VerticalDotsIcon } from "components/Icons"
 
-const TableRow = ({ problem }) => {
+const TableRow = ({ problem, index }) => {
   return (
     <tr key={problem.pid} className="bg-white">
+      <td> {index} </td>
       {/* problem name and id  */}
       <td>
         <div className="flex items-center space-x-4">
