@@ -35,7 +35,7 @@ const TrackingTable = () => {
         </thead>
         <tbody>
           {problemStats.map((problem, index) => {
-            return <TableRow problem={problem} />
+            return <TableRow problem={problem} index={index} />
           })}
         </tbody>
       </table>
