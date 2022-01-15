@@ -1,10 +1,11 @@
-const { User } = require("../models")
+const { UserTest } = require("../models").sequelize.models
 const jwt = require("jsonwebtoken")
 
 const register = async (req, res) => {
   const { name, password, uid, email } = req.body
+  console.log(req.body)
   try {
-    const newUser = await User.create({
+    const newUser = await UserTest.create({
       name,
       password,
       uid,
@@ -15,6 +16,7 @@ const register = async (req, res) => {
       user: newUser,
     })
   } catch (err) {
+    console.log(err)
     res.status(400).json(err)
   }
 }
@@ -23,7 +25,7 @@ const login = async (req, res) => {
   const { uid, password } = req.body
   try {
     // check if user exists
-    const user = await User.findOne({ where: { uid } })
+    const user = await UserTest.findOne({ where: { uid } })
     if (!user) {
       return res
         .status(401)
