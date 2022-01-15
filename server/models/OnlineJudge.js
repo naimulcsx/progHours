@@ -17,8 +17,8 @@ const { DataTypes } = require("sequelize")
  */
 
 module.exports = (sequelize) => {
-  const Handle = sequelize.define(
-    "Handle",
+  const OnlineJudge = sequelize.define(
+    "OnlineJudge",
     {
       name: {
         type: DataTypes.STRING,
@@ -32,5 +32,5 @@ module.exports = (sequelize) => {
     }
   )
 
-  return Handle
+  return OnlineJudge
 }

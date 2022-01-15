@@ -30,13 +30,17 @@ module.exports = (sequelize) => {
     {
       problemId: {
         type: DataTypes.INTEGER,
-        references: "problems",
-        referencesKey: "id",
+        references: {
+          model: "Problem",
+          key: "id",
+        },
       },
       userId: {
         type: DataTypes.INTEGER,
-        references: "users",
-        referencesKey: "id",
+        references: {
+          model: "User",
+          key: "id",
+        },
       },
       verdict: {
         type: DataTypes.STRING,

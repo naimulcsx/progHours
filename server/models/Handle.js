@@ -1,4 +1,7 @@
+// const sequelize = require("sequelize")
 const { DataTypes } = require("sequelize")
+
+const { User, OnlineJudge } = require("./index").models
 
 /**
  * @swagger
@@ -30,13 +33,17 @@ module.exports = (sequelize) => {
       },
       userId: {
         type: DataTypes.INTEGER,
-        references: "users",
-        referencesKey: "id",
+        references: {
+          model: User,
+          key: "id",
+        },
       },
       judgeId: {
         type: DataTypes.INTEGER,
-        references: "online_judges",
-        referencesKey: "id",
+        references: {
+          model: OnlineJudge,
+          key: "id",
+        },
       },
     },
     {
