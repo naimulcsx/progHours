@@ -3,7 +3,6 @@ const jwt = require("jsonwebtoken")
 
 const register = async (req, res) => {
   const { name, password, uid, email } = req.body
-  console.log(req.body)
   try {
     const newUser = await User.create({
       name,

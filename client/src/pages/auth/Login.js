@@ -32,9 +32,11 @@ const Login = () => {
         navigate("/dashboard")
         toast.success("Successfully logged in", { className: "toast" })
       } catch (error) {
-        const { data } = error.response
-        console.log(data)
-        toast.error(data.message, { className: "toast" })
+        const { data, status, statusText } = error.response
+        if (status === 502)
+          toast.error(statusText, { className : "toast" })
+        else
+          toast.error(data.message, { className: "toast" })
       }
     },
   })
