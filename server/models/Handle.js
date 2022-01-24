@@ -1,27 +1,17 @@
-const { DataTypes } = require("sequelize")
+const { Model } = require("sequelize")
 
-/**
- * @swagger
- * components:
- *   schemas:
- *     handle:
- *       type: object
- *       required:
- *         - value
- *         - userId
- *         - judgeId
- *       properties:
- *         value:
- *           type: string
- *         userId:
- *           type: integer
- *         judgeId:
- *           type: integer
- */
-
-module.exports = (sequelize) => {
-  const Handle = sequelize.define(
-    "Handle",
+module.exports = (sequelize, DataTypes) => {
+  class Handle extends Model {
+    /**
+     * Helper method for defining associations.
+     * This method is not a part of Sequelize lifecycle.
+     * The `models/index` file will call this method automatically.
+     */
+    static associate(models) {
+      // define association here
+    }
+  }
+  Handle.init(
     {
       value: {
         type: DataTypes.STRING,
@@ -30,20 +20,24 @@ module.exports = (sequelize) => {
       },
       userId: {
         type: DataTypes.INTEGER,
-        references: "users",
-        referencesKey: "id",
+        references: {
+          model: "users",
+          key: "id",
+        },
       },
       judgeId: {
         type: DataTypes.INTEGER,
-        references: "online_judges",
-        referencesKey: "id",
+        references: {
+          model: "online_judges",
+          key: "id",
+        },
       },
     },
     {
-      updatedAt: false,
-      underscored: true,
+      sequelize,
+      tableName: "handles",
+      modelName: "Handle",
     }
   )
-
   return Handle
 }

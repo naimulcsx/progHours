@@ -33,7 +33,7 @@ services:
       - POSTGRES_PASSWORD=pass
       - POSTGRES_DB=db
     volumes:
-      - ./.pg-data/postgresql/data:/var/lib/postgresql/data
+      - /var/lib/postgresql/data
     networks:
       - mern_app
   pgadmin:

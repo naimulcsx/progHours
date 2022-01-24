@@ -1,42 +1,31 @@
-const { DataTypes } = require("sequelize")
-
-/**
- * @swagger
- * components:
- *   schemas:
- *     practiceSubmission:
- *       type: object
- *       required:
- *         - userId
- *         - problemId
- *         - verdict
- *         - solvedAt
- *       properties:
- *         id:
- *           type: integer
- *         userId:
- *           type: integer
- *         problemId:
- *           type: integer
- *         verdict:
- *           type: integer
- *         solvedAt:
- *           type: integer
- */
-
-module.exports = (sequelize) => {
-  const PracticeSubmission = sequelize.define(
-    "PracticeSubmission",
+"use strict"
+const { Model } = require("sequelize")
+module.exports = (sequelize, DataTypes) => {
+  class PracticeSubmission extends Model {
+    /**
+     * Helper method for defining associations.
+     * This method is not a part of Sequelize lifecycle.
+     * The `models/index` file will call this method automatically.
+     */
+    static associate(models) {
+      // define association here
+    }
+  }
+  PracticeSubmission.init(
     {
       problemId: {
         type: DataTypes.INTEGER,
-        references: "problems",
-        referencesKey: "id",
+        references: {
+          model: "problems",
+          key: "id",
+        },
       },
       userId: {
         type: DataTypes.INTEGER,
-        references: "users",
-        referencesKey: "id",
+        references: {
+          model: "users",
+          key: "id",
+        },
       },
       verdict: {
         type: DataTypes.STRING,
@@ -47,10 +36,10 @@ module.exports = (sequelize) => {
       },
     },
     {
-      updatedAt: false,
-      underscored: true,
+      sequelize,
+      tableName: "practice_submissions",
+      modelName: "PracticeSubmission",
     }
   )
-
   return PracticeSubmission
 }

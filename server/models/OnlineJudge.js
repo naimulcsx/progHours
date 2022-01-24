@@ -1,24 +1,18 @@
-const { DataTypes } = require("sequelize")
+const { Model } = require("sequelize")
+const bcrypt = require("bcrypt")
 
-/**
- * @swagger
- * components:
- *   schemas:
- *     onlineJudge:
- *       type: object
- *       required:
- *         - name
- *         - urlRegex
- *       properties:
- *         name:
- *           type: string
- *         urlRegex:
- *           type: integer
- */
-
-module.exports = (sequelize) => {
-  const Handle = sequelize.define(
-    "Handle",
+module.exports = (sequelize, DataTypes) => {
+  class OnlineJudge extends Model {
+    /**
+     * Helper method for defining associations.
+     * This method is not a part of Sequelize lifecycle.
+     * The `models/index` file will call this method automatically.
+     */
+    static associate(models) {
+      // define association here
+    }
+  }
+  OnlineJudge.init(
     {
       name: {
         type: DataTypes.STRING,
@@ -27,10 +21,10 @@ module.exports = (sequelize) => {
       },
     },
     {
-      updatedAt: false,
-      underscored: true,
+      sequelize,
+      tableName: "online_judges",
+      modelName: "OnlineJudge",
     }
   )
-
-  return Handle
+  return OnlineJudge
 }

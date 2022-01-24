@@ -1,4 +1,4 @@
-const { User } = require("../models")
+const { User } = require("../models").sequelize.models
 const jwt = require("jsonwebtoken")
 
 const register = async (req, res) => {
@@ -15,6 +15,7 @@ const register = async (req, res) => {
       user: newUser,
     })
   } catch (err) {
+    console.log(err)
     res.status(400).json(err)
   }
 }

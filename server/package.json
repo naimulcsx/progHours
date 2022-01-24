@@ -4,7 +4,9 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "dev": "nodemon index.js"
+    "dev": "nodemon index.js",
+    "migrate": "sequelize db:migrate",
+    "undo": "sequelize db:migrate:undo:all"
   },
   "keywords": [],
   "author": "",
@@ -17,7 +19,8 @@
     "express": "^4.17.1",
     "jsonwebtoken": "^8.5.1",
     "pg": "^8.7.1",
-    "sequelize": "^6.12.0-alpha.1",
+    "sequelize": "^6.13.0",
+    "sequelize-cli": "^6.4.1",
     "swagger-jsdoc": "^6.1.0",
     "swagger-ui-express": "^4.1.6"
   }

@@ -1,26 +1,17 @@
-const { DataTypes } = require("sequelize")
-
-/**
- * @swagger
- * components:
- *   schemas:
- *     tag:
- *       type: object
- *       required:
- *         - name
- *         - parentId
- *       properties:
- *         id:
- *           type: integer
- *         name:
- *           type: string
- *         parentId:
- *           type: integer
- */
-
-module.exports = (sequelize) => {
-  const Tag = sequelize.define(
-    "Tag",
+"use strict"
+const { Model } = require("sequelize")
+module.exports = (sequelize, DataTypes) => {
+  class Tag extends Model {
+    /**
+     * Helper method for defining associations.
+     * This method is not a part of Sequelize lifecycle.
+     * The `models/index` file will call this method automatically.
+     */
+    static associate(models) {
+      // define association here
+    }
+  }
+  Tag.init(
     {
       name: {
         type: DataTypes.STRING,
@@ -33,10 +24,10 @@ module.exports = (sequelize) => {
       },
     },
     {
-      updatedAt: false,
-      underscored: true,
+      sequelize,
+      tableName: "tags",
+      modelName: "Tag",
     }
   )
-
   return Tag
 }
