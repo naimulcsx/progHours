@@ -36,16 +36,14 @@ services:
       - /var/lib/postgresql/data
     networks:
       - mern_app
-  pgadmin:
-    container_name: pgadmin
-    image: dpage/pgadmin4
+  adminer:
+    container_name: adminer
+    image: adminer
+    restart: always
     ports:
-      - 5000:80
+      - 8080:8080
     environment:
-      - PGADMIN_DEFAULT_EMAIL=naimulcsx@gmail.com
-      - PGADMIN_DEFAULT_PASSWORD=SuperSecret
-    volumes:
-      - ./.pg-data/pgadmin/servers.json:/pgadmin4/servers.json
+      - ADMINER_DEFAULT_DB_DRIVER=pgsql
     depends_on:
       - db_server
     networks:

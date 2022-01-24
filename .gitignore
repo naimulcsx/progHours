@@ -2,7 +2,7 @@
 .vscode
 
 # ignore postgresql data
-.pg-data
+/pg-data
 
 # misc
 .DS_Store
