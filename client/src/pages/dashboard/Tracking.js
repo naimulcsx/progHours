@@ -1,8 +1,14 @@
 import Dashboardlayout from "components/DashboardLayout"
 import { GridViewIcon, ListViewIcon, PlusIcon } from "components/Icons"
 import TrackingTable from "components/tracking/Table"
+import { useState } from "react"
+import axios from "axios"
 
 export default function TrackingSheet() {
+  const [link, setLink] = useState("")
+  const [verdict, setVerdict] = useState("")
+  const [solveTime, setSolveTime] = useState(0)
+
   return (
     <Dashboardlayout>
       <div className="pt-28">
@@ -25,8 +31,42 @@ export default function TrackingSheet() {
         </div>
 
         <div>
+          {/* temporary  */}
           <form>
-            <input type="text" />
+            <input
+              type="text"
+              placeholder="link"
+              value={link}
+              onChange={(e) => setLink(e.target.value)}
+            />
+            <input
+              type="text"
+              placeholder="verdict"
+              value={verdict}
+              onChange={(e) => setVerdict(e.target.value)}
+            />
+            <input
+              type="number"
+              placeholder="solve time"
+              value={solveTime}
+              onChange={(e) => setSolveTime(e.target.value)}
+            />
+            <button
+              onClick={(e) => {
+                e.preventDefault()
+                axios
+                  .post("/api/practice", {
+                    link,
+                    verdict,
+                    solveTime,
+                  })
+                  .then((res) => {
+                    console.log(res)
+                  })
+              }}
+            >
+              Submit
+            </button>
           </form>
         </div>
         {/* tracking table */}

@@ -4,50 +4,54 @@ const cheerio = require("cheerio")
 const axios = require("axios")
 
 const createProblem = async (req, res, next) => {
-  let { url, verdict } = req.body
+  let { link, verdict, solveTime, pid } = req.body
 
-  const urlSplit = url.split("/")
+  return res.send({
+    data: req.user,
+  })
 
-  let pid
-  if (urlSplit.includes("problemset")) pid = urlSplit.slice(-2).join("")
-  else if (urlSplit.includes("contest")) pid = urlSplit[4] + "" + urlSplit[6]
+  // const urlSplit = url.split("/")
 
-  try {
-    const findId = await Problem.findOne({ where: { pid } })
-    console.log(pid)
+  // let pid
+  // if (urlSplit.includes("problemset")) pid = urlSplit.slice(-2).join("")
+  // else if (urlSplit.includes("contest")) pid = urlSplit[4] + "" + urlSplit[6]
 
-    console.log("findId---", findId)
+  // try {
+  //   const findId = await Problem.findOne({ where: { pid } })
+  //   console.log(pid)
 
-    if (findId) {
-      return res.status(400).json({
-        message: "Problem already exists",
-      })
-    }
+  //   console.log("findId---", findId)
 
-    const response = await axios(url)
-    const data = response.data
+  //   if (findId) {
+  //     return res.status(400).json({
+  //       message: "Problem already exists",
+  //     })
+  //   }
 
-    const $ = cheerio.load(data)
-    const val = $(".title").html()
+  //   const response = await axios(url)
+  //   const data = response.data
 
-    const name = val.split(". ")
-    console.log("pname----", name)
+  //   const $ = cheerio.load(data)
+  //   const val = $(".title").html()
 
-    // const newSubmisison = await Problem.create({
-    //   userId: req.currentUser.id,
-    //   pid,
-    //   verdict,
-    // })
+  //   const name = val.split(". ")
+  //   console.log("pname----", name)
 
-    return res.status(200).json({
-      message: "Hello world",
-      val,
-      pid,
-    })
-  } catch (err) {
-    console.log(err)
-    res.status(400).json(err)
-  }
+  //   // const newSubmisison = await Problem.create({
+  //   //   userId: req.currentUser.id,
+  //   //   pid,
+  //   //   verdict,
+  //   // })
+
+  //   return res.status(200).json({
+  //     message: "Hello world",
+  //     val,
+  //     pid,
+  //   })
+  // } catch (err) {
+  //   console.log(err)
+  //   res.status(400).json(err)
+  // }
 }
 
 module.exports = { createProblem }

@@ -24,21 +24,37 @@ runMigration()
  */
 app.use(express.static(__dirname + "/public"))
 app.use(express.json())
+app.use((req, res, next) => {
+  const { cookie } = req.headers
+  const accessToken = getAccessToken(cookie)
+  if (!accessToken) return next()
+  const user = jwt.verify(accessToken, process.env.ACCESS_TOKEN_SECRET)
+  req.user = user
+  next()
+})
 
 /**
  * Setup application routes
  */
 const authRoutes = require("./routes/authRoutes")
 const practiceRoutes = require("./routes/practiceRoutes")
+const getAccessToken = require("./utils/getAccessToken")
 
 app.use("/auth", authRoutes)
 app.use("/practice", practiceRoutes)
 
 app.get("/user", async (req, res) => {
   const { cookie } = req.headers
-  const accessToken = cookie.split("=")[1]
+  const accessToken = getAccessToken(cookie)
+  if (!accessToken) {
+    return res.send({
+      message: "user not logged in",
+    })
+  }
   const user = jwt.verify(accessToken, process.env.ACCESS_TOKEN_SECRET)
-  res.json(user)
+  res.json({
+    user,
+  })
 })
 
 app.all("*", (req, res) => {

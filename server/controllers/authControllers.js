@@ -25,7 +25,6 @@ const login = async (req, res) => {
   try {
     // check if user exists
     const user = await User.findOne({ where: { uid } })
-    console.log("hello world 1")
     if (!user) {
       return res
         .status(401)
@@ -40,8 +39,9 @@ const login = async (req, res) => {
       })
     }
     // if user exists and password is correct
+    const { id } = user.dataValues
     const accessToken = jwt.sign(
-      { uid: uid, name: user.name },
+      { id, uid: uid, name: user.name },
       process.env.ACCESS_TOKEN_SECRET
     )
     // send the accessToken to client
