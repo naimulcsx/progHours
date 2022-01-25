@@ -1,4 +1,3 @@
-import TableRow from "components/tracking/TableRow"
 import { useTable } from "react-table"
 
 const practiceData = [
@@ -40,7 +39,7 @@ const practiceColumns = [
     accessor: "solveTime",
   },
   {
-    Tags: "Solve Time",
+    Header: "Tags",
     accessor: "tags",
   },
 ]

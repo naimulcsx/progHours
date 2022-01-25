@@ -35,7 +35,7 @@ const Login = () => {
         toast.success("Successfully logged in", { className: "toast" })
       } catch (error) {
         const { data, status } = error.response
-        if (status !== 200)
+        if (status !== 200 && status !== 401)
           toast.error(getHttpStatusError(status), { className: "toast" })
         else toast.error(data.message, { className: "toast" })
       }
