@@ -1,30 +1,53 @@
-const { PracticeSubmission } = require("../models").sequelize.models
+// const { PracticeSubmission } = require("../models").sequelize.models
+const { Problem } = require("../models").sequelize.models
 const cheerio = require("cheerio")
-const path = require("path")
-const urlHelp = require("url")
+const axios = require("axios")
 
-const createProblem = async (req, res) => {
-  let { url } = req.body
+const createProblem = async (req, res, next) => {
+  let { url, verdict } = req.body
 
-  //   const file = urlHelp.parse(url, true)
+  const urlSplit = url.split("/")
 
-  //   console.log("parsing------", cheerio.load(file).html())
+  let pid
+  if (urlSplit.includes("problemset")) pid = urlSplit.slice(-2).join("")
+  else if (urlSplit.includes("contest")) pid = urlSplit[4] + "" + urlSplit[6]
 
-  //   url = url.split("/")
+  try {
+    const findId = await Problem.findOne({ where: { pid } })
+    console.log(pid)
 
-  //   if (url.includes("problemset")) {
-  //     console.log("Eito peye gechi -- problemset")
-  //   }
+    console.log("findId---", findId)
 
-  //   console.log(url.length)
-  //   console.log(url.includes("problemset"))
-  //   console.log(url.includes("contest"))
+    if (findId) {
+      return res.status(400).json({
+        message: "Problem already exists",
+      })
+    }
 
-  console.log(path.resolve(url))
+    const response = await axios(url)
+    const data = response.data
 
-  return res.status(200).json({
-    message: "Hello world",
-  })
+    const $ = cheerio.load(data)
+    const val = $(".title").html()
+
+    const name = val.split(". ")
+    console.log("pname----", name)
+
+    // const newSubmisison = await Problem.create({
+    //   userId: req.currentUser.id,
+    //   pid,
+    //   verdict,
+    // })
+
+    return res.status(200).json({
+      message: "Hello world",
+      val,
+      pid,
+    })
+  } catch (err) {
+    console.log(err)
+    res.status(400).json(err)
+  }
 }
 
 module.exports = { createProblem }
