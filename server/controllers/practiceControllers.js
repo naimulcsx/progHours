@@ -1,5 +1,4 @@
-// const { PracticeSubmission } = require("../models").sequelize.models
-const { Problem } = require("../models").sequelize.models
+const { Problem, PracticeSubmissions } = require("../models").sequelize.models
 const cheerio = require("cheerio")
 const axios = require("axios")
 
@@ -7,8 +6,13 @@ const createProblem = async (req, res, next) => {
   let { link, verdict, solveTime, pid } = req.body
 
   return res.send({
-    data: req.user,
+    foo: "bar",
   })
+
+  // try {
+  //   const problem = await Problem.findOne({ where: { pid } })
+
+  // }
 
   // const urlSplit = url.split("/")
 

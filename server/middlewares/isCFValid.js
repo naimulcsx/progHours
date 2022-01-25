@@ -25,6 +25,7 @@ const isCFValid = (req, res, next) => {
     })
   req.body.solveTime = parseInt(solveTime)
   req.body.pid = pid
+  req.body.judgeId = 1
   next()
 }
 
