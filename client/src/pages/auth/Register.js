@@ -5,6 +5,7 @@ import { useFormik } from "formik"
 import * as Yup from "yup"
 import axios from "axios"
 import { toast } from "react-toastify"
+import getHttpStatusError from "utils/getHttpStatusError"
 
 const reigsterSchema = Yup.object().shape({
   name: Yup.string().trim().required("Name is required"),
@@ -37,8 +38,12 @@ const Register = () => {
         // create a toast
         toast.success("Account successfully created")
       } catch (error) {
-        const { data } = error.response
-        data.errors.forEach(({ message }) => {
+        console.dir(error)
+        const { data, status } = error.response
+        if (status != 200) {
+          toast.error(getHttpStatusError(status), { className: "toast" })
+        }
+        data.errors?.forEach(({ message }) => {
           toast.error(message, { className: "toast" })
         })
       }
@@ -119,7 +124,7 @@ const Register = () => {
             By clicking below to signup, you're agreeing to our terms of
             service.
           </p>
-          <button type="submit" className="block btn-primary w-full">
+          <button type="submit" className="block w-full btn-primary">
             Register
           </button>
         </div>
