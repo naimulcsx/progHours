@@ -25,6 +25,7 @@ const login = async (req, res) => {
   try {
     // check if user exists
     const user = await User.findOne({ where: { uid } })
+    console.log("hello world 1")
     if (!user) {
       return res
         .status(401)
@@ -52,7 +53,10 @@ const login = async (req, res) => {
       },
     })
   } catch (err) {
-    res.json(err.response)
+    console.log(err)
+    res.status(400).send({
+      status: "error",
+    })
   }
 }
 
