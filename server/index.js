@@ -12,12 +12,22 @@ app.use(express.json())
  * Setup application routes
  */
 const authRoutes = require("./routes/authRoutes")
+const practiceSubmissionRoutes = require("./routes/practiceSubmissionRoutes")
+
 app.use("/auth", authRoutes)
+app.use("/practice", practiceSubmissionRoutes)
+
 app.get("/user", async (req, res) => {
   const { cookie } = req.headers
   const accessToken = cookie.split("=")[1]
   const user = jwt.verify(accessToken, process.env.ACCESS_TOKEN_SECRET)
   res.json(user)
+})
+
+app.all("*", (req, res) => {
+  res.json({
+    message: `Can't find ${req.originalUrl} to this server!`,
+  })
 })
 
 /**
