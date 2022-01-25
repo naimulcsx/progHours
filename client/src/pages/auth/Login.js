@@ -5,6 +5,7 @@ import { useFormik } from "formik"
 import * as Yup from "yup"
 import axios from "axios"
 import { toast } from "react-toastify"
+import getHttpStatusError from "utils/getHttpStatusError"
 
 const loginSchema = Yup.object().shape({
   uid: Yup.string()
@@ -26,17 +27,17 @@ const Login = () => {
       try {
         const { data } = await axios.post("/api/auth/login", values)
         const { user } = data
+        console.log(data)
         localStorage.setItem("isLoggedIn", 1)
         localStorage.setItem("role", 0)
         localStorage.setItem("name", user.name)
         navigate("/dashboard")
         toast.success("Successfully logged in", { className: "toast" })
       } catch (error) {
-        const { data, status, statusText } = error.response
-        if (status === 502)
-          toast.error(statusText, { className : "toast" })
-        else
-          toast.error(data.message, { className: "toast" })
+        const { data, status } = error.response
+        if (status !== 200)
+          toast.error(getHttpStatusError(status), { className: "toast" })
+        else toast.error(data.message, { className: "toast" })
       }
     },
   })
