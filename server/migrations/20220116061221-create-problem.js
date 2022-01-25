@@ -21,6 +21,10 @@ module.exports = {
         allowNull: false,
         trim: true,
       },
+      solveTime: {
+        type: DataTypes.INTEGER,
+        allowNull: true,
+      },
       judgeId: {
         type: DataTypes.INTEGER,
         references: {

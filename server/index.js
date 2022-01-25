@@ -29,10 +29,10 @@ app.use(express.json())
  * Setup application routes
  */
 const authRoutes = require("./routes/authRoutes")
-const practiceSubmissionRoutes = require("./routes/practiceSubmissionRoutes")
+const practiceRoutes = require("./routes/practiceRoutes")
 
 app.use("/auth", authRoutes)
-app.use("/practice", practiceSubmissionRoutes)
+app.use("/practice", practiceRoutes)
 
 app.get("/user", async (req, res) => {
   const { cookie } = req.headers

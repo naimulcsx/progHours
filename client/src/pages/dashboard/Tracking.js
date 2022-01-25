@@ -23,6 +23,12 @@ export default function TrackingSheet() {
             </button>
           </div>
         </div>
+
+        <div>
+          <form>
+            <input type="text" />
+          </form>
+        </div>
         {/* tracking table */}
         <TrackingTable />
       </div>
