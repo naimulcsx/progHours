@@ -27,6 +27,10 @@ module.exports = (sequelize, DataTypes) => {
           key: "id",
         },
       },
+      solveTime: {
+        type: DataTypes.INTEGER,
+        allowNull: true,
+      },
       verdict: {
         type: DataTypes.STRING,
         allowNull: false,

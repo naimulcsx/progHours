@@ -3,16 +3,40 @@ const cheerio = require("cheerio")
 const axios = require("axios")
 
 const createProblem = async (req, res, next) => {
-  let { link, verdict, solveTime, pid } = req.body
+  let { link, verdict, solveTime, pid, judgeId } = req.body
 
-  return res.send({
-    foo: "bar",
-  })
+  try {
+    const problem = await Problem.findOne({ where: { pid } })
 
-  // try {
-  //   const problem = await Problem.findOne({ where: { pid } })
+    // if (problem) {
+    //   const { id } = problem.dataValues
 
-  // }
+    //   return res.status(400).json({
+    //     message: "problem already exists",
+    //   })
+    // }
+
+    const response = await axios(link)
+    const data = response.data
+
+    const $ = cheerio.load(data)
+    const val = $(".title").html()
+
+    const name = val.split(". ")[1]
+    console.log("pname----", name)
+
+    const newProblem = await Problem.create({
+      pid,
+      name,
+      judgeId,
+    })
+
+    res.status(201).json({
+      data: newProblem,
+    })
+  } catch (err) {
+    res.json(err)
+  }
 
   // const urlSplit = url.split("/")
 

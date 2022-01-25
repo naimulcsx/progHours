@@ -15,6 +15,10 @@ module.exports = {
           key: "id",
         },
       },
+      solveTime: {
+        type: DataTypes.INTEGER,
+        allowNull: true,
+      },
       userId: {
         type: DataTypes.INTEGER,
         references: {

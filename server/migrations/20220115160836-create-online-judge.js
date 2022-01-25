@@ -20,6 +20,7 @@ module.exports = {
         type: DataTypes.STRING,
         allowNull: false,
         trim: true,
+        unique: true,
       },
     })
   },

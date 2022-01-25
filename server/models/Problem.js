@@ -26,10 +26,6 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: false,
         trim: true,
       },
-      solveTime: {
-        type: DataTypes.INTEGER,
-        allowNull: true,
-      },
       judgeId: {
         type: DataTypes.INTEGER,
         references: {

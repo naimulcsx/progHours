@@ -63,6 +63,12 @@ app.all("*", (req, res) => {
   })
 })
 
+app.all("*", (req, res) => {
+  res.json({
+    message: `Can't find ${req.originalUrl} to this server!`,
+  })
+})
+
 /**
  * Listen for requests
  */
