@@ -16,10 +16,7 @@ module.exports = (sequelize, DataTypes) => {
       pid: {
         type: DataTypes.STRING,
         allowNull: false,
-        unique: {
-          args: true,
-          msg: "Problem already exists",
-        },
+        unique: true,
       },
       name: {
         type: DataTypes.STRING,

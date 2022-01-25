@@ -17,10 +17,7 @@ module.exports = (sequelize, DataTypes) => {
       uid: {
         type: DataTypes.STRING,
         allowNull: false,
-        unique: {
-          args: true,
-          msg: "User already exists",
-        },
+        unique: true,
       },
       name: {
         type: DataTypes.STRING,
