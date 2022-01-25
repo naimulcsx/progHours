@@ -27,6 +27,10 @@ module.exports = (sequelize, DataTypes) => {
           key: "id",
         },
       },
+      solveTime: {
+        type: DataTypes.INTEGER,
+        allowNull: true,
+      },
       verdict: {
         type: DataTypes.STRING,
         allowNull: false,
@@ -37,7 +41,7 @@ module.exports = (sequelize, DataTypes) => {
     },
     {
       sequelize,
-      tableName: "practice_submissions",
+      tableName: "practiceSubmissions",
       modelName: "PracticeSubmission",
     }
   )

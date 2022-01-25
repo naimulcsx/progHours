@@ -26,10 +26,11 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: false,
         trim: true,
       },
+
       judgeId: {
         type: DataTypes.INTEGER,
         references: {
-          model: "online_judges",
+          model: "onlineJudges",
           key: "id",
         },
       },

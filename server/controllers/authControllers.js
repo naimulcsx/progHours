@@ -39,8 +39,9 @@ const login = async (req, res) => {
       })
     }
     // if user exists and password is correct
+    const { id } = user.dataValues
     const accessToken = jwt.sign(
-      { uid: uid, name: user.name },
+      { id, uid: uid, name: user.name },
       process.env.ACCESS_TOKEN_SECRET
     )
     // send the accessToken to client
@@ -52,7 +53,10 @@ const login = async (req, res) => {
       },
     })
   } catch (err) {
-    res.json(err.response)
+    console.log(err)
+    res.status(400).send({
+      status: "error",
+    })
   }
 }
 
