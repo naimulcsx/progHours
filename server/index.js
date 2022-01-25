@@ -1,6 +1,23 @@
+const { exec } = require("child_process")
 const express = require("express")
 const app = express()
 const jwt = require("jsonwebtoken")
+
+/**
+ * Migrate Database
+ */
+const runMigration = async () => {
+  return await new Promise((resolve, reject) => {
+    const migrate = exec("npm run migrate", { env: process.env }, (err) =>
+      err ? reject(err) : resolve()
+    )
+
+    // Forward stdout+stderr to this process
+    migrate.stdout.pipe(process.stdout)
+    migrate.stderr.pipe(process.stderr)
+  })
+}
+runMigration()
 
 /**
  * Allow JSON body parsing
