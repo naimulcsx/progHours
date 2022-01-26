@@ -1,13 +1,21 @@
 import Dashboardlayout from "components/DashboardLayout"
 import { GridViewIcon, ListViewIcon, PlusIcon } from "components/Icons"
 import TrackingTable from "components/tracking/Table"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import axios from "axios"
 
 export default function TrackingSheet() {
   const [link, setLink] = useState("")
   const [verdict, setVerdict] = useState("")
   const [solveTime, setSolveTime] = useState(0)
+  const [problemData, setProblemData] = useState([])
+
+  useEffect(() => {
+    axios("/api/practice").then((res) => {
+      setProblemData(res.data.data)
+      console.log("client side --", res.data)
+    })
+  }, [])
 
   return (
     <Dashboardlayout>
@@ -70,7 +78,7 @@ export default function TrackingSheet() {
           </form>
         </div>
         {/* tracking table */}
-        <TrackingTable />
+        <TrackingTable problemData={problemData} />
       </div>
     </Dashboardlayout>
   )

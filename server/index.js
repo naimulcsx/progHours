@@ -16,24 +16,24 @@ const runMigration = async () => {
     migrate.stdout.pipe(process.stdout)
     migrate.stderr.pipe(process.stderr)
   })
-  await new Promise((resolve, reject) => {
-    const migrate = exec("npm run undo-seed", { env: process.env }, (err) =>
-      err ? reject(err) : resolve()
-    )
+  // await new Promise((resolve, reject) => {
+  //   const migrate = exec("npm run undo-seed", { env: process.env }, (err) =>
+  //     err ? reject(err) : resolve()
+  //   )
 
-    // Forward stdout+stderr to this process
-    migrate.stdout.pipe(process.stdout)
-    migrate.stderr.pipe(process.stderr)
-  })
-  await new Promise((resolve, reject) => {
-    const migrate = exec("npm run seed", { env: process.env }, (err) =>
-      err ? reject(err) : resolve()
-    )
+  //   // Forward stdout+stderr to this process
+  //   migrate.stdout.pipe(process.stdout)
+  //   migrate.stderr.pipe(process.stderr)
+  // })
+  // await new Promise((resolve, reject) => {
+  //   const migrate = exec("npm run seed", { env: process.env }, (err) =>
+  //     err ? reject(err) : resolve()
+  //   )
 
-    // Forward stdout+stderr to this process
-    migrate.stdout.pipe(process.stdout)
-    migrate.stderr.pipe(process.stderr)
-  })
+  //   // Forward stdout+stderr to this process
+  //   migrate.stdout.pipe(process.stdout)
+  //   migrate.stderr.pipe(process.stderr)
+  // })
 }
 runMigration()
 

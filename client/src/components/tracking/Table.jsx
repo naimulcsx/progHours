@@ -44,9 +44,9 @@ const practiceColumns = [
   },
 ]
 
-const TrackingTable = () => {
+const TrackingTable = ({ problemData }) => {
   const tableInstance = useTable({
-    data: practiceData,
+    data: problemData,
     columns: practiceColumns,
   })
   const { getTableProps, getTableBodyProps, rows, prepareRow, headerGroups } =

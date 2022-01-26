@@ -40,4 +40,19 @@ const createProblem = async (req, res, next) => {
   }
 }
 
-module.exports = { createProblem }
+const getAllProblems = async (req, res, next) => {
+  try {
+    const problems = await PracticeSubmission.findAll({
+      include: Problem,
+    })
+    console.log(problems)
+
+    res.status(200).json({
+      data: problems,
+    })
+  } catch (err) {
+    res.json(err)
+  }
+}
+
+module.exports = { createProblem, getAllProblems }
