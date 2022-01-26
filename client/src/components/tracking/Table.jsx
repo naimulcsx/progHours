@@ -28,7 +28,7 @@ const practiceColumns = [
   },
   {
     Header: "Problem Name",
-    accessor: (row) => [row.pid, row.name],
+    accessor: (row) => [row.problem.pid, row.problem.name, row.id],
   },
   {
     Header: "Verdict",
@@ -51,15 +51,23 @@ const TrackingTable = ({ problemData }) => {
   })
   const { getTableProps, getTableBodyProps, rows, prepareRow, headerGroups } =
     tableInstance
+
   return (
     <div className="pt-12">
       <table {...getTableProps()}>
         <thead>
           {headerGroups.map((headerGroup) => {
             return (
-              <tr className="text-base font-medium">
+              <tr
+                {...headerGroup.getHeaderGroupProps()}
+                className="text-base font-medium"
+              >
                 {headerGroup.headers.map((header) => {
-                  return <td>{header.render("Header")}</td>
+                  return (
+                    <td {...header.getHeaderProps()}>
+                      {header.render("Header")}
+                    </td>
+                  )
                 })}
               </tr>
             )
@@ -69,13 +77,13 @@ const TrackingTable = ({ problemData }) => {
           {rows.map((row) => {
             prepareRow(row)
             return (
-              <tr className="bg-white">
+              <tr {...row.getRowProps()} key={row.id} className="bg-white">
                 {row.cells.map((cell) => {
                   // check if the cell is problem name
                   if (cell.column.Header === "Problem Name") {
-                    const [pid, name] = cell.value
+                    const [pid, name, id] = cell.value
                     return (
-                      <td>
+                      <td {...cell.getCellProps()} key={id}>
                         <div className="flex items-center space-x-4">
                           {/* replace with judge image */}
                           <div className="w-10 h-10 bg-purple-300 rounded-full"></div>
@@ -91,7 +99,7 @@ const TrackingTable = ({ problemData }) => {
                   // check if the cell is for verdict
                   if (cell.column.Header === "Verdict") {
                     return (
-                      <td>
+                      <td {...cell.getCellProps()}>
                         <span className="px-2 py-1 text-sm font-medium rounded-md bg-lightGreen text-green">
                           {cell.render("Cell")}
                         </span>
@@ -101,7 +109,7 @@ const TrackingTable = ({ problemData }) => {
 
                   if (cell.column.Header === "Solve Time") {
                     return (
-                      <td>
+                      <td {...cell.getCellProps()}>
                         <div className="flex items-center space-x-4">
                           <div className="w-2 h-2 bg-blue-400"></div>
                           <p className="">{cell.render("Cell")}</p>
@@ -111,7 +119,7 @@ const TrackingTable = ({ problemData }) => {
                   }
 
                   // default raw style
-                  return <td>{cell.render("Cell")}</td>
+                  return <td {...cell.getCellProps()}>{cell.render("Cell")}</td>
                 })}
               </tr>
             )

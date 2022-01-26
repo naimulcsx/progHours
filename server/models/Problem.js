@@ -42,7 +42,7 @@ module.exports = (sequelize, DataTypes) => {
     Problem.hasMany(models.PracticeSubmission, {
       foreignKey: {
         name: "problemId",
-        allowNull: false
+        allowNull: false,
       },
     })
   }

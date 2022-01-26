@@ -47,9 +47,9 @@ module.exports = (sequelize, DataTypes) => {
     PracticeSubmission.belongsTo(models.Problem, {
       foreignKey: {
         name: "problemId",
-        allowNull: false
+        allowNull: false,
       },
-      as: "problem"
+      as: "problem",
     })
   }
 

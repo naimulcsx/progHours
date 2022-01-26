@@ -13,7 +13,7 @@ export default function TrackingSheet() {
   useEffect(() => {
     axios("/api/practice").then((res) => {
       setProblemData(res.data.data)
-      console.log("client side --", res.data)
+      // console.log("client side --", res.data)
     })
   }, [])
 
