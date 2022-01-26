@@ -30,9 +30,6 @@ module.exports = {
         type: DataTypes.STRING,
         allowNull: false,
       },
-      solvedAt: {
-        type: DataTypes.DATE,
-      },
       createdAt: {
         allowNull: false,
         type: DataTypes.DATE,

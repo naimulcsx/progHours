@@ -6,11 +6,16 @@ module.exports = {
      * Add seed commands here.
      */
     await queryInterface.bulkInsert(
-      "onlineJudges",
+      "users",
       [
         {
           id: 1,
-          name: "Codeforces",
+          name: "John Doe",
+          email: "john@doe.com",
+          uid: "C181065",
+          password:
+            "$2b$10$SzHpcWVEVdkulvOTGrN/UOyt5yr6y7AXPak5VHn.g6tVfsBFMRn2K",
+          role: 0,
           createdAt: new Date(),
           updatedAt: new Date(),
         },
@@ -23,6 +28,6 @@ module.exports = {
     /**
      * Add commands to revert seed here.
      */
-    await queryInterface.bulkDelete("onlineJudges", null, {})
+    await queryInterface.bulkDelete("users", null, {})
   },
 }

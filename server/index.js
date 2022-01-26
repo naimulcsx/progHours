@@ -7,8 +7,26 @@ const jwt = require("jsonwebtoken")
  * Migrate Database
  */
 const runMigration = async () => {
-  return await new Promise((resolve, reject) => {
+  await new Promise((resolve, reject) => {
     const migrate = exec("npm run migrate", { env: process.env }, (err) =>
+      err ? reject(err) : resolve()
+    )
+
+    // Forward stdout+stderr to this process
+    migrate.stdout.pipe(process.stdout)
+    migrate.stderr.pipe(process.stderr)
+  })
+  await new Promise((resolve, reject) => {
+    const migrate = exec("npm run undo-seed", { env: process.env }, (err) =>
+      err ? reject(err) : resolve()
+    )
+
+    // Forward stdout+stderr to this process
+    migrate.stdout.pipe(process.stdout)
+    migrate.stderr.pipe(process.stderr)
+  })
+  await new Promise((resolve, reject) => {
+    const migrate = exec("npm run seed", { env: process.env }, (err) =>
       err ? reject(err) : resolve()
     )
 
