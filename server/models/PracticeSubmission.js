@@ -42,5 +42,16 @@ module.exports = (sequelize, DataTypes) => {
       modelName: "PracticeSubmission",
     }
   )
+
+  PracticeSubmission.associate = (models) => {
+    PracticeSubmission.belongsTo(models.Problem, {
+      foreignKey: {
+        name: "problemId",
+        allowNull: false
+      },
+      as: "problem"
+    })
+  }
+
   return PracticeSubmission
 }

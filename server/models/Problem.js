@@ -37,5 +37,15 @@ module.exports = (sequelize, DataTypes) => {
       modelName: "Problem",
     }
   )
+
+  Problem.associate = (models) => {
+    Problem.hasMany(models.PracticeSubmission, {
+      foreignKey: {
+        name: "problemId",
+        allowNull: false
+      },
+    })
+  }
+
   return Problem
 }

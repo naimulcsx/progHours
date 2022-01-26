@@ -43,10 +43,8 @@ const createProblem = async (req, res, next) => {
 const getAllProblems = async (req, res, next) => {
   try {
     const problems = await PracticeSubmission.findAll({
-      include: Problem,
+      include: { model: Problem, as: "problem" },
     })
-    console.log(problems)
-
     res.status(200).json({
       data: problems,
     })
