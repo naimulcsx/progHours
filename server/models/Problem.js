@@ -16,10 +16,7 @@ module.exports = (sequelize, DataTypes) => {
       pid: {
         type: DataTypes.STRING,
         allowNull: false,
-        unique: {
-          args: true,
-          msg: "Problem already exists",
-        },
+        unique: true,
       },
       name: {
         type: DataTypes.STRING,
@@ -29,7 +26,7 @@ module.exports = (sequelize, DataTypes) => {
       judgeId: {
         type: DataTypes.INTEGER,
         references: {
-          model: "online_judges",
+          model: "onlineJudges",
           key: "id",
         },
       },
@@ -40,5 +37,15 @@ module.exports = (sequelize, DataTypes) => {
       modelName: "Problem",
     }
   )
+
+  Problem.associate = (models) => {
+    Problem.hasMany(models.PracticeSubmission, {
+      foreignKey: {
+        name: "problemId",
+        allowNull: false,
+      },
+    })
+  }
+
   return Problem
 }

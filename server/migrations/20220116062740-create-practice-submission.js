@@ -1,7 +1,7 @@
 "use strict"
 module.exports = {
   async up(queryInterface, DataTypes) {
-    await queryInterface.createTable("practice_submissions", {
+    await queryInterface.createTable("practiceSubmissions", {
       id: {
         allowNull: false,
         autoIncrement: true,
@@ -15,6 +15,10 @@ module.exports = {
           key: "id",
         },
       },
+      solveTime: {
+        type: DataTypes.INTEGER,
+        allowNull: true,
+      },
       userId: {
         type: DataTypes.INTEGER,
         references: {
@@ -25,9 +29,6 @@ module.exports = {
       verdict: {
         type: DataTypes.STRING,
         allowNull: false,
-      },
-      solvedAt: {
-        type: DataTypes.DATE,
       },
       createdAt: {
         allowNull: false,
@@ -40,6 +41,6 @@ module.exports = {
     })
   },
   async down(queryInterface, DataTypes) {
-    await queryInterface.dropTable("practice_submissions")
+    await queryInterface.dropTable("practiceSubmissions")
   },
 }

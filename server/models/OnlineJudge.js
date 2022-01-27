@@ -18,11 +18,12 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.STRING,
         allowNull: false,
         trim: true,
+        unique: true,
       },
     },
     {
       sequelize,
-      tableName: "online_judges",
+      tableName: "onlineJudges",
       modelName: "OnlineJudge",
     }
   )

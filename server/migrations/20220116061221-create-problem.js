@@ -11,10 +11,7 @@ module.exports = {
       pid: {
         type: DataTypes.STRING,
         allowNull: false,
-        unique: {
-          args: true,
-          msg: "Problem already exists",
-        },
+        unique: true,
       },
       name: {
         type: DataTypes.STRING,
@@ -24,7 +21,7 @@ module.exports = {
       judgeId: {
         type: DataTypes.INTEGER,
         references: {
-          model: "online_judges",
+          model: "onlineJudges",
           key: "id",
         },
       },

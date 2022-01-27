@@ -27,19 +27,31 @@ module.exports = (sequelize, DataTypes) => {
           key: "id",
         },
       },
+      solveTime: {
+        type: DataTypes.INTEGER,
+        allowNull: true,
+      },
       verdict: {
         type: DataTypes.STRING,
         allowNull: false,
       },
-      solvedAt: {
-        type: DataTypes.DATE,
-      },
     },
     {
       sequelize,
-      tableName: "practice_submissions",
+      tableName: "practiceSubmissions",
       modelName: "PracticeSubmission",
     }
   )
+
+  PracticeSubmission.associate = (models) => {
+    PracticeSubmission.belongsTo(models.Problem, {
+      foreignKey: {
+        name: "problemId",
+        allowNull: false,
+      },
+      as: "problem",
+    })
+  }
+
   return PracticeSubmission
 }
