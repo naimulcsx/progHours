@@ -17,18 +17,6 @@ body {
   @apply text-gray-700;
 }
 
-.p1 {
-  @apply text-lg leading-9 text-white;
-}
-
-.p2 {
-  @apply leading-9 text-primaryDark;
-}
-
-.p3 {
-  @apply text-lg leading-9 text-secondaryDark;
-}
-
 h1,
 h2,
 h3,
@@ -112,7 +100,7 @@ h6 {
 }
 
 .input-box {
-  @apply w-full px-4 py-1 text-lg border-2 border-gray-200 rounded-md focus:outline-none focus:border-2 focus:border-primary;
+  @apply w-full px-4 py-1 text-base border-2 border-gray-200 rounded-md focus:outline-none focus:border-2 focus:border-primary;
 }
 
 /* table styles */

@@ -28,14 +28,18 @@ export default function TrackingSheet() {
                 <ListViewIcon size={20} />
               </div>
             </div>
-            <button type="button" className="flex items-center btn-primary">
-              <PlusIcon size={25} /> <span>New Entry</span>
+            <button
+              type="button"
+              className="inline-flex items-center px-4 py-2 text-sm font-medium text-white border border-transparent rounded-md shadow-sm bg-primary hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+            >
+              <PlusIcon className="w-5 h-5 mr-2 -ml-1" aria-hidden="true" />
+              New Entry
             </button>
           </div>
         </div>
         <div>
           {/* temporary  */}
-          <form>
+          {/* <form>
             <input
               type="text"
               placeholder="link"
@@ -70,7 +74,7 @@ export default function TrackingSheet() {
             >
               Submit
             </button>
-          </form>
+          </form> */}
         </div>
         {/* tracking table */}
         {query.isSuccess && <TrackingTable problemData={query.data.data} />}

@@ -25,10 +25,10 @@ const DashboardSidebar = () => {
       <div className="flex flex-col justify-between h-full pt-16">
         <nav>
           <ul className="space-y-1">
-            <NavLink Icon={DashboardIcon} to="/dashboard/home">
+            <NavLink Icon={DashboardIcon} to="/dashboard">
               Dashboard
             </NavLink>
-            <NavLink Icon={TrackingIcon} to="/dashboard/tracking">
+            <NavLink Icon={TrackingIcon} to="/submissions">
               Tracking Sheet
             </NavLink>
             <NavLink Icon={LeaderboardIcon} to="/leaderboard">
@@ -40,19 +40,17 @@ const DashboardSidebar = () => {
           </ul>
         </nav>
         <div className="mb-12">
-          <div>
-            <div className="flex items-start space-x-3">
-              <Avatar size="40px" name={user} round />
-              <div>
-                <h6 className="text-xl font-medium">{user}</h6>
-                <button
-                  className="flex items-center mt-1 space-x-1 text-sm text-red-500"
-                  onClick={handleLogout}
-                >
-                  <LogoutIcon size={20} />
-                  <span>Logout</span>
-                </button>
-              </div>
+          <div className="flex items-start space-x-3">
+            <Avatar size="48px" name={user} round />
+            <div>
+              <h6 className="text-xl font-medium">{user}</h6>
+              <button
+                className="flex items-center mt-1 space-x-1 text-sm text-red-500"
+                onClick={handleLogout}
+              >
+                <LogoutIcon size={20} />
+                <span>Logout</span>
+              </button>
             </div>
           </div>
         </div>
