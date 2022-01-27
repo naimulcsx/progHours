@@ -1,5 +1,5 @@
 import SettingsLayout from "components/SettingsLayout"
-import InputField from "components/InputField"
+import InputField from "components/Form"
 
 const AccountSettings = () => {
   return (

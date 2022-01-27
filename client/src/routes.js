@@ -9,7 +9,7 @@ import AccountSettings from "pages/settings/AccountSettings"
 import ProfileSettings from "pages/settings/ProfileSettings"
 import Profile from "pages/profile"
 import TrackingSheet from "pages/dashboard/Tracking"
-
+import TrackingEntry from "pages/dashboard/TrackingEntry"
 const AccessDenied = () => {
   useEffect(() => {
     toast.error("Access denied", {
@@ -35,6 +35,10 @@ const routes = (isLoggedIn) => [
   {
     path: "/submissions",
     element: isLoggedIn ? <TrackingSheet /> : <AccessDenied />,
+  },
+  {
+    path: "/submissions/new",
+    element: isLoggedIn ? <TrackingEntry /> : <AccessDenied />,
   },
   {
     path: "/settings",

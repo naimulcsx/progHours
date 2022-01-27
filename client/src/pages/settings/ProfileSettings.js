@@ -1,5 +1,5 @@
 import SettingsLayout from "components/SettingsLayout"
-import InputField from "components/InputField"
+import InputField from "components/Form"
 import Avatar from "react-avatar"
 import { useFormik } from "formik"
 import * as Yup from "yup"

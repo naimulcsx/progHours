@@ -6,6 +6,7 @@ import * as Yup from "yup"
 import axios from "axios"
 import { toast } from "react-toastify"
 import getHttpStatusError from "utils/getHttpStatusError"
+import { FormControl, Input, ErrorMessage, Label } from "components/Form"
 
 const loginSchema = Yup.object().shape({
   uid: Yup.string()
@@ -57,30 +58,26 @@ const Login = () => {
         </p>
       </div>
       <form onSubmit={formik.handleSubmit} className="mt-8 space-y-4">
-        <div className="form-group">
-          <input
-            id="uid"
+        <FormControl isInvalid={formik.touched.uid && formik.errors.uid}>
+          <Input
             type="text"
             placeholder=" "
             {...formik.getFieldProps("uid")}
-          />
-          <label htmlFor="uid">University ID</label>
-          {hasError("uid") && (
-            <div className="error-message">{formik.errors.uid}</div>
-          )}
-        </div>
-        <div className="form-group">
-          <input
-            id="password"
+          ></Input>
+          <Label>University ID</Label>
+          <ErrorMessage>{formik.errors.uid}</ErrorMessage>
+        </FormControl>
+        <FormControl
+          isInvalid={formik.touched.password && formik.errors.password}
+        >
+          <Input
             type="password"
             placeholder=" "
             {...formik.getFieldProps("password")}
-          />
-          <label htmlFor="password">Password</label>
-          {hasError("password") && (
-            <div className="error-message">{formik.errors.password}</div>
-          )}
-        </div>
+          ></Input>
+          <Label>Password</Label>
+          <ErrorMessage>{formik.errors.password}</ErrorMessage>
+        </FormControl>
         <div>
           <button type="submit" className="block mt-6 btn-primary">
             Login
