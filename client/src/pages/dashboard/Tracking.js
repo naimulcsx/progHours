@@ -3,19 +3,15 @@ import { GridViewIcon, ListViewIcon, PlusIcon } from "components/Icons"
 import TrackingTable from "components/tracking/Table"
 import { useEffect, useState } from "react"
 import axios from "axios"
+import { useQuery } from "react-query"
+import { getSubmissions } from "api/submissions"
 
 export default function TrackingSheet() {
   const [link, setLink] = useState("")
   const [verdict, setVerdict] = useState("")
   const [solveTime, setSolveTime] = useState(0)
-  const [problemData, setProblemData] = useState([])
 
-  useEffect(() => {
-    axios("/api/practice").then((res) => {
-      setProblemData(res.data.data)
-      // console.log("client side --", res.data)
-    })
-  }, [])
+  const query = useQuery("practice", getSubmissions)
 
   return (
     <Dashboardlayout>
@@ -37,7 +33,6 @@ export default function TrackingSheet() {
             </button>
           </div>
         </div>
-
         <div>
           {/* temporary  */}
           <form>
@@ -78,7 +73,7 @@ export default function TrackingSheet() {
           </form>
         </div>
         {/* tracking table */}
-        <TrackingTable problemData={problemData} />
+        {query.isSuccess && <TrackingTable problemData={query.data.data} />}
       </div>
     </Dashboardlayout>
   )

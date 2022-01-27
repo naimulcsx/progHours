@@ -40,7 +40,7 @@ const practiceRoutes = require("./routes/practiceRoutes")
 const getAccessToken = require("./utils/getAccessToken")
 
 app.use("/auth", authRoutes)
-app.use("/practice", practiceRoutes)
+app.use("/submissions", practiceRoutes)
 
 app.get("/user", async (req, res) => {
   const { cookie } = req.headers
