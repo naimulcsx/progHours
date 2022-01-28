@@ -42,7 +42,6 @@ const Login = () => {
       }
     },
   })
-  const hasError = (field) => formik.touched[field] && formik.errors[field]
   return (
     <AuthContainer>
       <Helmet>
