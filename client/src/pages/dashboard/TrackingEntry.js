@@ -45,6 +45,7 @@ export default function TrackingEntry() {
     },
     validationSchema: submissionSchema,
     onSubmit: async (values) => {
+      console.log(values)
       mutate(values)
     },
   })
