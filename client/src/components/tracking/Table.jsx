@@ -1,5 +1,5 @@
 import { useTable } from "react-table"
-import { PlusIcon } from "@heroicons/react/solid"
+import { PlusIcon, TrashIcon, PencilAltIcon } from "@heroicons/react/outline"
 import { Link } from "react-router-dom"
 
 const practiceColumns = [
@@ -8,8 +8,12 @@ const practiceColumns = [
     accessor: "id",
   },
   {
+    Header: "Problem Id",
+    accessor: "problem.pid",
+  },
+  {
     Header: "Problem Name",
-    accessor: (row) => [row.problem.pid, row.problem.name, row.id],
+    accessor: "problem.name",
   },
   {
     Header: "Verdict",
@@ -21,7 +25,16 @@ const practiceColumns = [
   },
   {
     Header: "Tags",
-    accessor: "tags",
+    accessor: (row) => "Tag1, Tag2, Tag3",
+  },
+  {
+    Header: "Actions",
+    accessor: (row) => (
+      <button onClick={() => alert("helllo world")} className="flex space-x-4">
+        <PencilAltIcon className="w-5 h-5 text-dark" aria-hidden="true" />
+        <TrashIcon className="w-5 h-5 text-red-500" aria-hidden="true" />
+      </button>
+    ),
   },
 ]
 
@@ -71,18 +84,18 @@ const TrackingTable = ({ problemData }) => {
       </div>
     )
   return (
-    <div className="pt-12">
+    <div className="mt-12 overflow-hidden shadow rounded-xl">
       <table {...getTableProps()}>
         <thead>
           {headerGroups.map((headerGroup) => {
             return (
               <tr
                 {...headerGroup.getHeaderGroupProps()}
-                className="text-base font-medium"
+                className="text-base font-medium bg-white text-dark"
               >
                 {headerGroup.headers.map((header) => {
                   return (
-                    <td {...header.getHeaderProps()}>
+                    <td {...header.getHeaderProps()} className="px-6 py-4">
                       {header.render("Header")}
                     </td>
                   )
@@ -97,47 +110,11 @@ const TrackingTable = ({ problemData }) => {
             return (
               <tr {...row.getRowProps()} key={row.id} className="bg-white">
                 {row.cells.map((cell) => {
-                  // check if the cell is problem name
-                  if (cell.column.Header === "Problem Name") {
-                    const [pid, name, id] = cell.value
-                    return (
-                      <td {...cell.getCellProps()} key={id}>
-                        <div className="flex items-center space-x-4">
-                          {/* replace with judge image */}
-                          <div className="w-10 h-10 bg-purple-300 rounded-full"></div>
-                          <div>
-                            <h6 className="font-medium">{pid}</h6>
-                            <p>{name}</p>
-                          </div>
-                        </div>
-                      </td>
-                    )
-                  }
-
-                  // check if the cell is for verdict
-                  if (cell.column.Header === "Verdict") {
-                    return (
-                      <td {...cell.getCellProps()}>
-                        <span className="px-2 py-1 text-sm font-medium rounded-md bg-lightGreen text-green">
-                          {cell.render("Cell")}
-                        </span>
-                      </td>
-                    )
-                  }
-
-                  if (cell.column.Header === "Solve Time") {
-                    return (
-                      <td {...cell.getCellProps()}>
-                        <div className="flex items-center space-x-4">
-                          <div className="w-2 h-2 bg-blue-400"></div>
-                          <p className="">{cell.render("Cell")}</p>
-                        </div>
-                      </td>
-                    )
-                  }
-
-                  // default raw style
-                  return <td {...cell.getCellProps()}>{cell.render("Cell")}</td>
+                  return (
+                    <td {...cell.getCellProps()} className="px-6 py-4">
+                      {cell.render("Cell")}
+                    </td>
+                  )
                 })}
               </tr>
             )
