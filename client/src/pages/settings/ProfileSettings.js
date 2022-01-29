@@ -1,10 +1,10 @@
 import SettingsLayout from "components/SettingsLayout"
-import InputField from "components/InputField"
 import Avatar from "react-avatar"
 import { useFormik } from "formik"
 import * as Yup from "yup"
+import { FormControl, Input, Label, ErrorMessage } from "components/Form"
 
-const profileFormSchema = Yup.object().shape({
+const profileSchema = Yup.object().shape({
   name: Yup.string().trim().required("Name is required"),
   uid: Yup.string()
     .trim()
@@ -28,14 +28,12 @@ const EditProfile = () => {
       spoj: "",
       atcoder: "",
     },
-    validationSchema: profileFormSchema,
+    validationSchema: profileSchema,
 
     onSubmit: (values) => {
       console.log(values)
     },
   })
-
-  const hasError = (field) => formik.touched[field] && formik.errors[field]
 
   return (
     <SettingsLayout>
@@ -45,38 +43,78 @@ const EditProfile = () => {
             {/* edit profile: for name, email and uid  */}
             <div className="space-y-6">
               <h3 className="mb-8">Edit your profile</h3>
-              <InputField
-                id="name"
-                label="Full Name"
-                formik={formik}
-                haserror={hasError("name")}
-                msg={formik.errors.name}
-              />
-              <InputField
-                id="uid"
-                label="University ID"
-                formik={formik}
-                haserror={hasError("uid")}
-                msg={formik.errors.uid}
-              />
+
+              <FormControl
+                isInvalid={formik.touched.name && formik.errors.name}
+              >
+                <Input
+                  type="text"
+                  placeholder=" "
+                  {...formik.getFieldProps("name")}
+                />
+                <Label>Full Name</Label>
+                <ErrorMessage>{formik.errors.name}</ErrorMessage>
+              </FormControl>
+
+              <FormControl isInvalid={formik.touched.uid && formik.errors.uid}>
+                <Input
+                  type="text"
+                  placeholder=" "
+                  {...formik.getFieldProps("uid")}
+                />
+                <Label>University ID</Label>
+                <ErrorMessage>{formik.errors.uid}</ErrorMessage>
+              </FormControl>
             </div>
 
             {/* edit profile: online judge handles */}
             <div className="space-y-6">
               <h3 className="mb-8">Online Judge Handles</h3>
-              <InputField
-                id="codeforces"
-                formik={formik}
-                label="Codeforces Handle"
-              />
-              <InputField
-                id="codechef"
-                formik={formik}
-                label="CodeChef Handle"
-              />
-              <InputField id="uva" formik={formik} label="UVa Handle" />
-              <InputField id="spoj" formik={formik} label="SPOJ Handle" />
-              <InputField id="atcoder" formik={formik} label="AtCoder Handle" />
+
+              <FormControl>
+                <Input
+                  type="text"
+                  placeholder=" "
+                  {...formik.getFieldProps("codeforces")}
+                />
+                <Label>Codeforces Handle</Label>
+              </FormControl>
+
+              <FormControl>
+                <Input
+                  type="text"
+                  placeholder=" "
+                  {...formik.getFieldProps("codechef")}
+                />
+                <Label>CodeChef Handle</Label>
+              </FormControl>
+
+              <FormControl>
+                <Input
+                  type="text"
+                  placeholder=" "
+                  {...formik.getFieldProps("uva")}
+                />
+                <Label>UVa Handle</Label>
+              </FormControl>
+
+              <FormControl>
+                <Input
+                  type="text"
+                  placeholder=" "
+                  {...formik.getFieldProps("spoj")}
+                />
+                <Label>SPOJ Handle</Label>
+              </FormControl>
+
+              <FormControl>
+                <Input
+                  type="text"
+                  placeholder=" "
+                  {...formik.getFieldProps("atcoder")}
+                />
+                <Label>AtCoder Handle</Label>
+              </FormControl>
             </div>
 
             {/* save buttons */}

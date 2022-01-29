@@ -6,6 +6,7 @@ import * as Yup from "yup"
 import axios from "axios"
 import { toast } from "react-toastify"
 import getHttpStatusError from "utils/getHttpStatusError"
+import { FormControl, Label, ErrorMessage, Input } from "components/Form"
 
 const reigsterSchema = Yup.object().shape({
   name: Yup.string().trim().required("Name is required"),
@@ -47,11 +48,9 @@ const Register = () => {
           toast.error(message, { className: "toast" })
         })
       }
-      // console.log(values)
-      // do something with the values
     },
   })
-  const hasError = (field) => formik.touched[field] && formik.errors[field]
+
   return (
     <AuthContainer>
       <Helmet>
@@ -68,56 +67,47 @@ const Register = () => {
       </div>
       <form className="mt-8" onSubmit={formik.handleSubmit}>
         <div className="space-y-4">
-          <div className="form-group">
-            <input
-              id="name"
+          <FormControl isInvalid={formik.touched.name && formik.errors.name}>
+            <Input
+              type="text"
               placeholder=" "
-              autoComplete="off"
               {...formik.getFieldProps("name")}
             />
-            <label htmlFor="name">Name</label>
-            {hasError("name") && (
-              <div className="error-message">{formik.errors.name}</div>
-            )}
-          </div>
-          <div className="form-group">
-            <input
-              id="email"
+            <Label>Name</Label>
+            <ErrorMessage>{formik.errors.name}</ErrorMessage>
+          </FormControl>
+
+          <FormControl isInvalid={formik.touched.email && formik.errors.email}>
+            <Input
+              type="email"
               placeholder=" "
-              autoComplete="off"
               {...formik.getFieldProps("email")}
             />
-            <label htmlFor="email">Email</label>
-            {/* chcek for errors */}
-            {hasError("email") && (
-              <div className="error-message">{formik.errors.email}</div>
-            )}
-          </div>
-          <div className="form-group">
-            <input
-              id="uid"
+            <Label>Email</Label>
+            <ErrorMessage>{formik.errors.email}</ErrorMessage>
+          </FormControl>
+
+          <FormControl isInvalid={formik.touched.uid && formik.errors.uid}>
+            <Input
+              type="text"
               placeholder=" "
-              autoComplete="off"
               {...formik.getFieldProps("uid")}
             />
-            <label htmlFor="uid">University ID</label>
-            {hasError("uid") && (
-              <div className="error-message">{formik.errors.uid}</div>
-            )}
-          </div>
-          <div className="form-group">
-            <input
-              id="password"
+            <Label>University ID</Label>
+            <ErrorMessage>{formik.errors.uid}</ErrorMessage>
+          </FormControl>
+
+          <FormControl
+            isInvalid={formik.touched.password && formik.errors.password}
+          >
+            <Input
               type="password"
               placeholder=" "
-              autoComplete="off"
               {...formik.getFieldProps("password")}
             />
-            <label htmlFor="password">Password</label>
-            {hasError("password") && (
-              <div className="error-message">{formik.errors.password}</div>
-            )}
-          </div>
+            <Label>Password</Label>
+            <ErrorMessage>{formik.errors.password}</ErrorMessage>
+          </FormControl>
         </div>
         <div className="mt-8 space-y-4">
           <p className="text-sm">
