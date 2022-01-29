@@ -2,6 +2,7 @@ import Dashboardlayout from "components/DashboardLayout"
 import { useState } from "react"
 import * as Yup from "yup"
 import { useFormik } from "formik"
+import { useNavigate } from "react-router-dom"
 import {
   FormControl,
   Select,
@@ -10,22 +11,41 @@ import {
   Label,
   ErrorMessage,
 } from "components/Form"
+import { toast } from "react-toastify"
+import { useMutation } from "react-query"
+import { createSubmissions } from "api/submissions"
 
 const submissionSchema = Yup.object().shape({
   link: Yup.string().trim().required("Problem link is required"),
-  solveTime: Yup.number().required("Solve time is required"),
+  solveTime: Yup.number("Solve time must be a number").required(
+    "Solve time is required"
+  ),
   verdict: Yup.string().required("Verdict is required"),
 })
 
 export default function TrackingEntry() {
+  const navigate = useNavigate()
+
+  const { mutate } = useMutation(createSubmissions, {
+    onSuccess: (data) => {
+      console.log(data)
+      navigate("/submissions")
+      toast.success("Problem submitted successfully")
+    },
+    onError: (err) => {
+      toast.error(err.response.data.message)
+    },
+  })
+
   const formik = useFormik({
     initialValues: {
       link: "",
       solveTime: "",
       verdict: "",
     },
+    validationSchema: submissionSchema,
     onSubmit: async (values) => {
-      console.log(values)
+      mutate(values)
     },
   })
 
@@ -75,6 +95,7 @@ export default function TrackingEntry() {
                   <Option value="TLE">TLE</Option>
                   <Option value="RTE">RTE</Option>
                   <Option value="MLE">MLE</Option>
+                  <Option value="RE">RE</Option>
                 </Select>
               </FormControl>
             </div>

@@ -9,8 +9,14 @@ const createProblem = async (req, res, next) => {
   try {
     let problemId
     const problem = await Problem.findOne({ where: { pid } })
-    if (problem) problemId = problem.dataValues.id
-    else {
+    if (problem) {
+      // problemId = problem.dataValues.id
+
+      res.status(400).json({
+        status: "error",
+        message: "Problem already exists",
+      })
+    } else {
       const response = await axios(link)
       const $ = cheerio.load(response.data)
       const name = $(".title").html().split(". ")[1]
@@ -36,6 +42,7 @@ const createProblem = async (req, res, next) => {
       data: newSubmission,
     })
   } catch (err) {
+    console.log(err)
     res.json(err)
   }
 }

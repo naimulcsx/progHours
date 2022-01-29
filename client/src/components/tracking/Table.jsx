@@ -1,26 +1,6 @@
 import { useTable } from "react-table"
 import { PlusIcon } from "@heroicons/react/solid"
-
-const practiceData = [
-  {
-    id: 1,
-    pid: "CF-1366C",
-    name: "Palindromic Paths",
-    judgeName: "CODEFORCES",
-    verdict: "AC",
-    solveTime: 54,
-    tags: ["Number Theory", "Greedy"],
-  },
-  {
-    id: 2,
-    pid: "CF-1366C",
-    name: "Palindromic Paths",
-    judgeName: "CODEFORCES",
-    verdict: "AC",
-    solveTime: 54,
-    tags: ["Number Theory", "Greedy"],
-  },
-]
+import { Link } from "react-router-dom"
 
 const practiceColumns = [
   {
@@ -78,13 +58,15 @@ const TrackingTable = ({ problemData }) => {
           Get started by creating a new project.
         </p>
         <div className="mt-6">
-          <button
-            type="button"
-            className="inline-flex items-center px-4 py-2 text-sm font-medium text-white border border-transparent rounded-md shadow-sm bg-primary hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-          >
-            <PlusIcon className="w-5 h-5 mr-2 -ml-1" aria-hidden="true" />
-            New Entry
-          </button>
+          <Link to="/submissions/new">
+            <button
+              type="button"
+              className="inline-flex items-center px-4 py-2 text-sm font-medium text-white border border-transparent rounded-md shadow-sm bg-primary hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+            >
+              <PlusIcon className="w-5 h-5 mr-2 -ml-1" aria-hidden="true" />
+              New Entry
+            </button>
+          </Link>
         </div>
       </div>
     )

@@ -35,8 +35,6 @@ const EditProfile = () => {
     },
   })
 
-  const hasError = (field) => formik.touched[field] && formik.errors[field]
-
   return (
     <SettingsLayout>
       <div className="grid items-start grid-cols-3 gap-8">
