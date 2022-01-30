@@ -128,3 +128,25 @@ table th {
 table tbody tr td:first-child {
   padding-right: 3rem;
 }
+
+/* tables */
+
+td[data-verdict="WA"] span {
+  @apply p-2 text-sm text-red-700 bg-red-100 rounded;
+}
+
+td[data-verdict="AC"] span {
+  @apply p-2 text-sm rounded text-emerald-700 bg-emerald-100;
+}
+
+td[data-verdict="TLE"] span {
+  @apply p-2 text-sm rounded text-amber-700 bg-amber-100;
+}
+
+td[data-solvetime] span {
+  @apply ml-4;
+}
+
+td[data-solvetime] {
+  @apply flex items-center before:w-2 before:h-2 before:bg-cyan-500 before:block;
+}
