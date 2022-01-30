@@ -7,9 +7,6 @@ import { Link } from "react-router-dom"
 
 export default function TrackingSheet() {
   const query = useQuery("practice", getSubmissions)
-
-  console.log(query.data?.data)
-
   return (
     <Dashboardlayout>
       <div className="pt-28">

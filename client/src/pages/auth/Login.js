@@ -28,7 +28,6 @@ const Login = () => {
       try {
         const { data } = await axios.post("/api/auth/login", values)
         const { user } = data
-        console.log(data)
         localStorage.setItem("isLoggedIn", 1)
         localStorage.setItem("role", 0)
         localStorage.setItem("name", user.name)

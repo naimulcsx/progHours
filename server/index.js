@@ -46,8 +46,12 @@ app.get("/user", async (req, res) => {
   const { cookie } = req.headers
   const accessToken = getAccessToken(cookie)
   if (!accessToken) {
-    return res.send({
-      message: "user not logged in",
+    return res.status(401).send({
+      status: "error",
+      error: {
+        code: "001",
+        message: "User not found.",
+      },
     })
   }
   const user = jwt.verify(accessToken, process.env.ACCESS_TOKEN_SECRET)

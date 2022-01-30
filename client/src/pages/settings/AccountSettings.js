@@ -19,7 +19,6 @@ const AccountSettings = () => {
       confirmPassword: "",
     },
     validationSchema: accountSchema,
-
     onSubmit: (values) => {
       console.log(values)
     },
