@@ -42,20 +42,6 @@ const getAccessToken = require("./utils/getAccessToken")
 app.use("/auth", authRoutes)
 app.use("/submissions", practiceRoutes)
 
-app.get("/user", async (req, res) => {
-  const { cookie } = req.headers
-  const accessToken = getAccessToken(cookie)
-  if (!accessToken) {
-    return res.send({
-      message: "user not logged in",
-    })
-  }
-  const user = jwt.verify(accessToken, process.env.ACCESS_TOKEN_SECRET)
-  res.json({
-    user,
-  })
-})
-
 app.all("*", (req, res) => {
   res.json({
     message: `Can't find ${req.originalUrl} to this server!`,

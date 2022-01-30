@@ -1,5 +1,6 @@
 const { User } = require("../models").sequelize.models
 const jwt = require("jsonwebtoken")
+const getAccessToken = require("../utils/getAccessToken")
 
 const register = async (req, res) => {
   const { name, password, uid, email } = req.body
@@ -66,4 +67,25 @@ const logout = (req, res) => {
   })
 }
 
-module.exports = { register, login, logout }
+const getUser = async (req, res) => {
+  const { cookie } = req.headers
+  const accessToken = getAccessToken(cookie)
+  if (!accessToken) {
+    return res.status(401).send({
+      status: "error",
+      error: {
+        code: "001",
+        message: "User not found.",
+      },
+    })
+  }
+  // can't handle the error when the token is invalid
+  // tried both callback and try-catch
+  const user = jwt.verify(accessToken, process.env.ACCESS_TOKEN_SECRET)
+  res.status(200).send({
+    status: "sucess",
+    user,
+  })
+}
+
+module.exports = { register, login, logout, getUser }

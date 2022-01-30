@@ -13,9 +13,31 @@ import {
   SettingsIcon,
   LogoutIcon,
 } from "./Icons"
+import { useQuery } from "react-query"
+import { getUser } from "api/user"
+import clearAuthData from "utils/clearAuthData"
+import { toast } from "react-toastify"
+import { useNavigate } from "react-router-dom"
+import { useEffect } from "react"
+import axios from "axios"
 
 const DashboardSidebar = () => {
+  const navigate = useNavigate()
   const user = localStorage.getItem("name")
+
+  useEffect(() => {
+    async function checkUser() {
+      try {
+        await axios.get("/api/auth/user")
+      } catch (error) {
+        await clearAuthData()
+        navigate("/login")
+        toast.error("Access denied", { className: "toast" })
+      }
+    }
+    checkUser()
+  }, [])
+
   const handleLogout = useLogout()
   return (
     <div className="max-w-[280px] w-full h-[100vh] px-6 py-4 fixed z-50 top-0 left-0 bottom-0 bg-white border-r border-gray-100">

@@ -28,7 +28,6 @@ export default function TrackingEntry() {
 
   const { mutate } = useMutation(createSubmissions, {
     onSuccess: (data) => {
-      console.log(data)
       navigate("/submissions")
       toast.success("Problem submitted successfully")
     },
