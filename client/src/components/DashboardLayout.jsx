@@ -28,7 +28,7 @@ const DashboardSidebar = () => {
   useEffect(() => {
     async function checkUser() {
       try {
-        await axios.get("/api/user")
+        await axios.get("/api/auth/user")
       } catch (error) {
         await clearAuthData()
         navigate("/login")
