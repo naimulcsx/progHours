@@ -10,8 +10,8 @@ module.exports = {
       [
         {
           id: 1,
-          name: "John Doe",
-          email: "john@doe.com",
+          name: "Naimul Haque",
+          email: "naimulcsx@gmail.com",
           uid: "C181065",
           password:
             "$2b$10$SzHpcWVEVdkulvOTGrN/UOyt5yr6y7AXPak5VHn.g6tVfsBFMRn2K",

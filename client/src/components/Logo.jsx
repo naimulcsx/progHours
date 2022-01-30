@@ -1,11 +1,11 @@
 import { LogoIcon } from "./Icons"
 
-const Logo = () => {
+const Logo = ({ className }) => {
   return (
     <div className="flex items-center space-x-3 text-primary">
       {/* color of the logo is picked from its parents text-color */}
-      <LogoIcon width={40} height={40} />
-      <h4 className="text-xl font-bold">progHours</h4>
+      <LogoIcon width={26} height={26} />
+      <h4 className={`text-xl font-semibold ${className}`}>progHours</h4>
     </div>
   )
 }

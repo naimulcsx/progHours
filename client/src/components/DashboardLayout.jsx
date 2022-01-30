@@ -40,9 +40,7 @@ const DashboardSidebar = () => {
 
   const handleLogout = useLogout()
   return (
-    <div className="max-w-[280px] w-full h-[100vh] px-6 py-4 fixed z-50 top-0 left-0 bottom-0 bg-white border-r border-gray-100">
-      {/* logo   */}
-      <Logo />
+    <div className="max-w-[250px] w-full h-[100vh] py-6 fixed z-50 top-0 left-0 bottom-0 bg-white">
       {/* sidebar links */}
       <div className="flex flex-col justify-between h-full pt-16">
         <nav>
@@ -61,9 +59,13 @@ const DashboardSidebar = () => {
             </NavLink>
           </ul>
         </nav>
-        <div className="mb-12">
-          <div className="flex items-start space-x-3">
-            <Avatar size="48px" name={user} round />
+        <div className="px-6">
+          <div className="flex items-start space-x-4">
+            <img
+              src={`https://robohash.org/${user}?bgset=bg2&size=48x48`}
+              alt={user}
+              className="rounded-lg"
+            />
             <div>
               <h6 className="text-xl font-medium">{user}</h6>
               <button
@@ -84,10 +86,13 @@ const DashboardSidebar = () => {
 const Dashboardlayout = ({ children }) => {
   return (
     <div className="min-h-screen">
+      {/* topbar */}
       <Navbar />
       <DashboardSidebar />
-      {/* dashboard main contents */}
-      <div className="ml-[280px] bg-light min-h-screen px-20">{children}</div>
+      {/* dashboard contents */}
+      <div className="ml-[250px] bg-[#F6F8FA] min-h-screen px-6 pt-20">
+        {children}
+      </div>
     </div>
   )
 }

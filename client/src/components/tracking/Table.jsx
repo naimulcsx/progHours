@@ -110,7 +110,7 @@ const TrackingTable = ({ problemData }) => {
       </div>
     )
   return (
-    <div className="mt-12 overflow-hidden shadow rounded-xl">
+    <div className="mt-8 overflow-hidden">
       <table {...getTableProps()}>
         <thead>
           {headerGroups.map((headerGroup) => {
@@ -121,9 +121,9 @@ const TrackingTable = ({ problemData }) => {
               >
                 {headerGroup.headers.map((header) => {
                   return (
-                    <td {...header.getHeaderProps()} className="px-6 py-4">
+                    <th {...header.getHeaderProps()} className="px-6 py-4">
                       {header.render("Header")}
-                    </td>
+                    </th>
                   )
                 })}
               </tr>
@@ -131,13 +131,13 @@ const TrackingTable = ({ problemData }) => {
           })}
         </thead>
         <tbody {...getTableBodyProps()}>
-          {page.map((row) => {
+          {page.map((row, idx) => {
             prepareRow(row)
             return (
               <tr
                 {...row.getRowProps()}
                 key={row.id}
-                className="bg-white hover:bg-primary hover:bg-opacity-5"
+                className={`hover:bg-primary hover:bg-opacity-5 bg-white`}
               >
                 {row.cells.map((cell) => {
                   const extraProps = {}
