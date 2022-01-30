@@ -54,8 +54,11 @@ app.get("/user", async (req, res) => {
       },
     })
   }
+  // can't handle the error when the token is invalid
+  // tried both callback and try-catch
   const user = jwt.verify(accessToken, process.env.ACCESS_TOKEN_SECRET)
-  res.json({
+  res.status(200).send({
+    status: "sucess",
     user,
   })
 })
