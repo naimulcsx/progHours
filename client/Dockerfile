@@ -3,9 +3,9 @@ FROM node:16.13.0-alpine
 # Working directory needs to be under /home/node
 USER node
 WORKDIR /home/node/client
-COPY package.json .
+COPY --chown=node:node package.json .
 # Install node dependencies
-RUN yarn
+RUN yarn install
 COPY . ./
-EXPOSE 3000
-CMD ["yarn", "dev"]
+COPY --chown=node:node . .
+CMD ["yarn", "dev", "--host"]

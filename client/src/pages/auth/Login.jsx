@@ -1,12 +1,12 @@
-import AuthContainer from "components/AuthContainer"
+import AuthContainer from "@/components/AuthContainer"
 import { Helmet } from "react-helmet-async"
 import { Link, useNavigate } from "react-router-dom"
 import { useFormik } from "formik"
 import * as Yup from "yup"
 import axios from "axios"
 import { toast } from "react-toastify"
-import getHttpStatusError from "utils/getHttpStatusError"
-import { FormControl, Input, ErrorMessage, Label } from "components/Form"
+import getHttpStatusError from "@/utils/getHttpStatusError"
+import { FormControl, Input, ErrorMessage, Label } from "@/components/Form"
 
 const loginSchema = Yup.object().shape({
   uid: Yup.string()

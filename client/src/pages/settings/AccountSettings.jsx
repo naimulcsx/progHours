@@ -1,7 +1,7 @@
-import SettingsLayout from "components/SettingsLayout"
+import SettingsLayout from "@/components/SettingsLayout"
 import { useFormik } from "formik"
 import * as Yup from "yup"
-import { FormControl, Input, Label, ErrorMessage } from "components/Form"
+import { FormControl, Input, Label, ErrorMessage } from "@/components/Form"
 
 const accountSchema = Yup.object().shape({
   email: Yup.string().trim().email("Invalid email"),

@@ -1,12 +1,12 @@
-import AuthContainer from "components/AuthContainer"
+import AuthContainer from "@/components/AuthContainer"
 import { Link, useNavigate } from "react-router-dom"
 import { Helmet } from "react-helmet-async"
 import { useFormik } from "formik"
 import * as Yup from "yup"
 import axios from "axios"
 import { toast } from "react-toastify"
-import getHttpStatusError from "utils/getHttpStatusError"
-import { FormControl, Label, ErrorMessage, Input } from "components/Form"
+import getHttpStatusError from "@/utils/getHttpStatusError"
+import { FormControl, Label, ErrorMessage, Input } from "@/components/Form"
 
 const reigsterSchema = Yup.object().shape({
   name: Yup.string().trim().required("Name is required"),

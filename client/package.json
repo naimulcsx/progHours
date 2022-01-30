@@ -1,56 +1,31 @@
 {
-  "name": "client",
-  "version": "0.1.0",
-  "private": true,
+  "name": "client-vite",
+  "version": "0.0.0",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
   "dependencies": {
     "@headlessui/react": "^1.4.2",
     "@heroicons/react": "^1.0.5",
-    "@testing-library/jest-dom": "^5.11.4",
-    "@testing-library/react": "^11.1.0",
-    "@testing-library/user-event": "^12.1.10",
+    "react": "^17.0.2",
+    "react-dom": "^17.0.2",
     "axios": "^0.24.0",
     "formik": "^2.2.9",
-    "react": "^17.0.2",
     "react-avatar": "^4.0.0",
-    "react-dom": "^17.0.2",
     "react-helmet-async": "^1.1.2",
     "react-icons": "^4.3.1",
     "react-query": "^3.33.6",
     "react-router-dom": "6",
-    "react-scripts": "next",
     "react-table": "^7.7.0",
     "react-toastify": "^8.1.0",
-    "web-vitals": "^1.0.1",
     "yup": "^0.32.11"
   },
-  "scripts": {
-    "cra-start": "react-scripts start",
-    "cra-build": "react-scripts build",
-    "cra-test": "react-scripts test",
-    "cra-eject": "react-scripts eject",
-    "dev": "concurrently 'npm run cra-start'"
-  },
-  "eslintConfig": {
-    "extends": [
-      "react-app",
-      "react-app/jest"
-    ]
-  },
-  "browserslist": {
-    "production": [
-      ">0.2%",
-      "not dead",
-      "not op_mini all"
-    ],
-    "development": [
-      "last 1 chrome version",
-      "last 1 firefox version",
-      "last 1 safari version"
-    ]
-  },
   "devDependencies": {
+    "@vitejs/plugin-react": "^1.0.7",
+    "vite": "^2.7.2",
     "autoprefixer": "^10.4.0",
-    "concurrently": "^6.3.0",
     "postcss": "^8.4.4",
     "prettier": "^2.5.1",
     "tailwindcss": "^3.0.0"

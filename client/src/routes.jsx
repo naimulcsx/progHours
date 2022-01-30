@@ -1,15 +1,15 @@
 import { Navigate } from "react-router-dom"
-
-import Login from "pages/auth/Login"
-import Register from "pages/auth/Register"
-import DashboardHome from "pages/dashboard/Home"
 import { toast } from "react-toastify"
 import { useEffect } from "react"
-import AccountSettings from "pages/settings/AccountSettings"
-import ProfileSettings from "pages/settings/ProfileSettings"
-import Profile from "pages/profile"
-import TrackingSheet from "pages/dashboard/Tracking"
-import TrackingEntry from "pages/dashboard/TrackingEntry"
+import Login from "@/pages/auth/Login"
+import Register from "@/pages/auth/Register"
+import DashboardHome from "@/pages/dashboard/Home"
+import AccountSettings from "@/pages/settings/AccountSettings"
+import ProfileSettings from "@/pages/settings/ProfileSettings"
+import Profile from "@/pages/profile"
+import TrackingSheet from "@/pages/dashboard/Tracking"
+import TrackingEntry from "@/pages/dashboard/TrackingEntry"
+
 const AccessDenied = () => {
   useEffect(() => {
     toast.error("Access denied", {
