@@ -8,7 +8,7 @@ import { getUser } from "api/user"
 import routes from "./routes"
 import "react-toastify/dist/ReactToastify.css"
 import "styles/tailwind.css"
-import clearAuthData from "utils/clearAuthData"
+import "styles/spinner.css"
 
 const queryClient = new QueryClient()
 

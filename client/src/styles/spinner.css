@@ -1,0 +1,30 @@
+.sp {
+  width: 20px;
+  height: 20px;
+  clear: both;
+}
+
+.sp-circle {
+  border: 2px rgba(255, 255, 255, 0.2) solid;
+  border-top: 2px rgba(255, 255, 255, 0.99) solid;
+  border-radius: 50%;
+  -webkit-animation: spCircRot 0.6s infinite linear;
+  animation: spCircRot 0.6s infinite linear;
+}
+
+@-webkit-keyframes spCircRot {
+  from {
+    -webkit-transform: rotate(0deg);
+  }
+  to {
+    -webkit-transform: rotate(359deg);
+  }
+}
+@keyframes spCircRot {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(359deg);
+  }
+}

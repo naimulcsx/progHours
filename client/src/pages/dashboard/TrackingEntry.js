@@ -26,7 +26,7 @@ const submissionSchema = Yup.object().shape({
 export default function TrackingEntry() {
   const navigate = useNavigate()
 
-  const { mutate } = useMutation(createSubmissions, {
+  const { mutate, isLoading } = useMutation(createSubmissions, {
     onSuccess: (data) => {
       navigate("/submissions")
       toast.success("Problem submitted successfully")
@@ -100,8 +100,13 @@ export default function TrackingEntry() {
               </FormControl>
             </div>
             <div>
-              <button type="submit" className="block mt-6 btn-primary">
-                Create
+              <button
+                type="submit"
+                className="flex items-center mt-6 space-x-2 btn-primary"
+                disabled={isLoading}
+              >
+                {isLoading && <div className="sp sp-circle"></div>}
+                <span>{isLoading ? "Creating" : "Create"}</span>
               </button>
             </div>
           </form>
