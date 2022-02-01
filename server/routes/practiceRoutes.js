@@ -3,8 +3,9 @@ const {
   getAllProblems,
 } = require("../controllers/practiceControllers")
 const isCFValid = require("../middlewares/isCFValid")
+const isAuthenticated = require('../middlewares/isAutheticated')
 
 const router = require("express").Router()
-router.route("/").post(isCFValid, createProblem).get(getAllProblems)
+router.route("/").post(isAuthenticated, isCFValid, createProblem).get(getAllProblems)
 
 module.exports = router

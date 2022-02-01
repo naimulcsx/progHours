@@ -70,15 +70,6 @@ const logout = (req, res) => {
 const getUser = async (req, res) => {
   const { cookie } = req.headers
   const accessToken = getAccessToken(cookie)
-  if (!accessToken) {
-    return res.status(401).send({
-      status: "error",
-      error: {
-        code: "001",
-        message: "User not found.",
-      },
-    })
-  }
   // can't handle the error when the token is invalid
   // tried both callback and try-catch
   const user = jwt.verify(accessToken, process.env.ACCESS_TOKEN_SECRET)

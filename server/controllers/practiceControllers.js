@@ -12,13 +12,22 @@ const createProblem = async (req, res, next) => {
     if (problem) {
       // problemId = problem.dataValues.id
 
-      res.status(400).json({
+      return res.status(400).json({
         status: "error",
         message: "Problem already exists",
       })
     } else {
       const response = await axios(link)
       const $ = cheerio.load(response.data)
+      const problemExists = $(".title a").html() === null
+
+      if (!problemExists) {
+        return res.status(400).json({
+          status: "error",
+          message: "Invalid problem link."
+        })
+      }
+
       const name = $(".title").html().split(". ")[1]
       const newProblem = await Problem.create({
         pid,
@@ -51,6 +60,7 @@ const getAllProblems = async (req, res, next) => {
   try {
     const problems = await PracticeSubmission.findAll({
       include: { model: Problem, as: "problem" },
+      order: [['createdAt', 'DESC']]
     })
     res.status(200).json({
       data: problems,
