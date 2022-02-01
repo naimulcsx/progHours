@@ -13,14 +13,14 @@ export default function TrackingSheet() {
       <div className="flex items-center justify-between">
         <h3 className="font-bold">Tracking Sheet</h3>
         <div className="flex items-center space-x-5">
-          <div className="flex items-center text-primary">
+          {/* <div className="flex items-center text-primary">
             <div className="p-2 border border-r-0 border-lightGrey rounded-l-md">
               <GridViewIcon size={20} />
             </div>
             <div className="p-2 border border-lightGrey rounded-r-md">
               <ListViewIcon size={20} />
             </div>
-          </div>
+          </div> */}
           <Link to="/submissions/new">
             <button
               type="button"

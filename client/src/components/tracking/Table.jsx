@@ -110,14 +110,14 @@ const TrackingTable = ({ problemData }) => {
       </div>
     )
   return (
-    <div className="mt-8 overflow-hidden">
+    <div className="mt-6 overflow-hidden">
       <table {...getTableProps()}>
         <thead>
           {headerGroups.map((headerGroup) => {
             return (
               <tr
                 {...headerGroup.getHeaderGroupProps()}
-                className="text-base font-medium bg-white text-dark"
+                className="text-base bg-white text-dark"
               >
                 {headerGroup.headers.map((header) => {
                   return (

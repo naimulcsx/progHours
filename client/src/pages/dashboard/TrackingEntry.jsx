@@ -32,7 +32,7 @@ export default function TrackingEntry() {
       toast.success("Problem submitted successfully")
     },
     onError: (err) => {
-      toast.error(err.response.data.message)
+      toast.error(err.response.data.message, { className: "toast"} )
     },
   })
 
@@ -56,7 +56,7 @@ export default function TrackingEntry() {
 
   return (
     <Dashboardlayout>
-      <div className="pt-28">
+      <div>
         {/* tracking table header */}
         <div className="flex items-center justify-between">
           <h3>New Submission</h3>
