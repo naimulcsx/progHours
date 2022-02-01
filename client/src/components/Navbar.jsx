@@ -1,6 +1,5 @@
 import Logo from "./Logo"
 import { Link } from "react-router-dom"
-import Avatar from "react-avatar"
 import DropdownMenu from "./DropdownMenu"
 
 const Navbar = () => {

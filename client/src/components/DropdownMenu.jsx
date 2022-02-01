@@ -8,7 +8,7 @@ import {
 
 import { Menu, Transition } from "@headlessui/react"
 import { Link } from "react-router-dom"
-import useLogout from "hooks/useLogout"
+import useLogout from "@/hooks/useLogout"
 
 function DropdownMenu() {
   const handleClick = useLogout()

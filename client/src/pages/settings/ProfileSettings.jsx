@@ -1,8 +1,7 @@
-import SettingsLayout from "components/SettingsLayout"
-import Avatar from "react-avatar"
+import SettingsLayout from "@/components/SettingsLayout"
 import { useFormik } from "formik"
 import * as Yup from "yup"
-import { FormControl, Input, Label, ErrorMessage } from "components/Form"
+import { FormControl, Input, Label, ErrorMessage } from "@/components/Form"
 
 const profileSchema = Yup.object().shape({
   name: Yup.string().trim().required("Name is required"),
@@ -128,7 +127,7 @@ const EditProfile = () => {
             </div>
           </form>
         </div>
-        <Avatar name="Fahim Shahrier" size={210} color="#5542F6" round={true} />
+        {/* <Avatar name="Fahim Shahrier" size={210} color="#5542F6" round={true} /> */}
       </div>
     </SettingsLayout>
   )

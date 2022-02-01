@@ -1,4 +1,4 @@
-import Dashboardlayout from "components/DashboardLayout"
+import Dashboardlayout from "@/components/DashboardLayout"
 import { useState } from "react"
 import * as Yup from "yup"
 import { useFormik } from "formik"
@@ -10,10 +10,10 @@ import {
   Input,
   Label,
   ErrorMessage,
-} from "components/Form"
+} from "@/components/Form"
 import { toast } from "react-toastify"
 import { useMutation } from "react-query"
-import { createSubmissions } from "api/submissions"
+import { createSubmissions } from "@/api/submissions"
 
 const submissionSchema = Yup.object().shape({
   link: Yup.string().trim().required("Problem link is required"),
@@ -40,11 +40,10 @@ export default function TrackingEntry() {
     initialValues: {
       link: "",
       solveTime: "",
-      verdict: "",
+      verdict: "AC",
     },
     validationSchema: submissionSchema,
     onSubmit: async (values) => {
-      console.log(values)
       mutate(values)
     },
   })
@@ -103,7 +102,6 @@ export default function TrackingEntry() {
               <button
                 type="submit"
                 className="flex items-center mt-6 space-x-2 btn-primary"
-                disabled={isLoading}
               >
                 {isLoading && <div className="sp sp-circle"></div>}
                 <span>{isLoading ? "Creating" : "Create"}</span>

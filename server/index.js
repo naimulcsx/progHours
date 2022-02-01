@@ -24,7 +24,7 @@ runMigration()
 app.use(express.static(__dirname + "/public"))
 app.use(express.json())
 app.use((req, res, next) => {
-  const { cookie } = req.headers
+  const cookie = req.headers.cookie || ""
   const accessToken = getAccessToken(cookie)
   if (!accessToken) return next()
   const user = jwt.verify(accessToken, process.env.ACCESS_TOKEN_SECRET)
@@ -41,12 +41,6 @@ const getAccessToken = require("./utils/getAccessToken")
 
 app.use("/auth", authRoutes)
 app.use("/submissions", practiceRoutes)
-
-app.all("*", (req, res) => {
-  res.json({
-    message: `Can't find ${req.originalUrl} to this server!`,
-  })
-})
 
 /**
  * Listen for requests

@@ -1,5 +1,5 @@
-import Navbar from "components/Navbar"
-import ProgressBox from "components/ProgressBox"
+import Navbar from "@/components/Navbar"
+import ProgressBox from "@/components/ProgressBox"
 
 export default function Profile() {
   const name = localStorage.getItem("name")

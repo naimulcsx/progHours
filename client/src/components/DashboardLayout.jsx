@@ -1,7 +1,6 @@
 import NavLink from "./NavLink"
 import Navbar from "./Navbar"
-import Avatar from "react-avatar"
-import useLogout from "hooks/useLogout"
+import useLogout from "@/hooks/useLogout"
 
 // import logo and icons
 import Logo from "./Logo"
@@ -14,8 +13,8 @@ import {
   LogoutIcon,
 } from "./Icons"
 import { useQuery } from "react-query"
-import { getUser } from "api/user"
-import clearAuthData from "utils/clearAuthData"
+import { getUser } from "@/api/user"
+import clearAuthData from "@/utils/clearAuthData"
 import { toast } from "react-toastify"
 import { useNavigate } from "react-router-dom"
 import { useEffect } from "react"
