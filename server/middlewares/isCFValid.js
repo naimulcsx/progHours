@@ -17,7 +17,7 @@ const isCFValid = (req, res, next) => {
       status: "error",
       message: "Link not valid",
     })
-  const verdicts = ["AC", "WA", "TLE", "RTE", "MLE", "RE"]
+  const verdicts = ["AC", "WA", "TLE", "RTE", "MLE"]
   if (!verdicts.includes(verdict))
     return res.status(400).send({
       status: "error",

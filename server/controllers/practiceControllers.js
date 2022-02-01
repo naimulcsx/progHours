@@ -10,12 +10,7 @@ const createProblem = async (req, res, next) => {
     let problemId
     const problem = await Problem.findOne({ where: { pid } })
     if (problem) {
-      // problemId = problem.dataValues.id
-
-      return res.status(400).json({
-        status: "error",
-        message: "Problem already exists",
-      })
+      problemId = problem.dataValues.id
     } else {
       const response = await axios(link)
       const $ = cheerio.load(response.data)
@@ -46,6 +41,12 @@ const createProblem = async (req, res, next) => {
         verdict,
       },
     })
+    if (!created) {
+      return res.status(400).send({
+        status: "error",
+        message: "You already added this problem",
+      })
+    }
     res.status(201).send({
       status: "success",
       data: newSubmission,
@@ -57,9 +58,11 @@ const createProblem = async (req, res, next) => {
 }
 
 const getAllProblems = async (req, res, next) => {
+  const userId = req.user.id
   try {
     const problems = await PracticeSubmission.findAll({
       include: { model: Problem, as: "problem" },
+      where: { userId },
       order: [['createdAt', 'DESC']]
     })
     res.status(200).json({

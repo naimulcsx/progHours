@@ -137,15 +137,19 @@ table tbody tr td:first-child {
 /* tables */
 
 td[data-verdict="WA"] span {
-  @apply p-2 text-sm text-red-700 bg-red-100 rounded;
+  @apply p-2 text-sm text-red-700 bg-red-100 font-medium rounded;
 }
 
 td[data-verdict="AC"] span {
-  @apply p-2 text-sm rounded text-emerald-700 bg-emerald-100;
+  @apply p-2 text-sm rounded text-emerald-700 font-medium bg-emerald-100;
+}
+
+td[data-verdict="RTE"] span {
+  @apply p-2 text-sm rounded text-pink-700 font-medium bg-pink-100;
 }
 
 td[data-verdict="TLE"] span {
-  @apply p-2 text-sm rounded text-amber-700 bg-amber-100;
+  @apply p-2 text-sm rounded text-amber-900 font-medium bg-amber-100;
 }
 
 td[data-solvetime] span {
