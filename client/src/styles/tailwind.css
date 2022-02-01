@@ -122,7 +122,7 @@ table tr {
 
 table tr th {
   /* border-top: 1px solid #ebeaed; */
-  @apply border-b-[2px] border-gray-100;
+  @apply border-b-[2px] border-gray-100 font-medium;
 }
 
 table td,

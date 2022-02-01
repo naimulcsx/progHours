@@ -19,7 +19,7 @@ function App() {
     <QueryClientProvider client={queryClient}>
       <HelmetProvider>
         <div>{routing}</div>
-        <ToastContainer theme="colored" autoClose={2000} />
+        <ToastContainer theme="colored" autoClose={2000} position="bottom-right" />
       </HelmetProvider>
     </QueryClientProvider>
   )

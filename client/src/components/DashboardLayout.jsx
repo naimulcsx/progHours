@@ -39,7 +39,7 @@ const DashboardSidebar = () => {
 
   const handleLogout = useLogout()
   return (
-    <div className="max-w-[250px] w-full h-[100vh] py-6 fixed z-50 top-0 left-0 bottom-0 bg-white">
+    <div className="max-w-[250px] w-full h-[100vh] py-6 fixed z-50 top-0 left-0 bottom-0 bg-white shadow">
       {/* sidebar links */}
       <div className="flex flex-col justify-between h-full pt-16">
         <nav>
@@ -89,7 +89,7 @@ const Dashboardlayout = ({ children }) => {
       <Navbar />
       <DashboardSidebar />
       {/* dashboard contents */}
-      <div className="ml-[250px] bg-[#F6F8FA] min-h-screen px-6 pt-20">
+      <div className="ml-[250px] bg-[#F6F8FA] min-h-screen px-8 pt-20">
         {children}
       </div>
     </div>
