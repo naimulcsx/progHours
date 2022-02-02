@@ -32,7 +32,7 @@ export default function TrackingEntry() {
       toast.success("Problem submitted successfully")
     },
     onError: (err) => {
-      toast.error(err.response.data.message, { className: "toast"} )
+      toast.error(err.response.data.message, { className: "toast" })
     },
   })
 
@@ -94,7 +94,6 @@ export default function TrackingEntry() {
                   <Option value="TLE">TLE</Option>
                   <Option value="RTE">RTE</Option>
                   <Option value="MLE">MLE</Option>
-                  <Option value="RE">RE</Option>
                 </Select>
               </FormControl>
             </div>

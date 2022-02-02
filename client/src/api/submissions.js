@@ -8,4 +8,8 @@ const createSubmissions = (values) => {
   return axios.post("/api/submissions", values).then((res) => res.data)
 }
 
-export { getSubmissions, createSubmissions }
+const deleteSubmission = (id) => {
+  return axios.delete(`/api/submissions/${id}`).then((res) => res.data)
+}
+
+export { getSubmissions, createSubmissions, deleteSubmission }
