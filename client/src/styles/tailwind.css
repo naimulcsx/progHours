@@ -82,13 +82,13 @@ h6 {
 
 /* Navbar link styles */
 .nav-item {
-  @apply flex items-center px-6 py-3;
+  @apply flex items-center px-4 rounded-lg py-3;
 }
 .nav-item svg {
   @apply w-6 h-6 mr-2 text-gray-500;
 }
 .nav-item.active {
-  @apply font-medium border-r-[3px] bg-primary bg-opacity-10 border-primary text-primary;
+  @apply font-medium  bg-primary bg-opacity-10 text-primary;
 }
 .nav-item.active svg {
   @apply text-primary;

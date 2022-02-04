@@ -14,11 +14,11 @@ module.exports = {
     },
     extend: {
       colors: {
-        primary: "#4278f6",
+        primary: "#5542F6",
         primaryDark: "#2E2C34",
         secondaryDark: "#84818A",
         lightGrey: "#EBEAED",
-        light: "#F8F7FA",
+        light: "#FBFAFC",
         sky: "#00A5FF",
         orange: "#FF5C00",
         green: "#0F7432",

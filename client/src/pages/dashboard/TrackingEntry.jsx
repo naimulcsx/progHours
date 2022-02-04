@@ -32,7 +32,7 @@ export default function TrackingEntry() {
       toast.success("Problem submitted successfully")
     },
     onError: (err) => {
-      toast.error(err.response.data.message, { className: "toast"} )
+      toast.error(err.response.data.message, { className: "toast" })
     },
   })
 
@@ -61,7 +61,7 @@ export default function TrackingEntry() {
         <div className="flex items-center justify-between">
           <h3>New Submission</h3>
         </div>
-        {/* tracking form */}
+        {/* tracking form */} 
         <div className="max-w-3xl p-8 mt-10 bg-white rounded-lg shadow">
           <form className="space-y-4" onSubmit={formik.handleSubmit}>
             <FormControl isInvalid={formik.touched.link && formik.errors.link}>
@@ -94,7 +94,6 @@ export default function TrackingEntry() {
                   <Option value="TLE">TLE</Option>
                   <Option value="RTE">RTE</Option>
                   <Option value="MLE">MLE</Option>
-                  <Option value="RE">RE</Option>
                 </Select>
               </FormControl>
             </div>

@@ -7,6 +7,34 @@ import {
   FiChevronsLeft,
   FiChevronsRight,
 } from "react-icons/fi"
+import { useMutation, useQueryClient } from "react-query"
+import { deleteSubmission, getSubmissions } from "../../api/submissions"
+import { toast } from "react-toastify"
+
+const ProblemActions = ({ id }) => {
+  const queryClient = useQueryClient()
+
+  const { mutate } = useMutation((id) => deleteSubmission(id), {
+    onSuccess: () => {
+      queryClient.invalidateQueries("practice", getSubmissions)
+    },
+
+    onError: (err) => {
+      toast.error(err.response.data.message, { className: "toast" })
+    },
+  })
+
+  return (
+    <button className="flex space-x-4">
+      <PencilAltIcon className="w-5 h-5 text-dark" aria-hidden="true" />
+      <TrashIcon
+        className="w-5 h-5 text-red-500"
+        aria-hidden="true"
+        onClick={() => mutate(id)}
+      />
+    </button>
+  )
+}
 
 const practiceColumns = [
   {
@@ -35,12 +63,10 @@ const practiceColumns = [
   },
   {
     Header: "Actions",
-    accessor: (row) => (
-      <button onClick={() => alert("helllo world")} className="flex space-x-4">
-        <PencilAltIcon className="w-5 h-5 text-dark" aria-hidden="true" />
-        <TrashIcon className="w-5 h-5 text-red-500" aria-hidden="true" />
-      </button>
-    ),
+    accessor: (row) => {
+      console.log(row.id)
+      return <ProblemActions id={row.id} />
+    },
   },
 ]
 
@@ -110,7 +136,7 @@ const TrackingTable = ({ problemData }) => {
       </div>
     )
   return (
-    <div className="mt-6 overflow-hidden">
+    <div className="mt-6 overflow-hidden shadow rounded-lg">
       <table {...getTableProps()}>
         <thead>
           {headerGroups.map((headerGroup) => {

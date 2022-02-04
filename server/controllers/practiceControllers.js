@@ -19,7 +19,7 @@ const createProblem = async (req, res, next) => {
       if (!problemExists) {
         return res.status(400).json({
           status: "error",
-          message: "Invalid problem link."
+          message: "Invalid problem link.",
         })
       }
 
@@ -63,7 +63,7 @@ const getAllProblems = async (req, res, next) => {
     const problems = await PracticeSubmission.findAll({
       include: { model: Problem, as: "problem" },
       where: { userId },
-      order: [['createdAt', 'DESC']]
+      order: [["createdAt", "DESC"]],
     })
     res.status(200).json({
       data: problems,
@@ -73,4 +73,28 @@ const getAllProblems = async (req, res, next) => {
   }
 }
 
-module.exports = { createProblem, getAllProblems }
+const deleteProblem = async (req, res, next) => {
+  const userId = req.user.id
+  const { id } = req.params
+
+  try {
+    const isDeleted = await PracticeSubmission.destroy({
+      where: { id, userId },
+    })
+
+    if (!isDeleted) {
+      return res.status(400).json({
+        status: "error",
+        message: "Something went very wrong",
+      })
+    }
+
+    res.status(204).json({
+      status: "success",
+    })
+  } catch (err) {
+    res.json(err)
+  }
+}
+
+module.exports = { createProblem, getAllProblems, deleteProblem }
