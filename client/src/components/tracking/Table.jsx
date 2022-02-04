@@ -136,7 +136,7 @@ const TrackingTable = ({ problemData }) => {
       </div>
     )
   return (
-    <div className="mt-6 overflow-hidden">
+    <div className="mt-6 overflow-hidden shadow rounded-lg">
       <table {...getTableProps()}>
         <thead>
           {headerGroups.map((headerGroup) => {
