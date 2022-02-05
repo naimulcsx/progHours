@@ -1,6 +1,4 @@
 import { usePagination, useTable } from "react-table"
-import { PlusIcon, TrashIcon, PencilAltIcon } from "@heroicons/react/outline"
-import { Link } from "react-router-dom"
 import {
   FiChevronRight,
   FiChevronLeft,
@@ -10,6 +8,8 @@ import {
 import { useMutation, useQueryClient } from "react-query"
 import { deleteSubmission, getSubmissions } from "../../api/submissions"
 import { toast } from "react-toastify"
+import { CFIcon, TrashIcon, EditIcon } from "@/components/Icons"
+import EmptyState from "@/components/tracking/EmptyState"
 
 const ProblemActions = ({ id }) => {
   const queryClient = useQueryClient()
@@ -25,30 +25,43 @@ const ProblemActions = ({ id }) => {
   })
 
   return (
-    <button className="flex space-x-4">
-      <PencilAltIcon className="w-5 h-5 text-dark" aria-hidden="true" />
-      <TrashIcon
-        className="w-5 h-5 text-red-500"
-        aria-hidden="true"
-        onClick={() => mutate(id)}
-      />
-    </button>
+    <div className="flex space-x-4">
+      <EditIcon className="w-[22px] h-[22px] text-dark" aria-hidden="true" />
+      <button onClick={() => mutate(id)}>
+        <TrashIcon
+          className="w-[22px] h-[22px] text-red-500"
+          aria-hidden="true"
+        />
+      </button>
+    </div>
   )
 }
 
 const practiceColumns = [
   {
     Header: "Id",
-    accessor: "id",
-  },
-  {
-    Header: "Problem Id",
-    accessor: "problem.pid",
+    accessor: "idx",
   },
   {
     Header: "Problem Name",
-    accessor: "problem.name",
+    accessor: (row) => {
+      return (
+        <div className="flex space-x-4">
+          <div className="flex items-center justify-center h-10 bg-white border rounded-full basis-10">
+            <CFIcon />
+          </div>
+          <div>
+            <p className="font-medium text-gray-900">{row.problem.pid}</p>
+            <p className="text-sm text-gray-600">{row.problem.name}</p>
+          </div>
+        </div>
+      )
+    },
   },
+  // {
+  //   Header: "Problem Name",
+  //   accessor: "problem.name",
+  // },
   {
     Header: "Verdict",
     accessor: "verdict",
@@ -62,15 +75,27 @@ const practiceColumns = [
     accessor: (row) => "Tag1, Tag2, Tag3",
   },
   {
+    Header: "Date",
+    accessor: (row) =>
+      new Date(row.createdAt).toLocaleString("en-US", {
+        year: "numeric",
+        month: "long",
+        day: "numeric",
+        minute: "2-digit",
+        hour: "2-digit",
+      }),
+  },
+  {
     Header: "Actions",
     accessor: (row) => {
-      console.log(row.id)
       return <ProblemActions id={row.id} />
     },
   },
 ]
 
 const TrackingTable = ({ problemData }) => {
+  let k = problemData.length
+  problemData.forEach((el) => (el.idx = k--))
   const tableInstance = useTable(
     {
       data: problemData,
@@ -98,45 +123,9 @@ const TrackingTable = ({ problemData }) => {
     state: { pageIndex, pageSize },
   } = tableInstance
 
-  if (problemData.length === 0)
-    return (
-      <div className="relative block w-full p-12 mt-12 text-center border-2 border-gray-300 border-dashed rounded-2xl">
-        <svg
-          className="w-12 h-12 mx-auto text-gray-400"
-          fill="none"
-          viewBox="0 0 24 24"
-          stroke="currentColor"
-          aria-hidden="true"
-        >
-          <path
-            vectorEffect="non-scaling-stroke"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            strokeWidth={2}
-            d="M9 13h6m-3-3v6m-9 1V7a2 2 0 012-2h6l2 2h6a2 2 0 012 2v8a2 2 0 01-2 2H5a2 2 0 01-2-2z"
-          />
-        </svg>
-        <h3 className="mt-2 text-2xl font-medium text-gray-900">
-          No submissions
-        </h3>
-        <p className="mt-1 text-sm text-gray-500">
-          Get started by creating a new project.
-        </p>
-        <div className="mt-6">
-          <Link to="/submissions/new">
-            <button
-              type="button"
-              className="inline-flex items-center px-4 py-2 text-sm font-medium text-white border border-transparent rounded-md shadow-sm bg-primary hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-            >
-              <PlusIcon className="w-5 h-5 mr-2 -ml-1" aria-hidden="true" />
-              New Entry
-            </button>
-          </Link>
-        </div>
-      </div>
-    )
+  if (problemData.length === 0) return <EmptyState />
   return (
-    <div className="mt-6 overflow-hidden shadow rounded-lg">
+    <div className="mt-6 overflow-hidden border border-gray-100 rounded-lg">
       <table {...getTableProps()}>
         <thead>
           {headerGroups.map((headerGroup) => {
@@ -163,7 +152,7 @@ const TrackingTable = ({ problemData }) => {
               <tr
                 {...row.getRowProps()}
                 key={row.id}
-                className={`hover:bg-primary hover:bg-opacity-5 bg-white`}
+                className={`hover:bg-primary hover:bg-opacity-[0.04] bg-white`}
               >
                 {row.cells.map((cell) => {
                   const extraProps = {}
@@ -174,7 +163,7 @@ const TrackingTable = ({ problemData }) => {
                     <td
                       {...cell.getCellProps()}
                       {...extraProps}
-                      className="px-6 py-4"
+                      className="px-6 py-[10px]"
                     >
                       <span>{cell.render("Cell")}</span>
                     </td>
@@ -223,7 +212,7 @@ const TrackingTable = ({ problemData }) => {
           >
             <FiChevronsRight size={20} />
           </button>{" "}
-          {/* <span>
+          <span>
             | Go to page:{" "}
             <input
               type="number"
@@ -234,7 +223,7 @@ const TrackingTable = ({ problemData }) => {
               }}
               style={{ width: "100px" }}
             />
-          </span> */}
+          </span>
         </div>
       </div>
     </div>

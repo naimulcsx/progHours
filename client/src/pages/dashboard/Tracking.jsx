@@ -1,4 +1,4 @@
-import Dashboardlayout from "@/components/DashboardLayout"
+import Layout from "@/components/dashboard/Layout"
 import { GridViewIcon, ListViewIcon, PlusIcon } from "@/components/Icons"
 import TrackingTable from "@/components/tracking/Table"
 import { useQuery } from "react-query"
@@ -7,8 +7,9 @@ import { Link } from "react-router-dom"
 
 export default function TrackingSheet() {
   const query = useQuery("practice", getSubmissions)
+
   return (
-    <Dashboardlayout>
+    <Layout>
       {/* tracking table header */}
       <div className="flex items-center justify-between">
         <h3 className="font-bold">Tracking Sheet</h3>
@@ -35,6 +36,6 @@ export default function TrackingSheet() {
 
       {/* tracking table */}
       {query.isSuccess && <TrackingTable problemData={query.data.data} />}
-    </Dashboardlayout>
+    </Layout>
   )
 }

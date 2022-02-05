@@ -5,12 +5,12 @@ import DropdownMenu from "./DropdownMenu"
 const Navbar = () => {
   const name = localStorage.getItem("name")
   return (
-    <header className="fixed top-0 left-0 right-0 z-[9999] flex items-center justify-between px-6 py-3 bg-[#0e171f]">
+    <header className="fixed top-0 left-0 right-0 z-[9999] flex items-center justify-between px-6 py-3 bg-white border-b border-gray-100">
       <Link to="/dashboard">
-        <Logo className="text-white" />
+        <Logo className="text-gray-900" />
       </Link>
       <nav>
-        <ul className="flex items-center justify-end space-x-3">
+        <ul className="flex items-center justify-end space-x-2">
           <li className="flex items-center">
             <Link to="/profile" className="flex items-center space-x-2">
               <img
@@ -18,7 +18,7 @@ const Navbar = () => {
                 alt={name}
                 className="rounded-full w-7 h-7"
               />
-              <span className="text-sm text-white">{name}</span>
+              <span className="font-medium text-gray-900 ">{name}</span>
             </Link>
           </li>
           <li className="flex items-center">
