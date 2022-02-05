@@ -3,7 +3,9 @@ const jwt = require("jsonwebtoken")
 const getAccessToken = require("../utils/getAccessToken")
 
 const register = async (req, res) => {
-  const { name, password, uid, email } = req.body
+  let { name, password, uid, email } = req.body
+  uid = uid.toLowerCase()
+
   try {
     const newUser = await User.create({
       name,
@@ -11,6 +13,7 @@ const register = async (req, res) => {
       uid,
       email,
     })
+
     res.json({
       status: "success",
       user: newUser,
@@ -22,7 +25,9 @@ const register = async (req, res) => {
 }
 
 const login = async (req, res) => {
-  const { uid, password } = req.body
+  let { uid, password } = req.body
+  uid = uid.toLowerCase()
+
   try {
     // check if user exists
     const user = await User.findOne({ where: { uid } })
