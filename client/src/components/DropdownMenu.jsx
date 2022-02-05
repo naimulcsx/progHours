@@ -18,9 +18,9 @@ function DropdownMenu() {
         <>
           <Menu.Button>
             {!open ? (
-              <ChevronDownIcon color="white" size={24} />
+              <ChevronDownIcon className="text-gray-900" size={24} />
             ) : (
-              <ChevronUpIcon color="white" size={24} />
+              <ChevronUpIcon className="text-gray-900" size={24} />
             )}
           </Menu.Button>
           <Transition

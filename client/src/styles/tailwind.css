@@ -82,13 +82,13 @@ h6 {
 
 /* Navbar link styles */
 .nav-item {
-  @apply flex items-center px-4 rounded-lg py-3;
+  @apply flex items-center px-4 py-3 rounded-lg;
 }
 .nav-item svg {
   @apply w-6 h-6 mr-2 text-gray-500;
 }
 .nav-item.active {
-  @apply font-medium  bg-primary bg-opacity-10 text-primary;
+  @apply font-medium bg-primary bg-opacity-10 text-primary;
 }
 .nav-item.active svg {
   @apply text-primary;
@@ -137,25 +137,25 @@ table tbody tr td:first-child {
 /* tables */
 
 td[data-verdict="WA"] span {
-  @apply p-2 text-sm text-red-700 bg-red-100 font-medium rounded;
+  @apply p-2 text-sm font-medium text-red-700 bg-red-100 rounded;
 }
 
 td[data-verdict="AC"] span {
-  @apply p-2 text-sm rounded text-emerald-700 font-medium bg-emerald-100;
+  @apply p-2 text-sm font-medium rounded text-emerald-700 bg-emerald-100;
 }
 
 td[data-verdict="RTE"] span {
-  @apply p-2 text-sm rounded text-pink-700 font-medium bg-pink-100;
+  @apply p-2 text-sm font-medium text-pink-700 bg-pink-100 rounded;
 }
 
 td[data-verdict="TLE"] span {
-  @apply p-2 text-sm rounded text-amber-900 font-medium bg-amber-100;
+  @apply p-2 text-sm font-medium rounded text-amber-900 bg-amber-100;
 }
 
 td[data-solvetime] span {
-  @apply ml-4;
+  @apply ml-6;
 }
 
 td[data-solvetime] {
-  @apply flex items-center before:w-2 before:h-2 before:bg-cyan-500 before:block;
+  @apply before:w-2 before:h-2 before:bg-cyan-500 before:top-[15px] before:block before:relative;
 }

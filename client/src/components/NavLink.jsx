@@ -7,7 +7,7 @@ const NavLink = ({ Icon, children, to }) => {
     <li>
       <Link
         to={to}
-        className={`nav-item ${location.pathname === to ? "active" : ""}`}
+        className={`nav-item ${location.pathname.includes(to) ? "active" : ""}`}
       >
         <Icon />
         <span>{children}</span>

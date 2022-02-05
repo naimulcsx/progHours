@@ -1,4 +1,4 @@
-import Dashboardlayout from "@/components/DashboardLayout"
+import Layout from "@/components/dashboard/Layout"
 import { useState } from "react"
 import * as Yup from "yup"
 import { useFormik } from "formik"
@@ -55,14 +55,14 @@ export default function TrackingEntry() {
   }
 
   return (
-    <Dashboardlayout>
+    <Layout>
       <div>
         {/* tracking table header */}
         <div className="flex items-center justify-between">
           <h3>New Submission</h3>
         </div>
-        {/* tracking form */} 
-        <div className="max-w-3xl p-8 mt-10 bg-white rounded-lg shadow">
+        {/* tracking form */}
+        <div className="max-w-3xl p-8 mt-10 bg-white border border-gray-100 rounded-lg">
           <form className="space-y-4" onSubmit={formik.handleSubmit}>
             <FormControl isInvalid={formik.touched.link && formik.errors.link}>
               <Input
@@ -109,6 +109,6 @@ export default function TrackingEntry() {
           </form>
         </div>
       </div>
-    </Dashboardlayout>
+    </Layout>
   )
 }
