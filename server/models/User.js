@@ -38,8 +38,9 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: false,
       },
       role: {
-        type: DataTypes.SMALLINT,
-        defaultValue: 0,
+        type: DataTypes.ENUM,
+        values: ["user", "moderator", "admin"],
+        defaultValue: "user",
       },
     },
     {
