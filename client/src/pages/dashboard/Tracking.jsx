@@ -1,6 +1,6 @@
 import Layout from "@/components/dashboard/Layout"
 import { GridViewIcon, ListViewIcon, PlusIcon } from "@/components/Icons"
-import TrackingTable from "@/components/tracking/Table"
+import TrackingTable from "@/components/submissions/Table"
 import { useQuery } from "react-query"
 import { getSubmissions } from "@/api/submissions"
 import { Link } from "react-router-dom"

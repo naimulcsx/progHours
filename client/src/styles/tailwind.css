@@ -155,7 +155,7 @@ td[data-verdict="TLE"] span {
 td[data-solvetime] span {
   @apply ml-6;
 }
-
+/* 
 td[data-solvetime] {
   @apply before:w-2 before:h-2 before:bg-cyan-500 before:top-[15px] before:block before:relative;
-}
+} */
