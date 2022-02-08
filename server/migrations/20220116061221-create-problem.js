@@ -18,6 +18,10 @@ module.exports = {
         allowNull: false,
         trim: true,
       },
+      difficulty: {
+        type: DataTypes.STRING,
+        allowNull: true,
+      },
       judgeId: {
         type: DataTypes.INTEGER,
         references: {
