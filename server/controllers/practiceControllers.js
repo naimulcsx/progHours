@@ -1,4 +1,5 @@
-const { Problem, PracticeSubmission } = require("../models").sequelize.models
+const { Problem, PracticeSubmission, Tag, ProblemTag } =
+  require("../models").sequelize.models
 const cheerio = require("cheerio")
 const axios = require("axios")
 
@@ -23,15 +24,40 @@ const createProblem = async (req, res, next) => {
         })
       }
 
+      let makeTags = []
+      $(".roundbox .tag-box").each(function (i, e) {
+        const tag = $(this).text().trim()
+        makeTags.push({ name: tag })
+      })
+
+      // create problem
+      let difficulty = makeTags[makeTags.length - 1].name
+
       const name = $(".title").html().split(". ")[1]
+
       const newProblem = await Problem.create({
         pid,
         name,
         judgeId,
         solveTime,
+        difficulty,
       })
       problemId = newProblem.dataValues.id
+
+      // create tags
+      const tags = [...makeTags]
+      tags.pop()
+
+      tags.forEach(async (el) => {
+        const [newTag] = await Tag.findOrCreate({
+          where: { name: el.name },
+          defaults: { name: el.name },
+        })
+
+        await ProblemTag.create({ problemId, tagId: newTag.dataValues.id })
+      })
     }
+
     const [newSubmission, created] = await PracticeSubmission.findOrCreate({
       where: { userId, problemId },
       defaults: {
