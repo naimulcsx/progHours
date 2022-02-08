@@ -18,10 +18,6 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: false,
         trim: true,
       },
-      parentId: {
-        type: DataTypes.INTEGER,
-        allowNull: false,
-      },
     },
     {
       sequelize,
