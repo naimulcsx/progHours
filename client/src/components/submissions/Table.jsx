@@ -10,6 +10,7 @@ import EmptyState from "@/components/submissions/EmptyState"
 // import columns components
 import ProblemName from "./columns/ProblemName"
 import Actions from "./columns/Actions"
+import Verdict from "./columns/Verdict"
 
 const practiceColumns = [
   {
@@ -24,6 +25,7 @@ const practiceColumns = [
   {
     Header: "Verdict",
     accessor: "verdict",
+    Cell: Verdict,
   },
   {
     Header: "Solve Time",
@@ -34,6 +36,7 @@ const practiceColumns = [
           className="h-[40px] px-3 rounded  focus:outline-none focus:ring-2 focus:ring-primary focus:ring-opacity-50"
           type="text"
           value={cell.value}
+          onChange={() => {}}
           onBlur={() => console.log("update")}
         />
       )
@@ -76,7 +79,7 @@ const TrackingTable = ({ problemData }) => {
   const {
     getTableProps,
     getTableBodyProps,
-    page,
+    rows,
     prepareRow,
     headerGroups,
     canPreviousPage,
@@ -92,7 +95,7 @@ const TrackingTable = ({ problemData }) => {
 
   if (problemData.length === 0) return <EmptyState />
   return (
-    <div className="mt-6 overflow-hidden border border-gray-100 rounded-lg">
+    <div className="mt-6 border border-gray-100 rounded-lg">
       <table {...getTableProps()}>
         <thead>
           {headerGroups.map((headerGroup) => {
@@ -113,7 +116,7 @@ const TrackingTable = ({ problemData }) => {
           })}
         </thead>
         <tbody {...getTableBodyProps()}>
-          {page.map((row, idx) => {
+          {rows.map((row) => {
             prepareRow(row)
             return (
               <tr
@@ -123,16 +126,16 @@ const TrackingTable = ({ problemData }) => {
               >
                 {row.cells.map((cell) => {
                   const extraProps = {}
-                  extraProps[`data-${cell.column.id.toLowerCase()}`] =
-                    cell.value
-
+                  extraProps[
+                    `data-${cell.column.id.toLowerCase().split(" ").join("-")}`
+                  ] = cell.value
                   return (
                     <td
                       {...cell.getCellProps()}
                       {...extraProps}
                       className="px-6 py-2"
                     >
-                      <span className="">{cell.render("Cell")}</span>
+                      <span>{cell.render("Cell")}</span>
                     </td>
                   )
                 })}
@@ -141,7 +144,7 @@ const TrackingTable = ({ problemData }) => {
           })}
         </tbody>
       </table>
-      <div className="flex items-center justify-between px-6 py-3 space-x-4 bg-white pagination">
+      {/* <div className="flex items-center justify-between px-6 py-3 space-x-4 bg-white pagination">
         <div>
           <span>
             Page{" "}
@@ -192,7 +195,7 @@ const TrackingTable = ({ problemData }) => {
             />
           </span>
         </div>
-      </div>
+      </div> */}
     </div>
   )
 }
