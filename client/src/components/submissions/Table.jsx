@@ -11,6 +11,7 @@ import EmptyState from "@/components/submissions/EmptyState"
 import ProblemName from "./columns/ProblemName"
 import Actions from "./columns/Actions"
 import Verdict from "./columns/Verdict"
+import DatePicker from "./columns/DatePicker"
 
 const practiceColumns = [
   {
@@ -48,18 +49,20 @@ const practiceColumns = [
   },
   {
     Header: "Date",
-    accessor: (row) =>
-      new Date(row.createdAt).toLocaleString("en-US", {
-        year: "numeric",
-        month: "long",
-        day: "numeric",
-        minute: "2-digit",
-        hour: "2-digit",
-      }),
+    accessor: "createdAt",
+    Cell: DatePicker,
+    // Cell: (cell) =>
+    //   new Date(cell.value).toLocaleString("en-US", {
+    //     year: "numeric",
+    //     month: "long",
+    //     day: "numeric",
+    //     minute: "2-digit",
+    //     hour: "2-digit",
+    //   }),
   },
   {
     Header: "Actions",
-    accessor: () => 1,
+    accessor: (row) => row.id,
     Cell: Actions,
   },
 ]
@@ -121,8 +124,8 @@ const TrackingTable = ({ problemData }) => {
             return (
               <tr
                 {...row.getRowProps()}
-                key={row.id}
-                className={`hover:bg-primary hover:bg-opacity-[0.04] bg-white`}
+                key={row.original.id}
+                className={`hover:bg-light bg-white`}
               >
                 {row.cells.map((cell) => {
                   const extraProps = {}

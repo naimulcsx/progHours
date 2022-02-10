@@ -77,6 +77,9 @@ const deleteProblem = async (req, res, next) => {
   const userId = req.user.id
   const { id } = req.params
 
+  console.log("----------------------")
+  console.log(id, userId)
+
   try {
     const isDeleted = await PracticeSubmission.destroy({
       where: { id, userId },
