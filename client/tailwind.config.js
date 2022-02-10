@@ -1,6 +1,9 @@
+const colors = require("tailwindcss/colors")
+
 module.exports = {
   content: ["./src/**/*.{js,jsx}"],
   darkMode: false, // or 'media' or 'class'
+  colors: { ...colors },
   theme: {
     fontFamily: {
       sans: ["Roboto", "sans-serif"],

@@ -32,20 +32,31 @@ const ErrorMessage = ({ children }) => {
 }
 
 const Select = ({ children, ...props }) => {
+  const styles = {
+    AC: "bg-emerald-100 text-emerald-900 rounded w-full font-medium text-center",
+    WA: "bg-red-100 text-red-900 rounded w-full font-medium text-center",
+    RTE: "bg-pink-100 text-pink-900 rounded w-full font-medium text-center",
+    TLE: "bg-amber-100 text-amber-900 rounded w-full font-medium text-center",
+    MLE: "bg-cyan-100 text-cyan-900 rounded w-full font-medium text-center",
+  }
   return (
     <Listbox {...props}>
       {({ open }) => (
         <>
-          <div className="relative mt-1">
+          <div className="relative mt-1 w-24">
             <Listbox.Button
-              className={`relative w-full py-2 h-[45px] pr-10 text-left bg-white border-b border-gray-300 shadow-sm cursor-default active:border-primary focus:outline-none ${
-                open ? "border-b-2 border-primary" : ""
+              className={`${
+                styles[props.value]
+              } relative w-full py-2 h-[40px] pr-10 bg-white border-b border-gray-200 cursor-default focus:outline-none ${
+                open ? "ring-2 ring-primary ring-opacity-50" : ""
               }`}
             >
-              <span className="block truncate">{props.value}</span>
+              <span className={`px-3 `}>{props.value}</span>
               <span className="absolute inset-y-0 right-0 flex items-center pr-2 pointer-events-none">
                 <SelectorIcon
-                  className="w-5 h-5 text-gray-400"
+                  className={`w-4 h-4 ${
+                    styles[props.value] ? styles[props.value] : "text-gray-300"
+                  }`}
                   aria-hidden="true"
                 />
               </span>
@@ -57,7 +68,7 @@ const Select = ({ children, ...props }) => {
               leaveFrom="opacity-100"
               leaveTo="opacity-0"
             >
-              <Listbox.Options className="absolute z-10 w-full py-1 mt-1 overflow-auto text-base bg-white rounded-md shadow-lg max-h-60 ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm">
+              <Listbox.Options className="absolute z-[9999] w-full py-1 mt-1 overflow-auto text-base bg-white rounded-md shadow-lg max-h-60 ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm">
                 {children}
               </Listbox.Options>
             </Transition>

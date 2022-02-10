@@ -23,11 +23,13 @@ runMigration()
  */
 app.use(express.static(__dirname + "/public"))
 app.use(express.json())
+
 app.use((req, res, next) => {
   const cookie = req.headers.cookie || ""
   const accessToken = getAccessToken(cookie)
   if (!accessToken) return next()
   const user = jwt.verify(accessToken, process.env.ACCESS_TOKEN_SECRET)
+  // Find out if the user id is found in database
   req.user = user
   next()
 })

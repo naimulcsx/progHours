@@ -5,37 +5,13 @@ import {
   FiChevronsLeft,
   FiChevronsRight,
 } from "react-icons/fi"
-import { useMutation, useQueryClient } from "react-query"
-import { deleteSubmission, getSubmissions } from "../../api/submissions"
-import { toast } from "react-toastify"
-import { CFIcon, TrashIcon, EditIcon } from "@/components/Icons"
-import EmptyState from "@/components/tracking/EmptyState"
+import EmptyState from "@/components/submissions/EmptyState"
 
-const ProblemActions = ({ id }) => {
-  const queryClient = useQueryClient()
-
-  const { mutate } = useMutation((id) => deleteSubmission(id), {
-    onSuccess: () => {
-      queryClient.invalidateQueries("practice", getSubmissions)
-    },
-
-    onError: (err) => {
-      toast.error(err.response.data.message, { className: "toast" })
-    },
-  })
-
-  return (
-    <div className="flex space-x-4">
-      <EditIcon className="w-[22px] h-[22px] text-dark" aria-hidden="true" />
-      <button onClick={() => mutate(id)}>
-        <TrashIcon
-          className="w-[22px] h-[22px] text-red-500"
-          aria-hidden="true"
-        />
-      </button>
-    </div>
-  )
-}
+// import columns components
+import ProblemName from "./columns/ProblemName"
+import Actions from "./columns/Actions"
+import Verdict from "./columns/Verdict"
+import DatePicker from "./columns/DatePicker"
 
 const practiceColumns = [
   {
@@ -44,31 +20,28 @@ const practiceColumns = [
   },
   {
     Header: "Problem Name",
-    accessor: (row) => {
-      return (
-        <div className="flex space-x-4">
-          <div className="flex items-center justify-center h-10 bg-white border rounded-full basis-10">
-            <CFIcon />
-          </div>
-          <div>
-            <p className="font-medium text-gray-900">{row.problem.pid}</p>
-            <p className="text-sm text-gray-600">{row.problem.name}</p>
-          </div>
-        </div>
-      )
-    },
+    accessor: (row) => `${row.problem.pid} |-| ${row.problem.name}`,
+    Cell: ProblemName,
   },
-  // {
-  //   Header: "Problem Name",
-  //   accessor: "problem.name",
-  // },
   {
     Header: "Verdict",
     accessor: "verdict",
+    Cell: Verdict,
   },
   {
     Header: "Solve Time",
     accessor: "solveTime",
+    Cell: (cell) => {
+      return (
+        <input
+          className="h-[40px] px-3 rounded  focus:outline-none focus:ring-2 focus:ring-primary focus:ring-opacity-50"
+          type="text"
+          value={cell.value}
+          onChange={() => {}}
+          onBlur={() => console.log("update")}
+        />
+      )
+    },
   },
   {
     Header: "Tags",
@@ -76,40 +49,40 @@ const practiceColumns = [
   },
   {
     Header: "Date",
-    accessor: (row) =>
-      new Date(row.createdAt).toLocaleString("en-US", {
-        year: "numeric",
-        month: "long",
-        day: "numeric",
-        minute: "2-digit",
-        hour: "2-digit",
-      }),
+    accessor: "createdAt",
+    Cell: DatePicker,
+    // Cell: (cell) =>
+    //   new Date(cell.value).toLocaleString("en-US", {
+    //     year: "numeric",
+    //     month: "long",
+    //     day: "numeric",
+    //     minute: "2-digit",
+    //     hour: "2-digit",
+    //   }),
   },
   {
     Header: "Actions",
-    accessor: (row) => {
-      return <ProblemActions id={row.id} />
-    },
+    accessor: (row) => row.id,
+    Cell: Actions,
   },
 ]
 
 const TrackingTable = ({ problemData }) => {
   let k = problemData.length
   problemData.forEach((el) => (el.idx = k--))
+
   const tableInstance = useTable(
     {
       data: problemData,
       columns: practiceColumns,
-      initialState: {
-        pageSize: 10,
-      },
+      initialState: { pageSize: 10 },
     },
     usePagination
   )
   const {
     getTableProps,
     getTableBodyProps,
-    page,
+    rows,
     prepareRow,
     headerGroups,
     canPreviousPage,
@@ -125,7 +98,7 @@ const TrackingTable = ({ problemData }) => {
 
   if (problemData.length === 0) return <EmptyState />
   return (
-    <div className="mt-6 overflow-hidden border border-gray-100 rounded-lg">
+    <div className="mt-6 border border-gray-100 rounded-lg">
       <table {...getTableProps()}>
         <thead>
           {headerGroups.map((headerGroup) => {
@@ -146,24 +119,24 @@ const TrackingTable = ({ problemData }) => {
           })}
         </thead>
         <tbody {...getTableBodyProps()}>
-          {page.map((row, idx) => {
+          {rows.map((row) => {
             prepareRow(row)
             return (
               <tr
                 {...row.getRowProps()}
-                key={row.id}
-                className={`hover:bg-primary hover:bg-opacity-[0.04] bg-white`}
+                key={row.original.id}
+                className={`hover:bg-light bg-white`}
               >
                 {row.cells.map((cell) => {
                   const extraProps = {}
-                  extraProps[`data-${cell.column.id.toLowerCase()}`] =
-                    cell.value
-
+                  extraProps[
+                    `data-${cell.column.id.toLowerCase().split(" ").join("-")}`
+                  ] = cell.value
                   return (
                     <td
                       {...cell.getCellProps()}
                       {...extraProps}
-                      className="px-6 py-[10px]"
+                      className="px-6 py-2"
                     >
                       <span>{cell.render("Cell")}</span>
                     </td>
@@ -174,7 +147,7 @@ const TrackingTable = ({ problemData }) => {
           })}
         </tbody>
       </table>
-      <div className="flex items-center justify-between px-6 py-3 space-x-4 bg-white pagination">
+      {/* <div className="flex items-center justify-between px-6 py-3 space-x-4 bg-white pagination">
         <div>
           <span>
             Page{" "}
@@ -225,7 +198,7 @@ const TrackingTable = ({ problemData }) => {
             />
           </span>
         </div>
-      </div>
+      </div> */}
     </div>
   )
 }

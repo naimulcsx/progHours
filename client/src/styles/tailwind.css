@@ -135,7 +135,7 @@ table tbody tr td:first-child {
 }
 
 /* tables */
-
+/* 
 td[data-verdict="WA"] span {
   @apply p-2 text-sm font-medium text-red-700 bg-red-100 rounded;
 }
@@ -150,12 +150,12 @@ td[data-verdict="RTE"] span {
 
 td[data-verdict="TLE"] span {
   @apply p-2 text-sm font-medium rounded text-amber-900 bg-amber-100;
-}
+} */
 
 td[data-solvetime] span {
   @apply ml-6;
 }
-
+/* 
 td[data-solvetime] {
   @apply before:w-2 before:h-2 before:bg-cyan-500 before:top-[15px] before:block before:relative;
-}
+} */
