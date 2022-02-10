@@ -19,6 +19,11 @@ module.exports = {
         type: DataTypes.INTEGER,
         allowNull: true,
       },
+      solvedAt: {
+        type: DataTypes.DATE,
+        defaultValue: DataTypes.NOW,
+        allowNull: false,
+      },
       userId: {
         type: DataTypes.INTEGER,
         references: {
