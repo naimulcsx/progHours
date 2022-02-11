@@ -73,12 +73,34 @@ const getAllProblems = async (req, res, next) => {
   }
 }
 
+const updateProblem = async (req, res, next) => {
+  const { verdict, solveTime, solvedAt } = req.body
+  const { id } = req.params
+
+  try {
+    const isUpdated = await PracticeSubmission.update(
+      { verdict, solveTime, solvedAt },
+      { where: { id } }
+    )
+
+    if (!isUpdated[0]) {
+      return res.status(400).json({
+        status: "error",
+        message: "submission not updated",
+      })
+    }
+
+    res.status(200).json({
+      status: "success",
+    })
+  } catch (err) {
+    req.json(err)
+  }
+}
+
 const deleteProblem = async (req, res, next) => {
   const userId = req.user.id
   const { id } = req.params
-
-  console.log("----------------------")
-  console.log(id, userId)
 
   try {
     const isDeleted = await PracticeSubmission.destroy({
@@ -100,4 +122,4 @@ const deleteProblem = async (req, res, next) => {
   }
 }
 
-module.exports = { createProblem, getAllProblems, deleteProblem }
+module.exports = { createProblem, getAllProblems, deleteProblem, updateProblem }

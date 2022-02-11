@@ -13,6 +13,7 @@ import Actions from "./columns/Actions"
 import Verdict from "./columns/Verdict"
 import DatePicker from "./columns/DatePicker"
 import AddEntryRow from "./AddEntryRow"
+import SolveTime from "./columns/SolveTime"
 
 const practiceColumns = [
   {
@@ -32,17 +33,7 @@ const practiceColumns = [
   {
     Header: "Solve Time",
     accessor: "solveTime",
-    Cell: (cell) => {
-      return (
-        <input
-          className="h-[40px] px-3 rounded  focus:outline-none focus:ring-2 focus:ring-primary focus:ring-opacity-50"
-          type="text"
-          value={cell.value}
-          onChange={() => {}}
-          onBlur={() => console.log("update")}
-        />
-      )
-    },
+    Cell: SolveTime,
   },
   {
     Header: "Tags",
@@ -99,7 +90,7 @@ const TrackingTable = ({ problemData }) => {
 
   if (problemData.length === 0) return <EmptyState />
   return (
-    <div className="mt-6 border border-gray-100 rounded-lg max-h-[780px] overflow-scroll">
+    <div className="mt-6 border border-gray-100 rounded-lg max-h-[780px]">
       <table {...getTableProps()}>
         <thead>
           {headerGroups.map((headerGroup) => {
