@@ -62,8 +62,15 @@ h6 {
   @apply text-sm -top-1 text-primary;
 }
 
-.form-group .error-message {
+.error-message {
   @apply mt-1 text-sm text-red-500;
+}
+
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+input:-webkit-autofill:active {
+  -webkit-box-shadow: 0 0 0 30px white inset !important;
 }
 
 /*Button Styles*/
@@ -152,9 +159,9 @@ td[data-verdict="TLE"] span {
   @apply p-2 text-sm font-medium rounded text-amber-900 bg-amber-100;
 } */
 
-td[data-solvetime] span {
+/* td[data-solvetime] span {
   @apply ml-6;
-}
+} */
 /* 
 td[data-solvetime] {
   @apply before:w-2 before:h-2 before:bg-cyan-500 before:top-[15px] before:block before:relative;

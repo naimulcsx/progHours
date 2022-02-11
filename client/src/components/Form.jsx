@@ -6,13 +6,12 @@ function classNames(...classes) {
   return classes.filter(Boolean).join(" ")
 }
 
-const FormControl = (props) => {
-  const { isInvalid } = props
+const FormControl = ({ isInvalid, ...props }) => {
   const children = React.Children.toArray(props.children).filter((child) =>
     isValidElement(child)
   )
   return (
-    <div className="form-group">
+    <div className="form-group" {...props}>
       {children.filter((child) => child.type !== ErrorMessage)}
       {isInvalid && children.find((child) => child.type === ErrorMessage)}
     </div>
@@ -47,7 +46,7 @@ const Select = ({ children, ...props }) => {
             <Listbox.Button
               className={`${
                 styles[props.value]
-              } relative w-full py-2 h-[40px] pr-10 bg-white border-b border-gray-200 cursor-default focus:outline-none ${
+              } relative w-full py-2 h-[40px] pr-10 shadow-sm bg-white cursor-default focus:outline-none ${
                 open ? "ring-2 ring-primary ring-opacity-50" : ""
               }`}
             >
