@@ -12,4 +12,8 @@ const deleteSubmission = (id) => {
   return axios.delete(`/api/submissions/${id}`).then((res) => res.data)
 }
 
-export { getSubmissions, createSubmission, deleteSubmission }
+const updateSubmission = ({ id, ...values }) => {
+  return axios.patch(`/api/submissions/${id}`, values).then((res) => res.data)
+}
+
+export { getSubmissions, createSubmission, deleteSubmission, updateSubmission }

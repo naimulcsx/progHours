@@ -8,6 +8,7 @@ const Actions = (cell) => {
   const { mutate } = useMutation((id) => deleteSubmission(id), {
     onSuccess: () => {
       queryClient.invalidateQueries("practice", getSubmissions)
+      toast.success("Problem Deleted", { className: "toast" })
     },
     onError: (err) => {
       toast.error(err.response.data.message, { className: "toast" })
