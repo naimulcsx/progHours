@@ -12,6 +12,7 @@ import ProblemName from "./columns/ProblemName"
 import Actions from "./columns/Actions"
 import Verdict from "./columns/Verdict"
 import DatePicker from "./columns/DatePicker"
+import AddEntryRow from "./AddEntryRow"
 
 const practiceColumns = [
   {
@@ -98,7 +99,7 @@ const TrackingTable = ({ problemData }) => {
 
   if (problemData.length === 0) return <EmptyState />
   return (
-    <div className="mt-6 border border-gray-100 rounded-lg">
+    <div className="mt-6 border border-gray-100 rounded-lg max-h-[780px] overflow-scroll">
       <table {...getTableProps()}>
         <thead>
           {headerGroups.map((headerGroup) => {
@@ -119,6 +120,7 @@ const TrackingTable = ({ problemData }) => {
           })}
         </thead>
         <tbody {...getTableBodyProps()}>
+          <AddEntryRow id={problemData.length + 1} />
           {rows.map((row) => {
             prepareRow(row)
             return (

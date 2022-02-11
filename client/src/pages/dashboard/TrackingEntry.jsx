@@ -13,7 +13,7 @@ import {
 } from "@/components/Form"
 import { toast } from "react-toastify"
 import { useMutation } from "react-query"
-import { createSubmissions } from "@/api/submissions"
+import { createSubmission } from "@/api/submissions"
 
 const submissionSchema = Yup.object().shape({
   link: Yup.string().trim().required("Problem link is required"),
@@ -26,7 +26,7 @@ const submissionSchema = Yup.object().shape({
 export default function TrackingEntry() {
   const navigate = useNavigate()
 
-  const { mutate, isLoading } = useMutation(createSubmissions, {
+  const { mutate, isLoading } = useMutation(createSubmission, {
     onSuccess: (data) => {
       navigate("/submissions")
       toast.success("Problem submitted successfully")
