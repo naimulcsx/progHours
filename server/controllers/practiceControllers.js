@@ -3,7 +3,7 @@ const { Problem, PracticeSubmission, Tag, ProblemTag } =
 const cheerio = require("cheerio")
 const axios = require("axios")
 
-const createProblem = async (req, res, next) => {
+const createSubmission = async (req, res, next) => {
   let { link, verdict, solveTime, pid, judgeId } = req.body
   let userId = req.user.id
 
@@ -83,7 +83,7 @@ const createProblem = async (req, res, next) => {
   }
 }
 
-const getAllProblems = async (req, res, next) => {
+const getSubmissions = async (req, res, next) => {
   const userId = req.user.id
   try {
     const problems = await PracticeSubmission.findAll({
@@ -99,7 +99,7 @@ const getAllProblems = async (req, res, next) => {
   }
 }
 
-const updateProblem = async (req, res, next) => {
+const updateSubmission = async (req, res, next) => {
   const { verdict, solveTime, solvedAt } = req.body
   const { id } = req.params
 
@@ -124,7 +124,7 @@ const updateProblem = async (req, res, next) => {
   }
 }
 
-const deleteProblem = async (req, res, next) => {
+const deleteSubmission = async (req, res, next) => {
   const userId = req.user.id
   const { id } = req.params
 
@@ -148,4 +148,9 @@ const deleteProblem = async (req, res, next) => {
   }
 }
 
-module.exports = { createProblem, getAllProblems, deleteProblem, updateProblem }
+module.exports = {
+  createSubmission,
+  getSubmissions,
+  deleteSubmission,
+  updateSubmission,
+}
