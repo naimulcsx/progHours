@@ -33,7 +33,7 @@ const vjudgeParser = async (body) => {
     body.name = $("#prob-title h2").html()
     body.pid = pid
     body.tags = []
-    body.difficulty = null
+    body.difficulty = 0
   } catch (err) {
     return { error: "Parser: Something went wrong" }
   }

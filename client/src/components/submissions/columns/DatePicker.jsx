@@ -7,6 +7,7 @@ const DatePicker = () => {
   const [startDate, setStartDate] = useState(new Date())
   return (
     <ReactDatePicker
+      dateFormat="dd MMM yyyy"
       className="h-[40px] px-3 focus:outline-none rounded focus:ring-2 ring-primary ring-opacity-50"
       selected={startDate}
       onChange={(date) => setStartDate(date)}
