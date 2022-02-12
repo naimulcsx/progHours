@@ -24,8 +24,8 @@ module.exports = (sequelize, DataTypes) => {
         trim: true,
       },
       difficulty: {
-        type: DataTypes.STRING,
-        allowNull: true,
+        type: DataTypes.INTEGER,
+        defaultValue: 0,
       },
       judgeId: {
         type: DataTypes.INTEGER,
