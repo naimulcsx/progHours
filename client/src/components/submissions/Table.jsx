@@ -1,10 +1,4 @@
 import { usePagination, useTable } from "react-table"
-import {
-  FiChevronRight,
-  FiChevronLeft,
-  FiChevronsLeft,
-  FiChevronsRight,
-} from "react-icons/fi"
 import EmptyState from "@/components/submissions/EmptyState"
 
 // import columns components
@@ -88,7 +82,6 @@ const TrackingTable = ({ problemData }) => {
     state: { pageIndex, pageSize },
   } = tableInstance
 
-  if (problemData.length === 0) return <EmptyState />
   return (
     <div className="mt-6 border border-gray-100 rounded-lg max-h-[780px]">
       <table {...getTableProps()}>
@@ -192,6 +185,7 @@ const TrackingTable = ({ problemData }) => {
           </span>
         </div>
       </div> */}
+      {problemData.length === 0 && <EmptyState />}
     </div>
   )
 }
