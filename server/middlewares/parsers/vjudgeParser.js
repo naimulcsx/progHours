@@ -27,7 +27,6 @@ const getVjudgeLink = (link) => {
 const vjudgeParser = async (body) => {
   const { link } = body
   const [pid, vjudgeLink] = getVjudgeLink(link)
-  body.test = vjudgeLink
   try {
     const { data } = await axios(vjudgeLink)
     const $ = cheerio.load(data)
@@ -35,7 +34,9 @@ const vjudgeParser = async (body) => {
     body.pid = pid
     body.tags = []
     body.difficulty = null
-  } catch (err) {}
+  } catch (err) {
+    return { error: "Parser: Something went wrong" }
+  }
   return body
 }
 

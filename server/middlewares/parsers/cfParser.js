@@ -28,10 +28,12 @@ const cfParser = async (body) => {
       const tag = $(this).text().trim()
       body.tags.push(tag)
     })
-    body.diffculty = parseInt(body.tags[body.tags.length - 1].split("*")[1])
+    body.difficulty = parseInt(body.tags[body.tags.length - 1].split("*")[1])
     body.judgeId = 1
     body.tags.pop()
-  } catch (err) {}
+  } catch (err) {
+    return { error: "Parser: Something went wrong" }
+  }
   return body
 }
 
