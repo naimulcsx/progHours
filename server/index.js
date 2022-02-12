@@ -24,13 +24,20 @@ runMigration()
 app.use(express.static(__dirname + "/public"))
 app.use(express.json())
 
-app.use((req, res, next) => {
+/**
+ * Attach user's information on the request object
+ */
+const { User } = require("./models").sequelize.models
+app.use(async (req, res, next) => {
   const cookie = req.headers.cookie || ""
   const accessToken = getAccessToken(cookie)
   if (!accessToken) return next()
-  const user = jwt.verify(accessToken, process.env.ACCESS_TOKEN_SECRET)
-  // Find out if the user id is found in database
-  req.user = user
+  try {
+    const user = jwt.verify(accessToken, process.env.ACCESS_TOKEN_SECRET)
+    // check if the user is found on the database
+    const userFound = await User.findOne({ where: { id: user.id } })
+    if (userFound) req.user = user
+  } catch (err) {}
   next()
 })
 

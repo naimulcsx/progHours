@@ -79,7 +79,7 @@ const getUser = async (req, res) => {
   // tried both callback and try-catch
   const user = jwt.verify(accessToken, process.env.ACCESS_TOKEN_SECRET)
   res.status(200).send({
-    status: "sucess",
+    status: "success",
     user,
   })
 }
