@@ -72,7 +72,7 @@ const getSubmissions = async (req, res, next) => {
     const problems = await PracticeSubmission.findAll({
       include: { model: Problem, as: "problem" },
       where: { userId },
-      order: [["createdAt", "DESC"]],
+      order: [["solvedAt", "DESC"]],
     })
     res.status(200).json({
       data: problems,
