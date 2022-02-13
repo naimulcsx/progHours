@@ -35,7 +35,7 @@ const practiceColumns = [
   },
   {
     Header: "Date",
-    accessor: "createdAt",
+    accessor: "solvedAt",
     Cell: DatePicker,
     // Cell: (cell) =>
     //   new Date(cell.value).toLocaleString("en-US", {

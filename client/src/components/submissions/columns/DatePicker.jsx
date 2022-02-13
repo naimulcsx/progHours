@@ -3,8 +3,8 @@ import ReactDatePicker from "react-datepicker"
 import "react-datepicker/dist/react-datepicker.css"
 import "@/styles/datepicker.css"
 
-const DatePicker = () => {
-  const [startDate, setStartDate] = useState(new Date())
+const DatePicker = (cell) => {
+  const [startDate, setStartDate] = useState(new Date(cell.value))
   return (
     <ReactDatePicker
       dateFormat="dd MMM yyyy"

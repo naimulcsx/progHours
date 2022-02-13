@@ -4,8 +4,18 @@ const cheerio = require("cheerio")
 const axios = require("axios")
 
 const createSubmission = async (req, res, next) => {
-  let { link, verdict, solveTime, name, difficulty, tags, judgeId, pid } =
-    req.body
+  let {
+    link,
+    verdict,
+    solveTime,
+    name,
+    difficulty,
+    tags,
+    judgeId,
+    pid,
+    solvedAt,
+  } = req.body
+
   let userId = req.user.id
   try {
     let problemId
@@ -37,6 +47,7 @@ const createSubmission = async (req, res, next) => {
         problemId,
         solveTime,
         verdict,
+        solvedAt,
       },
     })
     if (!created) {
