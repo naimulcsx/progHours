@@ -23,27 +23,22 @@ const createSubmission = async (req, res, next) => {
     if (problem) {
       problemId = problem.dataValues.id
     } else {
-      const Tags = tags.map((tag) => ({ name: tag }))
-      const newProblem = await Problem.create(
-        {
-          pid,
-          name,
-          judgeId,
-          solveTime,
-          difficulty,
-          Tags,
-        },
-        { include: Tag }
-      )
+      const newProblem = await Problem.create({
+        pid,
+        name,
+        judgeId,
+        solveTime,
+        difficulty,
+      })
       problemId = newProblem.dataValues.id
       // create tags
-      // tags.forEach(async (el) => {
-      //   const [newTag] = await Tag.findOrCreate({
-      //     where: { name: el },
-      //     defaults: { name: el },
-      //   })
-      //   await ProblemTag.create({ problemId, tagId: newTag.dataValues.id })
-      // })
+      tags.forEach(async (el) => {
+        const [newTag] = await Tag.findOrCreate({
+          where: { name: el },
+          defaults: { name: el },
+        })
+        await ProblemTag.create({ problemId, tagId: newTag.dataValues.id })
+      })
     }
     const [newSubmission, created] = await PracticeSubmission.findOrCreate({
       where: { userId, problemId },

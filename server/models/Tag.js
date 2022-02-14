@@ -11,7 +11,6 @@ module.exports = (sequelize, DataTypes) => {
       // define association here
       this.belongsToMany(models.Problem, {
         foreignKey: "tagId",
-        as: "tags",
         through: models.ProblemTag,
       })
     }
@@ -20,6 +19,7 @@ module.exports = (sequelize, DataTypes) => {
     {
       name: {
         type: DataTypes.STRING,
+        unique: true,
         allowNull: false,
         trim: true,
       },

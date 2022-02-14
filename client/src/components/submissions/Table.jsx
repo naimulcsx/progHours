@@ -8,6 +8,7 @@ import Verdict from "./columns/Verdict"
 import DatePicker from "./columns/DatePicker"
 import AddEntryRow from "./AddEntryRow"
 import SolveTime from "./columns/SolveTime"
+import Tags from "./columns/Tags"
 
 const practiceColumns = [
   {
@@ -31,7 +32,8 @@ const practiceColumns = [
   },
   {
     Header: "Tags",
-    accessor: (row) => "Tag1, Tag2, Tag3",
+    accessor: (row) => row.problem.tags.map((tag) => tag.name).join(", "),
+    Cell: Tags,
   },
   {
     Header: "Date",
@@ -54,6 +56,7 @@ const practiceColumns = [
 ]
 
 const TrackingTable = ({ problemData }) => {
+  console.log(problemData)
   let k = problemData.length
   problemData.forEach((el) => (el.idx = k--))
 
