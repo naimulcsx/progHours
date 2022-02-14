@@ -23,22 +23,27 @@ const createSubmission = async (req, res, next) => {
     if (problem) {
       problemId = problem.dataValues.id
     } else {
-      const newProblem = await Problem.create({
-        pid,
-        name,
-        judgeId,
-        solveTime,
-        difficulty,
-      })
+      const Tags = tags.map((tag) => ({ name: tag }))
+      const newProblem = await Problem.create(
+        {
+          pid,
+          name,
+          judgeId,
+          solveTime,
+          difficulty,
+          Tags,
+        },
+        { include: Tag }
+      )
       problemId = newProblem.dataValues.id
       // create tags
-      tags.forEach(async (el) => {
-        const [newTag] = await Tag.findOrCreate({
-          where: { name: el },
-          defaults: { name: el },
-        })
-        await ProblemTag.create({ problemId, tagId: newTag.dataValues.id })
-      })
+      // tags.forEach(async (el) => {
+      //   const [newTag] = await Tag.findOrCreate({
+      //     where: { name: el },
+      //     defaults: { name: el },
+      //   })
+      //   await ProblemTag.create({ problemId, tagId: newTag.dataValues.id })
+      // })
     }
     const [newSubmission, created] = await PracticeSubmission.findOrCreate({
       where: { userId, problemId },
@@ -70,7 +75,14 @@ const getSubmissions = async (req, res, next) => {
   const userId = req.user.id
   try {
     const problems = await PracticeSubmission.findAll({
-      include: { model: Problem, as: "problem" },
+      include: {
+        model: Problem,
+        as: "problem",
+        include: {
+          model: Tag,
+          as: "tags",
+        },
+      },
       where: { userId },
       order: [["solvedAt", "DESC"]],
     })
