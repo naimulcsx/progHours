@@ -1,8 +1,8 @@
 const axios = require("axios")
 const cheerio = require("cheerio")
 
-const lightParser = async (body) => {
-  const { link, solveTime, verdict } = body
+const lightOJParser = async (body) => {
+  const { link } = body
 
   try {
     const { data } = await axios(link)
@@ -21,4 +21,4 @@ const lightParser = async (body) => {
   return body
 }
 
-module.exports = lightParser
+module.exports = lightOJParser

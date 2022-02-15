@@ -1,4 +1,5 @@
 const cfParser = require("./parsers/cfParser")
+const lightOJParser = require("./parsers/lightOjparser")
 const vjudgeParser = require("./parsers/vjudgeParser")
 
 /**
@@ -22,7 +23,13 @@ const parseProblem = async (req, res, next) => {
       message: "Invalid Link",
     })
   }
-  const parseData = hostname === "codeforces.com" ? cfParser : vjudgeParser
+
+  let parseData
+  if (hostname === "codeforces.com") parseData = cfParser
+  else if (hostname === "lightoj.com") parseData = lightOJParser
+  else parseData = vjudgeParser
+
+  // const parseData = hostname === "codeforces.com" ? cfParser : vjudgeParser
   const result = await parseData(req.body)
   if (result.error) {
     return res.status(400).send({
