@@ -4,6 +4,7 @@ import {
   CCIcon,
   LightOJIcon,
   UVAIcon,
+  CSESIcon,
 } from "@/components/Icons"
 
 const ProblemName = (cell) => {
@@ -16,6 +17,7 @@ const ProblemName = (cell) => {
         {pid.includes("CC-") && <CCIcon />}
         {pid.includes("LOJ-") && <LightOJIcon />}
         {pid.includes("UVA-") && <UVAIcon />}
+        {pid.includes("CSES-") && <CSESIcon />}
       </div>
       <div>
         <p className="font-medium text-gray-900">{pid}</p>
