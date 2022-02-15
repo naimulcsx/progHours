@@ -14,6 +14,7 @@ const lightOJParser = async (body) => {
     body.pid = $(".tags .is-link").text().trim()
     body.name = $(".title").text().trim()
     body.tags = []
+    body.judgeId = 6
   } catch (err) {
     return { error: "Parser: Something went wrong" }
   }
