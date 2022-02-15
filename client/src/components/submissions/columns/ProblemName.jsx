@@ -1,4 +1,4 @@
-import { CFIcon, SPOJIcon, CCIcon } from "@/components/Icons"
+import { CFIcon, SPOJIcon, CCIcon, LightOJIcon } from "@/components/Icons"
 
 const ProblemName = (cell) => {
   const [pid, name] = cell.value.split("|-|")
@@ -8,6 +8,7 @@ const ProblemName = (cell) => {
         {pid.includes("CF-") && <CFIcon />}
         {pid.includes("SPOJ-") && <SPOJIcon />}
         {pid.includes("CC-") && <CCIcon />}
+        {pid.includes("LOJ-") && <LightOJIcon />}
       </div>
       <div>
         <p className="font-medium text-gray-900">{pid}</p>
