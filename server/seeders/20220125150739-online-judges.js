@@ -44,6 +44,18 @@ module.exports = {
           createdAt: new Date(),
           updatedAt: new Date(),
         },
+        {
+          id: 7,
+          name: "UVA",
+          createdAt: new Date(),
+          updatedAt: new Date(),
+        },
+        {
+          id: 8,
+          name: "CSES",
+          createdAt: new Date(),
+          updatedAt: new Date(),
+        },
       ],
       {}
     )
