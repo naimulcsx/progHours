@@ -1,36 +1,44 @@
-const { Problem, PracticeSubmission } = require("../models").sequelize.models
+const { Problem, PracticeSubmission, Tag, ProblemTag } =
+  require("../models").sequelize.models
 const cheerio = require("cheerio")
 const axios = require("axios")
 
-const createProblem = async (req, res, next) => {
-  let { link, verdict, solveTime, pid, judgeId } = req.body
-  let userId = req.user.id
+const createSubmission = async (req, res, next) => {
+  let {
+    link,
+    verdict,
+    solveTime,
+    name,
+    difficulty,
+    tags,
+    judgeId,
+    pid,
+    solvedAt,
+  } = req.body
 
+  let userId = req.user.id
   try {
     let problemId
     const problem = await Problem.findOne({ where: { pid } })
     if (problem) {
       problemId = problem.dataValues.id
     } else {
-      const response = await axios(link)
-      const $ = cheerio.load(response.data)
-      const problemExists = $(".title a").html() === null
-
-      if (!problemExists) {
-        return res.status(400).json({
-          status: "error",
-          message: "Invalid problem link.",
-        })
-      }
-
-      const name = $(".title").html().split(". ")[1]
       const newProblem = await Problem.create({
         pid,
         name,
         judgeId,
         solveTime,
+        difficulty,
       })
       problemId = newProblem.dataValues.id
+      // create tags
+      tags.forEach(async (el) => {
+        const [newTag] = await Tag.findOrCreate({
+          where: { name: el },
+          defaults: { name: el },
+        })
+        await ProblemTag.create({ problemId, tagId: newTag.dataValues.id })
+      })
     }
     const [newSubmission, created] = await PracticeSubmission.findOrCreate({
       where: { userId, problemId },
@@ -39,6 +47,7 @@ const createProblem = async (req, res, next) => {
         problemId,
         solveTime,
         verdict,
+        solvedAt,
       },
     })
     if (!created) {
@@ -57,13 +66,20 @@ const createProblem = async (req, res, next) => {
   }
 }
 
-const getAllProblems = async (req, res, next) => {
+const getSubmissions = async (req, res, next) => {
   const userId = req.user.id
   try {
     const problems = await PracticeSubmission.findAll({
-      include: { model: Problem, as: "problem" },
+      include: {
+        model: Problem,
+        as: "problem",
+        include: {
+          model: Tag,
+          as: "tags",
+        },
+      },
       where: { userId },
-      order: [["createdAt", "DESC"]],
+      order: [["solvedAt", "DESC"]],
     })
     res.status(200).json({
       data: problems,
@@ -73,7 +89,7 @@ const getAllProblems = async (req, res, next) => {
   }
 }
 
-const updateProblem = async (req, res, next) => {
+const updateSubmission = async (req, res, next) => {
   const { verdict, solveTime, solvedAt } = req.body
   const { id } = req.params
 
@@ -98,7 +114,7 @@ const updateProblem = async (req, res, next) => {
   }
 }
 
-const deleteProblem = async (req, res, next) => {
+const deleteSubmission = async (req, res, next) => {
   const userId = req.user.id
   const { id } = req.params
 
@@ -122,4 +138,9 @@ const deleteProblem = async (req, res, next) => {
   }
 }
 
-module.exports = { createProblem, getAllProblems, deleteProblem, updateProblem }
+module.exports = {
+  createSubmission,
+  getSubmissions,
+  deleteSubmission,
+  updateSubmission,
+}

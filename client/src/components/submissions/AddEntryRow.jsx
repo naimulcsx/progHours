@@ -22,11 +22,11 @@ const submissionSchema = Yup.object().shape({
     "Solve time is required"
   ),
   verdict: Yup.string().required("Verdict is required"),
+  solvedAt: Yup.date().required("Date is required"),
 })
 
 const AddEntryRow = ({ id }) => {
   const queryClient = useQueryClient()
-  const [startDate, setStartDate] = useState(new Date())
   const [selected, setSelected] = useState("AC")
 
   const formik = useFormik({
@@ -34,9 +34,11 @@ const AddEntryRow = ({ id }) => {
       link: "",
       solveTime: "",
       verdict: "AC",
+      solvedAt: new Date(),
     },
     validationSchema: submissionSchema,
     onSubmit: async (values) => {
+      console.log(values)
       mutate(values)
     },
   })
@@ -115,9 +117,10 @@ const AddEntryRow = ({ id }) => {
       </td>
       <td className="px-6 py-2">
         <ReactDatePicker
+          dateFormat="dd MMM yyyy"
           className="h-[40px] px-3 focus:outline-none rounded focus:ring-2 ring-primary ring-opacity-50"
-          selected={startDate}
-          onChange={(date) => setStartDate(date)}
+          selected={formik.values.solvedAt}
+          onChange={(date) => formik.setFieldValue("solvedAt", date)}
         />
       </td>
       <td className="px-6 py-2">

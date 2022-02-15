@@ -1,10 +1,4 @@
 import { usePagination, useTable } from "react-table"
-import {
-  FiChevronRight,
-  FiChevronLeft,
-  FiChevronsLeft,
-  FiChevronsRight,
-} from "react-icons/fi"
 import EmptyState from "@/components/submissions/EmptyState"
 
 // import columns components
@@ -14,6 +8,7 @@ import Verdict from "./columns/Verdict"
 import DatePicker from "./columns/DatePicker"
 import AddEntryRow from "./AddEntryRow"
 import SolveTime from "./columns/SolveTime"
+import Tags from "./columns/Tags"
 
 const practiceColumns = [
   {
@@ -37,11 +32,12 @@ const practiceColumns = [
   },
   {
     Header: "Tags",
-    accessor: (row) => "Tag1, Tag2, Tag3",
+    accessor: (row) => row.problem.tags.map((tag) => tag.name).join(", "),
+    Cell: Tags,
   },
   {
     Header: "Date",
-    accessor: "createdAt",
+    accessor: "solvedAt",
     Cell: DatePicker,
     // Cell: (cell) =>
     //   new Date(cell.value).toLocaleString("en-US", {
@@ -60,6 +56,7 @@ const practiceColumns = [
 ]
 
 const TrackingTable = ({ problemData }) => {
+  console.log(problemData)
   let k = problemData.length
   problemData.forEach((el) => (el.idx = k--))
 
@@ -88,7 +85,6 @@ const TrackingTable = ({ problemData }) => {
     state: { pageIndex, pageSize },
   } = tableInstance
 
-  if (problemData.length === 0) return <EmptyState />
   return (
     <div className="mt-6 border border-gray-100 rounded-lg max-h-[780px]">
       <table {...getTableProps()}>
@@ -192,6 +188,7 @@ const TrackingTable = ({ problemData }) => {
           </span>
         </div>
       </div> */}
+      {problemData.length === 0 && <EmptyState />}
     </div>
   )
 }

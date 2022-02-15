@@ -9,18 +9,19 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
+      this.belongsToMany(models.Problem, {
+        foreignKey: "tagId",
+        through: models.ProblemTag,
+      })
     }
   }
   Tag.init(
     {
       name: {
         type: DataTypes.STRING,
+        unique: true,
         allowNull: false,
         trim: true,
-      },
-      parentId: {
-        type: DataTypes.INTEGER,
-        allowNull: false,
       },
     },
     {

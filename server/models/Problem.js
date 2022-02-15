@@ -9,6 +9,17 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
+      this.hasMany(models.PracticeSubmission, {
+        foreignKey: {
+          name: "problemId",
+          allowNull: false,
+        },
+      })
+      this.belongsToMany(models.Tag, {
+        foreignKey: "problemId",
+        as: "tags",
+        through: models.ProblemTag,
+      })
     }
   }
   Problem.init(
@@ -22,6 +33,11 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.STRING,
         allowNull: false,
         trim: true,
+      },
+      difficulty: {
+        type: DataTypes.INTEGER,
+        defaultValue: 0,
+        allowNull: false,
       },
       judgeId: {
         type: DataTypes.INTEGER,
@@ -37,15 +53,5 @@ module.exports = (sequelize, DataTypes) => {
       modelName: "Problem",
     }
   )
-
-  Problem.associate = (models) => {
-    Problem.hasMany(models.PracticeSubmission, {
-      foreignKey: {
-        name: "problemId",
-        allowNull: false,
-      },
-    })
-  }
-
   return Problem
 }

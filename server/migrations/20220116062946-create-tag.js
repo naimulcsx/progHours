@@ -10,12 +10,9 @@ module.exports = {
       },
       name: {
         type: DataTypes.STRING,
+        unique: true,
         allowNull: false,
         trim: true,
-      },
-      parentId: {
-        type: DataTypes.INTEGER,
-        allowNull: false,
       },
       createdAt: {
         allowNull: false,
