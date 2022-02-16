@@ -22,7 +22,6 @@ export default function SolveTime(cell) {
 
   return (
     <input
-      className="h-[40px] px-3 rounded  focus:outline-none focus:ring-2 focus:ring-primary focus:ring-opacity-50"
       type="number"
       value={time}
       onChange={(e) => setTime(e.target.value)}

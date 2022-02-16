@@ -32,17 +32,17 @@ const ErrorMessage = ({ children }) => {
 
 const Select = ({ children, ...props }) => {
   const styles = {
-    AC: "bg-emerald-100 text-emerald-900 rounded w-full font-medium text-center",
-    WA: "bg-red-100 text-red-900 rounded w-full font-medium text-center",
-    RTE: "bg-pink-100 text-pink-900 rounded w-full font-medium text-center",
-    TLE: "bg-amber-100 text-amber-900 rounded w-full font-medium text-center",
-    MLE: "bg-cyan-100 text-cyan-900 rounded w-full font-medium text-center",
+    AC: "bg-lime-200 text-lime-900 rounded w-full font-medium text-center",
+    WA: "bg-red-200 text-red-900 rounded w-full font-medium text-center",
+    RTE: "bg-pink-200 text-pink-900 rounded w-full font-medium text-center",
+    TLE: "bg-amber-200 text-amber-900 rounded w-full font-medium text-center",
+    MLE: "bg-cyan-200 text-cyan-900 rounded w-full font-medium text-center",
   }
   return (
     <Listbox {...props}>
       {({ open }) => (
         <>
-          <div className="relative mt-1 w-24">
+          <div className="relative">
             <Listbox.Button
               className={`${
                 styles[props.value]
