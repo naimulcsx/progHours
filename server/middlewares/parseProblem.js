@@ -1,3 +1,4 @@
+const atCoderParser = require("./parsers/atCoderParser")
 const cfParser = require("./parsers/cfParser")
 const csesParser = require("./parsers/csesParser")
 const lightOJParser = require("./parsers/lightOjparser")
@@ -38,6 +39,8 @@ const parseProblem = async (req, res, next) => {
   else if (hostname === "toph.co") parseData = tophParser
   else if (hostname === "www.spoj.com" || hostname === "spoj.com")
     parseData = spojParser
+  else if (hostname === "www.atcoder.jp" || hostname === "atcoder.jp")
+    parseData = atCoderParser
   else parseData = vjudgeParser
 
   // const parseData = hostname === "codeforces.com" ? cfParser : vjudgeParser
