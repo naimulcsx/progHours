@@ -11,13 +11,17 @@ const tophParser = async (body) => {
 
     const pname = $(".artifact__caption h1").text().trim()
     const parser = path.parse(link)
-
     body.name = pname
-
     body.pid = "TH-" + parser.name
 
     body.difficulty = 500
+
     body.tags = []
+    $(".flair__item .text a").each(function (i, e) {
+      const tag = $(this).text().trim()
+      body.tags.push(tag)
+    })
+
     body.judgeId = 9
   } catch (err) {
     return { error: "Parser: Something went wrong" }
