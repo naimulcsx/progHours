@@ -21,8 +21,7 @@ const DatePicker = (cell) => {
   }
   return (
     <ReactDatePicker
-      dateFormat="dd MMM yyyy"
-      className="h-[40px] px-3 focus:outline-none rounded focus:ring-2 ring-primary ring-opacity-50"
+      dateFormat="EEE, dd MMM yyyy"
       selected={date}
       onCalendarClose={handleBlur}
       onChange={(date) => setDate(date)}
