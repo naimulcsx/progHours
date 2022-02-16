@@ -56,6 +56,12 @@ module.exports = {
           createdAt: new Date(),
           updatedAt: new Date(),
         },
+        {
+          id: 9,
+          name: "Toph",
+          createdAt: new Date(),
+          updatedAt: new Date(),
+        },
       ],
       {}
     )

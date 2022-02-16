@@ -1,6 +1,7 @@
 const cfParser = require("./parsers/cfParser")
 const csesParser = require("./parsers/csesParser")
 const lightOJParser = require("./parsers/lightOjparser")
+const tophParser = require("./parsers/tophParser")
 const UVAParser = require("./parsers/uvaparser")
 const vjudgeParser = require("./parsers/vjudgeParser")
 
@@ -31,10 +32,13 @@ const parseProblem = async (req, res, next) => {
   else if (hostname === "lightoj.com") parseData = lightOJParser
   else if (hostname === "onlinejudge.org") parseData = UVAParser
   else if (hostname === "cses.fi") parseData = csesParser
+  else if (hostname === "toph.co") parseData = tophParser
   else parseData = vjudgeParser
 
   // const parseData = hostname === "codeforces.com" ? cfParser : vjudgeParser
   const result = await parseData(req.body)
+
+  console.log("result --------------", result)
 
   if (result.error) {
     return res.status(400).send({
