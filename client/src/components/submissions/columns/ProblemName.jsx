@@ -6,6 +6,7 @@ import {
   UVAIcon,
   CSESIcon,
   TophIcon,
+  AtCoder,
 } from "@/components/Icons"
 
 const ProblemName = (cell) => {
@@ -20,6 +21,7 @@ const ProblemName = (cell) => {
         {pid.includes("UVA-") && <UVAIcon />}
         {pid.includes("CSES-") && <CSESIcon />}
         {pid.includes("TH-") && <TophIcon />}
+        {pid.includes("AC-") && <AtCoder />}
       </div>
       <div>
         <p className="font-medium text-gray-900">{pid}</p>
