@@ -1,6 +1,7 @@
 const cfParser = require("./parsers/cfParser")
 const csesParser = require("./parsers/csesParser")
 const lightOJParser = require("./parsers/lightOjparser")
+const spojParser = require("./parsers/spojParser")
 const tophParser = require("./parsers/tophParser")
 const UVAParser = require("./parsers/uvaparser")
 const vjudgeParser = require("./parsers/vjudgeParser")
@@ -27,12 +28,16 @@ const parseProblem = async (req, res, next) => {
     })
   }
 
+  console.log("hostmaneeeeeeeeeeeeee", hostname)
+
   let parseData
   if (hostname === "codeforces.com") parseData = cfParser
   else if (hostname === "lightoj.com") parseData = lightOJParser
   else if (hostname === "onlinejudge.org") parseData = UVAParser
   else if (hostname === "cses.fi") parseData = csesParser
   else if (hostname === "toph.co") parseData = tophParser
+  else if (hostname === "www.spoj.com" || hostname === "spoj.com")
+    parseData = spojParser
   else parseData = vjudgeParser
 
   // const parseData = hostname === "codeforces.com" ? cfParser : vjudgeParser
