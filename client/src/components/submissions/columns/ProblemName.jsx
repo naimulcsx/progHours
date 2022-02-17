@@ -10,6 +10,10 @@ import {
   OpenLinkIcon,
   UnknownIcon,
 } from "@/components/Icons"
+import { useRef, useState } from "react"
+import { useMutation } from "react-query"
+import { updateSubmission } from "@/api/submissions"
+import { toast } from "react-toastify"
 
 const ProblemName = (cell) => {
   const [pid, name, link] = cell.value.split("|-|")
@@ -30,6 +34,36 @@ const ProblemName = (cell) => {
     )
     .filter((item) => item !== null)
 
+  const prevRef = useRef(name)
+  const [pname, setpName] = useState(name)
+  const [focused, setFocused] = useState(false)
+
+  const { mutate } = useMutation(updateSubmission, {
+    onSuccess: (data) => {
+      console.log(data)
+      toast.success("Problem updated", { className: "toast" })
+    },
+    onError: (err) => {
+      toast.error(err.response.data.message, { className: "toast" })
+    },
+  })
+
+  const handleFocus = () => {
+    setFocused(true)
+  }
+
+  const handleBlur = () => {
+    setFocused(false)
+    if (prevRef.current !== pname) {
+      mutate({
+        id: cell.row.original.id,
+        problemId: cell.row.original.problem.id,
+        name: pname,
+      })
+      prevRef.current = pname
+    }
+  }
+
   return (
     <div className="flex space-x-4">
       <div className="flex items-center justify-center h-10 bg-white border rounded-full basis-10">
@@ -47,7 +81,18 @@ const ProblemName = (cell) => {
             ></OpenLinkIcon>
           </a>
         </p>
-        <p className="text-sm text-gray-600">{name}</p>
+        {icons.length > 0 && <p className="text-sm text-gray-600">{name}</p>}
+        {icons.length === 0 && (
+          <p className="text-sm">
+            <input
+              className={focused ? "inset" : ""}
+              onFocus={handleFocus}
+              onBlur={handleBlur}
+              value={pname}
+              onChange={(e) => setpName(e.target.value)}
+            />
+          </p>
+        )}
       </div>
     </div>
   )

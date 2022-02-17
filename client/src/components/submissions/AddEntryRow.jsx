@@ -84,6 +84,7 @@ const AddEntryRow = ({ id }) => {
             type="text"
             placeholder="Problem Link"
             autoComplete="off"
+            className="inset"
             {...formik.getFieldProps("link")}
           ></Input>
         </FormControl>
