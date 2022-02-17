@@ -19,7 +19,7 @@ const atCoderParser = async (body) => {
 
     body.difficulty = 500
     body.tags = []
-    body.judgeId = 2
+    body.judgeId = 4
   } catch (err) {
     return { error: "Parser: Something went wrong!" }
   }

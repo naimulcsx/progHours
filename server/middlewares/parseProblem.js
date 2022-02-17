@@ -1,5 +1,6 @@
 const atCoderParser = require("./parsers/atCoderParser")
 const cfParser = require("./parsers/cfParser")
+const codeChefParser = require("./parsers/codeChefParser")
 const csesParser = require("./parsers/csesParser")
 const lightOJParser = require("./parsers/lightOjparser")
 const spojParser = require("./parsers/spojParser")
@@ -29,8 +30,6 @@ const parseProblem = async (req, res, next) => {
     })
   }
 
-  console.log("hostmaneeeeeeeeeeeeee", hostname)
-
   let parseData
   if (hostname === "codeforces.com") parseData = cfParser
   else if (hostname === "lightoj.com") parseData = lightOJParser
@@ -41,12 +40,11 @@ const parseProblem = async (req, res, next) => {
     parseData = spojParser
   else if (hostname === "www.atcoder.jp" || hostname === "atcoder.jp")
     parseData = atCoderParser
+  // else if (hostname === "www.codechef.com" || hostname === "codechef.com")
+  //   parseData = codeChefParser
   else parseData = vjudgeParser
 
-  // const parseData = hostname === "codeforces.com" ? cfParser : vjudgeParser
   const result = await parseData(req.body)
-
-  console.log("result --------------", result)
 
   if (result.error) {
     return res.status(400).send({

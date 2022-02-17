@@ -4,7 +4,6 @@ const {
   deleteSubmission,
   updateSubmission,
 } = require("../controllers/practiceControllers")
-const isCFValid = require("../middlewares/isCFValid")
 const isAuthenticated = require("../middlewares/isAutheticated")
 const parseProblem = require("../middlewares/parseProblem")
 
