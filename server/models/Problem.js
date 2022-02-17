@@ -39,6 +39,11 @@ module.exports = (sequelize, DataTypes) => {
         defaultValue: 0,
         allowNull: false,
       },
+      link: {
+        type: DataTypes.STRING,
+        allowNull: false,
+        unique: true,
+      },
       judgeId: {
         type: DataTypes.INTEGER,
         references: {
