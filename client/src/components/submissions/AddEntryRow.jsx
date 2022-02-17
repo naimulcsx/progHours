@@ -83,7 +83,7 @@ const AddEntryRow = ({ id }) => {
           <Input
             type="text"
             placeholder="Problem Link"
-            autocomplete="off"
+            autoComplete="off"
             {...formik.getFieldProps("link")}
           ></Input>
         </FormControl>
@@ -102,7 +102,7 @@ const AddEntryRow = ({ id }) => {
           <Input
             type="text"
             placeholder="eg. 80"
-            autocomplete="off"
+            autoComplete="off"
             className="focus:outline-none p-2 w-full"
             {...formik.getFieldProps("solveTime")}
           ></Input>
