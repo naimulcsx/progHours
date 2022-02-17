@@ -7,6 +7,8 @@ const spojParser = require("./parsers/spojParser")
 const tophParser = require("./parsers/tophParser")
 const UVAParser = require("./parsers/uvaparser")
 const vjudgeParser = require("./parsers/vjudgeParser")
+const ShortUniqueId = require("short-unique-id")
+const genId = new ShortUniqueId({ length: 8 })
 
 /**
  * A parser will return
@@ -29,6 +31,8 @@ const parserMap = {
   "www.spoj.com": spojParser,
   "atcoder.jp": atCoderParser,
   "www.atcoder.jp": atCoderParser,
+  "codechef.com": vjudgeParser,
+  "www.codechef.com": vjudgeParser,
 }
 
 const parseProblem = async (req, res, next) => {
@@ -41,17 +45,23 @@ const parseProblem = async (req, res, next) => {
       message: "Invalid Link",
     })
   }
-
-  let parseData = parserMap[hostname] ? parserMap[hostname] : vjudgeParser
-  const result = await parseData(req.body)
-  result.link = req.body.link
-  if (result.error) {
-    return res.status(400).send({
-      status: "error",
-      message: result.error,
-    })
+  if (parserMap[hostname]) {
+    let parserFn = parserMap[hostname]
+    const result = await parserFn(req.body)
+    if (result.error) {
+      return res.status(400).send({
+        status: "error",
+        message: result.error,
+      })
+    }
+    result.link = req.body.link
+    req.body = result
+  } else {
+    req.body.pid = genId()
+    req.body.name = genId()
+    req.body.tags = []
+    req.body.difficulty = 0
   }
-  req.body = result
   next()
 }
 
