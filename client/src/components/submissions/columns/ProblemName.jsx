@@ -81,9 +81,11 @@ const ProblemName = (cell) => {
             ></OpenLinkIcon>
           </a>
         </p>
-        {icons.length > 0 && <p className="text-sm text-gray-600">{name}</p>}
+        {icons.length > 0 && (
+          <p className="-mt-[0.5px] text-sm text-gray-600">{name}</p>
+        )}
         {icons.length === 0 && (
-          <p className="text-sm">
+          <p className="-mt-[0.5px] text-sm">
             <input
               className={focused ? "inset" : "w-full"}
               onFocus={handleFocus}
