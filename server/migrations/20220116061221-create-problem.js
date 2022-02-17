@@ -18,6 +18,11 @@ module.exports = {
         allowNull: false,
         trim: true,
       },
+      link: {
+        type: DataTypes.STRING,
+        allowNull: false,
+        unique: true,
+      },
       difficulty: {
         type: DataTypes.INTEGER,
         defaultValue: 0,
