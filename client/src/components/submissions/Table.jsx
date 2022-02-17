@@ -36,6 +36,10 @@ const practiceColumns = [
     Cell: Tags,
   },
   {
+    Header: "Difficulty",
+    accessor: "problem.difficulty",
+  },
+  {
     Header: "Date",
     accessor: "solvedAt",
     Cell: DatePicker,
@@ -97,7 +101,10 @@ const TrackingTable = ({ problemData }) => {
               >
                 {headerGroup.headers.map((header) => {
                   return (
-                    <th {...header.getHeaderProps()} className="px-6 py-3 border border-slate-100">
+                    <th
+                      {...header.getHeaderProps()}
+                      className="px-6 py-3 border border-slate-100"
+                    >
                       {header.render("Header")}
                     </th>
                   )

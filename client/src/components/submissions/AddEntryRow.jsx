@@ -75,7 +75,9 @@ const AddEntryRow = ({ id }) => {
 
   return (
     <tr className="bg-white">
-      <td className="border border-slate-100" data-idx>{id}</td>
+      <td className="border border-slate-100" data-idx>
+        {id}
+      </td>
       <td className="border border-slate-100" data-problem-name>
         <FormControl className="form">
           <Input
@@ -111,11 +113,13 @@ const AddEntryRow = ({ id }) => {
           className="h-[40px] rounded px-3"
         /> */}
       </td>
+
       <td className="border border-slate-100" data-tags>
         <button className="bg-gray-900 text-white px-3 py-1 rounded">
           + Tags
         </button>
       </td>
+      <td></td>
       <td className="border border-slate-100" data-solvedat>
         <ReactDatePicker
           dateFormat="EEE, dd MMM yyyy"

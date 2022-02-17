@@ -19,6 +19,18 @@ const vjudgeParser = require("./parsers/vjudgeParser")
  *    tags (only in cf)
  */
 
+const parserMap = {
+  "codeforces.com": cfParser,
+  "lightoj.com": lightOJParser,
+  "onlinejudge.org": UVAParser,
+  "cses.fi": csesParser,
+  "toph.co": tophParser,
+  "spoj.com": spojParser,
+  "www.spoj.com": spojParser,
+  "atcoder.jp": atCoderParser,
+  "www.atcoder.jp": atCoderParser,
+}
+
 const parseProblem = async (req, res, next) => {
   let hostname
   try {
@@ -30,22 +42,8 @@ const parseProblem = async (req, res, next) => {
     })
   }
 
-  let parseData
-  if (hostname === "codeforces.com") parseData = cfParser
-  else if (hostname === "lightoj.com") parseData = lightOJParser
-  else if (hostname === "onlinejudge.org") parseData = UVAParser
-  else if (hostname === "cses.fi") parseData = csesParser
-  else if (hostname === "toph.co") parseData = tophParser
-  else if (hostname === "www.spoj.com" || hostname === "spoj.com")
-    parseData = spojParser
-  else if (hostname === "www.atcoder.jp" || hostname === "atcoder.jp")
-    parseData = atCoderParser
-  // else if (hostname === "www.codechef.com" || hostname === "codechef.com")
-  //   parseData = codeChefParser
-  else parseData = vjudgeParser
-
+  let parseData = parserMap[hostname] ? parserMap[hostname] : vjudgeParser
   const result = await parseData(req.body)
-
   if (result.error) {
     return res.status(400).send({
       status: "error",

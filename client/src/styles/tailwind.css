@@ -149,6 +149,9 @@ table td[data-problem-name] input {
 table td[data-verdict] {
   @apply w-10 px-4 py-2;
 }
+table td[data-problem\.difficulty] {
+  @apply w-10 px-6 py-2;
+}
 table td[data-solvetime] {
   @apply relative;
 }
@@ -174,7 +177,6 @@ table {
   border-style: hidden !important;
   @apply rounded-lg shadow;
 }
-
 table td[data-tags] {
   @apply px-6 py-2;
 }
