@@ -17,7 +17,7 @@ const createSubmission = async (req, res, next) => {
   let userId = req.user.id
   try {
     let problemId
-    const problem = await Problem.findOne({ where: { pid } })
+    const problem = await Problem.findOne({ where: { link } })
     if (problem) {
       problemId = problem.dataValues.id
     } else {
