@@ -66,11 +66,11 @@ const ProblemName = (cell) => {
 
   return (
     <div className="flex space-x-4">
-      <div className="flex items-center justify-center h-10 bg-white border rounded-full basis-10">
+      <div className="flex items-center justify-center h-10 bg-white border rounded-full basis-10 grow-0 shrink-0">
         {icons.length > 0 && icons}
         {icons.length === 0 && <UnknownIcon size={20} />}
       </div>
-      <div>
+      <div className="w-full">
         {/* {link} */}
         <p className="flex space-x-3 font-medium text-gray-900">
           <span>{pid}</span>
@@ -85,7 +85,7 @@ const ProblemName = (cell) => {
         {icons.length === 0 && (
           <p className="text-sm">
             <input
-              className={focused ? "inset" : ""}
+              className={focused ? "inset" : "w-full"}
               onFocus={handleFocus}
               onBlur={handleBlur}
               value={pname}
