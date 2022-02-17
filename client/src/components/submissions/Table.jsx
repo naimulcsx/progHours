@@ -17,7 +17,8 @@ const practiceColumns = [
   },
   {
     Header: "Problem Name",
-    accessor: (row) => `${row.problem.pid} |-| ${row.problem.name}`,
+    accessor: (row) =>
+      `${row.problem.pid} |-| ${row.problem.name} |-| ${row.problem.link}`,
     Cell: ProblemName,
   },
   {

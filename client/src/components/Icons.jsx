@@ -17,6 +17,7 @@ import {
 import { RiAppsLine as DashboardIcon } from "react-icons/ri"
 import { MdOutlineListAlt as TrackingIcon } from "react-icons/md"
 import { CgMenuGridO as GridViewIcon } from "react-icons/cg"
+import { IoOpenOutline as OpenLinkIcon } from "react-icons/io5"
 
 const LogoIcon = ({ width, height }) => {
   return (
@@ -546,4 +547,5 @@ export {
   CSESIcon,
   TophIcon,
   AtCoder,
+  OpenLinkIcon,
 }
