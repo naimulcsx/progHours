@@ -27,6 +27,7 @@ const createSubmission = async (req, res, next) => {
         judgeId,
         solveTime,
         difficulty,
+        link,
       })
       problemId = newProblem.dataValues.id
       // create tags

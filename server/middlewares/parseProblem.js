@@ -44,6 +44,7 @@ const parseProblem = async (req, res, next) => {
 
   let parseData = parserMap[hostname] ? parserMap[hostname] : vjudgeParser
   const result = await parseData(req.body)
+  result.link = req.body.link
   if (result.error) {
     return res.status(400).send({
       status: "error",
