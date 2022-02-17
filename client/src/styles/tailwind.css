@@ -143,7 +143,7 @@ table td[data-idx] {
 table td[data-problem-name] {
   @apply relative px-4 py-2;
 }
-table td[data-problem-name] input {
+table td[data-problem-name] input.inset {
   @apply absolute inset-0 px-6 rounded focus:outline-none focus:ring-2 focus:ring-inset ring-primary;
 }
 table td[data-verdict] {
