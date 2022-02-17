@@ -36,6 +36,10 @@ const practiceColumns = [
     Cell: Tags,
   },
   {
+    Header: "Difficulty",
+    accessor: "problem.difficulty",
+  },
+  {
     Header: "Date",
     accessor: "solvedAt",
     Cell: DatePicker,
@@ -86,18 +90,21 @@ const TrackingTable = ({ problemData }) => {
   } = tableInstance
 
   return (
-    <div className="mt-6 border border-gray-100 rounded-lg max-h-[780px]">
-      <table {...getTableProps()}>
+    <div className="mt-6">
+      <table {...getTableProps()} className="border-collapse">
         <thead>
           {headerGroups.map((headerGroup) => {
             return (
               <tr
                 {...headerGroup.getHeaderGroupProps()}
-                className="text-base bg-white text-dark"
+                className="text-base text-dark"
               >
                 {headerGroup.headers.map((header) => {
                   return (
-                    <th {...header.getHeaderProps()} className="px-6 py-4">
+                    <th
+                      {...header.getHeaderProps()}
+                      className="px-6 py-3 border border-slate-100"
+                    >
                       {header.render("Header")}
                     </th>
                   )
@@ -114,7 +121,7 @@ const TrackingTable = ({ problemData }) => {
               <tr
                 {...row.getRowProps()}
                 key={row.original.id}
-                className={`hover:bg-light bg-white`}
+                className={`bg-white`}
               >
                 {row.cells.map((cell) => {
                   const extraProps = {}
@@ -125,9 +132,9 @@ const TrackingTable = ({ problemData }) => {
                     <td
                       {...cell.getCellProps()}
                       {...extraProps}
-                      className="px-6 py-2"
+                      className="border border-slate-100"
                     >
-                      <span>{cell.render("Cell")}</span>
+                      {cell.render("Cell")}
                     </td>
                   )
                 })}

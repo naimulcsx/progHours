@@ -74,19 +74,21 @@ const AddEntryRow = ({ id }) => {
   }
 
   return (
-    <tr className="bg-primary bg-opacity-10">
-      <td className="px-6 py-2">{id}</td>
-      <td className="px-6 py-2">
+    <tr className="bg-white">
+      <td className="border border-slate-100" data-idx>
+        {id}
+      </td>
+      <td className="border border-slate-100" data-problem-name>
         <FormControl className="form">
           <Input
             type="text"
             placeholder="Problem Link"
-            className="h-[40px] rounded p-2 w-full"
+            autocomplete="off"
             {...formik.getFieldProps("link")}
           ></Input>
         </FormControl>
       </td>
-      <td className="px-6 py-2">
+      <td className="border border-slate-100" data-verdict>
         <Select value={selected} onChange={handleSelected}>
           <Option value="AC">AC</Option>
           <Option value="WA">WA</Option>
@@ -95,12 +97,13 @@ const AddEntryRow = ({ id }) => {
           <Option value="MLE">MLE</Option>
         </Select>
       </td>
-      <td className="px-6 py-2">
+      <td className="border border-slate-100" data-solvetime>
         <FormControl className="form">
           <Input
             type="text"
-            placeholder="Solve Time"
-            className="h-[40px] rounded p-2 w-full"
+            placeholder="eg. 80"
+            autocomplete="off"
+            className="focus:outline-none p-2 w-full"
             {...formik.getFieldProps("solveTime")}
           ></Input>
         </FormControl>
@@ -110,20 +113,22 @@ const AddEntryRow = ({ id }) => {
           className="h-[40px] rounded px-3"
         /> */}
       </td>
-      <td className="px-6 py-2">
+
+      <td className="border border-slate-100" data-tags>
         <button className="bg-gray-900 text-white px-3 py-1 rounded">
           + Tags
         </button>
       </td>
-      <td className="px-6 py-2">
+      <td></td>
+      <td className="border border-slate-100" data-solvedat>
         <ReactDatePicker
-          dateFormat="dd MMM yyyy"
-          className="h-[40px] px-3 focus:outline-none rounded focus:ring-2 ring-primary ring-opacity-50"
+          dateFormat="EEE, dd MMM yyyy"
+          // className="h-[40px] px-3 focus:outline-none rounded focus:ring-2 ring-primary ring-opacity-50"
           selected={formik.values.solvedAt}
           onChange={(date) => formik.setFieldValue("solvedAt", date)}
         />
       </td>
-      <td className="px-6 py-2">
+      <td className="border border-slate-100" data-actions>
         <button
           type="submit"
           className="bg-gray-900 text-white px-3 py-1 rounded flex items-center space-x-2"

@@ -132,13 +132,56 @@ table tr th {
   @apply border-b-[2px] border-gray-100 font-medium;
 }
 
-table td,
+/* table td,
 table th {
   @apply px-6 py-4;
-}
+} */
 
-table tbody tr td:first-child {
-  padding-right: 3rem;
+table td[data-idx] {
+  @apply px-4 py-2 text-center;
+}
+table td[data-problem-name] {
+  @apply relative px-4 py-2;
+}
+table td[data-problem-name] input {
+  @apply absolute inset-0 px-6 rounded focus:outline-none focus:ring-2 focus:ring-inset ring-primary;
+}
+table td[data-verdict] {
+  @apply w-10 px-4 py-2;
+}
+table td[data-problem\.difficulty] {
+  @apply w-10 px-6 py-2;
+}
+table td[data-solvetime] {
+  @apply relative;
+}
+table td[data-solvetime] input {
+  @apply absolute inset-0 px-6 rounded focus:outline-none focus:ring-2 focus:ring-inset ring-primary;
+}
+table td[data-solvedat] {
+  @apply relative w-48;
+}
+table td[data-solvedat] .react-datepicker-wrapper {
+  @apply absolute inset-0;
+}
+table td[data-solvedat] .react-datepicker__input-container {
+  @apply w-full h-full;
+}
+table td[data-solvedat] .react-datepicker__input-container input {
+  @apply w-full h-full px-6;
+}
+table tr th:first-child {
+  @apply text-center;
+}
+table {
+  border-style: hidden !important;
+  @apply rounded-lg shadow;
+}
+table td[data-tags] {
+  @apply px-6 py-2;
+}
+table td[data-actions] {
+  @apply px-4 py-2;
 }
 
 /* tables */

@@ -14,6 +14,54 @@ module.exports = {
           createdAt: new Date(),
           updatedAt: new Date(),
         },
+        {
+          id: 2,
+          name: "SPOJ",
+          createdAt: new Date(),
+          updatedAt: new Date(),
+        },
+        {
+          id: 3,
+          name: "CodeChef",
+          createdAt: new Date(),
+          updatedAt: new Date(),
+        },
+        {
+          id: 4,
+          name: "AtCoder",
+          createdAt: new Date(),
+          updatedAt: new Date(),
+        },
+        {
+          id: 5,
+          name: "HackerRank",
+          createdAt: new Date(),
+          updatedAt: new Date(),
+        },
+        {
+          id: 6,
+          name: "LightOJ",
+          createdAt: new Date(),
+          updatedAt: new Date(),
+        },
+        {
+          id: 7,
+          name: "UVA",
+          createdAt: new Date(),
+          updatedAt: new Date(),
+        },
+        {
+          id: 8,
+          name: "CSES",
+          createdAt: new Date(),
+          updatedAt: new Date(),
+        },
+        {
+          id: 9,
+          name: "Toph",
+          createdAt: new Date(),
+          updatedAt: new Date(),
+        },
       ],
       {}
     )

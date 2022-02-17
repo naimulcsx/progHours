@@ -1,4 +1,11 @@
+const atCoderParser = require("./parsers/atCoderParser")
 const cfParser = require("./parsers/cfParser")
+const codeChefParser = require("./parsers/codeChefParser")
+const csesParser = require("./parsers/csesParser")
+const lightOJParser = require("./parsers/lightOjparser")
+const spojParser = require("./parsers/spojParser")
+const tophParser = require("./parsers/tophParser")
+const UVAParser = require("./parsers/uvaparser")
 const vjudgeParser = require("./parsers/vjudgeParser")
 
 /**
@@ -12,6 +19,18 @@ const vjudgeParser = require("./parsers/vjudgeParser")
  *    tags (only in cf)
  */
 
+const parserMap = {
+  "codeforces.com": cfParser,
+  "lightoj.com": lightOJParser,
+  "onlinejudge.org": UVAParser,
+  "cses.fi": csesParser,
+  "toph.co": tophParser,
+  "spoj.com": spojParser,
+  "www.spoj.com": spojParser,
+  "atcoder.jp": atCoderParser,
+  "www.atcoder.jp": atCoderParser,
+}
+
 const parseProblem = async (req, res, next) => {
   let hostname
   try {
@@ -22,7 +41,8 @@ const parseProblem = async (req, res, next) => {
       message: "Invalid Link",
     })
   }
-  const parseData = hostname === "codeforces.com" ? cfParser : vjudgeParser
+
+  let parseData = parserMap[hostname] ? parserMap[hostname] : vjudgeParser
   const result = await parseData(req.body)
   if (result.error) {
     return res.status(400).send({

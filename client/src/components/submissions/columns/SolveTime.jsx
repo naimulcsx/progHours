@@ -1,9 +1,10 @@
 import { useMutation } from "react-query"
 import { updateSubmission } from "@/api/submissions"
 import { toast } from "react-toastify"
-import { useState } from "react"
+import { useRef, useState } from "react"
 
 export default function SolveTime(cell) {
+  const prevRef = useRef(cell.value)
   const [time, setTime] = useState(cell.value)
 
   const { mutate } = useMutation(updateSubmission, {
@@ -17,12 +18,14 @@ export default function SolveTime(cell) {
   })
 
   const handleBlur = (value) => {
-    mutate({ id: cell.row.original.id, solveTime: value })
+    if (prevRef.current !== time) {
+      mutate({ id: cell.row.original.id, solveTime: value })
+      prevRef.current = value
+    }
   }
 
   return (
     <input
-      className="h-[40px] px-3 rounded  focus:outline-none focus:ring-2 focus:ring-primary focus:ring-opacity-50"
       type="number"
       value={time}
       onChange={(e) => setTime(e.target.value)}

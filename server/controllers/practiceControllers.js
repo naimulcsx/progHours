@@ -1,7 +1,5 @@
 const { Problem, PracticeSubmission, Tag, ProblemTag } =
   require("../models").sequelize.models
-const cheerio = require("cheerio")
-const axios = require("axios")
 
 const createSubmission = async (req, res, next) => {
   let {
