@@ -137,6 +137,9 @@ table th {
   @apply px-6 py-4;
 } */
 
+table td {
+  @apply h-[60px];
+}
 table td[data-idx] {
   @apply px-4 py-2 text-center;
 }

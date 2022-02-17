@@ -60,8 +60,7 @@ const createSubmission = async (req, res, next) => {
       data: newSubmission,
     })
   } catch (err) {
-    console.log(err)
-    res.json(err)
+    res.status(400).json(err)
   }
 }
 
@@ -89,27 +88,43 @@ const getSubmissions = async (req, res, next) => {
 }
 
 const updateSubmission = async (req, res, next) => {
-  const { verdict, solveTime, solvedAt } = req.body
+  const { name, problemId, verdict, solveTime, solvedAt } = req.body
   const { id } = req.params
 
   try {
+    if (name) {
+      const problemUpdated = await Problem.update(
+        { name },
+        { where: { id: problemId } }
+      )
+      if (problemUpdated[0]) {
+        return res.status(200).json({
+          status: "success",
+        })
+      }
+      return res.status(400).json({
+        status: "error",
+        message: "submission not updated",
+      })
+    }
     const isUpdated = await PracticeSubmission.update(
       { verdict, solveTime, solvedAt },
       { where: { id } }
     )
-
     if (!isUpdated[0]) {
       return res.status(400).json({
         status: "error",
         message: "submission not updated",
       })
     }
-
     res.status(200).json({
       status: "success",
     })
   } catch (err) {
-    req.json(err)
+    res.status(400).json({
+      status: "error",
+      message: "Something went wrong.",
+    })
   }
 }
 
