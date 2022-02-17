@@ -34,7 +34,7 @@ const ProblemName = (cell) => {
     <div className="flex space-x-4">
       <div className="flex items-center justify-center h-10 bg-white border rounded-full basis-10">
         {icons.length > 0 && icons}
-        {icons.length === 0 && <UnknownIcon />}
+        {icons.length === 0 && <UnknownIcon size={20} />}
       </div>
       <div>
         {/* {link} */}
