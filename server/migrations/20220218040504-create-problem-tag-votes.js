@@ -1,7 +1,7 @@
 "use strict"
 module.exports = {
   async up(queryInterface, DataTypes) {
-    await queryInterface.createTable("ProblemTagVotes", {
+    await queryInterface.createTable("userProblemTags", {
       id: {
         allowNull: false,
         autoIncrement: true,
@@ -15,7 +15,7 @@ module.exports = {
           key: "id",
         },
       },
-      problemTagsId: {
+      problemTagId: {
         type: DataTypes.INTEGER,
         references: {
           model: "problemTags",
@@ -33,6 +33,6 @@ module.exports = {
     })
   },
   async down(queryInterface, DataTypes) {
-    await queryInterface.dropTable("ProblemTagVotes")
+    await queryInterface.dropTable("userProblemTags")
   },
 }
