@@ -12,15 +12,15 @@ const createSubmission = async (req, res, next) => {
     judgeId,
     pid,
     solvedAt,
+    problemId,
   } = req.body
-
   let userId = req.user.id
   try {
-    let problemId
-    const problem = await Problem.findOne({ where: { link } })
-    if (problem) {
-      problemId = problem.dataValues.id
-    } else {
+    /**
+     ** If there is no problemId, that means the problem doesn't exists on our
+     ** database. So we have to create the problem, and then create the submission.
+     */
+    if (!problemId) {
       const newProblem = await Problem.create({
         pid,
         name,
@@ -39,6 +39,10 @@ const createSubmission = async (req, res, next) => {
         await ProblemTag.create({ problemId, tagId: newTag.dataValues.id })
       })
     }
+    /**
+     ** Create the submission but we need to also check if user already added
+     ** it previously.
+     */
     const [newSubmission, created] = await Submission.findOrCreate({
       where: { userId, problemId },
       defaults: {
@@ -49,6 +53,9 @@ const createSubmission = async (req, res, next) => {
         solvedAt,
       },
     })
+    /**
+     ** If the same problem was added previously, so we will return an error to the client
+     */
     if (!created) {
       return res.status(400).send({
         status: "error",
