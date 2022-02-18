@@ -8,14 +8,6 @@ module.exports = {
         primaryKey: true,
         type: DataTypes.INTEGER,
       },
-      created_at: {
-        allowNull: false,
-        type: DataTypes.DATE,
-      },
-      updated_at: {
-        allowNull: false,
-        type: DataTypes.DATE,
-      },
       name: {
         type: DataTypes.STRING,
         allowNull: false,
