@@ -16,8 +16,8 @@ module.exports = {
           password:
             "$2b$10$SzHpcWVEVdkulvOTGrN/UOyt5yr6y7AXPak5VHn.g6tVfsBFMRn2K",
           role: "admin",
-          createdAt: new Date(),
-          updatedAt: new Date(),
+          created_at: new Date(),
+          updated_at: new Date(),
         },
       ],
       {}

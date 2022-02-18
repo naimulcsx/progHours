@@ -26,7 +26,7 @@ module.exports = (sequelize, DataTypes) => {
     },
     {
       sequelize,
-      tableName: "tags",
+      underscored: true,
       modelName: "Tag",
     }
   )
