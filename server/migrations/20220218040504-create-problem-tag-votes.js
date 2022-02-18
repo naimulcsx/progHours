@@ -1,38 +1,38 @@
 "use strict"
 module.exports = {
   async up(queryInterface, DataTypes) {
-    await queryInterface.createTable("userProblemTags", {
+    await queryInterface.createTable("user_problem_tags", {
       id: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
         type: DataTypes.INTEGER,
       },
-      userId: {
+      user_id: {
         type: DataTypes.INTEGER,
         references: {
           model: "users",
           key: "id",
         },
       },
-      problemTagId: {
+      problem_tag_id: {
         type: DataTypes.INTEGER,
         references: {
-          model: "problemTags",
+          model: "problem_tags",
           key: "id",
         },
       },
-      createdAt: {
+      created_at: {
         allowNull: false,
         type: DataTypes.DATE,
       },
-      updatedAt: {
+      updated_at: {
         allowNull: false,
         type: DataTypes.DATE,
       },
     })
   },
   async down(queryInterface, DataTypes) {
-    await queryInterface.dropTable("userProblemTags")
+    await queryInterface.dropTable("user_problem_tags")
   },
 }

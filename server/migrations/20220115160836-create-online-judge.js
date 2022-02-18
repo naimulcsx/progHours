@@ -1,18 +1,18 @@
 "use strict"
 module.exports = {
   async up(queryInterface, DataTypes) {
-    await queryInterface.createTable("onlineJudges", {
+    await queryInterface.createTable("online_judges", {
       id: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
         type: DataTypes.INTEGER,
       },
-      createdAt: {
+      created_at: {
         allowNull: false,
         type: DataTypes.DATE,
       },
-      updatedAt: {
+      updated_at: {
         allowNull: false,
         type: DataTypes.DATE,
       },
@@ -25,6 +25,6 @@ module.exports = {
     })
   },
   async down(queryInterface, DataTypes) {
-    await queryInterface.dropTable("onlineJudges")
+    await queryInterface.dropTable("online_judges")
   },
 }
