@@ -14,14 +14,14 @@ module.exports = (sequelize, DataTypes) => {
   ProblemTagVotes.init(
     {
       userId: {
-        type: Sequelize.INTEGER,
+        type: DataTypes.INTEGER,
         references: {
           model: "users",
           key: "id",
         },
       },
       problemTagsId: {
-        type: Sequelize.INTEGER,
+        type: DataTypes.INTEGER,
         references: {
           model: "problemTags",
           key: "id",
