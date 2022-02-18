@@ -9,7 +9,7 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
-      this.hasMany(models.PracticeSubmission, {
+      this.hasMany(models.Submission, {
         foreignKey: {
           name: "problemId",
           allowNull: false,
@@ -54,7 +54,7 @@ module.exports = (sequelize, DataTypes) => {
     },
     {
       sequelize,
-      tableName: "problems",
+      underscored: true,
       modelName: "Problem",
     }
   )

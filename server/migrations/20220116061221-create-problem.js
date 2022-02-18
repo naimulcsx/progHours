@@ -28,18 +28,18 @@ module.exports = {
         defaultValue: 0,
         allowNull: false,
       },
-      judgeId: {
+      judge_id: {
         type: DataTypes.INTEGER,
         references: {
-          model: "onlineJudges",
+          model: "online_judges",
           key: "id",
         },
       },
-      createdAt: {
+      created_at: {
         allowNull: false,
         type: DataTypes.DATE,
       },
-      updatedAt: {
+      updated_at: {
         allowNull: false,
         type: DataTypes.DATE,
       },
