@@ -1,6 +1,6 @@
 const axios = require("axios")
 const cheerio = require("cheerio")
-const path = require("path")
+const url = require("url")
 
 const atCoderParser = async (body) => {
   const { link } = body
@@ -9,15 +9,19 @@ const atCoderParser = async (body) => {
     const { data } = await axios(link)
     const $ = cheerio.load(data)
 
-    const str = $("#main-container .row span.h2").text().trim()
-    const arr = str.split(" ")
-    const firstPart = arr.slice(2, arr.length - 1).join(" ")
-    const lastPart = arr.slice(-1).join("").split("\n")[0]
-    const parser = path.parse(link)
-    body.name = firstPart + " " + lastPart
-    body.pid = "AC-" + parser.name
+    // problem name
+    const parse = $("#main-container .row span.h2").text().trim()
+    body.name = parse.split("\n")[0].split("-")[1].trim()
 
-    body.difficulty = 500
+    // problem Id
+    const parseLink = url.parse(link, true)
+    const pid = parseLink.pathname.split("/")[4]
+    body.pid = "AC-" + pid
+
+    // problem difficulty
+    body.difficulty = 0
+
+    // problem tags
     body.tags = []
     body.judgeId = 4
   } catch (err) {

@@ -5,22 +5,25 @@ const path = require("path")
 
 const getVjudgeLink = (link) => {
   const { hostname } = nodeURL.parse(link, true)
-  let url = path.parse(link)
+  let { name } = path.parse(link)
+
+  const pid = name.includes("lang") ? name.split("?")[0] : name
+
   const prefix = "https://vjudge.net/problem"
   switch (hostname) {
     case "spoj.com":
     case "www.spoj.com":
-      return [`SPOJ-${url.base}`, `${prefix}/SPOJ-${url.base}`]
+      return [`SPOJ-${pid}`, `${prefix}/SPOJ-${pid}`]
     case "codechef.com":
     case "www.codechef.com":
-      return [`CC-${url.base}`, `${prefix}/CodeChef-${url.base}`]
+      return [`CC-${pid}`, `${prefix}/CodeChef-${pid}`]
     case "atcoder.jp":
     case "www.atcoder.jp":
-      return [`AtCoder-${url.base}`, `${prefix}/AtCoder-${url.base}`]
+      return [`AtCoder-${pid}`, `${prefix}/AtCoder-${pid}`]
     case "www.hackerrank.com":
-      if (url.base === "problem")
+      if (pid === "problem")
         url = path.parse(link.split("/").slice(0, -1).join("/"))
-      return [`HR-${url.base}`, `${prefix}/HackerRank-${url.base}`]
+      return [`HR-${pid}`, `${prefix}/HackerRank-${pid}`]
   }
 }
 
