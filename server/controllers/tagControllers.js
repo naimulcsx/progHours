@@ -1,4 +1,4 @@
-const { Problem, PracticeSubmission, Tag, ProblemTag, ProblemTagVotes } =
+const { Problem, PracticeSubmission, Tag, ProblemTag, UserProblemTag } =
   require("../models").sequelize.models
 
 const createProblemTag = async (req, res, next) => {
@@ -10,16 +10,36 @@ const createProblemTag = async (req, res, next) => {
   try {
     const tag = await Tag.findOne({ where: { name } })
 
+    let problemTagId
+
     if (!tag) {
-      res.status(404).json({
-        status: "error",
-        message: "Tag is not found!",
+      const newTag = await Tag.create({ name })
+
+      const createPTag = await ProblemTag.create({
+        problemId: pid,
+        tagId: newTag.dataValues.id,
       })
+
+      console.log("-------------------", createPTag)
+
+      problemTagId = createPTag.dataValues.problemId
+    } else {
+      const pTag = await ProblemTag.findOne({
+        where: { problemId: pid },
+      })
+
+      problemTagId = pTag.dataValues.id
+
+      console.log("-------------------", pTag)
+      console.log("-------------------", pTag.id)
     }
 
-    await ProblemTagVotes.create({ userId })
+    const userPTag = await UserProblemTag.create({
+      userId,
+      problemTagId,
+    })
 
-    res.send({ tag })
+    return res.send({ tag, userPTag })
   } catch (err) {
     res.json(err)
   }
