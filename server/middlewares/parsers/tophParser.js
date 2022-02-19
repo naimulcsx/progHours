@@ -9,13 +9,20 @@ const tophParser = async (body) => {
     const { data } = await axios(link)
     const $ = cheerio.load(data)
 
+    // problem name
     const pname = $(".artifact__caption h1").text().trim()
-    const parser = path.parse(link)
     body.name = pname
-    body.pid = "TH-" + parser.name
 
+    /// problem id
+    const { name } = path.parse(link)
+    const pid = name.includes("lang") ? name.split("?")[0] : name
+
+    body.pid = "TH-" + pid
+
+    // problem difficulty
     body.difficulty = 500
 
+    // problem tags
     body.tags = []
     $(".flair__item .text a").each(function (i, e) {
       const tag = $(this).text().trim()

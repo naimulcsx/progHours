@@ -9,9 +9,6 @@ const codeChefParser = async (body) => {
     const { data } = await axios(link)
     const $ = cheerio.load(data)
 
-    // const vaai = $(".problem-container header h1").text()
-    console.log("vaaaaaaaaiiii", $.html())
-
     body.html = $.html()
     body.difficulty = 500
     body.tags = []
