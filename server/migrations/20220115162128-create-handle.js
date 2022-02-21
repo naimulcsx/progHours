@@ -8,11 +8,11 @@ module.exports = {
         primaryKey: true,
         type: DataTypes.INTEGER,
       },
-      createdAt: {
+      created_at: {
         allowNull: false,
         type: DataTypes.DATE,
       },
-      updatedAt: {
+      updated_at: {
         allowNull: false,
         type: DataTypes.DATE,
       },
@@ -21,17 +21,17 @@ module.exports = {
         allowNull: false,
         trim: true,
       },
-      userId: {
+      user_id: {
         type: DataTypes.INTEGER,
         references: {
           model: "users",
           key: "id",
         },
       },
-      judgeId: {
+      judge_id: {
         type: DataTypes.INTEGER,
         references: {
-          model: "onlineJudges",
+          model: "online_judges",
           key: "id",
         },
       },

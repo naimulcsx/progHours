@@ -1,28 +1,12 @@
 "use strict"
 module.exports = {
   async up(queryInterface, DataTypes) {
-    await queryInterface.createTable("submissions", {
+    await queryInterface.createTable("user_problem_tags", {
       id: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
         type: DataTypes.INTEGER,
-      },
-      problem_id: {
-        type: DataTypes.INTEGER,
-        references: {
-          model: "problems",
-          key: "id",
-        },
-      },
-      solve_time: {
-        type: DataTypes.INTEGER,
-        allowNull: true,
-      },
-      solved_at: {
-        type: DataTypes.DATE,
-        defaultValue: DataTypes.NOW,
-        allowNull: false,
       },
       user_id: {
         type: DataTypes.INTEGER,
@@ -31,9 +15,12 @@ module.exports = {
           key: "id",
         },
       },
-      verdict: {
-        type: DataTypes.STRING,
-        allowNull: false,
+      problem_tag_id: {
+        type: DataTypes.INTEGER,
+        references: {
+          model: "problem_tags",
+          key: "id",
+        },
       },
       created_at: {
         allowNull: false,
@@ -46,6 +33,6 @@ module.exports = {
     })
   },
   async down(queryInterface, DataTypes) {
-    await queryInterface.dropTable("submissions")
+    await queryInterface.dropTable("user_problem_tags")
   },
 }

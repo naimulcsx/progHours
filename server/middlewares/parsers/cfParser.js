@@ -7,7 +7,7 @@ const getPID = (link) => {
   if (parts.length !== 7) return -1
   if (parts.includes("contest")) pid = "CF" + "-" + parts[4] + parts[6]
   if (parts.includes("problemset")) pid = "CF" + "-" + parts.slice(-2).join("")
-  return pid
+  return pid.split("?")[0] // ? ignoring query strings
 }
 
 const cfParser = async (body) => {

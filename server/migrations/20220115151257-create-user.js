@@ -36,11 +36,11 @@ module.exports = {
         values: ["user", "moderator", "admin"],
         defaultValue: "user",
       },
-      createdAt: {
+      created_at: {
         allowNull: false,
         type: DataTypes.DATE,
       },
-      updatedAt: {
+      updated_at: {
         allowNull: false,
         type: DataTypes.DATE,
       },

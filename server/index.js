@@ -46,10 +46,12 @@ app.use(async (req, res, next) => {
  */
 const authRoutes = require("./routes/authRoutes")
 const practiceRoutes = require("./routes/practiceRoutes")
+const problemRoutes = require("./routes/problemRoutes")
 const getAccessToken = require("./utils/getAccessToken")
 
 app.use("/auth", authRoutes)
 app.use("/submissions", practiceRoutes)
+app.use("/problems", problemRoutes)
 
 /**
  * Listen for requests

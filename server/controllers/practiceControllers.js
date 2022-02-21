@@ -1,4 +1,4 @@
-const { Problem, PracticeSubmission, Tag, ProblemTag } =
+const { Problem, Submission, Tag, ProblemTag } =
   require("../models").sequelize.models
 
 const createSubmission = async (req, res, next) => {
@@ -12,15 +12,15 @@ const createSubmission = async (req, res, next) => {
     judgeId,
     pid,
     solvedAt,
+    problemId,
   } = req.body
-
   let userId = req.user.id
   try {
-    let problemId
-    const problem = await Problem.findOne({ where: { link } })
-    if (problem) {
-      problemId = problem.dataValues.id
-    } else {
+    /**
+     ** If there is no problemId, that means the problem doesn't exists on our
+     ** database. So we have to create the problem, and then create the submission.
+     */
+    if (!problemId) {
       const newProblem = await Problem.create({
         pid,
         name,
@@ -39,7 +39,11 @@ const createSubmission = async (req, res, next) => {
         await ProblemTag.create({ problemId, tagId: newTag.dataValues.id })
       })
     }
-    const [newSubmission, created] = await PracticeSubmission.findOrCreate({
+    /**
+     ** Create the submission but we need to also check if user already added
+     ** it previously.
+     */
+    const [newSubmission, created] = await Submission.findOrCreate({
       where: { userId, problemId },
       defaults: {
         userId,
@@ -49,6 +53,9 @@ const createSubmission = async (req, res, next) => {
         solvedAt,
       },
     })
+    /**
+     ** If the same problem was added previously, so we will return an error to the client
+     */
     if (!created) {
       return res.status(400).send({
         status: "error",
@@ -67,7 +74,7 @@ const createSubmission = async (req, res, next) => {
 const getSubmissions = async (req, res, next) => {
   const userId = req.user.id
   try {
-    const problems = await PracticeSubmission.findAll({
+    const problems = await Submission.findAll({
       include: {
         model: Problem,
         as: "problem",
@@ -107,7 +114,7 @@ const updateSubmission = async (req, res, next) => {
         message: "submission not updated",
       })
     }
-    const isUpdated = await PracticeSubmission.update(
+    const isUpdated = await Submission.update(
       { verdict, solveTime, solvedAt },
       { where: { id } }
     )
@@ -133,7 +140,7 @@ const deleteSubmission = async (req, res, next) => {
   const { id } = req.params
 
   try {
-    const isDeleted = await PracticeSubmission.destroy({
+    const isDeleted = await Submission.destroy({
       where: { id, userId },
     })
 

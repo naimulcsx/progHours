@@ -6,61 +6,43 @@ module.exports = {
      * Add seed commands here.
      */
     await queryInterface.bulkInsert(
-      "onlineJudges",
+      "online_judges",
       [
         {
           id: 1,
           name: "Codeforces",
-          createdAt: new Date(),
-          updatedAt: new Date(),
         },
         {
           id: 2,
           name: "SPOJ",
-          createdAt: new Date(),
-          updatedAt: new Date(),
         },
         {
           id: 3,
           name: "CodeChef",
-          createdAt: new Date(),
-          updatedAt: new Date(),
         },
         {
           id: 4,
           name: "AtCoder",
-          createdAt: new Date(),
-          updatedAt: new Date(),
         },
         {
           id: 5,
           name: "HackerRank",
-          createdAt: new Date(),
-          updatedAt: new Date(),
         },
         {
           id: 6,
           name: "LightOJ",
-          createdAt: new Date(),
-          updatedAt: new Date(),
         },
         {
           id: 7,
           name: "UVA",
-          createdAt: new Date(),
-          updatedAt: new Date(),
         },
         {
           id: 8,
           name: "CSES",
-          createdAt: new Date(),
-          updatedAt: new Date(),
         },
         {
           id: 9,
           name: "Toph",
-          createdAt: new Date(),
-          updatedAt: new Date(),
         },
       ],
       {}
@@ -71,6 +53,6 @@ module.exports = {
     /**
      * Add commands to revert seed here.
      */
-    await queryInterface.bulkDelete("onlineJudges", null, {})
+    await queryInterface.bulkDelete("online_judges", null, {})
   },
 }

@@ -10,6 +10,13 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
+      this.hasMany(models.UserProblemTag, {
+        foreignKey: "userId",
+      })
+      this.belongsToMany(models.ProblemTag, {
+        foreignKey: "userId",
+        through: models.UserProblemTag,
+      })
     }
   }
   User.init(
@@ -45,7 +52,7 @@ module.exports = (sequelize, DataTypes) => {
     },
     {
       sequelize,
-      tableName: "users",
+      underscored: true,
       modelName: "User",
     }
   )
