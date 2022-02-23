@@ -2,6 +2,7 @@ import { Module } from '@nestjs/common';
 import { AuthModule } from './auth/auth.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Connection } from 'typeorm';
+import { SubmissionsModule } from './submissions/submissions.module';
 
 @Module({
   imports: [
@@ -13,6 +14,7 @@ import { Connection } from 'typeorm';
       synchronize: true,
       autoLoadEntities: true,
     }),
+    SubmissionsModule,
   ],
 })
 export class AppModule {
