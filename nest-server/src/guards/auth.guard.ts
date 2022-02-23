@@ -1,7 +1,3 @@
-/**
- * Guard
- */
-
 import {
   Inject,
   CanActivate,
@@ -9,7 +5,7 @@ import {
   Injectable,
 } from '@nestjs/common';
 import { Observable } from 'rxjs';
-import { AuthService } from './modules/auth/auth.service';
+import { AuthService } from '../modules/auth/auth.service';
 import * as jwt from 'jsonwebtoken';
 
 @Injectable()

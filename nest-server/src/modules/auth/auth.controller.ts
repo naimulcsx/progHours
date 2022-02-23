@@ -5,16 +5,13 @@ import {
   Res,
   BadRequestException,
   ForbiddenException,
-  UseGuards,
 } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { Response } from 'express';
 import * as jwt from 'jsonwebtoken';
-import { AuthGuard } from 'src/auth.guard';
 
 @Controller('auth')
-@UseGuards(AuthGuard)
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
   /**
