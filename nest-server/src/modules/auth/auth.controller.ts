@@ -7,7 +7,6 @@ import {
 } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { Response } from 'express';
-import * as jwt from 'jsonwebtoken';
 import { CreateUserDto } from 'src/validators/create-user-dto';
 import { LoginUserDto } from 'src/validators/login-user-dto';
 
