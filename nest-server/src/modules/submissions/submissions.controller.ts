@@ -9,8 +9,7 @@ export class SubmissionsController {
   async createSubmission(@Body() body: CreateSubmissionDto) {
     const res = await this.submissionsService.createSubmission(body);
     return {
-      a: 'hello world',
-      res,
+      ...res,
     };
   }
 }

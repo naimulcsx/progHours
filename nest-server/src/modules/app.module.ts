@@ -4,10 +4,11 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { Connection } from 'typeorm';
 import { SubmissionsModule } from './submissions/submissions.module';
 import { ProblemsModule } from './problems/problems.module';
+import { ParsersModule } from './parsers/parsers.module';
+import { HttpModule } from '@nestjs/axios';
 
 @Module({
   imports: [
-    AuthModule,
     TypeOrmModule.forRoot({
       type: 'postgres',
       url: process.env.DATABASE_URL,
@@ -15,8 +16,11 @@ import { ProblemsModule } from './problems/problems.module';
       synchronize: true,
       autoLoadEntities: true,
     }),
+    HttpModule,
+    AuthModule,
     SubmissionsModule,
     ProblemsModule,
+    ParsersModule,
   ],
 })
 export class AppModule {
