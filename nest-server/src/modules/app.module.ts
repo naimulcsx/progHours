@@ -3,6 +3,7 @@ import { AuthModule } from './auth/auth.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Connection } from 'typeorm';
 import { SubmissionsModule } from './submissions/submissions.module';
+import { ProblemsModule } from './problems/problems.module';
 
 @Module({
   imports: [
@@ -15,6 +16,7 @@ import { SubmissionsModule } from './submissions/submissions.module';
       autoLoadEntities: true,
     }),
     SubmissionsModule,
+    ProblemsModule,
   ],
 })
 export class AppModule {

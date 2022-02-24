@@ -35,8 +35,15 @@ export class AuthService {
     );
     return accessToken;
   }
-  registerUser(userData): Promise<User[]> {
-    const newUser = this.usersRepository.create({ ...userData, role: 'user' });
+  registerUser(userData): Promise<User> {
+    const { name, username, password, email } = userData;
+    const newUser = this.usersRepository.create({
+      name,
+      username,
+      password,
+      email,
+      role: 'user',
+    });
     return this.usersRepository.save(newUser);
   }
 }
