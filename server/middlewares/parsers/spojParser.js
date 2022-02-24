@@ -13,7 +13,7 @@ const spojParser = async (body) => {
     body.name = parts[1]
     body.pid = "SPOJ-" + parts[0]
 
-    body.difficulty = 500
+    body.difficulty = 0
     body.tags = []
     body.judgeId = 2
   } catch (err) {

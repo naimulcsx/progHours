@@ -10,7 +10,7 @@ const codeChefParser = async (body) => {
     const $ = cheerio.load(data)
 
     body.html = $.html()
-    body.difficulty = 500
+    body.difficulty = 0
     body.tags = []
     body.judgeId = 4
   } catch (err) {
