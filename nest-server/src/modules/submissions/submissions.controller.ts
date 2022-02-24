@@ -1,5 +1,5 @@
 import { Body, Controller, Post } from '@nestjs/common';
-import { CreateSubmissionDto } from './dto/new-submission.dto';
+import { CreateSubmissionDto } from 'src/validators/create-submission-dto';
 import { SubmissionsService } from './submissions.service';
 
 @Controller('submissions')

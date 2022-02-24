@@ -7,9 +7,9 @@ import {
   ForbiddenException,
 } from '@nestjs/common';
 import { AuthService } from './auth.service';
-import { CreateUserDto } from './dto/create-user.dto';
 import { Response } from 'express';
 import * as jwt from 'jsonwebtoken';
+import { CreateUserDto } from 'src/validators/create-user-dto';
 
 @Controller('auth')
 export class AuthController {
