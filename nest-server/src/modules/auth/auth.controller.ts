@@ -39,7 +39,9 @@ export class AuthController {
       const user = await this.authService.registerUser(body);
       return { user };
     } catch (err) {
-      throw new BadRequestException(['Some error occured']);
+      throw new BadRequestException([
+        err?.detail ? err.detail : 'Some error occured',
+      ]);
     }
   }
 }
