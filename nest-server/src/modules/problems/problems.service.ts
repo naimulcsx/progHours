@@ -9,6 +9,10 @@ export class ProblemsService {
     @InjectRepository(Problem)
     private problemRepository: Repository<Problem>,
   ) {}
+  async problemExists(link): Promise<boolean> {
+    const found = await this.problemRepository.count({ link });
+    return found ? true : false;
+  }
   createProblem(problemData): Promise<Problem> {
     const { pid, link, name, difficulty } = problemData;
     const newProblem = this.problemRepository.create({

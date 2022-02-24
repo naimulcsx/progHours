@@ -6,7 +6,11 @@ import { SubmissionsService } from './submissions.service';
 export class SubmissionsController {
   constructor(private readonly submissionsService: SubmissionsService) {}
   @Post()
-  createSubmission(@Body() body: CreateSubmissionDto) {
-    return 'hello world';
+  async createSubmission(@Body() body: CreateSubmissionDto) {
+    const res = await this.submissionsService.createSubmission(body);
+    return {
+      a: 'hello world',
+      res,
+    };
   }
 }
