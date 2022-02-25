@@ -3,7 +3,10 @@ import {
   Column,
   PrimaryGeneratedColumn,
   CreateDateColumn,
+  JoinTable,
+  ManyToMany,
 } from 'typeorm';
+import { Tag } from './tag.entity';
 
 @Entity()
 export class Problem {
@@ -24,4 +27,18 @@ export class Problem {
 
   @CreateDateColumn()
   created_at: Date;
+
+  @ManyToMany(() => Tag)
+  @JoinTable({
+    name: 'problem_tag',
+    joinColumn: {
+      name: 'problem_id',
+      referencedColumnName: 'id',
+    },
+    inverseJoinColumn: {
+      name: 'tag_id',
+      referencedColumnName: 'id',
+    },
+  })
+  tags: Tag[];
 }
