@@ -28,7 +28,7 @@ export class Problem {
   @CreateDateColumn()
   created_at: Date;
 
-  @ManyToMany(() => Tag)
+  @ManyToMany(() => Tag, { cascade: ['insert'] })
   @JoinTable({
     name: 'problem_tag',
     joinColumn: {

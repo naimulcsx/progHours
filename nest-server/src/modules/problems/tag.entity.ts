@@ -7,17 +7,15 @@ import {
   JoinColumn,
   ManyToMany,
   JoinTable,
+  PrimaryColumn,
+  Index,
 } from 'typeorm';
-import { Problem } from './problem.entity';
 
 @Entity()
 export class Tag {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column({ unique: true })
+  @Column()
   name: string;
-
-  @CreateDateColumn()
-  created_at: Date;
 }

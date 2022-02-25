@@ -37,6 +37,7 @@ export class SubmissionsService {
         });
         problemId = newProblem.id;
       } catch (err) {
+        console.log(err);
         throw new ForbiddenException('some error occured');
       }
     }

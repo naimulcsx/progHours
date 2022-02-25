@@ -1,9 +1,29 @@
+POST http://localhost/nest-api/auth/register
+Content-Type: application/json
+
+{
+  "name": "Naimul Haque",
+  "email": "naimulcsx@gmail.com",
+  "password": "test1234",
+  "username": "C181065"
+}
+
+###
+POST http://localhost/nest-api/auth/login
+Content-Type: application/json
+
+{
+  "username": "C181065",
+  "password": "test1234"
+}
+
+###
 POST http://localhost/nest-api/submissions
 Cookie: accessToken=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwidXNlcm5hbWUiOiJDMTgxMDY1IiwibmFtZSI6Ik5haW11bCBIYXF1ZSIsImlhdCI6MTY0NTc1NzU4OH0.7y0EqRdar4GSVLYssrfbphOKvuEQly-P0cdRZVK41is;
 Content-Type: application/json
 
 {
-  "link": "https://codeforces.com/contest/1617/problem/A",
+  "link": "https://codeforces.com/problemset/problem/1617/A",
   "solve_time": 65,
   "verdict": "AC",
   "solved_at": "2022-02-25T02:57:28.354Z"

@@ -17,11 +17,14 @@ export class ProblemsService {
     const foundProblem = await this.problemsRepository.findOne({ link });
     return foundProblem;
   }
-  createProblem(problemData): Promise<Problem> {
+  async createProblem(problemData): Promise<Problem> {
     const { pid, link, name, difficulty } = problemData;
-    const tags = problemData.tags.map((tag) =>
-      this.tagsRepository.create({ name: tag }),
-    );
+    const tags = [];
+    for (const tag of problemData.tags) {
+      const tagObj = { name: tag };
+      const foundTag = await this.tagsRepository.count(tagObj);
+      if (!foundTag) tags.push(tagObj);
+    }
     console.log(tags);
     const newProblem = this.problemsRepository.create({
       pid,
