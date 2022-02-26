@@ -15,7 +15,8 @@ import { useFormik } from "formik"
 import { toast } from "react-toastify"
 import { useQueryClient, useMutation } from "react-query"
 import { getSubmissions, createSubmission } from "@/api/submissions"
-
+import { Popover } from "@headlessui/react"
+import TagInputField from "./TagInputField"
 const submissionSchema = Yup.object().shape({
   link: Yup.string().trim().required("Problem link is required"),
   solveTime: Yup.number("Solve time must be a number").required(
@@ -116,9 +117,14 @@ const AddEntryRow = ({ id }) => {
       </td>
 
       <td className="border border-slate-100" data-tags>
-        <button className="bg-gray-900 text-white px-3 py-1 rounded">
-          + Tags
-        </button>
+        <Popover>
+          <Popover.Button className="bg-gray-900 text-white px-3 py-1 rounded">
+            Add Tags
+          </Popover.Button>
+          <Popover.Panel className="absolute z-10 w-30 px-4 py-3 bg-white border-2 shadow-xl inset rounded-xl">
+            <TagInputField></TagInputField>
+          </Popover.Panel>
+        </Popover>
       </td>
       <td></td>
       <td className="border border-slate-100" data-solvedat>

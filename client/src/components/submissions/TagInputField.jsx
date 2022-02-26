@@ -31,8 +31,8 @@ export default function TagInputField() {
   const filteredTags =
     query === ""
       ? tags
-      : tags.filter((tagVal) => {
-          return tagVal.toLowerCase().includes(query.toLowerCase())
+      : tags.filter((value) => {
+          return value.toLowerCase().includes(query.toLowerCase())
         })
   return (
     <Combobox value={selectedPerson} onChange={setSelectedPerson}>
@@ -41,9 +41,9 @@ export default function TagInputField() {
         className="input-box "
       />
       <Combobox.Options>
-        {filteredTags.map((tagVal) => (
-          <Combobox.Option key={tagVal} value={tagVal}>
-            {tagVal}
+        {filteredTags.map((value) => (
+          <Combobox.Option key={value} value={value}>
+            {value}
           </Combobox.Option>
         ))}
       </Combobox.Options>
