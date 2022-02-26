@@ -8,7 +8,7 @@ import {
 } from 'typeorm';
 import { Tag } from './tag.entity';
 
-@Entity()
+@Entity({ name: 'problems' })
 export class Problem {
   @PrimaryGeneratedColumn()
   id: number;
@@ -30,7 +30,7 @@ export class Problem {
 
   @ManyToMany(() => Tag, { cascade: ['insert'] })
   @JoinTable({
-    name: 'problem_tag',
+    name: 'problem_tags',
     joinColumn: {
       name: 'problem_id',
       referencedColumnName: 'id',

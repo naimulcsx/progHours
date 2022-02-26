@@ -11,7 +11,7 @@ import {
   Index,
 } from 'typeorm';
 
-@Entity()
+@Entity({ name: 'tags' })
 export class Tag {
   @PrimaryGeneratedColumn()
   id: number;
