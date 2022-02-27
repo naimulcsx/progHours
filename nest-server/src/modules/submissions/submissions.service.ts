@@ -13,6 +13,20 @@ export class SubmissionsService {
     @InjectRepository(Submission)
     private submissionsRepository: Repository<Submission>,
   ) {}
+
+  async getSubmissions(userId) {
+    const submissions = await this.submissionsRepository
+      .createQueryBuilder('submissions')
+      .where('submissions.user_id = :userId', { userId })
+      .innerJoinAndSelect('submissions.problem_id', 'problems')
+      .leftJoinAndSelect('problems.tags', 'tags')
+      .getMany();
+    return submissions.map(({ problem_id, ...rest }) => ({
+      ...rest,
+      problem: problem_id,
+    }));
+  }
+
   async createSubmission(body: any, user: any) {
     const { link } = body;
     let problemId: number;

@@ -2,6 +2,7 @@ import {
   Body,
   Controller,
   ForbiddenException,
+  Get,
   HttpStatus,
   Post,
   Req,
@@ -15,6 +16,15 @@ import { SubmissionsService } from './submissions.service';
 @UseGuards(IsAuthenticatedGuard)
 export class SubmissionsController {
   constructor(private readonly submissionsService: SubmissionsService) {}
+  @Get()
+  async getSubmissions(@Req() req) {
+    const submissions = await this.submissionsService.getSubmissions(
+      req.user.id,
+    );
+    return {
+      submissions,
+    };
+  }
   @Post()
   async createSubmission(@Body() body: CreateSubmissionDto, @Req() req) {
     const { user } = req;
