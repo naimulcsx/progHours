@@ -1,4 +1,4 @@
-POST http://localhost/nest-api/auth/register
+POST http://localhost/api/auth/register
 Content-Type: application/json
 
 {
@@ -9,22 +9,30 @@ Content-Type: application/json
 }
 
 ###
-POST http://localhost/nest-api/auth/login
+POST http://localhost/api/auth/login
 Content-Type: application/json
 
 {
-  "username": "C181059",
+  "username": "C181065",
   "password": "test1234"
 }
 
 ###
-POST http://localhost/nest-api/submissions
+GET http://localhost/api/auth/user
+
+
+###
+POST http://localhost/api/submissions
 Cookie: accessToken=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NCwidXNlcm5hbWUiOiJDMTgxMDU5IiwibmFtZSI6IkZhaGltIFNoYWhyaWVyIiwiaWF0IjoxNjQ1OTY3NDIwfQ.y1h4R5gZ095zXQ9Jz7XZVFLZ_FqO_ahIzfAC98dt9lc;
 Content-Type: application/json
 
 {
-  "link": "https://codeforces.com/problemset/problem/1617/B",
+  "link": "https://codeforces.com/problemset/problem/1617/A",
   "solve_time": 65,
   "verdict": "AC",
   "solved_at": "2022-02-25T02:57:28.354Z"
 }
+
+###
+GET http://localhost/api/submissions
+Cookie: accessToken=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NCwidXNlcm5hbWUiOiJDMTgxMDU5IiwibmFtZSI6IkZhaGltIFNoYWhyaWVyIiwiaWF0IjoxNjQ1OTY3NDIwfQ.y1h4R5gZ095zXQ9Jz7XZVFLZ_FqO_ahIzfAC98dt9lc;
