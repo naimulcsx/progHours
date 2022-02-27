@@ -22,8 +22,9 @@ export class ProblemsService {
     const tags = [];
     for (const tag of problemData.tags) {
       const tagObj = { name: tag };
-      const foundTag = await this.tagsRepository.count(tagObj);
+      const foundTag = await this.tagsRepository.findOne(tagObj);
       if (!foundTag) tags.push(tagObj);
+      else tags.push(foundTag);
     }
     console.log(tags);
     const newProblem = this.problemsRepository.create({
