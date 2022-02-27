@@ -155,22 +155,22 @@ table td[data-verdict] {
 table td[data-problem\.difficulty] {
   @apply w-10 px-6 py-2;
 }
-table td[data-solvetime] {
+table td[data-solve_time] {
   @apply relative;
 }
-table td[data-solvetime] input {
+table td[data-solve_time] input {
   @apply absolute inset-0 px-6 rounded focus:outline-none focus:ring-2 focus:ring-inset ring-primary;
 }
-table td[data-solvedat] {
+table td[data-solved_at] {
   @apply relative w-48;
 }
-table td[data-solvedat] .react-datepicker-wrapper {
+table td[data-solved_at] .react-datepicker-wrapper {
   @apply absolute inset-0;
 }
-table td[data-solvedat] .react-datepicker__input-container {
+table td[data-solved_at] .react-datepicker__input-container {
   @apply w-full h-full;
 }
-table td[data-solvedat] .react-datepicker__input-container input {
+table td[data-solved_at] .react-datepicker__input-container input {
   @apply w-full h-full px-6;
 }
 table tr th:first-child {
