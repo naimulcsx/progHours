@@ -7,9 +7,10 @@ import axios from "axios"
 import { toast } from "react-toastify"
 import getHttpStatusError from "@/utils/getHttpStatusError"
 import { FormControl, Input, ErrorMessage, Label } from "@/components/Form"
+import showErrorToasts from "../../utils/showErrorToasts"
 
 const loginSchema = Yup.object().shape({
-  uid: Yup.string()
+  username: Yup.string()
     .trim()
     .required("University ID is required")
     .length(7, "Invalid University ID"),
@@ -20,7 +21,7 @@ const Login = () => {
   const navigate = useNavigate()
   const formik = useFormik({
     initialValues: {
-      uid: "",
+      username: "",
       password: "",
     },
     validationSchema: loginSchema,
@@ -34,10 +35,9 @@ const Login = () => {
         navigate("/dashboard")
         toast.success("Successfully logged in", { className: "toast" })
       } catch (error) {
-        const { data, status } = error.response
-        if (status !== 200 && status !== 401)
-          toast.error(getHttpStatusError(status), { className: "toast" })
-        else toast.error(data.message, { className: "toast" })
+        const { data } = error.response
+        // toast.error(data.error, { className: "toast" })
+        showErrorToasts(data.message)
       }
     },
   })
@@ -56,14 +56,16 @@ const Login = () => {
         </p>
       </div>
       <form onSubmit={formik.handleSubmit} className="mt-8 space-y-4">
-        <FormControl isInvalid={formik.touched.uid && formik.errors.uid}>
+        <FormControl
+          isInvalid={formik.touched.username && formik.errors.username}
+        >
           <Input
             type="text"
             placeholder=" "
-            {...formik.getFieldProps("uid")}
+            {...formik.getFieldProps("username")}
           ></Input>
           <Label>University ID</Label>
-          <ErrorMessage>{formik.errors.uid}</ErrorMessage>
+          <ErrorMessage>{formik.errors.username}</ErrorMessage>
         </FormControl>
         <FormControl
           isInvalid={formik.touched.password && formik.errors.password}
