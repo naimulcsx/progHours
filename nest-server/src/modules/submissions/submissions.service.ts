@@ -1,10 +1,4 @@
-import {
-  BadRequestException,
-  ForbiddenException,
-  Inject,
-  Injectable,
-  Req,
-} from '@nestjs/common';
+import { BadRequestException, Inject, Injectable, Req } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { ParsersService } from '../parsers/parsers.service';
@@ -38,19 +32,25 @@ export class SubmissionsService {
         problemId = newProblem.id;
       } catch (err) {
         console.log(err);
-        throw new ForbiddenException('some error occured');
+        throw new BadRequestException(['some error occured']);
       }
     }
-    const foundSubmission = await this.submissionsRepository.findOne({
-      problem_id: problemId,
-      user_id: user.id,
-    });
-    if (foundSubmission) {
-      /**
-       ** If the same problem is added previously by the same user
-       */
-      throw new BadRequestException('you already added this problem');
+
+    try {
+      const foundSubmission = await this.submissionsRepository.findOne({
+        problem_id: problemId,
+        user_id: user.id,
+      });
+      if (foundSubmission) {
+        /**
+         ** If the same problem is added previously by the same user
+         */
+        throw new BadRequestException('you already added this problem');
+      }
+    } catch (err) {
+      throw err;
     }
+
     const newSubmission = this.submissionsRepository.create({
       problem_id: problemId,
       user_id: user.id,

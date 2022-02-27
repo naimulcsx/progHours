@@ -18,14 +18,10 @@ export class SubmissionsController {
   @Post()
   async createSubmission(@Body() body: CreateSubmissionDto, @Req() req) {
     const { user } = req;
-    try {
-      await this.submissionsService.createSubmission(body, user);
-      return {
-        statusCode: HttpStatus.CREATED,
-        message: 'resource created',
-      };
-    } catch (err) {
-      throw new ForbiddenException('some error occured');
-    }
+    await this.submissionsService.createSubmission(body, user);
+    return {
+      statusCode: HttpStatus.CREATED,
+      message: 'resource created',
+    };
   }
 }
