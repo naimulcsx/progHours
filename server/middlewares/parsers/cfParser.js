@@ -28,7 +28,8 @@ const cfParser = async (body) => {
       const tag = $(this).text().trim()
       body.tags.push(tag)
     })
-    body.difficulty = parseInt(body.tags[body.tags.length - 1].split("*")[1])
+    body.difficulty =
+      parseInt(body.tags[body.tags.length - 1].split("*")[1]) || 0
     body.judgeId = 1
     body.tags.pop()
   } catch (err) {

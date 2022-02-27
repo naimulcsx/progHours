@@ -10,7 +10,7 @@ const lightOJParser = async (body) => {
     const $ = cheerio.load(data)
 
     // body.difficulty = $(".tags .is-primary").text().trim()
-    body.difficulty = 500
+    body.difficulty = 0
     body.pid = $(".tags .is-link").text().trim()
     body.name = $(".title").text().trim()
     body.tags = []

@@ -13,7 +13,7 @@ const UVAParser = async (body) => {
 
     body.pid = "UVA-" + parts[0]
     body.name = parts.slice(1).join(" ").trim()
-    body.difficulty = 500
+    body.difficulty = 0
     body.tags = []
     body.judgeId = 7
   } catch (err) {

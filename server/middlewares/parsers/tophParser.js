@@ -20,7 +20,7 @@ const tophParser = async (body) => {
     body.pid = "TH-" + pid
 
     // problem difficulty
-    body.difficulty = 500
+    body.difficulty = 0
 
     // problem tags
     body.tags = []
