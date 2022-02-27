@@ -3,12 +3,16 @@ import {
   Controller,
   Post,
   Res,
+  Get,
   BadRequestException,
+  UseGuards,
+  Req,
 } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { Response } from 'express';
 import { CreateUserDto } from 'src/validators/create-user-dto';
 import { LoginUserDto } from 'src/validators/login-user-dto';
+import { IsAuthenticatedGuard } from 'src/guards/is-authenticated';
 
 @Controller('auth')
 export class AuthController {
@@ -21,10 +25,12 @@ export class AuthController {
     @Body() body: LoginUserDto,
     @Res({ passthrough: true }) res: Response,
   ) {
-    const accessToken = await this.authService.getAccessToken(body);
+    const { accessToken, user } =
+      await this.authService.getAccessTokenWithUserInfo(body);
     res.cookie('accessToken', accessToken);
     return {
       accessToken,
+      user,
     };
   }
   /**
@@ -43,5 +49,23 @@ export class AuthController {
         err?.detail ? err.detail : 'Some error occured',
       ]);
     }
+  }
+
+  /**
+   * GET /auth/user
+   */
+  @Get('/user')
+  @UseGuards(IsAuthenticatedGuard)
+  async getUserData(@Req() req) {
+    return req.user;
+  }
+
+  /**
+   * GET /auth/logout
+   */
+  @Get('/logout')
+  async logoutUser(@Res({ passthrough: true }) res: Response) {
+    res.cookie('accessToken', '', { expires: new Date(Date.now() - 100) });
+    return {};
   }
 }

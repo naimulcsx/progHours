@@ -21,7 +21,7 @@ export class AuthService {
   comparePassword(password, hashedPassword) {
     return bcrypt.compare(password, hashedPassword);
   }
-  async getAccessToken(body: any) {
+  async getAccessTokenWithUserInfo(body: any) {
     const { username, password } = body;
     const user = await this.getUser(username);
     if (!user) throw new BadRequestException(['user not found']);
@@ -29,11 +29,12 @@ export class AuthService {
     const isValidPassword = await this.comparePassword(password, user.password);
     //! if the user exists but the provided password is wrong
     if (!isValidPassword) throw new ForbiddenException(['invalid password']);
-    const accessToken = jwt.sign(
-      { id: user.id, username: user.username, name: user.name },
-      process.env.ACCESS_TOKEN_SECRET,
-    );
-    return accessToken;
+    const userObj = { id: user.id, username: user.username, name: user.name };
+    const accessToken = jwt.sign(userObj, process.env.ACCESS_TOKEN_SECRET);
+    return {
+      accessToken,
+      user: userObj,
+    };
   }
   registerUser(userData): Promise<User> {
     const { name, username, password, email } = userData;
