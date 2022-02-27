@@ -35,7 +35,9 @@ export default function TrackingSheet() {
       </div>
 
       {/* tracking table */}
-      {query.isSuccess && <TrackingTable problemData={query.data.data} />}
+      {query.isSuccess && (
+        <TrackingTable problemData={query.data.submissions} />
+      )}
     </Layout>
   )
 }

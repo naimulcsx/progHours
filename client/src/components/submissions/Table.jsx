@@ -28,7 +28,7 @@ const practiceColumns = [
   },
   {
     Header: "Solve Time",
-    accessor: "solveTime",
+    accessor: "solve_time",
     Cell: SolveTime,
   },
   {
@@ -42,7 +42,7 @@ const practiceColumns = [
   },
   {
     Header: "Date",
-    accessor: "solvedAt",
+    accessor: "solved_at",
     Cell: DatePicker,
     // Cell: (cell) =>
     //   new Date(cell.value).toLocaleString("en-US", {

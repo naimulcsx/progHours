@@ -19,11 +19,11 @@ import { Popover } from "@headlessui/react"
 import TagInputField from "./TagInputField"
 const submissionSchema = Yup.object().shape({
   link: Yup.string().trim().required("Problem link is required"),
-  solveTime: Yup.number("Solve time must be a number").required(
+  solve_time: Yup.number("Solve time must be a number").required(
     "Solve time is required"
   ),
   verdict: Yup.string().required("Verdict is required"),
-  solvedAt: Yup.date().required("Date is required"),
+  solved_at: Yup.date().required("Date is required"),
 })
 
 const AddEntryRow = ({ id }) => {
@@ -33,13 +33,13 @@ const AddEntryRow = ({ id }) => {
   const formik = useFormik({
     initialValues: {
       link: "",
-      solveTime: "",
+      solve_time: "",
       verdict: "AC",
-      solvedAt: new Date(),
+      solved_at: new Date(),
     },
     validationSchema: submissionSchema,
     onSubmit: async (values) => {
-      console.log(values)
+      values.solve_time = parseInt(values.solve_time)
       mutate(values)
     },
   })
@@ -51,6 +51,7 @@ const AddEntryRow = ({ id }) => {
       toast.success("Problem submitted successfully")
     },
     onError: (err) => {
+      console.log(err.response)
       toast.error(err.response.data.message, { className: "toast" })
     },
   })
@@ -99,14 +100,14 @@ const AddEntryRow = ({ id }) => {
           <Option value="MLE">MLE</Option>
         </Select>
       </td>
-      <td className="border border-slate-100" data-solvetime>
+      <td className="border border-slate-100" data-solve_time>
         <FormControl className="form">
           <Input
             type="text"
             placeholder="eg. 80"
             autoComplete="off"
             className="focus:outline-none p-2 w-full"
-            {...formik.getFieldProps("solveTime")}
+            {...formik.getFieldProps("solve_time")}
           ></Input>
         </FormControl>
         {/* <input
@@ -127,12 +128,12 @@ const AddEntryRow = ({ id }) => {
         </Popover>
       </td>
       <td></td>
-      <td className="border border-slate-100" data-solvedat>
+      <td className="border border-slate-100" data-solved_at>
         <ReactDatePicker
           dateFormat="EEE, dd MMM yyyy"
           // className="h-[40px] px-3 focus:outline-none rounded focus:ring-2 ring-primary ring-opacity-50"
-          selected={formik.values.solvedAt}
-          onChange={(date) => formik.setFieldValue("solvedAt", date)}
+          selected={formik.values.solved_at}
+          onChange={(date) => formik.setFieldValue("solved_at", date)}
         />
       </td>
       <td className="border border-slate-100" data-actions>
