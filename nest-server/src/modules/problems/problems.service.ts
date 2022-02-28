@@ -3,6 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Problem } from './problem.entity';
 import { Tag } from './tag.entity';
+import { UserTag } from './user-tags.entity';
 
 @Injectable()
 export class ProblemsService {
@@ -12,7 +13,16 @@ export class ProblemsService {
 
     @InjectRepository(Tag)
     private tagsRepository: Repository<Tag>,
+
+    @InjectRepository(UserTag)
+    private userTagsRepository: Repository<UserTag>,
   ) {}
+  async findOne(id) {
+    return this.problemsRepository.findOne(id, { relations: ['user_tags'] });
+  }
+  async saveProblem(problem) {
+    return this.problemsRepository.save(problem);
+  }
   async getProblem(link): Promise<Problem> {
     const foundProblem = await this.problemsRepository.findOne({ link });
     return foundProblem;
@@ -26,7 +36,6 @@ export class ProblemsService {
       if (!foundTag) tags.push(tagObj);
       else tags.push(foundTag);
     }
-    console.log(tags);
     const newProblem = this.problemsRepository.create({
       pid,
       link,
@@ -35,5 +44,14 @@ export class ProblemsService {
       tags,
     });
     return this.problemsRepository.save(newProblem);
+  }
+  async findOrCreateUserTag(tagData): Promise<UserTag> {
+    const { user_id, tag_name } = tagData;
+    let foundUserTag = await this.userTagsRepository.findOne(tagData);
+    if (foundUserTag) return foundUserTag;
+    const result = await this.userTagsRepository.save(
+      this.userTagsRepository.create({ user_id, tag_name }),
+    );
+    return result;
   }
 }

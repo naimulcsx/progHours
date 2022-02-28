@@ -6,15 +6,19 @@ import { SubmissionsModule } from './submissions/submissions.module';
 import { ProblemsModule } from './problems/problems.module';
 import { ParsersModule } from './parsers/parsers.module';
 import { HttpModule } from '@nestjs/axios';
+import { User } from './auth/user.entity';
+import { Tag } from './problems/tag.entity';
+import { Problem } from './problems/problem.entity';
+import { Submission } from './submissions/submission.entity';
+import { UserTag } from './problems/user-tags.entity';
 
 @Module({
   imports: [
     TypeOrmModule.forRoot({
       type: 'postgres',
       url: process.env.DATABASE_URL,
-      entities: [],
+      entities: [User, Tag, Problem, Submission, UserTag],
       synchronize: true,
-      autoLoadEntities: true,
     }),
     HttpModule,
     AuthModule,

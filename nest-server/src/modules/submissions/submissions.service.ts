@@ -20,6 +20,7 @@ export class SubmissionsService {
       .where('submissions.user_id = :userId', { userId })
       .innerJoinAndSelect('submissions.problem_id', 'problems')
       .leftJoinAndSelect('problems.tags', 'tags')
+      .leftJoinAndSelect('problems.user_tags', 'user_tags')
       .getMany();
     return submissions.map(({ problem_id, ...rest }) => ({
       ...rest,

@@ -12,11 +12,14 @@ import {
   OneToMany,
 } from 'typeorm';
 
-@Entity({ name: 'tags' })
-export class Tag {
+@Entity({ name: 'user_tags' })
+export class UserTag {
   @PrimaryGeneratedColumn()
   id: number;
 
   @Column()
-  name: string;
+  user_id: number;
+
+  @Column()
+  tag_name: string;
 }
