@@ -181,7 +181,7 @@ table {
   @apply rounded-lg shadow;
 }
 table td[data-tags] {
-  @apply px-6 py-2;
+  @apply w-[560px] px-6 py-2;
 }
 table td[data-actions] {
   @apply px-4 py-2;

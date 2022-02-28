@@ -44,14 +44,6 @@ const practiceColumns = [
     Header: "Date",
     accessor: "solved_at",
     Cell: DatePicker,
-    // Cell: (cell) =>
-    //   new Date(cell.value).toLocaleString("en-US", {
-    //     year: "numeric",
-    //     month: "long",
-    //     day: "numeric",
-    //     minute: "2-digit",
-    //     hour: "2-digit",
-    //   }),
   },
   {
     Header: "Actions",
