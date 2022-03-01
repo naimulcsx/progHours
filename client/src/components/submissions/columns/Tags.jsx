@@ -1,8 +1,10 @@
 import { Popover } from "@headlessui/react"
 import TagInputField from "../TagInputField"
 const Tags = (cell) => {
+  const user = localStorage.getItem("userId")
   const { id, tags, user_tags } = cell.row.original.problem
   if (tags.length === 0) return "—"
+
   return (
     <ul className="flex flex-wrap">
       {tags.map((tag) => {
@@ -16,6 +18,7 @@ const Tags = (cell) => {
         )
       })}
       {user_tags.map((tag) => {
+        if (tag.user_id !== parseInt(user)) return
         return (
           <li
             key={tag.id}

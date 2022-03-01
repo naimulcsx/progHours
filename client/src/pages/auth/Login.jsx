@@ -30,7 +30,8 @@ const Login = () => {
         const { data } = await axios.post("/api/auth/login", values)
         const { user } = data
         localStorage.setItem("isLoggedIn", 1)
-        localStorage.setItem("role", 0)
+        localStorage.setItem("role", "user")
+        localStorage.setItem("userId", user.id)
         localStorage.setItem("name", user.name)
         navigate("/dashboard")
         toast.success("Successfully logged in", { className: "toast" })
