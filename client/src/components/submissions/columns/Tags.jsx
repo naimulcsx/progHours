@@ -33,7 +33,7 @@ const Tags = (cell) => {
           <Popover.Button className="relative px-2 py-1 text-sm rounded-lg bg-primary bg-opacity-10 text-primary">
             +
           </Popover.Button>
-          <Popover.Panel className="absolute z-10 min-w-[260px] top-10 py-3 bg-white shadow rounded-xl  bg-white border">
+          <Popover.Panel className="absolute z-10 min-w-[260px] top-10 py-3 shadow rounded-xl  bg-white border">
             {({ close }) => {
               return (
                 <div>

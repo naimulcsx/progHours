@@ -4,6 +4,7 @@ import {
   PrimaryGeneratedColumn,
   ManyToOne,
   JoinColumn,
+  Index,
 } from 'typeorm';
 import { User } from '../auth/user.entity';
 import { Problem } from '../problems/problem.entity';
@@ -27,6 +28,7 @@ export class Submission {
   problem_id: number;
 
   @ManyToOne(() => User, (user) => user.id, { nullable: false })
+  @Index()
   @JoinColumn({ name: 'user_id' })
   user_id: number;
 }
