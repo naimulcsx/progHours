@@ -22,9 +22,20 @@ const Tags = (cell) => {
         return (
           <li
             key={tag.id}
-            className="mt-1 mr-2 border text-gray-400 px-2 py-1 text-sm rounded-lg"
+            className="suggested-tag relative mt-1 mr-2 border text-gray-400 px-2 py-1 text-sm rounded-lg"
           >
-            {tag.tag_name}
+            <button className="hidden absolute -top-3 right-0 p-1 rounded-full w-4 h-4 text-red-500">
+              <svg
+                fill="currentColor"
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 24 24"
+                width="16px"
+                height="16px"
+              >
+                <path d="M12,2C6.47,2,2,6.47,2,12s4.47,10,10,10s10-4.47,10-10S17.53,2,12,2z M17,15.59L15.59,17L12,13.41L8.41,17L7,15.59 L10.59,12L7,8.41L8.41,7L12,10.59L15.59,7L17,8.41L13.41,12L17,15.59z" />
+              </svg>
+            </button>
+            <p>{tag.tag_name}</p>
           </li>
         )
       })}

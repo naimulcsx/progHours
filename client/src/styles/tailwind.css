@@ -59,7 +59,7 @@ h6 {
 }
 .form-group input:focus + label,
 .form-group input:not(:placeholder-shown) + label {
-  @apply text-sm -top-1 text-primary;
+  @apply z-30 text-sm -top-1 text-primary;
 }
 
 .error-message {
@@ -212,3 +212,7 @@ td[data-verdict="TLE"] span {
 td[data-solvetime] {
   @apply before:w-2 before:h-2 before:bg-cyan-500 before:top-[15px] before:block before:relative;
 } */
+
+.suggested-tag:hover button {
+  @apply block;
+}
