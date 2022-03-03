@@ -7,7 +7,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { InsertResult, Repository } from 'typeorm';
 import * as jwt from 'jsonwebtoken';
 import * as bcrypt from 'bcrypt';
-import { User } from './user.entity';
+import { User } from '../users/user.entity';
 
 @Injectable()
 export class AuthService {
@@ -46,10 +46,5 @@ export class AuthService {
       role: 'user',
     });
     return this.usersRepository.save(newUser);
-  }
-  async addUserPoints(userId, points) {
-    const user = await this.usersRepository.findOne({ id: userId });
-    user.points += points;
-    return this.usersRepository.save(user);
   }
 }

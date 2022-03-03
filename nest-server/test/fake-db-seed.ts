@@ -67,15 +67,15 @@ async function createSubmissions() {
     const problem_id = Math.floor(Math.random() * NUMBER_OF_PROBLEMS) + 1;
     const verdict = faker.random.arrayElement(verdicts);
     const solve_time = Math.floor(Math.random() * 100) + 1;
-    const solved_at = faker.datatype.datetime();
+    const solved_at = faker.datatype.datetime({
+      max: 1644861600000,
+      min: 1630432800000,
+    });
     try {
       await client.query(
         'INSERT INTO submissions(id, solve_time, solved_at, verdict, problem_id, user_id) VALUES($1, $2, $3, $4, $5, $6)',
         [i, solve_time, solved_at, verdict, problem_id, user_id],
       );
-      await client.query('UPDATE users SET points = points + 1 WHERE id = $1', [
-        user_id,
-      ]);
     } catch (err) {
       console.log(err);
     }
@@ -87,6 +87,10 @@ async function seed() {
   await client.query('DELETE from submissions');
   await client.query('DELETE FROM users');
   await client.query('DELETE FROM problems');
+
+  // ajudst sequence id
+  await client.query('ALTER SEQUENCE problems_id_seq RESTART WITH 20000');
+  await client.query('ALTER SEQUENCE submissions_id_seq RESTART WITH 200000');
 
   // insert new data
   await createUsers();

@@ -6,11 +6,12 @@ import { SubmissionsModule } from './submissions/submissions.module';
 import { ProblemsModule } from './problems/problems.module';
 import { ParsersModule } from './parsers/parsers.module';
 import { HttpModule } from '@nestjs/axios';
-import { User } from './auth/user.entity';
+import { User } from './users/user.entity';
 import { Tag } from './problems/tag.entity';
 import { Problem } from './problems/problem.entity';
 import { Submission } from './submissions/submission.entity';
 import { UserTag } from './problems/user-tags.entity';
+import { UsersModule } from './users/users.module';
 
 @Module({
   imports: [
@@ -25,6 +26,7 @@ import { UserTag } from './problems/user-tags.entity';
     SubmissionsModule,
     ProblemsModule,
     ParsersModule,
+    UsersModule,
   ],
 })
 export class AppModule {

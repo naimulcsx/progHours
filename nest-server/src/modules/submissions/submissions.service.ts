@@ -23,6 +23,7 @@ export class SubmissionsService {
       .innerJoinAndSelect('submissions.problem_id', 'problems')
       .leftJoinAndSelect('problems.tags', 'tags')
       .leftJoinAndSelect('problems.user_tags', 'user_tags')
+      .orderBy('submissions.solved_at', 'DESC')
       .getMany();
     return submissions.map(({ problem_id, ...rest }) => ({
       ...rest,
@@ -71,7 +72,6 @@ export class SubmissionsService {
       user_id: user.id,
       ...body,
     });
-    await this.authService.addUserPoints(user.id, 1);
     return this.submissionsRepository.save(newSubmission);
   }
 }
