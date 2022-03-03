@@ -4,8 +4,25 @@ import { Fragment } from "react"
 import { PlusIcon } from "../../components/Icons"
 import LeaderboardTable from "../../components/leaderboard/Table"
 import { Link } from "react-router-dom"
+import { useQuery } from "react-query"
+import axios from "axios"
 
+function calculatePoints(obj) {
+  return (obj.avg_diffculty * obj.solve_count) / 100.0
+}
 const LeaderboardPage = () => {
+  const query = useQuery(
+    "ranklist",
+    () => axios.get("/api/users/ranklist").then((res) => res.data),
+    {
+      staleTime: 60000,
+      onSuccess: (data) => {
+        data.ranklist.sort((a, b) => {
+          return calculatePoints(a) >= calculatePoints(b) ? -1 : 1
+        })
+      },
+    }
+  )
   return (
     <Layout>
       <div className="flex items-center justify-between">
@@ -14,7 +31,7 @@ const LeaderboardPage = () => {
             <span>Leaderboard</span>
             <Transition
               as={Fragment}
-              show={false}
+              show={query.status === "loading"}
               enter="transform transition duration-[400ms]"
               enterFrom="opacity-0 rotate-[-120deg] scale-50"
               enterTo="opacity-100 rotate-0 scale-100"
@@ -46,9 +63,11 @@ const LeaderboardPage = () => {
           </Link>
         </div>
       </div>
-      <div className="mt-6">
-        <LeaderboardTable />
-      </div>
+      {query.status !== "loading" && (
+        <div className="mt-6">
+          <LeaderboardTable ranklist={query.data?.ranklist || []} />
+        </div>
+      )}
     </Layout>
   )
 }

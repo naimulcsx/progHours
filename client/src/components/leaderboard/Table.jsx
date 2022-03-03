@@ -48,19 +48,7 @@ const columns = [
   },
 ]
 
-const LeaderboardTable = () => {
-  const [ranklist, setRanklist] = useState([])
-  useEffect(async () => {
-    const { data } = await axios.get("/api/users/ranklist")
-    data.ranklist.sort((a, b) => {
-      return calculatePoints(a) >= calculatePoints(b) ? -1 : 1
-    })
-
-    console.log(data.ranklist)
-
-    setRanklist(data.ranklist)
-  }, [])
-
+const LeaderboardTable = ({ ranklist }) => {
   const tableInstance = useTable(
     {
       data: ranklist,
