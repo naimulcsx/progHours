@@ -53,10 +53,10 @@ const practiceColumns = [
 ]
 
 const TrackingTable = ({ problemData }) => {
-  console.log(problemData)
+  if (!problemData) return null
+
   let k = problemData.length
   problemData.forEach((el) => (el.idx = k--))
-
   const tableInstance = useTable(
     {
       data: problemData,
@@ -70,6 +70,7 @@ const TrackingTable = ({ problemData }) => {
     getTableBodyProps,
     rows,
     prepareRow,
+    page,
     headerGroups,
     canPreviousPage,
     canNextPage,

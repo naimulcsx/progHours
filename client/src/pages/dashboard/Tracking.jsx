@@ -4,10 +4,10 @@ import TrackingTable from "@/components/submissions/Table"
 import { useQuery } from "react-query"
 import { getSubmissions } from "@/api/submissions"
 import { Link } from "react-router-dom"
+import { useEffect } from "react"
 
 export default function TrackingSheet() {
   const query = useQuery("practice", getSubmissions)
-
   return (
     <Layout>
       {/* tracking table header */}
@@ -33,11 +33,8 @@ export default function TrackingSheet() {
           </Link>
         </div>
       </div>
-
       {/* tracking table */}
-      {query.isSuccess && (
-        <TrackingTable problemData={query.data.submissions} />
-      )}
+      <TrackingTable problemData={query?.data?.submissions} />
     </Layout>
   )
 }

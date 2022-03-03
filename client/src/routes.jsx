@@ -9,6 +9,7 @@ import ProfileSettings from "@/pages/settings/ProfileSettings"
 import Profile from "@/pages/profile"
 import TrackingSheet from "@/pages/dashboard/Tracking"
 import TrackingEntry from "@/pages/dashboard/TrackingEntry"
+import LeaderboardPage from "./pages/leaderboard"
 
 const AccessDenied = () => {
   useEffect(() => {
@@ -59,6 +60,10 @@ const routes = (isLoggedIn) => [
   {
     path: "/profile",
     element: <Profile />,
+  },
+  {
+    path: "/leaderboard",
+    element: <LeaderboardPage />,
   },
 ]
 
