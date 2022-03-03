@@ -1,6 +1,7 @@
 import { BadRequestException, Inject, Injectable, Req } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
+import { AuthService } from '../auth/auth.service';
 import { ParsersService } from '../parsers/parsers.service';
 import { ProblemsService } from '../problems/problems.service';
 import { Submission } from './submission.entity';
@@ -10,6 +11,7 @@ export class SubmissionsService {
   constructor(
     @Inject(ProblemsService) private problemsService: ProblemsService,
     @Inject(ParsersService) private parsersService: ParsersService,
+    @Inject(AuthService) private authService: AuthService,
     @InjectRepository(Submission)
     private submissionsRepository: Repository<Submission>,
   ) {}
@@ -50,7 +52,6 @@ export class SubmissionsService {
         throw new BadRequestException(['some error occured']);
       }
     }
-
     try {
       const foundSubmission = await this.submissionsRepository.findOne({
         problem_id: problemId,
@@ -65,12 +66,14 @@ export class SubmissionsService {
     } catch (err) {
       throw err;
     }
-
     const newSubmission = this.submissionsRepository.create({
       problem_id: problemId,
       user_id: user.id,
       ...body,
     });
+    await this.authService.addUserPoints(user.id, 1);
     return this.submissionsRepository.save(newSubmission);
   }
 }
+
+// == => -> === != ***

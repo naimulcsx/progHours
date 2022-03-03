@@ -47,4 +47,9 @@ export class AuthService {
     });
     return this.usersRepository.save(newUser);
   }
+  async addUserPoints(userId, points) {
+    const user = await this.usersRepository.findOne({ id: userId });
+    user.points += points;
+    return this.usersRepository.save(user);
+  }
 }

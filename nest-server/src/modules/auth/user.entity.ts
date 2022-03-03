@@ -27,6 +27,9 @@ export class User {
   @Column()
   role: string;
 
+  @Column({ default: 0 })
+  points: number;
+
   @CreateDateColumn()
   created_at: Date;
 

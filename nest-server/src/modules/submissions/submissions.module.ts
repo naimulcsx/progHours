@@ -1,5 +1,6 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { AuthModule } from '../auth/auth.module';
 import { ParsersModule } from '../parsers/parsers.module';
 import { ProblemsModule } from '../problems/problems.module';
 import { Submission } from './submission.entity';
@@ -10,6 +11,7 @@ import { SubmissionsService } from './submissions.service';
   imports: [
     ProblemsModule,
     ParsersModule,
+    AuthModule,
     TypeOrmModule.forFeature([Submission]),
   ],
   controllers: [SubmissionsController],
