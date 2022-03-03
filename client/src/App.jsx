@@ -2,6 +2,7 @@ import { useLocation, useNavigate, useRoutes } from "react-router-dom"
 import { HelmetProvider } from "react-helmet-async"
 import { toast, ToastContainer } from "react-toastify"
 import { QueryClient, QueryClientProvider, useQuery } from "react-query"
+import { ReactQueryDevtools } from "react-query/devtools"
 
 // import routes
 import routes from "./routes"
@@ -45,6 +46,7 @@ function App() {
           position="bottom-right"
         />
       </HelmetProvider>
+      <ReactQueryDevtools />
     </QueryClientProvider>
   )
 }

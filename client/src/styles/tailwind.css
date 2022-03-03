@@ -161,16 +161,16 @@ table td[data-solve_time] {
 table td[data-solve_time] input {
   @apply absolute inset-0 px-6 rounded focus:outline-none focus:ring-2 focus:ring-inset ring-primary;
 }
-table td[data-solved_at] {
+table td[data-solved-at] {
   @apply relative w-48;
 }
-table td[data-solved_at] .react-datepicker-wrapper {
+table td[data-solved-at] .react-datepicker-wrapper {
   @apply absolute inset-0;
 }
-table td[data-solved_at] .react-datepicker__input-container {
+table td[data-solved-at] .react-datepicker__input-container {
   @apply w-full h-full;
 }
-table td[data-solved_at] .react-datepicker__input-container input {
+table td[data-solved-at] .react-datepicker__input-container input {
   @apply w-full h-full px-6;
 }
 table tr th:first-child {

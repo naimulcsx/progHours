@@ -1,4 +1,4 @@
-import { usePagination, useTable } from "react-table"
+import { usePagination, useTable, useSortBy } from "react-table"
 import EmptyState from "@/components/submissions/EmptyState"
 
 // import columns components
@@ -9,6 +9,10 @@ import DatePicker from "./columns/DatePicker"
 import AddEntryRow from "./AddEntryRow"
 import SolveTime from "./columns/SolveTime"
 import Tags from "./columns/Tags"
+import { useEffect, useState } from "react"
+import { getSubmissions } from "../../api/submissions"
+import { useQuery } from "react-query"
+import axios from "axios"
 
 const practiceColumns = [
   {
@@ -41,6 +45,7 @@ const practiceColumns = [
     accessor: "problem.difficulty",
   },
   {
+    id: "solved-at",
     Header: "Date",
     accessor: "solved_at",
     Cell: DatePicker,
@@ -52,17 +57,24 @@ const practiceColumns = [
   },
 ]
 
-const TrackingTable = ({ problemData }) => {
-  if (!problemData) return null
-
-  let k = problemData.length
-  problemData.forEach((el) => (el.idx = k--))
+const TrackingTable = ({ submissions }) => {
+  let k = submissions.length
+  submissions.forEach((el) => (el.idx = k--))
   const tableInstance = useTable(
     {
-      data: problemData,
+      data: submissions,
       columns: practiceColumns,
-      initialState: { pageSize: 10 },
+      initialState: {
+        pageSize: 10,
+        sortBy: [
+          {
+            id: "solved-at",
+            desc: true,
+          },
+        ],
+      },
     },
+    useSortBy,
     usePagination
   )
   const {
@@ -96,7 +108,7 @@ const TrackingTable = ({ problemData }) => {
                 {headerGroup.headers.map((header) => {
                   return (
                     <th
-                      {...header.getHeaderProps()}
+                      {...header.getHeaderProps(header.getSortByToggleProps())}
                       className="px-6 py-3 border border-slate-100"
                     >
                       {header.render("Header")}
@@ -108,7 +120,7 @@ const TrackingTable = ({ problemData }) => {
           })}
         </thead>
         <tbody {...getTableBodyProps()}>
-          <AddEntryRow id={problemData.length + 1} />
+          <AddEntryRow id={submissions.length + 1} />
           {rows.map((row) => {
             prepareRow(row)
             return (
@@ -189,7 +201,7 @@ const TrackingTable = ({ problemData }) => {
           </span>
         </div>
       </div> */}
-      {problemData.length === 0 && <EmptyState />}
+      {submissions.length === 0 && <EmptyState />}
     </div>
   )
 }

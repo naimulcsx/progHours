@@ -1,4 +1,6 @@
-import { useTable } from "react-table"
+import axios from "axios"
+import { useEffect, useState } from "react"
+import { useTable, useSortBy } from "react-table"
 
 const columns = [
   {
@@ -6,19 +8,41 @@ const columns = [
     accessor: "name",
   },
   {
+    Header: "Solve Count",
+    accessor: "solve_count",
+  },
+  {
+    Header: "Solve Time",
+    accessor: "solve_time",
+  },
+  {
     Header: "Points",
-    accessor: "points",
+    accessor: (row) => parseInt(row.solve_count) + parseInt(row.solve_time),
   },
 ]
 
 const LeaderboardTable = () => {
-  const tableInstance = useTable({
-    data: [
-      { name: "Test", points: 100 },
-      { name: "Fahim", points: 20 },
-    ],
-    columns,
-  })
+  const [ranklist, setRanklist] = useState([])
+  useEffect(async () => {
+    const { data } = await axios.get("/api/users/ranklist")
+    setRanklist(data.ranklist)
+  }, [])
+
+  const tableInstance = useTable(
+    {
+      data: ranklist,
+      columns,
+      initialState: {
+        sortBy: [
+          {
+            id: "Points",
+            desc: true,
+          },
+        ],
+      },
+    },
+    useSortBy
+  )
 
   const { getTableProps, getTableBodyProps, rows, prepareRow, headerGroups } =
     tableInstance
@@ -35,7 +59,7 @@ const LeaderboardTable = () => {
               {headerGroup.headers.map((header) => {
                 return (
                   <th
-                    {...header.getHeaderProps()}
+                    {...header.getHeaderProps(header.getSortByToggleProps())}
                     className="px-6 py-3 border border-slate-100"
                   >
                     {header.render("Header")}

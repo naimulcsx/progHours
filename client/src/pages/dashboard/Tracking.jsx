@@ -4,15 +4,35 @@ import TrackingTable from "@/components/submissions/Table"
 import { useQuery } from "react-query"
 import { getSubmissions } from "@/api/submissions"
 import { Link } from "react-router-dom"
-import { useEffect } from "react"
+import { Fragment, useEffect, useRef, useState } from "react"
+import { Transition } from "@headlessui/react"
 
 export default function TrackingSheet() {
-  const query = useQuery("practice", getSubmissions)
+  const query = useQuery("practice", getSubmissions, {
+    staleTime: 30 * 60 * 1000,
+  })
+
   return (
     <Layout>
       {/* tracking table header */}
       <div className="flex items-center justify-between">
-        <h3 className="font-bold">Tracking Sheet</h3>
+        <h3 className="font-bold">
+          <div className="flex items-center space-x-4">
+            <span>Tracking Sheet</span>
+            <Transition
+              as={Fragment}
+              show={query.status === "loading"}
+              enter="transform transition duration-[400ms]"
+              enterFrom="opacity-0 rotate-[-120deg] scale-50"
+              enterTo="opacity-100 rotate-0 scale-100"
+              leave="transform duration-200 transition ease-in-out"
+              leaveFrom="opacity-100 rotate-0 scale-100 "
+              leaveTo="opacity-0 scale-95 "
+            >
+              <div className="sp sp-circle sp-circle-dark"></div>
+            </Transition>
+          </div>
+        </h3>
         <div className="flex items-center space-x-5">
           {/* <div className="flex items-center text-primary">
             <div className="p-2 border border-r-0 border-lightGrey rounded-l-md">
@@ -34,7 +54,8 @@ export default function TrackingSheet() {
         </div>
       </div>
       {/* tracking table */}
-      <TrackingTable problemData={query?.data?.submissions} />
+
+      <TrackingTable submissions={query.data?.submissions || []} />
     </Layout>
   )
 }

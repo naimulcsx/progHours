@@ -82,7 +82,7 @@ const ProblemName = (cell) => {
           </a>
         </p>
         {icons.length > 0 && (
-          <p className="-mt-[0.5px] text-sm text-gray-600">{name}</p>
+          <p className="-mt-[0.5px] text-sm text-gray-600 truncate">{name}</p>
         )}
         {icons.length === 0 && (
           <p className="-mt-[0.5px] text-sm">
