@@ -2,10 +2,32 @@ import axios from "axios"
 import { useEffect, useState } from "react"
 import { useTable, useSortBy } from "react-table"
 
+function calculatePoints(obj) {
+  return (obj.avg_diffculty * obj.solve_count) / 100.0
+}
+
 const columns = [
+  {
+    Header: "#",
+    accessor: (row, i) => i + 1,
+  },
   {
     Header: "Name",
     accessor: "name",
+    Cell: (cell) => {
+      return (
+        <div className="flex space-x-4 px-6">
+          <img
+            src={`https://robohash.org/${cell.value}?bgset=bg2&size=48x48`}
+            className="rounded-full"
+          />
+          <div>
+            <p className="font-medium">{cell.value}</p>
+            <p>{cell.row.original.username}</p>
+          </div>
+        </div>
+      )
+    },
   },
   {
     Header: "Solve Count",
@@ -16,8 +38,13 @@ const columns = [
     accessor: "solve_time",
   },
   {
+    Header: "Average Solve Difficulty",
+    accessor: "avg_diffculty",
+    Cell: (cell) => cell.value.toFixed(2),
+  },
+  {
     Header: "Points",
-    accessor: (row) => parseInt(row.solve_count) + parseInt(row.solve_time),
+    accessor: (row) => calculatePoints(row),
   },
 ]
 
@@ -25,6 +52,12 @@ const LeaderboardTable = () => {
   const [ranklist, setRanklist] = useState([])
   useEffect(async () => {
     const { data } = await axios.get("/api/users/ranklist")
+    data.ranklist.sort((a, b) => {
+      return calculatePoints(a) >= calculatePoints(b) ? -1 : 1
+    })
+
+    console.log(data.ranklist)
+
     setRanklist(data.ranklist)
   }, [])
 
@@ -48,7 +81,7 @@ const LeaderboardTable = () => {
     tableInstance
 
   return (
-    <table {...getTableProps()} className="border-collapse">
+    <table {...getTableProps()} className="border-collapse max-w-6  xl">
       <thead>
         {headerGroups.map((headerGroup) => {
           return (

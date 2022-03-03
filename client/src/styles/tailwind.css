@@ -132,10 +132,14 @@ table tr th {
   @apply border-b-[2px] border-gray-100 font-medium;
 }
 
-/* table td,
+table tr td:first-child {
+  text-align: center;
+}
+
+table td,
 table th {
-  @apply px-6 py-4;
-} */
+  @apply px-4 py-2;
+}
 
 table td {
   @apply h-[60px];

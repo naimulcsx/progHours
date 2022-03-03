@@ -34,10 +34,20 @@ export class UsersService {
         .where('user_id = :userId', { userId: user.id })
         .execute();
 
+      const { total_difficulty } = await this.submissionsRepository
+        .createQueryBuilder('submission')
+        .where('submission.user_id = :userId', { userId: user.id })
+        .andWhere("submission.verdict = 'AC'")
+        .innerJoinAndSelect('submission.problem_id', 'problems')
+        .select('SUM(problems.difficulty) as total_difficulty')
+        .getRawOne();
+
       result.push({
         ...user,
-        solve_count: acSolutions[0].count,
-        solve_time: solveTime[0].sum,
+        avg_diffculty:
+          parseInt(total_difficulty) / parseInt(acSolutions[0].count),
+        solve_count: parseInt(acSolutions[0].count),
+        solve_time: parseInt(solveTime[0].sum),
       });
     }
     return result;
