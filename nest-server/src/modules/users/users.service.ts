@@ -45,9 +45,9 @@ export class UsersService {
       result.push({
         ...user,
         avg_diffculty:
-          parseInt(total_difficulty) / parseInt(acSolutions[0].count),
+          parseInt(total_difficulty) / parseInt(acSolutions[0].count) || 0,
         solve_count: parseInt(acSolutions[0].count),
-        solve_time: parseInt(solveTime[0].sum),
+        solve_time: parseInt(solveTime[0].sum) || 0,
       });
     }
     return result;
