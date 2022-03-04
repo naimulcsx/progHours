@@ -46,7 +46,7 @@ function App() {
           position="bottom-right"
         />
       </HelmetProvider>
-      <ReactQueryDevtools />
+      {/* <ReactQueryDevtools /> */}
     </QueryClientProvider>
   )
 }

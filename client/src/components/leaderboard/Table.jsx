@@ -1,5 +1,3 @@
-import axios from "axios"
-import { useEffect, useState } from "react"
 import { useTable, useSortBy } from "react-table"
 
 const columns = [
@@ -12,14 +10,16 @@ const columns = [
     accessor: "name",
     Cell: (cell) => {
       return (
-        <div className="flex space-x-4 px-6">
+        <div className="flex items-center space-x-4 px-6">
           <img
-            src={`https://robohash.org/${cell.value}?bgset=bg2&size=48x48`}
+            src={`https://robohash.org/${cell.value}?bgset=bg2&size=40x40`}
             className="rounded-full"
           />
           <div>
             <p className="font-medium">{cell.value}</p>
-            <p>{cell.row.original.username}</p>
+            <p className="text-sm text-gray-500">
+              {cell.row.original.username}
+            </p>
           </div>
         </div>
       )
@@ -46,20 +46,10 @@ const columns = [
 ]
 
 const LeaderboardTable = ({ ranklist }) => {
-  console.log(ranklist)
-
   const tableInstance = useTable(
     {
       data: ranklist,
       columns,
-      initialState: {
-        sortBy: [
-          {
-            id: "points",
-            desc: true,
-          },
-        ],
-      },
     },
     useSortBy
   )
@@ -80,7 +70,7 @@ const LeaderboardTable = ({ ranklist }) => {
                 return (
                   <th
                     {...header.getHeaderProps(header.getSortByToggleProps())}
-                    className="px-6 py-3 border border-slate-100"
+                    className="border-b border-slate-100"
                   >
                     {header.render("Header")}
                   </th>
@@ -99,7 +89,7 @@ const LeaderboardTable = ({ ranklist }) => {
                 return (
                   <td
                     {...cell.getCellProps()}
-                    className="border border-slate-100"
+                    className="border-b border-slate-100"
                   >
                     {cell.render("Cell")}
                   </td>

@@ -9,10 +9,6 @@ import DatePicker from "./columns/DatePicker"
 import AddEntryRow from "./AddEntryRow"
 import SolveTime from "./columns/SolveTime"
 import Tags from "./columns/Tags"
-import { useEffect, useState } from "react"
-import { getSubmissions } from "../../api/submissions"
-import { useQuery } from "react-query"
-import axios from "axios"
 
 const practiceColumns = [
   {
@@ -109,7 +105,7 @@ const TrackingTable = ({ submissions }) => {
                   return (
                     <th
                       {...header.getHeaderProps(header.getSortByToggleProps())}
-                      className="px-6 py-3 border border-slate-100"
+                      className="border border-slate-100"
                     >
                       {header.render("Header")}
                     </th>

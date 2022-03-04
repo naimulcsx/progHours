@@ -8,24 +8,26 @@ import { useQuery } from "react-query"
 import axios from "axios"
 
 function calculatePoints(obj) {
-  const { avg_diffculty, solve_count } = obj
+  const { avg_diffculty, solve_count, solve_time } = obj
   const x = avg_diffculty / 3000
-  const y = solve_count / 5000
-  return (6 * x + 4 * y) / 10
+  const y = solve_count / 50
+  const z = solve_time / 100
+  return (2 * x + y + z) / 4
 }
+
 const LeaderboardPage = () => {
   const query = useQuery(
     "ranklist",
     () => axios.get("/api/users/ranklist").then((res) => res.data),
     {
-      staleTime: 60000,
+      // staleTime: 60000,
       onSuccess: (data) => {
         data.ranklist.forEach((el, i) => {
           data.ranklist[i].points = calculatePoints(el)
           el.points = calculatePoints(el) * 1000
         })
         data.ranklist.sort((a, b) => {
-          return calculatePoints(a) >= calculatePoints(b) ? -1 : 1
+          return b.points - a.points
         })
       },
     }

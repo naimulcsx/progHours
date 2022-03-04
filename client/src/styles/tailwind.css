@@ -110,43 +110,25 @@ input:-webkit-autofill:active {
   @apply w-full px-4 py-1 text-base border-2 border-gray-200 rounded-md focus:outline-none focus:border-2 focus:border-primary;
 }
 
-/* table styles */
-
+/*------- Table Styles ------ */
+/*----------------------------*/
 table {
-  width: 100%;
-  border-collapse: collapse;
+  @apply w-full;
 }
-
-table th,
-table tr {
-  text-align: left;
-}
-
-table tr {
-  /* border-top: 1px solid #ebeaed; */
-  @apply border-b border-gray-100;
-}
-
-table tr th {
-  /* border-top: 1px solid #ebeaed; */
-  @apply border-b-[2px] border-gray-100 font-medium;
-}
-
-table tr td:first-child {
-  text-align: center;
-}
-
-table td,
 table th {
-  @apply px-4 py-2;
+  @apply text-left;
+}
+table th,
+table td {
+  @apply px-5 py-2;
+}
+table tr th:first-child,
+table tr td:first-child {
+  @apply w-16 text-center;
 }
 
-table td {
-  @apply h-[60px];
-}
-table td[data-idx] {
-  @apply px-4 py-2 text-center;
-}
+/*------- Submissions Table ------ */
+/*--------------------------------*/
 table td[data-problem-name] {
   @apply w-[300px] relative px-4 py-2;
 }
@@ -154,10 +136,10 @@ table td[data-problem-name] input.inset {
   @apply absolute inset-0 px-6 rounded focus:outline-none focus:ring-2 focus:ring-inset ring-primary;
 }
 table td[data-verdict] {
-  @apply w-10 px-4 py-2;
+  @apply w-10 px-2;
 }
 table td[data-problem\.difficulty] {
-  @apply w-10 px-6 py-2;
+  @apply w-10;
 }
 table td[data-solve_time] {
   @apply relative;
@@ -177,46 +159,12 @@ table td[data-solved-at] .react-datepicker__input-container {
 table td[data-solved-at] .react-datepicker__input-container input {
   @apply w-full h-full px-6;
 }
-table tr th:first-child {
-  @apply text-center;
-}
-table {
-  border-style: hidden !important;
-  @apply rounded-lg shadow;
-}
 table td[data-tags] {
   @apply w-[560px] px-6 py-2;
 }
 table td[data-actions] {
   @apply px-4 py-2;
 }
-
-/* tables */
-/* 
-td[data-verdict="WA"] span {
-  @apply p-2 text-sm font-medium text-red-700 bg-red-100 rounded;
-}
-
-td[data-verdict="AC"] span {
-  @apply p-2 text-sm font-medium rounded text-emerald-700 bg-emerald-100;
-}
-
-td[data-verdict="RTE"] span {
-  @apply p-2 text-sm font-medium text-pink-700 bg-pink-100 rounded;
-}
-
-td[data-verdict="TLE"] span {
-  @apply p-2 text-sm font-medium rounded text-amber-900 bg-amber-100;
-} */
-
-/* td[data-solvetime] span {
-  @apply ml-6;
-} */
-/* 
-td[data-solvetime] {
-  @apply before:w-2 before:h-2 before:bg-cyan-500 before:top-[15px] before:block before:relative;
-} */
-
-.suggested-tag:hover button {
+table td[data-tags] .suggested-tag:hover button {
   @apply block;
 }
