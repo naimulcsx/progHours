@@ -8,7 +8,10 @@ import { useQuery } from "react-query"
 import axios from "axios"
 
 function calculatePoints(obj) {
-  return (obj.avg_diffculty * obj.solve_count) / 100.0
+  const { avg_diffculty, solve_count } = obj
+  const x = avg_diffculty / 3000
+  const y = solve_count / 5000
+  return (6 * x + 4 * y) / 10
 }
 const LeaderboardPage = () => {
   const query = useQuery(
@@ -17,6 +20,10 @@ const LeaderboardPage = () => {
     {
       staleTime: 60000,
       onSuccess: (data) => {
+        data.ranklist.forEach((el, i) => {
+          data.ranklist[i].points = calculatePoints(el)
+          el.points = calculatePoints(el) * 1000
+        })
         data.ranklist.sort((a, b) => {
           return calculatePoints(a) >= calculatePoints(b) ? -1 : 1
         })

@@ -2,10 +2,6 @@ import axios from "axios"
 import { useEffect, useState } from "react"
 import { useTable, useSortBy } from "react-table"
 
-function calculatePoints(obj) {
-  return (obj.avg_diffculty * obj.solve_count) / 100.0
-}
-
 const columns = [
   {
     Header: "#",
@@ -44,11 +40,14 @@ const columns = [
   },
   {
     Header: "Points",
-    accessor: (row) => calculatePoints(row),
+    accessor: "points",
+    Cell: (cell) => cell.value.toFixed(2),
   },
 ]
 
 const LeaderboardTable = ({ ranklist }) => {
+  console.log(ranklist)
+
   const tableInstance = useTable(
     {
       data: ranklist,
@@ -56,7 +55,7 @@ const LeaderboardTable = ({ ranklist }) => {
       initialState: {
         sortBy: [
           {
-            id: "Points",
+            id: "points",
             desc: true,
           },
         ],
