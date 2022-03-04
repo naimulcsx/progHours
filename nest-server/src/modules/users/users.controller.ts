@@ -1,4 +1,5 @@
-import { Controller, Get } from '@nestjs/common';
+import { Controller, Get, Req, UseGuards } from '@nestjs/common';
+import { IsAuthenticatedGuard } from 'src/guards/is-authenticated';
 import { UsersService } from './users.service';
 
 @Controller('users')
@@ -9,6 +10,15 @@ export class UsersController {
     const result = await this.usersService.getRanklist();
     return {
       ranklist: result,
+    };
+  }
+
+  @Get('stats')
+  @UseGuards(IsAuthenticatedGuard)
+  async getUserStats(@Req() req: any) {
+    const frequency = await this.usersService.getStats(req.user);
+    return {
+      verdict: frequency,
     };
   }
 }

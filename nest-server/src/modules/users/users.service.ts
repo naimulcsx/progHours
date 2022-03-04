@@ -13,6 +13,31 @@ export class UsersService {
     @InjectRepository(Submission)
     private submissionsRepository: Repository<Submission>,
   ) {}
+
+  async getVerdictCount(user, verdict) {
+    return this.submissionsRepository
+      .createQueryBuilder()
+      .select('COUNT(verdict)')
+      .where('user_id = :userId', { userId: user.id })
+      .andWhere('verdict = :verdict', { verdict })
+      .execute();
+  }
+
+  async getStats(user) {
+    const [AC] = await this.getVerdictCount(user, 'AC');
+    const [WA] = await this.getVerdictCount(user, 'WA');
+    const [RTE] = await this.getVerdictCount(user, 'RTE');
+    const [MLE] = await this.getVerdictCount(user, 'MLE');
+    const [TLE] = await this.getVerdictCount(user, 'TLE');
+    return {
+      AC: parseInt(AC.count),
+      WA: parseInt(WA.count),
+      RTE: parseInt(RTE.count),
+      MLE: parseInt(MLE.count),
+      TLE: parseInt(TLE.count),
+    };
+  }
+
   async getRanklist() {
     const users = await this.usersRepository
       .createQueryBuilder('user')
