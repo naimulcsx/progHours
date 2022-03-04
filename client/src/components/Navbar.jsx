@@ -5,7 +5,7 @@ import DropdownMenu from "./DropdownMenu"
 const Navbar = () => {
   const name = localStorage.getItem("name")
   return (
-    <header className="fixed top-0 left-0 right-0 z-[9999] flex items-center justify-between px-6 py-3 bg-white border-b border-gray-100">
+    <header className="fixed top-0 left-0 right-0 z-[9999] flex items-center justify-between px-6 py-3 bg-white">
       <Link to="/dashboard">
         <Logo className="text-gray-900" />
       </Link>

@@ -14,7 +14,7 @@ const Sidebar = () => {
 
   const handleLogout = useLogout()
   return (
-    <div className="max-w-[250px] w-full h-[100vh] py-6 fixed z-50 top-0 left-0 bottom-0 bg-white border-r border-gray-100">
+    <div className="max-w-[250px] w-full h-[100vh] py-6 fixed z-50 top-0 left-0 bottom-0 bg-white">
       {/* sidebar links */}
       <div className="flex flex-col justify-between h-full px-4">
         <div className="mt-16">
