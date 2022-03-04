@@ -11,9 +11,9 @@ const client = new Client({
 
 client.connect();
 
-const NUMBER_OF_USERS = 500;
-const NUMBER_OF_PROBLEMS = 2000;
-const AVG_SUBS_PER_USER = 200;
+const NUMBER_OF_USERS = 100;
+const NUMBER_OF_PROBLEMS = 1000;
+const AVG_SUBS_PER_USER = 500;
 const NUMBER_OF_SUBS = AVG_SUBS_PER_USER * NUMBER_OF_USERS;
 
 async function createUsers() {
@@ -45,6 +45,10 @@ async function createUsers() {
   }
 }
 
+function randomInRange(start, end) {
+  return Math.floor(Math.random() * (end - start + 1) + start);
+}
+
 async function createProblems() {
   // generate 2000 problems
   for (let i = 1; i <= NUMBER_OF_PROBLEMS; ++i) {
@@ -52,7 +56,7 @@ async function createProblems() {
     const pid = faker.random.alphaNumeric(10); // unique
     const name = faker.hacker.verb() + ' the ' + faker.hacker.noun();
     const link = faker.internet.url(); // unique
-    const difficulty = Math.floor(Math.random() * 30) * 100;
+    const difficulty = randomInRange(8, 18) * 100;
     await client.query(
       'INSERT INTO problems(id, pid, name, link, difficulty) VALUES($1, $2, $3, $4, $5)',
       [i, pid, name, link, difficulty],
@@ -62,7 +66,20 @@ async function createProblems() {
 
 async function createSubmissions() {
   for (let i = 1; i <= NUMBER_OF_SUBS; ++i) {
-    const verdicts = ['AC', 'TLE', 'WA', 'RTE'];
+    const verdicts = [
+      'AC',
+      'AC',
+      'AC',
+      'AC',
+      'TLE',
+      'AC',
+      'WA',
+      'AC',
+      'AC',
+      'AC',
+      'AC',
+      'RTE',
+    ];
     const user_id = Math.floor(Math.random() * NUMBER_OF_USERS) + 1;
     const problem_id = Math.floor(Math.random() * NUMBER_OF_PROBLEMS) + 1;
     const verdict = faker.random.arrayElement(verdicts);
