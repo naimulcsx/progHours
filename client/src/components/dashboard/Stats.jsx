@@ -42,22 +42,22 @@ export function Stats() {
         {
           label: "AC",
           data: [AC],
-          backgroundColor: "green",
+          backgroundColor: "#a3e635",
         },
         {
           label: "WA",
           data: [WA],
-          backgroundColor: "red",
+          backgroundColor: "#f87171",
         },
         {
           label: "TLE",
           data: [TLE],
-          backgroundColor: "pink",
+          backgroundColor: "#fbbf24",
         },
         {
           label: "RTE",
           data: [RTE],
-          backgroundColor: "orange",
+          backgroundColor: "#f472b6",
         },
       ],
     })
