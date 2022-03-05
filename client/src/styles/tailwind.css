@@ -168,3 +168,8 @@ table td[data-actions] {
 table td[data-tags] .suggested-tag:hover button {
   @apply block;
 }
+
+table.leaderboard tr th:first-child,
+table.leaderboard tr td:first-child {
+  @apply px-12;
+}

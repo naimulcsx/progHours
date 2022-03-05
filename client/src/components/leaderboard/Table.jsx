@@ -10,7 +10,7 @@ const columns = [
     accessor: "name",
     Cell: (cell) => {
       return (
-        <div className="flex items-center space-x-4 px-6">
+        <div className="flex items-center space-x-4">
           <img
             src={`https://robohash.org/${cell.value}?bgset=bg2&size=40x40`}
             className="rounded-full"
@@ -58,7 +58,10 @@ const LeaderboardTable = ({ ranklist }) => {
     tableInstance
 
   return (
-    <table {...getTableProps()} className="border-collapse max-w-6  xl">
+    <table
+      {...getTableProps()}
+      className="leaderboard border-collapse max-w-6  xl"
+    >
       <thead>
         {headerGroups.map((headerGroup) => {
           return (
