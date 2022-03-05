@@ -116,7 +116,7 @@ table {
   @apply w-full;
 }
 table th {
-  @apply text-left;
+  @apply font-medium text-left;
 }
 table th,
 table td {

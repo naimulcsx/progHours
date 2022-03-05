@@ -7,6 +7,7 @@ import { ReactQueryDevtools } from "react-query/devtools"
 // import routes
 import routes from "./routes"
 import "react-toastify/dist/ReactToastify.css"
+import "./styles/fonts.css"
 import "./styles/tailwind.css"
 import "./styles/spinner.css"
 import { useEffect } from "react"
