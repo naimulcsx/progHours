@@ -4,7 +4,14 @@ import TrackingTable from "@/components/submissions/Table"
 import { useQuery } from "react-query"
 import { getSubmissions } from "@/api/submissions"
 import { Link } from "react-router-dom"
-import { Fragment, useCallback, useEffect, useRef, useState } from "react"
+import {
+  Fragment,
+  useCallback,
+  useEffect,
+  useRef,
+  useState,
+  useMemo,
+} from "react"
 import { Transition } from "@headlessui/react"
 import moment from "moment"
 
@@ -26,20 +33,21 @@ function minmaxDate(arr) {
 }
 
 export default function TrackingSheet() {
-  const query = useQuery("practice", getSubmissions, {
-    staleTime: 1000000,
-  })
+  const query = useQuery("practice", getSubmissions, { staleTime: 60000 })
 
   let [weeks, setWeeks] = useState([])
   let [filters, setFilters] = useState([])
   let [filteredData, setFilteredData] = useState([])
 
-  useCallback()
+  const [minDate, maxDate] = useMemo(
+    () => minmaxDate(query.data?.submissions || []),
+    [query.data]
+  )
 
   useEffect(() => {
+    if (!query.data) return
     const { submissions } = query.data
 
-    const [minDate, maxDate] = minmaxDate(submissions)
     let from = moment(minDate)
     let to = moment(minDate)
     while (to.format("dddd") !== "Friday") {
@@ -143,7 +151,7 @@ export default function TrackingSheet() {
         </ul>
       </div>
       {/* tracking table */}
-      <TrackingTable submissions={filteredData || []} />
+      {query.data && <TrackingTable submissions={filteredData} />}
     </Layout>
   )
 }

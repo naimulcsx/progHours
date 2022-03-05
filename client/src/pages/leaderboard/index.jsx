@@ -20,7 +20,6 @@ const LeaderboardPage = () => {
     "ranklist",
     () => axios.get("/api/users/ranklist").then((res) => res.data),
     {
-      // staleTime: 60000,
       onSuccess: (data) => {
         data.ranklist.forEach((el, i) => {
           data.ranklist[i].points = calculatePoints(el)

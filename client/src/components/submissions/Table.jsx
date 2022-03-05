@@ -11,6 +11,12 @@ import SolveTime from "./columns/SolveTime"
 import Tags from "./columns/Tags"
 import { useEffect, useState } from "react"
 import moment from "moment"
+import {
+  FiChevronsLeft,
+  FiChevronLeft,
+  FiChevronRight,
+  FiChevronsRight,
+} from "react-icons/fi"
 
 const practiceColumns = [
   {
@@ -64,7 +70,7 @@ const TrackingTable = ({ submissions }) => {
       data: submissions,
       columns: practiceColumns,
       initialState: {
-        pageSize: 10,
+        pageSize: 20,
         sortBy: [
           {
             id: "solved-at",
@@ -120,7 +126,7 @@ const TrackingTable = ({ submissions }) => {
         </thead>
         <tbody {...getTableBodyProps()}>
           <AddEntryRow id={submissions.length + 1} />
-          {rows.map((row) => {
+          {page.map((row) => {
             prepareRow(row)
             return (
               <tr
@@ -148,7 +154,7 @@ const TrackingTable = ({ submissions }) => {
           })}
         </tbody>
       </table>
-      {/* <div className="flex items-center justify-between px-6 py-3 space-x-4 bg-white pagination">
+      <div className="flex items-center justify-between px-6 py-3 space-x-4 bg-white pagination">
         <div>
           <span>
             Page{" "}
@@ -199,7 +205,7 @@ const TrackingTable = ({ submissions }) => {
             />
           </span>
         </div>
-      </div> */}
+      </div>
       {submissions.length === 0 && <EmptyState />}
     </div>
   )
