@@ -4,13 +4,85 @@ import TrackingTable from "@/components/submissions/Table"
 import { useQuery } from "react-query"
 import { getSubmissions } from "@/api/submissions"
 import { Link } from "react-router-dom"
-import { Fragment, useEffect, useRef, useState } from "react"
+import { Fragment, useCallback, useEffect, useRef, useState } from "react"
 import { Transition } from "@headlessui/react"
+import moment from "moment"
+
+function minmaxDate(arr) {
+  var len = arr.length,
+    min = new Date("01-01-2999"),
+    max = new Date("01-01-1980")
+  while (len--) {
+    if (new Date(arr[len].solved_at) < min) {
+      min = new Date(arr[len].solved_at)
+    } else {
+      max = new Date(arr[len].solved_at)
+    }
+  }
+  return [
+    moment(min).startOf("day").toDate(),
+    moment(max).endOf("day").toDate(),
+  ]
+}
 
 export default function TrackingSheet() {
   const query = useQuery("practice", getSubmissions, {
-    staleTime: 30 * 60 * 1000,
+    staleTime: 1000000,
   })
+
+  let [weeks, setWeeks] = useState([])
+  let [filters, setFilters] = useState([])
+  let [filteredData, setFilteredData] = useState([])
+
+  useCallback()
+
+  useEffect(() => {
+    const { submissions } = query.data
+
+    const [minDate, maxDate] = minmaxDate(submissions)
+    let from = moment(minDate)
+    let to = moment(minDate)
+    while (to.format("dddd") !== "Friday") {
+      to.add(1, "day")
+    }
+
+    const weekRanges = [{ from: from.toDate(), to: to.toDate() }]
+    while (to.toDate() <= maxDate) {
+      weekRanges.push({
+        from: to.add(1, "day").toDate(),
+        to: to.add(6, "day").toDate(),
+      })
+    }
+    setWeeks(weekRanges)
+    if (!filters.includes("week=" + weekRanges.length))
+      setFilters([...filters, "week=" + weekRanges.length])
+  }, [query.data])
+
+  const dateFilter = (arr, from, to) =>
+    arr.filter(
+      (el) => Date.parse(el.solved_at) >= from && Date.parse(el.solved_at) <= to
+    )
+
+  useEffect(() => {
+    if (!query.data) return
+    let arr = query.data.submissions
+    filters.forEach((filter) => {
+      // it is a week filter
+      if (filter.includes("week")) {
+        const weekId = parseInt(filter.split("=")[1])
+        arr = dateFilter(arr, weeks[weekId - 1].from, weeks[weekId - 1].to)
+      }
+    })
+    setFilteredData(arr)
+  }, [filters])
+
+  const removeFilter = (name) => {
+    setFilters(
+      filters.filter((filter) => {
+        return filter !== name
+      })
+    )
+  }
 
   return (
     <Layout>
@@ -53,9 +125,25 @@ export default function TrackingSheet() {
           </Link>
         </div>
       </div>
+      <div>
+        <ul className="flex">
+          {filters.map((filter) => {
+            return (
+              <li className="bg-primary bg-opacity-10 px-3 py-1 text-sm text-primary rounded-xl">
+                {filter}
+                <button
+                  className="bg-red-600 text-white"
+                  onClick={() => removeFilter(filter)}
+                >
+                  x
+                </button>
+              </li>
+            )
+          })}
+        </ul>
+      </div>
       {/* tracking table */}
-
-      <TrackingTable submissions={query.data?.submissions || []} />
+      <TrackingTable submissions={filteredData || []} />
     </Layout>
   )
 }

@@ -9,6 +9,8 @@ import DatePicker from "./columns/DatePicker"
 import AddEntryRow from "./AddEntryRow"
 import SolveTime from "./columns/SolveTime"
 import Tags from "./columns/Tags"
+import { useEffect, useState } from "react"
+import moment from "moment"
 
 const practiceColumns = [
   {
@@ -56,6 +58,7 @@ const practiceColumns = [
 const TrackingTable = ({ submissions }) => {
   let k = submissions.length
   submissions.forEach((el) => (el.idx = k--))
+
   const tableInstance = useTable(
     {
       data: submissions,
