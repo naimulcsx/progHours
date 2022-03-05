@@ -17,7 +17,7 @@ const DatePicker = (cell) => {
     },
   })
   const handleBlur = () => {
-    mutate({ id: cell.row.original.id, solvedAt: date })
+    mutate({ id: cell.row.original.id, solved_at: date })
   }
   return (
     <ReactDatePicker

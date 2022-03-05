@@ -19,7 +19,7 @@ export default function SolveTime(cell) {
 
   const handleBlur = (value) => {
     if (prevRef.current !== time) {
-      mutate({ id: cell.row.original.id, solveTime: value })
+      mutate({ id: cell.row.original.id, solve_time: parseInt(value, 10) })
       prevRef.current = value
     }
   }

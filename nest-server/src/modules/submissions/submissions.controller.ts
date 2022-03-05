@@ -5,11 +5,14 @@ import {
   Get,
   HttpStatus,
   Post,
+  Patch,
   Req,
+  Param,
   UseGuards,
 } from '@nestjs/common';
 import { IsAuthenticatedGuard } from 'src/guards/is-authenticated';
 import { CreateSubmissionDto } from 'src/validators/create-submission-dto';
+import { UpdateSubmissionDto } from 'src/validators/update-submission-dto';
 import { SubmissionsService } from './submissions.service';
 
 @Controller('submissions')
@@ -32,6 +35,19 @@ export class SubmissionsController {
     return {
       statusCode: HttpStatus.CREATED,
       message: 'resource created',
+    };
+  }
+
+  @Patch(':id')
+  async updateSubmission(
+    @Param('id') id: any,
+    @Body() body: UpdateSubmissionDto,
+  ) {
+    await this.submissionsService.updateSubmission(body, id);
+
+    return {
+      statusCode: HttpStatus.OK,
+      message: 'resource updated',
     };
   }
 }
