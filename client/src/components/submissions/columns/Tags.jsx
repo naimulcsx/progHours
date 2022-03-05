@@ -3,10 +3,8 @@ import TagInputField from "../TagInputField"
 const Tags = (cell) => {
   const user = localStorage.getItem("userId")
   const { id, tags, user_tags } = cell.row.original.problem
-  if (tags.length === 0) return "—"
-
   return (
-    <ul className="flex flex-wrap">
+    <ul className="flex flex-wrap items-center">
       {tags.map((tag) => {
         return (
           <li

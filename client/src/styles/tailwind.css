@@ -124,7 +124,7 @@ table td {
 }
 table tr th:first-child,
 table tr td:first-child {
-  @apply w-16 text-center;
+  @apply w-20 text-center;
 }
 
 /*------- Submissions Table ------ */
@@ -136,7 +136,7 @@ table td[data-problem-name] input.inset {
   @apply absolute inset-0 px-6 rounded focus:outline-none focus:ring-2 focus:ring-inset ring-primary;
 }
 table td[data-verdict] {
-  @apply w-10 px-2;
+  @apply w-10 px-5;
 }
 table td[data-problem\.difficulty] {
   @apply w-10;
@@ -160,7 +160,7 @@ table td[data-solved-at] .react-datepicker__input-container input {
   @apply w-full h-full px-6;
 }
 table td[data-tags] {
-  @apply w-[560px] px-6 py-2;
+  @apply w-[520px] px-6 py-2;
 }
 table td[data-actions] {
   @apply px-4 py-2;

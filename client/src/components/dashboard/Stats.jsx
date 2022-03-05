@@ -61,7 +61,6 @@ export function Stats() {
         },
       ],
     })
-    console.log(data)
   }, [])
 
   return <Bar options={options} data={data} />

@@ -22,8 +22,8 @@ const LeaderboardPage = () => {
     {
       onSuccess: (data) => {
         data.ranklist.forEach((el, i) => {
-          data.ranklist[i].points = calculatePoints(el)
-          el.points = calculatePoints(el) * 1000
+          el.points = (calculatePoints(el) * 1000).toFixed(2)
+          el.avg_diffculty = el.avg_diffculty.toFixed(2)
         })
         data.ranklist.sort((a, b) => {
           return b.points - a.points

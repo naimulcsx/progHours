@@ -37,10 +37,10 @@ const routes = (isLoggedIn) => [
     path: "/submissions",
     element: isLoggedIn ? <TrackingSheet /> : <AccessDenied />,
   },
-  {
-    path: "/submissions/new",
-    element: isLoggedIn ? <TrackingEntry /> : <AccessDenied />,
-  },
+  // {
+  //   path: "/submissions/new",
+  //   element: isLoggedIn ? <TrackingEntry /> : <AccessDenied />,
+  // },
   {
     path: "/settings",
     element: isLoggedIn ? (

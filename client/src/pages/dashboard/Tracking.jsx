@@ -78,7 +78,8 @@ export default function TrackingSheet() {
       // it is a week filter
       if (filter.includes("week")) {
         const weekId = parseInt(filter.split("=")[1])
-        arr = dateFilter(arr, weeks[weekId - 1].from, weeks[weekId - 1].to)
+        if (weekId > 0)
+          arr = dateFilter(arr, weeks[weekId - 1].from, weeks[weekId - 1].to)
       }
     })
     setFilteredData(arr)
@@ -113,25 +114,6 @@ export default function TrackingSheet() {
             </Transition>
           </div>
         </h3>
-        <div className="flex items-center space-x-5">
-          {/* <div className="flex items-center text-primary">
-            <div className="p-2 border border-r-0 border-lightGrey rounded-l-md">
-              <GridViewIcon size={20} />
-            </div>
-            <div className="p-2 border border-lightGrey rounded-r-md">
-              <ListViewIcon size={20} />
-            </div>
-          </div> */}
-          <Link to="/submissions/new">
-            <button
-              type="button"
-              className="inline-flex items-center px-4 py-2 text-sm font-medium text-white border border-transparent rounded-md shadow-sm bg-primary hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-            >
-              <PlusIcon className="w-5 h-5 mr-2 -ml-1" aria-hidden="true" />
-              New Entry
-            </button>
-          </Link>
-        </div>
       </div>
       <div className="mt-4">
         <ul className="flex space-x-4 items-center">
