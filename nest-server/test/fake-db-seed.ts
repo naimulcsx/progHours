@@ -85,7 +85,7 @@ async function createSubmissions() {
     const verdict = faker.random.arrayElement(verdicts);
     const solve_time = Math.floor(Math.random() * 100) + 1;
     const solved_at = faker.datatype.datetime({
-      max: 1644861600000,
+      max: 1646469214282,
       min: 1630432800000,
     });
     try {

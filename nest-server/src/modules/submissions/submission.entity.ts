@@ -18,8 +18,8 @@ export class Submission {
   @Column()
   solve_time: number;
 
-  @Column()
-  solved_at: Date;
+  @Column({ type: 'timestamp with time zone' })
+  solved_at: String;
 
   @Column()
   verdict: string;
