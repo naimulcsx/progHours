@@ -5,8 +5,8 @@ import { useFormik } from "formik"
 import * as Yup from "yup"
 import axios from "axios"
 import { toast } from "react-toastify"
-import getHttpStatusError from "@/utils/getHttpStatusError"
 import { FormControl, Label, ErrorMessage, Input } from "@/components/Form"
+import showErrorToasts from "../../utils/showErrorToasts"
 
 const reigsterSchema = Yup.object().shape({
   name: Yup.string().trim().required("Name is required"),
@@ -14,7 +14,7 @@ const reigsterSchema = Yup.object().shape({
     .trim()
     .required("Email is required")
     .email("Invalid email"),
-  uid: Yup.string()
+  username: Yup.string()
     .trim()
     .required("University ID is required")
     .length(7, "Invalid University ID"),
@@ -27,7 +27,7 @@ const Register = () => {
     initialValues: {
       name: "",
       email: "",
-      uid: "",
+      username: "",
       password: "",
     },
     validationSchema: reigsterSchema,
@@ -37,16 +37,11 @@ const Register = () => {
         // redirect to the login page
         navigate("/login")
         // create a toast
-        toast.success("Account successfully created")
-      } catch (error) {
-        console.dir(error)
-        const { data, status } = error.response
-        if (status != 200) {
-          toast.error(getHttpStatusError(status), { className: "toast" })
-        }
-        data.errors?.forEach(({ message }) => {
-          toast.error(message, { className: "toast" })
-        })
+        toast.success("Account created!")
+      } catch (err) {
+        const { data } = err.response
+        toast.error(data.error, { className: "toast" })
+        showErrorToasts(data.message)
       }
     },
   })
@@ -87,14 +82,16 @@ const Register = () => {
             <ErrorMessage>{formik.errors.email}</ErrorMessage>
           </FormControl>
 
-          <FormControl isInvalid={formik.touched.uid && formik.errors.uid}>
+          <FormControl
+            isInvalid={formik.touched.username && formik.errors.username}
+          >
             <Input
               type="text"
               placeholder=" "
-              {...formik.getFieldProps("uid")}
+              {...formik.getFieldProps("username")}
             />
             <Label>University ID</Label>
-            <ErrorMessage>{formik.errors.uid}</ErrorMessage>
+            <ErrorMessage>{formik.errors.username}</ErrorMessage>
           </FormControl>
 
           <FormControl

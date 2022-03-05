@@ -5,7 +5,6 @@ const getAccessToken = require("../utils/getAccessToken")
 const register = async (req, res) => {
   let { name, password, uid, email } = req.body
   uid = uid.toLowerCase()
-
   try {
     const newUser = await User.create({
       name,
@@ -13,7 +12,6 @@ const register = async (req, res) => {
       uid,
       email,
     })
-
     res.json({
       status: "success",
       user: newUser,

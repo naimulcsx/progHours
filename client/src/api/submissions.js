@@ -16,4 +16,14 @@ const updateSubmission = ({ id, ...values }) => {
   return axios.patch(`/api/submissions/${id}`, values).then((res) => res.data)
 }
 
-export { getSubmissions, createSubmission, deleteSubmission, updateSubmission }
+const addTag = ({ id, ...values }) => {
+  return axios.post(`/api/problems/${id}/tags`, values).then((res) => res.data)
+}
+
+export {
+  addTag,
+  getSubmissions,
+  createSubmission,
+  deleteSubmission,
+  updateSubmission,
+}

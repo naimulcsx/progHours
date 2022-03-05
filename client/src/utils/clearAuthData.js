@@ -5,6 +5,7 @@ const clearAuthData = () => {
   localStorage.removeItem("isLoggedIn")
   localStorage.removeItem("role")
   localStorage.removeItem("name")
+  localStorage.removeItem("userId")
   // remove the accessToken cookie
   return axios.get("/api/auth/logout")
 }

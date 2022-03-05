@@ -1,9 +1,5 @@
 import NavLink from "@/components/NavLink"
 import useLogout from "@/hooks/useLogout"
-import { toast } from "react-toastify"
-import { Link, useNavigate } from "react-router-dom"
-import { useEffect } from "react"
-import axios from "axios"
 
 import {
   DashboardIcon,
@@ -12,28 +8,14 @@ import {
   SettingsIcon,
   LogoutIcon,
 } from "@/components/Icons"
-
-import clearAuthData from "@/utils/clearAuthData"
-import Logo from "@/components/Logo"
-
+import { Link } from "react-router-dom"
+import Logo from "../Logo"
 const Sidebar = () => {
-  const navigate = useNavigate()
   const user = localStorage.getItem("name")
-  useEffect(() => {
-    async function checkUser() {
-      try {
-        await axios.get("/api/auth/user")
-      } catch (error) {
-        await clearAuthData()
-        navigate("/login")
-        toast.error("Access denied", { className: "toast" })
-      }
-    }
-    checkUser()
-  }, [])
+
   const handleLogout = useLogout()
   return (
-    <div className="max-w-[250px] w-full h-[100vh] py-6 fixed z-50 top-0 left-0 bottom-0 bg-white border-r border-gray-100">
+    <div className="max-w-[250px] w-full h-[100vh] py-6 fixed z-50 top-0 left-0 bottom-0 bg-white">
       {/* sidebar links */}
       <div className="flex flex-col justify-between h-full px-4">
         <div className="mt-16">

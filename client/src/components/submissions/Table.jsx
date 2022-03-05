@@ -1,4 +1,4 @@
-import { usePagination, useTable } from "react-table"
+import { usePagination, useTable, useSortBy } from "react-table"
 import EmptyState from "@/components/submissions/EmptyState"
 
 // import columns components
@@ -9,6 +9,14 @@ import DatePicker from "./columns/DatePicker"
 import AddEntryRow from "./AddEntryRow"
 import SolveTime from "./columns/SolveTime"
 import Tags from "./columns/Tags"
+import { useEffect, useState } from "react"
+import moment from "moment"
+import {
+  FiChevronsLeft,
+  FiChevronLeft,
+  FiChevronRight,
+  FiChevronsRight,
+} from "react-icons/fi"
 
 const practiceColumns = [
   {
@@ -28,7 +36,7 @@ const practiceColumns = [
   },
   {
     Header: "Solve Time",
-    accessor: "solveTime",
+    accessor: "solve_time",
     Cell: SolveTime,
   },
   {
@@ -41,17 +49,10 @@ const practiceColumns = [
     accessor: "problem.difficulty",
   },
   {
+    id: "solved-at",
     Header: "Date",
-    accessor: "solvedAt",
+    accessor: "solved_at",
     Cell: DatePicker,
-    // Cell: (cell) =>
-    //   new Date(cell.value).toLocaleString("en-US", {
-    //     year: "numeric",
-    //     month: "long",
-    //     day: "numeric",
-    //     minute: "2-digit",
-    //     hour: "2-digit",
-    //   }),
   },
   {
     Header: "Actions",
@@ -60,17 +61,25 @@ const practiceColumns = [
   },
 ]
 
-const TrackingTable = ({ problemData }) => {
-  console.log(problemData)
-  let k = problemData.length
-  problemData.forEach((el) => (el.idx = k--))
+const TrackingTable = ({ submissions }) => {
+  let k = submissions.length
+  submissions.forEach((el) => (el.idx = k--))
 
   const tableInstance = useTable(
     {
-      data: problemData,
+      data: submissions,
       columns: practiceColumns,
-      initialState: { pageSize: 10 },
+      initialState: {
+        pageSize: 20,
+        sortBy: [
+          {
+            id: "solved-at",
+            desc: true,
+          },
+        ],
+      },
     },
+    useSortBy,
     usePagination
   )
   const {
@@ -78,6 +87,7 @@ const TrackingTable = ({ problemData }) => {
     getTableBodyProps,
     rows,
     prepareRow,
+    page,
     headerGroups,
     canPreviousPage,
     canNextPage,
@@ -103,8 +113,8 @@ const TrackingTable = ({ problemData }) => {
                 {headerGroup.headers.map((header) => {
                   return (
                     <th
-                      {...header.getHeaderProps()}
-                      className="px-6 py-3 border border-slate-100"
+                      {...header.getHeaderProps(header.getSortByToggleProps())}
+                      className="border border-slate-100"
                     >
                       {header.render("Header")}
                     </th>
@@ -115,8 +125,8 @@ const TrackingTable = ({ problemData }) => {
           })}
         </thead>
         <tbody {...getTableBodyProps()}>
-          <AddEntryRow id={problemData.length + 1} />
-          {rows.map((row) => {
+          <AddEntryRow id={submissions.length + 1} />
+          {page.map((row) => {
             prepareRow(row)
             return (
               <tr
@@ -144,7 +154,7 @@ const TrackingTable = ({ problemData }) => {
           })}
         </tbody>
       </table>
-      {/* <div className="flex items-center justify-between px-6 py-3 space-x-4 bg-white pagination">
+      <div className="flex items-center justify-between px-6 py-3 space-x-4 bg-white pagination">
         <div>
           <span>
             Page{" "}
@@ -195,8 +205,8 @@ const TrackingTable = ({ problemData }) => {
             />
           </span>
         </div>
-      </div> */}
-      {problemData.length === 0 && <EmptyState />}
+      </div>
+      {submissions.length === 0 && <EmptyState />}
     </div>
   )
 }

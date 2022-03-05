@@ -5,7 +5,7 @@ export default function Profile() {
   const name = localStorage.getItem("name")
   return (
     <div className="">
-      <Navbar />
+      <Navbar bgWhite />
       <div className="relative flex items-center justify-center py-48 bg-primary">
         <div className="space-y-3 text-center">
           <h1 className="text-white">{name}</h1>
