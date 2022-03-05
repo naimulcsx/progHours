@@ -161,7 +161,7 @@ export class ParsersService {
       ? pathName.split('?')[0]
       : pathName;
 
-    const pid = 'TOPH-' + splitName;
+    const pid = 'TH-' + splitName;
 
     // problem difficulty
     const difficulty = 0;

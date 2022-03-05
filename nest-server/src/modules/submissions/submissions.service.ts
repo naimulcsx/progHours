@@ -1,4 +1,4 @@
-import { BadRequestException, Inject, Injectable, Req } from '@nestjs/common';
+import { BadRequestException, Inject, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { AuthService } from '../auth/auth.service';
@@ -73,6 +73,24 @@ export class SubmissionsService {
       ...body,
     });
     return this.submissionsRepository.save(newSubmission);
+  }
+
+  async updateSubmission(body: any, id: any) {
+    const { verdict, solve_time, solved_at } = body;
+
+    const options: any = {};
+
+    if (verdict) options.verdict = verdict;
+    if (solve_time) options.solve_time = solve_time;
+    if (solved_at) options.solved_at = solved_at;
+
+    try {
+      await this.submissionsRepository.update(id, options);
+
+      return { message: 'submission updated' };
+    } catch (err) {
+      throw err;
+    }
   }
 }
 
