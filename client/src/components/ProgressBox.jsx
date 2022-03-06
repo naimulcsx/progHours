@@ -2,6 +2,7 @@ import { BsArrowUpRight } from "react-icons/bs"
 import { FaRegComment } from "react-icons/fa"
 import { GiArrowCursor } from "react-icons/gi"
 import { MdWatchLater } from "react-icons/md"
+import { SiOpslevel } from "react-icons/si"
 
 const Box = ({ title, icon, result, progress, today }) => {
   return (
@@ -24,13 +25,15 @@ const Box = ({ title, icon, result, progress, today }) => {
   )
 }
 
-const ProgressBox = () => {
+const ProgressBox = ({ progress }) => {
+  const { total_solve, total_solve_time, total_difficulty } = progress
+
   return (
     <div className="flex justify-center">
-      <div className="w-full max-w-6xl mx-auto">
-        <div className="grid grid-cols-3 gap-9">
+      <div className="w-full">
+        <div className="grid grid-cols-1 lg:grid-cols-4 md:grid-cols-2 gap-9">
           <Box
-            icon={<FaRegComment />}
+            icon={<FaRegComment size={24} />}
             title="Points"
             result="850"
             progress="5.0"
@@ -38,19 +41,27 @@ const ProgressBox = () => {
           />
 
           <Box
-            icon={<GiArrowCursor />}
+            icon={<GiArrowCursor size={24} />}
             title="Problems Solved"
-            result="539"
+            result={total_solve}
             progress="5.0"
             today="+10 today"
           />
 
           <Box
-            icon={<MdWatchLater />}
-            title="Reading TIme"
-            result="156h"
+            icon={<MdWatchLater size={24} />}
+            title="Solve Time"
+            result={total_solve_time}
             progress="5.0"
             today="-13m 35s"
+          />
+
+          <Box
+            icon={<SiOpslevel size={24} />}
+            title="Average Difficulty"
+            result={total_difficulty}
+            progress="5.0"
+            today="+45 today"
           />
         </div>
       </div>

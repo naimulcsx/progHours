@@ -24,14 +24,14 @@ export class UsersService {
   }
 
   async getProgress(user) {
-    const acSolution = await this.submissionsRepository
+    const { count } = await this.submissionsRepository
       .createQueryBuilder()
       .select('COUNT(verdict)')
       .where('user_id = :userId', { userId: user.id })
       .andWhere('verdict = :verdict', { verdict: 'AC' })
       .getRawOne();
 
-    const solveTime = await this.submissionsRepository
+    const { sum } = await this.submissionsRepository
       .createQueryBuilder('submission')
       .select('SUM(solve_time)')
       .where('user_id = :userId', { userId: user.id })
@@ -47,8 +47,8 @@ export class UsersService {
       .getRawOne();
 
     return {
-      acSolution,
-      solveTime,
+      total_solve: count,
+      total_solve_time: sum,
       total_difficulty,
     };
   }
