@@ -6,20 +6,14 @@ import { useQuery } from "react-query"
 import axios from "axios"
 import { getRankList } from "../../api/leaderBorad"
 
-function calculatePoints(obj) {
-  const { avg_diffculty, solve_count, solve_time } = obj
-  const x = avg_diffculty / 3000
-  const y = solve_count / 50
-  const z = solve_time / 100
-  return (2 * x + y + z) / 4
-}
+import calculatePoints from "../../utils/calculatePoints"
 
 const LeaderboardPage = () => {
   const query = useQuery("ranklist", () => getRankList(), {
     onSuccess: (data) => {
       data.ranklist.forEach((el, i) => {
-        el.points = (calculatePoints(el) * 1000).toFixed(2)
-        el.avg_diffculty = el.avg_diffculty.toFixed(2)
+        el.points = calculatePoints(el).toFixed(2)
+        el.avg_difficulty = el.avg_difficulty.toFixed(2)
       })
       data.ranklist.sort((a, b) => {
         return b.points - a.points

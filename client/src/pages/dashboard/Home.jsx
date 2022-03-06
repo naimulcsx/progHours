@@ -3,6 +3,7 @@ import { Stats } from "../../components/dashboard/Stats"
 import ProgressBox from "../../components/ProgressBox"
 import { useQuery } from "react-query"
 import { getStats } from "../../api/dashboard"
+import calculatePoints from "../../utils/calculatePoints"
 
 const DashboardHome = () => {
   const query = useQuery("stats", getStats)

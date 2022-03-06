@@ -154,10 +154,7 @@ const AddEntryRow = ({ id }) => {
           className="flex items-center px-1 py-1 space-x-2 border rounded"
           // onClick={handleSubmit}
         >
-          {isLoading && <div className="sp sp-circle"></div>}
-          <span>
-            <AddIcon />
-          </span>
+          {isLoading ? <div className="sp sp-circle"></div> : <AddIcon />}
         </button>
       </td>
     </tr>

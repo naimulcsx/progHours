@@ -23,13 +23,4 @@ export class UsersController {
       ...progress,
     };
   }
-
-  @Get('progress')
-  @UseGuards(IsAuthenticatedGuard)
-  async getUserProgress(@Req() req: any) {
-    const progress = await this.usersService.getProgress(req.user);
-    return {
-      progress,
-    };
-  }
 }

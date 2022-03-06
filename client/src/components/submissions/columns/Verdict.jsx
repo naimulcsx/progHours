@@ -5,19 +5,28 @@ import { updateSubmission, getSubmissions } from "@/api/submissions"
 import { toast } from "react-toastify"
 
 const Verdict = (cell) => {
+  const client = useQueryClient()
   const [selected, setSelected] = useState(cell.value)
 
   const { mutate } = useMutation(updateSubmission, {
     onSuccess: (data) => {
+      console.log(selected)
       toast.success("Problem updated", { className: "toast" })
     },
-
     onError: (err) => {
       toast.error(err.response.data.message, { className: "toast" })
     },
   })
 
   const handleSelected = (value) => {
+    const oldData = client.getQueryData("practice")
+    const newData = oldData.submissions.map((el) => {
+      if (cell.row.original.id == el.id) {
+        return { ...el, verdict: value }
+      }
+      return el
+    })
+    client.setQueryData("practice", { submissions: newData })
     mutate({ id: cell.row.original.id, verdict: value })
     setSelected(value)
   }

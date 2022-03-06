@@ -33,7 +33,7 @@ function minmaxDate(arr) {
 }
 
 export default function TrackingSheet() {
-  const query = useQuery("practice", getSubmissions, { staleTime: 60000 })
+  const query = useQuery("practice", getSubmissions)
 
   let [weeks, setWeeks] = useState([])
   let [filters, setFilters] = useState([])

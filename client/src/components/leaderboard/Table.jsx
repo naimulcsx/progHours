@@ -35,7 +35,7 @@ const columns = [
   },
   {
     Header: "Average Solve Difficulty",
-    accessor: "avg_diffculty",
+    accessor: "avg_difficulty",
     Cell: (cell) => cell.value,
   },
   {

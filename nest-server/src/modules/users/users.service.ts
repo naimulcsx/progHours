@@ -35,7 +35,7 @@ export class UsersService {
       .createQueryBuilder('submission')
       .select('SUM(solve_time)')
       .where('user_id = :userId', { userId: user.id })
-      .andWhere("submission.verdict = 'AC'")
+      // .andWhere("submission.verdict = 'AC'")
       .getRawOne();
 
     const { total_difficulty } = await this.submissionsRepository
@@ -47,9 +47,9 @@ export class UsersService {
       .getRawOne();
 
     return {
-      total_solve: parseInt(count),
-      total_solve_time: parseInt(sum) || 0,
-      total_difficulty: parseInt(total_difficulty) || 0,
+      solve_count: parseInt(count),
+      solve_time: parseInt(sum) || 0,
+      avg_difficulty: parseInt(total_difficulty) / parseInt(count) || 0,
     };
   }
 
@@ -99,7 +99,7 @@ export class UsersService {
 
       result.push({
         ...user,
-        avg_diffculty:
+        avg_difficulty:
           parseInt(total_difficulty) / parseInt(acSolutions[0].count) || 0,
         solve_count: parseInt(acSolutions[0].count),
         solve_time: parseInt(solveTime[0].sum) || 0,
