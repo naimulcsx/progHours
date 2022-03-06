@@ -1,11 +1,10 @@
 import Layout from "@/components/dashboard/Layout"
 import { Transition } from "@headlessui/react"
 import { Fragment } from "react"
-import { PlusIcon } from "../../components/Icons"
 import LeaderboardTable from "../../components/leaderboard/Table"
-import { Link } from "react-router-dom"
 import { useQuery } from "react-query"
 import axios from "axios"
+import { getRankList } from "../../api/leaderBorad"
 
 function calculatePoints(obj) {
   const { avg_diffculty, solve_count, solve_time } = obj
@@ -16,21 +15,17 @@ function calculatePoints(obj) {
 }
 
 const LeaderboardPage = () => {
-  const query = useQuery(
-    "ranklist",
-    () => axios.get("/api/users/ranklist").then((res) => res.data),
-    {
-      onSuccess: (data) => {
-        data.ranklist.forEach((el, i) => {
-          el.points = (calculatePoints(el) * 1000).toFixed(2)
-          el.avg_diffculty = el.avg_diffculty.toFixed(2)
-        })
-        data.ranklist.sort((a, b) => {
-          return b.points - a.points
-        })
-      },
-    }
-  )
+  const query = useQuery("ranklist", () => getRankList(), {
+    onSuccess: (data) => {
+      data.ranklist.forEach((el, i) => {
+        el.points = (calculatePoints(el) * 1000).toFixed(2)
+        el.avg_diffculty = el.avg_diffculty.toFixed(2)
+      })
+      data.ranklist.sort((a, b) => {
+        return b.points - a.points
+      })
+    },
+  })
   return (
     <Layout>
       <div className="flex items-center justify-between">

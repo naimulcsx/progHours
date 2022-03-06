@@ -7,14 +7,15 @@ const DashboardHome = () => {
     <Layout>
       <div className="flex items-center justify-between">
         <div>
-          <h3 className="font-bold">Hi! {name} </h3>
-          <p className="text-gray-500 mt-1">
-            Here’s what’s going on in your competitive programming journey!
+          <h3 className="font-bold">Hi! {name}</h3>
+          <p className="mt-1 text-gray-500">
+            Here&apos;s what&apos;s going on in your competitive programming
+            journey!
           </p>
         </div>
       </div>
       <div className="grid grid-cols-3 mt-6">
-        <div className="bg-white px-8 py-6 border border-slate-100 rounded-lg">
+        <div className="px-8 py-6 bg-white border rounded-lg border-slate-100">
           <Stats />
         </div>
       </div>
