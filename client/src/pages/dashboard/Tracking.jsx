@@ -83,7 +83,7 @@ export default function TrackingSheet() {
       }
     })
     setFilteredData(arr)
-  }, [filters])
+  }, [query.data, filters])
 
   const removeFilter = (name) => {
     setFilters(

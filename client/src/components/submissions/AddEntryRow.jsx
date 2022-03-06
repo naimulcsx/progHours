@@ -17,6 +17,8 @@ import { useQueryClient, useMutation } from "react-query"
 import { getSubmissions, createSubmission } from "@/api/submissions"
 import { Popover } from "@headlessui/react"
 import TagInputField from "./TagInputField"
+import { AddIcon } from "../Icons"
+
 const submissionSchema = Yup.object().shape({
   link: Yup.string().trim().required("Problem link is required"),
   solve_time: Yup.number("Solve time must be a number").required(
@@ -61,7 +63,8 @@ const AddEntryRow = ({ id }) => {
     formik.setFieldValue("verdict", value)
   }
 
-  const handleSubmit = () => {
+  const handleSubmit = (e) => {
+    e.preventDefault()
     const errorNames = Object.keys(formik.errors)
     if (errorNames.length > 0) {
       errorNames.forEach((el) => {
@@ -81,9 +84,11 @@ const AddEntryRow = ({ id }) => {
         {id}
       </td>
       <td className="border border-slate-100" data-problem-name>
+        <form id="add-submission" onSubmit={handleSubmit}></form>
         <FormControl className="form">
           <Input
             type="text"
+            form="add-submission"
             placeholder="Problem Link"
             autoComplete="off"
             className="inset"
@@ -92,7 +97,11 @@ const AddEntryRow = ({ id }) => {
         </FormControl>
       </td>
       <td className="border border-slate-100" data-verdict>
-        <Select value={selected} onChange={handleSelected}>
+        <Select
+          value={selected}
+          onChange={handleSelected}
+          form="add-submission"
+        >
           <Option value="AC">AC</Option>
           <Option value="WA">WA</Option>
           <Option value="TLE">TLE</Option>
@@ -106,6 +115,7 @@ const AddEntryRow = ({ id }) => {
             type="text"
             placeholder="eg. 80"
             autoComplete="off"
+            form="add-submission"
             className="w-full p-2 focus:outline-none"
             {...formik.getFieldProps("solve_time")}
           ></Input>
@@ -131,6 +141,7 @@ const AddEntryRow = ({ id }) => {
       <td className="border border-slate-100" data-solved_at>
         <ReactDatePicker
           dateFormat="EEE, dd MMM yyyy"
+          form="add-submission"
           // className="h-[40px] px-3 focus:outline-none rounded focus:ring-2 ring-primary ring-opacity-50"
           selected={formik.values.solved_at}
           onChange={(date) => formik.setFieldValue("solved_at", date)}
@@ -138,12 +149,15 @@ const AddEntryRow = ({ id }) => {
       </td>
       <td className="border border-slate-100" data-actions>
         <button
+          form="add-submission"
           type="submit"
-          className="flex items-center px-3 py-1 space-x-2 text-white bg-gray-900 rounded"
-          onClick={handleSubmit}
+          className="flex items-center px-1 py-1 space-x-2 border rounded"
+          // onClick={handleSubmit}
         >
           {isLoading && <div className="sp sp-circle"></div>}
-          <span>{isLoading ? "Creating" : "Create"}</span>
+          <span>
+            <AddIcon />
+          </span>
         </button>
       </td>
     </tr>
