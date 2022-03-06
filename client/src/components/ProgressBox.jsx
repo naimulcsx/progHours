@@ -35,7 +35,7 @@ const ProgressBox = ({ progress }) => {
           <Box
             icon={<FaRegComment size={24} />}
             title="Points"
-            result="850"
+            result={0}
             progress="5.0"
             today="+45 today"
           />
@@ -43,7 +43,7 @@ const ProgressBox = ({ progress }) => {
           <Box
             icon={<GiArrowCursor size={24} />}
             title="Problems Solved"
-            result={total_solve}
+            result={total_solve || 0}
             progress="5.0"
             today="+10 today"
           />
@@ -51,7 +51,7 @@ const ProgressBox = ({ progress }) => {
           <Box
             icon={<MdWatchLater size={24} />}
             title="Solve Time"
-            result={total_solve_time}
+            result={total_solve_time || 0}
             progress="5.0"
             today="-13m 35s"
           />
@@ -59,7 +59,7 @@ const ProgressBox = ({ progress }) => {
           <Box
             icon={<SiOpslevel size={24} />}
             title="Average Difficulty"
-            result={total_difficulty}
+            result={total_difficulty / total_solve || 0}
             progress="5.0"
             today="+45 today"
           />
