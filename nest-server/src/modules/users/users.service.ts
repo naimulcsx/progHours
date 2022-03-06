@@ -47,9 +47,9 @@ export class UsersService {
       .getRawOne();
 
     return {
-      total_solve: count,
-      total_solve_time: sum,
-      total_difficulty,
+      total_solve: parseInt(count),
+      total_solve_time: parseInt(sum) || 0,
+      total_difficulty: parseInt(total_difficulty) || 0,
     };
   }
 

@@ -16,9 +16,11 @@ export class UsersController {
   @Get('stats')
   @UseGuards(IsAuthenticatedGuard)
   async getUserStats(@Req() req: any) {
+    const progress = await this.usersService.getProgress(req.user);
     const frequency = await this.usersService.getStats(req.user);
     return {
       verdict: frequency,
+      ...progress,
     };
   }
 
@@ -26,7 +28,6 @@ export class UsersController {
   @UseGuards(IsAuthenticatedGuard)
   async getUserProgress(@Req() req: any) {
     const progress = await this.usersService.getProgress(req.user);
-
     return {
       progress,
     };
