@@ -60,7 +60,7 @@ const LeaderboardTable = ({ ranklist }) => {
   return (
     <table
       {...getTableProps()}
-      className="leaderboard border-collapse max-w-6  xl"
+      className="border-collapse leaderboard max-w-6 xl"
     >
       <thead>
         {headerGroups.map((headerGroup) => {

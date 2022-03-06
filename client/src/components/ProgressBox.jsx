@@ -5,8 +5,8 @@ import { MdWatchLater } from "react-icons/md"
 
 const Box = ({ title, icon, result, progress, today }) => {
   return (
-    <div className="hover:transform hover:-translate-y-4 transition-transform duration-500 flex bg-white rounded-md items-start space-x-4 border border-lightGrey py-5 px-8">
-      <div className="bg-primary p-3 rounded-full bg-opacity-10 text-primary">
+    <div className="flex items-start px-8 py-5 space-x-4 transition-transform duration-500 bg-white border rounded-md hover:transform hover:-translate-y-4 border-lightGrey">
+      <div className="p-3 rounded-full bg-primary bg-opacity-10 text-primary">
         {icon}
       </div>
       <div className="pt-3 space-y-8">
@@ -15,8 +15,8 @@ const Box = ({ title, icon, result, progress, today }) => {
           <h2>{result}</h2>
           <div className="flex items-center space-x-5">
             <BsArrowUpRight />
-            <p className="text-primaryDark text-lg">{progress} %</p>
-            <p className="text-secondaryDark text-lg">{today}</p>
+            <p className="text-lg text-primaryDark">{progress} %</p>
+            <p className="text-lg text-secondaryDark">{today}</p>
           </div>
         </div>
       </div>

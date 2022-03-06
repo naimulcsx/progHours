@@ -106,7 +106,7 @@ const AddEntryRow = ({ id }) => {
             type="text"
             placeholder="eg. 80"
             autoComplete="off"
-            className="focus:outline-none p-2 w-full"
+            className="w-full p-2 focus:outline-none"
             {...formik.getFieldProps("solve_time")}
           ></Input>
         </FormControl>
@@ -119,10 +119,10 @@ const AddEntryRow = ({ id }) => {
 
       <td className="border border-slate-100" data-tags>
         <Popover>
-          <Popover.Button className="bg-gray-900 text-white px-3 py-1 rounded">
+          <Popover.Button className="px-3 py-1 text-white bg-gray-900 rounded">
             Add Tags
           </Popover.Button>
-          <Popover.Panel className="absolute z-10 w-30 px-4 py-3 bg-white border-2 shadow-xl inset rounded-xl">
+          <Popover.Panel className="absolute z-10 px-4 py-3 bg-white border-2 shadow-xl w-30 inset rounded-xl">
             <TagInputField></TagInputField>
           </Popover.Panel>
         </Popover>
@@ -139,7 +139,7 @@ const AddEntryRow = ({ id }) => {
       <td className="border border-slate-100" data-actions>
         <button
           type="submit"
-          className="bg-gray-900 text-white px-3 py-1 rounded flex items-center space-x-2"
+          className="flex items-center px-3 py-1 space-x-2 text-white bg-gray-900 rounded"
           onClick={handleSubmit}
         >
           {isLoading && <div className="sp sp-circle"></div>}

@@ -9,7 +9,7 @@ const Tags = (cell) => {
         return (
           <li
             key={tag.id}
-            className="mt-1 mr-2 bg-primary bg-opacity-10 text-primary px-2 py-1 text-sm rounded-lg"
+            className="px-2 py-1 mt-1 mr-2 text-sm rounded-lg bg-primary bg-opacity-10 text-primary"
           >
             {tag.name}
           </li>
@@ -20,9 +20,9 @@ const Tags = (cell) => {
         return (
           <li
             key={tag.id}
-            className="suggested-tag relative mt-1 mr-2 border text-gray-400 px-2 py-1 text-sm rounded-lg"
+            className="relative px-2 py-1 mt-1 mr-2 text-sm text-gray-400 border rounded-lg suggested-tag"
           >
-            <button className="hidden absolute -top-3 right-0 p-1 rounded-full w-4 h-4 text-red-500">
+            <button className="absolute right-0 hidden w-4 h-4 p-1 text-red-500 rounded-full -top-3">
               <svg
                 fill="currentColor"
                 xmlns="http://www.w3.org/2000/svg"
@@ -38,7 +38,7 @@ const Tags = (cell) => {
         )
       })}
       <li>
-        <Popover className="mt-1 relative">
+        <Popover className="relative mt-1">
           <Popover.Button className="relative px-2 py-1 text-sm rounded-lg bg-primary bg-opacity-10 text-primary">
             +
           </Popover.Button>
@@ -48,7 +48,7 @@ const Tags = (cell) => {
                 <div>
                   <div className="px-4">
                     <p className="font-medium text-primary">Suggest Tag</p>
-                    <p className="text-sm text-gray-400 mb-2">
+                    <p className="mb-2 text-sm text-gray-400">
                       Suggest a tag that is revelant to this problem.
                     </p>
                   </div>
