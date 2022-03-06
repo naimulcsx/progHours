@@ -23,6 +23,36 @@ export class UsersService {
       .execute();
   }
 
+  async getProgress(user) {
+    const acSolutions = await this.submissionsRepository
+      .createQueryBuilder()
+      .select('COUNT(verdict)')
+      .where('user_id = :userId', { userId: user.id })
+      .andWhere('verdict = :verdict', { verdict: 'AC' })
+      .execute();
+
+    const solveTime = await this.submissionsRepository
+      .createQueryBuilder('submission')
+      .select('SUM(solve_time)')
+      .where('user_id = :userId', { userId: user.id })
+      .andWhere("submission.verdict = 'AC'")
+      .execute();
+
+    const { total_difficulty } = await this.submissionsRepository
+      .createQueryBuilder('submission')
+      .where('submission.user_id = :userId', { userId: user.id })
+      .andWhere("submission.verdict = 'AC'")
+      .innerJoinAndSelect('submission.problem_id', 'problems')
+      .select('SUM(problems.difficulty) as total_difficulty')
+      .getRawOne();
+
+    return {
+      acSolutions,
+      solveTime,
+      total_difficulty,
+    };
+  }
+
   async getStats(user) {
     const [AC] = await this.getVerdictCount(user, 'AC');
     const [WA] = await this.getVerdictCount(user, 'WA');
