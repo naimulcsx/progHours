@@ -46,7 +46,7 @@ const Select = ({ children, ...props }) => {
             <Listbox.Button
               className={`${
                 styles[props.value]
-              } relative w-full py-2 h-[40px] pr-10 shadow-sm bg-white cursor-default focus:outline-none ${
+              } relative w-full py-2 h-[40px] pr-10 shadow-sm bg-white cursor-default focus:outline-none focus:ring-2 focus:ring-primary ${
                 open ? "ring-2 ring-primary ring-opacity-50" : ""
               }`}
             >
