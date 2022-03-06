@@ -10,6 +10,7 @@ import {
 import { useEffect, useState } from "react"
 import { Bar } from "react-chartjs-2"
 import axios from "axios"
+import { getStats } from "../../api/dashboard"
 
 ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend)
 
@@ -34,8 +35,9 @@ export function Stats() {
   })
 
   useEffect(async () => {
-    const { data } = await axios.get("/api/users/stats")
-    const { AC, WA, TLE, RTE } = data.verdict
+    const { verdict } = await getStats()
+    const { AC, WA, TLE, RTE } = verdict
+
     setData({
       labels,
       datasets: [
