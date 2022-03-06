@@ -116,14 +116,14 @@ export default function TrackingSheet() {
         </h3>
       </div>
       <div className="mt-4">
-        <ul className="flex space-x-4 items-center">
+        <ul className="flex items-center space-x-4">
           <li className="">Filters</li>
           {filters.map((filter) => {
             return (
-              <li className="bg-primary relative bg-opacity-10 px-3 py-1 text-sm text-primary rounded-lg">
+              <li className="relative px-3 py-1 text-sm rounded-lg bg-primary bg-opacity-10 text-primary">
                 {filter}
                 <button
-                  className="absolute -top-3 right-0 p-1 rounded-full w-4 h-4 text-red-500"
+                  className="absolute right-0 w-4 h-4 p-1 text-red-500 rounded-full -top-3"
                   onClick={() => removeFilter(filter)}
                 >
                   <svg
