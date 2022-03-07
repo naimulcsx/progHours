@@ -10,7 +10,7 @@ services:
       - ./client:/home/node/client
       - /home/node/client/node_modules
     depends_on:
-      - api_server
+      - nest_api_server
     networks:
       - mern_app
   nest_api_server:
@@ -58,7 +58,7 @@ services:
     ports:
       - 80:80
     depends_on:
-      - api_server
+      - nest_api_server
       - client_app
     volumes:
       - ./nginx/default.conf:/etc/nginx/conf.d/default.conf

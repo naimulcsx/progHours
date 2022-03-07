@@ -87,6 +87,7 @@ export class UsersService {
         .createQueryBuilder()
         .select('SUM(solve_time)')
         .where('user_id = :userId', { userId: user.id })
+        .andWhere('verdict = :verdict', { verdict: 'AC' })
         .execute();
 
       const { total_difficulty } = await this.submissionsRepository
