@@ -22,6 +22,10 @@ const AccessDenied = () => {
 
 const routes = (isLoggedIn) => [
   {
+    path: "/",
+    element: isLoggedIn ? <Navigate to="/dashboard" /> : <Login />,
+  },
+  {
     path: "/login",
     element: isLoggedIn ? <Navigate to="/dashboard" /> : <Login />,
   },
