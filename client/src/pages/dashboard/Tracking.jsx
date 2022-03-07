@@ -18,7 +18,7 @@ import moment from "moment"
 function minmaxDate(arr) {
   var len = arr.length,
     min = new Date(),
-    max = new Date("01-01-1980")
+    max = new Date()
   while (len--) {
     if (new Date(arr[len].solved_at) < min) {
       min = new Date(arr[len].solved_at)
@@ -46,14 +46,11 @@ export default function TrackingSheet() {
 
   useEffect(() => {
     if (!query.data) return
-    const { submissions } = query.data
-
     let from = moment(minDate)
     let to = moment(minDate)
     while (to.format("dddd") !== "Friday") {
       to.add(1, "day")
     }
-
     const weekRanges = [{ from: from.toDate(), to: to.toDate() }]
     while (to.toDate() <= maxDate) {
       weekRanges.push({
@@ -61,6 +58,7 @@ export default function TrackingSheet() {
         to: to.add(6, "day").toDate(),
       })
     }
+    console.log(weekRanges)
     setWeeks(weekRanges)
     if (!filters.includes("week=" + weekRanges.length))
       setFilters([...filters, "week=" + weekRanges.length])
@@ -119,9 +117,12 @@ export default function TrackingSheet() {
       <div className="mt-4">
         <ul className="flex items-center space-x-4">
           <li className="">Filters</li>
-          {filters.map((filter) => {
+          {filters.map((filter, i) => {
             return (
-              <li className="relative px-3 py-1 text-sm rounded-lg bg-primary bg-opacity-10 text-primary">
+              <li
+                key={i}
+                className="relative px-3 py-1 text-sm rounded-lg bg-primary bg-opacity-10 text-primary"
+              >
                 {filter}
                 <button
                   className="absolute right-0 w-4 h-4 p-1 text-red-500 rounded-full -top-3"

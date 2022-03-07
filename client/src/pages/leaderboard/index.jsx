@@ -1,6 +1,6 @@
 import Layout from "@/components/dashboard/Layout"
 import { Transition } from "@headlessui/react"
-import { Fragment } from "react"
+import { Fragment, useState } from "react"
 import LeaderboardTable from "../../components/leaderboard/Table"
 import { useQuery } from "react-query"
 import axios from "axios"
@@ -9,6 +9,7 @@ import { getRankList } from "../../api/leaderBorad"
 import calculatePoints from "../../utils/calculatePoints"
 
 const LeaderboardPage = () => {
+  let [ranklist, setRanklist] = useState([])
   const query = useQuery("ranklist", () => getRankList(), {
     onSuccess: (data) => {
       data.ranklist.forEach((el, i) => {
@@ -18,8 +19,10 @@ const LeaderboardPage = () => {
       data.ranklist.sort((a, b) => {
         return b.points - a.points
       })
+      setRanklist(data.ranklist)
     },
   })
+  console.log(query.isRefetching)
   return (
     <Layout>
       <div className="flex items-center justify-between">
@@ -28,7 +31,7 @@ const LeaderboardPage = () => {
             <span>Leaderboard</span>
             <Transition
               as={Fragment}
-              show={query.status === "loading"}
+              show={query.status === "loading" || query.isRefetching}
               enter="transform transition duration-[400ms]"
               enterFrom="opacity-0 rotate-[-120deg] scale-50"
               enterTo="opacity-100 rotate-0 scale-100"
@@ -41,11 +44,20 @@ const LeaderboardPage = () => {
           </div>
         </h3>
       </div>
-      {query.status !== "loading" && (
+      <Transition
+        as={Fragment}
+        show={!query.isRefetching && query.status !== "loading"}
+        enter="transform transition duration-[300]"
+        enterFrom="opacity-0"
+        enterTo="opacity-100"
+        leave="transform duration-300 transition ease-in-out"
+        leaveFrom="opacity-100 scale-100"
+        leaveTo="opacity-0"
+      >
         <div className="mt-6">
-          <LeaderboardTable ranklist={query.data?.ranklist || []} />
+          <LeaderboardTable ranklist={ranklist} />
         </div>
-      )}
+      </Transition>
     </Layout>
   )
 }

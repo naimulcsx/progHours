@@ -36,12 +36,10 @@ const columns = [
   {
     Header: "Average Solve Difficulty",
     accessor: "avg_difficulty",
-    Cell: (cell) => cell.value,
   },
   {
     Header: "Points",
     accessor: "points",
-    Cell: (cell) => cell.value,
   },
 ]
 
