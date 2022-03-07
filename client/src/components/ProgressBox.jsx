@@ -26,6 +26,12 @@ const Box = ({ title, icon, result, progress, today }) => {
   )
 }
 
+function convertToHours(totalTimeInMin) {
+  const h = Math.floor(totalTimeInMin / 60)
+  const m = totalTimeInMin % 60
+  return `${h}h ${m}m`
+}
+
 const ProgressBox = ({ progress }) => {
   const { solve_count, solve_time, avg_difficulty } = progress
 
@@ -52,7 +58,7 @@ const ProgressBox = ({ progress }) => {
           <Box
             icon={<MdWatchLater size={20} />}
             title="Solve Time"
-            result={solve_time}
+            result={convertToHours(solve_time)}
             progress="5.0"
             today="-13m 35s"
           />

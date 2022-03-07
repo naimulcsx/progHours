@@ -10,7 +10,6 @@ const Verdict = (cell) => {
 
   const { mutate } = useMutation(updateSubmission, {
     onSuccess: (data) => {
-      console.log(selected)
       toast.success("Problem updated", { className: "toast" })
     },
     onError: (err) => {

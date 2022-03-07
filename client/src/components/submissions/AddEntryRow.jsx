@@ -53,7 +53,6 @@ const AddEntryRow = ({ id }) => {
       toast.success("Problem submitted successfully")
     },
     onError: (err) => {
-      console.log(err.response)
       toast.error(err.response.data.message, { className: "toast" })
     },
   })

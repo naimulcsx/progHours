@@ -17,7 +17,7 @@ import moment from "moment"
 
 function minmaxDate(arr) {
   var len = arr.length,
-    min = new Date("01-01-2999"),
+    min = new Date(),
     max = new Date("01-01-1980")
   while (len--) {
     if (new Date(arr[len].solved_at) < min) {
@@ -67,9 +67,10 @@ export default function TrackingSheet() {
   }, [query.data])
 
   const dateFilter = (arr, from, to) =>
-    arr.filter(
-      (el) => Date.parse(el.solved_at) >= from && Date.parse(el.solved_at) <= to
-    )
+    arr.filter((el) => {
+      if (new Date(el.solved_at) >= from && new Date(el.solved_at) <= to)
+        return true
+    })
 
   useEffect(() => {
     if (!query.data) return

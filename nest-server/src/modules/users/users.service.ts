@@ -35,7 +35,7 @@ export class UsersService {
       .createQueryBuilder('submission')
       .select('SUM(solve_time)')
       .where('user_id = :userId', { userId: user.id })
-      // .andWhere("submission.verdict = 'AC'")
+      .andWhere("submission.verdict = 'AC'")
       .getRawOne();
 
     const { total_difficulty } = await this.submissionsRepository
