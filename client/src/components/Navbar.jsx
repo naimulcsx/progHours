@@ -6,8 +6,8 @@ const Navbar = ({ bgWhite }) => {
   const name = localStorage.getItem("name")
   return (
     <header
-      className={`fixed top-0 left-0 right-0 z-[999] flex items-center justify-between px-6 py-3 ${
-        bgWhite ? "bg-white" : ""
+      className={`fixed top-0 left-0 right-0 z-30 flex items-center justify-between px-6 py-3 ${
+        bgWhite ? "bg-white" : "bg-white"
       }`}
     >
       <Link to="/dashboard">

@@ -35,62 +35,62 @@ function minmaxDate(arr) {
 export default function TrackingSheet() {
   const query = useQuery("practice", getSubmissions)
 
-  let [weeks, setWeeks] = useState([])
-  let [filters, setFilters] = useState([])
-  let [filteredData, setFilteredData] = useState([])
+  // let [weeks, setWeeks] = useState([])
+  // let [filters, setFilters] = useState([])
+  // let [filteredData, setFilteredData] = useState([])
 
-  const [minDate, maxDate] = useMemo(
-    () => minmaxDate(query.data?.submissions || []),
-    [query.data]
-  )
+  // const [minDate, maxDate] = useMemo(
+  //   () => minmaxDate(query.data?.submissions || []),
+  //   [query.data]
+  // )
 
-  useEffect(() => {
-    if (!query.data) return
-    let from = moment(minDate)
-    let to = moment(minDate)
-    while (to.format("dddd") !== "Friday") {
-      to.add(1, "day")
-    }
-    const weekRanges = [{ from: from.toDate(), to: to.toDate() }]
-    while (to.toDate() <= maxDate) {
-      weekRanges.push({
-        from: to.add(1, "day").toDate(),
-        to: to.add(6, "day").toDate(),
-      })
-    }
-    console.log(weekRanges)
-    setWeeks(weekRanges)
-    if (!filters.includes("week=" + weekRanges.length))
-      setFilters([...filters, "week=" + weekRanges.length])
-  }, [query.data])
+  // useEffect(() => {
+  //   if (!query.data) return
+  //   let from = moment(minDate)
+  //   let to = moment(minDate)
+  //   while (to.format("dddd") !== "Friday") {
+  //     to.add(1, "day")
+  //   }
+  //   const weekRanges = [{ from: from.toDate(), to: to.toDate() }]
+  //   while (to.toDate() <= maxDate) {
+  //     weekRanges.push({
+  //       from: to.add(1, "day").toDate(),
+  //       to: to.add(6, "day").toDate(),
+  //     })
+  //   }
+  //   console.log(weekRanges)
+  //   setWeeks(weekRanges)
+  //   if (!filters.includes("week=" + weekRanges.length))
+  //     setFilters([...filters, "week=" + weekRanges.length])
+  // }, [query.data])
 
-  const dateFilter = (arr, from, to) =>
-    arr.filter((el) => {
-      if (new Date(el.solved_at) >= from && new Date(el.solved_at) <= to)
-        return true
-    })
+  // const dateFilter = (arr, from, to) =>
+  //   arr.filter((el) => {
+  //     if (new Date(el.solved_at) >= from && new Date(el.solved_at) <= to)
+  //       return true
+  //   })
 
-  useEffect(() => {
-    if (!query.data) return
-    let arr = query.data.submissions
-    filters.forEach((filter) => {
-      // it is a week filter
-      if (filter.includes("week")) {
-        const weekId = parseInt(filter.split("=")[1])
-        if (weekId > 0)
-          arr = dateFilter(arr, weeks[weekId - 1].from, weeks[weekId - 1].to)
-      }
-    })
-    setFilteredData(arr)
-  }, [query.data, filters])
+  // useEffect(() => {
+  //   if (!query.data) return
+  //   let arr = query.data.submissions
+  //   filters.forEach((filter) => {
+  //     // it is a week filter
+  //     if (filter.includes("week")) {
+  //       const weekId = parseInt(filter.split("=")[1])
+  //       if (weekId > 0)
+  //         arr = dateFilter(arr, weeks[weekId - 1].from, weeks[weekId - 1].to)
+  //     }
+  //   })
+  //   setFilteredData(arr)
+  // }, [query.data, filters])
 
-  const removeFilter = (name) => {
-    setFilters(
-      filters.filter((filter) => {
-        return filter !== name
-      })
-    )
-  }
+  // const removeFilter = (name) => {
+  //   setFilters(
+  //     filters.filter((filter) => {
+  //       return filter !== name
+  //     })
+  //   )
+  // }
 
   return (
     <Layout>
@@ -114,7 +114,7 @@ export default function TrackingSheet() {
           </div>
         </h3>
       </div>
-      <div className="mt-4">
+      {/* <div className="mt-4">
         <ul className="flex items-center space-x-4">
           <li className="">Filters</li>
           {filters.map((filter, i) => {
@@ -142,9 +142,9 @@ export default function TrackingSheet() {
             )
           })}
         </ul>
-      </div>
+      </div> */}
       {/* tracking table */}
-      {query.data && <TrackingTable submissions={filteredData} />}
+      {query.data && <TrackingTable submissions={query.data?.submissions} />}
     </Layout>
   )
 }
