@@ -91,6 +91,16 @@ export class SubmissionsService {
       throw err;
     }
   }
+
+  async deleteSubmission(id: any) {
+    try {
+      await this.submissionsRepository.delete(id);
+
+      return { message: 'Submission deleted' };
+    } catch (err) {
+      throw err;
+    }
+  }
 }
 
 // == => -> === != ***

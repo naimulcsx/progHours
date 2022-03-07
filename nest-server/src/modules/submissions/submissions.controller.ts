@@ -7,6 +7,7 @@ import {
   Post,
   Patch,
   Req,
+  Delete,
   Param,
   UseGuards,
 } from '@nestjs/common';
@@ -25,6 +26,7 @@ export class SubmissionsController {
       req.user.id,
     );
     return {
+      results: submissions.length,
       submissions,
     };
   }
@@ -48,6 +50,16 @@ export class SubmissionsController {
     return {
       statusCode: HttpStatus.OK,
       message: 'resource updated',
+    };
+  }
+
+  @Delete(':id')
+  async deleteSubmission(@Param('id') id: any) {
+    await this.submissionsService.deleteSubmission(id);
+
+    return {
+      statusCode: HttpStatus.NO_CONTENT,
+      message: 'Resource deleted',
     };
   }
 }
