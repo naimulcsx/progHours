@@ -14,6 +14,8 @@ import {
 } from "react"
 import { Transition } from "@headlessui/react"
 import moment from "moment"
+import getWeekRanges from "../../utils/getWeekRanges"
+import WeekFilters from "../../components/submissions/filters/WeekFilter"
 
 function minmaxDate(arr) {
   var len = arr.length,
@@ -35,62 +37,45 @@ function minmaxDate(arr) {
 export default function TrackingSheet() {
   const query = useQuery("practice", getSubmissions)
 
-  // let [weeks, setWeeks] = useState([])
-  // let [filters, setFilters] = useState([])
-  // let [filteredData, setFilteredData] = useState([])
+  let [weeks, setWeeks] = useState([])
+  let [filters, setFilters] = useState([])
+  let [filteredData, setFilteredData] = useState([])
+  const [selectedWeek, setSelectedWeek] = useState({ id: 0, name: "" })
 
-  // const [minDate, maxDate] = useMemo(
-  //   () => minmaxDate(query.data?.submissions || []),
-  //   [query.data]
-  // )
+  console.log(selectedWeek)
 
-  // useEffect(() => {
-  //   if (!query.data) return
-  //   let from = moment(minDate)
-  //   let to = moment(minDate)
-  //   while (to.format("dddd") !== "Friday") {
-  //     to.add(1, "day")
-  //   }
-  //   const weekRanges = [{ from: from.toDate(), to: to.toDate() }]
-  //   while (to.toDate() <= maxDate) {
-  //     weekRanges.push({
-  //       from: to.add(1, "day").toDate(),
-  //       to: to.add(6, "day").toDate(),
-  //     })
-  //   }
-  //   console.log(weekRanges)
-  //   setWeeks(weekRanges)
-  //   if (!filters.includes("week=" + weekRanges.length))
-  //     setFilters([...filters, "week=" + weekRanges.length])
-  // }, [query.data])
+  useEffect(() => {
+    if (!query.data) return
+    const weekRanges = getWeekRanges(query.data.submissions)
+    setWeeks(weekRanges)
+    setSelectedWeek({
+      id: weekRanges.length + 1,
+      name: "Week " + weekRanges.length,
+    })
+  }, [query.data])
 
-  // const dateFilter = (arr, from, to) =>
-  //   arr.filter((el) => {
-  //     if (new Date(el.solved_at) >= from && new Date(el.solved_at) <= to)
-  //       return true
-  //   })
+  const dateFilter = (arr, from, to) =>
+    arr.filter((el) => {
+      if (new Date(el.solved_at) >= from && new Date(el.solved_at) <= to)
+        return true
+    })
 
-  // useEffect(() => {
-  //   if (!query.data) return
-  //   let arr = query.data.submissions
-  //   filters.forEach((filter) => {
-  //     // it is a week filter
-  //     if (filter.includes("week")) {
-  //       const weekId = parseInt(filter.split("=")[1])
-  //       if (weekId > 0)
-  //         arr = dateFilter(arr, weeks[weekId - 1].from, weeks[weekId - 1].to)
-  //     }
-  //   })
-  //   setFilteredData(arr)
-  // }, [query.data, filters])
+  useEffect(() => {
+    if (!query.data) return
+    let arr = query.data.submissions
+    const weekId = selectedWeek.id - 1
+    if (weekId > 0)
+      arr = dateFilter(arr, weeks[weekId - 1].from, weeks[weekId - 1].to)
+    setFilteredData(arr)
+  }, [query.data, selectedWeek])
 
-  // const removeFilter = (name) => {
-  //   setFilters(
-  //     filters.filter((filter) => {
-  //       return filter !== name
-  //     })
-  //   )
-  // }
+  const removeFilter = (name) => {
+    setFilters(
+      filters.filter((filter) => {
+        return filter !== name
+      })
+    )
+  }
 
   return (
     <Layout>
@@ -114,10 +99,17 @@ export default function TrackingSheet() {
           </div>
         </h3>
       </div>
-      {/* <div className="mt-4">
+      <div className="mt-4">
         <ul className="flex items-center space-x-4">
           <li className="">Filters</li>
-          {filters.map((filter, i) => {
+          <li>
+            <WeekFilters
+              numberOfWeeks={weeks.length}
+              selected={selectedWeek}
+              setSelected={setSelectedWeek}
+            />
+          </li>
+          {/* {filters.map((filter, i) => {
             return (
               <li
                 key={i}
@@ -140,11 +132,11 @@ export default function TrackingSheet() {
                 </button>
               </li>
             )
-          })}
+          })} */}
         </ul>
-      </div> */}
+      </div>
       {/* tracking table */}
-      {query.data && <TrackingTable submissions={query.data?.submissions} />}
+      {query.data && <TrackingTable submissions={filteredData} />}
     </Layout>
   )
 }
