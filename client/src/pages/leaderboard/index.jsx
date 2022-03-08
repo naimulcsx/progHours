@@ -1,36 +1,27 @@
 import Layout from "@/components/dashboard/Layout"
 import { Transition } from "@headlessui/react"
-import { Fragment } from "react"
-import { PlusIcon } from "../../components/Icons"
+import { Fragment, useState } from "react"
 import LeaderboardTable from "../../components/leaderboard/Table"
-import { Link } from "react-router-dom"
 import { useQuery } from "react-query"
 import axios from "axios"
+import { getRankList } from "../../api/leaderBorad"
 
-function calculatePoints(obj) {
-  const { avg_diffculty, solve_count, solve_time } = obj
-  const x = avg_diffculty / 3000
-  const y = solve_count / 50
-  const z = solve_time / 100
-  return (2 * x + y + z) / 4
-}
+import calculatePoints from "../../utils/calculatePoints"
 
 const LeaderboardPage = () => {
-  const query = useQuery(
-    "ranklist",
-    () => axios.get("/api/users/ranklist").then((res) => res.data),
-    {
-      onSuccess: (data) => {
-        data.ranklist.forEach((el, i) => {
-          el.points = (calculatePoints(el) * 1000).toFixed(2)
-          el.avg_diffculty = el.avg_diffculty.toFixed(2)
-        })
-        data.ranklist.sort((a, b) => {
-          return b.points - a.points
-        })
-      },
-    }
-  )
+  let [ranklist, setRanklist] = useState([])
+  const query = useQuery("ranklist", () => getRankList(), {
+    onSuccess: (data) => {
+      data.ranklist.forEach((el, i) => {
+        el.points = calculatePoints(el).toFixed(2)
+        el.avg_difficulty = el.avg_difficulty.toFixed(2)
+      })
+      data.ranklist.sort((a, b) => {
+        return b.points - a.points
+      })
+      setRanklist(data.ranklist)
+    },
+  })
   return (
     <Layout>
       <div className="flex items-center justify-between">
@@ -39,7 +30,7 @@ const LeaderboardPage = () => {
             <span>Leaderboard</span>
             <Transition
               as={Fragment}
-              show={query.status === "loading"}
+              show={query.status === "loading" || query.isRefetching}
               enter="transform transition duration-[400ms]"
               enterFrom="opacity-0 rotate-[-120deg] scale-50"
               enterTo="opacity-100 rotate-0 scale-100"
@@ -52,11 +43,20 @@ const LeaderboardPage = () => {
           </div>
         </h3>
       </div>
-      {query.status !== "loading" && (
+      <Transition
+        as={Fragment}
+        show={!query.isRefetching && query.status !== "loading"}
+        enter="transform transition duration-[300]"
+        enterFrom="opacity-0"
+        enterTo="opacity-100"
+        leave="transform duration-300 transition ease-in-out"
+        leaveFrom="opacity-100 scale-100"
+        leaveTo="opacity-0"
+      >
         <div className="mt-6">
-          <LeaderboardTable ranklist={query.data?.ranklist || []} />
+          <LeaderboardTable ranklist={ranklist} />
         </div>
-      )}
+      </Transition>
     </Layout>
   )
 }

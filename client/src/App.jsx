@@ -24,7 +24,6 @@ function App() {
       try {
         await axios.get("/api/auth/user")
       } catch (error) {
-        console.log(error.response)
         await clearAuthData()
         navigate("/login")
         toast.error("Access denied", { className: "toast" })

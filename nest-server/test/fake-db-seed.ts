@@ -108,6 +108,7 @@ async function seed() {
   // ajudst sequence id
   await client.query('ALTER SEQUENCE problems_id_seq RESTART WITH 20000');
   await client.query('ALTER SEQUENCE submissions_id_seq RESTART WITH 200000');
+  await client.query('ALTER SEQUENCE users_id_seq RESTART WITH 2000');
 
   // insert new data
   await createUsers();

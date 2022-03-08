@@ -35,13 +35,11 @@ const columns = [
   },
   {
     Header: "Average Solve Difficulty",
-    accessor: "avg_diffculty",
-    Cell: (cell) => cell.value,
+    accessor: "avg_difficulty",
   },
   {
     Header: "Points",
     accessor: "points",
-    Cell: (cell) => cell.value,
   },
 ]
 
@@ -58,51 +56,53 @@ const LeaderboardTable = ({ ranklist }) => {
     tableInstance
 
   return (
-    <table
-      {...getTableProps()}
-      className="leaderboard border-collapse max-w-6  xl"
-    >
-      <thead>
-        {headerGroups.map((headerGroup) => {
-          return (
-            <tr
-              {...headerGroup.getHeaderGroupProps()}
-              className="text-base text-dark"
-            >
-              {headerGroup.headers.map((header) => {
-                return (
-                  <th
-                    {...header.getHeaderProps(header.getSortByToggleProps())}
-                    className="border-b border-slate-100"
-                  >
-                    {header.render("Header")}
-                  </th>
-                )
-              })}
-            </tr>
-          )
-        })}
-      </thead>
-      <tbody>
-        {rows.map((row) => {
-          prepareRow(row)
-          return (
-            <tr {...row.getRowProps()} className={`bg-white`}>
-              {row.cells.map((cell) => {
-                return (
-                  <td
-                    {...cell.getCellProps()}
-                    className="border-b border-slate-100"
-                  >
-                    {cell.render("Cell")}
-                  </td>
-                )
-              })}
-            </tr>
-          )
-        })}
-      </tbody>
-    </table>
+    <div className="shadow shadow-primary/5 rounded-lg overflow-hidden">
+      <table
+        {...getTableProps()}
+        className="border-collapse leaderboard max-w-6 xl"
+      >
+        <thead>
+          {headerGroups.map((headerGroup) => {
+            return (
+              <tr
+                {...headerGroup.getHeaderGroupProps()}
+                className="text-base text-dark"
+              >
+                {headerGroup.headers.map((header) => {
+                  return (
+                    <th
+                      {...header.getHeaderProps(header.getSortByToggleProps())}
+                      className=" border-b border-t border-slate-100"
+                    >
+                      {header.render("Header")}
+                    </th>
+                  )
+                })}
+              </tr>
+            )
+          })}
+        </thead>
+        <tbody>
+          {rows.map((row) => {
+            prepareRow(row)
+            return (
+              <tr {...row.getRowProps()} className={`bg-white`}>
+                {row.cells.map((cell) => {
+                  return (
+                    <td
+                      {...cell.getCellProps()}
+                      className="border-b border-slate-100"
+                    >
+                      {cell.render("Cell")}
+                    </td>
+                  )
+                })}
+              </tr>
+            )
+          })}
+        </tbody>
+      </table>
+    </div>
   )
 }
 

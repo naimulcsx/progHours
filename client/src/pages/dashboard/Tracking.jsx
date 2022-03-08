@@ -14,11 +14,13 @@ import {
 } from "react"
 import { Transition } from "@headlessui/react"
 import moment from "moment"
+import getWeekRanges from "../../utils/getWeekRanges"
+import WeekFilters from "../../components/submissions/filters/WeekFilter"
 
 function minmaxDate(arr) {
   var len = arr.length,
-    min = new Date("01-01-2999"),
-    max = new Date("01-01-1980")
+    min = new Date(),
+    max = new Date()
   while (len--) {
     if (new Date(arr[len].solved_at) < min) {
       min = new Date(arr[len].solved_at)
@@ -33,57 +35,36 @@ function minmaxDate(arr) {
 }
 
 export default function TrackingSheet() {
-  const query = useQuery("practice", getSubmissions, { staleTime: 60000 })
-
+  const query = useQuery("practice", getSubmissions)
   let [weeks, setWeeks] = useState([])
   let [filters, setFilters] = useState([])
   let [filteredData, setFilteredData] = useState([])
-
-  const [minDate, maxDate] = useMemo(
-    () => minmaxDate(query.data?.submissions || []),
-    [query.data]
-  )
+  const [selectedWeek, setSelectedWeek] = useState({ id: 0, name: "" })
 
   useEffect(() => {
     if (!query.data) return
-    const { submissions } = query.data
-
-    let from = moment(minDate)
-    let to = moment(minDate)
-    while (to.format("dddd") !== "Friday") {
-      to.add(1, "day")
-    }
-
-    const weekRanges = [{ from: from.toDate(), to: to.toDate() }]
-    while (to.toDate() <= maxDate) {
-      weekRanges.push({
-        from: to.add(1, "day").toDate(),
-        to: to.add(6, "day").toDate(),
-      })
-    }
+    const weekRanges = getWeekRanges(query.data.submissions)
     setWeeks(weekRanges)
-    if (!filters.includes("week=" + weekRanges.length))
-      setFilters([...filters, "week=" + weekRanges.length])
+    setSelectedWeek({
+      id: weekRanges.length + 1,
+      name: "Week " + weekRanges.length,
+    })
   }, [query.data])
 
   const dateFilter = (arr, from, to) =>
-    arr.filter(
-      (el) => Date.parse(el.solved_at) >= from && Date.parse(el.solved_at) <= to
-    )
+    arr.filter((el) => {
+      if (new Date(el.solved_at) >= from && new Date(el.solved_at) <= to)
+        return true
+    })
 
   useEffect(() => {
     if (!query.data) return
     let arr = query.data.submissions
-    filters.forEach((filter) => {
-      // it is a week filter
-      if (filter.includes("week")) {
-        const weekId = parseInt(filter.split("=")[1])
-        if (weekId > 0)
-          arr = dateFilter(arr, weeks[weekId - 1].from, weeks[weekId - 1].to)
-      }
-    })
+    const weekId = selectedWeek.id - 1
+    if (weekId > 0)
+      arr = dateFilter(arr, weeks[weekId - 1].from, weeks[weekId - 1].to)
     setFilteredData(arr)
-  }, [filters])
+  }, [query.data, selectedWeek])
 
   const removeFilter = (name) => {
     setFilters(
@@ -116,14 +97,24 @@ export default function TrackingSheet() {
         </h3>
       </div>
       <div className="mt-4">
-        <ul className="flex space-x-4 items-center">
+        <ul className="flex items-center space-x-4">
           <li className="">Filters</li>
-          {filters.map((filter) => {
+          <li>
+            <WeekFilters
+              numberOfWeeks={weeks.length}
+              selected={selectedWeek}
+              setSelected={setSelectedWeek}
+            />
+          </li>
+          {/* {filters.map((filter, i) => {
             return (
-              <li className="bg-primary relative bg-opacity-10 px-3 py-1 text-sm text-primary rounded-lg">
+              <li
+                key={i}
+                className="relative px-3 py-1 text-sm rounded-lg bg-primary bg-opacity-10 text-primary"
+              >
                 {filter}
                 <button
-                  className="absolute -top-3 right-0 p-1 rounded-full w-4 h-4 text-red-500"
+                  className="absolute right-0 w-4 h-4 p-1 text-red-500 rounded-full -top-3"
                   onClick={() => removeFilter(filter)}
                 >
                   <svg
@@ -138,7 +129,7 @@ export default function TrackingSheet() {
                 </button>
               </li>
             )
-          })}
+          })} */}
         </ul>
       </div>
       {/* tracking table */}

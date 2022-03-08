@@ -38,7 +38,6 @@ export default function TagInputField({ problemId, closePopover }) {
       toast.success("Tag suggested.")
     },
     onError: (err) => {
-      console.log(err.response)
       toast.error(err.response.data.message, { className: "toast" })
     },
   })

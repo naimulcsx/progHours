@@ -101,112 +101,119 @@ const TrackingTable = ({ submissions }) => {
   } = tableInstance
 
   return (
-    <div className="mt-6">
-      <table {...getTableProps()} className="border-collapse">
-        <thead>
-          {headerGroups.map((headerGroup) => {
-            return (
-              <tr
-                {...headerGroup.getHeaderGroupProps()}
-                className="text-base text-dark"
-              >
-                {headerGroup.headers.map((header) => {
-                  return (
-                    <th
-                      {...header.getHeaderProps(header.getSortByToggleProps())}
-                      className="border border-slate-100"
-                    >
-                      {header.render("Header")}
-                    </th>
-                  )
-                })}
-              </tr>
-            )
-          })}
-        </thead>
-        <tbody {...getTableBodyProps()}>
-          <AddEntryRow id={submissions.length + 1} />
-          {page.map((row) => {
-            prepareRow(row)
-            return (
-              <tr
-                {...row.getRowProps()}
-                key={row.original.id}
-                className={`bg-white`}
-              >
-                {row.cells.map((cell) => {
-                  const extraProps = {}
-                  extraProps[
-                    `data-${cell.column.id.toLowerCase().split(" ").join("-")}`
-                  ] = cell.value
-                  return (
-                    <td
-                      {...cell.getCellProps()}
-                      {...extraProps}
-                      className="border border-slate-100"
-                    >
-                      {cell.render("Cell")}
-                    </td>
-                  )
-                })}
-              </tr>
-            )
-          })}
-        </tbody>
-      </table>
-      <div className="flex items-center justify-between px-6 py-3 space-x-4 bg-white pagination">
-        <div>
-          <span>
-            Page{" "}
-            <strong>
-              {pageIndex + 1} of {pageOptions.length}
-            </strong>{" "}
-          </span>
-          <select
-            value={pageSize}
-            onChange={(e) => {
-              setPageSize(Number(e.target.value))
-            }}
-          >
-            {[5, 10, 20, 30, 40, 50].map((pageSize) => (
-              <option key={pageSize} value={pageSize}>
-                Show {pageSize}
-              </option>
-            ))}
-          </select>
-        </div>
-
-        <div className="flex items-center space-x-4">
-          <button onClick={() => gotoPage(0)} disabled={!canPreviousPage}>
-            <FiChevronsLeft size={20} />
-          </button>{" "}
-          <button onClick={() => previousPage()} disabled={!canPreviousPage}>
-            <FiChevronLeft size={20} />
-          </button>{" "}
-          <button onClick={() => nextPage()} disabled={!canNextPage}>
-            <FiChevronRight size={20} />
-          </button>{" "}
-          <button
-            onClick={() => gotoPage(pageCount - 1)}
-            disabled={!canNextPage}
-          >
-            <FiChevronsRight size={20} />
-          </button>{" "}
-          <span>
-            | Go to page:{" "}
-            <input
-              type="number"
-              defaultValue={pageIndex + 1}
+    <div className="relative">
+      <div className="mt-6 shadow shadow-primary/5 rounded-md  overflow-hidden">
+        <table {...getTableProps()} className="border-collapse ">
+          <thead>
+            {headerGroups.map((headerGroup) => {
+              return (
+                <tr
+                  {...headerGroup.getHeaderGroupProps()}
+                  className="text-base text-dark"
+                >
+                  {headerGroup.headers.map((header) => {
+                    return (
+                      <th
+                        {...header.getHeaderProps(
+                          header.getSortByToggleProps()
+                        )}
+                        className="border border-slate-100"
+                      >
+                        {header.render("Header")}
+                      </th>
+                    )
+                  })}
+                </tr>
+              )
+            })}
+          </thead>
+          <tbody {...getTableBodyProps()}>
+            <AddEntryRow id={submissions.length + 1} />
+            {page.map((row) => {
+              prepareRow(row)
+              return (
+                <tr
+                  {...row.getRowProps()}
+                  key={row.original.id}
+                  className={`bg-white`}
+                >
+                  {row.cells.map((cell) => {
+                    const extraProps = {}
+                    extraProps[
+                      `data-${cell.column.id
+                        .toLowerCase()
+                        .split(" ")
+                        .join("-")}`
+                    ] = cell.value
+                    return (
+                      <td
+                        {...cell.getCellProps()}
+                        {...extraProps}
+                        className="border border-slate-100"
+                      >
+                        {cell.render("Cell")}
+                      </td>
+                    )
+                  })}
+                </tr>
+              )
+            })}
+          </tbody>
+        </table>
+        <div className="flex items-center justify-between px-6 py-3 space-x-4 bg-white pagination">
+          <div>
+            <span>
+              Page{" "}
+              <strong>
+                {pageIndex + 1} of {pageOptions.length}
+              </strong>{" "}
+            </span>
+            <select
+              value={pageSize}
               onChange={(e) => {
-                const page = e.target.value ? Number(e.target.value) - 1 : 0
-                gotoPage(page)
+                setPageSize(Number(e.target.value))
               }}
-              style={{ width: "100px" }}
-            />
-          </span>
+            >
+              {[5, 10, 20, 30, 40, 50].map((pageSize) => (
+                <option key={pageSize} value={pageSize}>
+                  Show {pageSize}
+                </option>
+              ))}
+            </select>
+          </div>
+
+          <div className="flex items-center space-x-4">
+            <button onClick={() => gotoPage(0)} disabled={!canPreviousPage}>
+              <FiChevronsLeft size={20} />
+            </button>{" "}
+            <button onClick={() => previousPage()} disabled={!canPreviousPage}>
+              <FiChevronLeft size={20} />
+            </button>{" "}
+            <button onClick={() => nextPage()} disabled={!canNextPage}>
+              <FiChevronRight size={20} />
+            </button>{" "}
+            <button
+              onClick={() => gotoPage(pageCount - 1)}
+              disabled={!canNextPage}
+            >
+              <FiChevronsRight size={20} />
+            </button>{" "}
+            <span>
+              | Go to page:{" "}
+              <input
+                type="number"
+                defaultValue={pageIndex + 1}
+                onChange={(e) => {
+                  const page = e.target.value ? Number(e.target.value) - 1 : 0
+                  gotoPage(page)
+                }}
+                style={{ width: "100px" }}
+              />
+            </span>
+          </div>
         </div>
+        {submissions.length === 0 && <EmptyState />}
       </div>
-      {submissions.length === 0 && <EmptyState />}
     </div>
   )
 }

@@ -23,6 +23,36 @@ export class UsersService {
       .execute();
   }
 
+  async getProgress(user) {
+    const { count } = await this.submissionsRepository
+      .createQueryBuilder()
+      .select('COUNT(verdict)')
+      .where('user_id = :userId', { userId: user.id })
+      .andWhere('verdict = :verdict', { verdict: 'AC' })
+      .getRawOne();
+
+    const { sum } = await this.submissionsRepository
+      .createQueryBuilder('submission')
+      .select('SUM(solve_time)')
+      .where('user_id = :userId', { userId: user.id })
+      .andWhere("submission.verdict = 'AC'")
+      .getRawOne();
+
+    const { total_difficulty } = await this.submissionsRepository
+      .createQueryBuilder('submission')
+      .where('submission.user_id = :userId', { userId: user.id })
+      .andWhere("submission.verdict = 'AC'")
+      .innerJoinAndSelect('submission.problem_id', 'problems')
+      .select('SUM(problems.difficulty) as total_difficulty')
+      .getRawOne();
+
+    return {
+      solve_count: parseInt(count),
+      solve_time: parseInt(sum) || 0,
+      avg_difficulty: parseInt(total_difficulty) / parseInt(count) || 0,
+    };
+  }
+
   async getStats(user) {
     const [AC] = await this.getVerdictCount(user, 'AC');
     const [WA] = await this.getVerdictCount(user, 'WA');
@@ -57,6 +87,7 @@ export class UsersService {
         .createQueryBuilder()
         .select('SUM(solve_time)')
         .where('user_id = :userId', { userId: user.id })
+        .andWhere('verdict = :verdict', { verdict: 'AC' })
         .execute();
 
       const { total_difficulty } = await this.submissionsRepository
@@ -69,7 +100,7 @@ export class UsersService {
 
       result.push({
         ...user,
-        avg_diffculty:
+        avg_difficulty:
           parseInt(total_difficulty) / parseInt(acSolutions[0].count) || 0,
         solve_count: parseInt(acSolutions[0].count),
         solve_time: parseInt(solveTime[0].sum) || 0,

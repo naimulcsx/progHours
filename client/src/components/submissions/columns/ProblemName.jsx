@@ -40,7 +40,6 @@ const ProblemName = (cell) => {
 
   const { mutate } = useMutation(updateSubmission, {
     onSuccess: (data) => {
-      console.log(data)
       toast.success("Problem updated", { className: "toast" })
     },
     onError: (err) => {

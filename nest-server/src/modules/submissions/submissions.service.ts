@@ -49,7 +49,6 @@ export class SubmissionsService {
         });
         problemId = newProblem.id;
       } catch (err) {
-        console.log(err);
         throw new BadRequestException(['some error occured']);
       }
     }
@@ -88,6 +87,16 @@ export class SubmissionsService {
       await this.submissionsRepository.update(id, options);
 
       return { message: 'submission updated' };
+    } catch (err) {
+      throw err;
+    }
+  }
+
+  async deleteSubmission(id: any) {
+    try {
+      await this.submissionsRepository.delete(id);
+
+      return { message: 'Submission deleted' };
     } catch (err) {
       throw err;
     }
