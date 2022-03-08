@@ -67,13 +67,13 @@ const Actions = (cell) => {
               <div className="inline-block w-full max-w-xl p-6 my-8 overflow-hidden text-left align-middle transition-all transform bg-white shadow-xl rounded-2xl">
                 <Dialog.Title
                   as="h3"
-                  className="text-lg font-semibold leading-6 text-gray-900"
+                  className="text-xl font-semibold leading-6 text-dark"
                 >
-                  Delete Problem Submission
+                  Delete Submission
                 </Dialog.Title>
                 <div className="mt-2">
-                  <p className="text-sm text-gray-600">
-                    Are you sure you want to delete this submission ?
+                  <p className="text-gray-600">
+                    Are you sure you want to delete this submission?
                   </p>
                 </div>
 
