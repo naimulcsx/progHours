@@ -1,12 +1,38 @@
 import Layout from "@/components/dashboard/Layout"
-import { Stats } from "../../components/dashboard/Stats"
 import ProgressBox from "../../components/ProgressBox"
 import { useQuery } from "react-query"
 import { getStats } from "../../api/dashboard"
-import calculatePoints from "../../utils/calculatePoints"
+import { VerdictChart } from "../../components/dashboard/stats/VerdictChart"
+import WeekChart from "../../components/dashboard/stats/WeekChart"
+import { useState } from "react"
+import { getSubmissions } from "../../api/submissions"
+import getWeekRanges from "../../utils/getWeekRanges"
 
 const DashboardHome = () => {
-  const query = useQuery("stats", getStats)
+  let [data, setData] = useState(null)
+  let [frequency, setFrequency] = useState(null)
+  const query = useQuery("stats", getStats, {
+    onSuccess: (data) => setData(data),
+  })
+  useQuery("practice", getSubmissions, {
+    onSuccess: (data) => {
+      const frequency = {}
+      const weekRanges = getWeekRanges(data.submissions)
+      for (let i = 0; i < data.submissions.length; ++i) {
+        for (let j = 0; j < weekRanges.length; ++j) {
+          const solved_at = new Date(data.submissions[i].solved_at)
+          if (
+            solved_at >= weekRanges[j].from &&
+            solved_at <= weekRanges[j].to
+          ) {
+            if (!frequency[j + 1]) frequency[j + 1] = 0
+            frequency[j + 1]++
+          }
+        }
+      }
+      setFrequency(frequency)
+    },
+  })
   const name = localStorage.getItem("name")
   return (
     <Layout>
@@ -21,12 +47,15 @@ const DashboardHome = () => {
       </div>
       {query.status !== "loading" && (
         <div className="my-8">
-          <ProgressBox progress={query.data} />
+          <ProgressBox progress={data} />
         </div>
       )}
-      <div className="grid grid-cols-2 gap-8">
-        <div className="px-8 py-6 bg-white border rounded-lg border-slate-100">
-          <Stats />
+      <div className="grid grid-cols-4 gap-8">
+        <div className="h-full w-full px-8 py-6 bg-white shadow shadow-primary/5 rounded-lg">
+          <VerdictChart data={data} />
+        </div>
+        <div className="px-8 py-6 bg-white  rounded-lg shadow shadow-primary/5 col-span-2">
+          <WeekChart data={frequency} />
         </div>
       </div>
     </Layout>

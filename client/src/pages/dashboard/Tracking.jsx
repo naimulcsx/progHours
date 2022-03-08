@@ -36,13 +36,10 @@ function minmaxDate(arr) {
 
 export default function TrackingSheet() {
   const query = useQuery("practice", getSubmissions)
-
   let [weeks, setWeeks] = useState([])
   let [filters, setFilters] = useState([])
   let [filteredData, setFilteredData] = useState([])
   const [selectedWeek, setSelectedWeek] = useState({ id: 0, name: "" })
-
-  console.log(selectedWeek)
 
   useEffect(() => {
     if (!query.data) return

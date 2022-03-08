@@ -7,7 +7,7 @@ import calculatePoints from "../utils/calculatePoints"
 
 const Box = ({ title, icon, result, progress, today }) => {
   return (
-    <div className="flex items-start px-8 py-5 space-x-4 bg-white border rounded-md border-slate-100">
+    <div className="flex items-start px-8 py-5 space-x-4 bg-white rounded-md  shadow shadow-primary/5">
       <div className="p-3 rounded-full bg-primary bg-opacity-10 text-primary">
         {icon}
       </div>
@@ -33,6 +33,7 @@ function convertToHours(totalTimeInMin) {
 }
 
 const ProgressBox = ({ progress }) => {
+  if (!progress) return "loading"
   const { solve_count, solve_time, avg_difficulty } = progress
 
   return (

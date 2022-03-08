@@ -22,7 +22,6 @@ const LeaderboardPage = () => {
       setRanklist(data.ranklist)
     },
   })
-  console.log(query.isRefetching)
   return (
     <Layout>
       <div className="flex items-center justify-between">

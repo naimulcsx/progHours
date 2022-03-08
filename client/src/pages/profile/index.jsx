@@ -6,8 +6,6 @@ import { getStats } from "../../api/dashboard"
 export default function Profile() {
   const name = localStorage.getItem("name")
   const query = useQuery("stats", getStats)
-
-  console.log(query.data)
   return (
     <div className="">
       <Navbar bgWhite />
