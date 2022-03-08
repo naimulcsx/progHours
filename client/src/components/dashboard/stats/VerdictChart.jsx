@@ -35,7 +35,7 @@ export function VerdictChart({ data }) {
     <Doughnut
       data={makeData(data)}
       options={{
-        cutout: 75,
+        cutout: 120,
         aspectRatio: 1,
         responsive: true,
       }}
