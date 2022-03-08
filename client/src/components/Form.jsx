@@ -42,7 +42,7 @@ const Select = ({ children, ...props }) => {
     <Listbox {...props}>
       {({ open }) => (
         <>
-          <div className="relative">
+          <div className="">
             <Listbox.Button
               className={`${
                 styles[props.value]
@@ -67,7 +67,7 @@ const Select = ({ children, ...props }) => {
               leaveFrom="opacity-100"
               leaveTo="opacity-0"
             >
-              <Listbox.Options className="absolute z-[9999] w-full py-1 mt-1 overflow-auto text-base bg-white rounded-md shadow-lg max-h-60 ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm">
+              <Listbox.Options className="absolute z-[9999] w-[160px] py-1 mt-1 overflow-auto text-base bg-white rounded-md shadow-lg max-h-60 ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm">
                 {children}
               </Listbox.Options>
             </Transition>
