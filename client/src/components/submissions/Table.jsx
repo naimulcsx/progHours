@@ -101,8 +101,8 @@ const TrackingTable = ({ submissions }) => {
   } = tableInstance
 
   return (
-    <div className="mt-6">
-      <table {...getTableProps()} className="border-collapse">
+    <div className="mt-6 shadow shadow-primary/5 rounded-md overflow-hidden">
+      <table {...getTableProps()} className="border-collapse ">
         <thead>
           {headerGroups.map((headerGroup) => {
             return (
