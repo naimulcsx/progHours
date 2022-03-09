@@ -1,13 +1,12 @@
-import AuthContainer from "@/components/AuthContainer"
+import axios from "axios"
+import * as Yup from "yup"
+import { useFormik } from "formik"
+import { toast } from "react-toastify"
 import { Helmet } from "react-helmet-async"
 import { Link, useNavigate } from "react-router-dom"
-import { useFormik } from "formik"
-import * as Yup from "yup"
-import axios from "axios"
-import { toast } from "react-toastify"
-import getHttpStatusError from "@/utils/getHttpStatusError"
+import showErrorToasts from "@/utils/showErrorToasts"
+import AuthContainer from "@/components/AuthContainer"
 import { FormControl, Input, ErrorMessage, Label } from "@/components/Form"
-import showErrorToasts from "../../utils/showErrorToasts"
 
 const loginSchema = Yup.object().shape({
   username: Yup.string()
@@ -17,7 +16,7 @@ const loginSchema = Yup.object().shape({
   password: Yup.string().trim().required("Password is required"),
 })
 
-const Login = () => {
+const Login = (): JSX.Element => {
   const navigate = useNavigate()
   const formik = useFormik({
     initialValues: {
@@ -27,15 +26,18 @@ const Login = () => {
     validationSchema: loginSchema,
     onSubmit: async (values) => {
       try {
+        /**
+         * TODO: REPLACE THIS WITH REACT-QUERY MUTATION
+         */
         const { data } = await axios.post("/api/auth/login", values)
         const { user } = data
-        localStorage.setItem("isLoggedIn", 1)
+        localStorage.setItem("isLoggedIn", "1")
         localStorage.setItem("role", "user")
         localStorage.setItem("userId", user.id)
         localStorage.setItem("name", user.name)
         navigate("/dashboard")
         toast.success("Successfully logged in", { className: "toast" })
-      } catch (error) {
+      } catch (error: any) {
         const { data } = error.response
         // toast.error(data.error, { className: "toast" })
         showErrorToasts(data.message)
