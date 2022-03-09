@@ -1,17 +1,35 @@
-import { Navigate } from "react-router-dom"
-import { toast } from "react-toastify"
 import { useEffect } from "react"
+import { toast } from "react-toastify"
+import { Navigate, RouteObject } from "react-router-dom"
+
+/**
+ * Auth pages
+ */
 import Login from "@/pages/auth/Login"
 import Register from "@/pages/auth/Register"
+
+/**
+ * Dashboard pages
+ */
 import DashboardHome from "@/pages/dashboard/Home"
+import TrackingSheet from "@/pages/dashboard/Tracking"
+import LeaderboardPage from "@/pages/leaderboard"
+
+/**
+ * Profile page
+ */
+import Profile from "@/pages/profile"
+
+/**
+ * Settings page
+ */
 import AccountSettings from "@/pages/settings/AccountSettings"
 import ProfileSettings from "@/pages/settings/ProfileSettings"
-import Profile from "@/pages/profile"
-import TrackingSheet from "@/pages/dashboard/Tracking"
-import TrackingEntry from "@/pages/dashboard/TrackingEntry"
-import LeaderboardPage from "./pages/leaderboard"
 
-const AccessDenied = () => {
+const AccessDenied = (): JSX.Element => {
+  /**
+   * Show the Access denied toast and redirect users to /login
+   */
   useEffect(() => {
     toast.error("Access denied", {
       className: "toast",
@@ -20,7 +38,7 @@ const AccessDenied = () => {
   return <Navigate to="/login" />
 }
 
-const routes = (isLoggedIn) => [
+const routes = (isLoggedIn: boolean): RouteObject[] => [
   {
     path: "/",
     element: isLoggedIn ? <Navigate to="/dashboard" /> : <Login />,
@@ -41,10 +59,6 @@ const routes = (isLoggedIn) => [
     path: "/submissions",
     element: isLoggedIn ? <TrackingSheet /> : <AccessDenied />,
   },
-  // {
-  //   path: "/submissions/new",
-  //   element: isLoggedIn ? <TrackingEntry /> : <AccessDenied />,
-  // },
   {
     path: "/settings",
     element: isLoggedIn ? (

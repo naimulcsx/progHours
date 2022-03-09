@@ -1,12 +1,12 @@
-import AuthContainer from "@/components/AuthContainer"
-import { Link, useNavigate } from "react-router-dom"
-import { Helmet } from "react-helmet-async"
-import { useFormik } from "formik"
-import * as Yup from "yup"
 import axios from "axios"
+import * as Yup from "yup"
+import { useFormik } from "formik"
 import { toast } from "react-toastify"
-import { FormControl, Label, ErrorMessage, Input } from "@/components/Form"
-import showErrorToasts from "../../utils/showErrorToasts"
+import { Helmet } from "react-helmet-async"
+import { Link, useNavigate } from "react-router-dom"
+import showErrorToasts from "@/utils/showErrorToasts"
+import AuthContainer from "@/components/AuthContainer"
+import { FormControl, Input, ErrorMessage, Label } from "@/components/Form"
 
 const reigsterSchema = Yup.object().shape({
   name: Yup.string().trim().required("Name is required"),
@@ -21,7 +21,7 @@ const reigsterSchema = Yup.object().shape({
   password: Yup.string().trim().required("Password is required"),
 })
 
-const Register = () => {
+const Register = (): JSX.Element => {
   const navigate = useNavigate()
   const formik = useFormik({
     initialValues: {
@@ -33,12 +33,15 @@ const Register = () => {
     validationSchema: reigsterSchema,
     onSubmit: async (values) => {
       try {
+        /**
+         * TODO: REPLACE THIS WITH REACT-QUERY MUTATION
+         */
         await axios.post("/api/auth/register", values)
         // redirect to the login page
         navigate("/login")
         // create a toast
         toast.success("Account created!")
-      } catch (err) {
+      } catch (err: any) {
         const { data } = err.response
         toast.error(data.error, { className: "toast" })
         showErrorToasts(data.message)
