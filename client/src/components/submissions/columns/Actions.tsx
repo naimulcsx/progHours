@@ -12,11 +12,20 @@ const Actions = (cell) => {
 
   const { mutate } = useMutation((id) => deleteSubmission(id), {
     onSuccess: () => {
-      queryClient.invalidateQueries("practice", getSubmissions)
+      setIsOpen(false)
+      // queryClient.invalidateQueries("practice", getSubmissions)
+      const practice: any = queryClient.getQueryData("practice")
+      queryClient.setQueryData("practice", {
+        results: practice.submissions.length - 1,
+        submissions: practice.submissions.filter(
+          (el: any) => el.id !== cell.row.original.id
+        ),
+      })
       toast.success("Problem Deleted", { className: "toast" })
     },
 
     onError: (err) => {
+      setIsOpen(false)
       toast.error(err.response.data.message, { className: "toast" })
     },
   })
