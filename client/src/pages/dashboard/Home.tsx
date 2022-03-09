@@ -1,12 +1,20 @@
-import Layout from "@/components/dashboard/Layout"
-import ProgressBox from "../../components/ProgressBox"
-import { useQuery } from "react-query"
-import { getStats } from "../../api/dashboard"
-import { VerdictChart } from "../../components/dashboard/stats/VerdictChart"
-import WeekChart from "../../components/dashboard/stats/WeekChart"
 import { useState } from "react"
-import { getSubmissions } from "../../api/submissions"
-import getWeekRanges from "../../utils/getWeekRanges"
+import { useQuery } from "react-query"
+
+/**
+ * Import Components
+ */
+import Layout from "@/components/dashboard/Layout"
+import ProgressBox from "@/components/ProgressBox"
+import VerdictChart from "@/components/dashboard/stats/VerdictChart"
+import WeekChart from "@/components/dashboard/stats/WeekChart"
+
+/**
+ * Import helpers
+ */
+import { getStats } from "@/api/dashboard"
+import { getSubmissions } from "@/api/submissions"
+import getWeekRanges from "@/utils/getWeekRanges"
 
 const DashboardHome = () => {
   let [data, setData] = useState(null)

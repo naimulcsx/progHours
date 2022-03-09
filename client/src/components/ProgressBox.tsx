@@ -33,7 +33,7 @@ function convertToHours(totalTimeInMin) {
 }
 
 const ProgressBox = ({ progress }) => {
-  if (!progress) return "loading"
+  if (!progress) return <div>Loading</div>
   const { solve_count, solve_time, avg_difficulty } = progress
 
   return (

@@ -4,10 +4,17 @@ import { useFormik } from "formik"
 import { toast } from "react-toastify"
 import { Helmet } from "react-helmet-async"
 import { Link, useNavigate } from "react-router-dom"
+
+/**
+ * Import Components / Utilities
+ */
 import showErrorToasts from "@/utils/showErrorToasts"
 import AuthContainer from "@/components/AuthContainer"
 import { FormControl, Input, ErrorMessage, Label } from "@/components/Form"
 
+/**
+ * Yup validation schema for login form
+ */
 const loginSchema = Yup.object().shape({
   username: Yup.string()
     .trim()
@@ -16,6 +23,9 @@ const loginSchema = Yup.object().shape({
   password: Yup.string().trim().required("Password is required"),
 })
 
+/**
+ * Component for login page
+ */
 const Login = (): JSX.Element => {
   const navigate = useNavigate()
   const formik = useFormik({
