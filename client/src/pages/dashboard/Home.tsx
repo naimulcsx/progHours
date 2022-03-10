@@ -17,14 +17,23 @@ import { getSubmissions } from "@/api/submissions"
 import getWeekRanges from "@/utils/getWeekRanges"
 
 const DashboardHome = () => {
+  /**
+   * Get statistics: number of problem solved, total solve time and average_difficulty
+   */
   let [data, setData] = useState(null)
-  let [frequency, setFrequency] = useState(null)
   const query = useQuery("stats", getStats, {
     onSuccess: (data) => setData(data),
   })
+  /**
+   * Get submissions and get statistics for each week
+   */
+  interface Frequency {
+    [name: string]: number
+  }
+  let [frequency, setFrequency] = useState<Frequency | null>(null)
   useQuery("practice", getSubmissions, {
     onSuccess: (data) => {
-      const frequency = {}
+      const frequency: Frequency = {}
       const weekRanges = getWeekRanges(data.submissions)
       for (let i = 0; i < data.submissions.length; ++i) {
         for (let j = 0; j < weekRanges.length; ++j) {
@@ -41,6 +50,10 @@ const DashboardHome = () => {
       setFrequency(frequency)
     },
   })
+
+  /**
+   * Get user's name from localstorage
+   */
   const name = localStorage.getItem("name")
   return (
     <Layout>
