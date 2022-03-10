@@ -1,6 +1,6 @@
 import { Fragment, useState } from "react"
 import { Combobox, Transition } from "@headlessui/react"
-import { CheckIcon, SelectorIcon } from "@heroicons/react/solid"
+import { SelectorIcon } from "@heroicons/react/solid"
 
 export default function WeekFilters({ numberOfWeeks, selected, setSelected }) {
   const weeks = [{ id: 1, name: "All weeks" }]

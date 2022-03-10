@@ -1,6 +1,6 @@
 import moment from "moment"
 
-function getMinDate(arr) {
+function getMinDate(arr: any) {
   var len = arr.length,
     min = new Date()
   while (len--) {
@@ -11,7 +11,12 @@ function getMinDate(arr) {
   return moment(min).startOf("day").toDate()
 }
 
-function getWeekRanges(submissions) {
+interface WeekRange {
+  from: Date
+  to: Date
+}
+
+function getWeekRanges(submissions: any) {
   const minDate = getMinDate(submissions)
   let from = moment(minDate)
   let to = moment(minDate)
@@ -25,8 +30,8 @@ function getWeekRanges(submissions) {
       to: to.add(6, "day").toDate(),
     })
   }
-  console.log(weekRanges)
   return weekRanges
 }
 
-export default getWeekRanges
+export type { WeekRange }
+export { getWeekRanges }

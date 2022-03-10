@@ -14,7 +14,7 @@ import WeekChart from "@/components/dashboard/stats/WeekChart"
  */
 import { getStats } from "@/api/dashboard"
 import { getSubmissions } from "@/api/submissions"
-import getWeekRanges from "@/utils/getWeekRanges"
+import { getWeekRanges } from "@/utils/getWeekRanges"
 
 const DashboardHome = () => {
   /**
