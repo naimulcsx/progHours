@@ -1,5 +1,7 @@
-import { Popover } from "@headlessui/react"
+import { Transition, Popover } from "@headlessui/react"
 import TagInputField from "../TagInputField"
+import { Fragment } from "react"
+
 const Tags = (cell) => {
   const user = localStorage.getItem("userId")
   const { id, tags, user_tags } = cell.row.original.problem
@@ -41,25 +43,35 @@ const Tags = (cell) => {
         <Popover className="mt-1">
           <Popover.Button className="relative px-2 py-1 text-sm rounded-lg bg-primary bg-opacity-10 text-primary">
             +
-          </Popover.Button>
-          <Popover.Panel className="absolute z-10 min-w-[260px] mt-2 py-3 shadow rounded-xl  bg-white border">
-            {({ close }) => {
-              return (
-                <div>
-                  <div className="px-4">
-                    <p className="font-medium text-primary">Suggest Tag</p>
-                    <p className="mb-2 text-sm text-gray-400">
-                      Suggest a tag that is revelant to this problem.
-                    </p>
+          </Popover.Button>{" "}
+          <Transition
+            as={Fragment}
+            enter="transition ease-out duration-200"
+            enterFrom="opacity-0 translate-y-1"
+            enterTo="opacity-100 translate-y-0"
+            leave="transition ease-in duration-150"
+            leaveFrom="opacity-100 translate-y-0"
+            leaveTo="opacity-0 translate-y-1"
+          >
+            <Popover.Panel className="absolute z-10 min-w-[260px] mt-2 py-3 shadow rounded-xl  bg-white border">
+              {({ close }) => {
+                return (
+                  <div>
+                    <div className="px-4">
+                      <p className="font-medium text-primary">Suggest Tag</p>
+                      <p className="mb-2 text-sm text-gray-400">
+                        Suggest a tag that is revelant to this problem.
+                      </p>
+                    </div>
+                    <TagInputField
+                      problemId={id}
+                      closePopover={close}
+                    ></TagInputField>
                   </div>
-                  <TagInputField
-                    problemId={id}
-                    closePopover={close}
-                  ></TagInputField>
-                </div>
-              )
-            }}
-          </Popover.Panel>
+                )
+              }}
+            </Popover.Panel>
+          </Transition>
         </Popover>
       </li>
     </ul>
