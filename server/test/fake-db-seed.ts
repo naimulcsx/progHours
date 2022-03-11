@@ -50,6 +50,16 @@ function randomInRange(start, end) {
 }
 
 async function createProblems() {
+  // const urls = [
+  //   'https://codeforces.com',
+  //   'https://www.spoj.com',
+  //   'https://lighttoj.com',
+  //   'https://atcoder.jp',
+  //   'https://toph.co',
+  //   'https://www.hackerrank.com',
+  //   'https://www.codechef.com',
+  //   'https://cses.fi/',
+  // ];
   // generate 2000 problems
   for (let i = 1; i <= NUMBER_OF_PROBLEMS; ++i) {
     // id, pid, name, link, difficulty

@@ -7,6 +7,7 @@ import axios from "axios"
 import { getRankList } from "../../api/leaderBorad"
 
 import calculatePoints from "../../utils/calculatePoints"
+import Spinner from "@/components/Spinner"
 
 const LeaderboardPage = () => {
   let [ranklist, setRanklist] = useState([])
@@ -28,18 +29,7 @@ const LeaderboardPage = () => {
         <h3 className="font-bold">
           <div className="flex items-center space-x-4">
             <span>Leaderboard</span>
-            <Transition
-              as={Fragment}
-              show={query.status === "loading" || query.isRefetching}
-              enter="transform transition duration-[400ms]"
-              enterFrom="opacity-0 rotate-[-120deg] scale-50"
-              enterTo="opacity-100 rotate-0 scale-100"
-              leave="transform duration-200 transition ease-in-out"
-              leaveFrom="opacity-100 rotate-0 scale-100 "
-              leaveTo="opacity-0 scale-95 "
-            >
-              <div className="sp sp-circle sp-circle-dark"></div>
-            </Transition>
+            <Spinner show={query.isLoading || query.isRefetching} />
           </div>
         </h3>
       </div>
