@@ -1,7 +1,6 @@
 import {
   Body,
   Controller,
-  ForbiddenException,
   Get,
   HttpStatus,
   Post,
@@ -26,7 +25,6 @@ export class SubmissionsController {
       req.user.id,
     );
     return {
-      results: submissions.length,
       submissions,
     };
   }
@@ -56,7 +54,6 @@ export class SubmissionsController {
   @Delete(':id')
   async deleteSubmission(@Param('id') id: any) {
     await this.submissionsService.deleteSubmission(id);
-
     return {
       statusCode: HttpStatus.NO_CONTENT,
       message: 'Resource deleted',
