@@ -1,6 +1,6 @@
 import { useQuery } from "react-query"
-import { Fragment, useEffect, useRef, useState } from "react"
-import { Transition } from "@headlessui/react"
+import { useEffect, useState } from "react"
+import { Helmet } from "react-helmet-async"
 
 /**
  * Import Components and helpers
@@ -45,6 +45,9 @@ export default function TrackingSheet() {
 
   return (
     <Layout>
+      <Helmet>
+        <title>Tracking Sheet</title>
+      </Helmet>
       <div className="flex items-center justify-between">
         <h3 className="font-bold flex items-center space-x-4">
           <span>Tracking Sheet</span>

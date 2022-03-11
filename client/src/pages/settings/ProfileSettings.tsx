@@ -2,6 +2,7 @@ import SettingsLayout from "@/components/SettingsLayout"
 import { useFormik } from "formik"
 import * as Yup from "yup"
 import { FormControl, Input, Label, ErrorMessage } from "@/components/Form"
+import { Helmet } from "react-helmet-async"
 
 const profileSchema = Yup.object().shape({
   name: Yup.string().trim().required("Name is required"),
@@ -36,6 +37,9 @@ const EditProfile = () => {
 
   return (
     <SettingsLayout>
+      <Helmet>
+        <title>Settings</title>
+      </Helmet>
       <div className="grid items-start grid-cols-3 gap-8">
         <div className="col-span-2">
           <form className="space-y-12" onSubmit={formik.handleSubmit}>

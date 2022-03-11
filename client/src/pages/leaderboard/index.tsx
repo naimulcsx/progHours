@@ -8,6 +8,7 @@ import { getRankList } from "../../api/leaderBorad"
 
 import calculatePoints from "../../utils/calculatePoints"
 import Spinner from "@/components/Spinner"
+import { Helmet } from "react-helmet-async"
 
 const LeaderboardPage = () => {
   let [ranklist, setRanklist] = useState([])
@@ -25,6 +26,9 @@ const LeaderboardPage = () => {
   })
   return (
     <Layout>
+      <Helmet>
+        <title>Tracking Sheet</title>
+      </Helmet>
       <div className="flex items-center justify-between">
         <h3 className="font-bold">
           <div className="flex items-center space-x-4">

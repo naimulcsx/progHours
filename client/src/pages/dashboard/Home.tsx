@@ -1,5 +1,6 @@
 import { useState } from "react"
 import { useQuery } from "react-query"
+import { Helmet } from "react-helmet-async"
 
 /**
  * Import Components
@@ -57,6 +58,9 @@ const DashboardHome = () => {
   const name = localStorage.getItem("name")
   return (
     <Layout>
+      <Helmet>
+        <title>Dashboard</title>
+      </Helmet>
       <div className="flex items-center justify-between">
         <div>
           <h3 className="font-bold">Hi! {name}</h3>
