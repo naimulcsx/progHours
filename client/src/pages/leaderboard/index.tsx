@@ -1,18 +1,24 @@
-import Layout from "@/components/dashboard/Layout"
+import { Helmet } from "react-helmet-async"
 import { Transition } from "@headlessui/react"
 import { Fragment, useState } from "react"
-import LeaderboardTable from "../../components/leaderboard/Table"
 import { useQuery } from "react-query"
-import axios from "axios"
-import { getRankList } from "../../api/leaderBorad"
 
-import calculatePoints from "../../utils/calculatePoints"
+/**
+ * Import Components
+ */
+import Layout from "@/components/dashboard/Layout"
+import LeaderboardTable from "@/components/leaderboard/Table"
 import Spinner from "@/components/Spinner"
-import { Helmet } from "react-helmet-async"
+
+/**
+ * Import helpers
+ */
+import calculatePoints from "@/utils/calculatePoints"
+import { getRankList } from "@/api/leaderboard"
 
 const LeaderboardPage = () => {
   let [ranklist, setRanklist] = useState([])
-  const query = useQuery("ranklist", () => getRankList(), {
+  const query = useQuery("ranklist", getRankList, {
     onSuccess: (data) => {
       data.ranklist.forEach((el, i) => {
         el.points = calculatePoints(el).toFixed(2)
