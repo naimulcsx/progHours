@@ -8,11 +8,23 @@ import {
   UseGuards,
   Req,
 } from "@nestjs/common"
-import { AuthService } from "./auth.service"
 import { Response } from "express"
-import { CreateUserDto } from "src/validators/create-user-dto"
-import { LoginUserDto } from "src/validators/login-user-dto"
-import { IsAuthenticatedGuard } from "src/guards/is-authenticated"
+
+/**
+ * Import Data Transfer Objects (DTO)
+ */
+import { CreateUserDto } from "@/validators/create-user-dto"
+import { LoginUserDto } from "@/validators/login-user-dto"
+
+/**
+ * Import Services
+ */
+import { AuthService } from "@/modules/auth/auth.service"
+
+/**
+ * Import Guards
+ */
+import { IsAuthenticatedGuard } from "@/guards/is-authenticated"
 
 @Controller("auth")
 export class AuthController {
