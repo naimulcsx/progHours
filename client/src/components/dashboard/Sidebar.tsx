@@ -13,7 +13,7 @@ const Sidebar = () => {
   const user = localStorage.getItem("name")
   const handleLogout = useLogout()
   return (
-    <div className="max-w-[250px] w-full h-[100vh] py-6 fixed z-10 top-0 left-0 bottom-0 bg-white shadow shadow-primary/5">
+    <div className="hidden max-w-[250px] w-full flex-shrink-0 h-[100vh] py-6  z-50 top-0 left-0 bottom-0 bg-white xl:block">
       {/* sidebar links */}
       <div className="flex flex-col justify-between h-full px-4">
         <div className="mt-16">
