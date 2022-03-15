@@ -17,7 +17,9 @@ import { getSubmissions } from "@/api/submissions"
 import { getWeekRanges, WeekRange, filterByWeek } from "@/utils/getWeekRanges"
 
 export default function TrackingSheet() {
-  const query = useQuery("practice", getSubmissions)
+  const query = useQuery("practice", getSubmissions, {
+    refetchOnWindowFocus: false,
+  })
   let [filteredData, setFilteredData] = useState([])
 
   /**

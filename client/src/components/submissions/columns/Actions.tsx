@@ -1,29 +1,43 @@
+import { Fragment, useState } from "react"
+import { Dialog, Transition } from "@headlessui/react"
 import { useMutation, useQueryClient } from "react-query"
-import { TrashIcon } from "@/components/Icons"
-import { getSubmissions, deleteSubmission } from "@/api/submissions"
 import { toast } from "react-toastify"
 
-import { Dialog, Transition } from "@headlessui/react"
-import { Fragment, useState } from "react"
+/**
+ * Import Components
+ */
+import { TrashIcon } from "@/components/Icons"
 
-const Actions = (cell) => {
+/**
+ * Import helpers
+ */
+import { deleteSubmission } from "@/api/submissions"
+
+/**
+ * Import Types / Interfaces
+ */
+import { Cell } from "react-table"
+
+interface Practice {
+  submissions: any[]
+}
+
+const Actions = (cell: Cell) => {
   const queryClient = useQueryClient()
   const [isOpen, setIsOpen] = useState(false)
 
   const { mutate } = useMutation((id) => deleteSubmission(id), {
     onSuccess: () => {
       setIsOpen(false)
-      // queryClient.invalidateQueries("practice", getSubmissions)
-      const practice: any = queryClient.getQueryData("practice")
+      const practice: Practice | undefined =
+        queryClient.getQueryData("practice")
       queryClient.setQueryData("practice", {
-        results: practice.submissions.length - 1,
-        submissions: practice.submissions.filter(
+        submissions: practice?.submissions.filter(
           (el: any) => el.id !== cell.row.original.id
         ),
       })
       toast.success("Problem Deleted", { className: "toast" })
     },
-
     onError: (err) => {
       setIsOpen(false)
       toast.error(err.response.data.message, { className: "toast" })

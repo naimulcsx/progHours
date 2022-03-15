@@ -5,30 +5,30 @@ import {
   ManyToOne,
   JoinColumn,
   Index,
-} from 'typeorm';
-import { User } from '../users/user.entity';
-import { Problem } from '../problems/problem.entity';
+} from "typeorm"
+import { User } from "../users/user.entity"
+import { Problem } from "../problems/problem.entity"
 
-@Entity({ name: 'submissions' })
-@Index(['user_id', 'verdict', 'solve_time'])
+@Entity({ name: "submissions" })
+@Index(["user", "verdict", "solve_time"])
 export class Submission {
   @PrimaryGeneratedColumn()
-  id: number;
+  id: number
 
   @Column()
-  solve_time: number;
+  solve_time: number
 
-  @Column({ type: 'timestamp with time zone' })
-  solved_at: String;
+  @Column({ type: "timestamp with time zone" })
+  solved_at: String
 
   @Column()
-  verdict: string;
+  verdict: string
 
   @ManyToOne(() => Problem, (problem) => problem.id, { nullable: false })
-  @JoinColumn({ name: 'problem_id' })
-  problem_id: number;
+  @JoinColumn({ name: "problem_id" })
+  problem: number
 
   @ManyToOne(() => User, (user) => user.id, { nullable: false })
-  @JoinColumn({ name: 'user_id' })
-  user_id: number;
+  @JoinColumn({ name: "user_id" })
+  user: number
 }

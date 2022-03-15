@@ -6,12 +6,11 @@ Competitive programmers are always looking for an edge to improve their skills. 
 - Help competitive programmers by providing a competitive atmosphere to keep going without slowing down.
 - Help coaches to find out the talented / hard working contestants in an institution.
 
-
 ## Installation
 
 ### Prerequisites
 
-* To run this project, you must have `Docker` installed
+- To run this project, you must have `Docker` installed
 
 ### Steps
 

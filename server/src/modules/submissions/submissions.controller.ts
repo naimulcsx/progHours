@@ -9,54 +9,54 @@ import {
   Delete,
   Param,
   UseGuards,
-} from '@nestjs/common';
-import { IsAuthenticatedGuard } from 'src/guards/is-authenticated';
-import { CreateSubmissionDto } from 'src/validators/create-submission-dto';
-import { UpdateSubmissionDto } from 'src/validators/update-submission-dto';
-import { SubmissionsService } from './submissions.service';
+} from "@nestjs/common"
+import { IsAuthenticatedGuard } from "src/guards/is-authenticated"
+import { CreateSubmissionDto } from "src/validators/create-submission-dto"
+import { UpdateSubmissionDto } from "src/validators/update-submission-dto"
+import { SubmissionsService } from "./submissions.service"
 
-@Controller('submissions')
+@Controller("submissions")
 @UseGuards(IsAuthenticatedGuard)
 export class SubmissionsController {
   constructor(private readonly submissionsService: SubmissionsService) {}
   @Get()
   async getSubmissions(@Req() req) {
     const submissions = await this.submissionsService.getSubmissions(
-      req.user.id,
-    );
+      req.user.id
+    )
     return {
       submissions,
-    };
+    }
   }
   @Post()
   async createSubmission(@Body() body: CreateSubmissionDto, @Req() req) {
-    const { user } = req;
-    await this.submissionsService.createSubmission(body, user);
+    const { user } = req
+    await this.submissionsService.createSubmission(body, user)
     return {
       statusCode: HttpStatus.CREATED,
-      message: 'resource created',
-    };
+      message: "resource created",
+    }
   }
 
-  @Patch(':id')
+  @Patch(":id")
   async updateSubmission(
-    @Param('id') id: any,
-    @Body() body: UpdateSubmissionDto,
+    @Param("id") id: any,
+    @Body() body: UpdateSubmissionDto
   ) {
-    await this.submissionsService.updateSubmission(body, id);
+    await this.submissionsService.updateSubmission(body, id)
 
     return {
       statusCode: HttpStatus.OK,
-      message: 'resource updated',
-    };
+      message: "resource updated",
+    }
   }
 
-  @Delete(':id')
-  async deleteSubmission(@Param('id') id: any) {
-    await this.submissionsService.deleteSubmission(id);
+  @Delete(":id")
+  async deleteSubmission(@Param("id") id: any) {
+    await this.submissionsService.deleteSubmission(id)
     return {
       statusCode: HttpStatus.NO_CONTENT,
-      message: 'Resource deleted',
-    };
+      message: "Resource deleted",
+    }
   }
 }
