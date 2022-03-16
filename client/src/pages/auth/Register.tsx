@@ -4,10 +4,17 @@ import { useFormik } from "formik"
 import { toast } from "react-toastify"
 import { Helmet } from "react-helmet-async"
 import { Link, useNavigate } from "react-router-dom"
+
+/**
+ * Import Components / Utilities
+ */
 import showErrorToasts from "@/utils/showErrorToasts"
 import AuthContainer from "@/components/AuthContainer"
 import { FormControl, Input, ErrorMessage, Label } from "@/components/Form"
 
+/**
+ * Yup validation schema for register form
+ */
 const reigsterSchema = Yup.object().shape({
   name: Yup.string().trim().required("Name is required"),
   email: Yup.string()
@@ -21,6 +28,9 @@ const reigsterSchema = Yup.object().shape({
   password: Yup.string().trim().required("Password is required"),
 })
 
+/**
+ * Component for registration page
+ */
 const Register = (): JSX.Element => {
   const navigate = useNavigate()
   const formik = useFormik({

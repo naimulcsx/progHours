@@ -2,6 +2,7 @@ import SettingsLayout from "@/components/SettingsLayout"
 import { useFormik } from "formik"
 import * as Yup from "yup"
 import { FormControl, Input, Label, ErrorMessage } from "@/components/Form"
+import { Helmet } from "react-helmet-async"
 
 const accountSchema = Yup.object().shape({
   email: Yup.string().trim().email("Invalid email"),
@@ -26,6 +27,9 @@ const AccountSettings = () => {
 
   return (
     <SettingsLayout>
+      <Helmet>
+        <title>Settings</title>
+      </Helmet>
       <form className="space-y-12">
         <div className="space-y-6">
           <h3 className="mb-8">Change Account Settings</h3>

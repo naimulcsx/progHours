@@ -6,54 +6,44 @@ import {
   JoinTable,
   ManyToMany,
   OneToMany,
-} from 'typeorm';
-import { Tag } from './tag.entity';
-import { UserTag } from './user-tags.entity';
+} from "typeorm"
+import { Tag } from "./tag.entity"
+import { UserProblemTag } from "./user-problem-tag"
 
-@Entity({ name: 'problems' })
+@Entity({ name: "problems" })
 export class Problem {
   @PrimaryGeneratedColumn()
-  id: number;
+  id: number
 
   @Column({ unique: true })
-  pid: string;
+  pid: string
 
   @Column()
-  name: string;
+  name: string
 
   @Column({ unique: true })
-  link: string;
+  link: string
 
   @Column()
-  difficulty: number;
+  difficulty: number
 
   @CreateDateColumn()
-  created_at: Date;
-  @ManyToMany(() => Tag, { cascade: ['insert'] })
-  @JoinTable({
-    name: 'problem_tags',
-    joinColumn: {
-      name: 'problem_id',
-      referencedColumnName: 'id',
-    },
-    inverseJoinColumn: {
-      name: 'tag_id',
-      referencedColumnName: 'id',
-    },
-  })
-  tags: Tag[];
+  created_at: Date
 
-  @ManyToMany(() => UserTag, { cascade: ['update'] })
+  @ManyToMany(() => Tag, { cascade: ["insert"] })
   @JoinTable({
-    name: 'user_problem_tags',
+    name: "problem_tags",
     joinColumn: {
-      name: 'problem_id',
-      referencedColumnName: 'id',
+      name: "problem_id",
+      referencedColumnName: "id",
     },
     inverseJoinColumn: {
-      name: 'user_tag_id',
-      referencedColumnName: 'id',
+      name: "tag_id",
+      referencedColumnName: "id",
     },
   })
-  user_tags: UserTag[];
+  tags: Tag[]
+
+  @OneToMany(() => UserProblemTag, (userProblemTag) => userProblemTag.problem)
+  public user_problem_tags!: UserProblemTag[]
 }

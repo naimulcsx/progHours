@@ -1,15 +1,15 @@
-import { IsString, IsUrl, IsNumber, IsDateString } from 'class-validator';
+import { IsString, IsUrl, IsNumber, IsDateString } from "class-validator"
 
 export class CreateSubmissionDto {
   @IsUrl()
-  link: string;
+  link: string
 
   @IsNumber()
-  solve_time: number;
+  solve_time: number
 
   @IsString()
-  verdict: string;
+  verdict: string
 
   @IsDateString()
-  solved_at: Date;
+  solved_at: Date
 }

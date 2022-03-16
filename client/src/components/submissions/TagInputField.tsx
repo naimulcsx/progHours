@@ -67,7 +67,7 @@ export default function TagInputField({ problemId, closePopover }) {
     <Combobox value={selectedPerson} onChange={setSelectedPerson}>
       <form className="px-4" onKeyUp={handleSubmit}>
         <Combobox.Input
-          autocomplete="off"
+          autoComplete="off"
           value={tagName}
           onChange={(e) => setTagName(e.target.value)}
           className="text-sm w-full border focus:outline-none py-2 px-2 focus:ring-2 focus:ring-primary rounded-lg"

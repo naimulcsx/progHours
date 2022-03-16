@@ -1,16 +1,16 @@
-import { Matches, IsString, IsEmail, MinLength } from 'class-validator';
+import { Matches, IsString, IsEmail, MinLength } from "class-validator"
 
 export class CreateUserDto {
   @IsString()
-  name: string;
+  name: string
 
-  @Matches(/^[C][0-9]{6}$/, { message: 'invalid uid' })
-  username: string;
+  @Matches(/^[C][0-9]{6}$/, { message: "invalid uid" })
+  username: string
 
   @IsEmail()
-  email: string;
+  email: string
 
   @IsString()
   @MinLength(8)
-  password: string;
+  password: string
 }

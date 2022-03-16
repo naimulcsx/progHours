@@ -136,7 +136,7 @@ const AddEntryRow = ({ id }) => {
           </Popover.Panel>
         </Popover>
       </td>
-      <td></td>
+      <td className="border border-slate-100"></td>
       <td className="border border-slate-100" data-solved_at>
         <ReactDatePicker
           dateFormat="EEE, dd MMM yyyy"

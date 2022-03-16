@@ -1,16 +1,24 @@
-import Layout from "@/components/dashboard/Layout"
+import { Helmet } from "react-helmet-async"
 import { Transition } from "@headlessui/react"
 import { Fragment, useState } from "react"
-import LeaderboardTable from "../../components/leaderboard/Table"
 import { useQuery } from "react-query"
-import axios from "axios"
-import { getRankList } from "../../api/leaderBorad"
 
-import calculatePoints from "../../utils/calculatePoints"
+/**
+ * Import Components
+ */
+import Layout from "@/components/dashboard/Layout"
+import LeaderboardTable from "@/components/leaderboard/Table"
+import Spinner from "@/components/Spinner"
+
+/**
+ * Import helpers
+ */
+import calculatePoints from "@/utils/calculatePoints"
+import { getRankList } from "@/api/leaderboard"
 
 const LeaderboardPage = () => {
   let [ranklist, setRanklist] = useState([])
-  const query = useQuery("ranklist", () => getRankList(), {
+  const query = useQuery("ranklist", getRankList, {
     onSuccess: (data) => {
       data.ranklist.forEach((el, i) => {
         el.points = calculatePoints(el).toFixed(2)
@@ -24,22 +32,14 @@ const LeaderboardPage = () => {
   })
   return (
     <Layout>
+      <Helmet>
+        <title>Tracking Sheet</title>
+      </Helmet>
       <div className="flex items-center justify-between">
         <h3 className="font-bold">
           <div className="flex items-center space-x-4">
             <span>Leaderboard</span>
-            <Transition
-              as={Fragment}
-              show={query.status === "loading" || query.isRefetching}
-              enter="transform transition duration-[400ms]"
-              enterFrom="opacity-0 rotate-[-120deg] scale-50"
-              enterTo="opacity-100 rotate-0 scale-100"
-              leave="transform duration-200 transition ease-in-out"
-              leaveFrom="opacity-100 rotate-0 scale-100 "
-              leaveTo="opacity-0 scale-95 "
-            >
-              <div className="sp sp-circle sp-circle-dark"></div>
-            </Transition>
+            <Spinner show={query.isLoading || query.isRefetching} />
           </div>
         </h3>
       </div>

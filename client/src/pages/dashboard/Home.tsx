@@ -1,22 +1,40 @@
-import Layout from "@/components/dashboard/Layout"
-import ProgressBox from "../../components/ProgressBox"
-import { useQuery } from "react-query"
-import { getStats } from "../../api/dashboard"
-import { VerdictChart } from "../../components/dashboard/stats/VerdictChart"
-import WeekChart from "../../components/dashboard/stats/WeekChart"
 import { useState } from "react"
-import { getSubmissions } from "../../api/submissions"
-import getWeekRanges from "../../utils/getWeekRanges"
+import { useQuery } from "react-query"
+import { Helmet } from "react-helmet-async"
+
+/**
+ * Import Components
+ */
+import Layout from "@/components/dashboard/Layout"
+import ProgressBox from "@/components/ProgressBox"
+import VerdictChart from "@/components/dashboard/stats/VerdictChart"
+import WeekChart from "@/components/dashboard/stats/WeekChart"
+
+/**
+ * Import helpers
+ */
+import { getStats } from "@/api/dashboard"
+import { getSubmissions } from "@/api/submissions"
+import { getWeekRanges } from "@/utils/getWeekRanges"
 
 const DashboardHome = () => {
+  /**
+   * Get statistics: number of problem solved, total solve time and average_difficulty
+   */
   let [data, setData] = useState(null)
-  let [frequency, setFrequency] = useState(null)
   const query = useQuery("stats", getStats, {
     onSuccess: (data) => setData(data),
   })
+  /**
+   * Get submissions and get statistics for each week
+   */
+  interface Frequency {
+    [name: string]: number
+  }
+  let [frequency, setFrequency] = useState<Frequency | null>(null)
   useQuery("practice", getSubmissions, {
     onSuccess: (data) => {
-      const frequency = {}
+      const frequency: Frequency = {}
       const weekRanges = getWeekRanges(data.submissions)
       for (let i = 0; i < data.submissions.length; ++i) {
         for (let j = 0; j < weekRanges.length; ++j) {
@@ -33,9 +51,16 @@ const DashboardHome = () => {
       setFrequency(frequency)
     },
   })
+
+  /**
+   * Get user's name from localstorage
+   */
   const name = localStorage.getItem("name")
   return (
     <Layout>
+      <Helmet>
+        <title>Dashboard</title>
+      </Helmet>
       <div className="flex items-center justify-between">
         <div>
           <h3 className="font-bold">Hi! {name}</h3>

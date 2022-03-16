@@ -4,34 +4,34 @@ import {
   PrimaryGeneratedColumn,
   CreateDateColumn,
   BeforeInsert,
-} from 'typeorm';
-import * as bcrypt from 'bcrypt';
+} from "typeorm"
+import * as bcrypt from "bcrypt"
 
-@Entity({ name: 'users' })
+@Entity({ name: "users" })
 export class User {
   @PrimaryGeneratedColumn()
-  id: number;
+  id: number
 
   @Column({ unique: true })
-  username: string;
+  username: string
 
   @Column()
-  name: string;
+  name: string
 
   @Column({ unique: true })
-  email: string;
+  email: string
 
   @Column()
-  password: string;
+  password: string
 
   @Column()
-  role: string;
+  role: string
 
   @CreateDateColumn()
-  created_at: Date;
+  created_at: Date
 
   @BeforeInsert()
   async hashPassword() {
-    this.password = await bcrypt.hash(this.password, 10);
+    this.password = await bcrypt.hash(this.password, 10)
   }
 }

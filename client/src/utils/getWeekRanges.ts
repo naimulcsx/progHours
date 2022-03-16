@@ -1,6 +1,23 @@
 import moment from "moment"
 
-function getMinDate(arr) {
+/**
+ * filters the submissions array in a specific date range
+ */
+
+const filterByWeek = (arr: any, range: WeekRange) =>
+  arr.filter((el: any) => {
+    if (
+      new Date(el.solved_at) >= range.from &&
+      new Date(el.solved_at) <= range.to
+    )
+      return true
+  })
+
+/**
+ * Get the minimum date from submissions
+ */
+
+function getMinDate(arr: any[]) {
   var len = arr.length,
     min = new Date()
   while (len--) {
@@ -11,10 +28,19 @@ function getMinDate(arr) {
   return moment(min).startOf("day").toDate()
 }
 
-function getWeekRanges(submissions) {
+/**
+ * Returns week ranges by taking a look at the date of sumbissions. For Example
+ */
+
+interface WeekRange {
+  from: Date
+  to: Date
+}
+
+function getWeekRanges(submissions: any) {
   const minDate = getMinDate(submissions)
-  let from = moment(minDate)
-  let to = moment(minDate)
+  let from = moment(minDate),
+    to = moment(minDate).endOf("day")
   while (to.format("dddd") !== "Friday") {
     to.add(1, "day")
   }
@@ -22,11 +48,11 @@ function getWeekRanges(submissions) {
   while (to.toDate() <= new Date()) {
     weekRanges.push({
       from: to.add(1, "day").toDate(),
-      to: to.add(6, "day").toDate(),
+      to: to.add(6, "day").endOf("day").toDate(),
     })
   }
-  console.log(weekRanges)
   return weekRanges
 }
 
-export default getWeekRanges
+export type { WeekRange }
+export { getWeekRanges, filterByWeek }

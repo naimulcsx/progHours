@@ -30,7 +30,7 @@ const makeData = (data) => {
   }
 }
 
-export function VerdictChart({ data }) {
+export default function VerdictChart({ data }) {
   return (
     <Doughnut
       data={makeData(data)}

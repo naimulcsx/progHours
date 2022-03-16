@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { forwardRef, useState } from "react"
 import ReactDatePicker from "react-datepicker"
 import "react-datepicker/dist/react-datepicker.css"
 import "@/styles/datepicker.css"
@@ -6,6 +6,7 @@ import { updateSubmission } from "@/api/submissions"
 import { useMutation, useQueryClient } from "react-query"
 import { toast } from "react-toastify"
 import { getSubmissions } from "../../../api/submissions"
+import moment from "moment"
 
 const DatePicker = (cell) => {
   const queryClient = useQueryClient()
@@ -27,7 +28,9 @@ const DatePicker = (cell) => {
       dateFormat="EEE, dd MMM yyyy"
       selected={date}
       onCalendarClose={handleBlur}
-      onChange={(date) => setDate(date)}
+      onChange={(date) => {
+        setDate(date)
+      }}
     />
   )
 }
