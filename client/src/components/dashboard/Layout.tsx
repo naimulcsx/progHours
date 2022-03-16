@@ -1,9 +1,10 @@
 import Navbar from "@/components/Navbar"
 import Sidebar from "@/components/dashboard/Sidebar"
+import MobileNav from "../MobileNav"
 
 const Layout = ({ children }) => {
   return (
-    <div className="min-h-screen w-auto">
+    <div className="min-h-screen  w-auto">
       {/* topbar */}
       <Navbar />
       {/* sidebar */}
@@ -14,6 +15,7 @@ const Layout = ({ children }) => {
           {children}
         </div>
       </div>
+      <MobileNav></MobileNav>
     </div>
   )
 }

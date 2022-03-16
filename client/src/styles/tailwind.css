@@ -92,7 +92,7 @@ input:-webkit-autofill:active {
   @apply flex items-center px-4 py-3 rounded-lg;
 }
 .nav-item svg {
-  @apply w-6 h-6 mr-2 text-gray-500;
+  @apply w-6 h-6 mx-2 text-gray-500;
 }
 .nav-item.active {
   @apply font-medium bg-primary bg-opacity-10 text-primary;
@@ -100,7 +100,11 @@ input:-webkit-autofill:active {
 .nav-item.active svg {
   @apply text-primary;
 }
-
+/*
+.nav-item-mobile svg {
+  @apply w-6 h-6 text-gray-500;
+}
+*/
 /* Settings form styles */
 .settings-form {
   @apply flex flex-col py-10 border-b border-lightGrey;
