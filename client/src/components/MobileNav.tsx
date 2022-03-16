@@ -1,5 +1,4 @@
-import React from "react"
-import MobileNavLink from "@/components/MobileNavLink"
+import NavLink from "@/components/NavLink"
 import {
   DashboardIcon,
   LeaderboardIcon,
@@ -12,13 +11,10 @@ export default function MobileNav() {
     <div className="fixed bottom-0 left-0 right-0 z-60 bg-white py-2 md:hidden ">
       <nav>
         <ul className="flex justify-between">
-          <MobileNavLink Icon={DashboardIcon} to="/dashboard"></MobileNavLink>
-          <MobileNavLink Icon={TrackingIcon} to="/submissions"></MobileNavLink>
-          <MobileNavLink
-            Icon={LeaderboardIcon}
-            to="/leaderboard"
-          ></MobileNavLink>
-          <MobileNavLink Icon={SettingsIcon} to="/settings"></MobileNavLink>
+          <NavLink Icon={DashboardIcon} to="/dashboard"></NavLink>
+          <NavLink Icon={TrackingIcon} to="/submissions"></NavLink>
+          <NavLink Icon={LeaderboardIcon} to="/leaderboard"></NavLink>
+          <NavLink Icon={SettingsIcon} to="/settings"></NavLink>
         </ul>
       </nav>
     </div>
