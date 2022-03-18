@@ -1,9 +1,13 @@
 import { Injectable } from "@nestjs/common"
 import { InjectRepository } from "@nestjs/typeorm"
 import { Repository } from "typeorm"
-import { Problem } from "./problem.entity"
-import { Tag } from "./tag.entity"
-import { UserProblemTag } from "./user-problem-tag"
+
+/**
+ * Import Entities (models)
+ */
+import { Tag } from "@/modules/problems/tag.entity"
+import { Problem } from "@/modules/problems/problem.entity"
+import { UserProblemTag } from "@/modules/problems/user-problem-tag"
 
 @Injectable()
 export class ProblemsService {

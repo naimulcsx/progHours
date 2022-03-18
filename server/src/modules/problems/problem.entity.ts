@@ -7,8 +7,12 @@ import {
   ManyToMany,
   OneToMany,
 } from "typeorm"
-import { Tag } from "./tag.entity"
-import { UserProblemTag } from "./user-problem-tag"
+
+/**
+ * Import Entities (models)
+ */
+import { Tag } from "@/modules/problems/tag.entity"
+import { UserProblemTag } from "@/modules/problems/user-problem-tag"
 
 @Entity({ name: "problems" })
 export class Problem {

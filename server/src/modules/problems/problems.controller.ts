@@ -1,15 +1,14 @@
-import {
-  BadRequestException,
-  Body,
-  Controller,
-  Get,
-  Param,
-  Post,
-  Req,
-  UseGuards,
-} from "@nestjs/common"
-import { IsAuthenticatedGuard } from "src/guards/is-authenticated"
-import { ProblemsService } from "./problems.service"
+import { Controller, Param, Post, Req, UseGuards } from "@nestjs/common"
+
+/**
+ * Import Guards
+ */
+import { IsAuthenticatedGuard } from "@/guards/is-authenticated"
+
+/**
+ * Import Services
+ */
+import { ProblemsService } from "@/modules/problems/problems.service"
 
 @Controller("problems")
 @UseGuards(IsAuthenticatedGuard)
