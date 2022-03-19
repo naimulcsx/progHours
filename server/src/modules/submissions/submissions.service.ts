@@ -1,10 +1,18 @@
 import { BadRequestException, Inject, Injectable } from "@nestjs/common"
 import { InjectRepository } from "@nestjs/typeorm"
 import { Repository } from "typeorm"
-import { AuthService } from "../auth/auth.service"
-import { ParsersService } from "../parsers/parsers.service"
-import { ProblemsService } from "../problems/problems.service"
-import { Submission } from "./submission.entity"
+
+/**
+ * Import Entities (models)
+ */
+import { Submission } from "@/modules/submissions/submission.entity"
+
+/**
+ * Import Services
+ */
+import { ProblemsService } from "@/modules/problems/problems.service"
+import { ParsersService } from "@/modules/parsers/parsers.service"
+import { AuthService } from "@/modules/auth/auth.service"
 
 @Injectable()
 export class SubmissionsService {

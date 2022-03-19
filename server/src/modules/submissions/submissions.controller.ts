@@ -10,10 +10,22 @@ import {
   Param,
   UseGuards,
 } from "@nestjs/common"
-import { IsAuthenticatedGuard } from "src/guards/is-authenticated"
-import { CreateSubmissionDto } from "src/validators/create-submission-dto"
-import { UpdateSubmissionDto } from "src/validators/update-submission-dto"
-import { SubmissionsService } from "./submissions.service"
+
+/**
+ * Import Data Transfer Objects (DTO)
+ */
+import { CreateSubmissionDto } from "@/validators/create-submission-dto"
+import { UpdateSubmissionDto } from "@/validators/update-submission-dto"
+
+/**
+ * Import Services
+ */
+import { SubmissionsService } from "@/modules/submissions/submissions.service"
+
+/**
+ * Import Guards
+ */
+import { IsAuthenticatedGuard } from "@/guards/is-authenticated"
 
 @Controller("submissions")
 @UseGuards(IsAuthenticatedGuard)

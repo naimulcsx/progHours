@@ -1,7 +1,7 @@
 import { Test, TestingModule } from "@nestjs/testing"
 import { TypeOrmModule } from "@nestjs/typeorm"
 import { AuthController } from "./auth.controller"
-import { User } from "../users/user.entity"
+import { User } from "@/modules/users/user.entity"
 
 describe("AuthController", () => {
   let controller: AuthController

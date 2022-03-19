@@ -1,6 +1,10 @@
 import { Module } from "@nestjs/common"
-import { ParsersService } from "./parsers.service"
 import { HttpModule } from "@nestjs/axios"
+
+/**
+ * Import Services
+ */
+import { ParsersService } from "@/modules/parsers/parsers.service"
 
 @Module({
   imports: [HttpModule],

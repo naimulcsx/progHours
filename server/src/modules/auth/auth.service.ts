@@ -4,10 +4,14 @@ import {
   Injectable,
 } from "@nestjs/common"
 import { InjectRepository } from "@nestjs/typeorm"
-import { InsertResult, Repository } from "typeorm"
+import { Repository } from "typeorm"
 import * as jwt from "jsonwebtoken"
 import * as bcrypt from "bcrypt"
-import { User } from "../users/user.entity"
+
+/**
+ * Import Entities (models)
+ */
+import { User } from "@/modules/users/user.entity"
 
 @Injectable()
 export class AuthService {
