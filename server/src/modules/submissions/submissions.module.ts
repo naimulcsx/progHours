@@ -1,11 +1,11 @@
 import { Module } from "@nestjs/common"
 import { TypeOrmModule } from "@nestjs/typeorm"
-import { AuthModule } from "../auth/auth.module"
-import { ParsersModule } from "../parsers/parsers.module"
-import { ProblemsModule } from "../problems/problems.module"
-import { Submission } from "./submission.entity"
-import { SubmissionsController } from "./submissions.controller"
-import { SubmissionsService } from "./submissions.service"
+import { AuthModule } from "@/modules/auth/auth.module"
+import { ParsersModule } from "@/modules/parsers/parsers.module"
+import { ProblemsModule } from "@/modules/problems/problems.module"
+import { Submission } from "@/modules/submissions/submission.entity"
+import { SubmissionsController } from "@/modules/submissions/submissions.controller"
+import { SubmissionsService } from "@/modules/submissions/submissions.service"
 
 @Module({
   imports: [

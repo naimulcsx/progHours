@@ -6,8 +6,12 @@ import {
   JoinColumn,
   Index,
 } from "typeorm"
-import { User } from "../users/user.entity"
-import { Problem } from "../problems/problem.entity"
+
+/**
+ * Import Entities (models)
+ */
+import { User } from "@/modules/users/user.entity"
+import { Problem } from "@/modules/problems/problem.entity"
 
 @Entity({ name: "submissions" })
 @Index(["user", "verdict", "solve_time"])
