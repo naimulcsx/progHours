@@ -6,7 +6,7 @@ import {
 import { InjectRepository } from "@nestjs/typeorm"
 import { Repository } from "typeorm"
 import * as jwt from "jsonwebtoken"
-import * as bcrypt from "bcrypt"
+import * as bcrypt from "bcryptjs"
 
 /**
  * Import Entities (models)
