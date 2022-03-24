@@ -34,7 +34,7 @@ const AccountSettings = () => {
       <Helmet>
         <title>Settings</title>
       </Helmet>
-      <form className="space-y-12">
+      <form className="space-y-12" onSubmit={formik.handleSubmit}>
         <div className="space-y-6">
           <h3 className="mb-8">Change Account Settings</h3>
           <FormControl isInvalid={formik.touched.name && formik.errors.name}>
@@ -79,7 +79,7 @@ const AccountSettings = () => {
         </div>
       </form>
 
-      <form className="mt-24 space-y-12">
+      <form className="mt-24 space-y-12" onSubmit={formik.handleSubmit}>
         <div className="space-y-6">
           <h3 className="mb-8">Change your Password</h3>
 
