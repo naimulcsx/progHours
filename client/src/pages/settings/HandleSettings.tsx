@@ -5,11 +5,6 @@ import { FormControl, Input, Label, ErrorMessage } from "@/components/Form"
 import { Helmet } from "react-helmet-async"
 
 const profileSchema = Yup.object().shape({
-  name: Yup.string().trim().required("Name is required"),
-  uid: Yup.string()
-    .trim()
-    .required("University ID is required")
-    .length(7, "Invalid University ID"),
   codeforces: Yup.string().trim(),
   codechef: Yup.string(),
   uva: Yup.string(),
@@ -20,8 +15,6 @@ const profileSchema = Yup.object().shape({
 const EditProfile = () => {
   const formik = useFormik({
     initialValues: {
-      name: "",
-      uid: "",
       codeforces: "",
       codechef: "",
       uva: "",
@@ -43,33 +36,6 @@ const EditProfile = () => {
       <div className="grid items-start grid-cols-3 gap-8">
         <div className="col-span-2">
           <form className="space-y-12" onSubmit={formik.handleSubmit}>
-            {/* edit profile: for name, email and uid  */}
-            <div className="space-y-6">
-              <h3 className="mb-8">Edit your profile</h3>
-
-              <FormControl
-                isInvalid={formik.touched.name && formik.errors.name}
-              >
-                <Input
-                  type="text"
-                  placeholder=" "
-                  {...formik.getFieldProps("name")}
-                />
-                <Label>Full Name</Label>
-                <ErrorMessage>{formik.errors.name}</ErrorMessage>
-              </FormControl>
-
-              <FormControl isInvalid={formik.touched.uid && formik.errors.uid}>
-                <Input
-                  type="text"
-                  placeholder=" "
-                  {...formik.getFieldProps("uid")}
-                />
-                <Label>University ID</Label>
-                <ErrorMessage>{formik.errors.uid}</ErrorMessage>
-              </FormControl>
-            </div>
-
             {/* edit profile: online judge handles */}
             <div className="space-y-6">
               <h3 className="mb-8">Online Judge Handles</h3>
