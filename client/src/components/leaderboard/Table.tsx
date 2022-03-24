@@ -57,7 +57,7 @@ const LeaderboardTable = ({ ranklist }) => {
     tableInstance
 
   return (
-    <div className="shadow shadow-primary/5 rounded-lg overflow-hidden">
+    <div className="shadow shadow-primary/5 rounded-lg overflow-y-scroll">
       <table
         {...getTableProps()}
         className="border-collapse leaderboard max-w-6 xl"
