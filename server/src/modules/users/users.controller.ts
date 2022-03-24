@@ -1,4 +1,13 @@
-import { Controller, Get, Req, UseGuards } from "@nestjs/common"
+import {
+  Body,
+  Controller,
+  Get,
+  HttpStatus,
+  Param,
+  Patch,
+  Req,
+  UseGuards,
+} from "@nestjs/common"
 
 /**
  * Import Services
@@ -29,6 +38,17 @@ export class UsersController {
     return {
       verdict: frequency,
       ...progress,
+    }
+  }
+
+  @Patch("account")
+  @UseGuards(IsAuthenticatedGuard)
+  async updateAccount(@Body() body: any, @Req() req: any) {
+    await this.usersService.updateAccount(body, req.user.id)
+
+    return {
+      statusCode: HttpStatus.OK,
+      message: "account is updated",
     }
   }
 }

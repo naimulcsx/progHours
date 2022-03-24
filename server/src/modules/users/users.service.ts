@@ -116,4 +116,24 @@ export class UsersService {
     }
     return result
   }
+
+  /**
+   * Update user account
+   */
+  async updateAccount(body: any, id: any) {
+    const { name, email } = body
+
+    try {
+      await this.usersRepository
+        .createQueryBuilder()
+        .update(User)
+        .set({ name, email })
+        .where("id = :id", { id })
+        .execute()
+
+      return { message: "account updated" }
+    } catch (err) {
+      throw err
+    }
+  }
 }
