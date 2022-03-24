@@ -1,3 +1,4 @@
+import MobileNav from "@/components/MobileNav"
 import Navbar from "@/components/Navbar"
 import ProgressBox from "@/components/ProgressBox"
 import { useQuery } from "react-query"
@@ -20,6 +21,7 @@ export default function Profile() {
           {query.data && <ProgressBox progress={query.data} />}
         </div>
       </div>
+      <MobileNav></MobileNav>
       {/* tracking problem table */}
     </div>
   )
