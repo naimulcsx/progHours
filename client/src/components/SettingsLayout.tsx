@@ -13,8 +13,8 @@ const SettingsLayout = ({ children }) => {
           <p className="mt-2 text-gray-500">Update and manage your account</p>
           <nav className="mt-8">
             <ul className="space-y-2">
-              <NavLink Icon={UserIcon} to="/settings/profile">
-                Profile
+              <NavLink Icon={UserIcon} to="/settings/handles">
+                Online Judge Handles
               </NavLink>
               <NavLink Icon={SettingsIcon} to="/settings/account">
                 Account Settings
