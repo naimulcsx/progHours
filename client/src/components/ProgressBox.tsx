@@ -7,7 +7,11 @@ import calculatePoints from "../utils/calculatePoints"
 
 const Box = ({ title, icon, result, progress, today }) => {
   return (
-    <div className="flex items-start px-8 py-5 space-x-4 bg-white rounded-md  shadow shadow-primary/5">
+    <div
+      className="flex flex-col text-center items-center mx-auto px-8 py-5 space-x-4 bg-white rounded-md  shadow shadow-primary/5 w-2/3
+    md:flex-row md:items-start md:text-left md:mx-0 md:w-auto
+    "
+    >
       <div className="p-3 rounded-full bg-primary bg-opacity-10 text-primary">
         {icon}
       </div>
