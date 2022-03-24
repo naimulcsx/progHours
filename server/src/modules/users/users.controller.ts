@@ -19,6 +19,11 @@ import { UsersService } from "@/modules/users/users.service"
  */
 import { IsAuthenticatedGuard } from "@/guards/is-authenticated"
 
+/**
+ * Import Dto
+ */
+import { UpdateUserDto } from "@/validators/update-user-dto"
+
 @Controller("users")
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
@@ -43,7 +48,7 @@ export class UsersController {
 
   @Patch("account")
   @UseGuards(IsAuthenticatedGuard)
-  async updateAccount(@Body() body: any, @Req() req: any) {
+  async updateAccount(@Body() body: UpdateUserDto, @Req() req: any) {
     await this.usersService.updateAccount(body, req.user.id)
 
     return {
