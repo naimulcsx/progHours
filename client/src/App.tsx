@@ -5,6 +5,7 @@ import { QueryClient, QueryClientProvider } from "react-query"
 import { useLocation, useNavigate, useRoutes } from "react-router-dom"
 import clearAuthData from "@/utils/clearAuthData"
 import axios from "axios"
+import { ReactQueryDevtools } from "react-query/devtools"
 
 /**
  * Import Styles
@@ -66,6 +67,7 @@ const App = (): JSX.Element => {
           autoClose={2000}
           position="bottom-right"
         />
+        <ReactQueryDevtools position="bottom-right" />
       </HelmetProvider>
     </QueryClientProvider>
   )
