@@ -1,14 +1,18 @@
-import { createContext } from "react"
+import { createContext, ReactNode } from "react"
 import useSubmissions from "@/hooks/useSubmissions"
 
 const GlobalContext = createContext({})
 
-const GlobalStateProvider = ({ children }) => {
-  const submissionsData = useSubmissions()
+const GlobalStateProvider = ({
+  children,
+}: {
+  children: ReactNode
+}): JSX.Element => {
+  const useSubmissionsResult = useSubmissions()
   return (
     <GlobalContext.Provider
       value={{
-        submissions: submissionsData,
+        useSubmissionsResult,
       }}
     >
       {children}

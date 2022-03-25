@@ -49,7 +49,7 @@ const AddEntryRow = ({ id }) => {
   const { mutate, isLoading } = useMutation(createSubmission, {
     onSuccess: (data) => {
       formik.resetForm()
-      queryClient.invalidateQueries("practice", getSubmissions)
+      queryClient.invalidateQueries("practice")
       toast.success("Problem submitted successfully")
     },
     onError: (err) => {
