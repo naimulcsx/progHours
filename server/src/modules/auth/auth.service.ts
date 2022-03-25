@@ -33,7 +33,7 @@ export class AuthService {
     const isValidPassword = await this.comparePassword(password, user.password)
     //! if the user exists but the provided password is wrong
     if (!isValidPassword) throw new ForbiddenException(["invalid password"])
-    const userObj = { id: user.id, username: user.username, name: user.name }
+    const userObj = { id: user.id, username: user.username, name: user.name, role: user.role }
     const accessToken = jwt.sign(userObj, process.env.ACCESS_TOKEN_SECRET)
     return {
       accessToken,
