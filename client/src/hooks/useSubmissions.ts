@@ -21,11 +21,22 @@ function useSubmissions() {
     if (!query.data) return
     const weekRanges = getWeekRanges(query.data.submissions)
     setWeekRanges(weekRanges)
-    if (counterRef.current <= 1) {
+    /**
+     * Set default week to be the current week (only the first time we get the data)
+     */
+    if (selectedWeek.id === 0) {
       setSelectedWeek({
         id: weekRanges.length + 1,
         name: "Week " + weekRanges.length,
       })
+    } else {
+      /**
+       * Data has updated, but we don't want to change the selectedWeek, so keep the selectedWeek as it is
+       * And Re-filter the data, so that the weeks have got the corrent submissions after the update
+       */
+      setFilteredData(
+        filterByWeek(query.data.submissions, weekRanges[selectedWeek.id - 2])
+      )
     }
     counterRef.current++
   }, [query.data])
