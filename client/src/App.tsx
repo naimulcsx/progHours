@@ -20,6 +20,11 @@ import "react-toastify/dist/ReactToastify.css"
 import routes from "./routes"
 
 /**
+ * Import Components
+ */
+import { GlobalStateProvider } from "./GlobalStateProvider"
+
+/**
  * Initialize query client
  */
 const queryClient = new QueryClient()
@@ -53,7 +58,9 @@ const App = (): JSX.Element => {
   return (
     <QueryClientProvider client={queryClient}>
       <HelmetProvider>
-        <main>{matchedPage}</main>
+        <GlobalStateProvider>
+          <main>{matchedPage}</main>
+        </GlobalStateProvider>
         <ToastContainer
           theme="colored"
           autoClose={2000}

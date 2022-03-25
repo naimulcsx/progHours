@@ -1,5 +1,5 @@
 import { useQuery } from "react-query"
-import { useEffect, useState } from "react"
+import { useContext, useEffect, useState } from "react"
 import { Helmet } from "react-helmet-async"
 
 /**
@@ -13,41 +13,12 @@ import WeekFilters from "@/components/submissions/filters/WeekFilter"
 /**
  * Import helpers
  */
-import { getSubmissions } from "@/api/submissions"
-import { getWeekRanges, WeekRange, filterByWeek } from "@/utils/getWeekRanges"
+import { GlobalContext } from "@/GlobalStateProvider"
 
 export default function TrackingSheet() {
-  const query = useQuery("practice", getSubmissions, {
-    refetchOnWindowFocus: false,
-  })
-  let [filteredData, setFilteredData] = useState([])
-
-  /**
-   * Whenever the `query.data` changes, we need to recalculate the weeks
-   * Week ranges containing `from` and `to` Date
-   */
-  const [weekRanges, setWeekRanges] = useState<WeekRange[]>([])
-  const [selectedWeek, setSelectedWeek] = useState({ id: 0, name: "" })
-  useEffect(() => {
-    if (!query.data) return
-    const weekRanges = getWeekRanges(query.data.submissions)
-    setWeekRanges(weekRanges)
-    setSelectedWeek({
-      id: weekRanges.length + 1,
-      name: "Week " + weekRanges.length,
-    })
-  }, [query.data])
-
-  /**
-   * Whenever the selected week is changed, re-filter the submissions again
-   */
-  useEffect(() => {
-    if (!query.data) return
-    let arr = query.data.submissions
-    const weekId = selectedWeek.id - 1
-    if (weekId > 0) arr = filterByWeek(arr, weekRanges[weekId - 1])
-    setFilteredData(arr)
-  }, [selectedWeek])
+  const context = useContext(GlobalContext)
+  const [query, filteredData, selectedWeek, setSelectedWeek, weekRanges] =
+    context?.submissions
 
   return (
     <Layout>

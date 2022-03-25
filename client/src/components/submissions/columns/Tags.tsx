@@ -6,7 +6,7 @@ const Tags = (cell) => {
   const user = localStorage.getItem("userId")
   const { id, tags, user_problem_tags } = cell.row.original.problem
   return (
-    <ul className="flex flex-wrap items-center gap-2">
+    <ul className="tags-ul flex flex-wrap items-center gap-2">
       {tags.map((tag) => {
         return (
           <li

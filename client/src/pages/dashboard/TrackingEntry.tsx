@@ -17,9 +17,7 @@ import { createSubmission } from "@/api/submissions"
 
 const submissionSchema = Yup.object().shape({
   link: Yup.string().trim().required("Problem link is required"),
-  solveTime: Yup.number("Solve time must be a number").required(
-    "Solve time is required"
-  ),
+  solveTime: Yup.number().required("Solve time is required"),
   verdict: Yup.string().required("Verdict is required"),
 })
 
