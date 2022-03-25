@@ -17,8 +17,8 @@ import { GlobalContext } from "@/GlobalStateProvider"
 
 export default function TrackingSheet() {
   const context = useContext(GlobalContext)
-  const [query, filteredData, selectedWeek, setSelectedWeek, weekRanges] =
-    context?.submissions
+  const { query, filteredData, selectedWeek, setSelectedWeek, weekRanges } =
+    context?.useSubmissionsResult
 
   return (
     <Layout>

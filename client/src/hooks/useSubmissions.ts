@@ -58,7 +58,7 @@ function useSubmissions() {
     setFilteredData(arr)
   }, [selectedWeek])
 
-  return [query, filteredData, selectedWeek, setSelectedWeek, weekRanges]
+  return { query, filteredData, selectedWeek, setSelectedWeek, weekRanges }
 }
 
 export default useSubmissions
