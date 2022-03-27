@@ -57,24 +57,4 @@ export class AuthService {
     })
     return this.usersRepository.save(newUser)
   }
-
-  async updateUserPassword(body: any, id: any) {
-    const { currentPassword, newPassword, confirmPassword } = body
-
-    const user = await this.usersRepository.findOne({ id })
-    const isValidPassword = await this.comparePassword(
-      currentPassword,
-      user.password
-    )
-
-    if (!isValidPassword)
-      throw new ForbiddenException("current password is not correct")
-
-    if (newPassword !== confirmPassword)
-      throw new ForbiddenException("password doesn't matched")
-
-    user.password = newPassword
-
-    return this.usersRepository.save(user)
-  }
 }

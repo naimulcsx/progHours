@@ -16,10 +16,11 @@ import { UsersController } from "@/modules/users/users.controller"
  * Import Services
  */
 import { UsersService } from "@/modules/users/users.service"
+import { AuthService } from "../auth/auth.service"
 
 @Module({
   imports: [TypeOrmModule.forFeature([User, Submission])],
-  providers: [UsersService],
+  providers: [UsersService, AuthService],
   controllers: [UsersController],
 })
 export class UsersModule {}
