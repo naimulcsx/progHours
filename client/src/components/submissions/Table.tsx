@@ -213,7 +213,7 @@ const TrackingTable = ({ submissions }) => {
             </span>
           </div>
         </div>
-        {submissions.length === 0 && <EmptyState />}
+        {/* {submissions.length === 0 && <EmptyState />} */}
       </div>
     </div>
   )

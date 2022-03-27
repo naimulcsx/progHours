@@ -5,6 +5,7 @@ import { QueryClient, QueryClientProvider } from "react-query"
 import { useLocation, useNavigate, useRoutes } from "react-router-dom"
 import clearAuthData from "@/utils/clearAuthData"
 import axios from "axios"
+import { ReactQueryDevtools } from "react-query/devtools"
 
 /**
  * Import Styles
@@ -18,6 +19,11 @@ import "react-toastify/dist/ReactToastify.css"
  * Import Routes
  */
 import routes from "./routes"
+
+/**
+ * Import Components
+ */
+import { GlobalStateProvider } from "./GlobalStateProvider"
 
 /**
  * Initialize query client
@@ -53,12 +59,15 @@ const App = (): JSX.Element => {
   return (
     <QueryClientProvider client={queryClient}>
       <HelmetProvider>
-        <main>{matchedPage}</main>
+        <GlobalStateProvider>
+          <main>{matchedPage}</main>
+        </GlobalStateProvider>
         <ToastContainer
           theme="colored"
           autoClose={2000}
           position="bottom-right"
         />
+        <ReactQueryDevtools position="bottom-right" />
       </HelmetProvider>
     </QueryClientProvider>
   )

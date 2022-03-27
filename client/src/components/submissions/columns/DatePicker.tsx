@@ -1,19 +1,22 @@
-import { forwardRef, useState } from "react"
+import { useState } from "react"
 import ReactDatePicker from "react-datepicker"
-import "react-datepicker/dist/react-datepicker.css"
-import "@/styles/datepicker.css"
 import { updateSubmission } from "@/api/submissions"
 import { useMutation, useQueryClient } from "react-query"
 import { toast } from "react-toastify"
-import { getSubmissions } from "../../../api/submissions"
-import moment from "moment"
+import { Cell } from "react-table"
 
-const DatePicker = (cell) => {
+/**
+ * Import Styles
+ */
+import "react-datepicker/dist/react-datepicker.css"
+import "@/styles/datepicker.css"
+
+const DatePicker = (cell: Cell) => {
   const queryClient = useQueryClient()
   const [date, setDate] = useState(new Date(cell.value))
   const { mutate } = useMutation(updateSubmission, {
     onSuccess: (data) => {
-      queryClient.invalidateQueries("practice", getSubmissions)
+      queryClient.invalidateQueries("practice")
       toast.success("Problem updated", { className: "toast" })
     },
     onError: (err) => {

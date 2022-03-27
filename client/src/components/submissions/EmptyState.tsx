@@ -3,7 +3,7 @@ import { Link } from "react-router-dom"
 
 const EmptyState = () => {
   return (
-    <div className="relative block w-full p-8 bg-white text-center border-2 border-gray-300 border-dashed rounded">
+    <div className="relative block w-full p-8 text-center bg-white border-2 border-gray-300 border-dashed rounded">
       <svg
         className="w-10 h-10 mx-auto text-gray-400"
         fill="none"

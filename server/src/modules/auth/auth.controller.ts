@@ -71,7 +71,9 @@ export class AuthController {
   @Get("/user")
   @UseGuards(IsAuthenticatedGuard)
   async getUserData(@Req() req) {
-    return req.user
+    const user = await this.authService.getUser(req.user.username)
+    const { name, email, username, role } = user
+    return { name, email, username, role }
   }
 
   /**
