@@ -19,10 +19,7 @@ const accountSchema = Yup.object().shape({
 })
 
 const AccountSettings = () => {
-  // const [user, setUser] = useState({ username: "C181059", name: "", email: "" })
   const client = useQueryClient()
-
-  // console.log(user)
 
   // update user account
   const { mutate } = useMutation(updateUserAccount, {
@@ -33,19 +30,6 @@ const AccountSettings = () => {
 
     onError: (err: any) => {
       console.log("fsfsdf", err.response)
-      showErrorToasts(err.response.data.message)
-    },
-  })
-
-  // update password
-  const { mutate: passwordMutate } = useMutation(updatePassword, {
-    onSuccess: () => {
-      client.invalidateQueries("user")
-      toast.success("update password")
-    },
-
-    onError: (err: any) => {
-      console.log(err.response)
       showErrorToasts(err.response.data.message)
     },
   })
@@ -61,25 +45,27 @@ const AccountSettings = () => {
     },
     validationSchema: accountSchema,
     onSubmit: (values) => {
-      console.log("fahim -1")
-      mutate({ name: values.name, email: values.email })
-      const { currentPassword, newPassword, confirmPassword } = values
+      const {
+        name,
+        email,
+        uid,
+        currentPassword,
+        newPassword,
+        confirmPassword,
+      } = values
 
-      passwordMutate({ currentPassword, newPassword, confirmPassword })
-      // const { currentPassword, newPassword, confirmPassword } = values
-      // if (currentPassword || newPassword || confirmPassword) {
-
-      //   passwordMutate({ currentPassword, newPassword, confirmPassword })
-      // } else if (
-      //   formik.values.name !== values.name ||
-      //   formik.values.email !== values.email
-      // ) {
-      //   mutate({ name: values.name, email: values.email })
-      // }
+      mutate({
+        name,
+        email,
+        username: uid,
+        currentPassword,
+        newPassword,
+        confirmPassword,
+      })
     },
   })
 
-  const { data } = useQuery("user", getUser, {
+  useQuery("user", getUser, {
     onSuccess: (data) => {
       formik.setFieldValue("uid", data.username)
       formik.setFieldValue("name", data.name)
@@ -134,7 +120,7 @@ const AccountSettings = () => {
             isInvalid={formik.touched && formik.errors.currentPassword}
           >
             <Input
-              type="text"
+              type="password"
               placeholder=" "
               {...formik.getFieldProps("currentPassword")}
             />
@@ -144,7 +130,7 @@ const AccountSettings = () => {
 
           <FormControl isInvalid={formik.touched && formik.errors.newPassword}>
             <Input
-              type="text"
+              type="password"
               placeholder=" "
               {...formik.getFieldProps("newPassword")}
             />
@@ -156,7 +142,7 @@ const AccountSettings = () => {
             isInvalid={formik.touched && formik.errors.confirmPassword}
           >
             <Input
-              type="text"
+              type="password"
               placeholder=" "
               {...formik.getFieldProps("confirmPassword")}
             />

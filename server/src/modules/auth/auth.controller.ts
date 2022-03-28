@@ -16,7 +16,6 @@ import { Response } from "express"
  */
 import { CreateUserDto } from "@/validators/create-user-dto"
 import { LoginUserDto } from "@/validators/login-user-dto"
-import { UpdatePasswordDto } from "@/validators/update-password-dto"
 
 /**
  * Import Services
@@ -83,16 +82,5 @@ export class AuthController {
   async logoutUser(@Res({ passthrough: true }) res: Response) {
     res.cookie("accessToken", "", { expires: new Date(Date.now() - 100) })
     return {}
-  }
-
-  /**
-   * Change user password
-   */
-  @Patch("change-password")
-  @UseGuards(IsAuthenticatedGuard)
-  async updateUserPassword(@Body() body: UpdatePasswordDto, @Req() req: any) {
-    await this.authService.updateUserPassword(body, req.user.id)
-
-    return { message: "updated password" }
   }
 }
