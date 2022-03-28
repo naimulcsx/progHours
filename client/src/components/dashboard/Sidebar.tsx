@@ -10,10 +10,10 @@ import {
 } from "@/components/Icons"
 import { useContext } from "react"
 import { GlobalContext } from "@/GlobalStateProvider"
+import { userInfo } from "os"
 
 const Sidebar = () => {
   const { user } = useContext(GlobalContext)
-
   const handleLogout = useLogout()
   return (
     <div className="max-w-[250px] w-full h-[100vh] py-6 fixed z-10 top-0 left-0 bottom-0 bg-white shadow shadow-primary/5">
