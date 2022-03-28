@@ -19,7 +19,10 @@ export class AuthService {
     @InjectRepository(User)
     private usersRepository: Repository<User>
   ) {}
-  getUser(username: string): Promise<User> {
+  getUserById(id: number): Promise<User> {
+    return this.usersRepository.findOne(id)
+  }
+  getUserByUsername(username: string): Promise<User> {
     return this.usersRepository.findOne({ username })
   }
   comparePassword(password, hashedPassword) {
@@ -27,7 +30,7 @@ export class AuthService {
   }
   async getAccessTokenWithUserInfo(body: any) {
     const { username, password } = body
-    const user = await this.getUser(username)
+    const user = await this.getUserByUsername(username)
     if (!user) throw new BadRequestException(["user not found"])
 
     const isValidPassword = await this.comparePassword(password, user.password)
