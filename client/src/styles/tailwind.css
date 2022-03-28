@@ -57,6 +57,11 @@ h6 {
   @apply hover:shadow-input-primary;
   @apply focus:outline-none focus:border-b focus:border-primary focus:shadow-input-primary;
 }
+
+.form-group input[disabled] {
+  @apply text-gray-400 focus:border-transparent hover:shadow-gray-50;
+}
+
 .form-group input:focus + label,
 .form-group input:not(:placeholder-shown) + label {
   @apply z-30 text-sm -top-1 text-primary;
