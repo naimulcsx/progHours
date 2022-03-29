@@ -4,6 +4,7 @@ import {
   PrimaryGeneratedColumn,
   CreateDateColumn,
   BeforeInsert,
+  BeforeUpdate,
 } from "typeorm"
 import * as bcrypt from "bcryptjs"
 
@@ -30,6 +31,7 @@ export class User {
   @CreateDateColumn()
   created_at: Date
 
+  @BeforeUpdate()
   @BeforeInsert()
   async hashPassword() {
     this.password = await bcrypt.hash(this.password, 10)

@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { useContext, useState } from "react"
 import { useQuery } from "react-query"
 import { Helmet } from "react-helmet-async"
 
@@ -9,6 +9,7 @@ import Layout from "@/components/dashboard/Layout"
 import ProgressBox from "@/components/ProgressBox"
 import VerdictChart from "@/components/dashboard/stats/VerdictChart"
 import WeekChart from "@/components/dashboard/stats/WeekChart"
+import { GlobalContext } from "@/GlobalStateProvider"
 
 /**
  * Import helpers
@@ -53,9 +54,9 @@ const DashboardHome = () => {
   })
 
   /**
-   * Get user's name from localstorage
+   * Get user's name from global state context
    */
-  const name = localStorage.getItem("name")
+  const { user } = useContext(GlobalContext)
   return (
     <Layout>
       <Helmet>
@@ -63,7 +64,7 @@ const DashboardHome = () => {
       </Helmet>
       <div className="flex items-center justify-between">
         <div>
-          <h3 className="font-bold">Hi! {name}</h3>
+          <h3 className="font-bold">Hi! {user.name}</h3>
           <p className="mt-1 text-gray-500">
             Here&apos;s what&apos;s going on in your competitive programming
             journey!

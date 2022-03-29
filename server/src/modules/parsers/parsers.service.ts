@@ -4,11 +4,25 @@ import { lastValueFrom } from "rxjs"
 import * as cheerio from "cheerio"
 import * as path from "path"
 import * as url from "url"
+import ShortUniqueId from "short-unique-id"
+
+const genId = new ShortUniqueId({ length: 6 })
 
 @Injectable()
 export class ParsersService {
   constructor(private httpService: HttpService) {}
-  parseProblem(link) {
+
+  isValidLink(link) {
+    let url
+    try {
+      url = new URL(link)
+    } catch (_) {
+      return false
+    }
+    return url.protocol === "http:" || url.protocol === "https:"
+  }
+
+  async parseProblem(link) {
     const parserMap = {
       "codeforces.com": this.cfParser,
       "lightoj.com": this.lightOjParser,
@@ -20,16 +34,39 @@ export class ParsersService {
       "atcoder.jp": this.atCoderParser,
       "www.atcoder.jp": this.atCoderParser,
     }
+
     try {
       let hostname = new URL(link).hostname
-      return parserMap[hostname].call(this, link)
-    } catch (err) {}
+      /**
+       * If we have a dedicated parser for the OJ
+       */
+      if (parserMap[hostname]) {
+        const parsedResult = await parserMap[hostname].call(this, link)
+        return parsedResult
+      } else {
+        /**
+         * We don't have a parser for the link
+         */
+        return {
+          pid: genId(),
+          name: this.isValidLink(link) ? genId() : link,
+          tags: [],
+          difficulty: 0,
+          judge_id: null,
+        }
+      }
+    } catch (err) {
+      throw err
+    }
   }
 
   /**
-   *  Parser for codeforces.com
+   **  Parser for codeforces.com
    */
   async cfParser(link) {
+    /**
+     * Utility function to extract Problem ID from URL
+     */
     const getPID = (link) => {
       let pid = "",
         parts = link.split("/")
@@ -39,10 +76,24 @@ export class ParsersService {
         pid = "CF" + "-" + parts.slice(-2).join("")
       return pid.split("?")[0] // ? ignoring query strings
     }
+
+    /**
+     * Get the source of the provided codeforces link
+     */
     const { data } = await lastValueFrom(this.httpService.get(link))
     const $ = cheerio.load(data)
 
-    // extract informations
+    /**
+     * Check if the problem is link is valid
+     */
+    const isInvalid = $(".title a").html()
+    if (isInvalid) {
+      throw new Error("Invalid codeforces link!")
+    }
+
+    /**
+     * Extract informations from source
+     */
     let difficulty = 0
     const tags = []
     const pid = getPID(link)
@@ -53,13 +104,13 @@ export class ParsersService {
         difficulty = parseInt(tag.substring(1))
       else tags.push(tag)
     })
-    const judgeId = 1
+    const judge_id = 1
     return {
       pid,
       name,
       tags,
       difficulty,
-      judgeId,
+      judge_id,
     }
   }
 
@@ -74,13 +125,13 @@ export class ParsersService {
     const name = $(".title").text().trim()
     const difficulty = 0
     const tags = []
-    const judgeId = 6
+    const judge_id = 6
     return {
       pid,
       name,
       tags,
       difficulty,
-      judgeId,
+      judge_id,
     }
   }
 
@@ -98,14 +149,14 @@ export class ParsersService {
     const name = parts.slice(1).join(" ").trim()
     const difficulty = 0
     const tags = []
-    const judgeId = 7
+    const judge_id = 7
 
     return {
       pid,
       name,
       tags,
       difficulty,
-      judgeId,
+      judge_id,
     }
   }
 
@@ -132,15 +183,15 @@ export class ParsersService {
     // problem tags
     const tags = []
 
-    // attached judgeId
-    const judgeId = 8
+    // attached judge_id
+    const judge_id = 8
 
     return {
       pid,
       name,
       tags,
       difficulty,
-      judgeId,
+      judge_id,
     }
   }
 
@@ -172,14 +223,14 @@ export class ParsersService {
       const tag = $(this).text().trim()
       tags.push(tag)
     })
-    const judgeId = 9
+    const judge_id = 9
 
     return {
       pid,
       name,
       tags,
       difficulty,
-      judgeId,
+      judge_id,
     }
   }
 
@@ -197,14 +248,14 @@ export class ParsersService {
 
     const difficulty = 0
     const tags = []
-    const judgeId = 2
+    const judge_id = 2
 
     return {
       pid,
       name,
       tags,
       difficulty,
-      judgeId,
+      judge_id,
     }
   }
   /**
@@ -228,14 +279,14 @@ export class ParsersService {
 
     // problem tags
     const tags = []
-    const judgeId = 4
+    const judge_id = 4
 
     return {
       pid,
       name,
       tags,
       difficulty,
-      judgeId,
+      judge_id,
     }
   }
 }

@@ -6,6 +6,8 @@ import {
   JoinTable,
   ManyToMany,
   OneToMany,
+  ManyToOne,
+  JoinColumn,
 } from "typeorm"
 
 /**
@@ -13,6 +15,7 @@ import {
  */
 import { Tag } from "@/modules/problems/tag.entity"
 import { UserProblemTag } from "@/modules/problems/user-problem-tag"
+import { OnlineJudges } from "@/modules/online-judges/online-judges.entity"
 
 @Entity({ name: "problems" })
 export class Problem {
@@ -47,6 +50,10 @@ export class Problem {
     },
   })
   tags: Tag[]
+
+  @ManyToOne(() => OnlineJudges, (online_judge) => online_judge.id)
+  @JoinColumn({ name: "judge_id" })
+  judge_id: number
 
   @OneToMany(() => UserProblemTag, (userProblemTag) => userProblemTag.problem)
   public user_problem_tags!: UserProblemTag[]

@@ -32,7 +32,7 @@ export class ProblemsService {
     return foundProblem
   }
   async createProblem(problemData): Promise<Problem> {
-    const { pid, link, name, difficulty } = problemData
+    const { pid, link, name, difficulty, judge_id } = problemData
     const tags = []
     for (const tag of problemData.tags) {
       const tagObj = { name: tag }
@@ -46,6 +46,7 @@ export class ProblemsService {
       name,
       difficulty,
       tags,
+      judge_id,
     })
     return this.problemsRepository.save(newProblem)
   }

@@ -1,9 +1,13 @@
 import { toast } from "react-toastify"
 
 function showErrorToasts(messages: string[]) {
-  messages?.forEach((errorMsg) => {
-    toast.error(errorMsg, { className: "toast" })
-  })
+  if (typeof messages === "string") {
+    toast.error(messages)
+  } else {
+    messages?.forEach((errorMsg) => {
+      toast.error(errorMsg, { className: "toast" })
+    })
+  }
 }
 
 export default showErrorToasts

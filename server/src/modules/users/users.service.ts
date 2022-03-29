@@ -1,4 +1,4 @@
-import { Injectable } from "@nestjs/common"
+import { ForbiddenException, Inject, Injectable } from "@nestjs/common"
 import { InjectRepository } from "@nestjs/typeorm"
 import { Repository } from "typeorm"
 
@@ -7,12 +7,15 @@ import { Repository } from "typeorm"
  */
 import { User } from "@/modules/users/user.entity"
 import { Submission } from "@/modules/submissions/submission.entity"
+import { AuthService } from "../auth/auth.service"
 
 @Injectable()
 export class UsersService {
   constructor(
     @InjectRepository(User)
     private usersRepository: Repository<User>,
+
+    @Inject(AuthService) private authService: AuthService,
 
     @InjectRepository(Submission)
     private submissionsRepository: Repository<Submission>
@@ -115,5 +118,33 @@ export class UsersService {
       })
     }
     return result
+  }
+
+  /**
+   * Update user account
+   */
+  async updateAccount(body: any, id: any) {
+    const { name, email, currentPassword, newPassword, confirmPassword } = body
+
+    const user = await this.usersRepository.findOne({ id })
+
+    if (currentPassword && newPassword && confirmPassword) {
+      const isCorrect = await this.authService.comparePassword(
+        currentPassword,
+        user.password
+      )
+      if (!isCorrect)
+        throw new ForbiddenException("current password is not correct")
+
+      if (newPassword !== confirmPassword)
+        throw new ForbiddenException("password doesn't matched")
+
+      user.password = newPassword
+    }
+
+    user.email = email
+    user.name = name
+
+    return this.usersRepository.save(user)
   }
 }

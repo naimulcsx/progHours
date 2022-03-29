@@ -1,4 +1,13 @@
-import { Controller, Get, Req, UseGuards } from "@nestjs/common"
+import {
+  Body,
+  Controller,
+  Get,
+  HttpStatus,
+  Param,
+  Patch,
+  Req,
+  UseGuards,
+} from "@nestjs/common"
 
 /**
  * Import Services
@@ -9,6 +18,11 @@ import { UsersService } from "@/modules/users/users.service"
  * Import Guards
  */
 import { IsAuthenticatedGuard } from "@/guards/is-authenticated"
+
+/**
+ * Import Dto
+ */
+import { UpdateUserDto } from "@/validators/update-user-dto"
 
 @Controller("users")
 export class UsersController {
@@ -29,6 +43,17 @@ export class UsersController {
     return {
       verdict: frequency,
       ...progress,
+    }
+  }
+
+  @Patch("account")
+  @UseGuards(IsAuthenticatedGuard)
+  async updateAccount(@Body() body: UpdateUserDto, @Req() req: any) {
+    await this.usersService.updateAccount(body, req.user.id)
+
+    return {
+      statusCode: HttpStatus.OK,
+      message: "account is updated",
     }
   }
 }

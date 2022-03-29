@@ -7,6 +7,8 @@ import {
   BadRequestException,
   UseGuards,
   Req,
+  Patch,
+  ForbiddenException,
 } from "@nestjs/common"
 import { Response } from "express"
 
@@ -69,7 +71,12 @@ export class AuthController {
   @Get("/user")
   @UseGuards(IsAuthenticatedGuard)
   async getUserData(@Req() req) {
-    return req.user
+    const user = await this.authService.getUserById(req.user.id)
+    if (!user) {
+      throw new ForbiddenException("User not found")
+    }
+    const { name, email, username, role } = user
+    return { name, email, username, role }
   }
 
   /**

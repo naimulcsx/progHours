@@ -18,6 +18,7 @@ import { getSubmissions, createSubmission } from "@/api/submissions"
 import { Popover } from "@headlessui/react"
 import TagInputField from "./TagInputField"
 import { AddIcon } from "../Icons"
+import showErrorToasts from "@/utils/showErrorToasts"
 
 const submissionSchema = Yup.object().shape({
   link: Yup.string().trim().required("Problem link is required"),
@@ -53,7 +54,7 @@ const AddEntryRow = ({ id }) => {
       toast.success("Problem submitted successfully")
     },
     onError: (err) => {
-      toast.error(err.response.data.message, { className: "toast" })
+      showErrorToasts(err.response.data.message)
     },
   })
 
@@ -127,16 +128,9 @@ const AddEntryRow = ({ id }) => {
       </td>
 
       <td className="border border-slate-100" data-tags>
-        <Popover>
-          <Popover.Button className="px-3 py-1 text-white bg-gray-900 rounded">
-            Add Tags
-          </Popover.Button>
-          <Popover.Panel className="absolute z-10 px-4 py-3 bg-white border-2 shadow-xl w-30 inset rounded-xl">
-            <TagInputField></TagInputField>
-          </Popover.Panel>
-        </Popover>
+        —
       </td>
-      <td className="border border-slate-100"></td>
+      <td className="border border-slate-100">—</td>
       <td className="border border-slate-100" data-solved_at>
         <ReactDatePicker
           dateFormat="EEE, dd MMM yyyy"

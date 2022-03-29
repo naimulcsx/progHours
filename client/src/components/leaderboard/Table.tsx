@@ -1,4 +1,5 @@
 import { useTable, useSortBy } from "react-table"
+import { ArrowSmDownIcon, ArrowSmUpIcon } from "@heroicons/react/solid"
 
 const columns = [
   {
@@ -74,7 +75,20 @@ const LeaderboardTable = ({ ranklist }) => {
                       {...header.getHeaderProps(header.getSortByToggleProps())}
                       className=" border-b border-t border-slate-100"
                     >
-                      {header.render("Header")}
+                      <div className="flex items-center justify-start space-x-1">
+                        <span>{header.render("Header")}</span>
+                        <span>
+                          {header.isSorted ? (
+                            header.isSortedDesc ? (
+                              <ArrowSmDownIcon height={20} />
+                            ) : (
+                              <ArrowSmUpIcon height={20} />
+                            )
+                          ) : (
+                            ""
+                          )}
+                        </span>
+                      </div>
                     </th>
                   )
                 })}

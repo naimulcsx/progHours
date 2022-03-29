@@ -11,6 +11,10 @@ import { Tag } from "./problems/tag.entity"
 import { Problem } from "./problems/problem.entity"
 import { Submission } from "./submissions/submission.entity"
 import { UsersModule } from "./users/users.module"
+import { OnlineJudgesModule } from "./online-judges/online-judges.module"
+import { OnlineJudges } from "./online-judges/online-judges.entity"
+import { HandlesModule } from "./handles/handles.module"
+import { Handle } from "./handles/handles.entity"
 import { UserProblemTag } from "./problems/user-problem-tag"
 
 @Module({
@@ -18,7 +22,15 @@ import { UserProblemTag } from "./problems/user-problem-tag"
     TypeOrmModule.forRoot({
       type: "postgres",
       url: process.env.DATABASE_URL,
-      entities: [User, Tag, Problem, Submission, UserProblemTag],
+      entities: [
+        User,
+        Tag,
+        Problem,
+        Submission,
+        UserProblemTag,
+        Handle,
+        OnlineJudges,
+      ],
       synchronize: true,
     }),
     HttpModule,
@@ -27,6 +39,8 @@ import { UserProblemTag } from "./problems/user-problem-tag"
     ProblemsModule,
     ParsersModule,
     UsersModule,
+    OnlineJudgesModule,
+    HandlesModule,
   ],
 })
 export class AppModule {

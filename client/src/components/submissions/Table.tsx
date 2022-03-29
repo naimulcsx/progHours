@@ -11,6 +11,8 @@ import SolveTime from "./columns/SolveTime"
 import Tags from "./columns/Tags"
 import { useEffect, useState } from "react"
 
+import { ArrowSmDownIcon, ArrowSmUpIcon } from "@heroicons/react/solid"
+
 import moment from "moment"
 import {
   FiChevronsLeft,
@@ -120,7 +122,20 @@ const TrackingTable = ({ submissions }) => {
                         )}
                         className="border border-slate-100"
                       >
-                        {header.render("Header")}
+                        <div className="flex items-center justify-start space-x-1">
+                          <span>{header.render("Header")}</span>
+                          <span>
+                            {header.isSorted ? (
+                              header.isSortedDesc ? (
+                                <ArrowSmDownIcon height={20} />
+                              ) : (
+                                <ArrowSmUpIcon height={20} />
+                              )
+                            ) : (
+                              ""
+                            )}
+                          </span>
+                        </div>
                       </th>
                     )
                   })}

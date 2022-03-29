@@ -1,7 +1,26 @@
 import { createContext, ReactNode } from "react"
 import useSubmissions from "@/hooks/useSubmissions"
+import useUser from "@/hooks/useUser"
 
-const GlobalContext = createContext({})
+export interface User {
+  name: string
+  role: string
+  email: string
+  username: string
+}
+
+interface GlobalContext {
+  user: User
+}
+
+const GlobalContext = createContext<GlobalContext>({
+  user: {
+    name: "",
+    role: "",
+    email: "",
+    username: "",
+  },
+})
 
 const GlobalStateProvider = ({
   children,
@@ -9,10 +28,12 @@ const GlobalStateProvider = ({
   children: ReactNode
 }): JSX.Element => {
   const useSubmissionsResult = useSubmissions()
+  const user: User = useUser()
   return (
     <GlobalContext.Provider
       value={{
         useSubmissionsResult,
+        user,
       }}
     >
       {children}

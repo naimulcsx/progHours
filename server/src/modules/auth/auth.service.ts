@@ -19,7 +19,10 @@ export class AuthService {
     @InjectRepository(User)
     private usersRepository: Repository<User>
   ) {}
-  getUser(username: string): Promise<User> {
+  getUserById(id: number): Promise<User> {
+    return this.usersRepository.findOne(id)
+  }
+  getUserByUsername(username: string): Promise<User> {
     return this.usersRepository.findOne({ username })
   }
   comparePassword(password, hashedPassword) {
@@ -27,13 +30,19 @@ export class AuthService {
   }
   async getAccessTokenWithUserInfo(body: any) {
     const { username, password } = body
-    const user = await this.getUser(username)
+    const user = await this.getUserByUsername(username)
     if (!user) throw new BadRequestException(["user not found"])
-    console.log(user)
+
     const isValidPassword = await this.comparePassword(password, user.password)
     //! if the user exists but the provided password is wrong
     if (!isValidPassword) throw new ForbiddenException(["invalid password"])
-    const userObj = { id: user.id, username: user.username, name: user.name, role: user.role }
+    const userObj = {
+      id: user.id,
+      username: user.username,
+      name: user.name,
+      email: user.email,
+      role: user.role,
+    }
     const accessToken = jwt.sign(userObj, process.env.ACCESS_TOKEN_SECRET)
     return {
       accessToken,

@@ -8,9 +8,11 @@ import {
   SettingsIcon,
   LogoutIcon,
 } from "@/components/Icons"
+import { useContext } from "react"
+import { GlobalContext } from "@/GlobalStateProvider"
 
 const Sidebar = () => {
-  const user = localStorage.getItem("name")
+  const { user } = useContext(GlobalContext)
   const handleLogout = useLogout()
   return (
     <div className="max-w-[250px] w-full h-[100vh] py-6 fixed z-10 top-0 left-0 bottom-0 bg-white shadow shadow-primary/5">
@@ -41,12 +43,12 @@ const Sidebar = () => {
         </div>
         <div className="flex items-start space-x-4">
           <img
-            src={`https://robohash.org/${user}?bgset=bg2&size=48x48`}
-            alt={user}
+            src={`https://robohash.org/${user.name}?bgset=bg2&size=48x48`}
+            alt={user.name}
             className="rounded-lg"
           />
           <div>
-            <h6 className="text-lg font-medium">{user}</h6>
+            <h6 className="text-lg font-medium">{user.name}</h6>
             <button
               className="flex items-center mt-0.5 space-x-1 text-sm text-red-500"
               onClick={handleLogout}
