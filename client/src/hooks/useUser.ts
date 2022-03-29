@@ -1,5 +1,5 @@
 import { getUser } from "@/api/user"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { useQuery } from "react-query"
 import { User } from "@/GlobalStateProvider"
 

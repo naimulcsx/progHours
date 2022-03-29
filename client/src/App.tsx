@@ -59,9 +59,13 @@ const App = (): JSX.Element => {
   return (
     <QueryClientProvider client={queryClient}>
       <HelmetProvider>
-        <GlobalStateProvider>
+        {isLoggedIn ? (
+          <GlobalStateProvider>
+            <main>{matchedPage}</main>
+          </GlobalStateProvider>
+        ) : (
           <main>{matchedPage}</main>
-        </GlobalStateProvider>
+        )}
         <ToastContainer
           theme="colored"
           autoClose={2000}

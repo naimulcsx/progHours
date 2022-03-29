@@ -10,7 +10,6 @@ import {
 } from "@/components/Icons"
 import { useContext } from "react"
 import { GlobalContext } from "@/GlobalStateProvider"
-import { userInfo } from "os"
 
 const Sidebar = () => {
   const { user } = useContext(GlobalContext)
