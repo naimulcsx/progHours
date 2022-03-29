@@ -130,7 +130,7 @@ const AddEntryRow = ({ id }) => {
       <td className="border border-slate-100" data-tags>
         —
       </td>
-      <td className="border border-slate-100"></td>
+      <td className="border border-slate-100">—</td>
       <td className="border border-slate-100" data-solved_at>
         <ReactDatePicker
           dateFormat="EEE, dd MMM yyyy"
