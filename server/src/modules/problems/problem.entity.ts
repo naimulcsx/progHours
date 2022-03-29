@@ -53,7 +53,7 @@ export class Problem {
 
   @ManyToOne(() => OnlineJudges, (online_judge) => online_judge.id)
   @JoinColumn({ name: "judge_id" })
-  judge_id: OnlineJudges
+  judge_id: number
 
   @OneToMany(() => UserProblemTag, (userProblemTag) => userProblemTag.problem)
   public user_problem_tags!: UserProblemTag[]

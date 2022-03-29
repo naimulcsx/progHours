@@ -52,7 +52,7 @@ export class ParsersService {
           name: this.isValidLink(link) ? genId() : link,
           tags: [],
           difficulty: 0,
-          judge_id: -1,
+          judge_id: null,
         }
       }
     } catch (err) {
@@ -64,6 +64,9 @@ export class ParsersService {
    **  Parser for codeforces.com
    */
   async cfParser(link) {
+    /**
+     * Utility function to extract Problem ID from URL
+     */
     const getPID = (link) => {
       let pid = "",
         parts = link.split("/")
@@ -73,10 +76,10 @@ export class ParsersService {
         pid = "CF" + "-" + parts.slice(-2).join("")
       return pid.split("?")[0] // ? ignoring query strings
     }
+
     /**
      * Get the source of the provided codeforces link
      */
-
     const { data } = await lastValueFrom(this.httpService.get(link))
     const $ = cheerio.load(data)
 
