@@ -55,7 +55,7 @@ export class SubmissionsService {
         })
         problemId = newProblem.id
       } catch (err) {
-        throw new BadRequestException(["some error occured"])
+        throw new BadRequestException([err.message])
       }
     }
     try {
