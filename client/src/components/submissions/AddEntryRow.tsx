@@ -128,14 +128,7 @@ const AddEntryRow = ({ id }) => {
       </td>
 
       <td className="border border-slate-100" data-tags>
-        <Popover>
-          <Popover.Button className="px-3 py-1 text-white bg-gray-900 rounded">
-            Add Tags
-          </Popover.Button>
-          <Popover.Panel className="absolute z-10 px-4 py-3 bg-white border-2 shadow-xl w-30 inset rounded-xl">
-            <TagInputField></TagInputField>
-          </Popover.Panel>
-        </Popover>
+        —
       </td>
       <td className="border border-slate-100"></td>
       <td className="border border-slate-100" data-solved_at>
