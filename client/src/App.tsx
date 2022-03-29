@@ -71,6 +71,7 @@ const App = (): JSX.Element => {
           autoClose={2000}
           position="bottom-right"
         />
+        {/* <ReactQueryDevtools position="bottom-right" /> */}
       </HelmetProvider>
     </QueryClientProvider>
   )

@@ -18,6 +18,7 @@ import { getSubmissions, createSubmission } from "@/api/submissions"
 import { Popover } from "@headlessui/react"
 import TagInputField from "./TagInputField"
 import { AddIcon } from "../Icons"
+import showErrorToasts from "@/utils/showErrorToasts"
 
 const submissionSchema = Yup.object().shape({
   link: Yup.string().trim().required("Problem link is required"),
@@ -53,7 +54,7 @@ const AddEntryRow = ({ id }) => {
       toast.success("Problem submitted successfully")
     },
     onError: (err) => {
-      toast.error(err.response.data.message, { className: "toast" })
+      showErrorToasts(err.response.data.message)
     },
   })
 

@@ -54,6 +54,15 @@ const AccountSettings = () => {
         confirmPassword,
       } = values
 
+      console.log({
+        name,
+        email,
+        username: uid,
+        currentPassword,
+        newPassword,
+        confirmPassword,
+      })
+
       mutate({
         name,
         email,
