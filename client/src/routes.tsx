@@ -62,7 +62,7 @@ const routes = (isLoggedIn: boolean): RouteObject[] => [
   {
     path: "/settings",
     element: isLoggedIn ? (
-      <Navigate to="/settings/handles" />
+      <Navigate to="/settings/account" />
     ) : (
       <AccessDenied />
     ),
