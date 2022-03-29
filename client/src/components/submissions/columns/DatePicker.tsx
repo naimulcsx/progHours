@@ -10,6 +10,7 @@ import { Cell } from "react-table"
  */
 import "react-datepicker/dist/react-datepicker.css"
 import "@/styles/datepicker.css"
+import moment from "moment"
 
 const DatePicker = (cell: Cell) => {
   const queryClient = useQueryClient()
@@ -32,7 +33,13 @@ const DatePicker = (cell: Cell) => {
       selected={date}
       onCalendarClose={handleBlur}
       onChange={(date) => {
-        setDate(date)
+        const currentDate = new Date()
+        const dateToSend = moment(date)
+          .set("hour", currentDate.getHours())
+          .set("minute", currentDate.getMinutes())
+          .set("second", currentDate.getSeconds())
+        console.log(dateToSend.toDate())
+        setDate(dateToSend.toDate())
       }}
     />
   )
