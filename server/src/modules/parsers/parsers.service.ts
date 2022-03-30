@@ -6,6 +6,7 @@ import * as path from "path"
 import * as url from "url"
 import ShortUniqueId from "short-unique-id"
 
+const UrlPattern = require("url-pattern")
 const genId = new ShortUniqueId({ length: 6 })
 
 @Injectable()
@@ -65,16 +66,26 @@ export class ParsersService {
    */
   async cfParser(link) {
     /**
-     * Utility function to extract Problem ID from URL
+     * Check if the problem is link is valid
      */
-    const getPID = (link) => {
-      let pid = "",
-        parts = link.split("/")
-      if (parts.length !== 7) return -1
-      if (parts.includes("contest")) pid = "CF" + "-" + parts[4] + parts[6]
-      if (parts.includes("problemset"))
-        pid = "CF" + "-" + parts.slice(-2).join("")
-      return pid.split("?")[0] // ? ignoring query strings
+    const cfValidPatterns = [
+      new UrlPattern("/contest/:contestId/problem/:problemId"),
+      new UrlPattern("/problemset/problem/:contestId/:problemId"),
+      new UrlPattern("/gym/:contestId/problem/:problemId"),
+    ]
+
+    let matchedResult: any
+    let isInvalid: boolean = true
+    cfValidPatterns.forEach((pattern) => {
+      let result = pattern.match(new URL(link).pathname)
+      if (result) {
+        matchedResult = result
+        isInvalid = false
+      }
+    })
+
+    if (isInvalid) {
+      throw new Error("Invalid codeforces link!")
     }
 
     /**
@@ -84,9 +95,10 @@ export class ParsersService {
     const $ = cheerio.load(data)
 
     /**
-     * Check if the problem is link is valid
+     * Valid pattern but wrong URL, example problem `Z` would less likely to exist in Codeforces rounds
+     * In that case, https://codeforces.com/contest/1616/problem/Z is a valid matching pattern but the problem doesn't exist
      */
-    const isInvalid = $(".title a").html()
+    isInvalid = $(".title a").html() !== null
     if (isInvalid) {
       throw new Error("Invalid codeforces link!")
     }
@@ -94,16 +106,27 @@ export class ParsersService {
     /**
      * Extract informations from source
      */
-    let difficulty = 0
-    const tags = []
-    const pid = getPID(link)
+    const pid = `CF-${matchedResult.contestId}${matchedResult.problemId}`
     const name = $(".title").html().split(". ")[1]
+
+    /**
+     * Iterate over all tags of the problem
+     */
+    const tags = []
+    let difficulty = 0
     $(".roundbox .tag-box").each(function (i, e) {
       const tag = $(this).text().trim()
+      /**
+       * Extract the tag with starts with * - use it as tje problem difficulty
+       */
       if (tag.includes("*") && tag.indexOf("*") === 0)
         difficulty = parseInt(tag.substring(1))
       else tags.push(tag)
     })
+
+    /**
+     * Set judge_id for codeforces
+     */
     const judge_id = 1
     return {
       pid,
