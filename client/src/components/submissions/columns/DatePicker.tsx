@@ -38,7 +38,6 @@ const DatePicker = (cell: Cell) => {
           .set("hour", currentDate.getHours())
           .set("minute", currentDate.getMinutes())
           .set("second", currentDate.getSeconds())
-        console.log(dateToSend.toDate())
         setDate(dateToSend.toDate())
       }}
     />

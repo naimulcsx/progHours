@@ -19,6 +19,7 @@ import { Popover } from "@headlessui/react"
 import TagInputField from "./TagInputField"
 import { AddIcon } from "../Icons"
 import showErrorToasts from "@/utils/showErrorToasts"
+import moment from "moment"
 
 const submissionSchema = Yup.object().shape({
   link: Yup.string().trim().required("Problem link is required"),
@@ -137,7 +138,14 @@ const AddEntryRow = ({ id }) => {
           form="add-submission"
           // className="h-[40px] px-3 focus:outline-none rounded focus:ring-2 ring-primary ring-opacity-50"
           selected={formik.values.solved_at}
-          onChange={(date) => formik.setFieldValue("solved_at", date)}
+          onChange={(date) => {
+            const currentDate = new Date()
+            const dateToSend = moment(date)
+              .set("hour", currentDate.getHours())
+              .set("minute", currentDate.getMinutes())
+              .set("second", currentDate.getSeconds())
+            formik.setFieldValue("solved_at", dateToSend.toDate())
+          }}
         />
       </td>
       <td className="border border-slate-100" data-actions>
