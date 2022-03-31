@@ -8,6 +8,7 @@ import { Repository } from "typeorm"
 import { Tag } from "@/modules/problems/tag.entity"
 import { Problem } from "@/modules/problems/problem.entity"
 import { UserProblemTag } from "@/modules/problems/user-problem-tag"
+import * as UrlPattern from "url-pattern"
 
 @Injectable()
 export class ProblemsService {
@@ -28,6 +29,16 @@ export class ProblemsService {
     return this.problemsRepository.save(problem)
   }
   async getProblem(link): Promise<Problem> {
+    const linkUrl = new URL(link)
+    if (linkUrl.hostname === "codeforces.com") {
+      const patternToConvert = new UrlPattern(
+        `/problemset/problem/:contestId/:problemId`
+      )
+      const result = patternToConvert.match(linkUrl.pathname)
+      if (result) {
+        link = `${linkUrl.origin}/contest/${result.contestId}/problem/${result.problemId}`
+      }
+    }
     const foundProblem = await this.problemsRepository.findOne({ link })
     return foundProblem
   }

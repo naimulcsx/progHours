@@ -72,7 +72,7 @@ export class ParsersService {
     const cfValidPatterns = [
       new UrlPattern("/contest/:contestId/problem/:problemId"),
       new UrlPattern("/problemset/problem/:contestId/:problemId"),
-      new UrlPattern("/gym/:contestId/problem/:problemId"),
+      new UrlPattern("/gym/:gymId/problem/:problemId"),
     ]
 
     let matchedResult: any
@@ -107,7 +107,9 @@ export class ParsersService {
     /**
      * Extract informations from source
      */
-    const pid = `CF-${matchedResult.contestId}${matchedResult.problemId}`
+    const pid = `CF-${matchedResult.contestId || matchedResult.gymId}${
+      matchedResult.problemId
+    }`
     const name = $(".title").html().split(". ")[1]
 
     /**
@@ -138,7 +140,9 @@ export class ParsersService {
       /**
        * Removing query params before saving the link into database
        */
-      link: `${linkUrl.origin}${linkUrl.pathname}`,
+      link: matchedResult.contestId
+        ? `https://codeforces.com/contest/${matchedResult.contestId}/problem/${matchedResult.problemId}`
+        : `https://codeforces.com/gym/${matchedResult.gymId}/problem/${matchedResult.problemId}`,
     }
   }
 
