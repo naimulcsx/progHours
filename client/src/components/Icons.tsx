@@ -363,16 +363,24 @@ function CCIcon() {
 function LightOJIcon() {
   return (
     <svg
-      width={24}
-      height={24}
-      viewBox="0 0 24 24"
-      fill="none"
       xmlns="http://www.w3.org/2000/svg"
+      width="24"
+      height="24"
+      fill="none"
+      viewBox="0 0 24 24"
     >
-      <path
-        d="M0 12V24H12H24V12V-9.53674e-07H12H0V12ZM11.2 10.5375L11.25 16.125H15.125H19V17.5312V18.9375H12.75H6.5V11.9062V4.85625L8.825 4.9125L11.125 4.96875L11.2 10.5375Z"
-        fill="#814FFD"
-      />
+      <g clipPath="url(#clip0_908_2241)">
+        <path fill="#814FFD" d="M0 0H24V24H0z"></path>
+        <path
+          fill="#fff"
+          d="M0 12v12h24V0H0v12zm11.2-1.463l.05 5.588H19V18.938H6.5V4.855l2.325.056 2.3.057.075 5.568z"
+        ></path>
+      </g>
+      <defs>
+        <clipPath id="clip0_908_2241">
+          <path fill="#fff" d="M0 0H24V24H0z"></path>
+        </clipPath>
+      </defs>
     </svg>
   )
 }
