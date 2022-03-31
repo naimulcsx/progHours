@@ -33,7 +33,7 @@ const LeaderboardPage = () => {
   return (
     <Layout>
       <Helmet>
-        <title>Tracking Sheet</title>
+        <title>Leaderboard</title>
       </Helmet>
       <div className="flex items-center justify-between">
         <h3 className="font-bold">
