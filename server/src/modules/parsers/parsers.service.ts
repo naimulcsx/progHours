@@ -68,6 +68,7 @@ export class ParsersService {
     /**
      * Check if the problem is link is valid
      */
+    const linkUrl = new URL(link)
     const cfValidPatterns = [
       new UrlPattern("/contest/:contestId/problem/:problemId"),
       new UrlPattern("/problemset/problem/:contestId/:problemId"),
@@ -77,7 +78,7 @@ export class ParsersService {
     let matchedResult: any
     let isInvalid: boolean = true
     cfValidPatterns.forEach((pattern) => {
-      let result = pattern.match(new URL(link).pathname)
+      let result = pattern.match(linkUrl.pathname)
       if (result) {
         matchedResult = result
         isInvalid = false
@@ -134,6 +135,10 @@ export class ParsersService {
       tags,
       difficulty,
       judge_id,
+      /**
+       * Removing query params before saving the link into database
+       */
+      link: `${linkUrl.origin}${linkUrl.pathname}`,
     }
   }
 
@@ -141,20 +146,30 @@ export class ParsersService {
    *  Parser for lightoj.com
    */
   async lightOjParser(link) {
-    const { data } = await lastValueFrom(this.httpService.get(link))
-    const $ = cheerio.load(data)
-    // extract informations
-    const pid = $(".tags .is-link").text().trim()
-    const name = $(".title").text().trim()
-    const difficulty = 0
-    const tags = []
-    const judge_id = 6
-    return {
-      pid,
-      name,
-      tags,
-      difficulty,
-      judge_id,
+    const lightOjPattern = new UrlPattern("/problem/:problemName")
+    let matchedResult = lightOjPattern.match(new URL(link).pathname)
+    let isInvalid: boolean = matchedResult === null
+    if (isInvalid) {
+      throw new Error("Invalid LightOJ link!")
+    }
+    try {
+      const { data } = await lastValueFrom(this.httpService.get(link))
+      const $ = cheerio.load(data)
+      // extract informations
+      const pid = $(".tags .is-link").text().trim()
+      const name = $(".title").text().trim()
+      const difficulty = 0
+      const tags = []
+      const judge_id = 6
+      return {
+        pid,
+        name,
+        tags,
+        difficulty,
+        judge_id,
+      }
+    } catch (err) {
+      throw new Error("Invalid LightOJ link!")
     }
   }
 
