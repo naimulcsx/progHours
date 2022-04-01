@@ -37,9 +37,45 @@ export class SubmissionsService {
     return submissions
   }
 
+  vjudgeToCF(link) {
+    const linkUrl = new URL(link)
+    const problem = linkUrl.pathname.includes("CodeForces")
+      ? linkUrl.pathname.split("CodeForces-").pop()
+      : linkUrl.pathname.split("Gym-").pop()
+    const contestId = problem.substring(0, problem.length - 1)
+    const problemId = problem.substring(problem.length - 1)
+    const newLink = linkUrl.pathname.includes("CodeForces")
+      ? `https://codeforces.com/contest/${contestId}/problem/${problemId}`
+      : `https://codeforces.com/gym/${contestId}/problem/${problemId}`
+    return newLink
+  }
+
+  vjudgeToLightOJ(link) {
+    const problemId = link.split("LightOJ-").pop()
+    const newLink = `https://lightoj.com/problem/${problemId}`
+    return newLink
+  }
+
+  convertLinkToOriginal(link) {
+    if (link.includes("CodeForces") || link.includes("Gym"))
+      return this.vjudgeToCF(link)
+    else if (link.includes("LightOJ")) return this.vjudgeToLightOJ(link)
+    return link
+  }
+
   async createSubmission(body: any, user: any) {
-    const { link } = body
+    let { link } = body
     let problemId: number
+
+    if (new URL(link).hostname === "vjudge.net")
+      link = this.convertLinkToOriginal(link)
+
+    console.log(link)
+
+    /**
+     * If vjudge cf - then convert link to cf link
+     */
+
     const foundProblem = await this.problemsService.getProblem(link)
     if (foundProblem) problemId = foundProblem.id
     else {
