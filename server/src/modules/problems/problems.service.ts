@@ -29,17 +29,20 @@ export class ProblemsService {
     return this.problemsRepository.save(problem)
   }
   async getProblem(link): Promise<Problem> {
-    const linkUrl = new URL(link)
-    if (linkUrl.hostname === "codeforces.com") {
-      const patternToConvert = new UrlPattern(
-        `/problemset/problem/:contestId/:problemId`
-      )
-      const result = patternToConvert.match(linkUrl.pathname)
-      if (result) {
-        link = `${linkUrl.origin}/contest/${result.contestId}/problem/${result.problemId}`
+    let foundProblem = await this.problemsRepository.findOne({ link })
+    /**
+     * ~ ONLY FOR LIGHTOJ - NEED TO CHECK IF the problem exists with the pid from link
+     */
+    console.log(link)
+    if (!foundProblem && new URL(link).hostname === "lightoj.com") {
+      const pattern = new UrlPattern("/problem/:problemId")
+      const patternResult = pattern.match(new URL(link).pathname)
+      if (patternResult) {
+        foundProblem = await this.problemsRepository.findOne({
+          pid: `LOJ-${patternResult.problemId}`,
+        })
       }
     }
-    const foundProblem = await this.problemsRepository.findOne({ link })
     return foundProblem
   }
   async createProblem(problemData): Promise<Problem> {

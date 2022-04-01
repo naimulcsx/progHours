@@ -35,6 +35,8 @@ export class ParsersService {
       "atcoder.jp": this.atCoderParser,
       "www.atcoder.jp": this.atCoderParser,
       "vjudge.net": this.vjudgeParser,
+      "codechef.com": this.ccParser,
+      "www.codechef.com": this.ccParser,
     }
 
     try {
@@ -368,6 +370,57 @@ export class ParsersService {
       tags: [],
       difficulty: 0,
       judge_id: 2,
+    }
+  }
+
+  async ccParser(link) {
+    /**
+     * Check if the problem link is valid
+     */
+    const linkUrl = new URL(link)
+    const ccUrlPatterns = [
+      new UrlPattern("/problems/:problemId"),
+      new UrlPattern("/:contestId/problems/:problemId"),
+    ]
+    let isInvalid = true
+    let patternResult: any
+    ccUrlPatterns.forEach((pattern) => {
+      const result = pattern.match(linkUrl.pathname)
+      if (result) {
+        patternResult = result
+        isInvalid = false
+      }
+    })
+
+    if (isInvalid) {
+      throw new Error("Invalid CodeChef link!")
+    }
+
+    /**
+     * Get the problem id
+     */
+
+    const problemId = patternResult.problemId
+    const apiLink = `https://www.codechef.com/api/contests/PRACTICE/problems/${problemId}`
+    const response = await lastValueFrom(this.httpService.get(apiLink))
+
+    /**
+     * If the problem id is invalid
+     */
+    if (response.data?.status === "error") {
+      throw new Error("Invalid CodeChef link!")
+    }
+
+    const pid = `CC-${response.data.problem_code}`
+    const name = response.data.problem_name
+
+    return {
+      pid,
+      name,
+      tags: [],
+      difficulty: 0,
+      judge_id: 2,
+      link: `https://www.codechef.com/problems/${response.data.problem_code}`,
     }
   }
 }
