@@ -20,19 +20,7 @@ const accountSchema = Yup.object().shape({
 
 const AccountSettings = () => {
   const client = useQueryClient()
-
-  // update user account
-  const { mutate } = useMutation(updateUserAccount, {
-    onSuccess: () => {
-      client.invalidateQueries("user")
-      toast.success("update account")
-    },
-
-    onError: (err: any) => {
-      console.log("fsfsdf", err.response)
-      showErrorToasts(err.response.data.message)
-    },
-  })
+  client.invalidateQueries("user")
 
   const formik = useFormik({
     initialValues: {
@@ -71,6 +59,17 @@ const AccountSettings = () => {
         newPassword,
         confirmPassword,
       })
+    },
+  })
+
+  // update user account
+  const { mutate } = useMutation(updateUserAccount, {
+    onSuccess: () => {
+      toast.success("update account")
+    },
+
+    onError: (err: any) => {
+      showErrorToasts(err.response.data.message)
     },
   })
 
@@ -161,13 +160,6 @@ const AccountSettings = () => {
         </div>
         {/* save buttons */}
         <div className="flex items-center justify-end space-x-6">
-          <button
-            className="py-3 btn-outline"
-            type="button"
-            // onClick={formik.resetForm}
-          >
-            Cancel
-          </button>
           <button className="btn-primary" type="submit">
             Save Changes
           </button>
