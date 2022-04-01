@@ -25,9 +25,9 @@ function vjudgeToAtCoder(link) {
 
 function convertLinkToOriginal(link) {
   if (link.includes("CodeForces") || link.includes("Gym"))
-    return this.vjudgeToCF(link)
-  else if (link.includes("LightOJ")) return this.vjudgeToLightOJ(link)
-  else if (link.includes("AtCoder")) return this.vjudgeToAtCoder(link)
+    return vjudgeToCF(link)
+  else if (link.includes("LightOJ")) return vjudgeToLightOJ(link)
+  else if (link.includes("AtCoder")) return vjudgeToAtCoder(link)
   return link
 }
 
