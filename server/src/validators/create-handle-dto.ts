@@ -1,9 +1,9 @@
-import { IsNumber, IsString } from 'class-validator';
+import { IsNumber, IsString } from "class-validator"
 
 export class CreateHandleDto {
   @IsString()
-  handle: string;
+  handle: string
 
   @IsNumber()
-  judge_id: number;
+  judge_id: number
 }
