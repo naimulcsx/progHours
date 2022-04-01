@@ -37,6 +37,7 @@ export class ParsersService {
       "vjudge.net": this.vjudgeParser,
       "codechef.com": this.ccParser,
       "www.codechef.com": this.ccParser,
+      "www.eolymp.com": this.eOlympParser,
     }
 
     try {
@@ -360,6 +361,9 @@ export class ParsersService {
     }
   }
 
+  /**
+   *  Parser for vjudge
+   */
   async vjudgeParser(link) {
     /**
      * TODO: fix vjudge parser
@@ -373,6 +377,9 @@ export class ParsersService {
     }
   }
 
+  /**
+   *  Parser for codechef
+   */
   async ccParser(link) {
     /**
      * Check if the problem link is valid
@@ -421,6 +428,59 @@ export class ParsersService {
       difficulty: 0,
       judge_id: 2,
       link: `https://www.codechef.com/problems/${response.data.problem_code}`,
+    }
+  }
+
+  /**
+   *  Parser for eOlymp
+   */
+  async eOlympParser(link) {
+    /**
+     * Check if the problem link is valid
+     */
+    const linkUrl = new URL(link)
+
+    const eOlympValidPatterns = [
+      new UrlPattern("/en/problems/:problemId"),
+      new UrlPattern("/en/contests/:contestId/problems/:problemId"),
+    ]
+
+    let matchedResult: any
+    let isInvalid: boolean = true
+    eOlympValidPatterns.forEach((pattern) => {
+      let result = pattern.match(linkUrl.pathname)
+
+      if (result) {
+        matchedResult = result
+        isInvalid = false
+      }
+    })
+
+    if (isInvalid) {
+      throw new Error("Invalid eolymp link!")
+    }
+
+    // Extract data from provided link
+    const { data } = await lastValueFrom(this.httpService.get(link))
+    const $ = cheerio.load(data)
+
+    // problem name
+    const name = $(".eo-paper__header").text().trim()
+
+    // problem ID
+    const pid = matchedResult.contestId
+      ? `EOlymp-${matchedResult.contestId}`
+      : `EOlymp-${matchedResult.problemId}`
+
+    return {
+      pid,
+      name,
+      tags: [],
+      difficulty: 0,
+      judge_id: 9,
+      link: matchedResult.contestId
+        ? `https://www.eolymp.com/en/contests/${matchedResult.contestId}/${matchedResult.problemId}`
+        : `https://www.eolymp.com/en/problems/${matchedResult.problemId}`,
     }
   }
 }

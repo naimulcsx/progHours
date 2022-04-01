@@ -36,7 +36,6 @@ function vjudgeToSPOJ(link) {
 
 function vjudgeTOTOPH(link) {
   const problemId = link.split("Toph-").pop()
-  console.log(problemId)
   return `https://toph.co/p/${problemId}`
 }
 
