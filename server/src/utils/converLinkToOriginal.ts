@@ -39,6 +39,11 @@ function vjudgeTOTOPH(link) {
   return `https://toph.co/p/${problemId}`
 }
 
+function vjudgeToEOlymp(link) {
+  const problemId = link.split("EOlymp-").pop()
+  return `https://www.eolymp.com/en/problems/${problemId}`
+}
+
 function convertLinkToOriginal(link) {
   if (link.includes("CodeForces") || link.includes("Gym"))
     return vjudgeToCF(link)
@@ -47,6 +52,7 @@ function convertLinkToOriginal(link) {
   else if (link.includes("CodeChef")) return vjudgeToCodeChef(link)
   else if (link.includes("SPOJ")) return vjudgeToSPOJ(link)
   else if (link.includes("Toph")) return vjudgeTOTOPH(link)
+  else if (link.includes("EOlymp")) return vjudgeToEOlymp(link)
   return link
 }
 
