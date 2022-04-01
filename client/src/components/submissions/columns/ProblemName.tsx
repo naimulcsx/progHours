@@ -18,6 +18,7 @@ import { toast } from "react-toastify"
 const ProblemName = (cell) => {
   const [pid, name, link] = cell.value.split("|-|")
   const iconMap = [
+    { prefix: "Gym-", icon: CFIcon },
     { prefix: "CF-", icon: CFIcon },
     { prefix: "SPOJ-", icon: SPOJIcon },
     { prefix: "CC-", icon: CCIcon },
@@ -65,7 +66,7 @@ const ProblemName = (cell) => {
 
   return (
     <div className="flex space-x-4">
-      <div className="flex items-center justify-center h-10 bg-white border rounded-full basis-10 grow-0 shrink-0">
+      <div className="flex items-center justify-center h-10 bg-white border rounded-full basis-10 grow-0 shrink-0 overflow-hidden">
         {icons.length > 0 && icons}
         {icons.length === 0 && <UnknownIcon size={20} />}
       </div>
