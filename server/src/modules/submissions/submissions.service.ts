@@ -1,6 +1,7 @@
 import { BadRequestException, Inject, Injectable } from "@nestjs/common"
 import { InjectRepository } from "@nestjs/typeorm"
 import { Repository } from "typeorm"
+import convertLinkToOriginal from "@/utils/converLinkToOriginal"
 
 /**
  * Import Entities (models)
@@ -37,46 +38,26 @@ export class SubmissionsService {
     return submissions
   }
 
-  vjudgeToCF(link) {
-    const linkUrl = new URL(link)
-    const problem = linkUrl.pathname.includes("CodeForces")
-      ? linkUrl.pathname.split("CodeForces-").pop()
-      : linkUrl.pathname.split("Gym-").pop()
-    const contestId = problem.substring(0, problem.length - 1)
-    const problemId = problem.substring(problem.length - 1)
-    const newLink = linkUrl.pathname.includes("CodeForces")
-      ? `https://codeforces.com/contest/${contestId}/problem/${problemId}`
-      : `https://codeforces.com/gym/${contestId}/problem/${problemId}`
-    return newLink
-  }
-
-  vjudgeToLightOJ(link) {
-    const problemId = link.split("LightOJ-").pop()
-    const newLink = `https://lightoj.com/problem/${problemId}`
-    return newLink
-  }
-
-  convertLinkToOriginal(link) {
-    if (link.includes("CodeForces") || link.includes("Gym"))
-      return this.vjudgeToCF(link)
-    else if (link.includes("LightOJ")) return this.vjudgeToLightOJ(link)
-    return link
-  }
-
   async createSubmission(body: any, user: any) {
     let { link } = body
     let problemId: number
 
+    /**
+     * Changing the Links to the respective OJ link
+     * Why?- To remove duplicated entries for the same problem
+     * For example
+     *    https://codeforces.com/problemset/problem/1617/B
+     *    https://vjudge.net/problem/CodeForces-1617B
+     */
     if (new URL(link).hostname === "vjudge.net")
-      link = this.convertLinkToOriginal(link)
+      link = convertLinkToOriginal(link)
 
-    console.log(link)
+    let foundProblem = await this.problemsService.getProblem(link)
 
     /**
-     * If vjudge cf - then convert link to cf link
+     * TODO: Search the problem also by its pid, if it can be pid can be formed through URL
      */
 
-    const foundProblem = await this.problemsService.getProblem(link)
     if (foundProblem) problemId = foundProblem.id
     else {
       /**
