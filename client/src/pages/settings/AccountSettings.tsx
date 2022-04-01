@@ -21,19 +21,6 @@ const accountSchema = Yup.object().shape({
 const AccountSettings = () => {
   const client = useQueryClient()
 
-  // update user account
-  const { mutate } = useMutation(updateUserAccount, {
-    onSuccess: () => {
-      client.invalidateQueries("user")
-      toast.success("update account")
-    },
-
-    onError: (err: any) => {
-      console.log("fsfsdf", err.response)
-      showErrorToasts(err.response.data.message)
-    },
-  })
-
   const formik = useFormik({
     initialValues: {
       name: "",
@@ -54,14 +41,11 @@ const AccountSettings = () => {
         confirmPassword,
       } = values
 
-      console.log({
-        name,
-        email,
-        username: uid,
-        currentPassword,
-        newPassword,
-        confirmPassword,
-      })
+      // if (currentPassword || newPassword || confirmPassword) {
+      //   if (!currentPassword || !newPassword || !confirmPassword) {
+      //     return toast.error("field must be filled")
+      //   }
+      // }
 
       mutate({
         name,
@@ -74,6 +58,20 @@ const AccountSettings = () => {
     },
   })
 
+  // update user account
+  const { mutate } = useMutation(updateUserAccount, {
+    onSuccess: () => {
+      client.invalidateQueries("user")
+      formik.resetForm()
+      toast.success("update account")
+    },
+
+    onError: (err: any) => {
+      showErrorToasts(err.response.data.message)
+    },
+  })
+
+  // get user data
   useQuery("user", getUser, {
     onSuccess: (data) => {
       formik.setFieldValue("uid", data.username)

@@ -51,6 +51,7 @@ const EditProfile = () => {
     refetchOnWindowFocus: false,
 
     onSuccess: (data) => {
+      console.log(data)
       setHandles(data?.handles)
     },
   })
@@ -68,7 +69,7 @@ const EditProfile = () => {
 
           <div className="space-y-6">
             {handles.length > 0 ? (
-              handles.map((item) => (
+              handles.map((item: any) => (
                 <FormControl key={item.id}>
                   <Input
                     type="text"
