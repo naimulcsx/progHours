@@ -1,13 +1,42 @@
 import SettingsLayout from "@/components/SettingsLayout"
 import { useFormik } from "formik"
 import * as Yup from "yup"
-import { ErrorMessage, FormControl, Input, Label } from "@/components/Form"
+import {
+  ErrorMessage,
+  FormControl,
+  Input,
+  Label,
+  Select,
+  Option,
+} from "@/components/Form"
 import { Helmet } from "react-helmet-async"
 import { useState } from "react"
 import { useMutation, useQuery, useQueryClient } from "react-query"
 import { createOJHandle, getAllHandles } from "@/api/handle"
 import showErrorToasts from "@/utils/showErrorToasts"
 import { toast } from "react-toastify"
+
+interface OJ {
+  CodeForces: number
+  CodeChef: number
+  CSES: number
+  UVa: number
+  Toph: number
+  SPOJ: number
+  Hackerrank: number
+}
+
+interface HandleState {
+  handle: string
+  onlineJudge:
+    | "CodeForces"
+    | "CodeChef"
+    | "CSES"
+    | "UVa"
+    | "Toph"
+    | "SPOJ"
+    | "Hackerrank"
+}
 
 const profileSchema = Yup.object().shape({
   handle: Yup.string().trim().required("handle name is required"),
@@ -20,14 +49,24 @@ const EditProfile = () => {
   const formik = useFormik({
     initialValues: {
       handle: "",
-      onlineJudge: "1",
+      onlineJudge: "CodeForces",
     },
     validationSchema: profileSchema,
 
-    onSubmit: (values) => {
+    onSubmit: (values: HandleState) => {
+      const judge: OJ = {
+        CodeForces: 1,
+        CodeChef: 2,
+        CSES: 3,
+        UVa: 4,
+        Toph: 5,
+        SPOJ: 6,
+        Hackerrank: 7,
+      }
+
       const val = {
         handle: values.handle,
-        judge_id: parseInt(values.onlineJudge, 10),
+        judge_id: judge[values.onlineJudge],
       }
       mutate(val)
     },
@@ -48,8 +87,6 @@ const EditProfile = () => {
   })
 
   useQuery("handles", getAllHandles, {
-    refetchOnWindowFocus: false,
-
     onSuccess: (data) => {
       console.log(data)
       setHandles(data?.handles)
@@ -85,7 +122,7 @@ const EditProfile = () => {
             )}
           </div>
 
-          <div className="flex items-center pt-10 space-x-5">
+          <div className="flex items-center space-x-5">
             <div className="flex-1">
               <FormControl
                 isInvalid={formik.touched.handle && formik.errors.handle}
@@ -105,18 +142,22 @@ const EditProfile = () => {
                 formik.touched.onlineJudge && formik.errors.onlineJudge
               }
             >
-              <select
+              <Select
                 {...formik.getFieldProps("onlineJudge")}
-                className="w-full p-3 border-2 border-gray-200 rounded-md focus:outline-none"
+                value={formik.values.onlineJudge}
+                onChange={(value: string) =>
+                  formik.setFieldValue("onlineJudge", value)
+                }
               >
-                <option value="1">CodeForces</option>
-                <option value="2">CodeChef</option>
-                <option value="3">CSES</option>
-                <option value="4">UVa</option>
-                <option value="5">Toph</option>
-                <option value="6">SPOJ</option>
-                <option value="7">Hackerrank</option>
-              </select>
+                <Option value="CodeForces">Codeforces</Option>
+                <Option value="CodeChef">CodeChef</Option>
+                <Option value="CSES">CSES</Option>
+                <Option value="UVa">UVa</Option>
+                <Option value="Toph">Toph</Option>
+                <Option value="SPOJ">SPOJ</Option>
+                <Option value="Hackerrank">Hackerrank</Option>
+              </Select>
+
               <ErrorMessage>{formik.errors.onlineJudge}</ErrorMessage>
             </FormControl>
           </div>

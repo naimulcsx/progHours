@@ -10,9 +10,9 @@ export class HandlesService {
     private handlesRepository: Repository<Handle>
   ) {}
 
-  findHandles({ handle, judge_id }) {
+  findHandles({ user_id, judge_id }) {
     return this.handlesRepository.findOne({
-      where: { handle, judge_id },
+      where: { user_id, judge_id },
     })
   }
 

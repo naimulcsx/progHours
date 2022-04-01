@@ -4,10 +4,9 @@ import * as Yup from "yup"
 import { FormControl, Input, Label, ErrorMessage } from "@/components/Form"
 import { Helmet } from "react-helmet-async"
 import { useMutation, useQuery, useQueryClient } from "react-query"
-import { getUser, updatePassword, updateUserAccount } from "@/api/user"
+import { getUser, updateUserAccount } from "@/api/user"
 import { toast } from "react-toastify"
 import showErrorToasts from "@/utils/showErrorToasts"
-import { useEffect, useState } from "react"
 
 const accountSchema = Yup.object().shape({
   name: Yup.string().trim(),

@@ -20,7 +20,10 @@ export class HandlesController {
   async createOJHandles(@Body() body: CreateHandleDto, @Req() req: any) {
     const { handle, judge_id } = body
 
-    const foundHandle = await this.handleService.findHandles(body)
+    const foundHandle = await this.handleService.findHandles({
+      user_id: req.user.id,
+      judge_id,
+    })
     if (foundHandle) throw new ForbiddenException("handle already exists")
 
     const newHandle = await this.handleService.createHandles({
