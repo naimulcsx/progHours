@@ -34,6 +34,12 @@ function vjudgeToSPOJ(link) {
   return `https://www.spoj.com/problems/${problemId}`
 }
 
+function vjudgeTOTOPH(link) {
+  const problemId = link.split("Toph-").pop()
+  console.log(problemId)
+  return `https://toph.co/p/${problemId}`
+}
+
 function convertLinkToOriginal(link) {
   if (link.includes("CodeForces") || link.includes("Gym"))
     return vjudgeToCF(link)
@@ -41,6 +47,7 @@ function convertLinkToOriginal(link) {
   else if (link.includes("AtCoder")) return vjudgeToAtCoder(link)
   else if (link.includes("CodeChef")) return vjudgeToCodeChef(link)
   else if (link.includes("SPOJ")) return vjudgeToSPOJ(link)
+  else if (link.includes("Toph")) return vjudgeTOTOPH(link)
   return link
 }
 
