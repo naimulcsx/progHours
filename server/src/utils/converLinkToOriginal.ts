@@ -25,7 +25,13 @@ function vjudgeToAtCoder(link) {
 
 function vjudgeToCodeChef(link) {
   const problemId = link.split("CodeChef-").pop()
+  console.log(`https://www.codechef.com/problems/${problemId}`)
   return `https://www.codechef.com/problems/${problemId}`
+}
+
+function VjudgeToSPOJ(link) {
+  const problemId = link.split("SPOJ-").pop()
+  return `https://www.spoj.com/problems/${problemId}`
 }
 
 function convertLinkToOriginal(link) {
@@ -34,6 +40,7 @@ function convertLinkToOriginal(link) {
   else if (link.includes("LightOJ")) return vjudgeToLightOJ(link)
   else if (link.includes("AtCoder")) return vjudgeToAtCoder(link)
   else if (link.includes("CodeChef")) return vjudgeToCodeChef(link)
+  else if (link.includes("SPOJ")) return VjudgeToSPOJ(link)
   return link
 }
 
