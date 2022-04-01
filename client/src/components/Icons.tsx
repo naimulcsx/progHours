@@ -516,6 +516,51 @@ function AddIcon() {
   )
 }
 
+function EOlympIcon() {
+  return (
+    <>
+      {/*?xml version="1.0" encoding="UTF-8" standalone="no"?*/}
+      <svg
+        version="1.1"
+        id="Layer_1"
+        xmlns="http://www.w3.org/2000/svg"
+        xmlnsXlink="http://www.w3.org/1999/xlink"
+        x="0px"
+        y="0px"
+        width="16px"
+        height="16px"
+        viewBox="0 0 16 16"
+        enableBackground="new 0 0 16 16"
+        xmlSpace="preserve"
+      >
+        {" "}
+        <image
+          id="image0"
+          width={16}
+          height={16}
+          x={0}
+          y={0}
+          href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAMAAAAoLQ9TAAAABGdBTUEAALGPC/xhBQAAACBjSFJN
+AAB6JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3CculE8AAABSlBMVEUAAAD/owD/oAD/nAD/
+mQD/lwAAhocAgYEAe3wAdXUAc3P/qwD/pwD/mQAAgYEAdHUAwML/sgD/rgD/nwD/nAAAfX0AdXUA
+ubwAtrn/ugD/tgD/pwD/owAAb3AAZ2gAr7MArLH/vAD+rgD/qwAAYmMAbG4Apqv/vwC/eQCtaQAA
+mqEAnaMAnqT/wgD/wACwbQC2cwAAkZgAk5oAlJsAmJ7/wgD/wAC6eADAfgAAh48AiZIAi5MAjpW/
+fQDDgQAAgYkAgYoAhI27eQC7eAC/fQDDgQDHhQAAe4UAeIIAd4EAeIIAe4T/owD/nwD/nAAAe3sA
+dXUAbm7/qwD/pwAAZ2gAaGn/sgD/rgAAYWEAd3gAsLT/uQD/tgAAoqcAp6z/vQD7sgAAnaPKhgCr
+aAAAk5q5dgCwbQC1cgAAipK1cwC6eAC/fQAAgIn////IerApAAAATHRSTlMABJLirBAMouSgCgSs
+wLC6CgSs9EA27roKAqr0QDbuugRE9EI27lhC9kY48FYCpvZGOPC2BASo9kQ48LYIqMCstggEkOCo
+EAqc3poIy9HuQwAAAAFiS0dEbbsGAK0AAAAHdElNRQfmBAEUAgqIOROqAAAAoUlEQVQY02NgIAsw
+MjGzsLKxc3ByQfjcPD6+frx8/gGB/AIgvqBQULCPsIioWGBIqLgEA4OkVFh4kLQMA4OsXERklLwC
+g2J0TJiSMkipimpsXJwag3p8dIKGJkhASzsxMVGHQVcvPilZ34CBwdAoJSXF2ISBwdQsNS3d3MLS
+KiMjw9oGpNTUNjMr284+JyfHwRHiECdnF1c3dw9PL2/yPAYAumccw7l6KrIAAAAldEVYdGRhdGU6
+Y3JlYXRlADIwMjItMDQtMDFUMjA6MDI6MTArMDA6MDBM/ScPAAAAJXRFWHRkYXRlOm1vZGlmeQAy
+MDIyLTA0LTAxVDIwOjAyOjEwKzAwOjAwPaCfswAAAABJRU5ErkJggg=="
+        />
+      </svg>
+    </>
+  )
+}
+
 export {
   LogoIcon,
   LogoutIcon,
@@ -544,4 +589,5 @@ export {
   OpenLinkIcon,
   UnknownIcon,
   AddIcon,
+  EOlympIcon,
 }
