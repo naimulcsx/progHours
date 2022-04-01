@@ -32,6 +32,5 @@ async function createOnlineJudges() {
 }
 
 createOnlineJudges()
-
 @Module({})
 export class OnlineJudgesModule {}

@@ -4,10 +4,9 @@ import * as Yup from "yup"
 import { FormControl, Input, Label, ErrorMessage } from "@/components/Form"
 import { Helmet } from "react-helmet-async"
 import { useMutation, useQuery, useQueryClient } from "react-query"
-import { getUser, updatePassword, updateUserAccount } from "@/api/user"
+import { getUser, updateUserAccount } from "@/api/user"
 import { toast } from "react-toastify"
 import showErrorToasts from "@/utils/showErrorToasts"
-import { useEffect, useState } from "react"
 
 const accountSchema = Yup.object().shape({
   name: Yup.string().trim(),
@@ -20,19 +19,6 @@ const accountSchema = Yup.object().shape({
 
 const AccountSettings = () => {
   const client = useQueryClient()
-
-  // update user account
-  const { mutate } = useMutation(updateUserAccount, {
-    onSuccess: () => {
-      client.invalidateQueries("user")
-      toast.success("update account")
-    },
-
-    onError: (err: any) => {
-      console.log("fsfsdf", err.response)
-      showErrorToasts(err.response.data.message)
-    },
-  })
 
   const formik = useFormik({
     initialValues: {
@@ -54,14 +40,11 @@ const AccountSettings = () => {
         confirmPassword,
       } = values
 
-      console.log({
-        name,
-        email,
-        username: uid,
-        currentPassword,
-        newPassword,
-        confirmPassword,
-      })
+      // if (currentPassword || newPassword || confirmPassword) {
+      //   if (!currentPassword || !newPassword || !confirmPassword) {
+      //     return toast.error("field must be filled")
+      //   }
+      // }
 
       mutate({
         name,
@@ -74,6 +57,20 @@ const AccountSettings = () => {
     },
   })
 
+  // update user account
+  const { mutate } = useMutation(updateUserAccount, {
+    onSuccess: () => {
+      client.invalidateQueries("user")
+      formik.resetForm()
+      toast.success("update account")
+    },
+
+    onError: (err: any) => {
+      showErrorToasts(err.response.data.message)
+    },
+  })
+
+  // get user data
   useQuery("user", getUser, {
     onSuccess: (data) => {
       formik.setFieldValue("uid", data.username)
@@ -161,13 +158,6 @@ const AccountSettings = () => {
         </div>
         {/* save buttons */}
         <div className="flex items-center justify-end space-x-6">
-          <button
-            className="py-3 btn-outline"
-            type="button"
-            // onClick={formik.resetForm}
-          >
-            Cancel
-          </button>
           <button className="btn-primary" type="submit">
             Save Changes
           </button>
