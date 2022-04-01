@@ -34,11 +34,11 @@ const EditProfile = () => {
   })
 
   const client = useQueryClient()
-  client.invalidateQueries("handles")
 
   const { mutate } = useMutation(createOJHandle, {
     onSuccess: () => {
       formik.resetForm()
+      client.invalidateQueries("handles")
       toast.success("create successfully")
     },
 

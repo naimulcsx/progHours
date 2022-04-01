@@ -20,7 +20,19 @@ const accountSchema = Yup.object().shape({
 
 const AccountSettings = () => {
   const client = useQueryClient()
-  client.invalidateQueries("user")
+
+  // update user account
+  const { mutate } = useMutation(updateUserAccount, {
+    onSuccess: () => {
+      client.invalidateQueries("user")
+      toast.success("update account")
+    },
+
+    onError: (err: any) => {
+      console.log("fsfsdf", err.response)
+      showErrorToasts(err.response.data.message)
+    },
+  })
 
   const formik = useFormik({
     initialValues: {
@@ -59,17 +71,6 @@ const AccountSettings = () => {
         newPassword,
         confirmPassword,
       })
-    },
-  })
-
-  // update user account
-  const { mutate } = useMutation(updateUserAccount, {
-    onSuccess: () => {
-      toast.success("update account")
-    },
-
-    onError: (err: any) => {
-      showErrorToasts(err.response.data.message)
     },
   })
 
