@@ -26,14 +26,15 @@ export class ParsersService {
   async parseProblem(link) {
     const parserMap = {
       "codeforces.com": this.cfParser,
-      "lightoj.com": this.lightOjParser,
-      "onlinejudge.org": this.uvaOjParser,
+      "lightoj.com": this.lightOJParser,
+      "onlinejudge.org": this.uvaParser,
       "cses.fi": this.csesParser,
       "toph.co": this.tophParser,
       "spoj.com": this.spojParser,
       "www.spoj.com": this.spojParser,
       "atcoder.jp": this.atCoderParser,
       "www.atcoder.jp": this.atCoderParser,
+      "vjudge.net": this.vjudgeParser,
     }
 
     try {
@@ -66,7 +67,7 @@ export class ParsersService {
    */
   async cfParser(link) {
     /**
-     * Check if the problem is link is valid
+     * Check if the problem link is valid
      */
     const linkUrl = new URL(link)
     const cfValidPatterns = [
@@ -107,9 +108,9 @@ export class ParsersService {
     /**
      * Extract informations from source
      */
-    const pid = `CF-${matchedResult.contestId || matchedResult.gymId}${
-      matchedResult.problemId
-    }`
+    const pid = matchedResult.contestId
+      ? `CF-${matchedResult.contestId}${matchedResult.problemId}`
+      : `Gym-${matchedResult.gymId}${matchedResult.problemId}`
     const name = $(".title").html().split(". ")[1]
 
     /**
@@ -149,19 +150,39 @@ export class ParsersService {
   /**
    *  Parser for lightoj.com
    */
-  async lightOjParser(link) {
+  async lightOJParser(link) {
+    /**
+     * Check if the problem link is valid
+     */
+    const linkUrl = new URL(link)
     const lightOjPattern = new UrlPattern("/problem/:problemName")
-    let matchedResult = lightOjPattern.match(new URL(link).pathname)
+    let matchedResult = lightOjPattern.match(linkUrl.pathname)
     let isInvalid: boolean = matchedResult === null
     if (isInvalid) {
       throw new Error("Invalid LightOJ link!")
     }
+    /**
+     * Get the page source
+     */
     try {
-      const { data } = await lastValueFrom(this.httpService.get(link))
-      const $ = cheerio.load(data)
-      // extract informations
+      const response = await lastValueFrom(this.httpService.get(link))
+      /**
+       * Getting the original URL
+       * `https://lightoj.com/problem/1026` redirects to `https://lightoj.com/problem/critical-links`
+       * So always saving `https://lightoj.com/problem/critical-links` into database
+       */
+      const originalUrl =
+        response?.request?.socket?._httpMessage?.res?.responseUrl
+
+      const $ = cheerio.load(response.data)
+      /**
+       * Extract informations
+       */
       const pid = $(".tags .is-link").text().trim()
       const name = $(".title").text().trim()
+      /**
+       * Todo: We can assign difficulty based of the difficulty tag - easy, medium, hard etc.
+       */
       const difficulty = 0
       const tags = []
       const judge_id = 6
@@ -171,8 +192,13 @@ export class ParsersService {
         tags,
         difficulty,
         judge_id,
+        /**
+         * Constructing link again for ignoring query params
+         */
+        link: originalUrl,
       }
     } catch (err) {
+      console.log(err)
       throw new Error("Invalid LightOJ link!")
     }
   }
@@ -180,9 +206,9 @@ export class ParsersService {
   /**
    *  Parser for onlineJudge.com(UVA)
    */
-  async uvaOjParser(link) {
-    const { data } = await lastValueFrom(this.httpService.get(link))
-    const $ = cheerio.load(data)
+  async uvaParser(link) {
+    const response = await lastValueFrom(this.httpService.get(link))
+    const $ = cheerio.load(response.data)
 
     const str = $(".floatbox tr td h3").text().trim()
     const parts = str.split(" - ")
@@ -329,6 +355,19 @@ export class ParsersService {
       tags,
       difficulty,
       judge_id,
+    }
+  }
+
+  async vjudgeParser(link) {
+    /**
+     * TODO: fix vjudge parser
+     */
+    return {
+      pid: "test",
+      name: "test",
+      tags: [],
+      difficulty: 0,
+      judge_id: 2,
     }
   }
 }
