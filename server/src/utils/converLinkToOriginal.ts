@@ -23,11 +23,17 @@ function vjudgeToAtCoder(link) {
   return `https://atcoder.jp/contests/${contestId}/tasks/${contestId}_${problemId}`
 }
 
+function vjudgeToCodeChef(link) {
+  const problemId = link.split("CodeChef-").pop()
+  return `https://www.codechef.com/problems/${problemId}`
+}
+
 function convertLinkToOriginal(link) {
   if (link.includes("CodeForces") || link.includes("Gym"))
     return vjudgeToCF(link)
   else if (link.includes("LightOJ")) return vjudgeToLightOJ(link)
   else if (link.includes("AtCoder")) return vjudgeToAtCoder(link)
+  else if (link.includes("CodeChef")) return vjudgeToCodeChef(link)
   return link
 }
 

@@ -2,6 +2,8 @@ import { BadRequestException, Inject, Injectable } from "@nestjs/common"
 import { InjectRepository } from "@nestjs/typeorm"
 import { Repository } from "typeorm"
 import convertLinkToOriginal from "@/utils/converLinkToOriginal"
+import getUniformCFLink from "@/utils/getUniformCFLink"
+import getUniformCCLink from "@/utils/getUniformCCLink"
 
 /**
  * Import Entities (models)
@@ -14,6 +16,7 @@ import { Submission } from "@/modules/submissions/submission.entity"
 import { ProblemsService } from "@/modules/problems/problems.service"
 import { ParsersService } from "@/modules/parsers/parsers.service"
 import { AuthService } from "@/modules/auth/auth.service"
+import * as UrlPattern from "url-pattern"
 
 @Injectable()
 export class SubmissionsService {
@@ -49,14 +52,18 @@ export class SubmissionsService {
      *    https://codeforces.com/problemset/problem/1617/B
      *    https://vjudge.net/problem/CodeForces-1617B
      */
-    if (new URL(link).hostname === "vjudge.net")
-      link = convertLinkToOriginal(link)
-
-    let foundProblem = await this.problemsService.getProblem(link)
+    const { hostname } = new URL(link)
+    const linkConverters = {
+      "vjudge.net": convertLinkToOriginal,
+      "codeforces.com": getUniformCFLink,
+      "www.codechef.com": getUniformCCLink,
+    }
+    if (linkConverters[hostname]) link = linkConverters[hostname](link)
 
     /**
-     * TODO: Search the problem also by its pid, if it can be pid can be formed through URL
+     * Check if the problem exists in database with the provided link
      */
+    let foundProblem = await this.problemsService.getProblem(link)
 
     if (foundProblem) problemId = foundProblem.id
     else {
