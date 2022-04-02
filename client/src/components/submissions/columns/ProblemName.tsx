@@ -16,6 +16,7 @@ import { useRef, useState } from "react"
 import { useMutation } from "react-query"
 import { updateSubmission } from "@/api/submissions"
 import { toast } from "react-toastify"
+import { ExternalLinkIcon } from "@heroicons/react/outline"
 
 const ProblemName = (cell) => {
   const [pid, name, link] = cell.value.split("|-|")
@@ -79,10 +80,7 @@ const ProblemName = (cell) => {
         <p className="flex space-x-3 font-medium text-gray-900">
           <span>{pid}</span>
           <a href={link} target="_blank">
-            <OpenLinkIcon
-              size={16}
-              className="relative top-[2px]"
-            ></OpenLinkIcon>
+            <ExternalLinkIcon className="w-4 h-4 text-gray-600 relative top-[2px]"></ExternalLinkIcon>
           </a>
         </p>
         {icons.length > 0 && (
