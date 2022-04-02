@@ -105,7 +105,7 @@ const TrackingTable = ({ submissions }) => {
 
   return (
     <div className="relative">
-      <div className="mt-6 rounded-md shadow shadow-primary/5">
+      <div className="mt-6 rounded-md">
         <table {...getTableProps()} className="border-collapse ">
           <thead>
             {headerGroups.map((headerGroup) => {

@@ -8,7 +8,7 @@ const Navbar = () => {
   const { user } = useContext(GlobalContext)
   return (
     <header
-      className={`fixed top-0 left-0 right-0 z-30 flex items-center justify-between px-6 py-3 shadow-sm shadow-primary/5 bg-white`}
+      className={`fixed top-0 left-0 right-0 z-30 flex items-center justify-between px-6 py-4`}
     >
       <Link to="/dashboard">
         <Logo className="text-gray-900" />
