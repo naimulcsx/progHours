@@ -184,7 +184,6 @@ export class ParsersService {
     /**
      * Get the problem id
      */
-
     const problemId = patternResult.problemId
     const apiLink = `https://www.codechef.com/api/contests/PRACTICE/problems/${problemId}`
     const response = await lastValueFrom(this.httpService.get(apiLink))
