@@ -25,7 +25,23 @@ function vjudgeToAtCoder(link) {
 
 function vjudgeToCodeChef(link) {
   const problemId = link.split("CodeChef-").pop()
+  console.log(`https://www.codechef.com/problems/${problemId}`)
   return `https://www.codechef.com/problems/${problemId}`
+}
+
+function vjudgeToSPOJ(link) {
+  const problemId = link.split("SPOJ-").pop()
+  return `https://www.spoj.com/problems/${problemId}`
+}
+
+function vjudgeTOTOPH(link) {
+  const problemId = link.split("Toph-").pop()
+  return `https://toph.co/p/${problemId}`
+}
+
+function vjudgeToEOlymp(link) {
+  const problemId = link.split("EOlymp-").pop()
+  return `https://www.eolymp.com/en/problems/${problemId}`
 }
 
 function convertLinkToOriginal(link) {
@@ -34,6 +50,9 @@ function convertLinkToOriginal(link) {
   else if (link.includes("LightOJ")) return vjudgeToLightOJ(link)
   else if (link.includes("AtCoder")) return vjudgeToAtCoder(link)
   else if (link.includes("CodeChef")) return vjudgeToCodeChef(link)
+  else if (link.includes("SPOJ")) return vjudgeToSPOJ(link)
+  else if (link.includes("Toph")) return vjudgeTOTOPH(link)
+  else if (link.includes("EOlymp")) return vjudgeToEOlymp(link)
   return link
 }
 

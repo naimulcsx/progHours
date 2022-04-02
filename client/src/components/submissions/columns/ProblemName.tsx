@@ -9,6 +9,7 @@ import {
   AtCoder,
   OpenLinkIcon,
   UnknownIcon,
+  EOlympIcon,
 } from "@/components/Icons"
 import { useRef, useState } from "react"
 import { useMutation } from "react-query"
@@ -27,6 +28,7 @@ const ProblemName = (cell) => {
     { prefix: "CSES-", icon: CSESIcon },
     { prefix: "TH-", icon: TophIcon },
     { prefix: "AC-", icon: AtCoder },
+    { prefix: "EOlymp-", icon: EOlympIcon },
   ]
 
   const icons = iconMap
@@ -66,7 +68,7 @@ const ProblemName = (cell) => {
 
   return (
     <div className="flex space-x-4">
-      <div className="flex items-center justify-center h-10 bg-white border rounded-full basis-10 grow-0 shrink-0 overflow-hidden">
+      <div className="flex items-center justify-center h-10 overflow-hidden bg-white border rounded-full basis-10 grow-0 shrink-0">
         {icons.length > 0 && icons}
         {icons.length === 0 && <UnknownIcon size={20} />}
       </div>
