@@ -39,7 +39,7 @@ interface WeekRange {
 
 function getWeekRanges(submissions: any) {
   const minDate = getMinDate(submissions)
-  let from = moment(minDate),
+  let from = moment(minDate).startOf("day"),
     to = moment(minDate).endOf("day")
   while (to.format("dddd") !== "Friday") {
     to.add(1, "day")
@@ -47,10 +47,11 @@ function getWeekRanges(submissions: any) {
   const weekRanges = [{ from: from.toDate(), to: to.toDate() }]
   while (to.toDate() <= new Date()) {
     weekRanges.push({
-      from: to.add(1, "day").toDate(),
+      from: to.add(1, "day").startOf("day").toDate(),
       to: to.add(6, "day").endOf("day").toDate(),
     })
   }
+  console.log(weekRanges)
   return weekRanges
 }
 
