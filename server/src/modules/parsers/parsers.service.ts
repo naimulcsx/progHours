@@ -41,6 +41,8 @@ export class ParsersService {
       "eolymp.com": this.eOlympParser,
       "www.beecrowd.com.br": this.beeCrowdParser,
       "beecrowd.com.br": this.beeCrowdParser,
+      "www.hackerrank.com": this.hackerrankParser,
+      "hackerrank.com": this.hackerrankParser,
     }
 
     try {
@@ -334,6 +336,54 @@ export class ParsersService {
   /** TODO
    *  Parser for HACKERRANK, id = 7
    */
+  async hackerrankParser(link) {
+    const linkUrl = new URL(link)
+
+    const hackerrankValidPatterns = [
+      new UrlPattern("/challenges/:problemId/problem?isFullScreen=true"),
+      new UrlPattern("/challenges/:problemId/problem?isFullScreen=false"),
+      new UrlPattern("/challenges/:problemId/problem"),
+    ]
+
+    let matchedResult: any
+    let isInvalid: boolean = true
+    hackerrankValidPatterns.forEach((pattern) => {
+      let result = pattern.match(linkUrl.pathname)
+
+      if (result) {
+        matchedResult = result
+        isInvalid = false
+      }
+    })
+
+    if (isInvalid) {
+      throw new Error("Invalid hackerrank link!")
+    }
+
+    // Extract data from provided link
+    const response = await lastValueFrom(
+      this.httpService.get(link, {
+        headers: {
+          "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64)",
+        },
+      })
+    )
+
+    const $ = cheerio.load(response.data)
+    const name = $(".challenge-page-label-wrapper .ui-icon-label.page-label")
+      .text()
+      .trim()
+    const pid = `HR-${matchedResult.problemId}`
+
+    return {
+      name,
+      pid,
+      tags: [],
+      difficulty: 0,
+      judge_id: 7,
+      link: `https://www.hackerrank.com/challenges/${matchedResult.problemId}/problem`,
+    }
+  }
 
   /**
    *  Parser for LIGHTOJ, id = 8
