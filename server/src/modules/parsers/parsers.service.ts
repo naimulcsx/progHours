@@ -475,7 +475,46 @@ export class ParsersService {
 
   /** TODO
    *  Parser for BEECROWD, id = 11
+   *  https://www.beecrowd.com.br/judge/en/problems/view/3171
    */
+  async beeCrowd(link) {
+    const linkUrl = new URL(link)
+
+    const eOlympValidPatterns = [
+      new UrlPattern("/judge/en/problems/view/:problemId"),
+    ]
+
+    let matchedResult: any
+    let isInvalid: boolean = true
+    eOlympValidPatterns.forEach((pattern) => {
+      let result = pattern.match(linkUrl.pathname)
+
+      if (result) {
+        matchedResult = result
+        isInvalid = false
+      }
+    })
+
+    if (isInvalid) {
+      throw new Error("Invalid beecrowd link!")
+    }
+
+    // Extract data from provided link
+    const { data } = await lastValueFrom(this.httpService.get(link))
+    const $ = cheerio.load(data)
+
+    const name = $(".header h1")
+    const pid = `BeeCrowd-${matchedResult.problemId}`
+
+    return {
+      name,
+      pid,
+      tags: [],
+      difficulty: 0,
+      judge_id: 11,
+      link: `https://www.beecrowd.com.br/judge/en/problems/view/${matchedResult.problemId}`,
+    }
+  }
 
   /**
    *  Parser for VJUDGE
