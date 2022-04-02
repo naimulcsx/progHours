@@ -248,6 +248,12 @@ export class ParsersService {
    *  Parser for UVA, id = 4
    */
   async uvaParser(link) {
+    const linkURl = new URL(link)
+
+    const problemId = linkURl.searchParams.get("problem")
+    const categoryId = linkURl.searchParams.get("category")
+
+    // extract data from provided link
     const response = await lastValueFrom(this.httpService.get(link))
     const $ = cheerio.load(response.data)
 
@@ -266,6 +272,7 @@ export class ParsersService {
       tags,
       difficulty,
       judge_id,
+      link: `https://onlinejudge.org/index.php?option=com_onlinejudge&Itemid=8&category=${categoryId}&page=show_problem&problem=${problemId}`,
     }
   }
 
@@ -333,7 +340,7 @@ export class ParsersService {
     }
   }
 
-  /** TODO
+  /**
    *  Parser for HACKERRANK, id = 7
    */
   async hackerrankParser(link) {
@@ -484,7 +491,7 @@ export class ParsersService {
 
     const eOlympValidPatterns = [
       new UrlPattern("/en/problems/:problemId"),
-      new UrlPattern("/en/contests/:contestId/problems/:problemId"),
+      // new UrlPattern("/en/contests/:contestId/problems/:problemId"),
     ]
 
     let matchedResult: any
