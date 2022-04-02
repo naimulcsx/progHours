@@ -38,6 +38,9 @@ export class ParsersService {
       "codechef.com": this.ccParser,
       "www.codechef.com": this.ccParser,
       "www.eolymp.com": this.eOlympParser,
+      "eolymp.com": this.eOlympParser,
+      "www.beecrowd.com.br": this.beeCrowdParser,
+      "beecrowd.com.br": this.beeCrowdParser,
     }
 
     try {
@@ -473,9 +476,47 @@ export class ParsersService {
     }
   }
 
-  /** TODO
+  /**
    *  Parser for BEECROWD, id = 11
    */
+  async beeCrowdParser(link) {
+    const linkUrl = new URL(link)
+
+    const beecrowdPatterns = [
+      new UrlPattern("/judge/en/problems/view/:problemId"),
+    ]
+
+    let matchedResult: any
+    let isInvalid: boolean = true
+    beecrowdPatterns.forEach((pattern) => {
+      let result = pattern.match(linkUrl.pathname)
+
+      if (result) {
+        matchedResult = result
+        isInvalid = false
+      }
+    })
+
+    if (isInvalid) {
+      throw new Error("Invalid beecrowd link!")
+    }
+
+    // Extract data from provided link
+    const { data } = await lastValueFrom(this.httpService.get(link))
+    const $ = cheerio.load(data)
+
+    const name = $(".header h1").text().trim()
+    const pid = `Bee-${matchedResult.problemId}`
+
+    return {
+      name,
+      pid,
+      tags: [],
+      difficulty: 0,
+      judge_id: 11,
+      link: `https://www.beecrowd.com.br/judge/en/problems/view/${matchedResult.problemId}`,
+    }
+  }
 
   /**
    *  Parser for VJUDGE

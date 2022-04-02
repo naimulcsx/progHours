@@ -10,6 +10,7 @@ import {
   OpenLinkIcon,
   UnknownIcon,
   EOlympIcon,
+  BeeCrowd,
 } from "@/components/Icons"
 import { useRef, useState } from "react"
 import { useMutation } from "react-query"
@@ -29,6 +30,7 @@ const ProblemName = (cell) => {
     { prefix: "TH-", icon: TophIcon },
     { prefix: "AC-", icon: AtCoder },
     { prefix: "EOlymp-", icon: EOlympIcon },
+    { prefix: "Bee-", icon: BeeCrowd },
   ]
 
   const icons = iconMap
@@ -45,7 +47,7 @@ const ProblemName = (cell) => {
     onSuccess: (data) => {
       toast.success("Problem updated", { className: "toast" })
     },
-    onError: (err) => {
+    onError: (err: any) => {
       toast.error(err.response.data.message, { className: "toast" })
     },
   })
