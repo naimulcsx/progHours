@@ -6,10 +6,17 @@ import {
   LeaderboardIcon,
   TrackingIcon,
   SettingsIcon,
-  LogoutIcon,
 } from "@/components/Icons"
 import { useContext } from "react"
 import { GlobalContext } from "@/GlobalStateProvider"
+
+import {
+  ClipboardListIcon,
+  ViewGridIcon,
+  ChartBarIcon,
+  CogIcon,
+  LogoutIcon,
+} from "@heroicons/react/outline"
 
 const Sidebar = () => {
   const { user } = useContext(GlobalContext)
@@ -26,16 +33,16 @@ const Sidebar = () => {
           </div> */}
           <nav>
             <ul className="space-y-1">
-              <NavLink Icon={DashboardIcon} to="/dashboard">
+              <NavLink Icon={ViewGridIcon} to="/dashboard">
                 Dashboard
               </NavLink>
-              <NavLink Icon={TrackingIcon} to="/submissions">
+              <NavLink Icon={ClipboardListIcon} to="/submissions">
                 Tracking Sheet
               </NavLink>
-              <NavLink Icon={LeaderboardIcon} to="/leaderboard">
+              <NavLink Icon={ChartBarIcon} to="/leaderboard">
                 Leaderboard
               </NavLink>
-              <NavLink Icon={SettingsIcon} to="/settings">
+              <NavLink Icon={CogIcon} to="/settings">
                 Settings
               </NavLink>
             </ul>
@@ -53,7 +60,7 @@ const Sidebar = () => {
               className="flex items-center mt-0.5 space-x-1 text-sm text-red-500"
               onClick={handleLogout}
             >
-              <LogoutIcon size={20} />
+              <LogoutIcon className="w-4 h-4" />
               <span>Logout</span>
             </button>
           </div>
