@@ -38,6 +38,9 @@ export class ParsersService {
       "codechef.com": this.ccParser,
       "www.codechef.com": this.ccParser,
       "www.eolymp.com": this.eOlympParser,
+      "eolymp.com": this.eOlympParser,
+      "www.beecrowd.com.br": this.beeCrowdParser,
+      "beecrowd.com.br": this.beeCrowdParser,
     }
 
     try {
@@ -473,20 +476,19 @@ export class ParsersService {
     }
   }
 
-  /** TODO
+  /**
    *  Parser for BEECROWD, id = 11
-   *  https://www.beecrowd.com.br/judge/en/problems/view/3171
    */
-  async beeCrowd(link) {
+  async beeCrowdParser(link) {
     const linkUrl = new URL(link)
 
-    const eOlympValidPatterns = [
+    const beecrowdPatterns = [
       new UrlPattern("/judge/en/problems/view/:problemId"),
     ]
 
     let matchedResult: any
     let isInvalid: boolean = true
-    eOlympValidPatterns.forEach((pattern) => {
+    beecrowdPatterns.forEach((pattern) => {
       let result = pattern.match(linkUrl.pathname)
 
       if (result) {
@@ -503,8 +505,8 @@ export class ParsersService {
     const { data } = await lastValueFrom(this.httpService.get(link))
     const $ = cheerio.load(data)
 
-    const name = $(".header h1")
-    const pid = `BeeCrowd-${matchedResult.problemId}`
+    const name = $(".header h1").text().trim()
+    const pid = `Bee-${matchedResult.problemId}`
 
     return {
       name,
