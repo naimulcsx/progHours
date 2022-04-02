@@ -66,7 +66,7 @@ export class ParsersService {
   }
 
   /**
-   **  Parser for codeforces.com
+   **  Parser for CODEFORCES, id = 1
    */
   async cfParser(link) {
     /**
@@ -151,234 +151,7 @@ export class ParsersService {
   }
 
   /**
-   *  Parser for lightoj.com
-   */
-  async lightOJParser(link) {
-    /**
-     * Check if the problem link is valid
-     */
-    const linkUrl = new URL(link)
-    const lightOjPattern = new UrlPattern("/problem/:problemName")
-    let matchedResult = lightOjPattern.match(linkUrl.pathname)
-    let isInvalid: boolean = matchedResult === null
-    if (isInvalid) {
-      throw new Error("Invalid LightOJ link!")
-    }
-    /**
-     * Get the page source
-     */
-    try {
-      const response = await lastValueFrom(this.httpService.get(link))
-      /**
-       * Getting the original URL
-       * `https://lightoj.com/problem/1026` redirects to `https://lightoj.com/problem/critical-links`
-       * So always saving `https://lightoj.com/problem/critical-links` into database
-       */
-      const originalUrl =
-        response?.request?.socket?._httpMessage?.res?.responseUrl
-
-      const $ = cheerio.load(response.data)
-      /**
-       * Extract informations
-       */
-      const pid = $(".tags .is-link").text().trim()
-      const name = $(".title").text().trim()
-      /**
-       * Todo: We can assign difficulty based of the difficulty tag - easy, medium, hard etc.
-       */
-      const difficulty = 0
-      const tags = []
-      const judge_id = 6
-      return {
-        pid,
-        name,
-        tags,
-        difficulty,
-        judge_id,
-        /**
-         * Constructing link again for ignoring query params
-         */
-        link: originalUrl,
-      }
-    } catch (err) {
-      console.log(err)
-      throw new Error("Invalid LightOJ link!")
-    }
-  }
-
-  /**
-   *  Parser for onlineJudge.com(UVA)
-   */
-  async uvaParser(link) {
-    const response = await lastValueFrom(this.httpService.get(link))
-    const $ = cheerio.load(response.data)
-
-    const str = $(".floatbox tr td h3").text().trim()
-    const parts = str.split(" - ")
-
-    const pid = "UVA-" + parts[0]
-    const name = parts.slice(1).join(" ").trim()
-    const difficulty = 0
-    const tags = []
-    const judge_id = 7
-
-    return {
-      pid,
-      name,
-      tags,
-      difficulty,
-      judge_id,
-    }
-  }
-
-  /**
-   *  Parser for cses.fi(CSES)
-   */
-  async csesParser(link) {
-    const { data } = await lastValueFrom(this.httpService.get(link))
-    const $ = cheerio.load(data)
-
-    const name = $(".title-block h1").text().trim()
-
-    // problem id
-    const { name: pathName } = path.parse(link)
-    const splitName = pathName.includes("lang")
-      ? pathName.split("?")[0]
-      : pathName
-
-    const pid = "CSES-" + splitName
-
-    // problem difficulty
-    const difficulty = 0
-
-    // problem tags
-    const tags = []
-
-    // attached judge_id
-    const judge_id = 8
-
-    return {
-      pid,
-      name,
-      tags,
-      difficulty,
-      judge_id,
-    }
-  }
-
-  /**
-   *  Parser for toph.co
-   */
-  async tophParser(link) {
-    const { data } = await lastValueFrom(this.httpService.get(link))
-    const $ = cheerio.load(data)
-
-    // problem name
-    const pname = $(".artifact__caption h1").text().trim()
-    const name = pname
-
-    /// problem id
-    const { name: pathName } = path.parse(link)
-    const splitName = pathName.includes("lang")
-      ? pathName.split("?")[0]
-      : pathName
-
-    const pid = "TH-" + splitName
-
-    // problem difficulty
-    const difficulty = 0
-
-    // problem tags
-    const tags = []
-    $(".flair__item .text a").each(function () {
-      const tag = $(this).text().trim()
-      tags.push(tag)
-    })
-    const judge_id = 5
-
-    return {
-      pid,
-      name,
-      tags,
-      difficulty,
-      judge_id,
-    }
-  }
-
-  /**
-   *  Parser for spoj.com
-   */
-  async spojParser(link) {
-    const { data } = await lastValueFrom(this.httpService.get(link))
-    const $ = cheerio.load(data)
-
-    const str = $(".prob #problem-name").text().trim()
-    const parts = str.split(" - ")
-    const name = parts[1]
-    const pid = "SPOJ-" + parts[0]
-
-    const difficulty = 0
-    const tags = []
-    const judge_id = 2
-
-    return {
-      pid,
-      name,
-      tags,
-      difficulty,
-      judge_id,
-    }
-  }
-  /**
-   *  Parser for spoj.com
-   */
-  async atCoderParser(link) {
-    const { data } = await lastValueFrom(this.httpService.get(link))
-    const $ = cheerio.load(data)
-
-    // problem name
-    const parse = $("#main-container .row span.h2").text().trim()
-    const name = parse.split("\n")[0].split("-")[1]
-
-    // problem Id
-    const parseLink = url.parse(link, true)
-    const splitName = parseLink.pathname.split("/")[4]
-    const pid = "AC-" + splitName
-
-    // problem difficulty
-    const difficulty = 0
-
-    // problem tags
-    const tags = []
-    const judge_id = 4
-
-    return {
-      pid,
-      name,
-      tags,
-      difficulty,
-      judge_id,
-    }
-  }
-
-  /**
-   *  Parser for vjudge
-   */
-  async vjudgeParser(link) {
-    /**
-     * TODO: fix vjudge parser
-     */
-    return {
-      pid: "test",
-      name: "test",
-      tags: [],
-      difficulty: 0,
-      judge_id: 2,
-    }
-  }
-
-  /**
-   *  Parser for codechef
+   *  Parser for CODECHEF, id = 2
    */
   async ccParser(link) {
     /**
@@ -432,7 +205,223 @@ export class ParsersService {
   }
 
   /**
-   *  Parser for eOlymp
+   *  Parser for CSES, id = 3
+   */
+  async csesParser(link) {
+    const { data } = await lastValueFrom(this.httpService.get(link))
+    const $ = cheerio.load(data)
+
+    const name = $(".title-block h1").text().trim()
+
+    // problem id
+    const { name: pathName } = path.parse(link)
+    const splitName = pathName.includes("lang")
+      ? pathName.split("?")[0]
+      : pathName
+
+    const pid = "CSES-" + splitName
+
+    // problem difficulty
+    const difficulty = 0
+
+    // problem tags
+    const tags = []
+
+    // attached judge_id
+    const judge_id = 3
+
+    return {
+      pid,
+      name,
+      tags,
+      difficulty,
+      judge_id,
+    }
+  }
+
+  /**
+   *  Parser for UVA, id = 4
+   */
+  async uvaParser(link) {
+    const response = await lastValueFrom(this.httpService.get(link))
+    const $ = cheerio.load(response.data)
+
+    const str = $(".floatbox tr td h3").text().trim()
+    const parts = str.split(" - ")
+
+    const pid = "UVA-" + parts[0]
+    const name = parts.slice(1).join(" ").trim()
+    const difficulty = 0
+    const tags = []
+    const judge_id = 4
+
+    return {
+      pid,
+      name,
+      tags,
+      difficulty,
+      judge_id,
+    }
+  }
+
+  /**
+   *  Parser for TOPH, id = 5
+   */
+  async tophParser(link) {
+    const { data } = await lastValueFrom(this.httpService.get(link))
+    const $ = cheerio.load(data)
+
+    // problem name
+    const pname = $(".artifact__caption h1").text().trim()
+    const name = pname
+
+    /// problem id
+    const { name: pathName } = path.parse(link)
+    const splitName = pathName.includes("lang")
+      ? pathName.split("?")[0]
+      : pathName
+
+    const pid = "TH-" + splitName
+
+    // problem difficulty
+    const difficulty = 0
+
+    // problem tags
+    const tags = []
+    $(".flair__item .text a").each(function () {
+      const tag = $(this).text().trim()
+      tags.push(tag)
+    })
+    const judge_id = 5
+
+    return {
+      pid,
+      name,
+      tags,
+      difficulty,
+      judge_id,
+    }
+  }
+
+  /**
+   *  Parser for SPOJ, id = 6
+   */
+  async spojParser(link) {
+    const { data } = await lastValueFrom(this.httpService.get(link))
+    const $ = cheerio.load(data)
+
+    const str = $(".prob #problem-name").text().trim()
+    const parts = str.split(" - ")
+    const name = parts[1]
+    const pid = "SPOJ-" + parts[0]
+
+    const difficulty = 0
+    const tags = []
+    const judge_id = 6
+
+    return {
+      pid,
+      name,
+      tags,
+      difficulty,
+      judge_id,
+    }
+  }
+
+  /** TODO
+   *  Parser for HACKERRANK, id = 7
+   */
+
+  /**
+   *  Parser for LIGHTOJ, id = 8
+   */
+  async lightOJParser(link) {
+    /**
+     * Check if the problem link is valid
+     */
+    const linkUrl = new URL(link)
+    const lightOjPattern = new UrlPattern("/problem/:problemName")
+    let matchedResult = lightOjPattern.match(linkUrl.pathname)
+    let isInvalid: boolean = matchedResult === null
+    if (isInvalid) {
+      throw new Error("Invalid LightOJ link!")
+    }
+    /**
+     * Get the page source
+     */
+    try {
+      const response = await lastValueFrom(this.httpService.get(link))
+      /**
+       * Getting the original URL
+       * `https://lightoj.com/problem/1026` redirects to `https://lightoj.com/problem/critical-links`
+       * So always saving `https://lightoj.com/problem/critical-links` into database
+       */
+      const originalUrl =
+        response?.request?.socket?._httpMessage?.res?.responseUrl
+
+      const $ = cheerio.load(response.data)
+      /**
+       * Extract informations
+       */
+      const pid = $(".tags .is-link").text().trim()
+      const name = $(".title").text().trim()
+      /**
+       * Todo: We can assign difficulty based of the difficulty tag - easy, medium, hard etc.
+       */
+      const difficulty = 0
+      const tags = []
+      const judge_id = 8
+      return {
+        pid,
+        name,
+        tags,
+        difficulty,
+        judge_id,
+        /**
+         * Constructing link again for ignoring query params
+         */
+        link: originalUrl,
+      }
+    } catch (err) {
+      console.log(err)
+      throw new Error("Invalid LightOJ link!")
+    }
+  }
+
+  /**
+   *  Parser for ATCODER, id = 9
+   */
+  async atCoderParser(link) {
+    const { data } = await lastValueFrom(this.httpService.get(link))
+    const $ = cheerio.load(data)
+
+    // problem name
+    const parse = $("#main-container .row span.h2").text().trim()
+    const name = parse.split("\n")[0].split("-")[1]
+
+    // problem Id
+    const parseLink = url.parse(link, true)
+    const splitName = parseLink.pathname.split("/")[4]
+    const pid = "AC-" + splitName
+
+    // problem difficulty
+    const difficulty = 0
+
+    // problem tags
+    const tags = []
+    const judge_id = 9
+
+    return {
+      pid,
+      name,
+      tags,
+      difficulty,
+      judge_id,
+    }
+  }
+
+  /**
+   *  Parser for EOLYMP, id = 10
    */
   async eOlympParser(link) {
     /**
@@ -477,10 +466,30 @@ export class ParsersService {
       name,
       tags: [],
       difficulty: 0,
-      judge_id: 9,
+      judge_id: 10,
       link: matchedResult.contestId
         ? `https://www.eolymp.com/en/contests/${matchedResult.contestId}/${matchedResult.problemId}`
         : `https://www.eolymp.com/en/problems/${matchedResult.problemId}`,
+    }
+  }
+
+  /** TODO
+   *  Parser for BEECROWD, id = 11
+   */
+
+  /**
+   *  Parser for VJUDGE
+   */
+  async vjudgeParser(link) {
+    /**
+     * TODO: fix vjudge parser
+     */
+    return {
+      pid: "test",
+      name: "test",
+      tags: [],
+      difficulty: 0,
+      judge_id: 2,
     }
   }
 }

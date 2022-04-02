@@ -19,6 +19,7 @@ async function createOnlineJudges() {
     "SPOJ",
     "Hackerrank",
     "LightOJ",
+    "AtCoder",
     "EOlymp",
     "BeeCrowd",
   ]
