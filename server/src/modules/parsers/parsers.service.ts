@@ -397,7 +397,7 @@ export class ParsersService {
 
     // problem name
     const parse = $("#main-container .row span.h2").text().trim()
-    const name = parse.split("\n")[0].split("-")[1]
+    const name = parse.split("\n")[0].split("-")[1].substring(1)
 
     // problem Id
     const parseLink = url.parse(link, true)
