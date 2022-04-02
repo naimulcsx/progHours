@@ -9,7 +9,7 @@ const Layout = ({ children }) => {
       {/* sidebar */}
       <Sidebar />
       {/* main content */}
-      <div className="ml-[250px] bg-light min-h-screen px-8 pt-20 pb-10">
+      <div className="ml-[250px] bg-light min-h-screen px-8 pt-12 pb-10">
         {children}
       </div>
     </div>
