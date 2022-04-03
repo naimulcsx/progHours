@@ -1,11 +1,31 @@
-import { BsArrowUpRight } from "react-icons/bs"
-import { FaRegComment } from "react-icons/fa"
-import { GiArrowCursor } from "react-icons/gi"
-import { MdWatchLater } from "react-icons/md"
-import { SiOpslevel } from "react-icons/si"
-import calculatePoints from "../utils/calculatePoints"
+import {
+  StarIcon,
+  LightningBoltIcon,
+  TrendingUpIcon,
+  ClockIcon,
+} from "@heroicons/react/outline"
+import calculatePoints from "@/utils/calculatePoints"
 
-const Box = ({ title, icon, result, progress, today }) => {
+interface ProgressBox {
+  title: string
+  icon: JSX.Element
+  data: string | number
+}
+
+interface Progress {
+  avg_difficulty: number
+  solve_count: number
+  solve_time: number
+  verdict: {
+    AC: number
+    WA: number
+    RTE: number
+    MLE: number
+    TLE: number
+  }
+}
+
+const Box = ({ title, icon, data }: ProgressBox) => {
   return (
     <div className="flex items-start px-8 py-5 space-x-4 bg-white rounded-md shadow shadow-primary/5">
       <div className="p-3 rounded-full bg-primary bg-opacity-10 text-primary">
@@ -14,25 +34,20 @@ const Box = ({ title, icon, result, progress, today }) => {
       <div className="pt-1 space-y-4">
         <h4 className="text-dark font-medium">{title}</h4>
         <div className="space-y-4">
-          <h2>{result}</h2>
-          {/* <div className="flex items-center space-x-5">
-            <BsArrowUpRight />
-            <p className="text-lg text-primaryDark">{progress} %</p>
-            <p className="text-lg text-secondaryDark">{today}</p>
-          </div> */}
+          <h2>{data}</h2>
         </div>
       </div>
     </div>
   )
 }
 
-function convertToHours(totalTimeInMin) {
+function convertToHours(totalTimeInMin: number): string {
   const h = Math.floor(totalTimeInMin / 60)
   const m = totalTimeInMin % 60
   return `${h}h ${m}m`
 }
 
-const ProgressBox = ({ progress }) => {
+const ProgressBox = ({ progress }: { progress: Progress }) => {
   if (!progress) return <div>Loading</div>
   const { solve_count, solve_time, avg_difficulty } = progress
 
@@ -41,35 +56,24 @@ const ProgressBox = ({ progress }) => {
       <div className="w-full">
         <div className="grid grid-cols-1 lg:grid-cols-4 md:grid-cols-2 gap-8">
           <Box
-            icon={<FaRegComment size={20} />}
+            icon={<StarIcon className="w-7" />}
             title="Points"
-            result={calculatePoints(progress).toFixed(2)}
-            progress="5.0"
-            today="+45 today"
+            data={calculatePoints(progress).toFixed(2)}
           />
-
           <Box
-            icon={<GiArrowCursor size={20} />}
+            icon={<TrendingUpIcon className="w-7" />}
             title="Problems Solved"
-            result={solve_count}
-            progress="5.0"
-            today="+10 today"
+            data={solve_count}
           />
-
           <Box
-            icon={<MdWatchLater size={20} />}
+            icon={<ClockIcon className="w-7" />}
             title="Solve Time"
-            result={convertToHours(solve_time)}
-            progress="5.0"
-            today="-13m 35s"
+            data={convertToHours(solve_time)}
           />
-
           <Box
-            icon={<SiOpslevel size={20} />}
+            icon={<LightningBoltIcon className="w-7" />}
             title="Average Difficulty"
-            result={avg_difficulty.toFixed(2)}
-            progress="5.0"
-            today="+45 today"
+            data={avg_difficulty.toFixed(2)}
           />
         </div>
       </div>
