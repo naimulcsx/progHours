@@ -105,7 +105,7 @@ const TrackingTable = ({ submissions }) => {
 
   return (
     <div className="relative">
-      <div className="mt-6 rounded-md shadow shadow-primary/5">
+      <div className="mt-6 rounded-md">
         <table {...getTableProps()} className="border-collapse ">
           <thead>
             {headerGroups.map((headerGroup) => {
@@ -176,7 +176,7 @@ const TrackingTable = ({ submissions }) => {
             })}
           </tbody>
         </table>
-        <div className="flex items-center justify-between px-6 py-3 space-x-4 bg-white pagination">
+        <div className="flex items-center justify-between px-6 py-3 space-x-4 bg-white pagination border border-slate-100 rounded-br-lg rounded-bl-lg">
           <div>
             <span>
               Page{" "}

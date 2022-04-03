@@ -17,11 +17,11 @@ module.exports = {
     },
     extend: {
       colors: {
-        primary: "#5542F6",
+        primary: "#3758f9",
         primaryDark: "#2E2C34",
         secondaryDark: "#84818A",
         lightGrey: "#f2edf7",
-        light: "#FBFAFC",
+        light: "#f9f7fa",
         sky: "#00A5FF",
         orange: "#FF5C00",
         green: "#0F7432",

@@ -1,6 +1,9 @@
 import { BadRequestException, Inject, Injectable } from "@nestjs/common"
 import { InjectRepository } from "@nestjs/typeorm"
 import { Repository } from "typeorm"
+import convertLinkToOriginal from "@/utils/converLinkToOriginal"
+import getUniformCFLink from "@/utils/getUniformCFLink"
+import getUniformCCLink from "@/utils/getUniformCCLink"
 
 /**
  * Import Entities (models)
@@ -13,6 +16,7 @@ import { Submission } from "@/modules/submissions/submission.entity"
 import { ProblemsService } from "@/modules/problems/problems.service"
 import { ParsersService } from "@/modules/parsers/parsers.service"
 import { AuthService } from "@/modules/auth/auth.service"
+import * as UrlPattern from "url-pattern"
 
 @Injectable()
 export class SubmissionsService {
@@ -38,9 +42,29 @@ export class SubmissionsService {
   }
 
   async createSubmission(body: any, user: any) {
-    const { link } = body
+    let { link } = body
     let problemId: number
-    const foundProblem = await this.problemsService.getProblem(link)
+
+    /**
+     * Changing the Links to the respective OJ link
+     * Why?- To remove duplicated entries for the same problem
+     * For example
+     *    https://codeforces.com/problemset/problem/1617/B
+     *    https://vjudge.net/problem/CodeForces-1617B
+     */
+    const { hostname } = new URL(link)
+    const linkConverters = {
+      "vjudge.net": convertLinkToOriginal,
+      "codeforces.com": getUniformCFLink,
+      "www.codechef.com": getUniformCCLink,
+    }
+    if (linkConverters[hostname]) link = linkConverters[hostname](link)
+
+    /**
+     * Check if the problem exists in database with the provided link
+     */
+    let foundProblem = await this.problemsService.getProblem(link)
+
     if (foundProblem) problemId = foundProblem.id
     else {
       /**

@@ -6,36 +6,45 @@ import {
   LeaderboardIcon,
   TrackingIcon,
   SettingsIcon,
-  LogoutIcon,
 } from "@/components/Icons"
 import { useContext } from "react"
 import { GlobalContext } from "@/GlobalStateProvider"
+import Logo from "../Logo"
+
+import {
+  ClipboardListIcon,
+  ViewGridIcon,
+  ChartBarIcon,
+  CogIcon,
+  LogoutIcon,
+} from "@heroicons/react/outline"
+import { Link } from "react-router-dom"
 
 const Sidebar = () => {
   const { user } = useContext(GlobalContext)
   const handleLogout = useLogout()
   return (
-    <div className="max-w-[250px] w-full h-[100vh] py-6 fixed z-10 top-0 left-0 bottom-0 bg-white shadow shadow-primary/5">
+    <div className="max-w-[250px] z-[200000000] w-full h-[100vh] pt-4 pb-6 fixed z-10 top-0 left-0 bottom-0 bg-white shadow shadow-primary/5">
       {/* sidebar links */}
-      <div className="flex flex-col justify-between h-full px-4">
-        <div className="mt-16">
-          {/* <div className="px-4 mb-12">
+      <div className="flex flex-col justify-between h-full px-6">
+        <div className="">
+          <div className="mb-12">
             <Link to="/dashboard">
               <Logo className="text-dark" />
             </Link>
-          </div> */}
+          </div>
           <nav>
             <ul className="space-y-1">
-              <NavLink Icon={DashboardIcon} to="/dashboard">
+              <NavLink Icon={ViewGridIcon} to="/dashboard">
                 Dashboard
               </NavLink>
-              <NavLink Icon={TrackingIcon} to="/submissions">
+              <NavLink Icon={ClipboardListIcon} to="/submissions">
                 Tracking Sheet
               </NavLink>
-              <NavLink Icon={LeaderboardIcon} to="/leaderboard">
+              <NavLink Icon={ChartBarIcon} to="/leaderboard">
                 Leaderboard
               </NavLink>
-              <NavLink Icon={SettingsIcon} to="/settings">
+              <NavLink Icon={CogIcon} to="/settings">
                 Settings
               </NavLink>
             </ul>
@@ -43,17 +52,17 @@ const Sidebar = () => {
         </div>
         <div className="flex items-start space-x-4">
           <img
-            src={`https://robohash.org/${user.name}?bgset=bg2&size=48x48`}
+            src={`https://robohash.org/${user.name}?bgset=bg2&size=40x40`}
             alt={user.name}
             className="rounded-lg"
           />
-          <div>
+          <div className="relative bottom-1">
             <h6 className="text-lg font-medium">{user.name}</h6>
             <button
-              className="flex items-center mt-0.5 space-x-1 text-sm text-red-500"
+              className="flex items-center space-x-1 text-sm text-red-500"
               onClick={handleLogout}
             >
-              <LogoutIcon size={20} />
+              <LogoutIcon className="w-4 h-4" />
               <span>Logout</span>
             </button>
           </div>

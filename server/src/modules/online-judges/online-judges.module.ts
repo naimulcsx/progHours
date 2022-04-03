@@ -18,6 +18,11 @@ async function createOnlineJudges() {
     "Toph",
     "SPOJ",
     "Hackerrank",
+    "LightOJ",
+    "AtCoder",
+    "EOlymp",
+    "BeeCrowd",
+    "LeetCode",
   ]
   const result = await client.query("SELECT * FROM online_judges")
   if (result.rows.length === 0) {

@@ -8,6 +8,7 @@ import { Repository } from "typeorm"
 import { Tag } from "@/modules/problems/tag.entity"
 import { Problem } from "@/modules/problems/problem.entity"
 import { UserProblemTag } from "@/modules/problems/user-problem-tag"
+import * as UrlPattern from "url-pattern"
 
 @Injectable()
 export class ProblemsService {
@@ -28,7 +29,20 @@ export class ProblemsService {
     return this.problemsRepository.save(problem)
   }
   async getProblem(link): Promise<Problem> {
-    const foundProblem = await this.problemsRepository.findOne({ link })
+    let foundProblem = await this.problemsRepository.findOne({ link })
+    /**
+     * ~ ONLY FOR LIGHTOJ - NEED TO CHECK IF the problem exists with the pid from link
+     */
+    console.log(link)
+    if (!foundProblem && new URL(link).hostname === "lightoj.com") {
+      const pattern = new UrlPattern("/problem/:problemId")
+      const patternResult = pattern.match(new URL(link).pathname)
+      if (patternResult) {
+        foundProblem = await this.problemsRepository.findOne({
+          pid: `LOJ-${patternResult.problemId}`,
+        })
+      }
+    }
     return foundProblem
   }
   async createProblem(problemData): Promise<Problem> {
