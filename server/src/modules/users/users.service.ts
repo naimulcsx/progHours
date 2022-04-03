@@ -128,6 +128,12 @@ export class UsersService {
 
     const user = await this.usersRepository.findOne({ id })
 
+    if (currentPassword || newPassword || confirmPassword) {
+      if (!currentPassword || !newPassword || !confirmPassword) {
+        throw new ForbiddenException("Field must be filled")
+      }
+    }
+
     if (currentPassword && newPassword && confirmPassword) {
       const isCorrect = await this.authService.comparePassword(
         currentPassword,

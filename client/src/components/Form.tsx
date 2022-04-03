@@ -42,7 +42,7 @@ const Select = ({ children, ...props }) => {
     <Listbox {...props}>
       {({ open }) => (
         <>
-          <div className="">
+          <div>
             <Listbox.Button
               className={`${
                 styles[props.value]

@@ -18,14 +18,13 @@ const NUMBER_OF_TAGS = 100
 const AVG_TAGS_PER_PROBLEM = 5
 const NUMBER_OF_SUBS = AVG_SUBS_PER_USER * NUMBER_OF_USERS
 
-
-const judges = ['codeforces', 'codechef', 'cses', 'uva', 'toph', 'spoj'];
+const judges = ["codeforces", "codechef", "cses", "uva", "toph", "spoj"]
 async function createOnlineJudges() {
   for (let i = 1; i <= judges.length; i++) {
-    await client.query('INSERT INTO online_judges(id, name) VALUES($1, $2)', [
+    await client.query("INSERT INTO online_judges(id, name) VALUES($1, $2)", [
       i,
       judges[i - 1],
-    ]);
+    ])
   }
 }
 
@@ -169,7 +168,7 @@ async function seed() {
   // insert new data
   await createUsers()
   await createProblems()
-  await createOnlineJudges();
+  await createOnlineJudges()
   await createSubmissions()
   await createTags()
   client.end()
