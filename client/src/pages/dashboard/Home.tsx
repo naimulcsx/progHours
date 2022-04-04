@@ -67,7 +67,7 @@ const DashboardHome = () => {
       </Helmet>
       <div className="flex items-center justify-between">
         <div>
-          <h3 className="font-bold">Hi! {user.name}</h3>
+          <h3 className="font-bold">Hi! {user?.name}</h3>
           <p className="mt-1 text-gray-500">
             Here&apos;s what&apos;s going on in your competitive programming
             journey!

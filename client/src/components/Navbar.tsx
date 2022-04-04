@@ -18,11 +18,11 @@ const Navbar = () => {
           <li className="flex items-center">
             <Link to="/profile" className="flex items-center space-x-2">
               <img
-                src={`https://robohash.org/${user.name}?bgset=bg2&size=48x48`}
-                alt={user.name}
+                src={`https://robohash.org/${user?.name}?bgset=bg2&size=48x48`}
+                alt={user?.name}
                 className="rounded-full w-7 h-7"
               />
-              <span className="font-medium text-gray-900 ">{user.name}</span>
+              <span className="font-medium text-gray-900 ">{user?.name}</span>
             </Link>
           </li>
           <li className="flex items-center">

@@ -1,7 +1,14 @@
 import { createContext, ReactNode } from "react"
+
+/**
+ * Import hooks
+ */
 import useSubmissions from "@/hooks/useSubmissions"
 import useUser from "@/hooks/useUser"
 
+/**
+ * Types for context
+ */
 export interface User {
   name: string
   role: string
@@ -11,16 +18,13 @@ export interface User {
 
 interface GlobalContext {
   user: User
+  useSubmissionsResult: any
 }
 
-const GlobalContext = createContext<GlobalContext>({
-  user: {
-    name: "",
-    role: "",
-    email: "",
-    username: "",
-  },
-})
+/**
+ * Declare global context
+ */
+const GlobalContext = createContext<Partial<GlobalContext>>({})
 
 const GlobalStateProvider = ({
   children,
