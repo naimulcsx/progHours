@@ -1,14 +1,21 @@
-import {
-  ChevronDownIcon,
-  ChevronUpIcon,
-  LogoutIcon,
-  UserIcon,
-  SettingsIcon,
-} from "./Icons"
-
 import { Menu, Transition } from "@headlessui/react"
 import { Link } from "react-router-dom"
+
+/**
+ * Import hooks
+ */
 import useLogout from "@/hooks/useLogout"
+
+/**
+ * Import icons
+ */
+import {
+  CogIcon,
+  UserIcon,
+  LogoutIcon,
+  ChevronUpIcon,
+  ChevronDownIcon,
+} from "@heroicons/react/outline"
 
 function DropdownMenu() {
   const handleClick = useLogout()
@@ -18,9 +25,9 @@ function DropdownMenu() {
         <>
           <Menu.Button>
             {!open ? (
-              <ChevronDownIcon className="text-gray-900" size={24} />
+              <ChevronDownIcon className="text-gray-900 w-4" />
             ) : (
-              <ChevronUpIcon className="text-gray-900" size={24} />
+              <ChevronUpIcon className="text-gray-900 w-4" />
             )}
           </Menu.Button>
           <Transition
@@ -44,7 +51,7 @@ function DropdownMenu() {
                     } group flex rounded-md items-center w-full px-2 py-2 text-sm font-medium`}
                     to="/profile"
                   >
-                    <UserIcon size={18} className="mr-2" />
+                    <UserIcon className="w-4 mr-2" />
                     Profile
                   </Link>
                 )}
@@ -59,7 +66,7 @@ function DropdownMenu() {
                     } group flex rounded-md items-center w-full px-2 py-2 text-sm font-medium`}
                     to="/settings"
                   >
-                    <SettingsIcon size={18} className="mr-2" />
+                    <CogIcon className="w-4 mr-2" />
                     Settings
                   </Link>
                 )}
@@ -74,7 +81,7 @@ function DropdownMenu() {
                     } group flex rounded-md items-center w-full px-2 py-2 text-sm font-medium`}
                     onClick={handleClick}
                   >
-                    <LogoutIcon size={18} className="mr-2" />
+                    <LogoutIcon className="w-4 mr-2" />
                     Logout
                   </button>
                 )}
