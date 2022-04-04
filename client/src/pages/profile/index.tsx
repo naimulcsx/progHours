@@ -1,13 +1,23 @@
 import Navbar from "@/components/Navbar"
 import ProgressBox from "@/components/ProgressBox"
 import { GlobalContext } from "@/GlobalStateProvider"
-import { useContext } from "react"
+import { useContext, useState } from "react"
 import { useQuery } from "react-query"
 import { getStats } from "@/api/dashboard"
+import { getSubmissions } from "@/api/submissions"
+import ProfileTable from "@/components/profile/Table"
 
 export default function Profile() {
   const { user } = useContext(GlobalContext)
-  const query = useQuery("stats", getStats)
+  const progressQuery = useQuery("stats", getStats)
+  let [submissionList, setSubmissionList] = useState([])
+  const query = useQuery("submissionList", getSubmissions, {
+    onSuccess: (data) => {
+      console.log(data.submissions)
+      setSubmissionList(data.submissions)
+    },
+  })
+
   return (
     <div className="">
       <Navbar />
@@ -23,9 +33,12 @@ export default function Profile() {
         </div>
       </div>
       <div className="container mx-auto px-6">
-        {query.data && <ProgressBox progress={query.data} />}
+        {progressQuery.data && <ProgressBox progress={progressQuery.data} />}
       </div>
+
+      <ProfileTable submissionList={submissionList} />
       {/* tracking problem table */}
     </div>
   )
 }
+//        <ProfileTable submissionList={submissionList} />
