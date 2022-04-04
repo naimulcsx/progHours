@@ -23,7 +23,7 @@ const DashboardHome = () => {
    * Get statistics: number of problem solved, total solve time and average_difficulty
    */
   let [data, setData] = useState(null)
-  const query = useQuery("stats", getStats, {
+  useQuery("stats", getStats, {
     onSuccess: (data) => setData(data),
   })
   /**
@@ -37,6 +37,9 @@ const DashboardHome = () => {
     onSuccess: (data) => {
       const frequency: Frequency = {}
       const weekRanges = getWeekRanges(data.submissions)
+      /**
+       * For each week k, calculate how many problems are solved in the k'th week
+       */
       for (let i = 0; i < data.submissions.length; ++i) {
         for (let j = 0; j < weekRanges.length; ++j) {
           const solved_at = new Date(data.submissions[i].solved_at)
@@ -71,7 +74,7 @@ const DashboardHome = () => {
           </p>
         </div>
       </div>
-      {query.status !== "loading" && (
+      {data && (
         <div className="my-8">
           <ProgressBox progress={data} />
         </div>
