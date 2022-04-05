@@ -3,8 +3,10 @@ import { updateSubmission, getSubmissions } from "@/api/submissions"
 import { toast } from "react-toastify"
 import { useEffect, useRef, useState } from "react"
 import moment from "moment"
+import { Cell } from "react-table"
+import { Submission } from "@/types/Submission"
 
-export default function SolveTime(cell) {
+export default function SolveTime(cell: Cell<Submission>) {
   const client = useQueryClient()
   const prevRef = useRef(cell.value)
   const [time, setTime] = useState(cell.value)

@@ -3,8 +3,10 @@ import { useState } from "react"
 import { useMutation, useQueryClient } from "react-query"
 import { updateSubmission, getSubmissions } from "@/api/submissions"
 import { toast } from "react-toastify"
+import { Cell } from "react-table"
+import { Submission } from "@/types/Submission"
 
-const Verdict = (cell) => {
+const Verdict = (cell: Cell<Submission>) => {
   const client = useQueryClient()
   const [selected, setSelected] = useState(cell.value)
 

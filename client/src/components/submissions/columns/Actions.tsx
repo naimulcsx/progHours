@@ -17,12 +17,13 @@ import { deleteSubmission } from "@/api/submissions"
  * Import Types / Interfaces
  */
 import { Cell } from "react-table"
+import { Submission } from "@/types/Submission"
 
 interface Practice {
   submissions: any[]
 }
 
-const Actions = (cell: Cell) => {
+const Actions = (cell: Cell<Submission>) => {
   const queryClient = useQueryClient()
   const [isOpen, setIsOpen] = useState(false)
 

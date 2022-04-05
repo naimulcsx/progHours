@@ -4,12 +4,11 @@ import { Submission } from "@/types/Submission"
 import { UserProblemTag } from "@/types/UserProblemTag"
 import { Tag } from "@/types/Tag"
 
-const Tags = (cell: Cell) => {
+const Tags = (cell: Cell<Submission>) => {
   let user = localStorage.getItem("userId")
   let userId = user ? parseInt(user) : -1
 
-  const row: Submission = cell.row.original as Submission
-  const { id, tags, user_problem_tags } = row.problem
+  const { id, tags, user_problem_tags } = cell.row.original.problem
 
   return (
     <ul className="tags-ul flex flex-wrap items-center gap-2">

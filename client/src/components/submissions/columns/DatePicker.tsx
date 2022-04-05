@@ -1,18 +1,19 @@
+import moment from "moment"
 import { useState } from "react"
+import { Cell } from "react-table"
+import { toast } from "react-toastify"
+import { Submission } from "@/types/Submission"
 import ReactDatePicker from "react-datepicker"
 import { updateSubmission } from "@/api/submissions"
 import { useMutation, useQueryClient } from "react-query"
-import { toast } from "react-toastify"
-import { Cell } from "react-table"
 
 /**
  * Import Styles
  */
 import "react-datepicker/dist/react-datepicker.css"
 import "@/styles/datepicker.css"
-import moment from "moment"
 
-const DatePicker = (cell: Cell) => {
+const DatePicker = (cell: Cell<Submission>) => {
   const queryClient = useQueryClient()
   const [date, setDate] = useState(new Date(cell.value))
   const { mutate } = useMutation(updateSubmission, {
