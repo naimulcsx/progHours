@@ -18,30 +18,43 @@ import { deleteSubmission } from "@/api/submissions"
  */
 import { Cell } from "react-table"
 import { Submission } from "@/types/Submission"
+import { AxiosError } from "axios"
 
 interface Practice {
-  submissions: any[]
+  submissions: Submission[]
 }
 
 const Actions = (cell: Cell<Submission>) => {
   const queryClient = useQueryClient()
   const [isOpen, setIsOpen] = useState(false)
 
+  /**
+   * Delete submission
+   */
   const { mutate } = useMutation((id) => deleteSubmission(id), {
     onSuccess: () => {
       setIsOpen(false)
       const practice: Practice | undefined =
         queryClient.getQueryData("practice")
+      /**
+       * Update the state by removing the submission with the id
+       */
       queryClient.setQueryData("practice", {
         submissions: practice?.submissions.filter(
-          (el: any) => el.id !== cell.row.original.id
+          (el: Submission) => el.id !== cell.row.original.id
         ),
       })
-      toast.success("Problem Deleted", { className: "toast" })
+      /**
+       * Show toast message
+       */
+      toast.success("Problem deleted", { className: "toast" })
     },
-    onError: (err) => {
+    onError: (err: AxiosError) => {
       setIsOpen(false)
-      toast.error(err.response.data.message, { className: "toast" })
+      /**
+       * Show toast message
+       */
+      toast.error(err.response?.data.message, { className: "toast" })
     },
   })
 
@@ -63,14 +76,14 @@ const Actions = (cell: Cell<Submission>) => {
           <div className="min-h-screen px-4 text-center">
             <Transition.Child
               as={Fragment}
-              enter="ease-out duration-300"
+              enter="ease-out duration-100"
               enterFrom="opacity-0"
               enterTo="opacity-100"
-              leave="ease-in duration-200"
+              leave="ease-in duration-100"
               leaveFrom="opacity-100"
               leaveTo="opacity-0"
             >
-              <Dialog.Overlay className="fixed inset-0 bg-gray-500/75" />
+              <Dialog.Overlay className="fixed inset-0 bg-black/60" />
             </Transition.Child>
 
             <span
@@ -88,7 +101,7 @@ const Actions = (cell: Cell<Submission>) => {
               leaveFrom="opacity-100 scale-100"
               leaveTo="opacity-0 scale-95"
             >
-              <div className="inline-block w-full max-w-xl p-6 my-8 overflow-hidden text-left align-middle transition-all transform bg-white shadow-xl rounded-2xl">
+              <div className="inline-block w-full max-w-xl p-6 my-8 overflow-hidden text-left align-middle transition-all transform bg-white shadow shadow-primary/10 rounded-xl">
                 <Dialog.Title
                   as="h3"
                   className="text-xl font-semibold leading-6 text-dark"
