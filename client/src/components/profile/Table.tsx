@@ -1,7 +1,6 @@
 import { usePagination, useTable, useSortBy } from "react-table"
 
 import ProblemName from "../submissions/columns/ProblemName"
-import DatePicker from "../submissions/columns/DatePicker"
 import Tags from "../submissions/columns/Tags"
 
 import { ArrowSmDownIcon, ArrowSmUpIcon } from "@heroicons/react/solid"
@@ -31,7 +30,37 @@ const columns = [
   {
     Header: "Tags",
     accessor: (row) => row.problem.tags.map((tag) => tag.name).join(", "),
+    Cell: (cell) => {
+      const row = cell.row.original
+      const { id, tags, user_problem_tags } = row.problem
+      return (
+        <ul className="tags-ul flex flex-wrap items-center gap-2">
+          {tags.map((tag) => {
+            return (
+              <li
+                key={tag.id}
+                className="px-2 py-1 text-sm rounded-lg bg-primary bg-opacity-10 text-primary"
+              >
+                {tag.name}
+              </li>
+            )
+          })}
+        </ul>
+      )
+    },
   },
+  /*
+  {cell.problem.tags.map((tag: Tag) => {
+            return (
+              <li
+                key={tag.id}
+                className="px-2 py-1 text-sm rounded-lg bg-primary bg-opacity-10 text-primary"
+              >
+                {tag.name}
+              </li>
+            )
+          })}
+  */
   {
     Header: "Difficulty",
     accessor: "problem.difficulty",
@@ -40,7 +69,9 @@ const columns = [
     id: "solved-at",
     Header: "Solved at",
     accessor: "solved_at",
-    cell: DatePicker,
+    Cell: (cell) => {
+      return <div>{new Date(cell.value).toDateString()}</div>
+    },
   },
 ]
 
