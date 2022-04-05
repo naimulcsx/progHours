@@ -5,6 +5,7 @@ import { User } from "@/GlobalStateProvider"
 
 function useUser() {
   const [user, setUser] = useState<User>({
+    id: -1,
     name: "",
     role: "",
     email: "",

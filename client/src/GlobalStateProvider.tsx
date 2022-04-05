@@ -10,6 +10,7 @@ import useUser from "@/hooks/useUser"
  * Types for context
  */
 export interface User {
+  id: number
   name: string
   role: string
   email: string

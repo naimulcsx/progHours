@@ -1,13 +1,22 @@
+import { useContext } from "react"
 import { Cell } from "react-table"
-import TagInputPopup from "../TagInputPopup"
+
+/**
+ * Import types
+ */
+import { Tag } from "@/types/Tag"
 import { Submission } from "@/types/Submission"
 import { UserProblemTag } from "@/types/UserProblemTag"
-import { Tag } from "@/types/Tag"
+
+/**
+ * Import components
+ */
+import TagInputPopup from "@/components/submissions/TagInputPopup"
+import { GlobalContext } from "@/GlobalStateProvider"
 
 const Tags = (cell: Cell<Submission>) => {
-  let user = localStorage.getItem("userId")
-  let userId = user ? parseInt(user) : -1
-
+  let { user } = useContext(GlobalContext)
+  const userId = user?.id
   const { id, tags, user_problem_tags } = cell.row.original.problem
 
   return (
