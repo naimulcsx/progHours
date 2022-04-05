@@ -13,6 +13,9 @@ import DatePicker from "./columns/DatePicker"
 import SolveTime from "./columns/SolveTime"
 import Tags from "./columns/Tags"
 
+/**
+ * Import Icons
+ */
 import {
   ArrowSmDownIcon,
   ArrowSmUpIcon,
@@ -21,12 +24,6 @@ import {
   ChevronDoubleLeftIcon,
   ChevronDoubleRightIcon,
 } from "@heroicons/react/solid"
-import {
-  FiChevronsLeft,
-  FiChevronLeft,
-  FiChevronRight,
-  FiChevronsRight,
-} from "react-icons/fi"
 
 const TrackingTable = ({ submissions }: { submissions: Submission[] }) => {
   /**
@@ -192,6 +189,7 @@ const TrackingTable = ({ submissions }: { submissions: Submission[] }) => {
             })}
           </tbody>
         </table>
+        {/* Pagination */}
         <div className="flex items-center justify-between px-6 py-3 space-x-4 bg-white pagination border-l border-r border-b border-slate-100 rounded-br-lg rounded-bl-lg">
           <div>
             <span>
@@ -207,7 +205,7 @@ const TrackingTable = ({ submissions }: { submissions: Submission[] }) => {
                 setPageSize(Number(e.target.value))
               }}
             >
-              {[5, 10, 20, 30, 40, 50].map((pageSize) => (
+              {[10, 20, 30, 40, 50].map((pageSize) => (
                 <option key={pageSize} value={pageSize}>
                   Show {pageSize}
                 </option>
