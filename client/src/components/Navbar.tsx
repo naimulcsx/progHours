@@ -1,7 +1,11 @@
-import Logo from "./Logo"
-import { Link } from "react-router-dom"
-import DropdownMenu from "./DropdownMenu"
 import { useContext } from "react"
+import { Link } from "react-router-dom"
+
+/**
+ * Import components
+ */
+import Logo from "./Logo"
+import DropdownMenu from "./DropdownMenu"
 import { GlobalContext } from "@/GlobalStateProvider"
 
 const Navbar = () => {

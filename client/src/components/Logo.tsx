@@ -1,6 +1,6 @@
 import { LogoIcon } from "./Icons"
 
-const Logo = ({ className }) => {
+const Logo = ({ className }: { className: string }) => {
   return (
     <div className="flex items-center space-x-3 text-primary">
       {/* color of the logo is picked from its parents text-color */}

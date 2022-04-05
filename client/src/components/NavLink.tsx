@@ -1,7 +1,13 @@
 import { useLocation } from "react-router-dom"
 import { Link } from "react-router-dom"
 
-const NavLink = ({ Icon, children, to }) => {
+interface NavLinkProps {
+  Icon: React.FC
+  children: React.ReactNode
+  to: string
+}
+
+const NavLink = ({ Icon, children, to }: NavLinkProps) => {
   const location = useLocation()
   return (
     <li>
