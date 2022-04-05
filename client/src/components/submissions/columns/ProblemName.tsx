@@ -19,6 +19,7 @@ import { toast } from "react-toastify"
 import { ExternalLinkIcon } from "@heroicons/react/outline"
 import { Cell } from "react-table"
 import { Submission } from "@/types/Submission"
+import { AxiosError } from "axios"
 
 const ProblemName = (cell: Cell<Submission>) => {
   const { pid, name, link } = cell.row.original.problem
@@ -48,11 +49,11 @@ const ProblemName = (cell: Cell<Submission>) => {
   const [focused, setFocused] = useState(false)
 
   const { mutate } = useMutation(updateSubmission, {
-    onSuccess: (data) => {
+    onSuccess: () => {
       toast.success("Problem updated", { className: "toast" })
     },
-    onError: (err: any) => {
-      toast.error(err.response.data.message, { className: "toast" })
+    onError: (err: AxiosError) => {
+      toast.error(err.response?.data.message, { className: "toast" })
     },
   })
 
