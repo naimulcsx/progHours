@@ -67,18 +67,7 @@ const columns = [
       )
     },
   },
-  /*
-  {cell.problem.tags.map((tag: Tag) => {
-            return (
-              <li
-                key={tag.id}
-                className="px-2 py-1 text-sm rounded-lg bg-primary bg-opacity-10 text-primary"
-              >
-                {tag.name}
-              </li>
-            )
-          })}
-  */
+
   {
     Header: "Difficulty",
     accessor: "problem.difficulty",
@@ -99,7 +88,7 @@ export default function ProfileTable({ submissionList }) {
       data: submissionList,
       columns,
       initialState: {
-        pageSize: 20,
+        pageSize: 10,
         sortBy: [
           {
             id: "solved-at",
@@ -130,7 +119,7 @@ export default function ProfileTable({ submissionList }) {
     state: { pageIndex, pageSize },
   } = tableInstance
   return (
-    <div className="shadow shadow-primary/5 rounded-lg overflow-hidden mx-36 my-8">
+    <div className="shadow shadow-primary/5 rounded-lg overflow-hidden mx-36 my-16">
       <table {...getTableProps()} className="border-collapse ">
         <thead>
           {headerGroups.map((headerGroup) => {

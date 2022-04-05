@@ -35,7 +35,6 @@ export default function Profile() {
       <div className="container mx-auto px-6">
         {progressQuery.data && <ProgressBox progress={progressQuery.data} />}
       </div>
-
       <ProfileTable submissionList={submissionList} />
       {/* tracking problem table */}
     </div>
