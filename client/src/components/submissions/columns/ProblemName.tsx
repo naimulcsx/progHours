@@ -17,9 +17,12 @@ import { useMutation } from "react-query"
 import { updateSubmission } from "@/api/submissions"
 import { toast } from "react-toastify"
 import { ExternalLinkIcon } from "@heroicons/react/outline"
+import { Cell } from "react-table"
+import { Submission } from "@/types/Submission"
 
-const ProblemName = (cell) => {
-  const [pid, name, link] = cell.value.split("|-|")
+const ProblemName = (cell: Cell<Submission>) => {
+  const { pid, name, link } = cell.row.original.problem
+
   const iconMap = [
     { prefix: "Gym-", icon: CFIcon },
     { prefix: "CF-", icon: CFIcon },

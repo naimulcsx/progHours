@@ -1,77 +1,106 @@
-import { usePagination, useTable, useSortBy } from "react-table"
-import EmptyState from "@/components/submissions/EmptyState"
+import { usePagination, useTable, useSortBy, Row, Column } from "react-table"
+import { Submission } from "@/types/Submission"
 
-// import columns components
+/**
+ * Import table columnes
+ */
+import AddEntryRow from "./AddEntryRow"
 import ProblemName from "./columns/ProblemName"
 import Actions from "./columns/Actions"
 import Verdict from "./columns/Verdict"
 import DatePicker from "./columns/DatePicker"
-import AddEntryRow from "./AddEntryRow"
 import SolveTime from "./columns/SolveTime"
 import Tags from "./columns/Tags"
-import { useEffect, useState } from "react"
 
 import { ArrowSmDownIcon, ArrowSmUpIcon } from "@heroicons/react/solid"
-
-import moment from "moment"
 import {
   FiChevronsLeft,
   FiChevronLeft,
   FiChevronRight,
   FiChevronsRight,
 } from "react-icons/fi"
+import { useMemo } from "react"
 
-const practiceColumns = [
-  {
-    Header: "Id",
-    accessor: "idx",
-  },
-  {
-    Header: "Problem Name",
-    accessor: (row) =>
-      `${row.problem.pid}|-|${row.problem.name}|-|${row.problem.link}`,
-    Cell: ProblemName,
-  },
-  {
-    Header: "Verdict",
-    accessor: "verdict",
-    Cell: Verdict,
-  },
-  {
-    Header: "Solve Time",
-    accessor: "solve_time",
-    Cell: SolveTime,
-  },
-  {
-    Header: "Tags",
-    accessor: (row) => row.problem.tags.map((tag) => tag.name).join(", "),
-    Cell: Tags,
-  },
-  {
-    Header: "Difficulty",
-    accessor: "problem.difficulty",
-  },
-  {
-    id: "solved-at",
-    Header: "Date",
-    accessor: "solved_at",
-    Cell: DatePicker,
-  },
-  {
-    Header: "Actions",
-    accessor: (row) => row.id,
-    Cell: Actions,
-  },
-]
+interface TrackingTableProps {
+  submissions: Submission[]
+}
 
-const TrackingTable = ({ submissions }) => {
+const TrackingTable = (props: TrackingTableProps) => {
+  const { submissions } = props
+  /**
+   * Attach a serial number to each submissions
+   */
   let k = submissions.length
-  submissions.forEach((el) => (el.idx = k--))
+  submissions.forEach((el) => (el.serial = k--))
 
-  const tableInstance = useTable(
+  /**
+   * Define table columns
+   */
+  const tableColumns = useMemo(
+    () =>
+      [
+        {
+          Header: "Id",
+          accessor: "serial",
+        },
+        {
+          Header: "Problem Name",
+          accessor: "problem.name",
+          Cell: ProblemName,
+        },
+        {
+          Header: "Verdict",
+          accessor: "verdict",
+          Cell: Verdict,
+        },
+        {
+          Header: "Solve Time",
+          accessor: "solve_time",
+          Cell: SolveTime,
+        },
+        {
+          Header: "Tags",
+          accessor: "",
+          Cell: Tags,
+        },
+        {
+          Header: "Difficulty",
+          accessor: "problem.difficulty",
+        },
+        {
+          id: "solved-at",
+          Header: "Solved On",
+          accessor: "solved_at",
+          Cell: DatePicker,
+        },
+        {
+          Header: "Actions",
+          accessor: "id",
+          Cell: Actions,
+        },
+      ] as Column<Submission>[],
+    []
+  )
+
+  const {
+    getTableProps,
+    getTableBodyProps,
+    prepareRow,
+    page,
+    headerGroups,
+    canPreviousPage,
+    canNextPage,
+    pageOptions,
+    pageCount,
+    gotoPage,
+    nextPage,
+    previousPage,
+    setPageSize,
+    state: { pageIndex, pageSize },
+  } = useTable(
     {
       data: submissions,
-      columns: practiceColumns,
+      columns: tableColumns,
       initialState: {
         pageSize: 20,
         sortBy: [
@@ -85,23 +114,6 @@ const TrackingTable = ({ submissions }) => {
     useSortBy,
     usePagination
   )
-  const {
-    getTableProps,
-    getTableBodyProps,
-    rows,
-    prepareRow,
-    page,
-    headerGroups,
-    canPreviousPage,
-    canNextPage,
-    pageOptions,
-    pageCount,
-    gotoPage,
-    nextPage,
-    previousPage,
-    setPageSize,
-    state: { pageIndex, pageSize },
-  } = tableInstance
 
   return (
     <div className="relative">
@@ -154,7 +166,9 @@ const TrackingTable = ({ submissions }) => {
                   className={`bg-white`}
                 >
                   {row.cells.map((cell) => {
-                    const extraProps = {}
+                    const extraProps: {
+                      [key: string]: string
+                    } = {}
                     extraProps[
                       `data-${cell.column.id
                         .toLowerCase()
@@ -228,7 +242,6 @@ const TrackingTable = ({ submissions }) => {
             </span>
           </div>
         </div>
-        {/* {submissions.length === 0 && <EmptyState />} */}
       </div>
     </div>
   )

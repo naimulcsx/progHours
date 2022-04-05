@@ -1,44 +1,14 @@
 import { Cell } from "react-table"
 import TagInputPopup from "../TagInputPopup"
-
-interface SubmissionRow {
-  idx: number
-  id: number
-  problem: Problem
-  solve_time: number
-  solved_at: string
-  verdict: string
-}
-
-interface Problem {
-  id: number
-  name: string
-  link: string
-  pid: string
-  difficulty: number
-  created_at: string
-  tags: Tag[]
-  user_problem_tags: UserProblemTag[]
-}
-
-interface Tag {
-  id: number
-  name: string
-}
-
-interface UserProblemTag {
-  id: number
-  problem_id: number
-  tag_id: number
-  user_id: number
-  tag: Tag
-}
+import { Submission } from "@/types/Submission"
+import { UserProblemTag } from "@/types/UserProblemTag"
+import { Tag } from "@/types/Tag"
 
 const Tags = (cell: Cell) => {
   let user = localStorage.getItem("userId")
   let userId = user ? parseInt(user) : -1
 
-  const row: SubmissionRow = cell.row.original as SubmissionRow
+  const row: Submission = cell.row.original as Submission
   const { id, tags, user_problem_tags } = row.problem
 
   return (
