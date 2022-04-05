@@ -1,6 +1,6 @@
 import Logo from "./Logo"
 
-const AuthContainer = ({ children }) => {
+const AuthContainer = ({ children }: { children: React.ReactNode }) => {
   return (
     <div className="flex items-center justify-center min-h-screen bg-light">
       <div className="w-full max-w-md p-12 mx-auto bg-white rounded-lg shadow">

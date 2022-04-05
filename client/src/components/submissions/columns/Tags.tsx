@@ -1,45 +1,23 @@
+import { useContext } from "react"
 import { Cell } from "react-table"
-import TagInputPopup from "../TagInputPopup"
 
-interface SubmissionRow {
-  idx: number
-  id: number
-  problem: Problem
-  solve_time: number
-  solved_at: string
-  verdict: string
-}
+/**
+ * Import types
+ */
+import { Tag } from "@/types/Tag"
+import { Submission } from "@/types/Submission"
+import { UserProblemTag } from "@/types/UserProblemTag"
 
-interface Problem {
-  id: number
-  name: string
-  link: string
-  pid: string
-  difficulty: number
-  created_at: string
-  tags: Tag[]
-  user_problem_tags: UserProblemTag[]
-}
+/**
+ * Import components
+ */
+import TagInputPopup from "@/components/submissions/TagInputPopup"
+import { GlobalContext } from "@/GlobalStateProvider"
 
-interface Tag {
-  id: number
-  name: string
-}
-
-interface UserProblemTag {
-  id: number
-  problem_id: number
-  tag_id: number
-  user_id: number
-  tag: Tag
-}
-
-const Tags = (cell: Cell) => {
-  let user = localStorage.getItem("userId")
-  let userId = user ? parseInt(user) : -1
-
-  const row: SubmissionRow = cell.row.original as SubmissionRow
-  const { id, tags, user_problem_tags } = row.problem
+const Tags = (cell: Cell<Submission>) => {
+  let { user } = useContext(GlobalContext)
+  const userId = user?.id
+  const { id, tags, user_problem_tags } = cell.row.original.problem
 
   return (
     <ul className="tags-ul flex flex-wrap items-center gap-2">

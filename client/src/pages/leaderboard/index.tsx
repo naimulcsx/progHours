@@ -15,16 +15,25 @@ import Spinner from "@/components/Spinner"
  */
 import calculatePoints from "@/utils/calculatePoints"
 import { getRankList } from "@/api/leaderboard"
+import { RanklistItem } from "@/types/RanklistItem"
 
 const LeaderboardPage = () => {
   let [ranklist, setRanklist] = useState([])
   const query = useQuery("ranklist", getRankList, {
     onSuccess: (data) => {
-      data.ranklist.forEach((el, i) => {
-        el.points = calculatePoints(el).toFixed(2)
-        el.avg_difficulty = el.avg_difficulty.toFixed(2)
+      /**
+       * Data is sent unsorted by the server
+       * We need to caluclate the points
+       */
+      data.ranklist.forEach((el: RanklistItem) => {
+        el.points = calculatePoints(el)
+        // el.avg_difficulty = el.avg_difficulty.toFixed(2)
       })
-      data.ranklist.sort((a, b) => {
+      /**
+       * Sort the array according to the points calculated
+       * in the previous step and update the ranklist state
+       */
+      data.ranklist.sort((a: RanklistItem, b: RanklistItem) => {
         return b.points - a.points
       })
       setRanklist(data.ranklist)

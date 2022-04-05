@@ -75,8 +75,8 @@ export class AuthController {
     if (!user) {
       throw new ForbiddenException("User not found")
     }
-    const { name, email, username, role } = user
-    return { name, email, username, role }
+    const { id, name, email, username, role } = user
+    return { id, name, email, username, role }
   }
 
   /**

@@ -1,16 +1,21 @@
+import { useContext } from "react"
+import { Link } from "react-router-dom"
+
+/**
+ * Import Components
+ */
 import NavLink from "@/components/NavLink"
+import Logo from "@/components/Logo"
+import { GlobalContext } from "@/GlobalStateProvider"
+
+/**
+ * Import helpers
+ */
 import useLogout from "@/hooks/useLogout"
 
-import {
-  DashboardIcon,
-  LeaderboardIcon,
-  TrackingIcon,
-  SettingsIcon,
-} from "@/components/Icons"
-import { useContext } from "react"
-import { GlobalContext } from "@/GlobalStateProvider"
-import Logo from "../Logo"
-
+/**
+ * Import icons
+ */
 import {
   ClipboardListIcon,
   ViewGridIcon,
@@ -18,13 +23,15 @@ import {
   CogIcon,
   LogoutIcon,
 } from "@heroicons/react/outline"
-import { Link } from "react-router-dom"
 
-const Sidebar = () => {
+const Sidebar = (): JSX.Element => {
+  /**
+   * Get user information from global state
+   */
   const { user } = useContext(GlobalContext)
   const handleLogout = useLogout()
   return (
-    <div className="max-w-[250px] z-[200000000] w-full h-[100vh] pt-4 pb-6 fixed z-10 top-0 left-0 bottom-0 bg-white shadow shadow-primary/5">
+    <div className="max-w-[250px] z-[200000000] w-full h-[100vh] py-4 fixed z-10 top-0 left-0 bottom-0 bg-white shadow shadow-primary/5">
       {/* sidebar links */}
       <div className="flex flex-col justify-between h-full px-6">
         <div className="">
@@ -52,12 +59,12 @@ const Sidebar = () => {
         </div>
         <div className="flex items-start space-x-4">
           <img
-            src={`https://robohash.org/${user.name}?bgset=bg2&size=40x40`}
-            alt={user.name}
+            src={`https://robohash.org/${user?.name}?bgset=bg2&size=40x40`}
+            alt={user?.name}
             className="rounded-lg"
           />
           <div className="relative bottom-1">
-            <h6 className="text-lg font-medium">{user.name}</h6>
+            <h6 className="text-lg font-medium">{user?.name}</h6>
             <button
               className="flex items-center space-x-1 text-sm text-red-500"
               onClick={handleLogout}

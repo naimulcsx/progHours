@@ -23,7 +23,7 @@ const DashboardHome = () => {
    * Get statistics: number of problem solved, total solve time and average_difficulty
    */
   let [data, setData] = useState(null)
-  const query = useQuery("stats", getStats, {
+  useQuery("stats", getStats, {
     onSuccess: (data) => setData(data),
   })
   /**
@@ -37,6 +37,9 @@ const DashboardHome = () => {
     onSuccess: (data) => {
       const frequency: Frequency = {}
       const weekRanges = getWeekRanges(data.submissions)
+      /**
+       * For each week k, calculate how many problems are solved in the k'th week
+       */
       for (let i = 0; i < data.submissions.length; ++i) {
         for (let j = 0; j < weekRanges.length; ++j) {
           const solved_at = new Date(data.submissions[i].solved_at)
@@ -64,14 +67,14 @@ const DashboardHome = () => {
       </Helmet>
       <div className="flex items-center justify-between">
         <div>
-          <h3 className="font-bold">Hi! {user.name}</h3>
+          <h3 className="font-bold">Hi! {user?.name}</h3>
           <p className="mt-1 text-gray-500">
             Here&apos;s what&apos;s going on in your competitive programming
             journey!
           </p>
         </div>
       </div>
-      {query.status !== "loading" && (
+      {data && (
         <div className="my-8">
           <ProgressBox progress={data} />
         </div>

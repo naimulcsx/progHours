@@ -1,8 +1,15 @@
+/**
+ * Import Components
+ */
 import Navbar from "./Navbar"
 import NavLink from "./NavLink"
-import { UserIcon, SettingsIcon } from "./Icons"
 
-const SettingsLayout = ({ children }) => {
+/**
+ * Import Icons
+ */
+import { CogIcon, UserIcon } from "@heroicons/react/outline"
+
+const SettingsLayout = ({ children }: { children: React.ReactNode }) => {
   return (
     <div className="min-h-screen bg-light">
       <Navbar />
@@ -13,7 +20,7 @@ const SettingsLayout = ({ children }) => {
           <p className="mt-2 text-gray-500">Update and manage your account</p>
           <nav className="mt-8">
             <ul className="space-y-2">
-              <NavLink Icon={SettingsIcon} to="/settings/account">
+              <NavLink Icon={CogIcon} to="/settings/account">
                 Account Settings
               </NavLink>
               <NavLink Icon={UserIcon} to="/settings/handles">

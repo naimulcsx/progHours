@@ -1,77 +1,105 @@
-import { usePagination, useTable, useSortBy } from "react-table"
-import EmptyState from "@/components/submissions/EmptyState"
+import { useMemo } from "react"
+import { usePagination, useTable, useSortBy, Column } from "react-table"
+import { Submission } from "@/types/Submission"
 
-// import columns components
+/**
+ * Import table columnes
+ */
+import AddEntryRow from "./AddEntryRow"
 import ProblemName from "./columns/ProblemName"
 import Actions from "./columns/Actions"
 import Verdict from "./columns/Verdict"
 import DatePicker from "./columns/DatePicker"
-import AddEntryRow from "./AddEntryRow"
 import SolveTime from "./columns/SolveTime"
 import Tags from "./columns/Tags"
-import { useEffect, useState } from "react"
 
-import { ArrowSmDownIcon, ArrowSmUpIcon } from "@heroicons/react/solid"
-
-import moment from "moment"
+/**
+ * Import Icons
+ */
 import {
-  FiChevronsLeft,
-  FiChevronLeft,
-  FiChevronRight,
-  FiChevronsRight,
-} from "react-icons/fi"
+  ArrowSmDownIcon,
+  ArrowSmUpIcon,
+  ChevronRightIcon,
+  ChevronLeftIcon,
+  ChevronDoubleLeftIcon,
+  ChevronDoubleRightIcon,
+} from "@heroicons/react/solid"
 
-const practiceColumns = [
-  {
-    Header: "Id",
-    accessor: "idx",
-  },
-  {
-    Header: "Problem Name",
-    accessor: (row) =>
-      `${row.problem.pid}|-|${row.problem.name}|-|${row.problem.link}`,
-    Cell: ProblemName,
-  },
-  {
-    Header: "Verdict",
-    accessor: "verdict",
-    Cell: Verdict,
-  },
-  {
-    Header: "Solve Time",
-    accessor: "solve_time",
-    Cell: SolveTime,
-  },
-  {
-    Header: "Tags",
-    accessor: (row) => row.problem.tags.map((tag) => tag.name).join(", "),
-    Cell: Tags,
-  },
-  {
-    Header: "Difficulty",
-    accessor: "problem.difficulty",
-  },
-  {
-    id: "solved-at",
-    Header: "Date",
-    accessor: "solved_at",
-    Cell: DatePicker,
-  },
-  {
-    Header: "Actions",
-    accessor: (row) => row.id,
-    Cell: Actions,
-  },
-]
-
-const TrackingTable = ({ submissions }) => {
+const TrackingTable = ({ submissions }: { submissions: Submission[] }) => {
+  /**
+   * Attach a serial number to each submissions
+   */
   let k = submissions.length
-  submissions.forEach((el) => (el.idx = k--))
+  submissions.forEach((el) => (el.serial = k--))
 
-  const tableInstance = useTable(
+  /**
+   * Define table columns
+   */
+  const tableColumns = useMemo(
+    () =>
+      [
+        {
+          Header: "Id",
+          accessor: "serial",
+        },
+        {
+          Header: "Problem Name",
+          accessor: "problem.name",
+          Cell: ProblemName,
+        },
+        {
+          Header: "Verdict",
+          accessor: "verdict",
+          Cell: Verdict,
+        },
+        {
+          Header: "Solve Time",
+          accessor: "solve_time",
+          Cell: SolveTime,
+        },
+        {
+          Header: "Tags",
+          accessor: "",
+          Cell: Tags,
+        },
+        {
+          Header: "Difficulty",
+          accessor: "problem.difficulty",
+        },
+        {
+          id: "solved-at",
+          Header: "Solved On",
+          accessor: "solved_at",
+          Cell: DatePicker,
+        },
+        {
+          Header: "Actions",
+          accessor: "id",
+          Cell: Actions,
+        },
+      ] as Column<Submission>[],
+    []
+  )
+
+  const {
+    getTableProps,
+    getTableBodyProps,
+    prepareRow,
+    page,
+    headerGroups,
+    canPreviousPage,
+    canNextPage,
+    pageOptions,
+    pageCount,
+    gotoPage,
+    nextPage,
+    previousPage,
+    setPageSize,
+    state: { pageIndex, pageSize },
+  } = useTable(
     {
       data: submissions,
-      columns: practiceColumns,
+      columns: tableColumns,
       initialState: {
         pageSize: 20,
         sortBy: [
@@ -85,28 +113,11 @@ const TrackingTable = ({ submissions }) => {
     useSortBy,
     usePagination
   )
-  const {
-    getTableProps,
-    getTableBodyProps,
-    rows,
-    prepareRow,
-    page,
-    headerGroups,
-    canPreviousPage,
-    canNextPage,
-    pageOptions,
-    pageCount,
-    gotoPage,
-    nextPage,
-    previousPage,
-    setPageSize,
-    state: { pageIndex, pageSize },
-  } = tableInstance
 
   return (
     <div className="relative">
-      <div className="mt-6 rounded-md">
-        <table {...getTableProps()} className="border-collapse ">
+      <div className="mt-6 rounded-md shadow shadow-primary/5">
+        <table {...getTableProps()} className="border-collapse">
           <thead>
             {headerGroups.map((headerGroup) => {
               return (
@@ -154,7 +165,9 @@ const TrackingTable = ({ submissions }) => {
                   className={`bg-white`}
                 >
                   {row.cells.map((cell) => {
-                    const extraProps = {}
+                    const extraProps: {
+                      [key: string]: string
+                    } = {}
                     extraProps[
                       `data-${cell.column.id
                         .toLowerCase()
@@ -176,59 +189,72 @@ const TrackingTable = ({ submissions }) => {
             })}
           </tbody>
         </table>
-        <div className="flex items-center justify-between px-6 py-3 space-x-4 bg-white pagination border border-slate-100 rounded-br-lg rounded-bl-lg">
+        {/* Pagination */}
+        <div className="flex items-center justify-between px-6 py-3 space-x-4 bg-white pagination border-l border-r border-b border-slate-100 rounded-br-lg rounded-bl-lg">
           <div>
             <span>
               Page{" "}
-              <strong>
+              <span className="font-medium">
                 {pageIndex + 1} of {pageOptions.length}
-              </strong>{" "}
+              </span>
             </span>
             <select
               value={pageSize}
+              className="py-1 border-b ml-4"
               onChange={(e) => {
                 setPageSize(Number(e.target.value))
               }}
             >
-              {[5, 10, 20, 30, 40, 50].map((pageSize) => (
+              {[10, 20, 30, 40, 50].map((pageSize) => (
                 <option key={pageSize} value={pageSize}>
                   Show {pageSize}
                 </option>
               ))}
             </select>
           </div>
-
           <div className="flex items-center space-x-4">
-            <button onClick={() => gotoPage(0)} disabled={!canPreviousPage}>
-              <FiChevronsLeft size={20} />
-            </button>{" "}
-            <button onClick={() => previousPage()} disabled={!canPreviousPage}>
-              <FiChevronLeft size={20} />
-            </button>{" "}
-            <button onClick={() => nextPage()} disabled={!canNextPage}>
-              <FiChevronRight size={20} />
-            </button>{" "}
             <button
+              className="border p-1 rounded"
+              onClick={() => gotoPage(0)}
+              disabled={!canPreviousPage}
+            >
+              <ChevronDoubleLeftIcon className="h-4" />
+            </button>
+            <button
+              className="border p-1 rounded"
+              onClick={() => previousPage()}
+              disabled={!canPreviousPage}
+            >
+              <ChevronLeftIcon className="h-4" />
+            </button>
+            <button
+              className="border p-1 rounded"
+              onClick={() => nextPage()}
+              disabled={!canNextPage}
+            >
+              <ChevronRightIcon className="h-4" />
+            </button>
+            <button
+              className="border p-1 rounded"
               onClick={() => gotoPage(pageCount - 1)}
               disabled={!canNextPage}
             >
-              <FiChevronsRight size={20} />
-            </button>{" "}
-            <span>
-              | Go to page:{" "}
+              <ChevronDoubleRightIcon className="h-4" />
+            </button>
+            <span className="space-x-2">
+              <span className="font-medium">Go to page : </span>
               <input
+                className="border-b w-16 py-1"
                 type="number"
                 defaultValue={pageIndex + 1}
                 onChange={(e) => {
                   const page = e.target.value ? Number(e.target.value) - 1 : 0
                   gotoPage(page)
                 }}
-                style={{ width: "100px" }}
               />
             </span>
           </div>
         </div>
-        {/* {submissions.length === 0 && <EmptyState />} */}
       </div>
     </div>
   )
