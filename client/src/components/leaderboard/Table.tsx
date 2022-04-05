@@ -1,60 +1,70 @@
-import { useTable, useSortBy } from "react-table"
+import { useMemo } from "react"
+import { useTable, useSortBy, Cell, Column } from "react-table"
+import { RanklistItem } from "@/types/RanklistItem"
+
+/**
+ * Import Icons
+ */
 import { ArrowSmDownIcon, ArrowSmUpIcon } from "@heroicons/react/solid"
 
-const columns = [
-  {
-    Header: "#",
-    accessor: (row, i) => i + 1,
-  },
-  {
-    Header: "Name",
-    accessor: "name",
-    Cell: (cell) => {
-      return (
-        <div className="flex items-center space-x-4">
-          <img
-            src={`https://robohash.org/${cell.value}?bgset=bg2&size=40x40`}
-            className="rounded-full"
-          />
-          <div>
-            <p className="font-medium">{cell.value}</p>
-            <p className="text-sm text-gray-500">
-              {cell.row.original.username}
-            </p>
-          </div>
-        </div>
-      )
-    },
-  },
-  {
-    Header: "Solve Count",
-    accessor: "solve_count",
-  },
-  {
-    Header: "Solve Time",
-    accessor: "solve_time",
-  },
-  {
-    Header: "Average Solve Difficulty",
-    accessor: "avg_difficulty",
-  },
-  {
-    Header: "Points",
-    accessor: "points",
-  },
-]
+const UserCell = (cell: Cell<RanklistItem>) => {
+  return (
+    <div className="flex items-center space-x-4">
+      <img
+        src={`https://robohash.org/${cell.value}?bgset=bg2&size=40x40`}
+        className="rounded-full"
+      />
+      <div>
+        <p className="font-medium">{cell.value}</p>
+        <p className="text-sm text-gray-500">{cell.row.original.username}</p>
+      </div>
+    </div>
+  )
+}
 
-const LeaderboardTable = ({ ranklist }) => {
-  const tableInstance = useTable(
+const LeaderboardTable = ({ ranklist }: { ranklist: RanklistItem[] }) => {
+  /**
+   * Define table columns
+   */
+  const tableColumns = useMemo(
+    () =>
+      [
+        {
+          Header: "#",
+          accessor: (row: RanklistItem, i: number) => i + 1,
+        },
+        {
+          Header: "Name",
+          accessor: "name",
+          Cell: UserCell,
+        },
+        {
+          Header: "Solve Count",
+          accessor: "solve_count",
+        },
+        {
+          Header: "Solve Time",
+          accessor: "solve_time",
+        },
+        {
+          Header: "Average Solve Difficulty",
+          accessor: "avg_difficulty",
+        },
+        {
+          Header: "Points",
+          accessor: (row: RanklistItem) => row.points.toFixed(3),
+        },
+      ] as Column<RanklistItem>[],
+    []
+  )
+
+  const { getTableProps, rows, prepareRow, headerGroups } = useTable(
     {
       data: ranklist,
-      columns,
+      columns: tableColumns,
     },
     useSortBy
   )
-
-  const { getTableProps, getTableBodyProps, rows, prepareRow, headerGroups } =
-    tableInstance
 
   return (
     <div className="shadow shadow-primary/5 rounded-lg overflow-hidden">
