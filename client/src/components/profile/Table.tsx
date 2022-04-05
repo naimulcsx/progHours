@@ -21,6 +21,21 @@ const columns = [
   {
     Header: "Verdict",
     accessor: "verdict",
+    Cell: (cell) => {
+      const styles = {
+        AC: "bg-lime-200 text-lime-900 rounded w-full font-medium text-center",
+        WA: "bg-red-200 text-red-900 rounded w-full font-medium text-center",
+        RTE: "bg-pink-200 text-pink-900 rounded w-full font-medium text-center",
+        TLE: "bg-amber-200 text-amber-900 rounded w-full font-medium text-center",
+        MLE: "bg-cyan-200 text-cyan-900 rounded w-full font-medium text-center",
+      }
+      let value = cell.value
+      return (
+        <div className="flex items-center justify-center">
+          <p className={styles[cell.value]}> {cell.value}</p>
+        </div>
+      )
+    },
   },
   {
     Header: "Solve Time",
