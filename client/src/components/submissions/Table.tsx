@@ -1,4 +1,5 @@
-import { usePagination, useTable, useSortBy, Row, Column } from "react-table"
+import { useMemo } from "react"
+import { usePagination, useTable, useSortBy, Column } from "react-table"
 import { Submission } from "@/types/Submission"
 
 /**
@@ -12,21 +13,22 @@ import DatePicker from "./columns/DatePicker"
 import SolveTime from "./columns/SolveTime"
 import Tags from "./columns/Tags"
 
-import { ArrowSmDownIcon, ArrowSmUpIcon } from "@heroicons/react/solid"
+import {
+  ArrowSmDownIcon,
+  ArrowSmUpIcon,
+  ChevronRightIcon,
+  ChevronLeftIcon,
+  ChevronDoubleLeftIcon,
+  ChevronDoubleRightIcon,
+} from "@heroicons/react/solid"
 import {
   FiChevronsLeft,
   FiChevronLeft,
   FiChevronRight,
   FiChevronsRight,
 } from "react-icons/fi"
-import { useMemo } from "react"
 
-interface TrackingTableProps {
-  submissions: Submission[]
-}
-
-const TrackingTable = (props: TrackingTableProps) => {
-  const { submissions } = props
+const TrackingTable = ({ submissions }: { submissions: Submission[] }) => {
   /**
    * Attach a serial number to each submissions
    */
@@ -117,8 +119,8 @@ const TrackingTable = (props: TrackingTableProps) => {
 
   return (
     <div className="relative">
-      <div className="mt-6 rounded-md">
-        <table {...getTableProps()} className="border-collapse ">
+      <div className="mt-6 rounded-md shadow shadow-primary/5">
+        <table {...getTableProps()} className="border-collapse">
           <thead>
             {headerGroups.map((headerGroup) => {
               return (
@@ -190,16 +192,17 @@ const TrackingTable = (props: TrackingTableProps) => {
             })}
           </tbody>
         </table>
-        <div className="flex items-center justify-between px-6 py-3 space-x-4 bg-white pagination border border-slate-100 rounded-br-lg rounded-bl-lg">
+        <div className="flex items-center justify-between px-6 py-3 space-x-4 bg-white pagination border-l border-r border-b border-slate-100 rounded-br-lg rounded-bl-lg">
           <div>
             <span>
               Page{" "}
-              <strong>
+              <span className="font-medium">
                 {pageIndex + 1} of {pageOptions.length}
-              </strong>{" "}
+              </span>
             </span>
             <select
               value={pageSize}
+              className="py-1 border-b ml-4"
               onChange={(e) => {
                 setPageSize(Number(e.target.value))
               }}
@@ -211,33 +214,45 @@ const TrackingTable = (props: TrackingTableProps) => {
               ))}
             </select>
           </div>
-
           <div className="flex items-center space-x-4">
-            <button onClick={() => gotoPage(0)} disabled={!canPreviousPage}>
-              <FiChevronsLeft size={20} />
-            </button>{" "}
-            <button onClick={() => previousPage()} disabled={!canPreviousPage}>
-              <FiChevronLeft size={20} />
-            </button>{" "}
-            <button onClick={() => nextPage()} disabled={!canNextPage}>
-              <FiChevronRight size={20} />
-            </button>{" "}
             <button
+              className="border p-1 rounded"
+              onClick={() => gotoPage(0)}
+              disabled={!canPreviousPage}
+            >
+              <ChevronDoubleLeftIcon className="h-4" />
+            </button>
+            <button
+              className="border p-1 rounded"
+              onClick={() => previousPage()}
+              disabled={!canPreviousPage}
+            >
+              <ChevronLeftIcon className="h-4" />
+            </button>
+            <button
+              className="border p-1 rounded"
+              onClick={() => nextPage()}
+              disabled={!canNextPage}
+            >
+              <ChevronRightIcon className="h-4" />
+            </button>
+            <button
+              className="border p-1 rounded"
               onClick={() => gotoPage(pageCount - 1)}
               disabled={!canNextPage}
             >
-              <FiChevronsRight size={20} />
-            </button>{" "}
-            <span>
-              | Go to page:{" "}
+              <ChevronDoubleRightIcon className="h-4" />
+            </button>
+            <span className="space-x-2">
+              <span className="font-medium">Go to page : </span>
               <input
+                className="border-b w-16 py-1"
                 type="number"
                 defaultValue={pageIndex + 1}
                 onChange={(e) => {
                   const page = e.target.value ? Number(e.target.value) - 1 : 0
                   gotoPage(page)
                 }}
-                style={{ width: "100px" }}
               />
             </span>
           </div>
