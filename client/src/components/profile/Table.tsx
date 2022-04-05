@@ -40,6 +40,9 @@ const columns = [
   {
     Header: "Solve Time",
     accessor: "solve_time",
+    Cell: (cell) => {
+      return <div className="text-center">{cell.value}</div>
+    },
   },
 
   {
