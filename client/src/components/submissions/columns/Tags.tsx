@@ -20,7 +20,7 @@ const Tags = (cell: Cell<Submission>) => {
   const { id, tags, user_problem_tags } = cell.row.original.problem
 
   return (
-    <ul className="tags-ul flex flex-wrap items-center gap-2">
+    <ul className="tags-ul flex xl:flex-wrap items-center gap-2">
       {tags.map((tag: Tag) => {
         return (
           <li

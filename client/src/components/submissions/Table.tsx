@@ -60,6 +60,9 @@ const TrackingTable = ({ submissions }: { submissions: Submission[] }) => {
         {
           Header: "Tags",
           accessor: "",
+          maxWidth: 400,
+          minWidth: 140,
+          width: 200,
           Cell: Tags,
         },
         {
