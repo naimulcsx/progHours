@@ -34,12 +34,7 @@ const Sidebar = (): JSX.Element => {
     <div className="hidden max-w-[250px] w-full flex-shrink-0 h-[100vh] py-6  z-20 top-0 left-0 bottom-0 bg-white md:block">
       {/* sidebar links */}
       <div className="flex flex-col justify-between h-full px-6">
-        <div className="">
-          <div className="mb-12">
-            <Link to="/dashboard">
-              <Logo className="text-dark" />
-            </Link>
-          </div>
+        <div className="mt-16">
           <nav>
             <ul className="space-y-1">
               <NavLink Icon={ViewGridIcon} to="/dashboard">
