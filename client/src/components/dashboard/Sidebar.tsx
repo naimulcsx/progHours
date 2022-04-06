@@ -31,10 +31,15 @@ const Sidebar = (): JSX.Element => {
   const { user } = useContext(GlobalContext)
   const handleLogout = useLogout()
   return (
-    <div className="hidden max-w-[250px] w-full flex-shrink-0 h-screen py-6  z-20 fixed top-0 left-0 bottom-0 bg-white md:block">
+    <div className="max-w-[250px] z-[200000000] w-full h-[100vh] py-4 fixed z-10 top-0 left-0 bottom-0 bg-white shadow shadow-primary/5">
       {/* sidebar links */}
       <div className="flex flex-col justify-between h-full px-6">
-        <div className="mt-16">
+        <div className="">
+          <div className="mb-12">
+            <Link to="/dashboard">
+              <Logo className="text-dark" />
+            </Link>
+          </div>
           <nav>
             <ul className="space-y-1">
               <NavLink Icon={ViewGridIcon} to="/dashboard">

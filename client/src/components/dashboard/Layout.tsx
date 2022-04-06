@@ -4,14 +4,14 @@ import MobileNav from "../MobileNav"
 
 const Layout = ({ children }) => {
   return (
-    <div className="min-h-screen  w-auto">
+    <div className="min-h-screen w-auto">
       {/* topbar */}
       <Navbar />
       {/* sidebar */}
       <div className="flex">
         <Sidebar />
         {/* main content */}
-        <div className="md:ml-[250px] bg-light w-full min-h-screen px-8 pt-20 pb-10">
+        <div className="md:ml-[250px] bg-light w-full min-h-screen px-8 pt-12 pb-10">
           {children}
         </div>
       </div>
