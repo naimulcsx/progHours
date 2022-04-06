@@ -1,7 +1,6 @@
 import { useMemo } from "react"
 import { usePagination, useTable, useSortBy, Cell, Column } from "react-table"
 import { Submission } from "@/types/Submission"
-
 import ProblemName from "../submissions/columns/ProblemName"
 /**
  * Import Icons
@@ -127,7 +126,7 @@ export default function ProfileTable({
   )
 
   return (
-    <div className="shadow shadow-primary/5 rounded-lg overflow-hidden mx-36 my-16">
+    <div className="shadow shadow-primary/5 rounded-lg overflow-hidden w-full">
       <table {...getTableProps()} className="border-collapse ">
         <thead>
           {headerGroups.map((headerGroup) => {

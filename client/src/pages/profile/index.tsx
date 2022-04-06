@@ -33,10 +33,10 @@ export default function Profile() {
           <span className="text-2xl">{user.username}</span>
         </div>
       </div>
-      <div className="container mx-auto px-6">
+      <div className="container mx-auto px-6 space-y-16">
         {progressQuery.data && <ProgressBox progress={progressQuery.data} />}
+        <ProfileTable submissions={submissionList} />
       </div>
-      <ProfileTable submissionList={submissionList} />
       <MobileNav></MobileNav>
       {/* tracking problem table */}
     </div>
