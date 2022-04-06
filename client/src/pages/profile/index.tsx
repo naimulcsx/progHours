@@ -1,3 +1,4 @@
+import MobileNav from "@/components/MobileNav"
 import Navbar from "@/components/Navbar"
 import ProgressBox from "@/components/ProgressBox"
 import { GlobalContext } from "@/GlobalStateProvider"
@@ -36,6 +37,7 @@ export default function Profile() {
         {progressQuery.data && <ProgressBox progress={progressQuery.data} />}
       </div>
       <ProfileTable submissionList={submissionList} />
+      <MobileNav></MobileNav>
       {/* tracking problem table */}
     </div>
   )

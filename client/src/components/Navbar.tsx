@@ -26,7 +26,9 @@ const Navbar = () => {
                 alt={user?.name}
                 className="rounded-full w-7 h-7"
               />
-              <span className="font-medium text-gray-900 ">{user?.name}</span>
+              <span className="hidden font-medium text-gray-900 md:block">
+                {name}
+              </span>
             </Link>
           </li>
           <li className="flex items-center">
