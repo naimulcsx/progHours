@@ -2,7 +2,7 @@ import Navbar from "@/components/Navbar"
 import Sidebar from "@/components/dashboard/Sidebar"
 import MobileNav from "../MobileNav"
 
-const Layout = ({ children }) => {
+const Layout = ({ children }: { children: React.ReactNode }) => {
   return (
     <div className="min-h-screen w-auto">
       {/* topbar */}
@@ -11,7 +11,7 @@ const Layout = ({ children }) => {
       <div className="flex">
         <Sidebar />
         {/* main content */}
-        <div className="md:ml-[250px] bg-light w-full min-h-screen px-8 pt-12 pb-10">
+        <div className="md:ml-[250px] bg-light w-full min-h-screen px-8 pt-24 lg:pt-10 pb-10">
           {children}
         </div>
       </div>
