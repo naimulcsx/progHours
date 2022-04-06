@@ -1,110 +1,101 @@
-import { usePagination, useTable, useSortBy } from "react-table"
+import { useMemo } from "react"
+import { usePagination, useTable, useSortBy, Cell, Column } from "react-table"
+import { Submission } from "@/types/Submission"
 
 import ProblemName from "../submissions/columns/ProblemName"
-import Tags from "../submissions/columns/Tags"
-
-import { ArrowSmDownIcon, ArrowSmUpIcon } from "@heroicons/react/solid"
+/**
+ * Import Icons
+ */
 import {
-  FiChevronsLeft,
-  FiChevronLeft,
-  FiChevronRight,
-  FiChevronsRight,
-} from "react-icons/fi"
+  ArrowSmDownIcon,
+  ArrowSmUpIcon,
+  ChevronRightIcon,
+  ChevronLeftIcon,
+  ChevronDoubleLeftIcon,
+  ChevronDoubleRightIcon,
+} from "@heroicons/react/solid"
 
-const columns = [
-  {
-    Header: "Problem Name",
-    accessor: (row) =>
-      `${row.problem.pid}|-|${row.problem.name}|-|${row.problem.link}`,
-    Cell: ProblemName,
-  },
-  {
-    Header: "Verdict",
-    accessor: "verdict",
-    Cell: (cell) => {
-      const styles = {
-        AC: "bg-lime-200 text-lime-900 rounded w-full font-medium text-center",
-        WA: "bg-red-200 text-red-900 rounded w-full font-medium text-center",
-        RTE: "bg-pink-200 text-pink-900 rounded w-full font-medium text-center",
-        TLE: "bg-amber-200 text-amber-900 rounded w-full font-medium text-center",
-        MLE: "bg-cyan-200 text-cyan-900 rounded w-full font-medium text-center",
-      }
-      let value = cell.value
-      return (
-        <div className="flex items-center justify-center">
-          <p className={styles[cell.value]}> {cell.value}</p>
-        </div>
-      )
-    },
-  },
-  {
-    Header: "Solve Time",
-    accessor: "solve_time",
-    Cell: (cell) => {
-      return <div className="text-center">{cell.value}</div>
-    },
-  },
-
-  {
-    Header: "Tags",
-    accessor: (row) => row.problem.tags.map((tag) => tag.name).join(", "),
-    Cell: (cell) => {
-      const row = cell.row.original
-      const { id, tags, user_problem_tags } = row.problem
-      return (
-        <ul className="tags-ul flex flex-wrap items-center gap-2">
-          {tags.map((tag) => {
+export default function ProfileTable({
+  submissions,
+}: {
+  submissions: Submission[]
+}) {
+  const tableColumns = useMemo(
+    () =>
+      [
+        {
+          Header: "Problem Name",
+          accessor: (row: Submission) =>
+            `${row.problem.pid}|-|${row.problem.name}|-|${row.problem.link}`,
+          Cell: ProblemName,
+        },
+        {
+          Header: "Verdict",
+          accessor: "verdict",
+          Cell: (cell: Cell<Submission>) => {
+            const styles: any = {
+              AC: "bg-lime-200 text-lime-900 rounded w-full font-medium text-center",
+              WA: "bg-red-200 text-red-900 rounded w-full font-medium text-center",
+              RTE: "bg-pink-200 text-pink-900 rounded w-full font-medium text-center",
+              TLE: "bg-amber-200 text-amber-900 rounded w-full font-medium text-center",
+              MLE: "bg-cyan-200 text-cyan-900 rounded w-full font-medium text-center",
+            }
+            let value = cell.value
             return (
-              <li
-                key={tag.id}
-                className="px-2 py-1 text-sm rounded-lg bg-primary bg-opacity-10 text-primary"
-              >
-                {tag.name}
-              </li>
+              <div className="flex items-center justify-center">
+                <p className={styles[cell.value]}> {cell.value}</p>
+              </div>
             )
-          })}
-        </ul>
-      )
-    },
-  },
-
-  {
-    Header: "Difficulty",
-    accessor: "problem.difficulty",
-  },
-  {
-    id: "solved-at",
-    Header: "Solved at",
-    accessor: "solved_at",
-    Cell: (cell) => {
-      return <div>{new Date(cell.value).toDateString()}</div>
-    },
-  },
-]
-
-export default function ProfileTable({ submissionList }) {
-  const tableInstance = useTable(
-    {
-      data: submissionList,
-      columns,
-      initialState: {
-        pageSize: 10,
-        sortBy: [
-          {
-            id: "solved-at",
-            desc: true,
           },
-        ],
-      },
-    },
-
-    useSortBy,
-    usePagination
+        },
+        {
+          Header: "Solve Time",
+          accessor: "solve_time",
+          Cell: (cell: Cell<Submission>) => {
+            return <div className="text-center">{cell.value}</div>
+          },
+        },
+        {
+          Header: "Tags",
+          accessor: (row) => row.problem.tags.map((tag) => tag.name).join(", "),
+          Cell: (cell: Cell<Submission>) => {
+            const row = cell.row.original
+            const { id, tags, user_problem_tags } = row.problem
+            return (
+              <ul className="tags-ul flex flex-wrap items-center gap-2">
+                {tags.map((tag) => {
+                  return (
+                    <li
+                      key={tag.id}
+                      className="px-2 py-1 text-sm rounded-lg bg-primary bg-opacity-10 text-primary"
+                    >
+                      {tag.name}
+                    </li>
+                  )
+                })}
+              </ul>
+            )
+          },
+        },
+        {
+          Header: "Difficulty",
+          accessor: "problem.difficulty",
+        },
+        {
+          id: "solved-at",
+          Header: "Solved at",
+          accessor: "solved_at",
+          Cell: (cell: Cell<Submission>) => {
+            return <div>{new Date(cell.value).toDateString()}</div>
+          },
+        },
+      ] as Column<Submission>[],
+    []
   )
+
   const {
     getTableProps,
     getTableBodyProps,
-    rows,
     prepareRow,
     page,
     headerGroups,
@@ -117,7 +108,24 @@ export default function ProfileTable({ submissionList }) {
     previousPage,
     setPageSize,
     state: { pageIndex, pageSize },
-  } = tableInstance
+  } = useTable(
+    {
+      data: submissions,
+      columns: tableColumns,
+      initialState: {
+        pageSize: 10,
+        sortBy: [
+          {
+            id: "solved-at",
+            desc: true,
+          },
+        ],
+      },
+    },
+    useSortBy,
+    usePagination
+  )
+
   return (
     <div className="shadow shadow-primary/5 rounded-lg overflow-hidden mx-36 my-16">
       <table {...getTableProps()} className="border-collapse ">
@@ -165,7 +173,9 @@ export default function ProfileTable({ submissionList }) {
                 className={`bg-white`}
               >
                 {row.cells.map((cell) => {
-                  const extraProps = {}
+                  const extraProps: {
+                    [key: string]: string
+                  } = {}
                   extraProps[
                     `data-${cell.column.id.toLowerCase().split(" ").join("-")}`
                   ] = cell.value
@@ -184,61 +194,72 @@ export default function ProfileTable({ submissionList }) {
           })}
         </tbody>
       </table>
-      <div className="flex items-center justify-between px-6 py-3 space-x-4 bg-white pagination border border-slate-100 rounded-br-lg rounded-bl-lg">
+      {/* Pagination */}
+      <div className="flex items-center justify-between px-6 py-3 space-x-4 bg-white pagination border-l border-r border-b border-slate-100 rounded-br-lg rounded-bl-lg">
         <div>
           <span>
             Page{" "}
-            <strong>
+            <span className="font-medium">
               {pageIndex + 1} of {pageOptions.length}
-            </strong>{" "}
+            </span>
           </span>
           <select
             value={pageSize}
+            className="py-1 border-b ml-4"
             onChange={(e) => {
               setPageSize(Number(e.target.value))
             }}
           >
-            {[5, 10, 20, 30, 40, 50].map((pageSize) => (
+            {[10, 20, 30, 40, 50].map((pageSize) => (
               <option key={pageSize} value={pageSize}>
                 Show {pageSize}
               </option>
             ))}
           </select>
         </div>
-
         <div className="flex items-center space-x-4">
-          <button onClick={() => gotoPage(0)} disabled={!canPreviousPage}>
-            <FiChevronsLeft size={20} />
-          </button>{" "}
-          <button onClick={() => previousPage()} disabled={!canPreviousPage}>
-            <FiChevronLeft size={20} />
-          </button>{" "}
-          <button onClick={() => nextPage()} disabled={!canNextPage}>
-            <FiChevronRight size={20} />
-          </button>{" "}
           <button
+            className="border p-1 rounded"
+            onClick={() => gotoPage(0)}
+            disabled={!canPreviousPage}
+          >
+            <ChevronDoubleLeftIcon className="h-4" />
+          </button>
+          <button
+            className="border p-1 rounded"
+            onClick={() => previousPage()}
+            disabled={!canPreviousPage}
+          >
+            <ChevronLeftIcon className="h-4" />
+          </button>
+          <button
+            className="border p-1 rounded"
+            onClick={() => nextPage()}
+            disabled={!canNextPage}
+          >
+            <ChevronRightIcon className="h-4" />
+          </button>
+          <button
+            className="border p-1 rounded"
             onClick={() => gotoPage(pageCount - 1)}
             disabled={!canNextPage}
           >
-            <FiChevronsRight size={20} />
-          </button>{" "}
-          <span>
-            | Go to page:{" "}
+            <ChevronDoubleRightIcon className="h-4" />
+          </button>
+          <span className="space-x-2">
+            <span className="font-medium">Go to page : </span>
             <input
+              className="border-b w-16 py-1"
               type="number"
               defaultValue={pageIndex + 1}
               onChange={(e) => {
                 const page = e.target.value ? Number(e.target.value) - 1 : 0
                 gotoPage(page)
               }}
-              style={{ width: "100px" }}
             />
           </span>
         </div>
       </div>
-      {/* {submissions.length === 0 && <EmptyState />} */}
     </div>
   )
 }
-/*
- */
