@@ -31,7 +31,7 @@ const Sidebar = (): JSX.Element => {
   const { user } = useContext(GlobalContext)
   const handleLogout = useLogout()
   return (
-    <div className="hidden md:block max-w-[250px] z-[200000000] w-full h-[100vh] py-4 fixed z-10 top-0 left-0 bottom-0 bg-white shadow shadow-primary/5">
+    <div className="hidden md:block max-w-[250px] z-[99999] w-full h-[100vh] py-4 fixed z-10 top-0 left-0 bottom-0 bg-white shadow shadow-primary/5">
       {/* sidebar links */}
       <div className="flex flex-col justify-between h-full px-6">
         <div className="">
