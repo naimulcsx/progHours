@@ -36,9 +36,9 @@ const Box = ({ title, icon, data }: ProgressBox) => {
         {icon}
       </div>
       <div className="pt-1 space-y-4">
-        <h4 className="text-dark font-medium text-lg md:text-xl">{title}</h4>
+        <h4 className="text-dark font-medium text-lg xl:text-xl">{title}</h4>
         <div className="space-y-4">
-          <h2 className="text-2xl md:text-3xl">{data}</h2>
+          <h2 className="text-2xl xl:text-3xl">{data}</h2>
         </div>
       </div>
     </div>
@@ -58,7 +58,7 @@ const ProgressBox = ({ progress }: { progress: Progress }) => {
   return (
     <div className="flex justify-center">
       <div className="w-full">
-        <div className="grid grid-cols-1 lg:grid-cols-4 md:grid-cols-2 gap-4 md:gap-8">
+        <div className="grid grid-cols-1 gap-4 md:grid-cols-2  md:gap-6 xl:gap-8 xl:grid-cols-4 ">
           <Box
             icon={<StarIcon className="w-7" />}
             title="Points"
