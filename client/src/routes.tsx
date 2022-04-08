@@ -76,7 +76,7 @@ const routes = (isLoggedIn: boolean): RouteObject[] => [
     element: <AccountSettings />,
   },
   {
-    path: "/profile",
+    path: "/profile/:username",
     element: <Profile />,
   },
   {

@@ -22,13 +22,13 @@ export class User {
   @Column({ unique: true })
   email: string
 
-  @Column()
+  @Column({ select: false })
   password: string
 
   @Column()
   role: string
 
-  @CreateDateColumn()
+  @CreateDateColumn({ select: false })
   created_at: Date
 
   @BeforeUpdate()

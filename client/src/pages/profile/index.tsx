@@ -1,5 +1,7 @@
-import { useContext, useState } from "react"
+import { AxiosError } from "axios"
 import { useQuery } from "react-query"
+import { useContext, useState } from "react"
+import { useNavigate, useParams } from "react-router-dom"
 
 /**
  * Import Components
@@ -14,10 +16,17 @@ import ProfileTable from "@/components/profile/Table"
  * Import API
  */
 import { getStats } from "@/api/dashboard"
-import { getSubmissions } from "@/api/submissions"
+import { getSubmissionsByUsername } from "@/api/submissions"
+
+/**
+ * Import helpers
+ */
+import showErrorToasts from "@/utils/showErrorToasts"
 
 export default function Profile() {
   const { user } = useContext(GlobalContext)
+  const { username } = useParams()
+  const navigate = useNavigate()
 
   /**
    * Get statistics
@@ -28,21 +37,25 @@ export default function Profile() {
   /**
    * Get submissions
    */
-  useQuery("submissionList", getSubmissions, {
-    onSuccess: (data) => {
-      setSubmissions(data.submissions)
-    },
-  })
+  useQuery(
+    `submissions/${username}`,
+    () => getSubmissionsByUsername(username ? username : "-1"),
+    {
+      retry: 1,
+      onSuccess: (data) => {
+        setSubmissions(data.submissions)
+      },
+      onError: (err: AxiosError) => {
+        navigate("/dashboard")
+        showErrorToasts(err.response?.data.message)
+      },
+    }
+  )
 
   return (
     <div className="">
       <Navbar className="lg:bg-white" />
       <div className="relative flex items-center justify-center pt-32 pb-32 overflow-clip">
-        {/* <img
-          src="https://i.ibb.co/VSNyf79/bg-profile.png"
-          alt=""
-          className="absolute inset-0 object-cover w-full opacity-50"
-        /> */}
         <div className="space-y-6 text-center">
           <img
             src={`https://robohash.org/${user?.name}?bgset=bg2&size=160x160`}
