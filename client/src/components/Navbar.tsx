@@ -24,7 +24,10 @@ const Navbar = ({ className }: { className: string }) => {
       <nav>
         <ul className="flex items-center justify-end space-x-2">
           <li className="flex items-center">
-            <Link to="/profile" className="flex items-center space-x-2">
+            <Link
+              to={`/profile/${user?.username}`}
+              className="flex items-center space-x-2"
+            >
               <img
                 src={`https://robohash.org/${user?.name}?bgset=bg2&size=48x48`}
                 alt={user?.name}

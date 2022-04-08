@@ -1,6 +1,7 @@
 import { useMemo } from "react"
 import { useTable, useSortBy, Cell, Column } from "react-table"
 import { RanklistItem } from "@/types/RanklistItem"
+import { Link } from "react-router-dom"
 
 /**
  * Import Icons
@@ -9,16 +10,18 @@ import { ArrowSmDownIcon, ArrowSmUpIcon } from "@heroicons/react/solid"
 
 const UserCell = (cell: Cell<RanklistItem>) => {
   return (
-    <div className="flex items-center space-x-4">
-      <img
-        src={`https://robohash.org/${cell.value}?bgset=bg2&size=40x40`}
-        className="rounded-full"
-      />
-      <div>
-        <p className="font-medium">{cell.value}</p>
-        <p className="text-sm text-gray-500">{cell.row.original.username}</p>
+    <Link to={`/profile/${cell.row.original.username}`}>
+      <div className="flex items-center space-x-4">
+        <img
+          src={`https://robohash.org/${cell.value}?bgset=bg2&size=40x40`}
+          className="rounded-full"
+        />
+        <div>
+          <p className="font-medium">{cell.value}</p>
+          <p className="text-sm text-gray-500">{cell.row.original.username}</p>
+        </div>
       </div>
-    </div>
+    </Link>
   )
 }
 

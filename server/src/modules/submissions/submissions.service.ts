@@ -48,9 +48,15 @@ export class SubmissionsService {
     if (!user) {
       throw new BadRequestException(["User not found"])
     }
+    const { id, email, name } = user
     const submissions = await this.getSubmissions(user.id)
     return {
-      user,
+      user: {
+        id,
+        email,
+        name,
+        username,
+      },
       submissions,
     }
   }
