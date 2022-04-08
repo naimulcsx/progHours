@@ -11,7 +11,7 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
       <div className="flex">
         <Sidebar />
         {/* main content */}
-        <div className="md:ml-[250px] bg-light w-full min-h-screen px-4 md:px-8 pt-24 lg:pt-10 pb-10">
+        <div className="md:ml-[250px] bg-light w-full min-h-screen px-5 md:px-8 pt-20 lg:pt-10 space-y-4 md:space-y-8 pb-20">
           {children}
         </div>
       </div>
