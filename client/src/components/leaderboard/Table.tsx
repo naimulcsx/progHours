@@ -10,7 +10,7 @@ import { ArrowSmDownIcon, ArrowSmUpIcon } from "@heroicons/react/solid"
 
 const UserCell = (cell: Cell<RanklistItem>) => {
   return (
-    <Link to={`/profile/${cell.row.original.username}`}>
+    <Link to={`/users/${cell.row.original.username}`}>
       <div className="flex items-center space-x-4">
         <img
           src={`https://robohash.org/${cell.value}?bgset=bg2&size=40x40`}

@@ -9,7 +9,7 @@ import Logo from "./Logo"
 import DropdownMenu from "./DropdownMenu"
 import { GlobalContext } from "@/GlobalStateProvider"
 
-const Navbar = ({ className }: { className: string }) => {
+const Navbar = ({ className }: { className?: string }) => {
   const { user } = useContext(GlobalContext)
   return (
     <header
@@ -25,7 +25,7 @@ const Navbar = ({ className }: { className: string }) => {
         <ul className="flex items-center justify-end space-x-2">
           <li className="flex items-center">
             <Link
-              to={`/profile/${user?.username}`}
+              to={`/users/${user?.username}`}
               className="flex items-center space-x-2"
             >
               <img
