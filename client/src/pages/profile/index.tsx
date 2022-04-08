@@ -1,5 +1,7 @@
-import { useContext, useState } from "react"
+import { AxiosError } from "axios"
 import { useQuery } from "react-query"
+import { useContext, useState } from "react"
+import { useNavigate, useParams } from "react-router-dom"
 
 /**
  * Import Components
@@ -14,10 +16,17 @@ import ProfileTable from "@/components/profile/Table"
  * Import API
  */
 import { getStats } from "@/api/dashboard"
-import { getSubmissions } from "@/api/submissions"
+import { getSubmissionsByUsername } from "@/api/submissions"
+
+/**
+ * Import helpers
+ */
+import showErrorToasts from "@/utils/showErrorToasts"
 
 export default function Profile() {
   const { user } = useContext(GlobalContext)
+  const { username } = useParams()
+  const navigate = useNavigate()
 
   /**
    * Get statistics
@@ -28,28 +37,39 @@ export default function Profile() {
   /**
    * Get submissions
    */
-  useQuery("submissionList", getSubmissions, {
-    onSuccess: (data) => {
-      setSubmissions(data.submissions)
-    },
-  })
+  useQuery(
+    `submissions/${username}`,
+    () => getSubmissionsByUsername(username ? username : "-1"),
+    {
+      retry: 1,
+      onSuccess: (data) => {
+        setSubmissions(data.submissions)
+      },
+      onError: (err: AxiosError) => {
+        navigate("/dashboard")
+        showErrorToasts(err.response?.data.message)
+      },
+    }
+  )
 
   return (
     <div className="">
-      <Navbar />
-      <div className="relative flex items-center justify-center pt-32 pb-16">
+      <Navbar className="lg:bg-white" />
+      <div className="relative flex items-center justify-center pt-32 pb-32 overflow-clip">
         <div className="space-y-6 text-center">
           <img
-            src={`https://robohash.org/${user?.name}?bgset=bg2&size=80x80`}
+            src={`https://robohash.org/${user?.name}?bgset=bg2&size=160x160`}
             alt={user?.name}
-            className="rounded-full mx-auto w-20 h-20"
+            className="rounded-full mx-auto"
           />
           <h1 className="text-4xl">{user?.name}</h1>
           <span className="text-2xl">{user?.username}</span>
         </div>
       </div>
-      <div className="container mx-auto px-6 space-y-16">
+      <div className="container mx-auto px-6 space-y-16 relative -mt-16">
         {progressQuery.data && <ProgressBox progress={progressQuery.data} />}
+      </div>
+      <div className="container mx-auto px-6 space-y-8 py-12">
         <ProfileTable submissions={submissions} />
       </div>
       <MobileNav></MobileNav>

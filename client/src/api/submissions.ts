@@ -4,6 +4,10 @@ const getSubmissions = () => {
   return axios.get("/api/submissions").then((res) => res.data)
 }
 
+const getSubmissionsByUsername = (username: string) => {
+  return axios.get(`/api/submissions/${username}`).then((res) => res.data)
+}
+
 const createSubmission = (values) => {
   return axios.post("/api/submissions", values).then((res) => res.data)
 }
@@ -23,6 +27,7 @@ const addTag = ({ id, ...values }) => {
 export {
   addTag,
   getSubmissions,
+  getSubmissionsByUsername,
   createSubmission,
   deleteSubmission,
   updateSubmission,

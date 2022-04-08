@@ -16,6 +16,7 @@ import { Submission } from "@/modules/submissions/submission.entity"
 import { ProblemsService } from "@/modules/problems/problems.service"
 import { ParsersService } from "@/modules/parsers/parsers.service"
 import { AuthService } from "@/modules/auth/auth.service"
+import { UsersService } from "@/modules/users/users.service"
 import * as UrlPattern from "url-pattern"
 
 @Injectable()
@@ -24,6 +25,7 @@ export class SubmissionsService {
     @Inject(ProblemsService) private problemsService: ProblemsService,
     @Inject(ParsersService) private parsersService: ParsersService,
     @Inject(AuthService) private authService: AuthService,
+    @Inject(UsersService) private usersService: UsersService,
     @InjectRepository(Submission)
     private submissionsRepository: Repository<Submission>
   ) {}
@@ -39,6 +41,24 @@ export class SubmissionsService {
       .orderBy("submissions.solved_at", "DESC")
       .getMany()
     return submissions
+  }
+
+  async getSubmissionsByUsername(username) {
+    const user = await this.usersService.getUserByUsername(username)
+    if (!user) {
+      throw new BadRequestException(["User not found"])
+    }
+    const { id, email, name } = user
+    const submissions = await this.getSubmissions(user.id)
+    return {
+      user: {
+        id,
+        email,
+        name,
+        username,
+      },
+      submissions,
+    }
   }
 
   async createSubmission(body: any, user: any) {

@@ -40,6 +40,15 @@ export class SubmissionsController {
       submissions,
     }
   }
+
+  @Get(":username")
+  async getSubmissionsByUserId(@Param() params) {
+    const result = await this.submissionsService.getSubmissionsByUsername(
+      params.username
+    )
+    return result
+  }
+
   @Post()
   async createSubmission(@Body() body: CreateSubmissionDto, @Req() req) {
     const { user } = req

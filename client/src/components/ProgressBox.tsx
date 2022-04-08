@@ -28,7 +28,7 @@ interface Progress {
 const Box = ({ title, icon, data }: ProgressBox) => {
   return (
     <div
-      className="flex flex-col text-center items-center mx-auto px-8 py-5  bg-white rounded-md  shadow shadow-primary/5 w-full
+      className="flex flex-col text-center items-center mx-auto space-x-2 px-8 py-5  bg-white rounded-md  shadow shadow-primary/5 w-full
     md:flex-row md:items-start md:text-left md:mx-0 md:w-auto md:space-x-4
     "
     >
@@ -36,9 +36,9 @@ const Box = ({ title, icon, data }: ProgressBox) => {
         {icon}
       </div>
       <div className="pt-1 space-y-4">
-        <h4 className="text-dark font-medium text-lg">{title}</h4>
+        <h4 className="text-dark font-medium text-lg xl:text-xl">{title}</h4>
         <div className="space-y-4">
-          <h2 className="text-2xl md:text-3xl">{data}</h2>
+          <h2 className="text-2xl xl:text-3xl">{data}</h2>
         </div>
       </div>
     </div>
@@ -58,7 +58,7 @@ const ProgressBox = ({ progress }: { progress: Progress }) => {
   return (
     <div className="flex justify-center">
       <div className="w-full">
-        <div className="grid grid-cols-1 lg:grid-cols-4 md:grid-cols-2 gap-4">
+        <div className="grid grid-cols-1 gap-4 md:grid-cols-2  md:gap-6 xl:gap-8 xl:grid-cols-4 ">
           <Box
             icon={<StarIcon className="w-7" />}
             title="Points"

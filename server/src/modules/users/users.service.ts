@@ -21,6 +21,10 @@ export class UsersService {
     private submissionsRepository: Repository<Submission>
   ) {}
 
+  async getUserByUsername(username: string) {
+    return this.usersRepository.findOne({ username })
+  }
+
   async getVerdictCount(user, verdict) {
     return this.submissionsRepository
       .createQueryBuilder()

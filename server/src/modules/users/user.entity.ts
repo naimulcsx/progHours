@@ -28,7 +28,7 @@ export class User {
   @Column()
   role: string
 
-  @CreateDateColumn()
+  @CreateDateColumn({ select: false })
   created_at: Date
 
   @BeforeUpdate()
