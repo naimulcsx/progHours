@@ -540,6 +540,7 @@ export class ParsersService {
 
     const beecrowdPatterns = [
       new UrlPattern("/judge/en/problems/view/:problemId"),
+      new UrlPattern("/repository/UOJ_:problemId_en.html"),
     ]
 
     let matchedResult: any
@@ -561,7 +562,9 @@ export class ParsersService {
     const { data } = await lastValueFrom(this.httpService.get(link))
     const $ = cheerio.load(data)
 
-    const name = $(".header h1").text().trim()
+    const parse = $("title").text().trim()
+    const name = parse.split(" - ")[1]
+
     const pid = `Bee-${matchedResult.problemId}`
 
     return {
