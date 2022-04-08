@@ -36,20 +36,27 @@ export default function Profile() {
 
   return (
     <div className="">
-      <Navbar />
-      <div className="relative flex items-center justify-center pt-32 pb-16">
+      <Navbar className="lg:bg-white" />
+      <div className="relative flex items-center justify-center pt-32 pb-32 overflow-clip">
+        {/* <img
+          src="https://i.ibb.co/VSNyf79/bg-profile.png"
+          alt=""
+          className="absolute inset-0 object-cover w-full opacity-50"
+        /> */}
         <div className="space-y-6 text-center">
           <img
-            src={`https://robohash.org/${user?.name}?bgset=bg2&size=80x80`}
+            src={`https://robohash.org/${user?.name}?bgset=bg2&size=160x160`}
             alt={user?.name}
-            className="rounded-full mx-auto w-20 h-20"
+            className="rounded-full mx-auto"
           />
           <h1 className="text-4xl">{user?.name}</h1>
           <span className="text-2xl">{user?.username}</span>
         </div>
       </div>
-      <div className="container mx-auto px-6 space-y-16">
+      <div className="container mx-auto px-6 space-y-16 relative -mt-16">
         {progressQuery.data && <ProgressBox progress={progressQuery.data} />}
+      </div>
+      <div className="container mx-auto px-6 space-y-8 py-12">
         <ProfileTable submissions={submissions} />
       </div>
       <MobileNav></MobileNav>

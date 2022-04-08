@@ -73,8 +73,8 @@ async function createProblems() {
     const link = faker.internet.url() // unique
     const difficulty = randomInRange(8, 18) * 100
     await client.query(
-      "INSERT INTO problems(id, pid, name, link, difficulty) VALUES($1, $2, $3, $4, $5)",
-      [i, pid, name, link, difficulty]
+      "INSERT INTO problems(id, pid, name, link, difficulty, judge_id) VALUES($1, $2, $3, $4, $5, $6)",
+      [i, pid, name, link, difficulty, 1]
     )
   }
 }
@@ -168,7 +168,7 @@ async function seed() {
   // insert new data
   await createUsers()
   await createProblems()
-  await createOnlineJudges()
+  // await createOnlineJudges()
   await createSubmissions()
   await createTags()
   client.end()

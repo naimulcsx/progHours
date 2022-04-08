@@ -1,5 +1,6 @@
 import { useContext } from "react"
 import { Link } from "react-router-dom"
+import { twMerge } from "tailwind-merge"
 
 /**
  * Import components
@@ -8,11 +9,14 @@ import Logo from "./Logo"
 import DropdownMenu from "./DropdownMenu"
 import { GlobalContext } from "@/GlobalStateProvider"
 
-const Navbar = () => {
+const Navbar = ({ className }: { className: string }) => {
   const { user } = useContext(GlobalContext)
   return (
     <header
-      className={`fixed top-0 left-0 right-0 z-30 flex items-center justify-between px-4 md:px-6 py-4 bg-white lg:bg-transparent`}
+      className={twMerge(
+        "fixed top-0 left-0 right-0 z-20 flex items-center justify-between px-4 md:px-6 py-3 bg-white lg:bg-transparent",
+        className
+      )}
     >
       <Link to="/dashboard">
         <Logo className="text-gray-900" />

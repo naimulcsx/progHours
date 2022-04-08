@@ -80,7 +80,7 @@ const DashboardHome = () => {
         </div>
       )}
       <div className="grid grid-cols-1 md:gird-cols-3 lg:grid-cols-4 gap-8 min-h-[560px]">
-        <div className="px-8 py-6 bg-white rounded-lg shadow shadow-primary/5 col-span-2">
+        <div className="px-4 py-3 bg-white rounded-lg shadow shadow-primary/5 col-span-2">
           <WeekChart data={frequency} />
         </div>
         <div className="h-full w-full px-8 py-6 bg-white shadow shadow-primary/5  rounded-lg col-span-2  md:px-16 lg:px-32">
