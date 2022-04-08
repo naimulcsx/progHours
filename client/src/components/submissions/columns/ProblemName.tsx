@@ -11,6 +11,7 @@ import {
   UnknownIcon,
   EOlympIcon,
   BeeCrowd,
+  HackerRankIcon,
 } from "@/components/Icons"
 import { useRef, useState } from "react"
 import { useMutation } from "react-query"
@@ -36,6 +37,7 @@ const ProblemName = (cell: Cell<Submission>) => {
     { prefix: "AC-", icon: AtCoder },
     { prefix: "EOlymp-", icon: EOlympIcon },
     { prefix: "Bee-", icon: BeeCrowd },
+    { prefix: "HR-", icon: HackerRankIcon },
   ]
 
   const icons = iconMap
