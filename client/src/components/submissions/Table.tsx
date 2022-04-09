@@ -60,6 +60,9 @@ const TrackingTable = ({ submissions }: { submissions: Submission[] }) => {
         {
           Header: "Tags",
           accessor: "",
+          maxWidth: 400,
+          minWidth: 140,
+          width: 200,
           Cell: Tags,
         },
         {
@@ -116,8 +119,8 @@ const TrackingTable = ({ submissions }: { submissions: Submission[] }) => {
 
   return (
     <div className="relative">
-      <div className="mt-6 rounded-md shadow shadow-primary/5">
-        <table {...getTableProps()} className="border-collapse">
+      <div className="mt-6 shadow shadow-primary/5 rounded-md overflow-x-scroll md:overflow-visible">
+        <table {...getTableProps()} className="border-collapse ">
           <thead>
             {headerGroups.map((headerGroup) => {
               return (

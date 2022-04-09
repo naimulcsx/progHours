@@ -2,6 +2,7 @@ import {
   BadRequestException,
   ForbiddenException,
   Injectable,
+  Inject,
 } from "@nestjs/common"
 import { InjectRepository } from "@nestjs/typeorm"
 import { Repository } from "typeorm"
@@ -12,52 +13,68 @@ import * as bcrypt from "bcryptjs"
  * Import Entities (models)
  */
 import { User } from "@/modules/users/user.entity"
+import { UsersService } from "../users/users.service"
+import { LoginUserDto } from "@/validators/login-user-dto"
 
 @Injectable()
 export class AuthService {
   constructor(
     @InjectRepository(User)
-    private usersRepository: Repository<User>
+    private usersRepository: Repository<User>,
+    @Inject(UsersService) private usersService: UsersService
   ) {}
-  getUserById(id: number): Promise<User> {
-    return this.usersRepository.findOne(id)
-  }
-  getUserByUsername(username: string): Promise<User> {
-    return this.usersRepository.findOne({ username })
-  }
+
+  /**
+   * Check if password is valid
+   */
   comparePassword(password, hashedPassword) {
     return bcrypt.compare(password, hashedPassword)
   }
-  async getAccessTokenWithUserInfo(body: any) {
-    const { username, password } = body
-    const user = await this.getUserByUsername(username)
+
+  /**
+   * Generates access token
+   */
+  generateAccessToken(user) {
+    return jwt.sign(user, process.env.ACCESS_TOKEN_SECRET)
+  }
+
+  async handleLogin(body: LoginUserDto) {
+    /**
+     * Get user by id
+     */
+    const user = await this.usersService.getUser({ username: body.username })
+
+    /**
+     * If username doesn't exist in our database
+     */
     if (!user) throw new BadRequestException(["user not found"])
 
-    const isValidPassword = await this.comparePassword(password, user.password)
-    //! if the user exists but the provided password is wrong
+    /**
+     * Username exists, need to check if the provided password is valid
+     */
+    const isValidPassword = await this.comparePassword(
+      body.password,
+      user.password
+    )
+
+    /**
+     * if the user exists, but the provided password is wrong
+     */
     if (!isValidPassword) throw new ForbiddenException(["invalid password"])
-    const userObj = {
-      id: user.id,
-      username: user.username,
-      name: user.name,
-      email: user.email,
-      role: user.role,
-    }
-    const accessToken = jwt.sign(userObj, process.env.ACCESS_TOKEN_SECRET)
+
+    /**
+     * Password is valid, generate access token
+     */
+    const { id, username, name, email, role } = user
+    const userObj = { id, username, name, email, role }
+    const accessToken = this.generateAccessToken(userObj)
+
+    /**
+     * Send response
+     */
     return {
-      accessToken,
       user: userObj,
+      accessToken,
     }
-  }
-  registerUser(userData): Promise<User> {
-    const { name, username, password, email } = userData
-    const newUser = this.usersRepository.create({
-      name,
-      username,
-      password,
-      email,
-      role: "user",
-    })
-    return this.usersRepository.save(newUser)
   }
 }

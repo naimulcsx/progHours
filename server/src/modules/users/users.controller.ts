@@ -46,14 +46,14 @@ export class UsersController {
     }
   }
 
-  @Patch("account")
-  @UseGuards(IsAuthenticatedGuard)
-  async updateAccount(@Body() body: UpdateUserDto, @Req() req: any) {
-    await this.usersService.updateAccount(body, req.user.id)
+  // @Patch("account")
+  // @UseGuards(IsAuthenticatedGuard)
+  // async updateAccount(@Body() body: UpdateUserDto, @Req() req: any) {
+  //   await this.usersService.updateAccount(body, req.user.id)
 
-    return {
-      statusCode: HttpStatus.OK,
-      message: "account is updated",
-    }
-  }
+  //   return {
+  //     statusCode: HttpStatus.OK,
+  //     message: "account is updated",
+  //   }
+  // }
 }

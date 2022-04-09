@@ -25,6 +25,7 @@
     "react-router-dom": "6",
     "react-table": "^7.7.0",
     "react-toastify": "^8.1.0",
+    "tailwind-merge": "^1.2.1",
     "yup": "^0.32.11"
   },
   "devDependencies": {
