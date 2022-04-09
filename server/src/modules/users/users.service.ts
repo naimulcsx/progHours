@@ -7,7 +7,7 @@ import { Repository } from "typeorm"
  */
 import { User } from "@/modules/users/user.entity"
 import { Submission } from "@/modules/submissions/submission.entity"
-import { AuthService } from "../auth/auth.service"
+// import { AuthService } from "../auth/auth.service"
 
 @Injectable()
 export class UsersService {
@@ -15,7 +15,7 @@ export class UsersService {
     @InjectRepository(User)
     private usersRepository: Repository<User>,
 
-    @Inject(AuthService) private authService: AuthService,
+    // @Inject(AuthService) private authService: AuthService,
 
     @InjectRepository(Submission)
     private submissionsRepository: Repository<Submission>
@@ -23,6 +23,26 @@ export class UsersService {
 
   async getUserByUsername(username: string) {
     return this.usersRepository.findOne({ username })
+  }
+
+  /**
+   * Get user
+   */
+  async getUser(match) {
+    return this.usersRepository.findOne(match)
+  }
+
+  /**
+   * Creates a new user
+   */
+  createUser({ name, username, password, email }: User): Promise<User> {
+    const newUser = this.usersRepository.create({
+      name,
+      username,
+      password,
+      email,
+    })
+    return this.usersRepository.save(newUser)
   }
 
   async getVerdictCount(user, verdict) {
@@ -127,34 +147,34 @@ export class UsersService {
   /**
    * Update user account
    */
-  async updateAccount(body: any, id: any) {
-    const { name, email, currentPassword, newPassword, confirmPassword } = body
+  // async updateAccount(body: any, id: any) {
+  //   const { name, email, currentPassword, newPassword, confirmPassword } = body
 
-    const user = await this.usersRepository.findOne({ id })
+  //   const user = await this.usersRepository.findOne({ id })
 
-    if (currentPassword || newPassword || confirmPassword) {
-      if (!currentPassword || !newPassword || !confirmPassword) {
-        throw new ForbiddenException("Field must be filled")
-      }
-    }
+  //   if (currentPassword || newPassword || confirmPassword) {
+  //     if (!currentPassword || !newPassword || !confirmPassword) {
+  //       throw new ForbiddenException("Field must be filled")
+  //     }
+  //   }
 
-    if (currentPassword && newPassword && confirmPassword) {
-      const isCorrect = await this.authService.comparePassword(
-        currentPassword,
-        user.password
-      )
-      if (!isCorrect)
-        throw new ForbiddenException("current password is not correct")
+  //   if (currentPassword && newPassword && confirmPassword) {
+  //     const isCorrect = await this.authService.comparePassword(
+  //       currentPassword,
+  //       user.password
+  //     )
+  //     if (!isCorrect)
+  //       throw new ForbiddenException("current password is not correct")
 
-      if (newPassword !== confirmPassword)
-        throw new ForbiddenException("password doesn't matched")
+  //     if (newPassword !== confirmPassword)
+  //       throw new ForbiddenException("password doesn't matched")
 
-      user.password = newPassword
-    }
+  //     user.password = newPassword
+  //   }
 
-    user.email = email
-    user.name = name
+  //   user.email = email
+  //   user.name = name
 
-    return this.usersRepository.save(user)
-  }
+  //   return this.usersRepository.save(user)
+  // }
 }

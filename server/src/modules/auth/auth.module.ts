@@ -16,8 +16,13 @@ import { AuthService } from "@/modules/auth/auth.service"
  */
 import { User } from "@/modules/users/user.entity"
 
+/**
+ * Imoport Modules
+ */
+import { UsersModule } from "@/modules/users/users.module"
+
 @Module({
-  imports: [TypeOrmModule.forFeature([User])],
+  imports: [UsersModule, TypeOrmModule.forFeature([User])],
   controllers: [AuthController],
   providers: [AuthService],
   exports: [AuthService],

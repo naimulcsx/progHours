@@ -27,10 +27,16 @@ import { AuthService } from "@/modules/auth/auth.service"
  * Import Guards
  */
 import { IsAuthenticatedGuard } from "@/guards/is-authenticated"
+import { UsersService } from "../users/users.service"
+import { User } from "../users/user.entity"
 
 @Controller("auth")
 export class AuthController {
-  constructor(private readonly authService: AuthService) {}
+  constructor(
+    private readonly authService: AuthService,
+    private readonly usersService: UsersService
+  ) {}
+
   /**
    * POST /auth/login
    */
@@ -39,24 +45,31 @@ export class AuthController {
     @Body() body: LoginUserDto,
     @Res({ passthrough: true }) res: Response
   ) {
-    const { accessToken, user } =
-      await this.authService.getAccessTokenWithUserInfo(body)
+    const { username, password } = body
+    const { accessToken, user } = await this.authService.handleLogin({
+      username,
+      password,
+    })
     res.cookie("accessToken", accessToken)
     return {
       accessToken,
       user,
     }
   }
+
   /**
    * POST /auth/register
    */
   @Post("/register")
-  async handleRegister(
-    @Body() body: CreateUserDto,
-    @Res({ passthrough: true }) res: Response
-  ) {
+  async handleRegister(@Body() body: CreateUserDto) {
     try {
-      const user = await this.authService.registerUser(body)
+      const { name, username, password, email } = body
+      const user = await this.usersService.createUser({
+        name,
+        username,
+        password,
+        email,
+      })
       return { user }
     } catch (err) {
       throw new BadRequestException([
@@ -71,7 +84,7 @@ export class AuthController {
   @Get("/user")
   @UseGuards(IsAuthenticatedGuard)
   async getUserData(@Req() req) {
-    const user = await this.authService.getUserById(req.user.id)
+    const user = await this.usersService.getUser({ id: req.user.id })
     if (!user) {
       throw new ForbiddenException("User not found")
     }

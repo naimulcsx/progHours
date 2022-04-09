@@ -11,7 +11,7 @@ import * as bcrypt from "bcryptjs"
 @Entity({ name: "users" })
 export class User {
   @PrimaryGeneratedColumn()
-  id: number
+  id?: number
 
   @Column({ unique: true })
   username: string
@@ -25,15 +25,15 @@ export class User {
   @Column()
   password: string
 
-  @Column()
-  role: string
+  @Column({ default: "user" })
+  role?: string
 
   @CreateDateColumn({ select: false })
-  created_at: Date
+  created_at?: Date
 
   @BeforeUpdate()
   @BeforeInsert()
-  async hashPassword() {
+  async hashPassword?() {
     this.password = await bcrypt.hash(this.password, 10)
   }
 }
