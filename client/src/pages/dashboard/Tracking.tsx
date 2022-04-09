@@ -25,22 +25,24 @@ export default function TrackingSheet() {
       <Helmet>
         <title>Tracking Sheet</title>
       </Helmet>
-      <div className="flex items-center justify-between">
-        <h3 className="font-bold flex items-center space-x-4">
-          <span>Tracking Sheet</span>
-          <Spinner show={query.isLoading || query.isRefetching} />
-        </h3>
-      </div>
-      <div className="mt-4">
-        <ul className="flex items-center space-x-4">
-          <li>
-            <WeekFilters
-              numberOfWeeks={weekRanges.length}
-              selected={selectedWeek}
-              setSelected={setSelectedWeek}
-            />
-          </li>
-        </ul>
+      <div>
+        <div className="flex items-center justify-between">
+          <h3 className="font-bold flex items-center space-x-4">
+            <span>Tracking Sheet</span>
+            <Spinner show={query.isLoading || query.isRefetching} />
+          </h3>
+        </div>
+        <div className="mt-4">
+          <ul className="flex items-center space-x-4">
+            <li>
+              <WeekFilters
+                numberOfWeeks={weekRanges.length}
+                selected={selectedWeek}
+                setSelected={setSelectedWeek}
+              />
+            </li>
+          </ul>
+        </div>
       </div>
       {/* tracking table */}
       {query.data && <TrackingTable submissions={filteredData} />}

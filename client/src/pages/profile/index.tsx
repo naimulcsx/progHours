@@ -23,8 +23,15 @@ import { getSubmissionsByUsername } from "@/api/submissions"
  */
 import showErrorToasts from "@/utils/showErrorToasts"
 
+interface User {
+  name?: string
+  username?: string
+  email?: string
+  id?: number
+}
+
 export default function Profile() {
-  const { user } = useContext(GlobalContext)
+  // const { user } = useContext(GlobalContext)
   const { username } = useParams()
   const navigate = useNavigate()
 
@@ -33,6 +40,7 @@ export default function Profile() {
    */
   const progressQuery = useQuery("stats", getStats)
   let [submissions, setSubmissions] = useState([])
+  let [user, setUser] = useState<User>({})
 
   /**
    * Get submissions
@@ -43,6 +51,7 @@ export default function Profile() {
     {
       retry: 1,
       onSuccess: (data) => {
+        setUser(data.user)
         setSubmissions(data.submissions)
       },
       onError: (err: AxiosError) => {
@@ -60,7 +69,7 @@ export default function Profile() {
           <img
             src={`https://robohash.org/${user?.name}?bgset=bg2&size=160x160`}
             alt={user?.name}
-            className="rounded-full mx-auto"
+            className={`rounded-full mx-auto ${user?.name ? "" : "opacity-0"}`}
           />
           <h1 className="text-4xl">{user?.name}</h1>
           <span className="text-2xl">{user?.username}</span>
