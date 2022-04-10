@@ -85,9 +85,9 @@ export class AuthController {
       const { name, username, password, email } = body
       const user = await this.usersService.createUser(
         name,
+        email,
         username,
-        password,
-        email
+        password
       )
       return { user }
     } catch (err) {
