@@ -58,10 +58,10 @@ export class AuthController {
     @Res({ passthrough: true }) res: Response
   ) {
     const { username, password } = body
-    const { accessToken, user } = await this.authService.handleLogin({
+    const { accessToken, user } = await this.authService.handleLogin(
       username,
-      password,
-    })
+      password
+    )
     res.cookie("accessToken", accessToken)
     res.status(200)
     return {
@@ -83,12 +83,12 @@ export class AuthController {
   async handleRegister(@Body() body: CreateUserDto) {
     try {
       const { name, username, password, email } = body
-      const user = await this.usersService.createUser({
+      const user = await this.usersService.createUser(
         name,
         username,
         password,
-        email,
-      })
+        email
+      )
       return { user }
     } catch (err) {
       if (err instanceof ConflictException) throw err

@@ -9,7 +9,13 @@ import {
   Req,
   UseGuards,
 } from "@nestjs/common"
-import { ApiTags } from "@nestjs/swagger"
+
+import {
+  ApiForbiddenResponse,
+  ApiOkResponse,
+  ApiOperation,
+  ApiTags,
+} from "@nestjs/swagger"
 
 /**
  * Import Services
@@ -65,6 +71,9 @@ export class UsersController {
    * Returns the current logged in user
    */
   @Get("/me")
+  @ApiOperation({ summary: "Returns the current logged in user." })
+  @ApiOkResponse({ description: "Success." })
+  @ApiForbiddenResponse({ description: "Forbidden." })
   @UseGuards(IsAuthenticatedGuard)
   async getCurrentUser(@Req() req) {
     const user = await this.usersService.getUser({ id: req.user.id })

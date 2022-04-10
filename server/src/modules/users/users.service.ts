@@ -1,10 +1,4 @@
-import {
-  BadRequestException,
-  ConflictException,
-  ForbiddenException,
-  Inject,
-  Injectable,
-} from "@nestjs/common"
+import { ConflictException, Injectable } from "@nestjs/common"
 import { InjectRepository } from "@nestjs/typeorm"
 import { Repository } from "typeorm"
 
@@ -13,7 +7,6 @@ import { Repository } from "typeorm"
  */
 import { User } from "@/modules/users/user.entity"
 import { Submission } from "@/modules/submissions/submission.entity"
-// import { AuthService } from "../auth/auth.service"
 
 @Injectable()
 export class UsersService {
@@ -21,18 +14,12 @@ export class UsersService {
     @InjectRepository(User)
     private usersRepository: Repository<User>,
 
-    // @Inject(AuthService) private authService: AuthService,
-
     @InjectRepository(Submission)
     private submissionsRepository: Repository<Submission>
   ) {}
 
-  async getUserByUsername(username: string) {
-    return this.usersRepository.findOne({ username })
-  }
-
   /**
-   * Get user
+   * Find user that matches given properties
    */
   async getUser(match) {
     return this.usersRepository.findOne(match)
@@ -41,13 +28,24 @@ export class UsersService {
   /**
    * Creates a new user
    */
-  async createUser({ name, username, password, email }: User): Promise<User> {
+  async createUser(
+    name: string,
+    email: string,
+    username: string,
+    password: string
+  ): Promise<User> {
+    /**
+     * Check if username or email is already taken
+     */
     let usernameExists = await this.getUser({ username })
     if (usernameExists) throw new ConflictException("Username already exists.")
 
     let emailExists = await this.getUser({ email })
     if (emailExists) throw new ConflictException("Email already exists.")
 
+    /**
+     * All good! Create a new user
+     */
     const newUser = this.usersRepository.create({
       name,
       username,

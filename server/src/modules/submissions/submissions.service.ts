@@ -49,7 +49,7 @@ export class SubmissionsService {
   }
 
   async getSubmissionsByUsername(username) {
-    const user = await this.usersService.getUserByUsername(username)
+    const user = await this.usersService.getUser({ username })
     if (!user) {
       throw new NotFoundException(["User not found"])
     }
