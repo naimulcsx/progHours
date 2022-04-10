@@ -4,12 +4,21 @@ import {
   Post,
   Res,
   Get,
-  UseGuards,
-  Req,
-  ForbiddenException,
   ConflictException,
   HttpStatus,
 } from "@nestjs/common"
+
+import {
+  ApiBadRequestResponse,
+  ApiConflictResponse,
+  ApiCreatedResponse,
+  ApiForbiddenResponse,
+  ApiNotFoundResponse,
+  ApiOkResponse,
+  ApiOperation,
+  ApiTags,
+} from "@nestjs/swagger"
+
 import { Response } from "express"
 
 /**
@@ -26,22 +35,7 @@ import { AuthService } from "@/modules/auth/auth.service"
 /**
  * Import Guards
  */
-import { IsAuthenticatedGuard } from "@/guards/is-authenticated"
 import { UsersService } from "../users/users.service"
-
-/**
- * Import response types (For Swagger UI)
- */
-import {
-  ApiBadRequestResponse,
-  ApiConflictResponse,
-  ApiCreatedResponse,
-  ApiForbiddenResponse,
-  ApiNotFoundResponse,
-  ApiOkResponse,
-  ApiOperation,
-  ApiTags,
-} from "@nestjs/swagger"
 
 @Controller("auth")
 @ApiTags("auth")
