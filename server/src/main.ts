@@ -6,9 +6,15 @@ import * as cookieParser from "cookie-parser"
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule)
-  app.use(cookieParser())
+  /**
+   * Setting global prefix, all routes will be prefixed with /api
+   */
   app.setGlobalPrefix("api")
+  app.use(cookieParser())
 
+  /**
+   * Setup Swagger UI
+   */
   const config = new DocumentBuilder()
     .setTitle("progHours")
     .setLicense(
