@@ -43,6 +43,8 @@ export class ParsersService {
       "beecrowd.com.br": this.beeCrowdParser,
       "www.hackerrank.com": this.hackerrankParser,
       "hackerrank.com": this.hackerrankParser,
+      "www.leetcode.com": this.leetCodeParser,
+      "leetcode.com": this.leetCodeParser,
     }
 
     try {
@@ -574,6 +576,45 @@ export class ParsersService {
       difficulty: 0,
       judge_id: 11,
       link: `https://www.beecrowd.com.br/judge/en/problems/view/${matchedResult.problemId}`,
+    }
+  }
+
+  /**
+   *  Parser for LEETCODE, id = 12
+   */
+  async leetCodeParser(link) {
+    const linkUrl = new URL(link)
+
+    const leetPatterns = [new UrlPattern("/problems/:problemId/")]
+
+    let matchedResult: any
+    let isInvalid: boolean = true
+    leetPatterns.forEach((pattern) => {
+      let result = pattern.match(linkUrl.pathname)
+
+      if (result) {
+        matchedResult = result
+        isInvalid = false
+      }
+    })
+
+    if (isInvalid) throw new Error("Invalid leetcode problem link!")
+
+    // Extract data from provided link
+    const { data } = await lastValueFrom(this.httpService.get(link))
+    const $ = cheerio.load(data)
+
+    const parse = $("title").text()
+
+    const pid = `LC-${matchedResult.problemId}`
+
+    return {
+      name: "fds",
+      pid,
+      tags: [],
+      difficulty: 0,
+      judge_id: 12,
+      link: `https://leetcode.com/problems/${matchedResult.problemId}/`,
     }
   }
 
