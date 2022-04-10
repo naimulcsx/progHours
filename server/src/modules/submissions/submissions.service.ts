@@ -1,4 +1,9 @@
-import { BadRequestException, Inject, Injectable } from "@nestjs/common"
+import {
+  BadRequestException,
+  Inject,
+  Injectable,
+  NotFoundException,
+} from "@nestjs/common"
 import { InjectRepository } from "@nestjs/typeorm"
 import { Repository } from "typeorm"
 import convertLinkToOriginal from "@/utils/converLinkToOriginal"
@@ -46,17 +51,10 @@ export class SubmissionsService {
   async getSubmissionsByUsername(username) {
     const user = await this.usersService.getUserByUsername(username)
     if (!user) {
-      throw new BadRequestException(["User not found"])
+      throw new NotFoundException(["User not found"])
     }
-    const { id, email, name } = user
     const submissions = await this.getSubmissions(user.id)
     return {
-      user: {
-        id,
-        email,
-        name,
-        username,
-      },
       submissions,
     }
   }

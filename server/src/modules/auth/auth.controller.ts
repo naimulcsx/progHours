@@ -44,6 +44,7 @@ import {
 } from "@nestjs/swagger"
 
 @Controller("auth")
+@ApiTags("auth")
 export class AuthController {
   constructor(
     private readonly authService: AuthService,
@@ -53,7 +54,6 @@ export class AuthController {
   /**
    * POST /auth/login
    */
-  @ApiTags("auth")
   @ApiOperation({ summary: "Handle user login." })
   @ApiOkResponse({ description: "Login successful." })
   @ApiForbiddenResponse({ description: "Forbidden (Password is wrong)." })
@@ -79,7 +79,6 @@ export class AuthController {
   /**
    * POST /auth/register
    */
-  @ApiTags("auth")
   @ApiOperation({ summary: "Register new user." })
   @ApiCreatedResponse({ description: "User successfully created." })
   @ApiConflictResponse({ description: "Username/Email already exists." })
@@ -106,7 +105,6 @@ export class AuthController {
   /**
    * GET /auth/logout
    */
-  @ApiTags("auth")
   @ApiOperation({ summary: "Logout user." })
   @ApiOkResponse({ description: "Logout success." })
   @Get("/logout")

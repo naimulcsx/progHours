@@ -9,6 +9,7 @@ import {
   Req,
   UseGuards,
 } from "@nestjs/common"
+import { ApiTags } from "@nestjs/swagger"
 
 /**
  * Import Services
@@ -25,10 +26,11 @@ import { IsAuthenticatedGuard } from "@/guards/is-authenticated"
  */
 import { UpdateUserDto } from "@/validators/update-user-dto"
 
-@Controller("users")
+@Controller("/users")
+@ApiTags("users")
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
-  @Get("ranklist")
+  @Get("/ranklist")
   async getRanklist() {
     const result = await this.usersService.getRanklist()
     return {
@@ -36,7 +38,7 @@ export class UsersController {
     }
   }
 
-  @Get("stats")
+  @Get("/stats")
   @UseGuards(IsAuthenticatedGuard)
   async getUserStats(@Req() req: any) {
     const progress = await this.usersService.getProgress(req.user)
@@ -59,9 +61,10 @@ export class UsersController {
   // }
 
   /**
+   * GET /users/me
    * Returns the current logged in user
    */
-  @Get("me")
+  @Get("/me")
   @UseGuards(IsAuthenticatedGuard)
   async getCurrentUser(@Req() req) {
     const user = await this.usersService.getUser({ id: req.user.id })
