@@ -1,4 +1,10 @@
-import { ForbiddenException, Inject, Injectable } from "@nestjs/common"
+import {
+  BadRequestException,
+  ConflictException,
+  ForbiddenException,
+  Inject,
+  Injectable,
+} from "@nestjs/common"
 import { InjectRepository } from "@nestjs/typeorm"
 import { Repository } from "typeorm"
 
@@ -35,7 +41,13 @@ export class UsersService {
   /**
    * Creates a new user
    */
-  createUser({ name, username, password, email }: User): Promise<User> {
+  async createUser({ name, username, password, email }: User): Promise<User> {
+    let usernameExists = await this.getUser({ username })
+    if (usernameExists) throw new ConflictException("Username already exists.")
+
+    let emailExists = await this.getUser({ email })
+    if (emailExists) throw new ConflictException("Email already exists.")
+
     const newUser = this.usersRepository.create({
       name,
       username,

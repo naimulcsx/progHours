@@ -3,6 +3,7 @@ import {
   ForbiddenException,
   Injectable,
   Inject,
+  NotFoundException,
 } from "@nestjs/common"
 import { InjectRepository } from "@nestjs/typeorm"
 import { Repository } from "typeorm"
@@ -18,14 +19,10 @@ import { LoginUserDto } from "@/validators/login-user-dto"
 
 @Injectable()
 export class AuthService {
-  constructor(
-    @InjectRepository(User)
-    private usersRepository: Repository<User>,
-    @Inject(UsersService) private usersService: UsersService
-  ) {}
+  constructor(@Inject(UsersService) private usersService: UsersService) {}
 
   /**
-   * Check if password is valid
+   * Checks if password is valid
    */
   comparePassword(password, hashedPassword) {
     return bcrypt.compare(password, hashedPassword)
@@ -47,7 +44,7 @@ export class AuthService {
     /**
      * If username doesn't exist in our database
      */
-    if (!user) throw new BadRequestException(["user not found"])
+    if (!user) throw new NotFoundException("User not found.")
 
     /**
      * Username exists, need to check if the provided password is valid
@@ -60,7 +57,7 @@ export class AuthService {
     /**
      * if the user exists, but the provided password is wrong
      */
-    if (!isValidPassword) throw new ForbiddenException(["invalid password"])
+    if (!isValidPassword) throw new ForbiddenException("User not found.")
 
     /**
      * Password is valid, generate access token
