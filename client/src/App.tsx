@@ -40,7 +40,7 @@ const App = (): JSX.Element => {
   useEffect(() => {
     async function checkUser() {
       try {
-        await axios.get("/api/auth/user")
+        await axios.get("/api/users/me")
       } catch (err) {
         await clearAuthData()
         navigate("/login")

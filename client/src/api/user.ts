@@ -1,7 +1,7 @@
 import axios from "axios"
 
 const getUser = () => {
-  return axios.get("/api/auth/user").then((res) => res.data)
+  return axios.get("/api/users/me").then((res) => res.data)
 }
 
 const updateUserAccount = (values: any) => {

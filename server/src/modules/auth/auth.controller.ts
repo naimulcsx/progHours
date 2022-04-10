@@ -104,21 +104,6 @@ export class AuthController {
   }
 
   /**
-   * GET /auth/user
-   */
-
-  @Get("/user")
-  @UseGuards(IsAuthenticatedGuard)
-  async getUserData(@Req() req) {
-    const user = await this.usersService.getUser({ id: req.user.id })
-    if (!user) {
-      throw new ForbiddenException("User not found.")
-    }
-    const { id, name, email, username, role } = user
-    return { id, name, email, username, role }
-  }
-
-  /**
    * GET /auth/logout
    */
   @ApiTags("auth")

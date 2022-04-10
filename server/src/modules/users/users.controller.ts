@@ -3,6 +3,7 @@ import {
   Controller,
   Get,
   HttpStatus,
+  NotFoundException,
   Param,
   Patch,
   Req,
@@ -56,4 +57,18 @@ export class UsersController {
   //     message: "account is updated",
   //   }
   // }
+
+  /**
+   * Returns the current logged in user
+   */
+  @Get("me")
+  @UseGuards(IsAuthenticatedGuard)
+  async getCurrentUser(@Req() req) {
+    const user = await this.usersService.getUser({ id: req.user.id })
+    if (!user) {
+      throw new NotFoundException("User not found.")
+    }
+    const { id, name, email, username, role } = user
+    return { id, name, email, username, role }
+  }
 }
