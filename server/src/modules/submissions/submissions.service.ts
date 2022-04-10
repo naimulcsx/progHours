@@ -93,6 +93,7 @@ export class SubmissionsService {
        */
       try {
         const problemData = await this.parsersService.parseProblem(link)
+        console.log(problemData)
         const newProblem = await this.problemsService.createProblem({
           link,
           ...problemData,

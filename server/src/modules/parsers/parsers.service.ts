@@ -591,7 +591,6 @@ export class ParsersService {
     let isInvalid: boolean = true
     leetPatterns.forEach((pattern) => {
       let result = pattern.match(linkUrl.pathname)
-
       if (result) {
         matchedResult = result
         isInvalid = false
@@ -601,20 +600,25 @@ export class ParsersService {
     if (isInvalid) throw new Error("Invalid leetcode problem link!")
 
     // Extract data from provided link
-    const { data } = await lastValueFrom(this.httpService.get(link))
-    const $ = cheerio.load(data)
+    const { data } = await lastValueFrom(
+      this.httpService.post("https://leetcode.com/graphql", {
+        operationName: "questionData",
+        variables: { titleSlug: matchedResult.problemId },
+        query:
+          "query questionData($titleSlug: String!) { question(titleSlug: $titleSlug) { questionId, title, titleSlug }}",
+      })
+    )
 
-    const parse = $("title").text()
-
-    const pid = `LC-${matchedResult.problemId}`
+    const { questionId, title } = data.data.question
+    const pid = `LC-${questionId}`
 
     return {
-      name: "fds",
+      name: title,
       pid,
       tags: [],
       difficulty: 0,
       judge_id: 12,
-      link: `https://leetcode.com/problems/${matchedResult.problemId}/`,
+      link: `https://leetcode.com/problems/${matchedResult.problemId}`,
     }
   }
 
