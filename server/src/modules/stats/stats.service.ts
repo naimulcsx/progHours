@@ -93,6 +93,6 @@ export class StatsService {
       ])
       .getRawOne()
 
-    return average_difficulty ? parseInt(average_difficulty) : 0
+    return average_difficulty ? parseFloat(average_difficulty) : 0
   }
 }

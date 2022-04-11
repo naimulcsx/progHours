@@ -36,24 +36,13 @@ export class SubmissionsService {
   ) {}
 
   async getSubmissions(userId) {
-    console.log(
-      this.submissionsRepository
-        .createQueryBuilder("submission")
-        .where("submission.user_id = :userId", { userId })
-        .leftJoinAndSelect("submission.problem", "problem")
-        .leftJoinAndSelect("problem.tags", "tag")
-        // .leftJoinAndSelect("problem.user_problem_tags", "user_problem_tag")
-        // .leftJoinAndSelect("user_problem_tag.tag", "tag")
-        .orderBy("submissions.solved_at", "DESC")
-        .getQuery()
-    )
     const submissions = await this.submissionsRepository
       .createQueryBuilder("submissions")
       .where("submissions.user_id = :userId", { userId })
       .leftJoinAndSelect("submissions.problem", "problems")
       .leftJoinAndSelect("problems.tags", "tags")
-      // .leftJoinAndSelect("problems.user_problem_tags", "user_problem_tags")
-      // .leftJoinAndSelect("user_problem_tags.tag", "tag")
+      .leftJoinAndSelect("problems.user_problem_tags", "user_problem_tags")
+      .leftJoinAndSelect("user_problem_tags.tag", "tag")
       .orderBy("submissions.solved_at", "DESC")
       .getMany()
     return submissions

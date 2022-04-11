@@ -13,6 +13,11 @@ import { StatsService } from "./stats.service"
 @UseGuards(IsAuthenticatedGuard)
 export class StatsController {
   constructor(private readonly statsService: StatsService) {}
+
+  /**
+   * GET /stats/me
+   * Returns the statistics of the current user.
+   */
   @Get("/me")
   @ApiOperation({ summary: "Returns the statistics of the current user." })
   @ApiOkResponse({ description: "Success." })
