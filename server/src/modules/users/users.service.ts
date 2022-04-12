@@ -22,6 +22,14 @@ export class UsersService {
    * Find user that matches given properties
    */
   async getUser(match) {
+    /**
+     * Consider username to be case insensitive
+     */
+    if (typeof match.username === "string")
+      match.username = match.username.toLowerCase()
+    /**
+     * Find out the user
+     */
     return this.usersRepository.findOne(match)
   }
 

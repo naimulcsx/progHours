@@ -11,6 +11,20 @@ export class StatsService {
   ) {}
 
   /**
+   * Uses all of the other helper methods and return all the statistics
+   */
+  async getUserStats(userId) {
+    const verdict_count = await this.getVerdictFrequency(userId)
+    const total_solve_time = await this.getSolveTime(userId)
+    const total_difficulty = await this.getAverageDifficulty(userId)
+    return {
+      verdict_count,
+      total_solve_time,
+      total_difficulty,
+    }
+  }
+
+  /**
    * Returns the frequency of submissions based on verdict for an user
    */
   async getVerdictFrequency(userId) {
