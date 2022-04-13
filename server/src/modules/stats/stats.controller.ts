@@ -42,13 +42,28 @@ export class StatsController {
   }
 
   /**
+   * GET /stats/ranklist
+   * Returns the ranklist of the users
+   */
+  @Get("/ranklist")
+  @ApiOperation({ summary: "Returns the ranklist of the users." })
+  @ApiOkResponse({ description: "Success." })
+  @ApiForbiddenResponse({ description: "Forbidden." })
+  async getRanklist() {
+    const result = await this.statsService.getRanklist()
+    return {
+      ranklist: result,
+    }
+  }
+
+  /**
    * GET /stats/{username}
    * Returns the statistics of a particular user.
    */
   @Get("/:username")
   @ApiOperation({ summary: "Returns the statistics of a particular user." })
   @ApiOkResponse({ description: "Success." })
-  @ApiNotFoundResponse({ description: "Username not found.!" })
+  @ApiNotFoundResponse({ description: "Username not found!" })
   @ApiForbiddenResponse({ description: "Forbidden." })
   async getStatsByUsername(@Param() params) {
     const user = await this.usersService.getUser({ username: params.username })

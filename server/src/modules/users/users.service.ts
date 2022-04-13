@@ -34,6 +34,13 @@ export class UsersService {
   }
 
   /**
+   * Query builder for users repository
+   */
+  createQueryBuilder(alias) {
+    return this.usersRepository.createQueryBuilder(alias)
+  }
+
+  /**
    * Creates a new user
    */
   async createUser(

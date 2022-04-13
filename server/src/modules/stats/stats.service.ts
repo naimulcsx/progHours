@@ -2,12 +2,14 @@ import { Injectable } from "@nestjs/common"
 import { InjectRepository } from "@nestjs/typeorm"
 import { Submission } from "@/modules/submissions/submission.entity"
 import { Repository } from "typeorm"
+import { UsersService } from "../users/users.service"
 
 @Injectable()
 export class StatsService {
   constructor(
     @InjectRepository(Submission)
-    private submissionsRepository: Repository<Submission>
+    private submissionsRepository: Repository<Submission>,
+    private readonly usersService: UsersService
   ) {}
 
   /**
@@ -16,12 +18,35 @@ export class StatsService {
   async getUserStats(userId) {
     const verdict_count = await this.getVerdictFrequency(userId)
     const total_solve_time = await this.getSolveTime(userId)
-    const total_difficulty = await this.getAverageDifficulty(userId)
+    const average_difficulty = await this.getAverageDifficulty(userId)
     return {
       verdict_count,
       total_solve_time,
-      total_difficulty,
+      average_difficulty,
+      total_solved: verdict_count.AC,
     }
+  }
+
+  /**
+   * Returns the number of total solved problems by a particular user
+   */
+  async getTotalSolvedCount(userId) {
+    /* -------------- SQL Query ----------------
+      SELECT 
+        COUNT("submission"."verdict") 
+      FROM 
+        "submissions" "submission" 
+      WHERE 
+        "submission"."verdict" = 'AC' 
+        AND "submission"."user_id" = : userId
+  */
+    const { count } = await this.submissionsRepository
+      .createQueryBuilder("submission")
+      .where("submission.verdict = 'AC'")
+      .andWhere("submission.user_id = :userId", { userId })
+      .select("COUNT(submission.verdict)")
+      .getRawOne()
+    return count ? parseInt(count) : 0
   }
 
   /**
@@ -108,5 +133,28 @@ export class StatsService {
       .getRawOne()
 
     return average_difficulty ? parseFloat(average_difficulty) : 0
+  }
+
+  /**
+   * Get user ranklist
+   */
+  async getRanklist() {
+    const users = await this.usersService
+      .createQueryBuilder("user")
+      .select(["user.username", "user.name", "user.id"])
+      .getMany()
+    const result = []
+    for (let user of users) {
+      const average_difficulty = await this.getAverageDifficulty(user.id)
+      const total_solve_time = await this.getSolveTime(user.id)
+      const total_solved = await this.getTotalSolvedCount(user.id)
+      result.push({
+        ...user,
+        average_difficulty,
+        total_solve_time,
+        total_solved,
+      })
+    }
+    return result
   }
 }
