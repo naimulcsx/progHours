@@ -36,24 +36,6 @@ import { UpdateUserDto } from "@/validators/update-user-dto"
 @ApiTags("users")
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
-  @Get("/ranklist")
-  async getRanklist() {
-    const result = await this.usersService.getRanklist()
-    return {
-      ranklist: result,
-    }
-  }
-
-  @Get("/stats")
-  @UseGuards(IsAuthenticatedGuard)
-  async getUserStats(@Req() req: any) {
-    const progress = await this.usersService.getProgress(req.user)
-    const frequency = await this.usersService.getStats(req.user)
-    return {
-      verdict: frequency,
-      ...progress,
-    }
-  }
 
   // @Patch("account")
   // @UseGuards(IsAuthenticatedGuard)
