@@ -13,6 +13,9 @@ const genId = new ShortUniqueId({ length: 6 })
 export class ParsersService {
   constructor(private httpService: HttpService) {}
 
+  /**
+   * Checks if a link is valid
+   */
   isValidLink(link) {
     let url
     try {
@@ -23,6 +26,10 @@ export class ParsersService {
     return url.protocol === "http:" || url.protocol === "https:"
   }
 
+  /**
+   * Entry point for all links, links will get routed here depneding on the online judge
+   * If there is no online judge for link, it also gets handled here
+   */
   async parseProblem(link) {
     const parserMap = {
       "codeforces.com": this.cfParser,
