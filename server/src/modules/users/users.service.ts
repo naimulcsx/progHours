@@ -1,4 +1,11 @@
-import { ConflictException, Injectable } from "@nestjs/common"
+import {
+  ConflictException,
+  ForbiddenException,
+  forwardRef,
+  Inject,
+  Injectable,
+  NotFoundException,
+} from "@nestjs/common"
 import { InjectRepository } from "@nestjs/typeorm"
 import { Repository } from "typeorm"
 
@@ -7,6 +14,7 @@ import { Repository } from "typeorm"
  */
 import { User } from "@/modules/users/user.entity"
 import { Submission } from "@/modules/submissions/submission.entity"
+import { AuthService } from "../auth/auth.service"
 
 @Injectable()
 export class UsersService {
@@ -15,7 +23,10 @@ export class UsersService {
     private usersRepository: Repository<User>,
 
     @InjectRepository(Submission)
-    private submissionsRepository: Repository<Submission>
+    private submissionsRepository: Repository<Submission>,
+
+    @Inject(forwardRef(() => AuthService))
+    private authService: AuthService
   ) {}
 
   /**
@@ -71,36 +82,56 @@ export class UsersService {
   }
 
   /**
-   * Update user account
+   * Update Profile
    */
-  // async updateAccount(body: any, id: any) {
-  //   const { name, email, currentPassword, newPassword, confirmPassword } = body
+  async updateProfile({ name, email }, userId) {
+    const user = await this.getUser({ id: userId })
+    /**
+     * This condition will never be hit, unless you have access token of an user which is not there in the database
+     */
+    if (!user) {
+      return new NotFoundException("User not found.")
+    }
+    user.name = name
+    user.email = email
+    return this.usersRepository.save(user)
+  }
 
-  //   const user = await this.usersRepository.findOne({ id })
+  /**
+   * Users user password
+   */
+  async updatePassword(passwordFields, userId) {
+    const [currentPassword, newPassword, confirmPassword] = passwordFields
 
-  //   if (currentPassword || newPassword || confirmPassword) {
-  //     if (!currentPassword || !newPassword || !confirmPassword) {
-  //       throw new ForbiddenException("Field must be filled")
-  //     }
-  //   }
-
-  //   if (currentPassword && newPassword && confirmPassword) {
-  //     const isCorrect = await this.authService.comparePassword(
-  //       currentPassword,
-  //       user.password
-  //     )
-  //     if (!isCorrect)
-  //       throw new ForbiddenException("current password is not correct")
-
-  //     if (newPassword !== confirmPassword)
-  //       throw new ForbiddenException("password doesn't matched")
-
-  //     user.password = newPassword
-  //   }
-
-  //   user.email = email
-  //   user.name = name
-
-  //   return this.usersRepository.save(user)
-  // }
+    const user = await this.getUser({ id: userId })
+    /**
+     * This condition will never be hit, unless you have access token of an user which is not there in the database
+     */
+    if (!user) {
+      return new NotFoundException("User not found.")
+    }
+    /**
+     * Check if the currentPassword is correct
+     */
+    const isValid = await this.authService.comparePassword(
+      currentPassword,
+      user.password
+    )
+    if (!isValid) {
+      throw new ForbiddenException("Current password is invalid.")
+    }
+    /**
+     * If new password and confirm password do not match
+     */
+    if (newPassword !== confirmPassword) {
+      throw new ForbiddenException(
+        "New password and confirm password do not match."
+      )
+    }
+    /**
+     * Update the password
+     */
+    user.password = newPassword
+    return this.usersRepository.save(user)
+  }
 }

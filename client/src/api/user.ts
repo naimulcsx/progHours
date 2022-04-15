@@ -5,7 +5,7 @@ const getUser = () => {
 }
 
 const updateUserAccount = (values: any) => {
-  return axios.patch("/api/users/account", values).then((res) => res.data)
+  return axios.patch("/api/users/me", values).then((res) => res.data)
 }
 
 export { getUser, updateUserAccount }

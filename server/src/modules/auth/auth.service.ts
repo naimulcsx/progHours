@@ -3,6 +3,7 @@ import {
   Injectable,
   Inject,
   NotFoundException,
+  forwardRef,
 } from "@nestjs/common"
 import * as jwt from "jsonwebtoken"
 import * as bcrypt from "bcryptjs"
@@ -15,7 +16,9 @@ import { LoginUserDto } from "@/validators/login-user-dto"
 
 @Injectable()
 export class AuthService {
-  constructor(@Inject(UsersService) private usersService: UsersService) {}
+  constructor(
+    @Inject(forwardRef(() => UsersService)) private usersService: UsersService
+  ) {}
 
   /**
    * Checks if password is valid
@@ -45,7 +48,10 @@ export class AuthService {
     /**
      * If username doesn't exist in our database
      */
-    if (!user) throw new NotFoundException("User not found.")
+    if (!user) {
+      console.log("hello world!!!")
+      throw new NotFoundException("User not found.")
+    }
 
     /**
      * Username exists, need to check if the provided password is valid
@@ -55,7 +61,7 @@ export class AuthService {
     /**
      * if the user exists, but the provided password is wrong
      */
-    if (!isValidPassword) throw new ForbiddenException("User not found.")
+    if (!isValidPassword) throw new ForbiddenException("Password incorrect.")
 
     /**
      * Password is valid, generate access token

@@ -1,4 +1,5 @@
 import {
+  BadRequestException,
   Body,
   Controller,
   Get,
@@ -38,19 +39,6 @@ import { UpdateUserDto } from "@/validators/update-user-dto"
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
-  @Patch("/me")
-  @ApiOperation({ summary: "Updates the user information." })
-  @ApiOkResponse({ description: "Success." })
-  @ApiForbiddenResponse({ description: "Forbidden." })
-  async updateAccount(@Body() body: UpdateUserDto, @Req() req: any) {
-    // await this.usersService.updateAccount(body, req.user.id)
-    console.log(body)
-    return {
-      statusCode: HttpStatus.OK,
-      message: "account is updated",
-    }
-  }
-
   /**
    * GET /users/me
    * Returns the current logged in user
@@ -66,5 +54,43 @@ export class UsersController {
     }
     const { id, name, email, username, role } = user
     return { id, name, email, username, role }
+  }
+
+  /**
+   * PATCH /users/me
+   * Updates the user information
+   */
+  @Patch("/me")
+  @ApiOperation({ summary: "Updates the user information." })
+  @ApiOkResponse({ description: "Success." })
+  @ApiForbiddenResponse({ description: "Forbidden." })
+  async updateAccount(@Body() body: UpdateUserDto, @Req() req: any) {
+    const { name, email, confirmPassword, currentPassword, newPassword } = body
+    /**
+     * Handle profile update
+     */
+    await this.usersService.updateProfile({ name, email }, req.user.id)
+    /**
+     * Handle password update
+     */
+    const passwordFields = [currentPassword, newPassword, confirmPassword]
+    if (
+      passwordFields.some((el) => el.length > 0) &&
+      passwordFields.some((el) => el.length === 0)
+    ) {
+      throw new BadRequestException(
+        "Please fill all the password related fields in order to change your password."
+      )
+    } else {
+      await this.usersService.updatePassword(passwordFields, req.user.id)
+    }
+
+    /**
+     * Send Response
+     */
+    return {
+      statusCode: HttpStatus.OK,
+      message: "Profile updated.",
+    }
   }
 }
