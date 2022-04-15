@@ -119,7 +119,7 @@ const TrackingTable = ({ submissions }: { submissions: Submission[] }) => {
 
   return (
     <div className="relative">
-      <div className="mt-6 shadow shadow-primary/5 rounded-md overflow-x-scroll md:overflow-visible">
+      <div className="mt-6 overflow-x-scroll rounded-md shadow shadow-primary/5 md:overflow-visible">
         <table {...getTableProps()} className="border-collapse ">
           <thead>
             {headerGroups.map((headerGroup) => {
@@ -193,7 +193,7 @@ const TrackingTable = ({ submissions }: { submissions: Submission[] }) => {
           </tbody>
         </table>
         {/* Pagination */}
-        <div className="flex items-center justify-between px-6 py-3 space-x-4 bg-white pagination border-l border-r border-b border-slate-100 rounded-br-lg rounded-bl-lg">
+        <div className="flex items-center justify-between px-6 py-3 space-x-4 bg-white border-b border-l border-r rounded-bl-lg rounded-br-lg pagination border-slate-100">
           <div>
             <span>
               Page{" "}
@@ -203,7 +203,7 @@ const TrackingTable = ({ submissions }: { submissions: Submission[] }) => {
             </span>
             <select
               value={pageSize}
-              className="py-1 border-b ml-4"
+              className="py-1 ml-4 border-b"
               onChange={(e) => {
                 setPageSize(Number(e.target.value))
               }}
@@ -217,28 +217,28 @@ const TrackingTable = ({ submissions }: { submissions: Submission[] }) => {
           </div>
           <div className="flex items-center space-x-4">
             <button
-              className="border p-1 rounded"
+              className="p-1 border rounded"
               onClick={() => gotoPage(0)}
               disabled={!canPreviousPage}
             >
               <ChevronDoubleLeftIcon className="h-4" />
             </button>
             <button
-              className="border p-1 rounded"
+              className="p-1 border rounded"
               onClick={() => previousPage()}
               disabled={!canPreviousPage}
             >
               <ChevronLeftIcon className="h-4" />
             </button>
             <button
-              className="border p-1 rounded"
+              className="p-1 border rounded"
               onClick={() => nextPage()}
               disabled={!canNextPage}
             >
               <ChevronRightIcon className="h-4" />
             </button>
             <button
-              className="border p-1 rounded"
+              className="p-1 border rounded"
               onClick={() => gotoPage(pageCount - 1)}
               disabled={!canNextPage}
             >
@@ -247,7 +247,7 @@ const TrackingTable = ({ submissions }: { submissions: Submission[] }) => {
             <span className="space-x-2">
               <span className="font-medium">Go to page : </span>
               <input
-                className="border-b w-16 py-1"
+                className="w-16 py-1 border-b"
                 type="number"
                 defaultValue={pageIndex + 1}
                 onChange={(e) => {

@@ -33,11 +33,11 @@ export default function ProfileTable({
           accessor: "verdict",
           Cell: (cell: Cell<Submission>) => {
             const styles: any = {
-              AC: "bg-lime-200 text-lime-900 rounded w-full font-medium text-center",
-              WA: "bg-red-200 text-red-900 rounded w-full font-medium text-center",
-              RTE: "bg-pink-200 text-pink-900 rounded w-full font-medium text-center",
-              TLE: "bg-amber-200 text-amber-900 rounded w-full font-medium text-center",
-              MLE: "bg-cyan-200 text-cyan-900 rounded w-full font-medium text-center",
+              AC: "bg-lime-200 text-lime-900 rounded w-full font-medium text-sm text-center p-2",
+              WA: "bg-red-200 text-red-900 rounded w-full font-medium text-sm text-center p-2",
+              RTE: "bg-pink-200 text-pink-900 rounded w-full font-medium text-sm text-center p-2",
+              TLE: "bg-amber-200 text-amber-900 rounded w-full font-medium text-sm text-center p-2",
+              MLE: "bg-cyan-200 text-cyan-900 rounded w-full font-medium text-sm text-center p-2",
             }
             let value = cell.value
             return (
@@ -51,7 +51,7 @@ export default function ProfileTable({
           Header: "Solve Time",
           accessor: "solve_time",
           Cell: (cell: Cell<Submission>) => {
-            return <div className="text-center">{cell.value}</div>
+            return <div>{cell.value}</div>
           },
         },
         {
@@ -61,12 +61,12 @@ export default function ProfileTable({
             const row = cell.row.original
             const { id, tags, user_problem_tags } = row.problem
             return (
-              <ul className="tags-ul flex flex-wrap items-center gap-2">
+              <ul className="flex items-center gap-2 xl:flex-wrap">
                 {tags.map((tag) => {
                   return (
                     <li
                       key={tag.id}
-                      className="px-2 py-1 text-sm rounded-lg bg-primary bg-opacity-10 text-primary"
+                      className="px-2 py-1 text-sm rounded-lg bg-primary bg-opacity-10 text-primary whitespace-nowrap"
                     >
                       {tag.name}
                     </li>
@@ -126,8 +126,8 @@ export default function ProfileTable({
   )
 
   return (
-    <div className="shadow shadow-primary/5 rounded-lg overflow-hidden w-full">
-      <table {...getTableProps()} className="border-collapse ">
+    <div className="overflow-x-auto rounded-md shadow shadow-primary/5">
+      <table {...getTableProps()} className="border-collapse">
         <thead>
           {headerGroups.map((headerGroup) => {
             return (
@@ -194,7 +194,7 @@ export default function ProfileTable({
         </tbody>
       </table>
       {/* Pagination */}
-      <div className="flex items-center justify-between px-6 py-3 space-x-4 bg-white pagination border-l border-r border-b border-slate-100 rounded-br-lg rounded-bl-lg">
+      <div className="flex items-center justify-between px-6 py-3 space-x-4 bg-white border-b border-l border-r rounded-bl-lg rounded-br-lg pagination border-slate-100">
         <div>
           <span>
             Page{" "}
@@ -204,7 +204,7 @@ export default function ProfileTable({
           </span>
           <select
             value={pageSize}
-            className="py-1 border-b ml-4"
+            className="py-1 ml-4 border-b"
             onChange={(e) => {
               setPageSize(Number(e.target.value))
             }}
@@ -218,28 +218,28 @@ export default function ProfileTable({
         </div>
         <div className="flex items-center space-x-4">
           <button
-            className="border p-1 rounded"
+            className="p-1 border rounded"
             onClick={() => gotoPage(0)}
             disabled={!canPreviousPage}
           >
             <ChevronDoubleLeftIcon className="h-4" />
           </button>
           <button
-            className="border p-1 rounded"
+            className="p-1 border rounded"
             onClick={() => previousPage()}
             disabled={!canPreviousPage}
           >
             <ChevronLeftIcon className="h-4" />
           </button>
           <button
-            className="border p-1 rounded"
+            className="p-1 border rounded"
             onClick={() => nextPage()}
             disabled={!canNextPage}
           >
             <ChevronRightIcon className="h-4" />
           </button>
           <button
-            className="border p-1 rounded"
+            className="p-1 border rounded"
             onClick={() => gotoPage(pageCount - 1)}
             disabled={!canNextPage}
           >
@@ -248,7 +248,7 @@ export default function ProfileTable({
           <span className="space-x-2">
             <span className="font-medium">Go to page : </span>
             <input
-              className="border-b w-16 py-1"
+              className="w-16 py-1 border-b"
               type="number"
               defaultValue={pageIndex + 1}
               onChange={(e) => {
