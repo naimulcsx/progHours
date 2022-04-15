@@ -11,8 +11,8 @@ const client = new Client({
 
 client.connect()
 
-const NUMBER_OF_USERS = 10
-const NUMBER_OF_PROBLEMS = 1000
+const NUMBER_OF_USERS = 200
+const NUMBER_OF_PROBLEMS = 5000
 const AVG_SUBS_PER_USER = 1000
 const NUMBER_OF_TAGS = 100
 const AVG_TAGS_PER_PROBLEM = 5

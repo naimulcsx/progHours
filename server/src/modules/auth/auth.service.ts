@@ -1,31 +1,27 @@
 import {
-  BadRequestException,
   ForbiddenException,
   Injectable,
   Inject,
+  NotFoundException,
+  forwardRef,
 } from "@nestjs/common"
-import { InjectRepository } from "@nestjs/typeorm"
-import { Repository } from "typeorm"
 import * as jwt from "jsonwebtoken"
 import * as bcrypt from "bcryptjs"
 
 /**
  * Import Entities (models)
  */
-import { User } from "@/modules/users/user.entity"
 import { UsersService } from "../users/users.service"
 import { LoginUserDto } from "@/validators/login-user-dto"
 
 @Injectable()
 export class AuthService {
   constructor(
-    @InjectRepository(User)
-    private usersRepository: Repository<User>,
-    @Inject(UsersService) private usersService: UsersService
+    @Inject(forwardRef(() => UsersService)) private usersService: UsersService
   ) {}
 
   /**
-   * Check if password is valid
+   * Checks if password is valid
    */
   comparePassword(password, hashedPassword) {
     return bcrypt.compare(password, hashedPassword)
@@ -38,40 +34,47 @@ export class AuthService {
     return jwt.sign(user, process.env.ACCESS_TOKEN_SECRET)
   }
 
-  async handleLogin(body: LoginUserDto) {
+  /**
+   *
+   * @param body
+   * @returns
+   */
+  async handleLogin(username: string, password: string) {
     /**
      * Get user by id
      */
-    const user = await this.usersService.getUser({ username: body.username })
+    const user = await this.usersService.getUser({ username })
+    console.log(username, user)
 
     /**
      * If username doesn't exist in our database
      */
-    if (!user) throw new BadRequestException(["user not found"])
+    if (!user) {
+      throw new NotFoundException("User not found.")
+    }
 
     /**
      * Username exists, need to check if the provided password is valid
      */
-    const isValidPassword = await this.comparePassword(
-      body.password,
-      user.password
-    )
+    const isValidPassword = await this.comparePassword(password, user.password)
 
     /**
      * if the user exists, but the provided password is wrong
      */
-    if (!isValidPassword) throw new ForbiddenException(["invalid password"])
+    if (!isValidPassword) throw new ForbiddenException("Password incorrect.")
 
     /**
      * Password is valid, generate access token
      */
-    const { id, username, name, email, role } = user
-    const userObj = { id, username, name, email, role }
+    const userObj = {
+      id: user.id,
+      username: user.username,
+      name: user.name,
+      email: user.email,
+      role: user.role,
+    }
     const accessToken = this.generateAccessToken(userObj)
 
-    /**
-     * Send response
-     */
     return {
       user: userObj,
       accessToken,

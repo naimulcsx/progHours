@@ -16,6 +16,7 @@ import { OnlineJudges } from "./online-judges/online-judges.entity"
 import { HandlesModule } from "./handles/handles.module"
 import { Handle } from "./handles/handles.entity"
 import { UserProblemTag } from "./problems/user-problem-tag"
+import { StatsModule } from './stats/stats.module';
 
 @Module({
   imports: [
@@ -41,6 +42,7 @@ import { UserProblemTag } from "./problems/user-problem-tag"
     UsersModule,
     OnlineJudgesModule,
     HandlesModule,
+    StatsModule,
   ],
 })
 export class AppModule {

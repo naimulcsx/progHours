@@ -21,7 +21,7 @@ export default function TrackingSheet() {
     context?.useSubmissionsResult
 
   return (
-    <Layout>
+    <Layout dataDependency={[query.data]}>
       <Helmet>
         <title>Tracking Sheet</title>
       </Helmet>

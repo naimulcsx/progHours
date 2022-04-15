@@ -4,12 +4,21 @@ import {
   Post,
   Res,
   Get,
-  BadRequestException,
-  UseGuards,
-  Req,
-  Patch,
-  ForbiddenException,
+  ConflictException,
+  HttpStatus,
 } from "@nestjs/common"
+
+import {
+  ApiBadRequestResponse,
+  ApiConflictResponse,
+  ApiCreatedResponse,
+  ApiForbiddenResponse,
+  ApiNotFoundResponse,
+  ApiOkResponse,
+  ApiOperation,
+  ApiTags,
+} from "@nestjs/swagger"
+
 import { Response } from "express"
 
 /**
@@ -26,11 +35,10 @@ import { AuthService } from "@/modules/auth/auth.service"
 /**
  * Import Guards
  */
-import { IsAuthenticatedGuard } from "@/guards/is-authenticated"
 import { UsersService } from "../users/users.service"
-import { User } from "../users/user.entity"
 
 @Controller("auth")
+@ApiTags("auth")
 export class AuthController {
   constructor(
     private readonly authService: AuthService,
@@ -40,17 +48,22 @@ export class AuthController {
   /**
    * POST /auth/login
    */
+  @ApiOperation({ summary: "Handle user login." })
+  @ApiOkResponse({ description: "Login successful." })
+  @ApiForbiddenResponse({ description: "Forbidden (Password is wrong)." })
+  @ApiNotFoundResponse({ description: "User not found." })
   @Post("/login")
   async handleLogin(
     @Body() body: LoginUserDto,
     @Res({ passthrough: true }) res: Response
   ) {
     const { username, password } = body
-    const { accessToken, user } = await this.authService.handleLogin({
+    const { accessToken, user } = await this.authService.handleLogin(
       username,
-      password,
-    })
+      password
+    )
     res.cookie("accessToken", accessToken)
+    res.status(200)
     return {
       accessToken,
       user,
@@ -60,44 +73,40 @@ export class AuthController {
   /**
    * POST /auth/register
    */
+  @ApiOperation({ summary: "Register new user." })
+  @ApiCreatedResponse({ description: "User successfully created." })
+  @ApiConflictResponse({ description: "Username/Email already exists." })
+  @ApiBadRequestResponse({
+    description: "Request body doesn't contain valid data.",
+  })
   @Post("/register")
   async handleRegister(@Body() body: CreateUserDto) {
     try {
       const { name, username, password, email } = body
-      const user = await this.usersService.createUser({
+      const user = await this.usersService.createUser(
         name,
-        username,
-        password,
         email,
-      })
+        username,
+        password
+      )
       return { user }
     } catch (err) {
-      throw new BadRequestException([
-        err?.detail ? err.detail : "Some error occured",
-      ])
+      if (err instanceof ConflictException) throw err
+      throw new Error(err)
     }
-  }
-
-  /**
-   * GET /auth/user
-   */
-  @Get("/user")
-  @UseGuards(IsAuthenticatedGuard)
-  async getUserData(@Req() req) {
-    const user = await this.usersService.getUser({ id: req.user.id })
-    if (!user) {
-      throw new ForbiddenException("User not found")
-    }
-    const { id, name, email, username, role } = user
-    return { id, name, email, username, role }
   }
 
   /**
    * GET /auth/logout
    */
+  @ApiOperation({ summary: "Logout user." })
+  @ApiOkResponse({ description: "Logout success." })
   @Get("/logout")
   async logoutUser(@Res({ passthrough: true }) res: Response) {
     res.cookie("accessToken", "", { expires: new Date(Date.now() - 100) })
-    return {}
+    return {
+      statusCode: HttpStatus.OK,
+      success: true,
+    }
   }
 }
