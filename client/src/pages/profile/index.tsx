@@ -78,7 +78,7 @@ export default function Profile() {
   return (
     <div>
       <Navbar className="lg:bg-white" />
-      {/* <Transition
+      <Transition
         show={[
           submissionQuery.isLoading,
           userQuery.isLoading,
@@ -92,27 +92,27 @@ export default function Profile() {
         leave="transform duration-200 transition ease-in-out"
         leaveFrom="opacity-100 rotate-0 scale-100"
         leaveTo="opacity-0 scale-98"
-      > */}
-      <div className="relative flex items-center justify-center pt-32 pb-32 overflow-clip">
-        <div className="space-y-6 text-center">
-          <Avatar.Root>
-            <Avatar.Image
-              src={`https://robohash.org/${user?.name}?bgset=bg2&size=160x160`}
-              className="mx-auto rounded-full"
-            />
-          </Avatar.Root>
-          <h1 className="text-4xl">{user?.name}</h1>
-          <span className="text-2xl">{user?.username}</span>
+      >
+        <div className="relative flex items-center justify-center pt-32 pb-32 overflow-clip">
+          <div className="space-y-6 text-center">
+            <Avatar.Root>
+              <Avatar.Image
+                src={`https://robohash.org/${user?.name}?bgset=bg2&size=160x160`}
+                className="mx-auto rounded-full"
+              />
+            </Avatar.Root>
+            <h1 className="text-4xl">{user?.name}</h1>
+            <span className="text-2xl">{user?.username}</span>
+          </div>
         </div>
-      </div>
-      <div className="container relative px-6 mx-auto -mt-16 space-y-16">
-        {progressQuery.data && <ProgressBox progress={progressQuery.data} />}
-      </div>
-      <div className="container px-6 py-12 mx-auto space-y-8">
-        <ProfileTable submissions={submissions} />
-      </div>
-      <MobileNav></MobileNav>
-      {/* </Transition> */}
+        <div className="container relative px-6 mx-auto -mt-16 space-y-16">
+          {progressQuery.data && <ProgressBox progress={progressQuery.data} />}
+        </div>
+        <div className="container px-6 py-12 mx-auto space-y-8">
+          <ProfileTable submissions={submissions} />
+        </div>
+        <MobileNav></MobileNav>
+      </Transition>
     </div>
   )
 }

@@ -94,12 +94,15 @@ export class UsersController {
      */
     const passwordFields = [currentPassword, newPassword, confirmPassword]
     if (
-      passwordFields.some((el) => el.length > 0) &&
-      passwordFields.some((el) => el.length === 0)
+      passwordFields.every((el) => el.length === 0) ||
+      (passwordFields.some((el) => el.length > 0) &&
+        passwordFields.some((el) => el.length === 0))
     ) {
-      throw new BadRequestException(
-        "Please fill all the password related fields in order to change your password."
-      )
+      if (!passwordFields.every((el) => el.length === 0)) {
+        throw new BadRequestException(
+          "Please fill all the password related fields in order to change your password."
+        )
+      }
     } else {
       await this.usersService.updatePassword(passwordFields, req.user.id)
     }

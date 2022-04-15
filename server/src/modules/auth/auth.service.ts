@@ -44,12 +44,12 @@ export class AuthService {
      * Get user by id
      */
     const user = await this.usersService.getUser({ username })
+    console.log(username, user)
 
     /**
      * If username doesn't exist in our database
      */
     if (!user) {
-      console.log("hello world!!!")
       throw new NotFoundException("User not found.")
     }
 
