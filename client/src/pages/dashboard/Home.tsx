@@ -1,4 +1,4 @@
-import { useContext, useState } from "react"
+import { Fragment, useContext, useState } from "react"
 import { useQuery } from "react-query"
 import { Helmet } from "react-helmet-async"
 
@@ -17,6 +17,7 @@ import { GlobalContext } from "@/GlobalStateProvider"
 import { getStats } from "@/api/dashboard"
 import { getSubmissions } from "@/api/submissions"
 import { getWeekRanges } from "@/utils/getWeekRanges"
+import { Transition } from "@headlessui/react"
 
 const DashboardHome = () => {
   /**
@@ -61,7 +62,7 @@ const DashboardHome = () => {
    */
   const { user } = useContext(GlobalContext)
   return (
-    <Layout>
+    <Layout dataDependency={[user, data, frequency]}>
       <Helmet>
         <title>Dashboard</title>
       </Helmet>

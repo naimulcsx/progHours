@@ -18,7 +18,7 @@ import { getRankList } from "@/api/leaderboard"
 import { RanklistItem } from "@/types/RanklistItem"
 
 const LeaderboardPage = () => {
-  let [ranklist, setRanklist] = useState([])
+  let [ranklist, setRanklist] = useState(null)
   const query = useQuery("ranklist", getRankList, {
     onSuccess: (data) => {
       /**
@@ -40,7 +40,7 @@ const LeaderboardPage = () => {
     },
   })
   return (
-    <Layout>
+    <Layout dataDependency={[ranklist]}>
       <Helmet>
         <title>Leaderboard</title>
       </Helmet>
@@ -63,7 +63,7 @@ const LeaderboardPage = () => {
         leaveTo="opacity-0"
       >
         <div className="mt-6">
-          <LeaderboardTable ranklist={ranklist} />
+          {ranklist && <LeaderboardTable ranklist={ranklist} />}
         </div>
       </Transition>
     </Layout>

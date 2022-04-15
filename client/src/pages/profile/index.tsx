@@ -85,12 +85,13 @@ export default function Profile() {
           submissionQuery.isFetching,
           userQuery.isFetching,
         ].every((val) => val === false)}
+        appear={true}
         enter="transform transition duration-[400ms]"
-        enterFrom="opacity-0 scale-70"
+        enterFrom="opacity-0 scale-[0.995]"
         enterTo="opacity-100 rotate-0 scale-100"
         leave="transform duration-200 transition ease-in-out"
         leaveFrom="opacity-100 rotate-0 scale-100"
-        leaveTo="opacity-0 scale-70"
+        leaveTo="opacity-0 scale-98"
       >
         <div className="relative flex items-center justify-center pt-32 pb-32 overflow-clip">
           <div className="space-y-6 text-center">
