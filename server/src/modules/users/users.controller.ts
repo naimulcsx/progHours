@@ -34,19 +34,22 @@ import { UpdateUserDto } from "@/validators/update-user-dto"
 
 @Controller("/users")
 @ApiTags("users")
+@UseGuards(IsAuthenticatedGuard)
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
-  // @Patch("account")
-  // @UseGuards(IsAuthenticatedGuard)
-  // async updateAccount(@Body() body: UpdateUserDto, @Req() req: any) {
-  //   await this.usersService.updateAccount(body, req.user.id)
-
-  //   return {
-  //     statusCode: HttpStatus.OK,
-  //     message: "account is updated",
-  //   }
-  // }
+  @Patch("/me")
+  @ApiOperation({ summary: "Updates the user information." })
+  @ApiOkResponse({ description: "Success." })
+  @ApiForbiddenResponse({ description: "Forbidden." })
+  async updateAccount(@Body() body: UpdateUserDto, @Req() req: any) {
+    // await this.usersService.updateAccount(body, req.user.id)
+    console.log(body)
+    return {
+      statusCode: HttpStatus.OK,
+      message: "account is updated",
+    }
+  }
 
   /**
    * GET /users/me
@@ -56,7 +59,6 @@ export class UsersController {
   @ApiOperation({ summary: "Returns the current logged in user." })
   @ApiOkResponse({ description: "Success." })
   @ApiForbiddenResponse({ description: "Forbidden." })
-  @UseGuards(IsAuthenticatedGuard)
   async getCurrentUser(@Req() req) {
     const user = await this.usersService.getUser({ id: req.user.id })
     if (!user) {

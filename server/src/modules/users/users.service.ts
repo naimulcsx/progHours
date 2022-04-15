@@ -70,15 +70,6 @@ export class UsersService {
     return this.usersRepository.save(newUser)
   }
 
-  async getVerdictCount(user, verdict) {
-    return this.submissionsRepository
-      .createQueryBuilder()
-      .select("COUNT(verdict)")
-      .where("user_id = :userId", { userId: user.id })
-      .andWhere("verdict = :verdict", { verdict })
-      .execute()
-  }
-
   /**
    * Update user account
    */

@@ -13,10 +13,10 @@ interface ProgressBox {
 }
 
 interface Progress {
-  avg_difficulty: number
-  solve_count: number
-  solve_time: number
-  verdict: {
+  average_difficulty: number
+  total_solved: number
+  total_solve_time: number
+  verdict_count: {
     AC: number
     WA: number
     RTE: number
@@ -53,7 +53,7 @@ function convertToHours(totalTimeInMin: number): string {
 
 const ProgressBox = ({ progress }: { progress: Progress }) => {
   if (!progress) return <div>Loading</div>
-  const { solve_count, solve_time, avg_difficulty } = progress
+  const { total_solved, total_solve_time, average_difficulty } = progress
 
   return (
     <div className="flex justify-center">
@@ -67,17 +67,17 @@ const ProgressBox = ({ progress }: { progress: Progress }) => {
           <Box
             icon={<TrendingUpIcon className="w-7" />}
             title="Problems Solved"
-            data={solve_count}
+            data={total_solved}
           />
           <Box
             icon={<ClockIcon className="w-7" />}
             title="Solve Time"
-            data={convertToHours(solve_time)}
+            data={convertToHours(total_solve_time)}
           />
           <Box
             icon={<LightningBoltIcon className="w-7" />}
             title="Average Difficulty"
-            data={avg_difficulty.toFixed(2)}
+            data={average_difficulty.toFixed(2)}
           />
         </div>
       </div>

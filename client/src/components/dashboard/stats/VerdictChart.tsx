@@ -9,8 +9,8 @@ ChartJS.register(ArcElement, Tooltip, Legend)
 const makeData = (data) => {
   let labels = []
   if (data) {
-    labels = Object.keys(data.verdict)
-    data = Object.keys(data.verdict).map((el) => data.verdict[el])
+    labels = Object.keys(data.verdict_count)
+    data = Object.keys(data.verdict_count).map((el) => data.verdict_count[el])
   }
   return {
     labels,

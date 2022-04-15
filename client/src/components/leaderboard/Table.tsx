@@ -43,19 +43,19 @@ const LeaderboardTable = ({ ranklist }: { ranklist: RanklistItem[] }) => {
         },
         {
           Header: "Solve Count",
-          accessor: "solve_count",
+          accessor: "total_solved",
         },
         {
           Header: "Solve Time",
-          accessor: "solve_time",
+          accessor: "total_solve_time",
         },
         {
           Header: "Average Solve Difficulty",
-          accessor: "avg_difficulty",
+          accessor: "average_difficulty",
         },
         {
           Header: "Points",
-          accessor: (row: RanklistItem) => row.points.toFixed(3),
+          accessor: (row: RanklistItem) => row.points.toFixed(2),
         },
       ] as Column<RanklistItem>[],
     []
