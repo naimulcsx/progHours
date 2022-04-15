@@ -5,7 +5,7 @@ const getSubmissions = () => {
 }
 
 const getSubmissionsByUsername = (username: string) => {
-  return axios.get(`/api/submissions/${username}`).then((res) => res.data)
+  return axios.get(`/api/submissions/by/${username}`).then((res) => res.data)
 }
 
 const createSubmission = (values) => {

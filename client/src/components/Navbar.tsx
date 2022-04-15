@@ -1,6 +1,7 @@
 import { useContext } from "react"
 import { Link } from "react-router-dom"
 import { twMerge } from "tailwind-merge"
+import * as Avatar from "@radix-ui/react-avatar"
 
 /**
  * Import components
@@ -28,11 +29,19 @@ const Navbar = ({ className }: { className?: string }) => {
               to={`/users/${user?.username}`}
               className="flex items-center space-x-2"
             >
-              <img
+              {/* <img
                 src={`https://robohash.org/${user?.name}?bgset=bg2&size=48x48`}
                 alt={user?.name}
                 className="rounded-full w-7 h-7"
-              />
+              /> */}
+              {/* <Avatar color="red" name="Wim Mostmans" /> */}
+              {/* <Avatar name="Foo Bar" /> */}
+              <Avatar.Root>
+                <Avatar.Image
+                  src={`https://robohash.org/${user?.name}?bgset=bg2&size=28x28`}
+                  className="rounded-full"
+                />
+              </Avatar.Root>
               <span className="hidden font-medium text-gray-900 md:block">
                 {user?.name}
               </span>

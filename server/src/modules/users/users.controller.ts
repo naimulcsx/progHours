@@ -13,6 +13,7 @@ import {
 
 import {
   ApiForbiddenResponse,
+  ApiNotFoundResponse,
   ApiOkResponse,
   ApiOperation,
   ApiTags,
@@ -49,6 +50,24 @@ export class UsersController {
   @ApiForbiddenResponse({ description: "Forbidden." })
   async getCurrentUser(@Req() req) {
     const user = await this.usersService.getUser({ id: req.user.id })
+    if (!user) {
+      throw new NotFoundException("User not found.")
+    }
+    const { id, name, email, username, role } = user
+    return { id, name, email, username, role }
+  }
+
+  /**
+   * GET /users/{username}
+   * Returns user by username.
+   */
+  @Get("/:username")
+  @ApiOperation({ summary: "Returns user by username." })
+  @ApiOkResponse({ description: "Success." })
+  @ApiNotFoundResponse({ description: "User not found." })
+  @ApiForbiddenResponse({ description: "Forbidden." })
+  async getUserByUsername(@Param() params) {
+    const user = await this.usersService.getUser({ username: params.username })
     if (!user) {
       throw new NotFoundException("User not found.")
     }
