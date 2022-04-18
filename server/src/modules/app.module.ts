@@ -16,7 +16,9 @@ import { OnlineJudges } from "./online-judges/online-judges.entity"
 import { HandlesModule } from "./handles/handles.module"
 import { Handle } from "./handles/handles.entity"
 import { UserProblemTag } from "./problems/user-problem-tag"
-import { StatsModule } from './stats/stats.module';
+import { StatsModule } from "./stats/stats.module"
+import { RankingModule } from "./ranking/ranking.module"
+import { Ranking } from "./ranking/ranking.entity"
 
 @Module({
   imports: [
@@ -31,6 +33,7 @@ import { StatsModule } from './stats/stats.module';
         UserProblemTag,
         Handle,
         OnlineJudges,
+        Ranking,
       ],
       synchronize: true,
     }),
@@ -43,6 +46,7 @@ import { StatsModule } from './stats/stats.module';
     OnlineJudgesModule,
     HandlesModule,
     StatsModule,
+    RankingModule,
   ],
 })
 export class AppModule {
