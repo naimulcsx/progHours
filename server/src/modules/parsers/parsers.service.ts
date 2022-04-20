@@ -288,6 +288,19 @@ export class ParsersService {
    *  Parser for TOPH, id = 5
    */
   async tophParser(link) {
+    /**
+     * Check if the problem link is valid
+     */
+    const linkUrl = new URL(link)
+    const tophURLPattern = new UrlPattern("/p/:problemId")
+    let matchedResult = tophURLPattern.match(linkUrl.pathname)
+
+    let isInvalid: boolean = matchedResult === null
+    if (isInvalid) throw new Error("Invalid Toph link!")
+
+    /**
+     * Get the page source
+     */
     const { data } = await lastValueFrom(this.httpService.get(link))
     const $ = cheerio.load(data)
 
@@ -320,6 +333,7 @@ export class ParsersService {
       tags,
       difficulty,
       judge_id,
+      link: `https://toph.co/p/${matchedResult.problemId}`,
     }
   }
 
