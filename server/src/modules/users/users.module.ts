@@ -6,6 +6,7 @@ import { TypeOrmModule } from "@nestjs/typeorm"
  */
 import { User } from "@/modules/users/user.entity"
 import { Submission } from "@/modules/submissions/submission.entity"
+import { Ranking } from "@/modules/ranking/ranking.entity"
 
 /**
  * Import Controllers
@@ -23,7 +24,7 @@ import { OnlineJudgesModule } from "../online-judges/online-judges.module"
   imports: [
     OnlineJudgesModule,
     forwardRef(() => AuthModule),
-    TypeOrmModule.forFeature([User, Submission]),
+    TypeOrmModule.forFeature([User, Submission, Ranking]),
   ],
   providers: [UsersService],
   controllers: [UsersController],

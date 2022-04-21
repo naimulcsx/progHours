@@ -16,6 +16,7 @@ import { User } from "@/modules/users/user.entity"
 import { Submission } from "@/modules/submissions/submission.entity"
 import { AuthService } from "../auth/auth.service"
 import { OnlineJudgesService } from "../online-judges/online-judges.service"
+import { Ranking } from "../ranking/ranking.entity"
 
 @Injectable()
 export class UsersService {
@@ -25,6 +26,9 @@ export class UsersService {
 
     @InjectRepository(Submission)
     private submissionsRepository: Repository<Submission>,
+
+    @InjectRepository(Ranking)
+    private rankingRepository: Repository<Ranking>,
 
     @Inject(forwardRef(() => AuthService))
     private authService: AuthService,
@@ -91,7 +95,13 @@ export class UsersService {
       password,
       email,
     })
-    return this.usersRepository.save(newUser)
+    const savedUser = await this.usersRepository.save(newUser)
+
+    /**
+     * Create a ranking row for that user
+     */
+    await this.rankingRepository.save({ user_id: savedUser.id })
+    return savedUser
   }
 
   /**

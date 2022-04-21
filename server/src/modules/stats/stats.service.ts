@@ -138,7 +138,7 @@ export class StatsService {
   /**
    * Get user ranklist
    */
-  async getRanklist() {
+  async getLiveRanklist() {
     const users = await this.usersService
       .createQueryBuilder("user")
       .select(["user.username", "user.name", "user.id"])
