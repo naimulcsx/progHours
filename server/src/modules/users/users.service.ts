@@ -15,6 +15,7 @@ import { Repository } from "typeorm"
 import { User } from "@/modules/users/user.entity"
 import { Submission } from "@/modules/submissions/submission.entity"
 import { AuthService } from "../auth/auth.service"
+import { OnlineJudgesService } from "../online-judges/online-judges.service"
 import { Ranking } from "../ranking/ranking.entity"
 
 @Injectable()
@@ -30,7 +31,10 @@ export class UsersService {
     private rankingRepository: Repository<Ranking>,
 
     @Inject(forwardRef(() => AuthService))
-    private authService: AuthService
+    private authService: AuthService,
+
+    @Inject(OnlineJudgesService)
+    private onlineJudgesService: OnlineJudgesService
   ) {}
 
   /**
@@ -72,6 +76,15 @@ export class UsersService {
 
     let emailExists = await this.getUser({ email })
     if (emailExists) throw new ConflictException("Email already exists.")
+
+    /**
+     * If there is no users, we need to seed OJ table
+     */
+
+    const numberOfUsers = await this.usersRepository.count({})
+    if (!numberOfUsers) {
+      await this.onlineJudgesService.seed()
+    }
 
     /**
      * All good! Create a new user
