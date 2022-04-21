@@ -70,7 +70,7 @@ const LeaderboardTable = ({ ranklist }: { ranklist: RanklistItem[] }) => {
   )
 
   return (
-    <div className="shadow shadow-primary/5 rounded-lg overflow-x-scroll md:overflow-clip">
+    <div className="overflow-x-scroll rounded-lg shadow shadow-primary/5 md:overflow-clip">
       <table
         {...getTableProps()}
         className="border-collapse leaderboard max-w-6 xl"
@@ -86,7 +86,7 @@ const LeaderboardTable = ({ ranklist }: { ranklist: RanklistItem[] }) => {
                   return (
                     <th
                       {...header.getHeaderProps(header.getSortByToggleProps())}
-                      className=" border-b border-t border-slate-100"
+                      className="border-t border-b border-slate-100"
                     >
                       <div className="flex items-center justify-start space-x-1">
                         <span>{header.render("Header")}</span>

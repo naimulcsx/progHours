@@ -54,7 +54,10 @@ const Verdict = (cell: Cell<Submission>) => {
     /**
      * Update the data in the server
      */
-    mutate({ id: cell.row.original.id, verdict: value })
+    if (value !== cell.row.original.verdict) {
+      mutate({ id: cell.row.original.id, verdict: value })
+    }
+
     setSelected(value)
   }
 
