@@ -6,7 +6,7 @@ import {
   OneToMany,
   PrimaryGeneratedColumn,
 } from "typeorm"
-import { OnlineJudges } from "../online-judges/online-judges.entity"
+import { OnlineJudge } from "../online-judges/online-judge.entity"
 import { User } from "../users/user.entity"
 
 @Entity()
@@ -21,7 +21,7 @@ export class Handle {
   @JoinColumn({ name: "user_id" })
   user_id: number
 
-  @ManyToOne(() => OnlineJudges)
+  @ManyToOne(() => OnlineJudge)
   @JoinColumn({ name: "judge_id" })
   judge_id: number
 }
