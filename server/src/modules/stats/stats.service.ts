@@ -166,6 +166,9 @@ export class StatsService {
    * Get user ranklist
    */
   async getRankList() {
-    return await this.rankRepository.find()
+    return await this.rankRepository
+      .createQueryBuilder("ranklist")
+      .leftJoinAndSelect("ranklist.user", "user")
+      .getMany()
   }
 }

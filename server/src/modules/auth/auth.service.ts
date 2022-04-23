@@ -43,8 +43,7 @@ export class AuthService {
     /**
      * Get user by id
      */
-    const user = await this.usersService.getUser({ username })
-    console.log(username, user)
+    const user = await this.usersService.getUserWithPassword(username)
 
     /**
      * If username doesn't exist in our database

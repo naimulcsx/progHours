@@ -60,6 +60,18 @@ export class UsersService {
   }
 
   /**
+   * Find user password
+   */
+
+  getUserWithPassword(username: string) {
+    return this.usersRepository
+      .createQueryBuilder("user")
+      .where("user.username = :username", { username: username.toLowerCase() })
+      .addSelect("user.password")
+      .getOne()
+  }
+
+  /**
    * Creates a new user
    */
   async createUser(
