@@ -3,13 +3,17 @@ import { InjectRepository } from "@nestjs/typeorm"
 import { Submission } from "@/modules/submissions/submission.entity"
 import { Repository } from "typeorm"
 import { UsersService } from "../users/users.service"
+import { Ranking } from "../ranking/ranking.entity"
 
 @Injectable()
 export class StatsService {
   constructor(
     @InjectRepository(Submission)
     private submissionsRepository: Repository<Submission>,
-    private readonly usersService: UsersService
+    private readonly usersService: UsersService,
+
+    @InjectRepository(Ranking)
+    private rankRepository: Repository<Ranking>
   ) {}
 
   /**
@@ -136,7 +140,7 @@ export class StatsService {
   }
 
   /**
-   * Get user ranklist
+   * Get user live ranklist
    */
   async getLiveRanklist() {
     const users = await this.usersService
@@ -156,5 +160,12 @@ export class StatsService {
       })
     }
     return result
+  }
+
+  /**
+   * Get user ranklist
+   */
+  async getRankList() {
+    return await this.rankRepository.find()
   }
 }

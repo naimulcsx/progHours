@@ -50,7 +50,7 @@ export class StatsController {
   @ApiOkResponse({ description: "Success." })
   @ApiForbiddenResponse({ description: "Forbidden." })
   async getRanklist() {
-    const result = await this.statsService.getLiveRanklist()
+    const result = await this.statsService.getRankList()
     return {
       ranklist: result,
     }
