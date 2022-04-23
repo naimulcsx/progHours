@@ -1,9 +1,15 @@
 export interface RanklistItem {
-  average_difficulty: number
-  id: number
-  name: string
-  points: number
-  total_solved: number
+  user_id: number
+  total_difficulty: number
   total_solve_time: number
-  username: string
+  total_solved: number
+  total_solved_with_difficulty: number
+  points: number
+  user: {
+    id: number
+    username: string
+    name: string
+    email: string
+    role: string
+  }
 }
