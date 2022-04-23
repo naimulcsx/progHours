@@ -3,6 +3,7 @@ export interface RanklistItem {
   total_difficulty: number
   total_solve_time: number
   total_solved: number
+  average_difficulty: number
   total_solved_with_difficulty: number
   points: number
   user: {

@@ -26,8 +26,9 @@ const LeaderboardPage = () => {
        * We need to caluclate the points
        */
       data.ranklist.forEach((el: RanklistItem) => {
+        el.average_difficulty =
+          el.total_difficulty / el.total_solved_with_difficulty || 0
         el.points = calculatePoints(el)
-        // el.avg_difficulty = el.avg_difficulty.toFixed(2)
       })
       /**
        * Sort the array according to the points calculated
