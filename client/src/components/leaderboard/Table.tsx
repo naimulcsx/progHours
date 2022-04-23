@@ -10,7 +10,7 @@ import { ArrowSmDownIcon, ArrowSmUpIcon } from "@heroicons/react/solid"
 
 const UserCell = (cell: Cell<RanklistItem>) => {
   return (
-    <Link to={`/users/${cell.row.original.username}`}>
+    <Link to={`/users/${cell.row.original.user.username}`}>
       <div className="flex items-center space-x-4">
         <img
           src={`https://robohash.org/${cell.value}?bgset=bg2&size=40x40`}
@@ -18,7 +18,9 @@ const UserCell = (cell: Cell<RanklistItem>) => {
         />
         <div>
           <p className="font-medium">{cell.value}</p>
-          <p className="text-sm text-gray-500">{cell.row.original.username}</p>
+          <p className="text-sm text-gray-500">
+            {cell.row.original.user.username}
+          </p>
         </div>
       </div>
     </Link>
@@ -38,7 +40,7 @@ const LeaderboardTable = ({ ranklist }: { ranklist: RanklistItem[] }) => {
         },
         {
           Header: "Name",
-          accessor: "name",
+          accessor: "user.name",
           Cell: UserCell,
         },
         {
@@ -70,7 +72,7 @@ const LeaderboardTable = ({ ranklist }: { ranklist: RanklistItem[] }) => {
   )
 
   return (
-    <div className="shadow shadow-primary/5 rounded-lg overflow-x-scroll md:overflow-clip">
+    <div className="overflow-x-scroll rounded-lg shadow shadow-primary/5 md:overflow-clip">
       <table
         {...getTableProps()}
         className="border-collapse leaderboard max-w-6 xl"
@@ -86,7 +88,7 @@ const LeaderboardTable = ({ ranklist }: { ranklist: RanklistItem[] }) => {
                   return (
                     <th
                       {...header.getHeaderProps(header.getSortByToggleProps())}
-                      className=" border-b border-t border-slate-100"
+                      className="border-t border-b border-slate-100"
                     >
                       <div className="flex items-center justify-start space-x-1">
                         <span>{header.render("Header")}</span>

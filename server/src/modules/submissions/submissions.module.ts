@@ -7,6 +7,7 @@ import { Submission } from "@/modules/submissions/submission.entity"
 import { SubmissionsController } from "@/modules/submissions/submissions.controller"
 import { SubmissionsService } from "@/modules/submissions/submissions.service"
 import { UsersModule } from "../users/users.module"
+import { SubmissionsSubscriber } from "./submissions.subscriber"
 
 @Module({
   imports: [
@@ -17,6 +18,6 @@ import { UsersModule } from "../users/users.module"
     TypeOrmModule.forFeature([Submission]),
   ],
   controllers: [SubmissionsController],
-  providers: [SubmissionsService],
+  providers: [SubmissionsService, SubmissionsSubscriber],
 })
 export class SubmissionsModule {}

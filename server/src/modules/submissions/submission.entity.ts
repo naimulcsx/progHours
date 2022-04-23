@@ -20,6 +20,12 @@ export class Submission {
   id: number
 
   @Column()
+  user_id: number
+
+  @Column()
+  problem_id: number
+
+  @Column()
   solve_time: number
 
   @Column({ type: "timestamp with time zone" })

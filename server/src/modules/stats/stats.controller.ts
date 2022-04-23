@@ -50,7 +50,25 @@ export class StatsController {
   @ApiOkResponse({ description: "Success." })
   @ApiForbiddenResponse({ description: "Forbidden." })
   async getRanklist() {
-    const result = await this.statsService.getRanklist()
+    const result = await this.statsService.getRankList()
+    return {
+      ranklist: result,
+    }
+  }
+
+  /**
+   * GET /stats/ranklist-live
+   * Returns the ranklist of the users
+   */
+  @Get("/ranklist-live")
+  @ApiOperation({
+    summary:
+      "Returns the ranklist of the users (aggregate from current database state).",
+  })
+  @ApiOkResponse({ description: "Success." })
+  @ApiForbiddenResponse({ description: "Forbidden." })
+  async getLiveRanklist() {
+    const result = await this.statsService.getLiveRanklist()
     return {
       ranklist: result,
     }

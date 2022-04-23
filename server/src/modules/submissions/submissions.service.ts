@@ -116,8 +116,8 @@ export class SubmissionsService {
       throw err
     }
     const newSubmission = this.submissionsRepository.create({
-      problem: problemId,
-      user: user.id,
+      problem_id: problemId,
+      user_id: user.id,
       ...body,
     })
     return this.submissionsRepository.save(newSubmission)
@@ -126,7 +126,7 @@ export class SubmissionsService {
   async updateSubmission(body: any, id: any) {
     const { verdict, solve_time, solved_at } = body
 
-    const options: any = {}
+    const options: any = { id }
 
     if (verdict) options.verdict = verdict
     if (solve_time) options.solve_time = solve_time
@@ -143,8 +143,10 @@ export class SubmissionsService {
 
   async deleteSubmission(id: any) {
     try {
-      await this.submissionsRepository.delete(id)
-
+      const submissionToDelete = await this.submissionsRepository.findOne({
+        id,
+      })
+      await this.submissionsRepository.remove(submissionToDelete)
       return { message: "Submission deleted" }
     } catch (err) {
       throw err

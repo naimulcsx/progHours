@@ -63,7 +63,7 @@ export class SubmissionsController {
   @ApiOkResponse({ description: "Success." })
   @ApiForbiddenResponse({ description: "Forbidden." })
   async updateSubmission(
-    @Param("id") id: any,
+    @Param("id") id: string,
     @Body() body: UpdateSubmissionDto
   ) {
     await this.submissionsService.updateSubmission(body, id)
