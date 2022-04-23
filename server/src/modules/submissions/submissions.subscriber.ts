@@ -37,10 +37,13 @@ export class SubmissionsSubscriber
       .getRepository(Problem)
       .findOne({ id: event.entity.problem_id })
 
-    if (problem.difficulty > 0) userRanking.total_solved_with_difficulty++
-    userRanking.total_difficulty += problem.difficulty
-    userRanking.total_solve_time += event.entity.solve_time
-    userRanking.total_solved += event.entity.verdict === "AC" ? 1 : 0
+    if (event.entity.verdict === "AC") {
+      userRanking.total_difficulty += problem.difficulty
+      userRanking.total_solve_time += event.entity.solve_time
+      userRanking.total_solved++
+      if (problem.difficulty > 0) userRanking.total_solved_with_difficulty++
+    }
+
     await rankingRepository.save(userRanking)
   }
 
@@ -86,14 +89,26 @@ export class SubmissionsSubscriber
       const problem = await event.connection
         .getRepository(Problem)
         .findOne({ id: submission.problem_id })
-      if (event.entity.verdict !== "AC") {
+      /**
+       * If the verdict was AC, and changed to a verdict other than AC
+       */
+      if (event.entity.verdict !== "AC" && submission.verdict === "AC") {
         userRanking.total_solved--
         userRanking.total_solve_time -= submission.solve_time
-        if (problem.difficulty > 0) userRanking.total_solved_with_difficulty--
-      } else {
+        if (problem.difficulty > 0) {
+          userRanking.total_solved_with_difficulty--
+          userRanking.total_difficulty -= problem.difficulty
+        }
+      } else if (submission.verdict !== "AC" && event.entity.verdict === "AC") {
+        /**
+         * If the verdict was non-AC, and changed to AC
+         */
         userRanking.total_solved++
         userRanking.total_solve_time += submission.solve_time
-        if (problem.difficulty > 0) userRanking.total_solved_with_difficulty++
+        if (problem.difficulty > 0) {
+          userRanking.total_solved_with_difficulty++
+          userRanking.total_difficulty += problem.difficulty
+        }
       }
     }
     await rankingRepository.save(userRanking)
