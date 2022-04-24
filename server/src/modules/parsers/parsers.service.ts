@@ -52,6 +52,7 @@ export class ParsersService {
       "hackerrank.com": this.hackerrankParser,
       "www.leetcode.com": this.leetCodeParser,
       "leetcode.com": this.leetCodeParser,
+      "acm.timus.ru": this.timusParser,
     }
 
     try {
@@ -640,6 +641,52 @@ export class ParsersService {
       difficulty: 0,
       judge_id: 12,
       link: `https://leetcode.com/problems/${matchedResult.problemId}`,
+    }
+  }
+
+  /**
+   *  Parser for TIMUS, id = 13
+   */
+  async timusParser(link) {
+    const linkUrl = new URL(link)
+
+    /**
+     * Check if the problem link is valid
+     */
+    const timusOJPattern = new UrlPattern("/problem.aspx")
+    let matchedResult = timusOJPattern.match(linkUrl.pathname)
+
+    let isInvalid: boolean = matchedResult === null
+    if (isInvalid) {
+      throw new Error("Invalid Timus OJ link!")
+    }
+
+    let problemId
+    problemId = linkUrl.searchParams.get("num")
+    const spaceId = linkUrl.searchParams.get("space")
+
+    // Extract data from provided link
+    const { data } = await lastValueFrom(this.httpService.get(link))
+    const $ = cheerio.load(data)
+
+    const parse = $("h2.problem_title").text().trim()
+    const name = parse.split(". ")[1]
+
+    let pid
+    if (spaceId !== "1") {
+      const parseName = $("table td a > nobr").text().trim()
+
+      problemId = parseName.split(". ")[0]
+      pid = `Tim-${problemId}`
+    } else pid = `Tim-${problemId}`
+
+    return {
+      name,
+      pid,
+      tags: [],
+      difficulty: 0,
+      judge_id: 13,
+      link: `https://acm.timus.ru/problem.aspx?space=1&num=${problemId}`,
     }
   }
 

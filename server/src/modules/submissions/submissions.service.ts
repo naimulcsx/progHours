@@ -22,8 +22,7 @@ import { ProblemsService } from "@/modules/problems/problems.service"
 import { ParsersService } from "@/modules/parsers/parsers.service"
 import { AuthService } from "@/modules/auth/auth.service"
 import { UsersService } from "@/modules/users/users.service"
-import * as UrlPattern from "url-pattern"
-import { CreateSubmissionDto } from "@/validators/create-submission-dto"
+import getUniformTimusLink from "@/utils/getUniformTimusLink"
 
 @Injectable()
 export class SubmissionsService {
@@ -110,6 +109,7 @@ export class SubmissionsService {
       "vjudge.net": convertLinkToOriginal,
       "codeforces.com": getUniformCFLink,
       "www.codechef.com": getUniformCCLink,
+      "acm.timus.ru": getUniformTimusLink,
     }
     if (linkConverters[hostname]) link = linkConverters[hostname](link)
 
