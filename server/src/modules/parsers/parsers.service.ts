@@ -53,6 +53,7 @@ export class ParsersService {
       "www.leetcode.com": this.leetCodeParser,
       "leetcode.com": this.leetCodeParser,
       "acm.timus.ru": this.timusParser,
+      "codeto.win": this.codeToWinParser,
     }
 
     try {
@@ -687,6 +688,41 @@ export class ParsersService {
       difficulty: 0,
       judge_id: 13,
       link: `https://acm.timus.ru/problem.aspx?space=1&num=${problemId}`,
+    }
+  }
+
+  /**
+   *  Parser for CodeToWin, id = 14
+   */
+  async codeToWinParser(link) {
+    const linkUrl = new URL(link)
+
+    /**
+     * Check if the problem link is valid
+     */
+    const codeToWinOJPattern = new UrlPattern("/problem/:problemId")
+    let matchedResult = codeToWinOJPattern.match(linkUrl.pathname)
+
+    let isInvalid: boolean = matchedResult === null
+    if (isInvalid) {
+      throw new Error("Invalid CodeToWin link!")
+    }
+
+    // Extract data from provided link
+    const { data } = await lastValueFrom(this.httpService.get(link))
+    const $ = cheerio.load(data)
+
+    const name = $(".problem > .row > h4.railway-font").text().trim()
+    console.log("nameeeeee", name)
+    const pid = "CW-" + matchedResult.problemId
+
+    return {
+      name,
+      pid,
+      tags: [],
+      difficulty: 0,
+      judge_id: 14,
+      link: `https://codeto.win/problem/${matchedResult.problemId}`,
     }
   }
 
