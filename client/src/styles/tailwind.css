@@ -186,3 +186,9 @@ table.leaderboard tr td:first-child {
 /* .profile-table .table td[data-tags] {
   @apply w-[220px] px-6 py-2;
 } */
+
+/* File input */
+
+input[type="file"] {
+  display: none;
+}
