@@ -49,6 +49,7 @@ export class SubmissionsController {
   @ApiOkResponse({ description: "Success." })
   @ApiForbiddenResponse({ description: "Forbidden." })
   async createSubmission(@Body() body: CreateSubmissionDto, @Req() req) {
+    console.log(body)
     const { user } = req
     await this.submissionsService.createSubmission(body, user)
     return {}

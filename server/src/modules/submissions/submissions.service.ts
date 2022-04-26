@@ -70,7 +70,8 @@ export class SubmissionsService {
      *    https://codeforces.com/problemset/problem/1617/B
      *    https://vjudge.net/problem/CodeForces-1617B
      */
-    const { hostname } = new URL(link)
+    const { hostname, protocol } = new URL(link)
+    console.log(protocol)
     const linkConverters = {
       "vjudge.net": convertLinkToOriginal,
       "codeforces.com": getUniformCFLink,
@@ -103,9 +104,10 @@ export class SubmissionsService {
     }
     try {
       const foundSubmission = await this.submissionsRepository.findOne({
-        problem: problemId,
-        user: user.id,
+        problem_id: problemId,
+        user_id: user.id,
       })
+      console.log(foundSubmission)
       if (foundSubmission) {
         /**
          ** If the same problem is added previously by the same user

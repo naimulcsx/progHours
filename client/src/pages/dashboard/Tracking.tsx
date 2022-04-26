@@ -1,5 +1,4 @@
-import { useQuery } from "react-query"
-import React, { useContext, useEffect, useState } from "react"
+import React, { useContext, useState } from "react"
 import { Helmet } from "react-helmet-async"
 
 /**
@@ -16,6 +15,8 @@ import WeekFilters from "@/components/submissions/filters/WeekFilter"
 import { GlobalContext } from "@/GlobalStateProvider"
 import { UploadIcon } from "@heroicons/react/outline"
 import ImportCsvModal from "./ImportCsvModal"
+import csvToArray from "@/utils/csvToArray"
+import { createSubmission } from "@/api/submissions"
 
 export default function TrackingSheet() {
   const context = useContext(GlobalContext)
@@ -23,20 +24,25 @@ export default function TrackingSheet() {
     context?.useSubmissionsResult
 
   let [isOpen, setIsOpen] = useState(false)
+  let [files, setFiles] = useState([])
+
   const handleImport = (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = e.target.files
-    console.log(files)
     if (files) {
       setIsOpen(true)
       const reader = new FileReader()
       reader.onload = function fileReadCompleted() {
         // when the reader is done, the content is in reader.result.
-        console.log(reader.result)
+        let fileList = csvToArray(reader.result as string)
+        fileList = fileList.filter((file) => file.length !== 1)
+        setFiles(fileList)
       }
       reader.readAsText(files[0])
     }
     e.target.value = ""
   }
+
+  console.log(files)
 
   return (
     <Layout dataDependency={[query.data]}>
@@ -70,7 +76,11 @@ export default function TrackingSheet() {
                 <UploadIcon className="w-5 h-5 mr-2" />
                 Import via .csv
               </label>
-              <ImportCsvModal isOpen={isOpen} setIsOpen={setIsOpen} />
+              <ImportCsvModal
+                isOpen={isOpen}
+                setIsOpen={setIsOpen}
+                files={files}
+              />
             </li>
           </ul>
         </div>
