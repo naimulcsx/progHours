@@ -23,6 +23,7 @@ import { ParsersService } from "@/modules/parsers/parsers.service"
 import { AuthService } from "@/modules/auth/auth.service"
 import { UsersService } from "@/modules/users/users.service"
 import * as UrlPattern from "url-pattern"
+import { CreateSubmissionDto } from "@/validators/create-submission-dto"
 
 @Injectable()
 export class SubmissionsService {
@@ -63,6 +64,13 @@ export class SubmissionsService {
     let { link } = body
     let problemId: number
 
+    const { hostname, protocol } = new URL(link)
+
+    /**
+     * Convert link to https protocol
+     */
+    if (protocol === "http:") link = `https:` + link.substring(5)
+
     /**
      * Changing the Links to the respective OJ link
      * Why?- To remove duplicated entries for the same problem
@@ -70,8 +78,6 @@ export class SubmissionsService {
      *    https://codeforces.com/problemset/problem/1617/B
      *    https://vjudge.net/problem/CodeForces-1617B
      */
-    const { hostname, protocol } = new URL(link)
-    console.log(protocol)
     const linkConverters = {
       "vjudge.net": convertLinkToOriginal,
       "codeforces.com": getUniformCFLink,
@@ -107,7 +113,6 @@ export class SubmissionsService {
         problem_id: problemId,
         user_id: user.id,
       })
-      console.log(foundSubmission)
       if (foundSubmission) {
         /**
          ** If the same problem is added previously by the same user
