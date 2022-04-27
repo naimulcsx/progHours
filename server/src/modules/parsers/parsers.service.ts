@@ -260,10 +260,23 @@ export class ParsersService {
   async uvaParser(link) {
     const linkURl = new URL(link)
 
+    /**
+     * Check if the problem link is valid
+     */
+    const uvaOJPattern = new UrlPattern("/index.php")
+    let matchedResult = uvaOJPattern.match(linkURl.pathname)
+
     const problemId = linkURl.searchParams.get("problem")
     const categoryId = linkURl.searchParams.get("category")
 
-    // extract data from provided link
+    let isInvalid: boolean =
+      matchedResult === null || problemId === null || categoryId === null
+
+    if (isInvalid) throw new Error("Invalid UVA link!")
+
+    /**
+     * Extract data from provided link
+     */
     const response = await lastValueFrom(this.httpService.get(link))
     const $ = cheerio.load(response.data)
 
