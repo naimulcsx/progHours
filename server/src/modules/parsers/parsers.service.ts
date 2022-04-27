@@ -341,27 +341,32 @@ export class ParsersService {
     const { data } = await lastValueFrom(this.httpService.get(link))
     const $ = cheerio.load(data)
 
-    // problem name
-    const pname = $(".artifact__caption h1").text().trim()
-    const name = pname
+    /**
+     * Problem name
+     */
+    const name = $(".artifact__caption h1").text().trim()
 
-    /// problem id
-    const { name: pathName } = path.parse(link)
-    const splitName = pathName.includes("lang")
-      ? pathName.split("?")[0]
-      : pathName
+    const { problemId } = matchedResult
 
-    const pid = "TH-" + splitName
+    /**
+     * problem id
+     */
+    const pid = "TH-" + problemId
 
-    // problem difficulty
+    /**
+     * problem difficulty
+     */
     const difficulty = 0
 
-    // problem tags
+    /**
+     * problem tags
+     */
     const tags = []
     $(".flair__item .text a").each(function () {
       const tag = $(this).text().trim()
       tags.push(tag)
     })
+
     const judge_id = 5
 
     return {
@@ -370,7 +375,7 @@ export class ParsersService {
       tags,
       difficulty,
       judge_id,
-      link: `https://toph.co/p/${matchedResult.problemId}`,
+      link: `https://toph.co/p/${problemId}`,
     }
   }
 
