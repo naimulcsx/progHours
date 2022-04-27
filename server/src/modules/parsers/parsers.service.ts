@@ -223,26 +223,47 @@ export class ParsersService {
    *  Parser for CSES, id = 3
    */
   async csesParser(link) {
+    const linkURl = new URL(link)
+
+    /**
+     * Check if the problem link is valid
+     * https://cses.fi/:contestId/task/:problemId
+     * https://cses.fi/problemset/task/:problemId
+     */
+
+    const csesOJPattern = new UrlPattern("/:contestId/task/:problemId")
+    let matchedResult = csesOJPattern.match(linkURl.pathname)
+
+    let isInvalid: boolean = matchedResult === null
+    if (isInvalid) throw new Error("Invalid CSES link!")
+
     const { data } = await lastValueFrom(this.httpService.get(link))
     const $ = cheerio.load(data)
 
     const name = $(".title-block h1").text().trim()
 
-    // problem id
-    const { name: pathName } = path.parse(link)
-    const splitName = pathName.includes("lang")
-      ? pathName.split("?")[0]
-      : pathName
+    const { contestId, problemId } = matchedResult
 
-    const pid = "CSES-" + splitName
+    /**
+     * Problem Id
+     */
+    let pid
+    if (contestId !== "problemset") pid = `CSES-${contestId}${problemId}`
+    else pid = "CSES-" + problemId
 
-    // problem difficulty
+    /**
+     * Problem Difficulty
+     */
     const difficulty = 0
 
-    // problem tags
+    /**
+     * Problem Tags
+     */
     const tags = []
 
-    // attached judge_id
+    /**
+     *  attached judge_id
+     */
     const judge_id = 3
 
     return {
@@ -251,6 +272,7 @@ export class ParsersService {
       tags,
       difficulty,
       judge_id,
+      link: `https://cses.fi/${contestId}/task/${problemId}`,
     }
   }
 
