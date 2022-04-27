@@ -64,7 +64,33 @@ export class SubmissionsService {
     let { link } = body
     let problemId: number
 
-    const { hostname, protocol } = new URL(link)
+    const url = new URL(link)
+    const { hostname, protocol } = url
+
+    /**
+     * Remove all query params from the link
+     *  - except a few online judge which uses query params as problem links eg. uva, timus etc
+     */
+    const params = []
+    let excludeOJParams = {
+      "onlinejudge.org": ["option", "Itemid", "category", "page", "problem"],
+      "acm.timus.ru": ["space", "num"],
+    }
+    for (let param of url.searchParams.entries()) params.push(param)
+    params.forEach(([key]) => {
+      let match: boolean
+      Object.keys(excludeOJParams).forEach((oj) => {
+        if (hostname === oj) {
+          match = true
+          if (!excludeOJParams[oj].includes(key)) {
+            url.searchParams.delete(key)
+          }
+        }
+      })
+      if (!match) url.searchParams.delete(key)
+    })
+    link = url.toString()
+    console.log("link ", link)
 
     /**
      * Convert link to https protocol
@@ -72,6 +98,8 @@ export class SubmissionsService {
     if (protocol === "http:") link = `https:` + link.substring(5)
 
     /**
+     * Link Transformer
+     *
      * Changing the Links to the respective OJ link
      * Why?- To remove duplicated entries for the same problem
      * For example
@@ -98,7 +126,6 @@ export class SubmissionsService {
        */
       try {
         const problemData = await this.parsersService.parseProblem(link)
-        console.log(problemData)
         const newProblem = await this.problemsService.createProblem({
           link,
           ...problemData,
@@ -117,7 +144,7 @@ export class SubmissionsService {
         /**
          ** If the same problem is added previously by the same user
          */
-        throw new BadRequestException("you have already added this problem")
+        throw new BadRequestException("Submission already exists.")
       }
     } catch (err) {
       throw err
