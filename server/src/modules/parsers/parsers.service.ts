@@ -383,16 +383,67 @@ export class ParsersService {
    *  Parser for SPOJ, id = 6
    */
   async spojParser(link) {
+    const linkURL = new URL(link)
+
+    /**
+     * Check if the problem link is valid
+     */
+    const sopjUrlPatterns = [
+      new UrlPattern("/:contestId/problems/:problemId/"),
+      new UrlPattern("/problems/:problemId/"),
+    ]
+    let isInvalid = true
+    let matchedResult: any
+    sopjUrlPatterns.forEach((pattern) => {
+      const result = pattern.match(linkURL.pathname)
+      if (result) {
+        matchedResult = result
+        isInvalid = false
+      }
+    })
+    if (isInvalid) throw new Error("Invalid SPOJ link!")
+
+    /**
+     * Parse data from link
+     */
     const { data } = await lastValueFrom(this.httpService.get(link))
     const $ = cheerio.load(data)
 
-    const str = $(".prob #problem-name").text().trim()
-    const parts = str.split(" - ")
+    const { contestId, problemId } = matchedResult
+
+    /**
+     * Get problem name and link
+     */
+    let parseName, problemLink
+    if (!contestId) {
+      parseName = $(".prob #problem-name").text().trim()
+      problemLink = `https://www.spoj.com/problems/${problemId}`
+    } else {
+      parseName = $("#content table td > h2").text().trim()
+      problemLink = `https://www.spoj.com/${contestId}/problems/${problemId}`
+    }
+
+    const parts = parseName.split(" - ")
     const name = parts[1]
+
+    /**
+     * Define problem id
+     */
     const pid = "SPOJ-" + parts[0]
 
+    /**
+     * problem difficulty
+     */
     const difficulty = 0
+
+    /**
+     * Problem tags
+     */
     const tags = []
+
+    /**
+     * Judge Id
+     */
     const judge_id = 6
 
     return {
@@ -401,6 +452,7 @@ export class ParsersService {
       tags,
       difficulty,
       judge_id,
+      link: problemLink,
     }
   }
 
