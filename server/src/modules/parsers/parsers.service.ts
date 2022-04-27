@@ -2,8 +2,6 @@ import { HttpService } from "@nestjs/axios"
 import { Injectable } from "@nestjs/common"
 import { lastValueFrom } from "rxjs"
 import * as cheerio from "cheerio"
-import * as path from "path"
-import * as url from "url"
 import ShortUniqueId from "short-unique-id"
 
 const UrlPattern = require("url-pattern")
@@ -568,23 +566,47 @@ export class ParsersService {
    *  Parser for ATCODER, id = 9
    */
   async atCoderParser(link) {
+    const linkUrl = new URL(link)
+
+    /**
+     * Check if the problem link is valid
+     */
+    const acUrlPattern = new UrlPattern("/contests/:contestId/tasks/:problemId")
+    let matchedResult = acUrlPattern.match(linkUrl.pathname)
+
+    let isInvalid: boolean = matchedResult === null
+    if (isInvalid) throw new Error("Invalid Atcoder link!")
+
+    /**
+     * Parse data from URL
+     */
     const { data } = await lastValueFrom(this.httpService.get(link))
     const $ = cheerio.load(data)
 
-    // problem name
+    /**
+     * Parse problem name
+     */
     const parse = $("#main-container .row span.h2").text().trim()
-    const name = parse.split("\n")[0].split("-")[1].substring(1)
+    const name = parse.split("\n")[0].slice(4)
 
-    // problem Id
-    const parseLink = url.parse(link, true)
-    const splitName = parseLink.pathname.split("/")[4]
-    const pid = "AC-" + splitName
+    /**
+     * Get Problem Id
+     */
+    const pid = "AC-" + matchedResult.problemId
 
-    // problem difficulty
+    /**
+     * Get Problem difficulty
+     */
     const difficulty = 0
 
-    // problem tags
+    /**
+     * Get Problem tags
+     */
     const tags = []
+
+    /**
+     * Get Problem Judge id
+     */
     const judge_id = 9
 
     return {
