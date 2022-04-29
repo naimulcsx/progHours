@@ -1,82 +1,105 @@
-import {
-  FormControl,
-  Select,
-  Option,
-  Input,
-  Label,
-  ErrorMessage,
-} from "@/components/Form"
-import { useEffect, useState } from "react"
+import * as Yup from "yup"
+import React, { useState } from "react"
+import { useFormik } from "formik"
+import { toast } from "react-toastify"
+import { AxiosError } from "axios"
+import { useQueryClient, useMutation } from "react-query"
+import { FormControl, Select, Option, Input } from "@/components/Form"
+import { AddIcon } from "../Icons"
+import moment from "moment"
+
+/**
+ * Import utils
+ */
+import showErrorToasts from "@/utils/showErrorToasts"
+import { createSubmission } from "@/api/submissions"
+
+/**
+ * Date picker component and styles
+ */
 import ReactDatePicker from "react-datepicker"
 import "react-datepicker/dist/react-datepicker.css"
 import "@/styles/datepicker.css"
-import * as Yup from "yup"
-import { useFormik } from "formik"
-import { toast } from "react-toastify"
-import { useQueryClient, useMutation } from "react-query"
-import { getSubmissions, createSubmission } from "@/api/submissions"
-import { Popover } from "@headlessui/react"
-import TagInputField from "./TagInputField"
-import { AddIcon } from "../Icons"
-import showErrorToasts from "@/utils/showErrorToasts"
-import moment from "moment"
 
 const submissionSchema = Yup.object().shape({
   link: Yup.string().trim().required("Problem link is required"),
-  solve_time: Yup.number("Solve time must be a number").required(
-    "Solve time is required"
-  ),
+  solve_time: Yup.number().required("Solve time is required"),
   verdict: Yup.string().required("Verdict is required"),
   solved_at: Yup.date().required("Date is required"),
 })
 
-const AddEntryRow = ({ id }) => {
+const AddEntryRow = ({ id }: { id: string }) => {
   const queryClient = useQueryClient()
-  const [selected, setSelected] = useState("AC")
 
-  const formik = useFormik({
-    initialValues: {
-      link: "",
-      solve_time: "",
-      verdict: "AC",
-      solved_at: new Date(),
-    },
-    validationSchema: submissionSchema,
-    onSubmit: async (values) => {
-      values.solve_time = parseInt(values.solve_time)
-      mutate(values)
-    },
-  })
-
-  const { mutate, isLoading } = useMutation(createSubmission, {
+  /**
+   * Create submission mutation
+   */
+  const createSubmissionMutation = useMutation(createSubmission, {
     onSuccess: (data) => {
       formik.resetForm()
       queryClient.invalidateQueries("practice")
       toast.success("Problem submitted successfully")
     },
-    onError: (err) => {
-      showErrorToasts(err.response.data.message)
+    onError: (err: AxiosError) => {
+      showErrorToasts(err.response?.data.message)
     },
   })
 
-  const handleSelected = (value) => {
+  /**
+   * Default selected state
+   */
+  const [selected, setSelected] = useState("AC")
+
+  const formik = useFormik({
+    initialValues: {
+      link: "",
+      solve_time: 0,
+      verdict: "AC",
+      solved_at: new Date(),
+    },
+    validationSchema: submissionSchema,
+    onSubmit: async (values) => {
+      /**
+       * Convert values.solve_time to number
+       */
+      const solveTimeString: string = values.solve_time.toString()
+      values.solve_time = parseInt(solveTimeString)
+
+      console.log(values)
+
+      /**
+       * Create the submission
+       */
+      createSubmissionMutation.mutate(values)
+    },
+  })
+
+  /**
+   * On change handler for Select component
+   */
+  const handleSelected = (value: string) => {
     setSelected(value)
     formik.setFieldValue("verdict", value)
   }
 
-  const handleSubmit = (e) => {
+  /**
+   * On submit handler for the form element
+   */
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
-    const errorNames = Object.keys(formik.errors)
-    if (errorNames.length > 0) {
-      errorNames.forEach((el) => {
-        toast.error(formik.errors[el], {
-          className: "toast",
-          toastId: formik.errors[el],
-        })
-      })
+    const fields = Object.keys(formik.errors) as Array<
+      "link" | "solve_time" | "verdict" | "solved_at"
+    >
+    if (fields.length === 0) {
+      formik.handleSubmit()
       return
     }
-    formik.handleSubmit()
+    fields.forEach((el) => {
+      toast.error(formik.errors[el], {
+        className: "toast",
+        toastId: formik.errors[el] as string,
+      })
+    })
   }
 
   return (
@@ -98,11 +121,7 @@ const AddEntryRow = ({ id }) => {
         </FormControl>
       </td>
       <td className="border border-slate-100" data-verdict>
-        <Select
-          value={selected}
-          onChange={handleSelected}
-          form="add-submission"
-        >
+        <Select value={selected} onChange={handleSelected}>
           <Option value="AC">AC</Option>
           <Option value="WA">WA</Option>
           <Option value="TLE">TLE</Option>
@@ -121,11 +140,6 @@ const AddEntryRow = ({ id }) => {
             {...formik.getFieldProps("solve_time")}
           ></Input>
         </FormControl>
-        {/* <input
-          type="text"
-          placeholder="Solve Time"
-          className="h-[40px] rounded px-3"
-        /> */}
       </td>
 
       <td className="border border-slate-100" data-tags>
@@ -135,8 +149,7 @@ const AddEntryRow = ({ id }) => {
       <td className="border border-slate-100" data-solved_at>
         <ReactDatePicker
           dateFormat="EEE, dd MMM yyyy"
-          form="add-submission"
-          // className="h-[40px] px-3 focus:outline-none rounded focus:ring-2 ring-primary ring-opacity-50"
+          className="h-[40px] px-3 focus:outline-none rounded focus:ring-2 ring-primary ring-opacity-50"
           selected={formik.values.solved_at}
           onChange={(date) => {
             const currentDate = new Date()
@@ -153,9 +166,12 @@ const AddEntryRow = ({ id }) => {
           form="add-submission"
           type="submit"
           className="flex items-center px-1 py-1 space-x-2 border rounded"
-          // onClick={handleSubmit}
         >
-          {isLoading ? <div className="sp sp-circle"></div> : <AddIcon />}
+          {createSubmissionMutation.isLoading ? (
+            <div className="sp sp-circle"></div>
+          ) : (
+            <AddIcon />
+          )}
         </button>
       </td>
     </tr>
