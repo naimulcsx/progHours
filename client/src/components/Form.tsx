@@ -1,37 +1,67 @@
-import React, { Fragment, isValidElement } from "react"
+import React, { Fragment, ReactNode } from "react"
 import { Listbox, Transition } from "@headlessui/react"
 import { CheckIcon, SelectorIcon } from "@heroicons/react/solid"
 
-function classNames(...classes) {
+function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(" ")
 }
 
-const FormControl = ({ isInvalid, ...props }) => {
-  const children = React.Children.toArray(props.children).filter((child) =>
-    isValidElement(child)
-  )
+const FormControl = ({
+  isInvalid = false,
+  children,
+  className,
+}: {
+  isInvalid?: boolean
+  className?: string
+  children?: ReactNode
+}) => {
+  const validChildren = React.Children.map(children, (child) => {
+    if (React.isValidElement(child) && typeof child.type !== "string") {
+      return child.type.name !== "ErrorMessage" ? child : null
+    }
+  })
+  const errorChildren = React.Children.map(children, (child) => {
+    if (React.isValidElement(child) && typeof child.type !== "string") {
+      return child.type.name === "ErrorMessage" ? child : null
+    }
+  })
   return (
-    <div className="form-group" {...props}>
-      {children.filter((child) => child.type !== ErrorMessage)}
-      {isInvalid && children.find((child) => child.type === ErrorMessage)}
+    <div className={className ? className : "form-group"}>
+      {validChildren}
+      {isInvalid && errorChildren}
     </div>
   )
 }
 
-const Label = ({ children }) => {
+const Label = ({ children }: { children: ReactNode }) => {
   return <label>{children}</label>
 }
 
-const Input = (props) => {
+const Input = (
+  props: React.DetailedHTMLProps<
+    React.InputHTMLAttributes<HTMLInputElement>,
+    HTMLInputElement
+  >
+) => {
   return <input {...props} />
 }
 
-const ErrorMessage = ({ children }) => {
+const ErrorMessage = ({ children }: { children: ReactNode }) => {
   return <div className="error-message">{children}</div>
 }
 
-const Select = ({ children, ...props }) => {
-  const styles = {
+const Select = ({
+  children,
+  value,
+  onChange,
+}: {
+  children: ReactNode
+  value: any
+  onChange: any
+}) => {
+  const styles: {
+    [key: string]: string
+  } = {
     AC: "bg-lime-200 text-lime-900 rounded w-full font-medium text-center",
     WA: "bg-red-200 text-red-900 rounded w-full font-medium text-center",
     RTE: "bg-pink-200 text-pink-900 rounded w-full font-medium text-center",
@@ -39,22 +69,22 @@ const Select = ({ children, ...props }) => {
     MLE: "bg-cyan-200 text-cyan-900 rounded w-full font-medium text-center",
   }
   return (
-    <Listbox {...props}>
+    <Listbox value={value} onChange={onChange}>
       {({ open }) => (
         <>
           <div>
             <Listbox.Button
               className={`${
-                styles[props.value]
+                styles[value] ? styles[value] : ""
               } relative w-full py-2 h-[40px] pr-10 shadow-sm bg-white cursor-default focus:outline-none focus:ring-2 focus:ring-primary ${
                 open ? "ring-2 ring-primary ring-opacity-50" : ""
               }`}
             >
-              <span className={`px-3 `}>{props.value}</span>
+              <span className={`px-3 `}>{value}</span>
               <span className="absolute inset-y-0 right-0 flex items-center pr-2 pointer-events-none">
                 <SelectorIcon
                   className={`w-4 h-4 ${
-                    styles[props.value] ? styles[props.value] : "text-gray-300"
+                    styles[value] ? styles[value] : "text-gray-300"
                   }`}
                   aria-hidden="true"
                 />
@@ -78,7 +108,13 @@ const Select = ({ children, ...props }) => {
   )
 }
 
-const Option = ({ children, ...props }) => {
+const Option = ({
+  children,
+  value,
+}: {
+  children: ReactNode
+  value: string
+}) => {
   return (
     <Listbox.Option
       className={({ active }) =>
@@ -87,7 +123,7 @@ const Option = ({ children, ...props }) => {
           "cursor-default select-none relative py-2 pl-3 pr-9"
         )
       }
-      {...props}
+      value={value}
     >
       {({ selected, active }) => (
         <>
