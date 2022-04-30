@@ -10,11 +10,11 @@ import { useMutation, useQueryClient } from "react-query"
 export default function ImportCsvModal({
   isOpen,
   setIsOpen,
-  files = [],
+  items = [],
 }: {
   isOpen: boolean
   setIsOpen: React.Dispatch<React.SetStateAction<boolean>>
-  files: any[]
+  items: any[]
 }) {
   const queryClient = useQueryClient()
 
@@ -67,7 +67,7 @@ export default function ImportCsvModal({
   const handleImportRequest = async () => {
     setImportStarted(true)
 
-    for (let item of files) {
+    for (let item of items) {
       let [link] = item
       setStatus((prev) => ({
         ...prev,
@@ -77,7 +77,7 @@ export default function ImportCsvModal({
       }))
     }
 
-    for (let item of files) {
+    for (let item of items) {
       let [
         link,
         solvedDuringContest,
@@ -150,7 +150,7 @@ export default function ImportCsvModal({
                   as="h3"
                   className="text-lg font-medium leading-6 text-gray-900"
                 >
-                  Import Submissions ({successCount}/{files.length})
+                  Import Submissions ({successCount}/{items.length})
                 </Dialog.Title>
                 <div className="mt-2">
                   <p className="text-sm text-gray-500">
@@ -161,7 +161,7 @@ export default function ImportCsvModal({
                 </div>
 
                 <div className="mt-6 space-y-3 h-64 bg-primary bg-opacity-5 rounded px-4 py-2 overflow-x-hidden shadow">
-                  {files.map((item, i) => {
+                  {items.map((item, i) => {
                     const [
                       link,
                       solvedDuringContest,

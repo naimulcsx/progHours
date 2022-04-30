@@ -16,33 +16,36 @@ import { GlobalContext } from "@/GlobalStateProvider"
 import { UploadIcon } from "@heroicons/react/outline"
 import ImportCsvModal from "./ImportCsvModal"
 import csvToArray from "@/utils/csvToArray"
-import { createSubmission } from "@/api/submissions"
 
 export default function TrackingSheet() {
   const context = useContext(GlobalContext)
   const { query, filteredData, selectedWeek, setSelectedWeek, weekRanges } =
     context?.useSubmissionsResult
 
+  /**
+   * Import .csv states
+   */
+  let [items, setItems] = useState([])
   let [isOpen, setIsOpen] = useState(false)
-  let [files, setFiles] = useState([])
 
+  /**
+   * Called after the user picks some file from import .csv button
+   */
   const handleImport = (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = e.target.files
     if (files) {
-      setIsOpen(true)
+      setIsOpen(true) // open the modal
       const reader = new FileReader()
       reader.onload = function fileReadCompleted() {
         // when the reader is done, the content is in reader.result.
-        let fileList = csvToArray(reader.result as string)
-        fileList = fileList.filter((file) => file.length !== 1)
-        setFiles(fileList)
+        let itemList = csvToArray(reader.result as string)
+        itemList = itemList.filter((item: Array<any>) => item.length !== 1)
+        setItems(itemList)
       }
       reader.readAsText(files[0])
     }
     e.target.value = ""
   }
-
-  console.log(files)
 
   return (
     <Layout dataDependency={[query.data]}>
@@ -79,7 +82,7 @@ export default function TrackingSheet() {
               <ImportCsvModal
                 isOpen={isOpen}
                 setIsOpen={setIsOpen}
-                files={files}
+                items={items}
               />
             </li>
           </ul>
