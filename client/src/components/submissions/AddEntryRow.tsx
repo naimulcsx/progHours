@@ -157,6 +157,7 @@ const AddEntryRow = ({ id }: { id: string }) => {
               .set("hour", currentDate.getHours())
               .set("minute", currentDate.getMinutes())
               .set("second", currentDate.getSeconds())
+              .set("millisecond", currentDate.getMilliseconds())
             formik.setFieldValue("solved_at", dateToSend.toDate())
           }}
         />

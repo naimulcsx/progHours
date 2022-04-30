@@ -4,8 +4,9 @@ import { InformationCircleIcon } from "@heroicons/react/outline"
 import { CheckIcon } from "@heroicons/react/solid"
 import { Fragment, useState } from "react"
 import { useMutation, useQueryClient } from "react-query"
-import Spinner from "@/components/Spinner"
 import { AxiosError } from "axios"
+import Spinner from "@/components/Spinner"
+import moment from "moment"
 
 export default function ImportCsvModal({
   isOpen,
@@ -111,6 +112,14 @@ export default function ImportCsvModal({
       date = date.split("/").length === 3 ? date.split("/") : date.split(".")
       const [day, month, year] = date
       date = new Date(parseInt(year), parseInt(month) - 1, parseInt(day))
+
+      const currentDate = new Date()
+      date = moment(date)
+        .set("hour", currentDate.getHours())
+        .set("minute", currentDate.getMinutes())
+        .set("second", currentDate.getSeconds())
+        .set("millisecond", currentDate.getMilliseconds())
+        .toDate()
 
       /**
        * Make the POST request to the server
