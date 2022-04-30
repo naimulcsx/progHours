@@ -1,11 +1,11 @@
 import { createSubmission } from "@/api/submissions"
-import Spinner from "@/components/Spinner"
 import { Dialog, Transition } from "@headlessui/react"
 import { InformationCircleIcon } from "@heroicons/react/outline"
 import { CheckIcon } from "@heroicons/react/solid"
-import { Fragment, useEffect, useState } from "react"
-import { IoTerminal } from "react-icons/io5"
+import { Fragment, useState } from "react"
 import { useMutation, useQueryClient } from "react-query"
+import Spinner from "@/components/Spinner"
+import { AxiosError } from "axios"
 
 export default function ImportCsvModal({
   isOpen,
@@ -18,26 +18,40 @@ export default function ImportCsvModal({
 }) {
   const queryClient = useQueryClient()
 
-  function closeModal() {
-    setIsOpen(false)
+  /**
+   * Status is an object that holds the state of the mutation of each items
+   * The key is the link, and the value is an object which contains the current status of the item
+   * Current status can be either - loading, success, error
+   */
+  interface Status {
+    [link: string]: {
+      status: "loading" | "success" | "error"
+      error?: any
+    }
   }
-
-  const [status, setStatus] = useState({})
+  const [status, setStatus] = useState<Status>({})
   const [successCount, setSuccessCount] = useState(0)
 
   const { mutateAsync } = useMutation(createSubmission, {
-    onError(err) {
+    onError(err: AxiosError) {
       const { link } = JSON.parse(err.config.data)
+      /**
+       * Set the status of the particular link to be 'error'
+       */
       setStatus((prev) => ({
         ...prev,
         [link]: {
           status: "error",
-          error: err?.response?.data?.message,
+          error: err.response?.data.message,
         },
       }))
     },
+
     onSuccess(data, values) {
       const link = values.link
+      /**
+       * Set the status of the particular link to be 'success'
+       */
       setStatus((prev) => ({
         ...prev,
         [link]: {
@@ -46,27 +60,26 @@ export default function ImportCsvModal({
       }))
       setSuccessCount((prev) => prev + 1)
     },
-    // onMutate(values) {
-    //   const link = values.link
-    //   setStatus({
-    //     ...status,
-    //     [link]: {
-    //       status: "loading",
-    //     },
-    //   })
-    // },
   })
 
-  interface Done {
-    [key: string]: string
-  }
-
+  /**
+   * States that tracks the status of the import process
+   */
   const [importStarted, setImportStarted] = useState(false)
   const [importFinished, setImportFinished] = useState(false)
 
+  /**
+   * Main handler function that goes through all the items and creates the submission one by one
+   */
   const handleImportRequest = async () => {
+    /**
+     * Import has started
+     */
     setImportStarted(true)
 
+    /**
+     * For each item, set the status of the particular link to be 'loading'
+     */
     for (let item of items) {
       let [link] = item
       setStatus((prev) => ({
@@ -77,6 +90,9 @@ export default function ImportCsvModal({
       }))
     }
 
+    /**
+     * For each item, try to create submission with the data we have from .csv
+     */
     for (let item of items) {
       let [
         link,
@@ -88,11 +104,17 @@ export default function ImportCsvModal({
         comment,
       ] = item
 
+      /**
+       * Formatting date
+       * Supports dd/mm/yyyy or dd.mm.yyyy
+       */
       date = date.split("/").length === 3 ? date.split("/") : date.split(".")
       const [day, month, year] = date
       date = new Date(parseInt(year), parseInt(month) - 1, parseInt(day))
 
-      // await new Promise((resolve) => setTimeout(resolve, 500))
+      /**
+       * Make the POST request to the server
+       */
       try {
         await mutateAsync({
           link,
@@ -102,8 +124,15 @@ export default function ImportCsvModal({
         })
       } catch (err) {}
     }
+
+    /**
+     * Everything is done, so let's update the importFinished state
+     */
     setImportFinished(true)
 
+    /**
+     * Wait 250ms before invalidating previous data, that will update the submissions
+     */
     await new Promise((resolve) => setTimeout(resolve, 250))
     queryClient.invalidateQueries("practice")
   }
@@ -150,7 +179,7 @@ export default function ImportCsvModal({
                   as="h3"
                   className="text-lg font-medium leading-6 text-gray-900"
                 >
-                  Import Submissions ({successCount}/{items.length})
+                  Import Submissions ({successCount} / {items.length})
                 </Dialog.Title>
                 <div className="mt-2">
                   <p className="text-sm text-gray-500">
@@ -160,7 +189,7 @@ export default function ImportCsvModal({
                   <p></p>
                 </div>
 
-                <div className="mt-6 space-y-3 h-64 bg-primary bg-opacity-5 rounded px-4 py-2 overflow-x-hidden shadow">
+                <div className="mt-6 space-y-3 h-64 bg-light rounded-lg px-5 py-3 overflow-x-hidden">
                   {items.map((item, i) => {
                     const [
                       link,
@@ -170,18 +199,18 @@ export default function ImportCsvModal({
                       date,
                       submissionLink,
                       comment,
-                    ] = item
+                    ]: Array<string> = item
 
                     const isSuccess =
-                      importStarted && status[link]?.status === "success"
+                      importStarted && status[link].status === "success"
                     const isLoading =
-                      importStarted && status[link]?.status === "loading"
+                      importStarted && status[link].status === "loading"
                     const isError =
-                      importStarted && status[link]?.status === "error"
+                      importStarted && status[link].status === "error"
 
                     return (
                       <div
-                        className="flex justify-between items-center text-gray-500 h-8 text-sm"
+                        className="flex justify-between items-center text-gray-500 h-7 text-sm"
                         key={`${link}-${i}}`}
                       >
                         <p
@@ -200,7 +229,7 @@ export default function ImportCsvModal({
                           </p>
                         )}
                         {isError && (
-                          <div title={status[link]?.error}>
+                          <div title={status[link].error}>
                             <InformationCircleIcon className="w-6 h-6 text-red-500 rounded-full" />
                           </div>
                         )}
@@ -231,7 +260,7 @@ export default function ImportCsvModal({
                     type="button"
                     className="inline-flex justify-center px-4 h-10 items-center text-sm font-medium text-blue-900 bg-blue-100 border border-transparent rounded-md hover:bg-blue-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-blue-500"
                     onClick={() => {
-                      closeModal()
+                      setIsOpen(false)
                       setStatus({})
                       setImportStarted(false)
                       setImportFinished(false)
