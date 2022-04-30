@@ -1,15 +1,15 @@
 /**
  * Import Components
  */
-import Navbar from "./Navbar"
-import NavLink from "./NavLink"
+import Navbar from "@/components/Navbar"
+import NavLink from "@/components/NavLink"
 
 /**
  * Import Icons
  */
 import { CogIcon, UserIcon } from "@heroicons/react/outline"
 
-const SettingsLayout = ({ children }: { children: React.ReactNode }) => {
+export const SettingsLayout = ({ children }: { children: React.ReactNode }) => {
   return (
     <div className="min-h-screen bg-light">
       <Navbar />
@@ -36,5 +36,3 @@ const SettingsLayout = ({ children }: { children: React.ReactNode }) => {
     </div>
   )
 }
-
-export default SettingsLayout

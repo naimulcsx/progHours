@@ -5,7 +5,7 @@ import { Helmet } from "react-helmet-async"
 /**
  * Import Components
  */
-import Layout from "@/components/dashboard/Layout"
+import { DashboardLayout } from "@/components/layouts/Dashboard"
 import ProgressBox from "@/components/ProgressBox"
 import VerdictChart from "@/components/dashboard/stats/VerdictChart"
 import WeekChart from "@/components/dashboard/stats/WeekChart"
@@ -62,7 +62,7 @@ const DashboardHome = () => {
    */
   const { user } = useContext(GlobalContext)
   return (
-    <Layout dataDependency={[user, data, frequency]}>
+    <DashboardLayout dataDependency={[user, data, frequency]}>
       <Helmet>
         <title>Dashboard</title>
       </Helmet>
@@ -88,7 +88,7 @@ const DashboardHome = () => {
           <VerdictChart data={data} />
         </div>
       </div>
-    </Layout>
+    </DashboardLayout>
   )
 }
 

@@ -1,12 +1,11 @@
-import { useQuery } from "react-query"
-import { useContext, useEffect, useState } from "react"
+import React, { useContext, useState } from "react"
 import { Helmet } from "react-helmet-async"
 
 /**
  * Import Components and helpers
  */
 import Spinner from "@/components/Spinner"
-import Layout from "@/components/dashboard/Layout"
+import { DashboardLayout } from "@/components/layouts/Dashboard"
 import TrackingTable from "@/components/submissions/Table"
 import WeekFilters from "@/components/submissions/filters/WeekFilter"
 
@@ -14,14 +13,42 @@ import WeekFilters from "@/components/submissions/filters/WeekFilter"
  * Import helpers
  */
 import { GlobalContext } from "@/GlobalStateProvider"
+import { UploadIcon } from "@heroicons/react/outline"
+import ImportCsvModal from "./ImportCsvModal"
+import csvToArray from "@/utils/csvToArray"
 
 export default function TrackingSheet() {
   const context = useContext(GlobalContext)
   const { query, filteredData, selectedWeek, setSelectedWeek, weekRanges } =
     context?.useSubmissionsResult
 
+  /**
+   * Import .csv states
+   */
+  let [items, setItems] = useState([])
+  let [isOpen, setIsOpen] = useState(false)
+
+  /**
+   * Called after the user picks some file from import .csv button
+   */
+  const handleImport = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const files = e.target.files
+    if (files) {
+      setIsOpen(true) // open the modal
+      const reader = new FileReader()
+      reader.onload = function fileReadCompleted() {
+        // when the reader is done, the content is in reader.result.
+        let itemList = csvToArray(reader.result as string)
+        itemList = itemList.filter((item: Array<any>) => item.length !== 1)
+        setItems(itemList)
+      }
+      reader.readAsText(files[0])
+    }
+    e.target.value = ""
+  }
+
   return (
-    <Layout dataDependency={[query.data]}>
+    <DashboardLayout dataDependency={[query.data]}>
       <Helmet>
         <title>Tracking Sheet</title>
       </Helmet>
@@ -32,7 +59,7 @@ export default function TrackingSheet() {
             <Spinner show={query.isLoading || query.isRefetching} />
           </h3>
         </div>
-        <div className="mt-4">
+        <div className="flex justify-between mt-4">
           <ul className="flex items-center space-x-4">
             <li>
               <WeekFilters
@@ -42,10 +69,27 @@ export default function TrackingSheet() {
               />
             </li>
           </ul>
+          <ul>
+            <li>
+              <label
+                htmlFor="csv-input"
+                className="flex items-center text-sm text-primary px-4 py-2 rounded-lg cursor-pointer border border-dashed border-primary"
+              >
+                <input type="file" id="csv-input" onInput={handleImport} />
+                <UploadIcon className="w-5 h-5 mr-2" />
+                Import via .csv
+              </label>
+              <ImportCsvModal
+                isOpen={isOpen}
+                setIsOpen={setIsOpen}
+                items={items}
+              />
+            </li>
+          </ul>
         </div>
       </div>
       {/* tracking table */}
       {query.data && <TrackingTable submissions={filteredData} />}
-    </Layout>
+    </DashboardLayout>
   )
 }

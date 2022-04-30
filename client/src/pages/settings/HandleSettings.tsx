@@ -1,4 +1,4 @@
-import SettingsLayout from "@/components/SettingsLayout"
+import { SettingsLayout } from "@/components/layouts/Settings"
 import { useFormik } from "formik"
 import * as Yup from "yup"
 import {
@@ -125,7 +125,7 @@ const EditProfile = () => {
           <div className="flex items-center space-x-5">
             <div className="flex-1">
               <FormControl
-                isInvalid={formik.touched.handle && formik.errors.handle}
+                isInvalid={formik.touched.handle && !!formik.errors.handle}
               >
                 <Input
                   type="text"
@@ -139,7 +139,7 @@ const EditProfile = () => {
 
             <FormControl
               isInvalid={
-                formik.touched.onlineJudge && formik.errors.onlineJudge
+                formik.touched.onlineJudge && !!formik.errors.onlineJudge
               }
             >
               <Select

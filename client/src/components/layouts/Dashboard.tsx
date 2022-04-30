@@ -1,10 +1,14 @@
+import { Fragment } from "react"
+import { Transition } from "@headlessui/react"
+
+/**
+ * Import Components
+ */
 import Navbar from "@/components/Navbar"
 import Sidebar from "@/components/dashboard/Sidebar"
-import MobileNav from "../MobileNav"
-import { Transition } from "@headlessui/react"
-import { Fragment } from "react"
+import MobileNav from "@/components/MobileNav"
 
-const Layout = ({
+export const DashboardLayout = ({
   children,
   dataDependency,
 }: {
@@ -40,5 +44,3 @@ const Layout = ({
     </div>
   )
 }
-
-export default Layout

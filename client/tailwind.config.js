@@ -1,4 +1,5 @@
 const colors = require("tailwindcss/colors")
+console.log(colors)
 
 module.exports = {
   content: ["./src/**/*.{ts,tsx}"],
@@ -24,7 +25,6 @@ module.exports = {
         light: "#f9f7fa",
         sky: "#00A5FF",
         orange: "#FF5C00",
-        green: "#0F7432",
         lightGreen: "#AAF3B2",
         dark: "#0a0347",
       },
