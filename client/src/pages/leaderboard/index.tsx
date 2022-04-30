@@ -6,7 +6,7 @@ import { useQuery } from "react-query"
 /**
  * Import Components
  */
-import Layout from "@/components/dashboard/Layout"
+import { DashboardLayout } from "@/components/layouts/Dashboard"
 import LeaderboardTable from "@/components/leaderboard/Table"
 import Spinner from "@/components/Spinner"
 
@@ -41,7 +41,7 @@ const LeaderboardPage = () => {
     },
   })
   return (
-    <Layout dataDependency={[ranklist]}>
+    <DashboardLayout dataDependency={[ranklist]}>
       <Helmet>
         <title>Leaderboard</title>
       </Helmet>
@@ -67,7 +67,7 @@ const LeaderboardPage = () => {
           {ranklist && <LeaderboardTable ranklist={ranklist} />}
         </div>
       </Transition>
-    </Layout>
+    </DashboardLayout>
   )
 }
 

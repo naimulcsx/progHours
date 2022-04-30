@@ -5,7 +5,7 @@ import { Helmet } from "react-helmet-async"
  * Import Components and helpers
  */
 import Spinner from "@/components/Spinner"
-import Layout from "@/components/dashboard/Layout"
+import { DashboardLayout } from "@/components/layouts/Dashboard"
 import TrackingTable from "@/components/submissions/Table"
 import WeekFilters from "@/components/submissions/filters/WeekFilter"
 
@@ -48,7 +48,7 @@ export default function TrackingSheet() {
   }
 
   return (
-    <Layout dataDependency={[query.data]}>
+    <DashboardLayout dataDependency={[query.data]}>
       <Helmet>
         <title>Tracking Sheet</title>
       </Helmet>
@@ -90,6 +90,6 @@ export default function TrackingSheet() {
       </div>
       {/* tracking table */}
       {query.data && <TrackingTable submissions={filteredData} />}
-    </Layout>
+    </DashboardLayout>
   )
 }

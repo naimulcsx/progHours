@@ -1,4 +1,3 @@
-import SettingsLayout from "@/components/SettingsLayout"
 import { useFormik } from "formik"
 import * as Yup from "yup"
 import { FormControl, Input, Label, ErrorMessage } from "@/components/Form"
@@ -7,6 +6,7 @@ import { useMutation, useQuery, useQueryClient } from "react-query"
 import { getUser, updateUserAccount } from "@/api/user"
 import { toast } from "react-toastify"
 import showErrorToasts from "@/utils/showErrorToasts"
+import { SettingsLayout } from "@/components/layouts/Settings"
 
 const accountSchema = Yup.object().shape({
   name: Yup.string().trim(),
@@ -87,7 +87,7 @@ const AccountSettings = () => {
       <form className="space-y-12" onSubmit={formik.handleSubmit}>
         <div className="space-y-6">
           <h3 className="mb-8">Change Account Settings</h3>
-          <FormControl isInvalid={formik.touched.name && formik.errors.name}>
+          <FormControl isInvalid={formik.touched.name && !!formik.errors.name}>
             <Input
               type="text"
               placeholder=" "
@@ -97,7 +97,7 @@ const AccountSettings = () => {
             <ErrorMessage>{formik.errors.name}</ErrorMessage>
           </FormControl>
 
-          <FormControl isInvalid={formik.touched.uid && formik.errors.uid}>
+          <FormControl isInvalid={formik.touched.uid && !!formik.errors.uid}>
             <Input
               type="text"
               placeholder=" "
@@ -108,7 +108,9 @@ const AccountSettings = () => {
             <ErrorMessage>{formik.errors.uid}</ErrorMessage>
           </FormControl>
 
-          <FormControl isInvalid={formik.touched.email && formik.errors.email}>
+          <FormControl
+            isInvalid={formik.touched.email && !!formik.errors.email}
+          >
             <Input
               type="email"
               placeholder=" "
@@ -123,7 +125,7 @@ const AccountSettings = () => {
           <h3 className="mb-8">Change your Password</h3>
 
           <FormControl
-            isInvalid={formik.touched && formik.errors.currentPassword}
+            isInvalid={formik.touched && !!formik.errors.currentPassword}
           >
             <Input
               type="password"
@@ -134,7 +136,9 @@ const AccountSettings = () => {
             <ErrorMessage>{formik.errors.currentPassword}</ErrorMessage>
           </FormControl>
 
-          <FormControl isInvalid={formik.touched && formik.errors.newPassword}>
+          <FormControl
+            isInvalid={formik.touched && !!formik.errors.newPassword}
+          >
             <Input
               type="password"
               placeholder=" "
@@ -145,7 +149,7 @@ const AccountSettings = () => {
           </FormControl>
 
           <FormControl
-            isInvalid={formik.touched && formik.errors.confirmPassword}
+            isInvalid={formik.touched && !!formik.errors.confirmPassword}
           >
             <Input
               type="password"
