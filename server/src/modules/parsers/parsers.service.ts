@@ -124,9 +124,6 @@ export class ParsersService {
       difficulty: number,
       judge_id = 1
 
-    /**
-     * Check if the problemId exists
-     */
     isInvalid = true
     for (let problem of data.result.problems) {
       if (problem.index === matchedResult.problemId) {
@@ -141,6 +138,10 @@ export class ParsersService {
       }
     }
 
+    /**
+     * Valid pattern but wrong URL, example problem `Z` would less likely to exist in Codeforces rounds
+     * In that case, https://codeforces.com/contest/1616/problem/Z is a valid matching pattern but the problem doesn't exist
+     */
     if (isInvalid) {
       throw new Error("Invalid codeforces link!")
     }
