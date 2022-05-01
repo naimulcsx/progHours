@@ -82,6 +82,7 @@ export class ParsersService {
   /**
    **  Parser for CODEFORCES, id = 1
    */
+
   async cfParser(link) {
     /**
      * Check if the problem link is valid
@@ -89,7 +90,6 @@ export class ParsersService {
     const linkUrl = new URL(link)
     const cfValidPatterns = [
       new UrlPattern("/contest/:contestId/problem/:problemId"),
-      new UrlPattern("/problemset/problem/:contestId/:problemId"),
       new UrlPattern("/gym/:gymId/problem/:problemId"),
     ]
 
@@ -110,45 +110,41 @@ export class ParsersService {
     /**
      * Get the source of the provided codeforces link
      */
-    const { data } = await lastValueFrom(this.httpService.get(link))
-    const $ = cheerio.load(data)
+    const { data } = await lastValueFrom(
+      this.httpService.get(
+        `https://codeforces.com/api/contest.standings?contestId=${
+          matchedResult.contestId || matchedResult.gymId
+        }&from=1&count=1`
+      )
+    )
+
+    let pid: string,
+      name: string,
+      tags: string[],
+      difficulty: number,
+      judge_id = 1
 
     /**
-     * Valid pattern but wrong URL, example problem `Z` would less likely to exist in Codeforces rounds
-     * In that case, https://codeforces.com/contest/1616/problem/Z is a valid matching pattern but the problem doesn't exist
+     * Check if the problemId exists
      */
-    isInvalid = $(".title a").html() !== null
+    isInvalid = true
+    for (let problem of data.result.problems) {
+      if (problem.index === matchedResult.problemId) {
+        isInvalid = false
+        pid = matchedResult.contestId
+          ? `CF-${matchedResult.contestId}${problem.index}`
+          : `Gym-${matchedResult.gymId}${problem.index}`
+        name = problem.name
+        difficulty = problem.rating || 0
+        tags = problem.tags
+        break
+      }
+    }
+
     if (isInvalid) {
       throw new Error("Invalid codeforces link!")
     }
 
-    /**
-     * Extract informations from source
-     */
-    const pid = matchedResult.contestId
-      ? `CF-${matchedResult.contestId}${matchedResult.problemId}`
-      : `Gym-${matchedResult.gymId}${matchedResult.problemId}`
-    const name = $(".title").html().split(". ")[1]
-
-    /**
-     * Iterate over all tags of the problem
-     */
-    const tags = []
-    let difficulty = 0
-    $(".roundbox .tag-box").each(function (i, e) {
-      const tag = $(this).text().trim()
-      /**
-       * Extract the tag with starts with * - use it as tje problem difficulty
-       */
-      if (tag.includes("*") && tag.indexOf("*") === 0)
-        difficulty = parseInt(tag.substring(1))
-      else tags.push(tag)
-    })
-
-    /**
-     * Set judge_id for codeforces
-     */
-    const judge_id = 1
     return {
       pid,
       name,
