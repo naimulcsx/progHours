@@ -23,3 +23,36 @@ export const cfLinkTransformer = (link: string) => {
   }
   return link
 }
+
+export const csesLinkTransformer = (link: string) => {
+  let linkURL = new URL(link)
+  if (linkURL.hostname === "www.cses.fi") {
+    linkURL.hostname = "cses.fi"
+  }
+  return linkURL.toString()
+}
+
+export const ccLinkTransformer = (link: string) => {
+  let linkURL = new URL(link)
+  if (linkURL.hostname === "codechef.com") {
+    linkURL.hostname = "www.codechef.com"
+  }
+  link = linkURL.toString()
+  const pattern = new UrlPattern("/:contestId/problems/:problemId")
+  const patternResult = pattern.match(new URL(link).pathname)
+  if (patternResult) {
+    link = `${linkURL.origin}/problems/${patternResult.problemId}`
+  }
+  return link
+}
+
+export const timusLinkTransformer = (link: string) => {
+  const linkURL = new URL(link)
+  const patternResult = new UrlPattern("/print.aspx").match(linkURL.pathname)
+  const problemId = linkURL.searchParams.get("num"),
+    spaceId = linkURL.searchParams.get("space")
+  if (patternResult) {
+    link = `${linkURL.origin}/problem.aspx?space=${spaceId}&num=${problemId}`
+  }
+  return link
+}

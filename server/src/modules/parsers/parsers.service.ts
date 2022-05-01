@@ -31,7 +31,6 @@ export class ParsersService {
   async parseProblem(link) {
     const parserMap = {
       "codeforces.com": this.cfParser,
-      "www.codeforces.com": this.cfParser,
       "lightoj.com": this.lightOJParser,
       "onlinejudge.org": this.uvaParser,
       "cses.fi": this.csesParser,

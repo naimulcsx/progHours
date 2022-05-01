@@ -7,8 +7,13 @@ import {
 import { InjectRepository } from "@nestjs/typeorm"
 import { Repository } from "typeorm"
 import convertLinkToOriginal from "@/utils/converLinkToOriginal"
-import getUniformCFLink from "@/utils/getUniformCFLink"
-import getUniformCCLink from "@/utils/getUniformCCLink"
+import {
+  spojLinkTransformer,
+  cfLinkTransformer,
+  csesLinkTransformer,
+  ccLinkTransformer,
+  timusLinkTransformer,
+} from "@/utils/linkTransformers"
 
 /**
  * Import Entities (models)
@@ -22,11 +27,6 @@ import { ProblemsService } from "@/modules/problems/problems.service"
 import { ParsersService } from "@/modules/parsers/parsers.service"
 import { AuthService } from "@/modules/auth/auth.service"
 import { UsersService } from "@/modules/users/users.service"
-import getUniformTimusLink from "@/utils/getUniformTimusLink"
-import {
-  spojLinkTransformer,
-  cfLinkTransformer,
-} from "@/utils/linkTransformers"
 
 @Injectable()
 export class SubmissionsService {
@@ -114,13 +114,14 @@ export class SubmissionsService {
      *    https://vjudge.net/problem/CodeForces-1617B
      */
     const linkConverters = {
-      "vjudge.net": convertLinkToOriginal,
-      "codeforces.com": cfLinkTransformer,
-      "www.codeforces.com": cfLinkTransformer,
-      "codechef.com": getUniformCCLink,
-      "acm.timus.ru": getUniformTimusLink,
-      "spoj.com": spojLinkTransformer,
-      "www.spoj.com": spojLinkTransformer,
+      "vjudge.net": convertLinkToOriginal, // convert vjudge links to respective OJ link
+      "codeforces.com": cfLinkTransformer, // convert problemset link to contest link
+      "www.codeforces.com": cfLinkTransformer, // removes www + convert problemset link to contest link
+      "codechef.com": ccLinkTransformer, // adds www + convert contest link to problemset link
+      "www.codechef.com": ccLinkTransformer, // convert contest link to problemset link
+      "spoj.com": spojLinkTransformer, // adds www
+      "www.cses.fi": csesLinkTransformer, // removes www
+      "acm.timus.ru": timusLinkTransformer, // convert print.asp link to problem.asp link
     }
     if (linkConverters[hostname]) link = linkConverters[hostname](link)
 
