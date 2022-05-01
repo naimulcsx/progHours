@@ -73,7 +73,6 @@ const App = (): JSX.Element => {
           theme="colored"
           autoClose={3000}
           position="bottom-right"
-          transition={Slide}
         />
         {/* <ReactQueryDevtools position="bottom-right" /> */}
       </HelmetProvider>

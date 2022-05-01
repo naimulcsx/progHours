@@ -31,6 +31,7 @@ export class ParsersService {
   async parseProblem(link) {
     const parserMap = {
       "codeforces.com": this.cfParser,
+      "www.codeforces.com": this.cfParser,
       "lightoj.com": this.lightOJParser,
       "onlinejudge.org": this.uvaParser,
       "cses.fi": this.csesParser,
@@ -378,14 +379,13 @@ export class ParsersService {
    *  Parser for SPOJ, id = 6
    */
   async spojParser(link) {
-    const linkURL = new URL(link)
-
+    let linkURL = new URL(link)
     /**
      * Check if the problem link is valid
      */
     const sopjUrlPatterns = [
-      new UrlPattern("/:contestId/problems/:problemId/"),
-      new UrlPattern("/problems/:problemId/"),
+      new UrlPattern("/:contestId/problems/:problemId"),
+      new UrlPattern("/problems/:problemId"),
     ]
     let isInvalid = true
     let matchedResult: any

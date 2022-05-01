@@ -23,6 +23,10 @@ import { ParsersService } from "@/modules/parsers/parsers.service"
 import { AuthService } from "@/modules/auth/auth.service"
 import { UsersService } from "@/modules/users/users.service"
 import getUniformTimusLink from "@/utils/getUniformTimusLink"
+import {
+  spojLinkTransformer,
+  cfLinkTransformer,
+} from "@/utils/linkTransformers"
 
 @Injectable()
 export class SubmissionsService {
@@ -89,7 +93,11 @@ export class SubmissionsService {
       if (!match) url.searchParams.delete(key)
     })
     link = url.toString()
-    console.log("link ", link)
+
+    /**
+     * Remove trailing slash
+     */
+    link = link.replace(/\/$/, "")
 
     /**
      * Convert link to https protocol
@@ -107,9 +115,12 @@ export class SubmissionsService {
      */
     const linkConverters = {
       "vjudge.net": convertLinkToOriginal,
-      "codeforces.com": getUniformCFLink,
-      "www.codechef.com": getUniformCCLink,
+      "codeforces.com": cfLinkTransformer,
+      "www.codeforces.com": cfLinkTransformer,
+      "codechef.com": getUniformCCLink,
       "acm.timus.ru": getUniformTimusLink,
+      "spoj.com": spojLinkTransformer,
+      "www.spoj.com": spojLinkTransformer,
     }
     if (linkConverters[hostname]) link = linkConverters[hostname](link)
 
