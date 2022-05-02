@@ -36,6 +36,11 @@ import { ProblemsService } from "@/modules/problems/problems.service"
 import { ParsersService } from "@/modules/parsers/parsers.service"
 import { AuthService } from "@/modules/auth/auth.service"
 import { UsersService } from "@/modules/users/users.service"
+import {
+  removeParams,
+  removeTrailingSlash,
+  toHttps,
+} from "@/utils/globalLinkTransformers"
 
 @Injectable()
 export class SubmissionsService {
@@ -80,45 +85,9 @@ export class SubmissionsService {
     const { hostname, protocol } = url
 
     /**
-     * Remove all query params from the link
-     *  - except a few online judge which uses query params as problem links eg. uva, timus etc
+     * Apply Global Link Transformers
      */
-    const params = []
-    let excludeOJParams = {
-      "onlinejudge.org": ["option", "Itemid", "category", "page", "problem"],
-      "www.onlinejudge.org": [
-        "option",
-        "Itemid",
-        "category",
-        "page",
-        "problem",
-      ],
-      "acm.timus.ru": ["space", "num"],
-    }
-    for (let param of url.searchParams.entries()) params.push(param)
-    params.forEach(([key]) => {
-      let match: boolean
-      Object.keys(excludeOJParams).forEach((oj) => {
-        if (hostname === oj) {
-          match = true
-          if (!excludeOJParams[oj].includes(key)) {
-            url.searchParams.delete(key)
-          }
-        }
-      })
-      if (!match) url.searchParams.delete(key)
-    })
-    link = url.toString()
-
-    /**
-     * Remove trailing slash
-     */
-    link = link.replace(/\/$/, "")
-
-    /**
-     * Convert link to https protocol
-     */
-    if (protocol === "http:") link = `https:` + link.substring(5)
+    link = toHttps(removeParams(removeTrailingSlash(link)))
 
     /**
      * Link Transformer
