@@ -8,6 +8,13 @@ export const removeParams = (link: string) => {
   let excludeOJParams = {
     "onlinejudge.org": ["option", "Itemid", "category", "page", "problem"],
     "www.onlinejudge.org": ["option", "Itemid", "category", "page", "problem"],
+    "icpcarchive.ecs.baylor.edu": [
+      "option",
+      "Itemid",
+      "category",
+      "page",
+      "problem",
+    ],
     "acm.timus.ru": ["space", "num"],
   }
   for (let param of url.searchParams.entries()) params.push(param)

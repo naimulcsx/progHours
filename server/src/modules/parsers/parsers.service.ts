@@ -3,6 +3,7 @@ import { Injectable } from "@nestjs/common"
 import { lastValueFrom } from "rxjs"
 import * as cheerio from "cheerio"
 import ShortUniqueId from "short-unique-id"
+import https from "https"
 
 const UrlPattern = require("url-pattern")
 const genId = new ShortUniqueId({ length: 6 })
@@ -40,6 +41,7 @@ export class ParsersService {
       "www.eolymp.com": this.eolympParser,
       "www.beecrowd.com.br": this.beeCrowdParser,
       "onlinejudge.org": this.uvaParser,
+      "icpcarchive.ecs.baylor.edu": this.icpcarchiveParser,
       "toph.co": this.tophParser,
       "www.hackerrank.com": this.hackerrankParser,
       "leetcode.com": this.leetCodeParser,
@@ -781,6 +783,50 @@ export class ParsersService {
       difficulty: 0,
       judge_id: 14,
       link: `https://codeto.win/problem/${matchedResult.problemId}`,
+    }
+  }
+
+  /**
+   *  Parser for UVA, id = 4
+   */
+  async icpcarchiveParser(link) {
+    const linkURl = new URL(link)
+
+    /**
+     * Check if the problem link is valid
+     */
+    const pattern = new UrlPattern("/index.php")
+    let matchedResult = pattern.match(linkURl.pathname)
+
+    const problemId = linkURl.searchParams.get("problem")
+    const categoryId = linkURl.searchParams.get("category")
+
+    let isInvalid: boolean =
+      matchedResult === null || problemId === null || categoryId === null
+
+    if (isInvalid) throw new Error("Invalid ICPC Live Archive link!")
+
+    /**
+     * Extract data from provided link
+     */
+    process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0" // for ignoring ssl certificate
+    const response = await lastValueFrom(this.httpService.get(link))
+    process.env.NODE_TLS_REJECT_UNAUTHORIZED = "1"
+
+    const $ = cheerio.load(response.data)
+    const str = $(".maincontent table tr:nth-child(2) h3").text().trim()
+    const parts = str.split(" - ")
+
+    const pid = "ICPCLive-" + parts[0]
+    const name = parts.slice(1).join(" ").trim()
+
+    return {
+      pid,
+      name,
+      tags: [],
+      difficulty: 0,
+      judge_id: 15,
+      link: `https://icpcarchive.ecs.baylor.edu/index.php?option=com_onlinejudge&Itemid=8&category=${categoryId}&page=show_problem&problem=${problemId}`,
     }
   }
 
