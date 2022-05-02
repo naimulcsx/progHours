@@ -13,6 +13,15 @@ import {
   csesLinkTransformer,
   ccLinkTransformer,
   timusLinkTransformer,
+  lightOjLinkTransformer,
+  atCoderLinkTransformer,
+  eolympLinkTransformer,
+  beecrowdLinkTransformer,
+  uvaLinkTransformer,
+  tophLinkTransformer,
+  hackrrankLinkTransformer,
+  leetcodeLinkTransformer,
+  codetowinLinkTransformer,
 } from "@/utils/linkTransformers"
 
 /**
@@ -77,6 +86,13 @@ export class SubmissionsService {
     const params = []
     let excludeOJParams = {
       "onlinejudge.org": ["option", "Itemid", "category", "page", "problem"],
+      "www.onlinejudge.org": [
+        "option",
+        "Itemid",
+        "category",
+        "page",
+        "problem",
+      ],
       "acm.timus.ru": ["space", "num"],
     }
     for (let param of url.searchParams.entries()) params.push(param)
@@ -122,6 +138,17 @@ export class SubmissionsService {
       "spoj.com": spojLinkTransformer, // adds www
       "www.cses.fi": csesLinkTransformer, // removes www
       "acm.timus.ru": timusLinkTransformer, // convert print.asp link to problem.asp link
+      "www.lightoj.com": lightOjLinkTransformer, // removes www
+      "www.atcoder.jp": atCoderLinkTransformer, // removes www
+      "www.onlinejudge.org": uvaLinkTransformer, // removes www
+      "eolymp.com": eolympLinkTransformer, // adds www
+      "beecrowd.com.br": beecrowdLinkTransformer, // adds www + convert repository link
+      "www.beecrowd.com.br": beecrowdLinkTransformer, // convert repository link
+      "www.toph.co": tophLinkTransformer, // removes www
+      "hackerrank.com": hackrrankLinkTransformer, // adds www
+      "www.hackerrank.com": hackrrankLinkTransformer, // adds www + unify links
+      "www.leetcode.com": leetcodeLinkTransformer, // removes www
+      "www.codeto.win": codetowinLinkTransformer, // removes www
     }
     if (linkConverters[hostname]) link = linkConverters[hostname](link)
 

@@ -56,3 +56,87 @@ export const timusLinkTransformer = (link: string) => {
   }
   return link
 }
+
+export const lightOjLinkTransformer = (link: string) => {
+  const linkURL = new URL(link)
+  if (linkURL.hostname === "www.lightoj.com") {
+    linkURL.hostname = "lightoj.com"
+  }
+  return linkURL.toString()
+}
+
+export const atCoderLinkTransformer = (link: string) => {
+  const linkURL = new URL(link)
+  if (linkURL.hostname === "www.atcoder.jp") {
+    linkURL.hostname = "atcoder.jp"
+  }
+  return linkURL.toString()
+}
+
+export const eolympLinkTransformer = (link: string) => {
+  const linkURL = new URL(link)
+  if (linkURL.hostname === "eolymp.com") {
+    linkURL.hostname = "www.eolymp.com"
+  }
+  return linkURL.toString()
+}
+
+export const beecrowdLinkTransformer = (link: string) => {
+  const linkURL = new URL(link)
+  if (linkURL.hostname === "beecrowd.com.br") {
+    linkURL.hostname = "www.beecrowd.com.br"
+  }
+  const beecrowdRepoPattern = new UrlPattern(
+    "/repository/UOJ_:problemId_en.html"
+  )
+  const result = beecrowdRepoPattern.match(linkURL.pathname)
+  if (result) {
+    linkURL.pathname = `/judge/en/problems/view/${result.problemId}`
+  }
+  return linkURL.toString()
+}
+
+export const uvaLinkTransformer = (link: string) => {
+  const linkURL = new URL(link)
+  if (linkURL.hostname === "www.onlinejudge.org") {
+    linkURL.hostname = "onlinejudge.org"
+  }
+  return linkURL.toString()
+}
+
+export const tophLinkTransformer = (link: string) => {
+  const linkURL = new URL(link)
+  if (linkURL.hostname === "www.toph.co") {
+    linkURL.hostname = "toph.co"
+  }
+  return linkURL.toString()
+}
+
+export const hackrrankLinkTransformer = (link: string) => {
+  const linkURL = new URL(link)
+  if (linkURL.hostname === "hackerrank.com") {
+    linkURL.hostname = "www.hackerrank.com"
+  }
+  const pattern = new UrlPattern("/challenges/:problemId/problem")
+  const result = pattern.match(linkURL.pathname)
+  if (result) {
+    linkURL.pathname = `/challenges/${result.problemId}`
+  }
+  return linkURL.toString()
+}
+
+export const leetcodeLinkTransformer = (link: string) => {
+  const linkURL = new URL(link)
+  if (linkURL.hostname === "www.leetcode.com") {
+    linkURL.hostname = "leetcode.com"
+  }
+  return linkURL.toString()
+}
+
+export const codetowinLinkTransformer = (link: string) => {
+  const linkURL = new URL(link)
+  if (linkURL.hostname === "www.codeto.win") {
+    linkURL.hostname = "codeto.win"
+  }
+  return linkURL.toString()
+}

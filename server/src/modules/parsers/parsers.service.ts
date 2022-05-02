@@ -31,27 +31,20 @@ export class ParsersService {
   async parseProblem(link) {
     const parserMap = {
       "codeforces.com": this.cfParser,
-      "lightoj.com": this.lightOJParser,
-      "onlinejudge.org": this.uvaParser,
-      "cses.fi": this.csesParser,
-      "toph.co": this.tophParser,
-      "spoj.com": this.spojParser,
+      "www.codechef.com": this.ccParser,
       "www.spoj.com": this.spojParser,
       "atcoder.jp": this.atCoderParser,
-      "www.atcoder.jp": this.atCoderParser,
-      "vjudge.net": this.vjudgeParser,
-      "codechef.com": this.ccParser,
-      "www.codechef.com": this.ccParser,
-      "www.eolymp.com": this.eOlympParser,
-      "eolymp.com": this.eOlympParser,
-      "www.beecrowd.com.br": this.beeCrowdParser,
-      "beecrowd.com.br": this.beeCrowdParser,
-      "www.hackerrank.com": this.hackerrankParser,
-      "hackerrank.com": this.hackerrankParser,
-      "www.leetcode.com": this.leetCodeParser,
-      "leetcode.com": this.leetCodeParser,
+      "lightoj.com": this.lightOJParser,
+      "cses.fi": this.csesParser,
       "acm.timus.ru": this.timusParser,
+      "www.eolymp.com": this.eolympParser,
+      "www.beecrowd.com.br": this.beeCrowdParser,
+      "onlinejudge.org": this.uvaParser,
+      "toph.co": this.tophParser,
+      "www.hackerrank.com": this.hackerrankParser,
+      "leetcode.com": this.leetCodeParser,
       "codeto.win": this.codeToWinParser,
+      "vjudge.net": this.vjudgeParser,
     }
 
     try {
@@ -139,8 +132,9 @@ export class ParsersService {
     }
 
     /**
-     * Valid pattern but wrong URL, example problem `Z` would less likely to exist in Codeforces rounds
-     * In that case, https://codeforces.com/contest/1616/problem/Z is a valid matching pattern but the problem doesn't exist
+     * Valid pattern but wrong URL, example problem `Z` would less likely to exist in
+     * Codeforces rounds. In that case, https://codeforces.com/contest/1616/problem/Z
+     * is a valid matching pattern but the problem doesn't exist
      */
     if (isInvalid) {
       throw new Error("Invalid codeforces link!")
@@ -456,17 +450,12 @@ export class ParsersService {
   async hackerrankParser(link) {
     const linkUrl = new URL(link)
 
-    const hackerrankValidPatterns = [
-      new UrlPattern("/challenges/:problemId/problem?isFullScreen=true"),
-      new UrlPattern("/challenges/:problemId/problem?isFullScreen=false"),
-      new UrlPattern("/challenges/:problemId/problem"),
-    ]
+    const hackerrankValidPatterns = [new UrlPattern("/challenges/:problemId")]
 
     let matchedResult: any
     let isInvalid: boolean = true
     hackerrankValidPatterns.forEach((pattern) => {
       let result = pattern.match(linkUrl.pathname)
-
       if (result) {
         matchedResult = result
         isInvalid = false
@@ -498,7 +487,7 @@ export class ParsersService {
       tags: [],
       difficulty: 0,
       judge_id: 7,
-      link: `https://www.hackerrank.com/challenges/${matchedResult.problemId}/problem`,
+      link: `https://www.hackerrank.com/challenges/${matchedResult.problemId}`,
     }
   }
 
@@ -570,7 +559,7 @@ export class ParsersService {
     const acUrlPattern = new UrlPattern("/contests/:contestId/tasks/:problemId")
     let matchedResult = acUrlPattern.match(linkUrl.pathname)
 
-    let isInvalid: boolean = matchedResult === null
+    let isInvalid = matchedResult === null
     if (isInvalid) throw new Error("Invalid Atcoder link!")
 
     /**
@@ -582,63 +571,36 @@ export class ParsersService {
     /**
      * Parse problem name
      */
-    const parse = $("#main-container .row span.h2").text().trim()
-    const name = parse.split("\n")[0].slice(4)
-
-    /**
-     * Get Problem Id
-     */
-    const pid = "AC-" + matchedResult.problemId
-
-    /**
-     * Get Problem difficulty
-     */
-    const difficulty = 0
-
-    /**
-     * Get Problem tags
-     */
-    const tags = []
-
-    /**
-     * Get Problem Judge id
-     */
-    const judge_id = 9
+    const name = $("#main-container .row span.h2")
+      .text()
+      .trim()
+      .split("\n")[0]
+      .slice(4)
 
     return {
-      pid,
       name,
-      tags,
-      difficulty,
-      judge_id,
+      pid: `AC-${matchedResult.problemId}`,
+      tags: [],
+      difficulty: 0,
+      judge_id: 9,
     }
   }
 
   /**
    *  Parser for EOLYMP, id = 10
    */
-  async eOlympParser(link) {
+  async eolympParser(link) {
+    const linkUrl = new URL(link)
+
     /**
      * Check if the problem link is valid
      */
-    const linkUrl = new URL(link)
-
-    const eOlympValidPatterns = [
-      new UrlPattern("/en/problems/:problemId"),
-      // new UrlPattern("/en/contests/:contestId/problems/:problemId"),
-    ]
-
-    let matchedResult: any
     let isInvalid: boolean = true
-    eOlympValidPatterns.forEach((pattern) => {
-      let result = pattern.match(linkUrl.pathname)
-
-      if (result) {
-        matchedResult = result
-        isInvalid = false
-      }
-    })
-
+    const eolympPattern = new UrlPattern("/en/problems/:problemId")
+    let matchedResult = eolympPattern.match(linkUrl.pathname)
+    if (matchedResult) {
+      isInvalid = false
+    }
     if (isInvalid) {
       throw new Error("Invalid eolymp link!")
     }
@@ -650,20 +612,13 @@ export class ParsersService {
     // problem name
     const name = $(".eo-paper__header").text().trim()
 
-    // problem ID
-    const pid = matchedResult.contestId
-      ? `EOlymp-${matchedResult.contestId}`
-      : `EOlymp-${matchedResult.problemId}`
-
     return {
-      pid,
       name,
+      pid: `Eolymp-${matchedResult.problemId}`,
       tags: [],
       difficulty: 0,
       judge_id: 10,
-      link: matchedResult.contestId
-        ? `https://www.eolymp.com/en/contests/${matchedResult.contestId}/${matchedResult.problemId}`
-        : `https://www.eolymp.com/en/problems/${matchedResult.problemId}`,
+      link: `https://www.eolymp.com/en/problems/${matchedResult.problemId}`,
     }
   }
 
@@ -671,40 +626,33 @@ export class ParsersService {
    *  Parser for BEECROWD, id = 11
    */
   async beeCrowdParser(link) {
-    const linkUrl = new URL(link)
+    const linkURL = new URL(link)
 
-    const beecrowdPatterns = [
-      new UrlPattern("/judge/en/problems/view/:problemId"),
-      new UrlPattern("/repository/UOJ_:problemId_en.html"),
-    ]
-
-    let matchedResult: any
+    /**
+     * Check if the problem link is valid
+     */
     let isInvalid: boolean = true
-    beecrowdPatterns.forEach((pattern) => {
-      let result = pattern.match(linkUrl.pathname)
-
-      if (result) {
-        matchedResult = result
-        isInvalid = false
-      }
-    })
+    const beecrowdPattern = new UrlPattern("/judge/en/problems/view/:problemId")
+    let matchedResult = beecrowdPattern.match(linkURL.pathname)
+    if (matchedResult) {
+      isInvalid = false
+    }
 
     if (isInvalid) {
       throw new Error("Invalid beecrowd link!")
     }
 
-    // Extract data from provided link
+    /**
+     * Make HTTP Request and parse from the source code
+     */
     const { data } = await lastValueFrom(this.httpService.get(link))
     const $ = cheerio.load(data)
 
-    const parse = $("title").text().trim()
-    const name = parse.split(" - ")[1]
-
-    const pid = `Bee-${matchedResult.problemId}`
+    const name = $("title").text().trim().split(" - ")[1]
 
     return {
       name,
-      pid,
+      pid: `BC-${matchedResult.problemId}`,
       tags: [],
       difficulty: 0,
       judge_id: 11,
@@ -718,7 +666,7 @@ export class ParsersService {
   async leetCodeParser(link) {
     const linkUrl = new URL(link)
 
-    const leetPatterns = [new UrlPattern("/problems/:problemId/")]
+    const leetPatterns = [new UrlPattern("/problems/:problemId")]
 
     let matchedResult: any
     let isInvalid: boolean = true
