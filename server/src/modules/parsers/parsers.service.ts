@@ -817,6 +817,10 @@ export class ParsersService {
     const str = $(".maincontent table tr:nth-child(2) h3").text().trim()
     const parts = str.split(" - ")
 
+    if (parts.length !== 2) {
+      throw new Error("Invalid ICPC Live Archive link!")
+    }
+
     const pid = "ICPCLive-" + parts[0]
     const name = parts.slice(1).join(" ").trim()
 
