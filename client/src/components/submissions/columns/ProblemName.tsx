@@ -35,6 +35,7 @@ const ProblemName = (cell: Cell<Submission>) => {
     { prefix: "CC-", icon: CCIcon },
     { prefix: "LOJ-", icon: LightOJIcon },
     { prefix: "UVA-", icon: UVAIcon },
+    { prefix: "ICPCLive-", icon: UVAIcon },
     { prefix: "CSES-", icon: CSESIcon },
     { prefix: "TH-", icon: TophIcon },
     { prefix: "AC-", icon: AtCoder },
