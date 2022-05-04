@@ -271,19 +271,29 @@ export class ParsersService {
    *  Parser for UVA, id = 4
    */
   async uvaParser(link) {
-    const linkURl = new URL(link)
+    const linkURL = new URL(link)
 
     /**
      * Check if the problem link is valid
      */
-    const uvaOJPattern = new UrlPattern("/index.php")
-    let matchedResult = uvaOJPattern.match(linkURl.pathname)
+    const uvaPattern = new UrlPattern("/index.php")
+    let matchedResult = uvaPattern.match(linkURL.pathname)
 
-    const problemId = linkURl.searchParams.get("problem")
-    const categoryId = linkURl.searchParams.get("category")
+    /**
+     * Make sure that the Link matches the pattern and has the rqeuired query params
+     */
+    const problemId = linkURL.searchParams.get("problem")
+    const option = linkURL.searchParams.get("option")
+    const page = linkURL.searchParams.get("page")
+    const itemId = linkURL.searchParams.get("Itemid")
 
-    let isInvalid: boolean =
-      matchedResult === null || problemId === null || categoryId === null
+    let isInvalid = !(
+      matchedResult !== null &&
+      problemId &&
+      option &&
+      page &&
+      itemId
+    )
 
     if (isInvalid) throw new Error("Invalid UVA link!")
 
@@ -298,17 +308,14 @@ export class ParsersService {
 
     const pid = "UVA-" + parts[0]
     const name = parts.slice(1).join(" ").trim()
-    const difficulty = 0
-    const tags = []
-    const judge_id = 4
 
     return {
       pid,
       name,
-      tags,
-      difficulty,
-      judge_id,
-      link: `https://onlinejudge.org/index.php?option=com_onlinejudge&Itemid=8&category=${categoryId}&page=show_problem&problem=${problemId}`,
+      tags: [],
+      difficulty: 0,
+      judge_id: 4,
+      link: `https://onlinejudge.org/index.php?option=com_onlinejudge&Itemid=8&page=show_problem&problem=${problemId}`,
     }
   }
 
