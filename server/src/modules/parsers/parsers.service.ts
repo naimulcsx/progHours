@@ -280,7 +280,7 @@ export class ParsersService {
     let matchedResult = uvaPattern.match(linkURL.pathname)
 
     /**
-     * Make sure that the Link matches the pattern and has the rqeuired query params
+     * Make sure that the link has the required query params
      */
     const problemId = linkURL.searchParams.get("problem")
     const option = linkURL.searchParams.get("option")
@@ -797,19 +797,29 @@ export class ParsersService {
    *  Parser for UVA, id = 4
    */
   async icpcarchiveParser(link) {
-    const linkURl = new URL(link)
+    const linkURL = new URL(link)
 
     /**
      * Check if the problem link is valid
      */
     const pattern = new UrlPattern("/index.php")
-    let matchedResult = pattern.match(linkURl.pathname)
+    let matchedResult = pattern.match(linkURL.pathname)
 
-    const problemId = linkURl.searchParams.get("problem")
-    const categoryId = linkURl.searchParams.get("category")
+    /**
+     * Make sure that the link has the required query params
+     */
+    const problemId = linkURL.searchParams.get("problem")
+    const option = linkURL.searchParams.get("option")
+    const page = linkURL.searchParams.get("page")
+    const itemId = linkURL.searchParams.get("Itemid")
 
-    let isInvalid: boolean =
-      matchedResult === null || problemId === null || categoryId === null
+    let isInvalid = !(
+      matchedResult !== null &&
+      problemId &&
+      option &&
+      page &&
+      itemId
+    )
 
     if (isInvalid) throw new Error("Invalid ICPC Live Archive link!")
 
@@ -837,7 +847,7 @@ export class ParsersService {
       tags: [],
       difficulty: 0,
       judge_id: 15,
-      link: `https://icpcarchive.ecs.baylor.edu/index.php?option=com_onlinejudge&Itemid=8&category=${categoryId}&page=show_problem&problem=${problemId}`,
+      link: `https://icpcarchive.ecs.baylor.edu/index.php?option=com_onlinejudge&Itemid=8&page=show_problem&problem=${problemId}`,
     }
   }
 
