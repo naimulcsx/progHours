@@ -81,46 +81,10 @@ export class SubmissionsService {
     let { link } = body
     let problemId: number
 
-    const url = new URL(link)
-    const { hostname, protocol } = url
-
     /**
-     * Apply Global Link Transformers
+     * Apply link transformers
      */
-    link = toHttps(removeParams(removeTrailingSlash(link)))
-
-    /**
-     * Link Transformer
-     *
-     * Changing the Links to the respective OJ link
-     * Why?- To remove duplicated entries for the same problem
-     * For example
-     *    https://codeforces.com/problemset/problem/1617/B
-     *    https://vjudge.net/problem/CodeForces-1617B
-     */
-    const linkConverters = {
-      "vjudge.net": convertLinkToOriginal, // convert vjudge links to respective OJ link
-      "codeforces.com": cfLinkTransformer, // convert problemset link to contest link
-      "www.codeforces.com": cfLinkTransformer, // removes www + convert problemset link to contest link
-      "codechef.com": ccLinkTransformer, // adds www + convert contest link to problemset link
-      "www.codechef.com": ccLinkTransformer, // convert contest link to problemset link
-      "spoj.com": spojLinkTransformer, // adds www
-      "www.cses.fi": csesLinkTransformer, // removes www
-      "acm.timus.ru": timusLinkTransformer, // convert print.asp link to problem.asp link
-      "www.lightoj.com": lightOjLinkTransformer, // removes www
-      "www.atcoder.jp": atCoderLinkTransformer, // removes www
-      "www.onlinejudge.org": uvaLinkTransformer, // removes www
-      "eolymp.com": eolympLinkTransformer, // adds www
-      "beecrowd.com.br": beecrowdLinkTransformer, // adds www + convert repository link
-      "www.beecrowd.com.br": beecrowdLinkTransformer, // convert repository link
-      "www.toph.co": tophLinkTransformer, // removes www
-      "hackerrank.com": hackrrankLinkTransformer, // adds www
-      "www.hackerrank.com": hackrrankLinkTransformer, // adds www + unify links
-      "www.leetcode.com": leetcodeLinkTransformer, // removes www
-      "www.codeto.win": codetowinLinkTransformer, // removes www
-    }
-    if (linkConverters[hostname]) link = linkConverters[hostname](link)
-
+    link = this.parsersService.unifyLink(link)
     /**
      * Check if the problem exists in database with the provided link
      */

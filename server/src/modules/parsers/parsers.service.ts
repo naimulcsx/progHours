@@ -3,7 +3,28 @@ import { Injectable } from "@nestjs/common"
 import { lastValueFrom } from "rxjs"
 import * as cheerio from "cheerio"
 import ShortUniqueId from "short-unique-id"
-import https from "https"
+import convertLinkToOriginal from "@/utils/converLinkToOriginal"
+import {
+  spojLinkTransformer,
+  cfLinkTransformer,
+  csesLinkTransformer,
+  ccLinkTransformer,
+  timusLinkTransformer,
+  lightOjLinkTransformer,
+  atCoderLinkTransformer,
+  eolympLinkTransformer,
+  beecrowdLinkTransformer,
+  uvaLinkTransformer,
+  tophLinkTransformer,
+  hackrrankLinkTransformer,
+  leetcodeLinkTransformer,
+  codetowinLinkTransformer,
+} from "@/utils/linkTransformers"
+import {
+  removeParams,
+  removeTrailingSlash,
+  toHttps,
+} from "@/utils/globalLinkTransformers"
 
 const UrlPattern = require("url-pattern")
 const genId = new ShortUniqueId({ length: 6 })
@@ -25,11 +46,54 @@ export class ParsersService {
     return url.protocol === "http:" || url.protocol === "https:"
   }
 
+  unifyLink(link: string) {
+    const url = new URL(link)
+    const { hostname } = url
+
+    /**
+     * Apply Global Link Transformers
+     */
+    link = toHttps(removeParams(removeTrailingSlash(link)))
+
+    /**
+     * Link Transformer
+     *
+     * Changing the Links to the respective OJ link
+     * Why?- To remove duplicated entries for the same problem
+     * For example
+     *    https://codeforces.com/problemset/problem/1617/B
+     *    https://vjudge.net/problem/CodeForces-1617B
+     */
+    const linkConverters = {
+      "vjudge.net": convertLinkToOriginal, // convert vjudge links to respective OJ link
+      "codeforces.com": cfLinkTransformer, // convert problemset link to contest link
+      "www.codeforces.com": cfLinkTransformer, // removes www + convert problemset link to contest link
+      "codechef.com": ccLinkTransformer, // adds www + convert contest link to problemset link
+      "www.codechef.com": ccLinkTransformer, // convert contest link to problemset link
+      "spoj.com": spojLinkTransformer, // adds www
+      "www.cses.fi": csesLinkTransformer, // removes www
+      "acm.timus.ru": timusLinkTransformer, // convert print.asp link to problem.asp link
+      "www.lightoj.com": lightOjLinkTransformer, // removes www
+      "www.atcoder.jp": atCoderLinkTransformer, // removes www
+      "www.onlinejudge.org": uvaLinkTransformer, // removes www
+      "eolymp.com": eolympLinkTransformer, // adds www
+      "beecrowd.com.br": beecrowdLinkTransformer, // adds www + convert repository link
+      "www.beecrowd.com.br": beecrowdLinkTransformer, // convert repository link
+      "www.toph.co": tophLinkTransformer, // removes www
+      "hackerrank.com": hackrrankLinkTransformer, // adds www
+      "www.hackerrank.com": hackrrankLinkTransformer, // adds www + unify links
+      "www.leetcode.com": leetcodeLinkTransformer, // removes www
+      "www.codeto.win": codetowinLinkTransformer, // removes www
+    }
+    if (linkConverters[hostname]) link = linkConverters[hostname](link)
+    return link
+  }
+
   /**
    * Entry point for all links, links will get routed here depneding on the online judge
    * If there is no online judge for link, it also gets handled here
    */
-  async parseProblem(link) {
+  async parseProblem(link: string) {
     const parserMap = {
       "codeforces.com": this.cfParser,
       "www.codechef.com": this.ccParser,
