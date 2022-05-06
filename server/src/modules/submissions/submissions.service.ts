@@ -6,23 +6,6 @@ import {
 } from "@nestjs/common"
 import { InjectRepository } from "@nestjs/typeorm"
 import { Repository } from "typeorm"
-import convertLinkToOriginal from "@/utils/converLinkToOriginal"
-import {
-  spojLinkTransformer,
-  cfLinkTransformer,
-  csesLinkTransformer,
-  ccLinkTransformer,
-  timusLinkTransformer,
-  lightOjLinkTransformer,
-  atCoderLinkTransformer,
-  eolympLinkTransformer,
-  beecrowdLinkTransformer,
-  uvaLinkTransformer,
-  tophLinkTransformer,
-  hackrrankLinkTransformer,
-  leetcodeLinkTransformer,
-  codetowinLinkTransformer,
-} from "@/utils/linkTransformers"
 
 /**
  * Import Entities (models)
@@ -34,20 +17,13 @@ import { Submission } from "@/modules/submissions/submission.entity"
  */
 import { ProblemsService } from "@/modules/problems/problems.service"
 import { ParsersService } from "@/modules/parsers/parsers.service"
-import { AuthService } from "@/modules/auth/auth.service"
 import { UsersService } from "@/modules/users/users.service"
-import {
-  removeParams,
-  removeTrailingSlash,
-  toHttps,
-} from "@/utils/globalLinkTransformers"
 
 @Injectable()
 export class SubmissionsService {
   constructor(
     @Inject(ProblemsService) private problemsService: ProblemsService,
     @Inject(ParsersService) private parsersService: ParsersService,
-    @Inject(AuthService) private authService: AuthService,
     @Inject(UsersService) private usersService: UsersService,
     @InjectRepository(Submission)
     private submissionsRepository: Repository<Submission>
