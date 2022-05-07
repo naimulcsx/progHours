@@ -113,8 +113,8 @@ export class ParsersService {
       "vjudge.net": this.vjudgeParser,
       "www.hackerearth.com": this.hackerEarthParser,
       "hackerearth.com": this.hackerEarthParser,
+      "open.kattis.com": this.kattisOJParser,
     }
-
     try {
       let hostname = new URL(link).hostname
       /**
@@ -919,19 +919,6 @@ export class ParsersService {
   }
 
   /**
-   *
-   * https://www.hackerearth.com/practice/data-structures/arrays/1-d/practice-problems/algorithm/modify-sequence/
-   *
-   * /practice/:taskName/:category/:subCategory/practice-problems/:problemType/:problemId/
-   *
-   * for contest
-   * https://www.hackerearth.com/problem/algorithm/sequence-236-65ae2348-9a337d41/
-   * /problem/:problemType/:problemId/
-   *
-   * https://www.hackerearth.com/practice/codemonk/
-   */
-
-  /**
    *  Parser for HackerEarth, id = 16
    */
   async hackerEarthParser(link) {
@@ -987,6 +974,60 @@ export class ParsersService {
       tags: [],
       difficulty: 0,
       judge_id: 16,
+      link: pLink,
+    }
+  }
+
+  /**
+   *  Parser for Open Kattis, id = 17
+   */
+  async kattisOJParser(link) {
+    const linkUrl = new URL(link)
+
+    const heURLPatterns = [
+      new UrlPattern("/problems/:problemId"),
+      new UrlPattern("/contests/:contestId/problems/:problemId"),
+    ]
+
+    let matchedResult: any
+    let isInvalid: boolean = true
+    heURLPatterns.forEach((pattern) => {
+      let result = pattern.match(linkUrl.pathname)
+
+      if (result) {
+        matchedResult = result
+        isInvalid = false
+      }
+    })
+
+    if (isInvalid) throw new Error("Invalid kattis problem link!")
+
+    const { contestId, problemId } = matchedResult
+
+    /**
+     * Extract data from provided link
+     */
+    const { data } = await lastValueFrom(this.httpService.get(link))
+    const $ = cheerio.load(data)
+
+    /**
+     * Problem link
+     */
+    let pLink, name
+    if (contestId) {
+      name = $(".headline-wrapper h1").text().trim()
+      pLink = `https://open.kattis.com/contests/${contestId}/problems/${problemId}`
+    } else {
+      name = $(".headline-wrapper h1").text().trim()
+      pLink = `https://open.kattis.com/problems/${problemId}`
+    }
+
+    return {
+      name,
+      pid: "KT-" + problemId,
+      tags: [],
+      difficulty: 0,
+      judge_id: 17,
       link: pLink,
     }
   }
