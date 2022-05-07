@@ -262,7 +262,7 @@ export class ParsersService {
     }
 
     const pid = `CC-${response.data.problem_code}`
-    const name = response.data.problem_name
+    const name = response.data.problem_name.trim()
 
     return {
       pid,
