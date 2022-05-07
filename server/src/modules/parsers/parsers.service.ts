@@ -368,10 +368,11 @@ export class ParsersService {
     const $ = cheerio.load(response.data)
 
     const str = $(".floatbox tr td h3").text().trim()
+
     const parts = str.split(" - ")
 
     const pid = "UVA-" + parts[0]
-    const name = parts.slice(1).join(" ").trim()
+    const name = parts.slice(1).join("-").trim()
 
     return {
       pid,
