@@ -27,6 +27,7 @@ export class OnlineJudgesService {
       { id: 13, name: "Timus" },
       { id: 14, name: "CodeToWin" },
       { id: 15, name: "ICPC Live Archive" },
+      { id: 16, name: "HackerEarth" },
     ]
     const onlineJudges = this.onlineJudgesReponsitory.create(judges)
     return this.onlineJudgesReponsitory.save(onlineJudges)

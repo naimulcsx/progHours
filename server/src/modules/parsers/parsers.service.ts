@@ -111,6 +111,8 @@ export class ParsersService {
       "leetcode.com": this.leetCodeParser,
       "codeto.win": this.codeToWinParser,
       "vjudge.net": this.vjudgeParser,
+      "www.hackerearth.com": this.hackerEarthParser,
+      "hackerearth.com": this.hackerEarthParser,
     }
 
     try {
@@ -859,7 +861,7 @@ export class ParsersService {
   }
 
   /**
-   *  Parser for UVA, id = 4
+   *  Parser for UVA, id = 15
    */
   async icpcarchiveParser(link) {
     const linkURL = new URL(link)
@@ -913,6 +915,79 @@ export class ParsersService {
       difficulty: 0,
       judge_id: 15,
       link: `https://icpcarchive.ecs.baylor.edu/index.php?option=com_onlinejudge&Itemid=8&page=show_problem&problem=${problemId}`,
+    }
+  }
+
+  /**
+   *
+   * https://www.hackerearth.com/practice/data-structures/arrays/1-d/practice-problems/algorithm/modify-sequence/
+   *
+   * /practice/:taskName/:category/:subCategory/practice-problems/:problemType/:problemId/
+   *
+   * for contest
+   * https://www.hackerearth.com/problem/algorithm/sequence-236-65ae2348-9a337d41/
+   * /problem/:problemType/:problemId/
+   *
+   * https://www.hackerearth.com/practice/codemonk/
+   */
+
+  /**
+   *  Parser for HackerEarth, id = 16
+   */
+  async hackerEarthParser(link) {
+    const linkUrl = new URL(link)
+
+    const heURLPatterns = [
+      new UrlPattern(
+        "/practice/:taskName/:category/:subCategory/practice-problems/:problemType/:problemId"
+      ),
+      new UrlPattern("/problem/:problemType/:problemId"),
+    ]
+
+    let matchedResult: any
+    let isInvalid: boolean = true
+    heURLPatterns.forEach((pattern) => {
+      let result = pattern.match(linkUrl.pathname)
+
+      if (result) {
+        matchedResult = result
+        isInvalid = false
+      }
+    })
+
+    if (isInvalid) throw new Error("Invalid hackerearth problem link!")
+
+    const { taskName, category, subCategory, problemType, problemId } =
+      matchedResult
+
+    /**
+     * Extract data from provided link
+     */
+    const { data } = await lastValueFrom(this.httpService.get(link))
+    const $ = cheerio.load(data)
+
+    const name = $("title").text().trim().split(" | ")[0]
+
+    const parseId = matchedResult.problemId.split("-")
+    const pid = "HE-" + parseId[parseId.length - 1]
+
+    /**
+     * Problem link
+     */
+    let pLink: string
+    if (!subCategory) {
+      pLink = `https://www.hackerearth.com/problem/${problemType}/${problemId}`
+    } else {
+      pLink = `https://www.hackerearth.com/practice/${taskName}/${category}/${subCategory}/practice-problems/${problemType}/${problemId}`
+    }
+
+    return {
+      name,
+      pid,
+      tags: [],
+      difficulty: 0,
+      judge_id: 16,
+      link: pLink,
     }
   }
 
