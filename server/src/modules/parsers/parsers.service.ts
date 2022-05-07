@@ -372,7 +372,7 @@ export class ParsersService {
     const parts = str.split(" - ")
 
     const pid = "UVA-" + parts[0]
-    const name = parts.slice(1).join("-").trim()
+    const name = parts.slice(1).join(" - ").trim()
 
     return {
       pid,
