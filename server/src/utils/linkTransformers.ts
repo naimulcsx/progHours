@@ -122,6 +122,15 @@ export const hackrrankLinkTransformer = (link: string) => {
   if (result) {
     linkURL.pathname = `/challenges/${result.problemId}`
   }
+
+  const pattern2 = new UrlPattern(
+    "/contests/:contestId/challenges/:problemId/problem"
+  )
+  const result2 = pattern2.match(linkURL.pathname)
+  if (result2) {
+    linkURL.pathname = `/contests/${result2.contestId}/challenges/${result2.problemId}`
+  }
+
   return linkURL.toString()
 }
 

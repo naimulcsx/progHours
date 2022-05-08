@@ -526,7 +526,10 @@ export class ParsersService {
   async hackerrankParser(link) {
     const linkUrl = new URL(link)
 
-    const hackerrankValidPatterns = [new UrlPattern("/challenges/:problemId")]
+    const hackerrankValidPatterns = [
+      new UrlPattern("/challenges/:problemId"),
+      new UrlPattern("/contests/:contestId/challenges/:problemId"),
+    ]
 
     let matchedResult: any
     let isInvalid: boolean = true
@@ -552,10 +555,25 @@ export class ParsersService {
     )
 
     const $ = cheerio.load(response.data)
-    const name = $(".challenge-page-label-wrapper .ui-icon-label.page-label")
-      .text()
-      .trim()
-    const pid = `HR-${matchedResult.problemId}`
+
+    const { problemId, contestId } = matchedResult
+    const pid = `HR-${problemId}`
+
+    /**
+     * Problem link
+     * hr_tour-challenge-name pull-left mlT
+     */
+    let pLink, name
+
+    if (contestId) {
+      pLink = `https://www.hackerrank.com/contests/${contestId}/challenges/${problemId}`
+      name = $('meta[property="og:title"]').attr("content")
+    } else {
+      pLink = `https://www.hackerrank.com/challenges/${problemId}`
+      name = $(".challenge-page-label-wrapper .ui-icon-label.page-label")
+        .text()
+        .trim()
+    }
 
     return {
       name,
@@ -563,7 +581,7 @@ export class ParsersService {
       tags: [],
       difficulty: 0,
       judge_id: 7,
-      link: `https://www.hackerrank.com/challenges/${matchedResult.problemId}`,
+      link: pLink,
     }
   }
 
