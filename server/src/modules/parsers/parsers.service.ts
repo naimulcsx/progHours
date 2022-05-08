@@ -26,6 +26,7 @@ import {
   removeTrailingSlash,
   toHttps,
 } from "@/utils/globalLinkTransformers"
+import { isUppercase } from "class-validator"
 
 const UrlPattern = require("url-pattern")
 const genId = new ShortUniqueId({ length: 6 })
@@ -428,8 +429,20 @@ export class ParsersService {
      * problem tags
      */
     const tags = []
+
+    function convertTagNames(tag: string) {
+      let result = ""
+      for (let ch of tag) {
+        if (isUppercase(ch)) result += " "
+
+        result += ch.toLowerCase()
+      }
+      return result.substring(1)
+    }
+
     $(".flair__item .text a").each(function () {
-      const tag = $(this).text().trim()
+      let tag = $(this).text().trim()
+      tag = convertTagNames(tag)
       tags.push(tag)
     })
 
