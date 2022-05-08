@@ -16,6 +16,7 @@ export const removeParams = (link: string) => {
       "problem",
     ],
     "acm.timus.ru": ["space", "num"],
+    "oj.synapse0.com": ["contest", "problem"],
   }
   for (let param of url.searchParams.entries()) params.push(param)
   params.forEach(([key]) => {

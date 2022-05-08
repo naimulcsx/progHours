@@ -9,8 +9,16 @@ export class ParsersController {
   async parseProblem(@Body() body, @Res({ passthrough: true }) res: Response) {
     let { link } = body
     link = this.parsersService.unifyLink(link)
-    const result = await this.parsersService.parseProblem(link)
-    res.status(200)
-    return result
+    try {
+      const result = await this.parsersService.parseProblem(link)
+      res.status(200)
+      return result
+    } catch (err) {
+      res.status(400)
+      return {
+        status: "error",
+        message: err.message,
+      }
+    }
   }
 }

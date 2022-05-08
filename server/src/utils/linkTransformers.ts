@@ -149,3 +149,11 @@ export const codetowinLinkTransformer = (link: string) => {
   }
   return linkURL.toString()
 }
+
+export const hackerearthLinkTransformer = (link: string) => {
+  const linkURL = new URL(link)
+  if (linkURL.hostname === "hackerearth.com") {
+    linkURL.hostname = "www.hackerearth.com"
+  }
+  return linkURL.toString()
+}

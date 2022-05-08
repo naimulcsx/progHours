@@ -110,7 +110,8 @@ export default function ImportCsvModal({
        * Supports dd/mm/yyyy or dd.mm.yyyy
        */
       date = date.split("/").length === 3 ? date.split("/") : date.split(".")
-      const [day, month, year] = date
+      let [day, month, year] = date
+      if (year?.length < 4) year = "20" + year
       date = new Date(parseInt(year), parseInt(month) - 1, parseInt(day))
 
       const currentDate = new Date()
@@ -120,6 +121,9 @@ export default function ImportCsvModal({
         .set("second", currentDate.getSeconds())
         .set("millisecond", currentDate.getMilliseconds())
         .toDate()
+
+      /** Uppercase verdict */
+      verdict = verdict.toUpperCase()
 
       /**
        * Make the POST request to the server

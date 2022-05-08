@@ -19,6 +19,7 @@ import {
   hackrrankLinkTransformer,
   leetcodeLinkTransformer,
   codetowinLinkTransformer,
+  hackerearthLinkTransformer,
 } from "@/utils/linkTransformers"
 import {
   removeParams,
@@ -84,6 +85,7 @@ export class ParsersService {
       "www.hackerrank.com": hackrrankLinkTransformer, // adds www + unify links
       "www.leetcode.com": leetcodeLinkTransformer, // removes www
       "www.codeto.win": codetowinLinkTransformer, // removes www
+      "hackerearth.com": hackerearthLinkTransformer, // adds www
     }
     if (linkConverters[hostname]) link = linkConverters[hostname](link)
     return link
@@ -95,25 +97,24 @@ export class ParsersService {
    */
   async parseProblem(link: string) {
     const parserMap = {
-      "codeforces.com": this.cfParser,
-      "www.codechef.com": this.ccParser,
-      "www.spoj.com": this.spojParser,
-      "atcoder.jp": this.atCoderParser,
-      "lightoj.com": this.lightOJParser,
-      "cses.fi": this.csesParser,
-      "acm.timus.ru": this.timusParser,
-      "www.eolymp.com": this.eolympParser,
-      "www.beecrowd.com.br": this.beeCrowdParser,
-      "onlinejudge.org": this.uvaParser,
-      "icpcarchive.ecs.baylor.edu": this.icpcarchiveParser,
-      "toph.co": this.tophParser,
-      "www.hackerrank.com": this.hackerrankParser,
-      "leetcode.com": this.leetCodeParser,
-      "codeto.win": this.codeToWinParser,
+      "codeforces.com": this.cfParser, // 1
+      "www.codechef.com": this.ccParser, // 2
+      "cses.fi": this.csesParser, // 3
+      "onlinejudge.org": this.uvaParser, // 4
+      "toph.co": this.tophParser, // 5
+      "www.spoj.com": this.spojParser, // 6
+      "www.hackerrank.com": this.hackerrankParser, // 7
+      "lightoj.com": this.lightOJParser, // 8
+      "atcoder.jp": this.atCoderParser, // 9
+      "www.eolymp.com": this.eolympParser, // 10
+      "www.beecrowd.com.br": this.beeCrowdParser, // 11
+      "leetcode.com": this.leetCodeParser, // 12
+      "acm.timus.ru": this.timusParser, // 13
+      "codeto.win": this.codeToWinParser, // 14
+      "icpcarchive.ecs.baylor.edu": this.icpcarchiveParser, // 15
+      "www.hackerearth.com": this.hackerEarthParser, // 16
+      "open.kattis.com": this.kattisOJParser, // 17
       "vjudge.net": this.vjudgeParser,
-      "www.hackerearth.com": this.hackerEarthParser,
-      "hackerearth.com": this.hackerEarthParser,
-      "open.kattis.com": this.kattisOJParser,
     }
     try {
       let hostname = new URL(link).hostname
@@ -879,7 +880,7 @@ export class ParsersService {
   }
 
   /**
-   *  Parser for UVA, id = 15
+   *  Parser for UVALive, id = 15
    */
   async icpcarchiveParser(link) {
     const linkURL = new URL(link)
