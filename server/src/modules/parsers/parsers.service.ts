@@ -691,6 +691,7 @@ export class ParsersService {
       tags: [],
       difficulty: 0,
       judge_id: 9,
+      link: `https://atcoder.jp/contests/${matchedResult.contestId}/tasks/${matchedResult.problemId}`,
     }
   }
 
