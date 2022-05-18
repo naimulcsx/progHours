@@ -181,6 +181,13 @@ export class ParsersService {
       )
     )
 
+    /**
+     * Sometimes the API sends down HTML when API server is down
+     */
+    if (typeof data === "string") {
+      throw new Error("Codeforces API down. Please try again later!")
+    }
+
     let pid: string,
       name: string,
       tags: string[],
