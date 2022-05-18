@@ -1,12 +1,12 @@
 import { useContext } from "react"
 import { Link } from "react-router-dom"
-
 /**
  * Import Components
  */
 import NavLink from "@/components/NavLink"
 import Logo from "@/components/Logo"
 import { GlobalContext } from "@/GlobalStateProvider"
+import Avatar from "@/components/Avatar"
 
 /**
  * Import helpers
@@ -28,12 +28,14 @@ const Sidebar = (): JSX.Element => {
   /**
    * Get user information from global state
    */
-  const { user } = useContext(GlobalContext)
+  const globalContext = useContext(GlobalContext)
+  const user = globalContext.user!
+
   const handleLogout = useLogout()
   return (
     <div className="hidden md:block max-w-[250px] z-[40] w-full h-[100vh] py-3 fixed z-10 top-0 left-0 bottom-0 bg-white shadow shadow-primary/5">
       {/* sidebar links */}
-      <div className="flex flex-col justify-between h-full px-6">
+      <div className="flex flex-col justify-between h-full px-5">
         <div className="">
           <div className="mb-12">
             <Link to="/dashboard">
@@ -57,14 +59,10 @@ const Sidebar = (): JSX.Element => {
             </ul>
           </nav>
         </div>
-        <div className="flex items-start space-x-4">
-          <img
-            src={`https://robohash.org/${user?.name}?bgset=bg2&size=40x40`}
-            alt={user?.name}
-            className="rounded-lg"
-          />
+        <div className="flex items-start space-x-3">
+          <Avatar name={user.name} />
           <div className="relative bottom-1">
-            <h6 className="text-lg font-medium">{user?.name}</h6>
+            <h6 className="text-lg font-medium">{user.name}</h6>
             <button
               className="flex items-center space-x-1 text-sm text-red-500"
               onClick={handleLogout}

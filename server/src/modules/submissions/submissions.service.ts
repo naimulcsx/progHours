@@ -6,9 +6,6 @@ import {
 } from "@nestjs/common"
 import { InjectRepository } from "@nestjs/typeorm"
 import { Repository } from "typeorm"
-import convertLinkToOriginal from "@/utils/converLinkToOriginal"
-import getUniformCFLink from "@/utils/getUniformCFLink"
-import getUniformCCLink from "@/utils/getUniformCCLink"
 
 /**
  * Import Entities (models)
@@ -20,17 +17,13 @@ import { Submission } from "@/modules/submissions/submission.entity"
  */
 import { ProblemsService } from "@/modules/problems/problems.service"
 import { ParsersService } from "@/modules/parsers/parsers.service"
-import { AuthService } from "@/modules/auth/auth.service"
 import { UsersService } from "@/modules/users/users.service"
-import * as UrlPattern from "url-pattern"
-import { CreateSubmissionDto } from "@/validators/create-submission-dto"
 
 @Injectable()
 export class SubmissionsService {
   constructor(
     @Inject(ProblemsService) private problemsService: ProblemsService,
     @Inject(ParsersService) private parsersService: ParsersService,
-    @Inject(AuthService) private authService: AuthService,
     @Inject(UsersService) private usersService: UsersService,
     @InjectRepository(Submission)
     private submissionsRepository: Repository<Submission>
@@ -64,55 +57,10 @@ export class SubmissionsService {
     let { link } = body
     let problemId: number
 
-    const url = new URL(link)
-    const { hostname, protocol } = url
-
     /**
-     * Remove all query params from the link
-     *  - except a few online judge which uses query params as problem links eg. uva, timus etc
+     * Apply link transformers
      */
-    const params = []
-    let excludeOJParams = {
-      "onlinejudge.org": ["option", "Itemid", "category", "page", "problem"],
-      "acm.timus.ru": ["space", "num"],
-    }
-    for (let param of url.searchParams.entries()) params.push(param)
-    params.forEach(([key]) => {
-      let match: boolean
-      Object.keys(excludeOJParams).forEach((oj) => {
-        if (hostname === oj) {
-          match = true
-          if (!excludeOJParams[oj].includes(key)) {
-            url.searchParams.delete(key)
-          }
-        }
-      })
-      if (!match) url.searchParams.delete(key)
-    })
-    link = url.toString()
-    console.log("link ", link)
-
-    /**
-     * Convert link to https protocol
-     */
-    if (protocol === "http:") link = `https:` + link.substring(5)
-
-    /**
-     * Link Transformer
-     *
-     * Changing the Links to the respective OJ link
-     * Why?- To remove duplicated entries for the same problem
-     * For example
-     *    https://codeforces.com/problemset/problem/1617/B
-     *    https://vjudge.net/problem/CodeForces-1617B
-     */
-    const linkConverters = {
-      "vjudge.net": convertLinkToOriginal,
-      "codeforces.com": getUniformCFLink,
-      "www.codechef.com": getUniformCCLink,
-    }
-    if (linkConverters[hostname]) link = linkConverters[hostname](link)
-
+    link = this.parsersService.unifyLink(link)
     /**
      * Check if the problem exists in database with the provided link
      */

@@ -1,5 +1,4 @@
 const colors = require("tailwindcss/colors")
-console.log(colors)
 
 module.exports = {
   content: ["./src/**/*.{ts,tsx}"],

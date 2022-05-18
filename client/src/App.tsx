@@ -5,6 +5,7 @@ import { QueryClient, QueryClientProvider } from "react-query"
 import { useLocation, useNavigate, useRoutes } from "react-router-dom"
 import clearAuthData from "@/utils/clearAuthData"
 import axios from "axios"
+import { Zoom, Slide } from "react-toastify"
 import { ReactQueryDevtools } from "react-query/devtools"
 
 /**
@@ -70,7 +71,7 @@ const App = (): JSX.Element => {
         </div>
         <ToastContainer
           theme="colored"
-          autoClose={2000}
+          autoClose={3000}
           position="bottom-right"
         />
         {/* <ReactQueryDevtools position="bottom-right" /> */}

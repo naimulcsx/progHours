@@ -13,6 +13,10 @@ import {
   BeeCrowd,
   HackerRankIcon,
   LeetCodeIcon,
+  TimusIcon,
+  CodeToWinIcon,
+  HackerEarthIcon,
+  KattisOJIcon,
 } from "@/components/Icons"
 import { useRef, useState } from "react"
 import { useMutation } from "react-query"
@@ -33,13 +37,18 @@ const ProblemName = (cell: Cell<Submission>) => {
     { prefix: "CC-", icon: CCIcon },
     { prefix: "LOJ-", icon: LightOJIcon },
     { prefix: "UVA-", icon: UVAIcon },
+    { prefix: "ICPCLive-", icon: UVAIcon },
     { prefix: "CSES-", icon: CSESIcon },
     { prefix: "TH-", icon: TophIcon },
     { prefix: "AC-", icon: AtCoder },
-    { prefix: "EOlymp-", icon: EOlympIcon },
-    { prefix: "Bee-", icon: BeeCrowd },
+    { prefix: "Eolymp-", icon: EOlympIcon },
+    { prefix: "BC-", icon: BeeCrowd },
     { prefix: "HR-", icon: HackerRankIcon },
     { prefix: "LC-", icon: LeetCodeIcon },
+    { prefix: "Tim-", icon: TimusIcon },
+    { prefix: "CW-", icon: CodeToWinIcon },
+    { prefix: "HE-", icon: HackerEarthIcon },
+    { prefix: "KT-", icon: KattisOJIcon },
   ]
 
   const icons = iconMap

@@ -7,15 +7,13 @@ import { Link } from "react-router-dom"
  * Import Icons
  */
 import { ArrowSmDownIcon, ArrowSmUpIcon } from "@heroicons/react/solid"
+import Avatar from "../Avatar"
 
 const UserCell = (cell: Cell<RanklistItem>) => {
   return (
     <Link to={`/users/${cell.row.original.user.username}`}>
       <div className="flex items-center space-x-4">
-        <img
-          src={`https://robohash.org/${cell.value}?bgset=bg2&size=40x40`}
-          className="rounded-full"
-        />
+        <Avatar name={cell.row.original.user.name} />
         <div>
           <p className="font-medium">{cell.value}</p>
           <p className="text-sm text-gray-500">

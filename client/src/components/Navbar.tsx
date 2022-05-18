@@ -1,7 +1,6 @@
 import { useContext } from "react"
 import { Link } from "react-router-dom"
 import { twMerge } from "tailwind-merge"
-import * as Avatar from "@radix-ui/react-avatar"
 
 /**
  * Import components
@@ -9,9 +8,11 @@ import * as Avatar from "@radix-ui/react-avatar"
 import Logo from "./Logo"
 import DropdownMenu from "./DropdownMenu"
 import { GlobalContext } from "@/GlobalStateProvider"
+import Avatar from "./Avatar"
 
 const Navbar = ({ className }: { className?: string }) => {
-  const { user } = useContext(GlobalContext)
+  const globalContext = useContext(GlobalContext)
+  const user = globalContext.user!
   return (
     <header
       className={twMerge(
@@ -26,24 +27,12 @@ const Navbar = ({ className }: { className?: string }) => {
         <ul className="flex items-center justify-end space-x-2">
           <li className="flex items-center">
             <Link
-              to={`/users/${user?.username}`}
+              to={`/users/${user.username}`}
               className="flex items-center space-x-2"
             >
-              {/* <img
-                src={`https://robohash.org/${user?.name}?bgset=bg2&size=48x48`}
-                alt={user?.name}
-                className="rounded-full w-7 h-7"
-              /> */}
-              {/* <Avatar color="red" name="Wim Mostmans" /> */}
-              {/* <Avatar name="Foo Bar" /> */}
-              <Avatar.Root>
-                <Avatar.Image
-                  src={`https://robohash.org/${user?.name}?bgset=bg2&size=28x28`}
-                  className="rounded-full"
-                />
-              </Avatar.Root>
+              <Avatar name={user.name} size="sm" />
               <span className="hidden font-medium text-gray-900 md:block">
-                {user?.name}
+                {user.name}
               </span>
             </Link>
           </li>
