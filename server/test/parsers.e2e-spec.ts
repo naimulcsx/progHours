@@ -145,7 +145,7 @@ describe("Parsers", () => {
     })
   })
 
-  test("HackerRank Test 1", async () => {
+  test("HackerRank Test 2", async () => {
     const data = await fetchProblem(
       "https://www.hackerrank.com/contests/bootcamp-2021female-mirror-contest/challenges/picking-fruits-1"
     )
@@ -159,7 +159,7 @@ describe("Parsers", () => {
     })
   })
 
-  test("HackerRank Test 1", async () => {
+  test("LightOJ Test", async () => {
     const data = await fetchProblem(
       "https://lightoj.com/problem/lighting-system-design"
     )
@@ -170,6 +170,154 @@ describe("Parsers", () => {
       difficulty: 0,
       judge_id: 8,
       link: "https://lightoj.com/problem/lighting-system-design",
+    })
+  })
+
+  test("Atcoder Test", async () => {
+    const data = await fetchProblem(
+      "https://atcoder.jp/contests/arc123/tasks/arc123_a"
+    )
+    expect(data).toStrictEqual({
+      pid: "AC-arc123_a",
+      name: "Arithmetic Sequence",
+      tags: [],
+      difficulty: 0,
+      judge_id: 9,
+      link: "https://atcoder.jp/contests/arc123/tasks/arc123_a",
+    })
+  })
+
+  test("EOlymp Test", async () => {
+    const data = await fetchProblem("https://eolymp.com/en/problems/9655")
+    expect(data).toStrictEqual({
+      pid: "Eolymp-9655",
+      name: "Mr. Nine and his love for mangoes",
+      tags: [],
+      difficulty: 0,
+      judge_id: 10,
+      link: "https://eolymp.com/en/problems/9655",
+    })
+  })
+
+  test("BeeCrowd Test", async () => {
+    const data = await fetchProblem(
+      "https://www.beecrowd.com.br/judge/en/problems/view/1004"
+    )
+    expect(data).toStrictEqual({
+      pid: "BC-1004",
+      name: "Simple Product",
+      tags: [],
+      difficulty: 0,
+      judge_id: 11,
+      link: "https://www.beecrowd.com.br/judge/en/problems/view/1004",
+    })
+  })
+
+  test("LeetCode Test", async () => {
+    const data = await fetchProblem(
+      "https://leetcode.com/problems/first-bad-version/"
+    )
+    expect(data).toStrictEqual({
+      pid: "LC-278",
+      name: "First Bad Version",
+      tags: [],
+      difficulty: 0,
+      judge_id: 12,
+      link: "https://leetcode.com/problems/first-bad-version",
+    })
+  })
+
+  test("Timus OJ Test", async () => {
+    const data = await fetchProblem(
+      "https://acm.timus.ru/problem.aspx?space=1&num=1203"
+    )
+    expect(data).toStrictEqual({
+      pid: "Tim-1203",
+      name: "Scientific Conference",
+      tags: [],
+      difficulty: 0,
+      judge_id: 13,
+      link: "https://acm.timus.ru/problem.aspx?space=1&num=1203",
+    })
+  })
+
+  test("CodeToWin OJ Test", async () => {
+    const data = await fetchProblem("https://codeto.win/problem/1154")
+    expect(data).toStrictEqual({
+      pid: "CW-1154",
+      name: "Easy ??",
+      tags: [],
+      difficulty: 0,
+      judge_id: 14,
+      link: "https://codeto.win/problem/1154",
+    })
+  })
+
+  // test("ICPCArchive Test", async () => {
+  //   const data = await fetchProblem(
+  //     "https://icpcarchive.ecs.baylor.edu/index.php?option=com_onlinejudge&Itemid=8&page=show_problem&problem=6100"
+  //   )
+  //   expect(data).toStrictEqual({
+  //     pid: "CW-1154",
+  //     name: "Easy ??",
+  //     tags: [],
+  //     difficulty: 0,
+  //     judge_id: 15,
+  //     link: "https://icpcarchive.ecs.baylor.edu/index.php?option=com_onlinejudge&Itemid=8&page=show_problem&problem=6100",
+  //   })
+  // })
+
+  test("HackerEarth OJ Test 1", async () => {
+    const data = await fetchProblem(
+      "https://www.hackerearth.com/practice/basic-programming/input-output/basics-of-input-output/practice-problems/algorithm/make-all-equal-90a21ab2/"
+    )
+    expect(data).toStrictEqual({
+      pid: "HE-90a21ab2",
+      name: "Number of steps",
+      tags: [],
+      difficulty: 0,
+      judge_id: 16,
+      link: "https://www.hackerearth.com/practice/basic-programming/input-output/basics-of-input-output/practice-problems/algorithm/make-all-equal-90a21ab2",
+    })
+  })
+
+  test("HackerEarth OJ Test 2", async () => {
+    const data = await fetchProblem(
+      "https://www.hackerearth.com/problem/algorithm/sequence-236-65ae2348-9a337d41/"
+    )
+    expect(data).toStrictEqual({
+      pid: "HE-9a337d41",
+      name: "Elements of the sequence",
+      tags: [],
+      difficulty: 0,
+      judge_id: 16,
+      link: "https://www.hackerearth.com/problem/algorithm/sequence-236-65ae2348-9a337d41",
+    })
+  })
+
+  test("Kattis OJ Test 1", async () => {
+    const data = await fetchProblem(
+      "https://open.kattis.com/contests/pfitti/problems/cakeymccakeface"
+    )
+    expect(data).toStrictEqual({
+      pid: "KT-cakeymccakeface",
+      name: "Problem ACakey McCakeFace",
+      tags: [],
+      difficulty: 0,
+      judge_id: 17,
+      link: "https://open.kattis.com/contests/pfitti/problems/cakeymccakeface",
+    })
+  })
+
+  test("Kattis OJ Test 2", async () => {
+    const data = await fetchProblem("https://open.kattis.com/problems/hello")
+    expect(data).toStrictEqual({
+      pid: "KT-hello",
+      name: "Hello World!",
+      tags: [],
+      difficulty: 0,
+      judge_id: 17,
+      link: "https://open.kattis.com/problems/hello",
     })
   })
 })
