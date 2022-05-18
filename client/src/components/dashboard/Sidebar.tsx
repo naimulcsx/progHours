@@ -1,12 +1,12 @@
 import { useContext } from "react"
 import { Link } from "react-router-dom"
-
 /**
  * Import Components
  */
 import NavLink from "@/components/NavLink"
 import Logo from "@/components/Logo"
 import { GlobalContext } from "@/GlobalStateProvider"
+import Avatar from "@/components/Avatar"
 
 /**
  * Import helpers
@@ -58,11 +58,12 @@ const Sidebar = (): JSX.Element => {
           </nav>
         </div>
         <div className="flex items-start space-x-4">
-          <img
+          {/* <img
             src={`https://robohash.org/${user?.name}?bgset=bg2&size=40x40`}
             alt={user?.name}
             className="rounded-lg"
-          />
+          /> */}
+          <Avatar name={user!.name} />
           <div className="relative bottom-1">
             <h6 className="text-lg font-medium">{user?.name}</h6>
             <button
