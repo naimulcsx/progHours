@@ -38,7 +38,7 @@ const Avatar = ({
 }: {
   name: string
   className?: string
-  size?: "sm" | "base"
+  size?: "sm" | "base" | "xl"
 }) => {
   const bgColorHex = stringToColour(name)
   const { r, g, b } = hexToRgb(bgColorHex)!
@@ -47,6 +47,7 @@ const Avatar = ({
   const sizes = {
     sm: "w-8 h-8 text-xs",
     base: "w-10 h-10 text-sm",
+    xl: "w-24 h-24 text-xl",
   }
 
   return (

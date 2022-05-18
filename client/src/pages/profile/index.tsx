@@ -25,6 +25,7 @@ import showErrorToasts from "@/utils/showErrorToasts"
 import { getUserByUsername } from "@/api/user"
 import Spinner from "@/components/Spinner"
 import { Transition } from "@headlessui/react"
+import Avatar from "@/components/Avatar"
 
 interface User {
   name?: string
@@ -94,9 +95,10 @@ export default function Profile() {
       >
         <div className="relative flex items-center justify-center pt-32 pb-32 overflow-clip">
           <div className="space-y-6 text-center">
-            <img
-              src={`https://robohash.org/${user?.name}?bgset=bg2&size=160x160`}
-              className="mx-auto rounded-full"
+            <Avatar
+              name={user?.name || ""}
+              size="xl"
+              className="mx-auto font-medium"
             />
             <h1 className="text-4xl">{user?.name}</h1>
             <span className="text-2xl">{user?.username}</span>
