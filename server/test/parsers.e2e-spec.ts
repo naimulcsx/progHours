@@ -195,7 +195,7 @@ describe("Parsers", () => {
       tags: [],
       difficulty: 0,
       judge_id: 10,
-      link: "https://eolymp.com/en/problems/9655",
+      link: "https://www.eolymp.com/en/problems/9655",
     })
   })
 
