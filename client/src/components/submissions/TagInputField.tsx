@@ -1,6 +1,6 @@
 import { useState } from "react"
 import { Combobox } from "@headlessui/react"
-import { toast } from "react-toastify"
+import toast from "react-hot-toast"
 import { useMutation, useQueryClient } from "react-query"
 import { addTag, getSubmissions } from "../../api/submissions"
 

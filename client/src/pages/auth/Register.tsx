@@ -1,7 +1,7 @@
 import axios from "axios"
 import * as Yup from "yup"
 import { useFormik } from "formik"
-import { toast } from "react-toastify"
+import toast from "react-hot-toast"
 import { Helmet } from "react-helmet-async"
 import { Link, useNavigate } from "react-router-dom"
 
@@ -53,7 +53,7 @@ const Register = (): JSX.Element => {
         toast.success("Account created!")
       } catch (err: any) {
         const { data } = err.response
-        toast.error(data.error, { className: "toast" })
+        // toast.error(data.error, { className: "toast" })
         showErrorToasts(data.message)
       }
     },

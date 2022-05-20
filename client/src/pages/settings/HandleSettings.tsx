@@ -14,7 +14,7 @@ import { useState } from "react"
 import { useMutation, useQuery, useQueryClient } from "react-query"
 import { createOJHandle, getAllHandles } from "@/api/handle"
 import showErrorToasts from "@/utils/showErrorToasts"
-import { toast } from "react-toastify"
+import toast from "react-hot-toast"
 
 interface OJ {
   CodeForces: number

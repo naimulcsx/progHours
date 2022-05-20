@@ -4,7 +4,7 @@ import { FormControl, Input, Label, ErrorMessage } from "@/components/Form"
 import { Helmet } from "react-helmet-async"
 import { useMutation, useQuery, useQueryClient } from "react-query"
 import { getUser, updateUserAccount } from "@/api/user"
-import { toast } from "react-toastify"
+import toast from "react-hot-toast"
 import showErrorToasts from "@/utils/showErrorToasts"
 import { SettingsLayout } from "@/components/layouts/Settings"
 

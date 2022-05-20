@@ -1,7 +1,7 @@
 import * as Yup from "yup"
 import React, { useState } from "react"
 import { useFormik } from "formik"
-import { toast } from "react-toastify"
+import toast from "react-hot-toast"
 import { AxiosError } from "axios"
 import { useQueryClient, useMutation } from "react-query"
 import { FormControl, Select, Option, Input } from "@/components/Form"
