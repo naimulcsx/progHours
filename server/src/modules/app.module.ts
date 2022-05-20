@@ -19,6 +19,10 @@ import { UserProblemTag } from "./problems/user-problem-tag"
 import { StatsModule } from "./stats/stats.module"
 import { RankingModule } from "./ranking/ranking.module"
 import { Ranking } from "./ranking/ranking.entity"
+import { ResourcesService } from "./resources/resources.service"
+import { ResourcesController } from "./resources/resources.controller"
+import { ResourcesModule } from "./resources/resources.module"
+import { Resource } from "./resources/resources.entity"
 
 @Module({
   imports: [
@@ -34,6 +38,7 @@ import { Ranking } from "./ranking/ranking.entity"
         Handle,
         OnlineJudge,
         Ranking,
+        Resource,
       ],
       synchronize: true,
     }),
@@ -47,6 +52,7 @@ import { Ranking } from "./ranking/ranking.entity"
     HandlesModule,
     StatsModule,
     RankingModule,
+    ResourcesModule,
   ],
 })
 export class AppModule {
