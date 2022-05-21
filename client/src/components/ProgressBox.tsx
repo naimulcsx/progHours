@@ -5,10 +5,11 @@ import {
   ClockIcon,
 } from "@heroicons/react/outline"
 import calculatePoints from "@/utils/calculatePoints"
+type HeroIconProps = (props: React.ComponentProps<"svg">) => JSX.Element
 
 interface ProgressBox {
   title: string
-  icon: JSX.Element
+  Icon: HeroIconProps
   data: string | number
 }
 
@@ -25,21 +26,17 @@ interface Progress {
   }
 }
 //
-const Box = ({ title, icon, data }: ProgressBox) => {
+const Box = ({ title, Icon, data }: ProgressBox) => {
   return (
-    <div
-      className="flex flex-col text-center items-center mx-auto space-x-2 px-8 py-5  bg-white rounded-md  shadow shadow-primary/5 w-full
-    md:flex-row md:items-start md:text-left md:mx-0 md:w-auto md:space-x-4
-    "
-    >
+    <div className="flex flex-col items-center w-full p-8 mx-auto space-x-2 text-center bg-white rounded-lg shadow md:flex-row md:items-start md:text-left md:mx-0 md:w-auto md:space-x-4 ">
       <div className="p-3 rounded-full bg-primary bg-opacity-10 text-primary">
-        {icon}
+        <Icon className="w-8 h-8" />
       </div>
-      <div className="pt-1 space-y-4">
-        <h4 className="text-dark font-medium text-lg xl:text-xl">{title}</h4>
+      <div className="pt-1 space-y-2">
         <div className="space-y-4">
           <h2 className="text-2xl xl:text-3xl">{data}</h2>
         </div>
+        <h4 className="text-lg font-normal text-gray-500">{title}</h4>
       </div>
     </div>
   )
@@ -58,24 +55,24 @@ const ProgressBox = ({ progress }: { progress: Progress }) => {
   return (
     <div className="flex justify-center">
       <div className="w-full">
-        <div className="grid grid-cols-1 gap-4 md:grid-cols-2  md:gap-6 xl:gap-8 xl:grid-cols-4 ">
+        <div className="grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-4">
           <Box
-            icon={<StarIcon className="w-7" />}
+            Icon={StarIcon}
             title="Points"
             data={calculatePoints(progress).toFixed(2)}
           />
           <Box
-            icon={<TrendingUpIcon className="w-7" />}
+            Icon={TrendingUpIcon}
             title="Problems Solved"
             data={total_solved}
           />
           <Box
-            icon={<ClockIcon className="w-7" />}
+            Icon={ClockIcon}
             title="Solve Time"
             data={convertToHours(total_solve_time)}
           />
           <Box
-            icon={<LightningBoltIcon className="w-7" />}
+            Icon={LightningBoltIcon}
             title="Average Difficulty"
             data={average_difficulty.toFixed(2)}
           />

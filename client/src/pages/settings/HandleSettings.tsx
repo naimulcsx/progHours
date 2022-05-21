@@ -15,6 +15,7 @@ import { useMutation, useQuery, useQueryClient } from "react-query"
 import { createOJHandle, getAllHandles } from "@/api/handle"
 import showErrorToasts from "@/utils/showErrorToasts"
 import toast from "react-hot-toast"
+import { DashboardLayout } from "@/components/layouts/Dashboard"
 
 interface OJ {
   CodeForces: number
@@ -94,27 +95,17 @@ const EditProfile = () => {
   })
 
   return (
-    <SettingsLayout>
-      <Helmet>
-        <title>Settings</title>
-      </Helmet>
-
-      <form className="space-y-12" onSubmit={formik.handleSubmit}>
+    <div className="p-8 bg-white rounded-lg shadow">
+      <form className="space-y-8" onSubmit={formik.handleSubmit}>
         {/* edit profile: online judge handles */}
         <div className="space-y-6">
-          <h3 className="mb-8">Online Judge Handles</h3>
-
+          <h4 className="mb-8">Online Judge Handles</h4>
           <div className="space-y-6">
             {handles.length > 0 ? (
               handles.map((item: any) => (
                 <FormControl key={item.id}>
-                  <Input
-                    type="text"
-                    placeholder=" "
-                    value={item.handle}
-                    readOnly
-                  />
                   <Label>{item.judge_id.name}</Label>
+                  <Input type="text" value={item.handle} readOnly />
                 </FormControl>
               ))
             ) : (
@@ -127,12 +118,8 @@ const EditProfile = () => {
               <FormControl
                 isInvalid={formik.touched.handle && !!formik.errors.handle}
               >
-                <Input
-                  type="text"
-                  placeholder=" "
-                  {...formik.getFieldProps("handle")}
-                />
                 <Label>Handle name</Label>
+                <Input type="text" {...formik.getFieldProps("handle")} />
                 <ErrorMessage>{formik.errors.handle}</ErrorMessage>
               </FormControl>
             </div>
@@ -142,6 +129,7 @@ const EditProfile = () => {
                 formik.touched.onlineJudge && !!formik.errors.onlineJudge
               }
             >
+              <Label>Judge</Label>
               <Select
                 {...formik.getFieldProps("onlineJudge")}
                 value={formik.values.onlineJudge}
@@ -170,7 +158,7 @@ const EditProfile = () => {
           </button>
         </div>
       </form>
-    </SettingsLayout>
+    </div>
   )
 }
 

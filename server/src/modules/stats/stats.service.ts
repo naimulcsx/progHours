@@ -1,13 +1,15 @@
 import { Injectable } from "@nestjs/common"
-import { InjectRepository } from "@nestjs/typeorm"
+import { InjectConnection, InjectRepository } from "@nestjs/typeorm"
 import { Submission } from "@/modules/submissions/submission.entity"
-import { Repository } from "typeorm"
+import { Connection, Repository } from "typeorm"
 import { UsersService } from "../users/users.service"
 import { Ranking } from "../ranking/ranking.entity"
 
 @Injectable()
 export class StatsService {
   constructor(
+    @InjectConnection() private readonly connection: Connection,
+
     @InjectRepository(Submission)
     private submissionsRepository: Repository<Submission>,
     private readonly usersService: UsersService,
@@ -23,11 +25,13 @@ export class StatsService {
     const verdict_count = await this.getVerdictFrequency(userId)
     const total_solve_time = await this.getSolveTime(userId)
     const average_difficulty = await this.getAverageDifficulty(userId)
+    const tags_frequency = await this.getTagsFrequency(userId)
     return {
       verdict_count,
       total_solve_time,
       average_difficulty,
       total_solved: verdict_count.AC,
+      tags_frequency,
     }
   }
 
@@ -170,5 +174,33 @@ export class StatsService {
       .createQueryBuilder("ranklist")
       .leftJoinAndSelect("ranklist.user", "user")
       .getMany()
+  }
+
+  /**
+   * Get tags frequency
+   */
+  async getTagsFrequency(userId) {
+    const rawData = await this.connection.query(`
+      SELECT 
+        tags.name, 
+        COUNT(tags.name) 
+      FROM 
+        problem_tags 
+      LEFT JOIN tags ON problem_tags.tag_id = tags.id 
+      WHERE 
+        problem_tags.problem_id IN (
+          SELECT 
+            problems.id 
+          FROM 
+            submissions 
+            LEFT JOIN problems ON problems.id = submissions.problem_id 
+          WHERE 
+            submissions.user_id = ${userId}
+            AND submissions.verdict = 'AC'
+        ) 
+      GROUP BY 
+        tags.name
+    `)
+    return rawData
   }
 }

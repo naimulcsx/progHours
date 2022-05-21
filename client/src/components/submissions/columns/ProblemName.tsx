@@ -87,17 +87,17 @@ const ProblemName = (cell: Cell<Submission>) => {
   }
 
   return (
-    <div className="flex space-x-4">
-      <div className="flex items-center justify-center h-10 overflow-hidden bg-white border rounded-full basis-10 grow-0 shrink-0">
+    <div className="flex space-x-6">
+      <div className="flex items-center justify-center p-[6px] overflow-hidden bg-white border rounded-full h-11 basis-11 grow-0 shrink-0">
         {icons.length > 0 && icons}
         {icons.length === 0 && <UnknownIcon size={20} />}
       </div>
       <div className="w-full">
         {/* {link} */}
-        <p className="flex space-x-3 font-medium text-gray-900">
+        <p className="flex items-center space-x-4 font-semibold text-gray-900">
           <span>{pid}</span>
           <a href={link} target="_blank">
-            <ExternalLinkIcon className="w-4 h-4 text-gray-600 relative top-[2px]"></ExternalLinkIcon>
+            <ExternalLinkIcon className="w-4 h-4 text-gray-500"></ExternalLinkIcon>
           </a>
         </p>
         {icons.length > 0 && (

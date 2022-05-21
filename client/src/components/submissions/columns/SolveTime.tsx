@@ -7,6 +7,7 @@ import { Cell } from "react-table"
 import { Submission } from "@/types/Submission"
 import { AxiosError } from "axios"
 import { Practice } from "@/types/Practice"
+import { Input } from "@/components/Form"
 
 export default function SolveTime(cell: Cell<Submission>) {
   const client = useQueryClient()
@@ -44,7 +45,7 @@ export default function SolveTime(cell: Cell<Submission>) {
   }
 
   return (
-    <input
+    <Input
       type="number"
       value={time}
       onChange={(e) => setTime(e.target.value)}

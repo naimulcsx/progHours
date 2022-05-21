@@ -25,6 +25,7 @@ import Profile from "@/pages/profile"
  */
 import AccountSettings from "@/pages/settings/AccountSettings"
 import HandleSettings from "@/pages/settings/HandleSettings"
+import Settings from "@/pages/settings/AccountSettings"
 
 const AccessDenied = (): JSX.Element => {
   /**
@@ -61,19 +62,7 @@ const routes = (isLoggedIn: boolean): RouteObject[] => [
   },
   {
     path: "/settings",
-    element: isLoggedIn ? (
-      <Navigate to="/settings/account" />
-    ) : (
-      <AccessDenied />
-    ),
-  },
-  {
-    path: "/settings/handles",
-    element: <HandleSettings />,
-  },
-  {
-    path: "/settings/account",
-    element: <AccountSettings />,
+    element: isLoggedIn ? <AccountSettings /> : <AccessDenied />,
   },
   {
     path: "/users/:username",

@@ -119,14 +119,14 @@ const TrackingTable = ({ submissions }: { submissions: Submission[] }) => {
 
   return (
     <div className="relative">
-      <div className="mt-6 overflow-x-scroll rounded-md shadow shadow-primary/5 md:overflow-visible">
-        <table {...getTableProps()} className="border-collapse ">
+      <div className="mt-6 -mx-4 overflow-x-scroll rounded-lg md:overflow-visible">
+        <table {...getTableProps()} className="border-collapse">
           <thead>
             {headerGroups.map((headerGroup) => {
               return (
                 <tr
                   {...headerGroup.getHeaderGroupProps()}
-                  className="text-base text-dark"
+                  className="text-xs text-gray-500 uppercase bg-gray-100"
                 >
                   {headerGroup.headers.map((header) => {
                     return (
@@ -134,9 +134,9 @@ const TrackingTable = ({ submissions }: { submissions: Submission[] }) => {
                         {...header.getHeaderProps(
                           header.getSortByToggleProps()
                         )}
-                        className="border border-slate-100"
+                        className="py-4 border-t border-b"
                       >
-                        <div className="flex items-center justify-start space-x-1">
+                        <div className="flex items-center justify-start">
                           <span>{header.render("Header")}</span>
                           <span>
                             {header.isSorted ? (
@@ -165,7 +165,7 @@ const TrackingTable = ({ submissions }: { submissions: Submission[] }) => {
                 <tr
                   {...row.getRowProps()}
                   key={row.original.id}
-                  className={`bg-white`}
+                  className={`bg-white hover:bg-gray-100`}
                 >
                   {row.cells.map((cell) => {
                     const extraProps: {
@@ -181,7 +181,7 @@ const TrackingTable = ({ submissions }: { submissions: Submission[] }) => {
                       <td
                         {...cell.getCellProps()}
                         {...extraProps}
-                        className="border border-slate-100"
+                        className="py-3 border-b"
                       >
                         {cell.render("Cell")}
                       </td>
@@ -193,7 +193,7 @@ const TrackingTable = ({ submissions }: { submissions: Submission[] }) => {
           </tbody>
         </table>
         {/* Pagination */}
-        <div className="flex items-center justify-between px-6 py-3 space-x-4 bg-white border-b border-l border-r rounded-bl-lg rounded-br-lg pagination border-slate-100">
+        <div className="flex items-center justify-between px-6 py-3 space-x-4 bg-white border-b pagination">
           <div>
             <span>
               Page{" "}
