@@ -52,8 +52,9 @@ const Register = (): JSX.Element => {
         // create a toast
         toast.success("Account created!")
       } catch (err: any) {
-        const { data } = err.response
-        // toast.error(data.error, { className: "toast" })
+        const { data, status, statusText } = err.response
+        // handle bad gateway errors
+        if (status === 502) toast.error(statusText)
         showErrorToasts(data.message)
       }
     },

@@ -49,8 +49,9 @@ const Login = (): JSX.Element => {
         navigate("/dashboard")
         toast.success("Successfully logged in", { className: "toast" })
       } catch (error: any) {
-        const { data } = error.response
-        // toast.error(data.error, { className: "toast" })
+        const { data, status, statusText } = error.response
+        // handle bad gateway errors
+        if (status === 502) toast.error(statusText)
         showErrorToasts(data.message)
       }
     },
