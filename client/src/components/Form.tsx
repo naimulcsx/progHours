@@ -50,7 +50,7 @@ const Input = (
   return (
     <input
       {...props}
-      className="bg-gray-50 border border-gray-200 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+      className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 shadow-sm"
     />
   )
 }
@@ -71,7 +71,7 @@ const Select = ({
   const styles: {
     [key: string]: string
   } = {
-    AC: "bg-lime-300 text-green-900 rounded-lg w-full font-medium text-center",
+    AC: "bg-lime-200 text-lime-900 rounded-lg w-full font-medium text-center",
     WA: "bg-red-200 text-red-900 rounded-lg w-full font-medium text-center",
     RTE: "bg-pink-200 text-pink-900 rounded-lg w-full font-medium text-center",
     TLE: "bg-amber-200 text-amber-900 rounded-lg w-full font-medium text-center",
@@ -83,7 +83,7 @@ const Select = ({
         <>
           <div>
             <Listbox.Button
-              className={`text-sm ${
+              className={`text-sm shadow-sm min-w-[96px] ${
                 styles[value]
                   ? styles[value]
                   : "rounded-lg w-full border border-gray-300"

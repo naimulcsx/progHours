@@ -22,7 +22,9 @@ import {
   ChartBarIcon,
   CogIcon,
   LogoutIcon,
+  DocumentTextIcon,
 } from "@heroicons/react/solid"
+import NavDropdown from "../NavDropdown"
 
 const Sidebar = () => {
   /**
@@ -38,8 +40,18 @@ const Sidebar = () => {
           <NavLink Icon={ViewGridIcon} to="/dashboard">
             Dashboard
           </NavLink>
-          <NavLink Icon={ClipboardListIcon} to="/submissions">
-            Tracking Sheet
+          <NavDropdown
+            Icon={ClipboardListIcon}
+            key="__xd4nbc"
+            items={[
+              ["Submissions", "/submissions"],
+              ["Study List", "/study-list"],
+            ]}
+          >
+            Practice
+          </NavDropdown>
+          <NavLink Icon={DocumentTextIcon} to="/resources">
+            Resources
           </NavLink>
           <NavLink Icon={ChartBarIcon} to="/leaderboard">
             Leaderboard

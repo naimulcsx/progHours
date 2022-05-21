@@ -43,13 +43,13 @@ const Settings = () => {
                     Admin
                   </span>
                 </h2>
-                <div className="space-y-1">
-                  <p className="flex space-x-2">
-                    <UserIcon className="w-6 h-6" />
+                <div className="space-y-1 text-gray-700">
+                  <p className="flex items-center space-x-2">
+                    <UserIcon className="w-5 h-5" />
                     <span>{user.username.toUpperCase()}</span>
                   </p>
-                  <p className="flex space-x-2">
-                    <MailIcon className="w-6 h-6" />
+                  <p className="flex items-center space-x-2">
+                    <MailIcon className="w-5 h-5" />
                     <span>{user.email}</span>
                   </p>
                 </div>

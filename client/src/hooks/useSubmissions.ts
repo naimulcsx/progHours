@@ -25,9 +25,13 @@ function useSubmissions() {
      * Set default week to be the current week (only the first time we get the data)
      */
     if (selectedWeek.id === 0) {
+      // setSelectedWeek({
+      //   id: weekRanges.length + 1,
+      //   name: "Week " + weekRanges.length,
+      // })
       setSelectedWeek({
-        id: weekRanges.length + 1,
-        name: "Week " + weekRanges.length,
+        id: 1,
+        name: "All Weeks",
       })
     } else if (selectedWeek.id === 1) {
       /**

@@ -74,23 +74,24 @@ const Login = (): JSX.Element => {
         <FormControl
           isInvalid={formik.touched.username && formik.errors.username}
         >
+          <Label>University ID</Label>
           <Input
             type="text"
             placeholder=" "
             {...formik.getFieldProps("username")}
           ></Input>
-          <Label>University ID</Label>
           <ErrorMessage>{formik.errors.username}</ErrorMessage>
         </FormControl>
         <FormControl
           isInvalid={formik.touched.password && formik.errors.password}
         >
+          <Label>Password</Label>
           <Input
             type="password"
             placeholder=" "
             {...formik.getFieldProps("password")}
           ></Input>
-          <Label>Password</Label>
+
           <ErrorMessage>{formik.errors.password}</ErrorMessage>
         </FormControl>
         <div>

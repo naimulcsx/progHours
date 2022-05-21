@@ -22,7 +22,9 @@ const Navbar = ({ className }: { className?: string }) => {
       )}
     >
       <div className="flex items-center space-x-6">
-        <MenuAlt1Icon className="w-6 h-6" />
+        <button>
+          <MenuAlt1Icon className="w-6 h-6 text-gray-900" />
+        </button>
         <Link to="/dashboard">
           <Logo className="text-gray-900" />
         </Link>

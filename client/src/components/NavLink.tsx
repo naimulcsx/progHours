@@ -16,10 +16,12 @@ const NavLink: FunctionComponent<NavLinkProps> = ({ Icon, children, to }) => {
       <Link
         to={to}
         className={`group flex items-center px-3 p-2 text-base font-normal text-gray-900 rounded-lg dark:text-white hover:bg-primary/[0.075] dark:hover:bg-gray-700 ${
-          location.pathname.includes(to) ? "text-primary" : "text-gray-500"
+          location.pathname.includes(to) ? "text-primary" : ""
         }`}
       >
-        <Icon className="flex-shrink-0 w-6 h-6 transition duration-75 group-hover:text-primary dark:text-gray-400 dark:group-hover:text-white" />
+        {Icon && (
+          <Icon className="flex-shrink-0 w-6 h-6 transition duration-75 group-hover:text-primary dark:text-gray-400 dark:group-hover:text-white" />
+        )}
         <span className="ml-3 group-hover:text-primary">{children}</span>
       </Link>
     </li>

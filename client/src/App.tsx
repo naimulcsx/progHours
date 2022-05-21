@@ -77,20 +77,20 @@ const App = (): JSX.Element => {
         <Toaster
           position="top-center"
           reverseOrder={false}
-          toastOptions={{
-            success: {
-              style: {
-                background: "#4BB543",
-                color: "white",
-              },
-            },
-            error: {
-              style: {
-                background: "red",
-                color: "white",
-              },
-            },
-          }}
+          // toastOptions={{
+          //   success: {
+          //     style: {
+          //       background: "#4BB543",
+          //       color: "white",
+          //     },
+          //   },
+          //   error: {
+          //     style: {
+          //       background: "red",
+          //       color: "white",
+          //     },
+          //   },
+          // }}
         />
         {/* <ReactQueryDevtools position="bottom-right" /> */}
       </HelmetProvider>
