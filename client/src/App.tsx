@@ -60,7 +60,7 @@ const App = (): JSX.Element => {
   return (
     <QueryClientProvider client={queryClient}>
       <HelmetProvider>
-        <div className="min-h-screen bg-light">
+        <div className="min-h-screen text-gray-500 bg-gray-50">
           {isLoggedIn ? (
             <GlobalStateProvider>
               <main>{matchedPage}</main>
@@ -74,7 +74,24 @@ const App = (): JSX.Element => {
           autoClose={3000}
           position="bottom-right"
         />
-        <Toaster position="top-center" reverseOrder={false} />
+        <Toaster
+          position="top-center"
+          reverseOrder={false}
+          toastOptions={{
+            success: {
+              style: {
+                background: "#4BB543",
+                color: "white",
+              },
+            },
+            error: {
+              style: {
+                background: "red",
+                color: "white",
+              },
+            },
+          }}
+        />
         {/* <ReactQueryDevtools position="bottom-right" /> */}
       </HelmetProvider>
     </QueryClientProvider>

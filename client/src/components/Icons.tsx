@@ -48,8 +48,8 @@ const LogoIcon = ({ width, height }) => {
 
 const CFIcon = (props) => (
   <svg
-    width={28}
-    height={28}
+    width="100%"
+    height="100%"
     fill="none"
     xmlns="http://www.w3.org/2000/svg"
     viewBox="0 0 200 200"
@@ -161,8 +161,8 @@ function SPOJIcon() {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
-      width="28"
-      height="28"
+      width="100%"
+      height="100%"
       version="1.1"
       viewBox="0 0 400 470.833"
     >
@@ -184,8 +184,8 @@ function CCIcon() {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
-      width="28"
-      height="28"
+      width="100%"
+      height="100%"
       fill="none"
       viewBox="0 0 200 200"
     >
@@ -388,8 +388,8 @@ function LightOJIcon() {
 function UVAIcon() {
   return (
     <svg
-      width={40}
-      height={40}
+      width="100%"
+      height="100%"
       viewBox="0 0 24 24"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
@@ -409,8 +409,8 @@ function UVAIcon() {
 function CSESIcon() {
   return (
     <svg
-      width={35}
-      height={35}
+      width="100%"
+      height="100%"
       viewBox="0 0 35 35"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
@@ -506,8 +506,8 @@ function EOlympIcon() {
         xmlnsXlink="http://www.w3.org/1999/xlink"
         x="0px"
         y="0px"
-        width={24}
-        height={24}
+        width="100%"
+        height="100%"
         viewBox="0 0 16 16"
         enableBackground="new 0 0 16 16"
         xmlSpace="preserve"
@@ -547,8 +547,8 @@ function BeeCrowd() {
       version="1.1"
       xmlns="http://www.w3.org/2000/svg"
       xmlnsXlink="http://www.w3.org/1999/xlink"
-      width={24}
-      height={24}
+      width="100%"
+      height="100%"
       viewBox="0, 0, 400,366.9270833333333"
     >
       <g id="svgg">
@@ -670,8 +670,8 @@ function LeetCodeIcon() {
 function TimusIcon() {
   return (
     <svg
-      width="24"
-      height="11"
+      width="100%"
+      height="100%"
       viewBox="0 0 24 11"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
@@ -696,8 +696,8 @@ function TimusIcon() {
 function CodeToWinIcon() {
   return (
     <svg
-      width={32}
-      height={32}
+      width="100%"
+      height="100%"
       viewBox="0 0 24 24"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
@@ -714,8 +714,8 @@ function CodeToWinIcon() {
 const HackerEarthIcon = () => {
   return (
     <svg
-      width={35}
-      height={35}
+      width="100%"
+      height="100%"
       viewBox="0 0 35 35"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
@@ -740,8 +740,8 @@ const KattisOJIcon = () => {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
-      width="24"
-      height="24"
+      width="100%"
+      height="100%"
       fill="none"
       viewBox="0 0 341 315"
     >

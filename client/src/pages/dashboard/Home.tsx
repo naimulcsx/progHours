@@ -66,7 +66,7 @@ const DashboardHome = () => {
       <Helmet>
         <title>Dashboard</title>
       </Helmet>
-      <div className="flex items-center justify-between mb-6">
+      {/* <div className="flex items-center justify-between mb-6">
         <div>
           <h3 className="font-bold">Hi! {user?.name}</h3>
           <p className="mt-1 text-gray-500">
@@ -74,18 +74,20 @@ const DashboardHome = () => {
             journey!
           </p>
         </div>
-      </div>
-      {data && (
-        <div className="">
-          <ProgressBox progress={data} />
-        </div>
-      )}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-8 min-h-[560px]">
-        <div className="px-4 xl:px-8 py-6 bg-white rounded-lg shadow shadow-primary/5 md:col-span-2">
-          <WeekChart data={frequency} />
-        </div>
-        <div className="h-full w-full px-4 xl:px-8 py-6 bg-white shadow shadow-primary/5 rounded-lg md:px-16 lg:px-32">
-          <VerdictChart data={data} />
+      </div> */}
+      <div className="space-y-4">
+        {data && (
+          <div className="">
+            <ProgressBox progress={data} />
+          </div>
+        )}
+        <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
+          <div className="p-8 bg-white rounded-lg shadow xl:px-8 md:col-span-2">
+            <WeekChart data={frequency} />
+          </div>
+          <div className="w-full h-full p-8 bg-white rounded-lg shadow xl:px-8 md:px-16 lg:px-32">
+            <VerdictChart data={data} />
+          </div>
         </div>
       </div>
     </DashboardLayout>

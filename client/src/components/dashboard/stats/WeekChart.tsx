@@ -10,6 +10,7 @@ import {
   Legend,
 } from "chart.js"
 import { Line } from "react-chartjs-2"
+import ReactApexChart from "react-apexcharts"
 
 ChartJS.register(
   CategoryScale,
@@ -73,5 +74,43 @@ function makeData(frequency) {
 }
 
 export default function WeekChart({ data }) {
-  return <Line options={options} data={makeData(data)} />
+  console.log(data)
+  const series = [
+    {
+      name: "series1",
+      data: Object.keys(data).map((el) => data[el]),
+    },
+  ]
+  const options = {
+    chart: {
+      toolbar: {
+        show: false,
+      },
+      height: 350,
+      type: "area",
+    },
+    dataLabels: {
+      enabled: false,
+    },
+    stroke: {
+      curve: "smooth",
+    },
+    xaxis: {
+      type: "text",
+      categories: Object.keys(data).map((el) => `Week ${el}`),
+    },
+    tooltip: {
+      x: {
+        format: "dd/MM/yy HH:mm",
+      },
+    },
+  }
+  return (
+    <ReactApexChart
+      options={options as any}
+      series={series}
+      type="area"
+      height={350}
+    />
+  )
 }

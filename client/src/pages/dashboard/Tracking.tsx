@@ -13,7 +13,7 @@ import WeekFilters from "@/components/submissions/filters/WeekFilter"
  * Import helpers
  */
 import { GlobalContext } from "@/GlobalStateProvider"
-import { UploadIcon } from "@heroicons/react/outline"
+import { UploadIcon } from "@heroicons/react/solid"
 import ImportCsvModal from "./ImportCsvModal"
 import csvToArray from "@/utils/csvToArray"
 
@@ -48,7 +48,7 @@ export default function TrackingSheet() {
   }
 
   return (
-    <DashboardLayout dataDependency={[query.data]}>
+    <DashboardLayout dataDependency={[query.data]} className="pb-0 bg-white">
       <Helmet>
         <title>Tracking Sheet</title>
       </Helmet>
@@ -73,7 +73,7 @@ export default function TrackingSheet() {
             <li>
               <label
                 htmlFor="csv-input"
-                className="flex items-center px-4 py-2 text-sm border border-dashed rounded-lg cursor-pointer text-primary border-primary"
+                className="flex items-center px-4 py-2 text-sm text-white rounded-lg cursor-pointer bg-primary"
               >
                 <input type="file" id="csv-input" onInput={handleImport} />
                 <UploadIcon className="w-5 h-5 mr-2" />

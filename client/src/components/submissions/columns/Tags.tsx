@@ -23,11 +23,13 @@ const Tags = (cell: Cell<Submission>) => {
     <ul className="flex gap-2 xl:flex-wrap">
       {tags.map((tag: Tag) => {
         return (
-          <li
-            key={tag.id}
-            className="px-2 py-1 text-sm rounded-lg bg-primary bg-opacity-10 text-primary whitespace-nowrap"
-          >
-            {tag.name}
+          <li>
+            <span
+              key={tag.id}
+              className="inline-block bg-primary/[0.075] text-primary text-sm h-7 px-2 flex items-center rounded dark:bg-gray-700 dark:text-gray-300"
+            >
+              {tag.name}
+            </span>
           </li>
         )
       })}
