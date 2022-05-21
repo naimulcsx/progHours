@@ -21,7 +21,7 @@ import {
 import { useRef, useState } from "react"
 import { useMutation } from "react-query"
 import { updateSubmission } from "@/api/submissions"
-import { toast } from "react-toastify"
+import toast from "react-hot-toast"
 import { ExternalLinkIcon } from "@heroicons/react/outline"
 import { Cell } from "react-table"
 import { Submission } from "@/types/Submission"

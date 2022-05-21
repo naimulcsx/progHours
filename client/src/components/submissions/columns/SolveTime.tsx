@@ -1,6 +1,6 @@
 import { useMutation, useQueryClient } from "react-query"
 import { updateSubmission, getSubmissions } from "@/api/submissions"
-import { toast } from "react-toastify"
+import toast from "react-hot-toast"
 import { useEffect, useRef, useState } from "react"
 import moment from "moment"
 import { Cell } from "react-table"

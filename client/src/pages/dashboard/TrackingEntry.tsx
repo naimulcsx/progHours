@@ -11,7 +11,7 @@ import {
   Label,
   ErrorMessage,
 } from "@/components/Form"
-import { toast } from "react-toastify"
+import toast from "react-hot-toast"
 import { useMutation } from "react-query"
 import { createSubmission } from "@/api/submissions"
 

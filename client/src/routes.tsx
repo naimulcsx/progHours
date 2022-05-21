@@ -1,5 +1,5 @@
 import { useEffect } from "react"
-import { toast } from "react-toastify"
+import toast from "react-hot-toast"
 import { Navigate, RouteObject } from "react-router-dom"
 
 /**

@@ -54,7 +54,7 @@ export default function TrackingSheet() {
       </Helmet>
       <div>
         <div className="flex items-center justify-between">
-          <h3 className="font-bold flex items-center space-x-4">
+          <h3 className="flex items-center space-x-4 font-bold">
             <span>Tracking Sheet</span>
             <Spinner show={query.isLoading || query.isRefetching} />
           </h3>
@@ -73,7 +73,7 @@ export default function TrackingSheet() {
             <li>
               <label
                 htmlFor="csv-input"
-                className="flex items-center text-sm text-primary px-4 py-2 rounded-lg cursor-pointer border border-dashed border-primary"
+                className="flex items-center px-4 py-2 text-sm border border-dashed rounded-lg cursor-pointer text-primary border-primary"
               >
                 <input type="file" id="csv-input" onInput={handleImport} />
                 <UploadIcon className="w-5 h-5 mr-2" />
