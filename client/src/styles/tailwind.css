@@ -80,7 +80,11 @@ input:-webkit-autofill:active {
 
 /*Button Styles*/
 .btn-primary {
-  @apply px-5 py-2 text-white rounded-md bg-primary;
+  @apply px-5 py-2 text-white rounded-lg bg-primary;
+}
+
+.btn-primary-sm {
+  @apply px-3 py-1.5 text-sm text-white rounded-lg bg-primary;
 }
 
 .btn-outline {

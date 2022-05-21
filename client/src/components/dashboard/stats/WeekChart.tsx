@@ -104,13 +104,24 @@ export default function WeekChart({ data }) {
         format: "dd/MM/yy HH:mm",
       },
     },
+    title: {
+      text: "Number of problems solved by week",
+      floating: false,
+      margin: 10,
+      offsetY: 0,
+      align: "center",
+      style: {
+        fontWeight: 600,
+        color: "#444",
+      },
+    },
   }
   return (
     <ReactApexChart
       options={options as any}
       series={series}
       type="area"
-      height={350}
+      height={320}
     />
   )
 }

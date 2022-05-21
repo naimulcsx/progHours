@@ -68,7 +68,7 @@ const DashboardHome = () => {
       <Helmet>
         <title>Dashboard</title>
       </Helmet>
-      {/* <div className="flex items-center justify-between mb-6">
+      <div className="flex items-center justify-between mb-6">
         <div>
           <h3 className="font-bold">Hi! {user?.name}</h3>
           <p className="mt-1 text-gray-500">
@@ -76,7 +76,7 @@ const DashboardHome = () => {
             journey!
           </p>
         </div>
-      </div> */}
+      </div>
       <div className="space-y-4">
         {data && (
           <div className="">
@@ -87,7 +87,7 @@ const DashboardHome = () => {
           <div className="p-8 bg-white rounded-lg shadow xl:px-8">
             <WeekChart data={frequency} />
           </div>
-          <div className="w-full h-full col-span-2 p-8 bg-white rounded-lg shadow xl:px-8 md:px-16 lg:px-32">
+          <div className="w-full h-full col-span-2 px-8 pt-8 pb-0 bg-white rounded-lg shadow xl:px-8 md:px-16 lg:px-32">
             <TagsChart data={data?.tags_frequency} />
           </div>
         </div>

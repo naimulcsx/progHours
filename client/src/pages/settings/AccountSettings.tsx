@@ -14,6 +14,7 @@ import { userInfo } from "os"
 import { useContext } from "react"
 import { GlobalContext } from "@/GlobalStateProvider"
 import { MailIcon, UserIcon } from "@heroicons/react/solid"
+import { Link } from "react-router-dom"
 
 const accountSchema = Yup.object().shape({
   name: Yup.string().trim(),
@@ -34,7 +35,7 @@ const Settings = () => {
       <div className="grid items-start grid-cols-3 gap-4">
         <div className="space-y-4">
           <div className="p-8 bg-white rounded-lg shadow">
-            <div className="flex items-center space-x-8">
+            <div className="flex space-x-8">
               <Avatar name={user.name} size="xl" />
               <div>
                 <h2 className="flex items-center mb-2 space-x-2 text-2xl">
@@ -52,6 +53,11 @@ const Settings = () => {
                     <MailIcon className="w-5 h-5" />
                     <span>{user.email}</span>
                   </p>
+                  <Link to={`/users/${user.username}`}>
+                    <a className="inline-block mt-4 btn-primary-sm">
+                      View Profile
+                    </a>
+                  </Link>
                 </div>
               </div>
             </div>

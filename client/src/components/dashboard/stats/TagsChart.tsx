@@ -1,11 +1,4 @@
-import React, { useEffect, useState } from "react"
-import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js"
-import { Doughnut } from "react-chartjs-2"
-import { getStats } from "../../../api/dashboard"
-import { useQuery } from "react-query"
 import ReactApexChart from "react-apexcharts"
-
-ChartJS.register(ArcElement, Tooltip, Legend)
 
 function stringToColour(str: string) {
   str = str + "_"
@@ -19,30 +12,6 @@ function stringToColour(str: string) {
     colour += ("00" + value.toString(16)).substr(-2)
   }
   return colour
-}
-
-const makeData = (data) => {
-  let labels = []
-  if (data) {
-    labels = Object.keys(data.verdict_count)
-    data = Object.keys(data.verdict_count).map((el) => data.verdict_count[el])
-  }
-  return {
-    labels,
-    datasets: [
-      {
-        label: "# of Votes",
-        data,
-        backgroundColor: [
-          "#34d399", //AC
-          "#f87171", //WA
-          "#f472b6", //RTE
-          "rgba(75, 192, 192, 0.2)", //MLE
-          "#fbbf24", //TLE
-        ],
-      },
-    ],
-  }
 }
 
 export default function TagsChart({ data }) {
@@ -79,13 +48,14 @@ export default function TagsChart({ data }) {
         formatter: function (val) {
           return val
         },
-        offsetY: -20,
+        offsetY: -32,
         style: {
           fontSize: "12px",
           colors: ["#304758"],
         },
       },
       xaxis: {
+        type: "category",
         categories: data.map(({ name }) => name),
         position: "bottom",
         axisBorder: {
@@ -107,10 +77,11 @@ export default function TagsChart({ data }) {
           },
         },
         tooltip: {
-          enabled: true,
+          enabled: false,
         },
       },
       yaxis: {
+        max: Math.max(...data.map(({ count }) => parseInt(count))) + 3,
         axisBorder: {
           show: false,
         },
@@ -126,8 +97,9 @@ export default function TagsChart({ data }) {
       },
       title: {
         text: "Solved categories",
-        floating: true,
-        offsetY: 330,
+        floating: false,
+        offsetY: 0,
+        margin: 10,
         align: "center",
         style: {
           color: "#444",
