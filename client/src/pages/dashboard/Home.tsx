@@ -7,7 +7,7 @@ import { Helmet } from "react-helmet-async"
  */
 import { DashboardLayout } from "@/components/layouts/Dashboard"
 import ProgressBox from "@/components/ProgressBox"
-import VerdictChart from "@/components/dashboard/stats/VerdictChart"
+import TagsChart from "@/components/dashboard/stats/TagsChart"
 import WeekChart from "@/components/dashboard/stats/WeekChart"
 import { GlobalContext } from "@/GlobalStateProvider"
 
@@ -25,7 +25,9 @@ const DashboardHome = () => {
    */
   let [data, setData] = useState(null)
   useQuery("stats", getStats, {
-    onSuccess: (data) => setData(data),
+    onSuccess: (data) => {
+      setData(data)
+    },
   })
   /**
    * Get submissions and get statistics for each week
@@ -82,11 +84,11 @@ const DashboardHome = () => {
           </div>
         )}
         <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
-          <div className="p-8 bg-white rounded-lg shadow xl:px-8 md:col-span-2">
+          <div className="p-8 bg-white rounded-lg shadow xl:px-8">
             <WeekChart data={frequency} />
           </div>
-          <div className="w-full h-full p-8 bg-white rounded-lg shadow xl:px-8 md:px-16 lg:px-32">
-            <VerdictChart data={data} />
+          <div className="w-full h-full col-span-2 p-8 bg-white rounded-lg shadow xl:px-8 md:px-16 lg:px-32">
+            <TagsChart data={data?.tags_frequency} />
           </div>
         </div>
       </div>

@@ -52,10 +52,11 @@ export default function TrackingSheet() {
       <Helmet>
         <title>Tracking Sheet</title>
       </Helmet>
+
       <div>
         <div className="flex items-center justify-between">
           <h3 className="flex items-center space-x-4 font-bold">
-            <span>Tracking Sheet</span>
+            <span>Submissions</span>
             <Spinner show={query.isLoading || query.isRefetching} />
           </h3>
         </div>
