@@ -10,7 +10,7 @@ import {
 } from "@/components/Form"
 import { useState } from "react"
 import { useMutation, useQuery, useQueryClient } from "react-query"
-import { createOJHandle, getAllHandles } from "@/api/handle"
+import { createOJHandle, deleteHandle, getAllHandles } from "@/api/handle"
 import showErrorToasts from "@/utils/showErrorToasts"
 import toast from "react-hot-toast"
 import { ExternalLinkIcon, TrashIcon } from "@heroicons/react/solid"
@@ -80,6 +80,20 @@ const HandleSettings = () => {
   })
 
   /**
+   * Handle delete
+   */
+  const { mutate: handleMutate } = useMutation(deleteHandle, {
+    onSuccess() {
+      client.invalidateQueries("handles")
+      toast.success("Deleted successfully")
+    },
+
+    onError: (err: any) => {
+      showErrorToasts(err.response.data.message)
+    },
+  })
+
+  /**
    * Get user online judge profile
    */
   const getProfileURL = (oj: string, handle: string) => {
@@ -104,44 +118,51 @@ const HandleSettings = () => {
         <div className="space-y-6">
           <h4 className="mb-8">Online Judge Handles</h4>
           <div className="">
-            <div className="px-8 py-3 -mx-8 text-sm uppercase bg-gray-100 border-t border-b">
-              <div className="flex justify-between">
-                <span>Handle</span>
-                <span>Action</span>
-              </div>
-            </div>
-            {handles.length > 0 &&
-              handles.map((item: any) => {
-                const iconMap = {
-                  Codeforces: <CFIcon />,
-                  CodeChef: <CCIcon />,
-                  Toph: <TophIcon />,
-                  LightOJ: <LightOJIcon />,
-                }
-                return (
-                  <div
-                    key={item.id}
-                    className="flex items-center justify-between px-8 py-2.5 -mx-8 border-b"
-                  >
-                    <div className="flex items-center space-x-2">
-                      <div className="w-6 h-6">
-                        {iconMap[item.judge_id.name]}
-                      </div>
-                      <a
-                        href={getProfileURL(item.judge_id.name, item.handle)}
-                        target="_blank"
-                        className="flex items-center space-x-1 text-blue-500 border-b border-blue-400"
-                      >
-                        <span>{item.handle}</span>
-                        <ExternalLinkIcon className="w-4 h-4" />
-                      </a>
-                    </div>
-                    <button className="w-5 h-5 text-red-500">
-                      <TrashIcon />
-                    </button>
+            {handles.length > 0 && (
+              <div>
+                <div className="px-8 py-3 -mx-8 text-sm uppercase bg-gray-100 border-t border-b">
+                  <div className="flex justify-between">
+                    <span>Handle</span>
+                    <span>Action</span>
                   </div>
-                )
-              })}
+                </div>
+                {handles.map((item: any) => {
+                  const iconMap = {
+                    Codeforces: <CFIcon />,
+                    CodeChef: <CCIcon />,
+                    Toph: <TophIcon />,
+                    LightOJ: <LightOJIcon />,
+                  }
+
+                  return (
+                    <div
+                      key={item.id}
+                      className="flex items-center justify-between px-8 py-2.5 -mx-8 border-b"
+                    >
+                      <div className="flex items-center space-x-2">
+                        <div className="w-6 h-6">
+                          {iconMap[item.judge_id.name]}
+                        </div>
+                        <a
+                          href={getProfileURL(item.judge_id.name, item.handle)}
+                          target="_blank"
+                          className="flex items-center space-x-1 text-blue-500 border-b border-blue-400"
+                        >
+                          <span>{item.handle}</span>
+                          <ExternalLinkIcon className="w-4 h-4" />
+                        </a>
+                      </div>
+                      <button
+                        className="w-5 h-5 text-red-500"
+                        onClick={() => handleMutate(item.judge_id.id)}
+                      >
+                        <TrashIcon />
+                      </button>
+                    </div>
+                  )
+                })}
+              </div>
+            )}
           </div>
 
           <div className="flex space-x-5">

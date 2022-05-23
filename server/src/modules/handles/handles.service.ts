@@ -40,7 +40,7 @@ export class HandlesService {
       .where("handle.user_id = :userId", { userId })
       .innerJoinAndSelect("handle.judge_id", "judge_id")
       .innerJoinAndSelect("handle.user_id", "user_id")
-      .select(["handle", "user_id.username", "judge_id.name"])
+      .select(["handle", "user_id.username", "judge_id.name", "judge_id.id"])
       .getMany()
 
     return handles
@@ -51,6 +51,8 @@ export class HandlesService {
    */
   async deleteHandle(userId: number, judge_id: number) {
     const foundHandle = await this.findHandle({ user_id: userId, judge_id })
+
+    console.log("foundHandle", judge_id, userId)
 
     return this.handlesRepository.delete(foundHandle)
   }
