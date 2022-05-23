@@ -8,4 +8,10 @@ const getAllHandles = () => {
   return axios("/api/handles").then((res) => res.data)
 }
 
-export { createOJHandle, getAllHandles }
+const deleteHandle = (judge_id: any) => {
+  return axios
+    .delete("/api/handles", { data: { judge_id } })
+    .then((res) => res.data)
+}
+
+export { createOJHandle, getAllHandles, deleteHandle }
