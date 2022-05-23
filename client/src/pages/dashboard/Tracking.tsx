@@ -16,6 +16,7 @@ import { GlobalContext } from "@/GlobalStateProvider"
 import { UploadIcon } from "@heroicons/react/solid"
 import ImportCsvModal from "./ImportCsvModal"
 import csvToArray from "@/utils/csvToArray"
+import DashboardHeader from "@/components/dashboard/Header"
 
 export default function TrackingSheet() {
   const context = useContext(GlobalContext)
@@ -54,13 +55,8 @@ export default function TrackingSheet() {
       </Helmet>
 
       <div>
-        <div className="flex items-center justify-between">
-          <h3 className="flex items-center space-x-4 font-bold">
-            <span>Submissions</span>
-            <Spinner show={query.isLoading || query.isRefetching} />
-          </h3>
-        </div>
-        <div className="flex justify-between mt-4">
+        <DashboardHeader title="Submissions" />
+        <div className="flex justify-between">
           <ul className="flex items-center space-x-4">
             <li>
               <WeekFilters

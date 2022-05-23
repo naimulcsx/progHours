@@ -16,6 +16,7 @@ import Spinner from "@/components/Spinner"
 import calculatePoints from "@/utils/calculatePoints"
 import { getRankList } from "@/api/leaderboard"
 import { RanklistItem } from "@/types/RanklistItem"
+import DashboardHeader from "@/components/dashboard/Header"
 
 const LeaderboardPage = () => {
   let [ranklist, setRanklist] = useState(null)
@@ -45,28 +46,8 @@ const LeaderboardPage = () => {
       <Helmet>
         <title>Leaderboard</title>
       </Helmet>
-      <div className="flex items-center justify-between">
-        <h3 className="font-bold">
-          <div className="flex items-center space-x-4">
-            <span>Leaderboard</span>
-            <Spinner show={query.isLoading || query.isRefetching} />
-          </div>
-        </h3>
-      </div>
-      <Transition
-        as={Fragment}
-        show={!query.isRefetching && query.status !== "loading"}
-        enter="transform transition duration-[300]"
-        enterFrom="opacity-0"
-        enterTo="opacity-100"
-        leave="transform duration-300 transition ease-in-out"
-        leaveFrom="opacity-100 scale-100"
-        leaveTo="opacity-0"
-      >
-        <div className="mt-6">
-          {ranklist && <LeaderboardTable ranklist={ranklist} />}
-        </div>
-      </Transition>
+      <DashboardHeader title="Leaderboard" />
+      {ranklist && <LeaderboardTable ranklist={ranklist} />}
     </DashboardLayout>
   )
 }
