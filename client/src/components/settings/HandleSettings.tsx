@@ -14,16 +14,13 @@ import { createOJHandle, getAllHandles } from "@/api/handle"
 import showErrorToasts from "@/utils/showErrorToasts"
 import toast from "react-hot-toast"
 import { ExternalLinkIcon, TrashIcon } from "@heroicons/react/solid"
-import { CCIcon, CFIcon, OpenLinkIcon } from "../Icons"
+import { CCIcon, CFIcon, LightOJIcon, OpenLinkIcon, TophIcon } from "../Icons"
 
 interface OJ {
-  CodeForces: number
+  Codeforces: number
   CodeChef: number
-  CSES: number
-  UVa: number
   Toph: number
-  SPOJ: number
-  Hackerrank: number
+  LightOJ: number
 }
 
 interface HandleState {
@@ -48,13 +45,10 @@ const HandleSettings = () => {
 
     onSubmit: (values: HandleState) => {
       const judge: OJ = {
-        CodeForces: 1,
+        Codeforces: 1,
         CodeChef: 2,
-        CSES: 3,
-        UVa: 4,
         Toph: 5,
-        SPOJ: 6,
-        Hackerrank: 7,
+        LightOJ: 8,
       }
       const val = {
         handle: values.handle,
@@ -102,17 +96,19 @@ const HandleSettings = () => {
                 const iconMap = {
                   Codeforces: <CFIcon />,
                   CodeChef: <CCIcon />,
+                  Toph: <TophIcon />,
+                  LightOJ: <LightOJIcon />,
                 }
                 return (
                   <div
                     key={item.id}
-                    className="flex items-center justify-between px-8 py-3 -mx-8 border-b"
+                    className="flex items-center justify-between px-8 py-2.5 -mx-8 border-b"
                   >
                     <div className="flex items-center space-x-2">
                       <div className="w-6 h-6">
                         {iconMap[item.judge_id.name]}
                       </div>
-                      <p className="flex items-center space-x-1 text-blue-500 border-b border-blue-500">
+                      <p className="flex items-center space-x-1 text-blue-500 border-b border-blue-400">
                         <span>{item.handle}</span>
                         <ExternalLinkIcon className="w-4 h-4" />
                       </p>
