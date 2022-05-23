@@ -7,7 +7,7 @@ import { Helmet } from "react-helmet-async"
  */
 import { DashboardLayout } from "@/components/layouts/Dashboard"
 import ProgressBox from "@/components/ProgressBox"
-import VerdictChart from "@/components/dashboard/stats/VerdictChart"
+import TagsChart from "@/components/dashboard/stats/TagsChart"
 import WeekChart from "@/components/dashboard/stats/WeekChart"
 import { GlobalContext } from "@/GlobalStateProvider"
 
@@ -25,7 +25,9 @@ const DashboardHome = () => {
    */
   let [data, setData] = useState(null)
   useQuery("stats", getStats, {
-    onSuccess: (data) => setData(data),
+    onSuccess: (data) => {
+      setData(data)
+    },
   })
   /**
    * Get submissions and get statistics for each week
@@ -75,17 +77,19 @@ const DashboardHome = () => {
           </p>
         </div>
       </div>
-      {data && (
-        <div className="">
-          <ProgressBox progress={data} />
-        </div>
-      )}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-8 min-h-[560px]">
-        <div className="px-4 xl:px-8 py-6 bg-white rounded-lg shadow shadow-primary/5 md:col-span-2">
-          <WeekChart data={frequency} />
-        </div>
-        <div className="h-full w-full px-4 xl:px-8 py-6 bg-white shadow shadow-primary/5 rounded-lg md:px-16 lg:px-32">
-          <VerdictChart data={data} />
+      <div className="space-y-4">
+        {data && (
+          <div className="">
+            <ProgressBox progress={data} />
+          </div>
+        )}
+        <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
+          <div className="p-8 bg-white rounded-lg shadow xl:px-8">
+            <WeekChart data={frequency} />
+          </div>
+          <div className="w-full h-full col-span-2 px-8 pt-8 pb-0 bg-white rounded-lg shadow xl:px-8 md:px-16 lg:px-32">
+            <TagsChart data={data?.tags_frequency} />
+          </div>
         </div>
       </div>
     </DashboardLayout>

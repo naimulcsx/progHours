@@ -85,6 +85,7 @@ export class UsersController {
   @ApiForbiddenResponse({ description: "Forbidden." })
   async updateAccount(@Body() body: UpdateUserDto, @Req() req: any) {
     const { name, email, confirmPassword, currentPassword, newPassword } = body
+
     /**
      * Handle profile update
      */
@@ -104,7 +105,7 @@ export class UsersController {
         )
       }
     } else {
-      await this.usersService.updatePassword(passwordFields, req.user.id)
+      // await this.usersService.updatePassword(passwordFields, req.user.id)
     }
 
     /**

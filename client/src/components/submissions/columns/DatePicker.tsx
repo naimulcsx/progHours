@@ -1,7 +1,7 @@
 import moment from "moment"
 import { useState } from "react"
 import { Cell } from "react-table"
-import { toast } from "react-toastify"
+import toast from "react-hot-toast"
 import { Submission } from "@/types/Submission"
 import ReactDatePicker from "react-datepicker"
 import { updateSubmission } from "@/api/submissions"

@@ -4,8 +4,8 @@ import TagInputField from "./TagInputField"
 
 export default function TagInputPopup({ problemId }: { problemId: number }) {
   return (
-    <Popover className="mt-1">
-      <Popover.Button className="relative px-2 py-1 text-sm rounded-lg bg-primary bg-opacity-10 text-primary">
+    <Popover className="">
+      <Popover.Button className="relative flex items-center px-2 text-sm rounded h-7 bg-primary bg-opacity-10 text-primary">
         +
       </Popover.Button>{" "}
       <Transition

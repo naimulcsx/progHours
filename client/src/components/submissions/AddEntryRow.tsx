@@ -1,7 +1,7 @@
 import * as Yup from "yup"
 import React, { useState } from "react"
 import { useFormik } from "formik"
-import { toast } from "react-toastify"
+import toast from "react-hot-toast"
 import { AxiosError } from "axios"
 import { useQueryClient, useMutation } from "react-query"
 import { FormControl, Select, Option, Input } from "@/components/Form"
@@ -104,10 +104,10 @@ const AddEntryRow = ({ id }: { id: string }) => {
 
   return (
     <tr className="bg-white">
-      <td className="border border-slate-100" data-idx>
+      <td className="py-3 border-b" data-serial>
         {id}
       </td>
-      <td className="border border-slate-100" data-problem-name>
+      <td className="py-3 border-b" data-problem-name>
         <form id="add-submission" onSubmit={handleSubmit}></form>
         <FormControl className="form">
           <Input
@@ -120,7 +120,7 @@ const AddEntryRow = ({ id }: { id: string }) => {
           ></Input>
         </FormControl>
       </td>
-      <td className="border border-slate-100" data-verdict>
+      <td className="py-3 border-b" data-verdict>
         <Select value={selected} onChange={handleSelected}>
           <Option value="AC">AC</Option>
           <Option value="WA">WA</Option>
@@ -129,7 +129,7 @@ const AddEntryRow = ({ id }: { id: string }) => {
           <Option value="MLE">MLE</Option>
         </Select>
       </td>
-      <td className="border border-slate-100" data-solve_time>
+      <td className="py-3 border-b" data-solve_time>
         <FormControl className="form">
           <Input
             type="text"
@@ -142,11 +142,11 @@ const AddEntryRow = ({ id }: { id: string }) => {
         </FormControl>
       </td>
 
-      <td className="border border-slate-100" data-tags>
+      <td className="py-3 border-b" data-tags>
         —
       </td>
-      <td className="border border-slate-100">—</td>
-      <td className="border border-slate-100" data-solved_at>
+      <td className="py-3 border-b">—</td>
+      <td className="py-3 border-b" data-solved_at>
         <ReactDatePicker
           dateFormat="EEE, dd MMM yyyy"
           className="h-[40px] px-3 focus:outline-none rounded focus:ring-2 ring-primary ring-opacity-50"
@@ -162,7 +162,7 @@ const AddEntryRow = ({ id }: { id: string }) => {
           }}
         />
       </td>
-      <td className="border border-slate-100" data-actions>
+      <td className="py-3 border-b" data-actions>
         <button
           form="add-submission"
           type="submit"

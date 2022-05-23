@@ -14,7 +14,7 @@
 
 /* Default styles */
 body {
-  @apply text-gray-700;
+  @apply text-gray-500;
 }
 
 h1,
@@ -23,7 +23,7 @@ h3,
 h4,
 h5,
 h6 {
-  @apply font-semibold text-dark;
+  @apply font-semibold text-gray-900;
 }
 
 h1 {
@@ -80,7 +80,11 @@ input:-webkit-autofill:active {
 
 /*Button Styles*/
 .btn-primary {
-  @apply px-5 py-2 text-white rounded-md bg-primary;
+  @apply px-5 py-2 text-white rounded-lg bg-primary;
+}
+
+.btn-primary-sm {
+  @apply px-3 py-1.5 text-sm text-white rounded-lg bg-primary;
 }
 
 .btn-outline {
@@ -138,8 +142,15 @@ table tr td:first-child {
 
 /*------- Submissions Table ------ */
 /*--------------------------------*/
+table td[data-serial],
+table tr th:first-child {
+  @apply px-10 text-gray-700;
+}
+table td[data-serial] {
+  @apply text-sm;
+}
 table td[data-problem-name] {
-  @apply w-[300px] relative px-4 py-2;
+  @apply relative px-4 py-2 w-72;
 }
 table td[data-problem-name] input.inset {
   @apply absolute inset-0 px-6 rounded focus:outline-none focus:ring-2 focus:ring-inset ring-primary;
@@ -148,25 +159,20 @@ table td[data-verdict] {
   @apply w-10 px-5;
 }
 table td[data-problem\.difficulty] {
+  @apply text-sm font-medium text-gray-700;
   /* @apply w-10; */
 }
 table td[data-solve_time] {
-  @apply relative;
+  @apply relative w-32;
 }
-table td[data-solve_time] input {
+/* table td[data-solve_time] input {
   @apply absolute inset-0 px-6 rounded focus:outline-none focus:ring-2 focus:ring-inset ring-primary;
-}
+} */
 table td[data-solved-at] {
-  @apply relative w-48;
-}
-table td[data-solved-at] .react-datepicker-wrapper {
-  @apply absolute inset-0;
-}
-table td[data-solved-at] .react-datepicker__input-container {
-  @apply w-full h-full;
+  @apply relative w-48 text-sm text-gray-700;
 }
 table td[data-solved-at] .react-datepicker__input-container input {
-  @apply w-full h-full px-6;
+  @apply bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500;
 }
 table td[data-tags] {
   @apply w-[520px] px-6 py-2;

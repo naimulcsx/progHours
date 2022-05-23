@@ -20,14 +20,24 @@ function useSubmissions() {
     if (!query.data) return
     const weekRanges = getWeekRanges(query.data.submissions)
     setWeekRanges(weekRanges)
+    console.log(selectedWeek)
     /**
      * Set default week to be the current week (only the first time we get the data)
      */
     if (selectedWeek.id === 0) {
+      // setSelectedWeek({
+      //   id: weekRanges.length + 1,
+      //   name: "Week " + weekRanges.length,
+      // })
       setSelectedWeek({
-        id: weekRanges.length + 1,
-        name: "Week " + weekRanges.length,
+        id: 1,
+        name: "All Weeks",
       })
+    } else if (selectedWeek.id === 1) {
+      /**
+       * If we are on the all weeks filter
+       */
+      setFilteredData(query.data.submissions)
     } else {
       /**
        * Data has updated, but we don't want to change the selectedWeek, so keep the selectedWeek as it is

@@ -1,12 +1,13 @@
 import { useMutation, useQueryClient } from "react-query"
 import { updateSubmission, getSubmissions } from "@/api/submissions"
-import { toast } from "react-toastify"
+import toast from "react-hot-toast"
 import { useEffect, useRef, useState } from "react"
 import moment from "moment"
 import { Cell } from "react-table"
 import { Submission } from "@/types/Submission"
 import { AxiosError } from "axios"
 import { Practice } from "@/types/Practice"
+import { Input } from "@/components/Form"
 
 export default function SolveTime(cell: Cell<Submission>) {
   const client = useQueryClient()
@@ -44,7 +45,7 @@ export default function SolveTime(cell: Cell<Submission>) {
   }
 
   return (
-    <input
+    <Input
       type="number"
       value={time}
       onChange={(e) => setTime(e.target.value)}

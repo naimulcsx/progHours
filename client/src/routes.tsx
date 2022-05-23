@@ -1,5 +1,5 @@
 import { useEffect } from "react"
-import { toast } from "react-toastify"
+import toast from "react-hot-toast"
 import { Navigate, RouteObject } from "react-router-dom"
 
 /**
@@ -23,8 +23,7 @@ import Profile from "@/pages/profile"
 /**
  * Settings page
  */
-import AccountSettings from "@/pages/settings/AccountSettings"
-import HandleSettings from "@/pages/settings/HandleSettings"
+import Settings from "@/pages/Settings"
 
 const AccessDenied = (): JSX.Element => {
   /**
@@ -61,19 +60,7 @@ const routes = (isLoggedIn: boolean): RouteObject[] => [
   },
   {
     path: "/settings",
-    element: isLoggedIn ? (
-      <Navigate to="/settings/account" />
-    ) : (
-      <AccessDenied />
-    ),
-  },
-  {
-    path: "/settings/handles",
-    element: <HandleSettings />,
-  },
-  {
-    path: "/settings/account",
-    element: <AccountSettings />,
+    element: isLoggedIn ? <Settings /> : <AccessDenied />,
   },
   {
     path: "/users/:username",

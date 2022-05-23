@@ -2,11 +2,11 @@ const colors = require("tailwindcss/colors")
 
 module.exports = {
   content: ["./src/**/*.{ts,tsx}"],
-  darkMode: false, // or 'media' or 'class'
+  darkMode: "class", // or 'media' or 'class'
   colors: { ...colors },
   theme: {
     fontFamily: {
-      sans: ["Helvetica Neue", "sans-serif"],
+      sans: ["Inter", "sans-serif"],
     },
     screens: {
       sm: "640px",
@@ -17,7 +17,7 @@ module.exports = {
     },
     extend: {
       colors: {
-        primary: "#3758f9",
+        primary: "#1d4ed8",
         primaryDark: "#2E2C34",
         secondaryDark: "#84818A",
         lightGrey: "#f2edf7",

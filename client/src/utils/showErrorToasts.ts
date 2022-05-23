@@ -1,4 +1,4 @@
-import { toast } from "react-toastify"
+import toast from "react-hot-toast"
 
 function showErrorToasts(messages: string[]) {
   if (typeof messages === "string") {

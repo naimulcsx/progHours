@@ -5,8 +5,8 @@ import { QueryClient, QueryClientProvider } from "react-query"
 import { useLocation, useNavigate, useRoutes } from "react-router-dom"
 import clearAuthData from "@/utils/clearAuthData"
 import axios from "axios"
-import { Zoom, Slide } from "react-toastify"
 import { ReactQueryDevtools } from "react-query/devtools"
+import { Toaster } from "react-hot-toast"
 
 /**
  * Import Styles
@@ -60,7 +60,7 @@ const App = (): JSX.Element => {
   return (
     <QueryClientProvider client={queryClient}>
       <HelmetProvider>
-        <div className="min-h-screen bg-light">
+        <div className="min-h-screen text-gray-500 bg-gray-50">
           {isLoggedIn ? (
             <GlobalStateProvider>
               <main>{matchedPage}</main>
@@ -73,6 +73,24 @@ const App = (): JSX.Element => {
           theme="colored"
           autoClose={3000}
           position="bottom-right"
+        />
+        <Toaster
+          position="top-center"
+          reverseOrder={false}
+          // toastOptions={{
+          //   success: {
+          //     style: {
+          //       background: "#4BB543",
+          //       color: "white",
+          //     },
+          //   },
+          //   error: {
+          //     style: {
+          //       background: "red",
+          //       color: "white",
+          //     },
+          //   },
+          // }}
         />
         {/* <ReactQueryDevtools position="bottom-right" /> */}
       </HelmetProvider>

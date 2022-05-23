@@ -15,9 +15,9 @@ const UserCell = (cell: Cell<RanklistItem>) => {
       <div className="flex items-center space-x-4">
         <Avatar name={cell.row.original.user.name} />
         <div>
-          <p className="font-medium">{cell.value}</p>
+          <p className="font-medium text-gray-900">{cell.value}</p>
           <p className="text-sm text-gray-500">
-            {cell.row.original.user.username}
+            {cell.row.original.user.username.toUpperCase()}
           </p>
         </div>
       </div>
@@ -70,23 +70,23 @@ const LeaderboardTable = ({ ranklist }: { ranklist: RanklistItem[] }) => {
   )
 
   return (
-    <div className="overflow-x-scroll rounded-lg shadow shadow-primary/5 md:overflow-clip">
+    <div className="-mx-4 overflow-x-scroll md:overflow-clip">
       <table
         {...getTableProps()}
-        className="border-collapse leaderboard max-w-6 xl"
+        className="text-gray-700 border-collapse leaderboard max-w-6"
       >
         <thead>
           {headerGroups.map((headerGroup) => {
             return (
               <tr
                 {...headerGroup.getHeaderGroupProps()}
-                className="text-base text-dark"
+                className="text-xs text-gray-500 uppercase bg-gray-100"
               >
                 {headerGroup.headers.map((header) => {
                   return (
                     <th
                       {...header.getHeaderProps(header.getSortByToggleProps())}
-                      className="border-t border-b border-slate-100"
+                      className="py-4 border-t border-b"
                     >
                       <div className="flex items-center justify-start space-x-1">
                         <span>{header.render("Header")}</span>
@@ -116,10 +116,7 @@ const LeaderboardTable = ({ ranklist }: { ranklist: RanklistItem[] }) => {
               <tr {...row.getRowProps()} className={`bg-white`}>
                 {row.cells.map((cell) => {
                   return (
-                    <td
-                      {...cell.getCellProps()}
-                      className="border-b border-slate-100"
-                    >
+                    <td {...cell.getCellProps()} className="py-3 border-b">
                       {cell.render("Cell")}
                     </td>
                   )

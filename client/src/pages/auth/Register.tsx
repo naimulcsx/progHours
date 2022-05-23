@@ -1,7 +1,7 @@
 import axios from "axios"
 import * as Yup from "yup"
 import { useFormik } from "formik"
-import { toast } from "react-toastify"
+import toast from "react-hot-toast"
 import { Helmet } from "react-helmet-async"
 import { Link, useNavigate } from "react-router-dom"
 
@@ -52,8 +52,9 @@ const Register = (): JSX.Element => {
         // create a toast
         toast.success("Account created!")
       } catch (err: any) {
-        const { data } = err.response
-        toast.error(data.error, { className: "toast" })
+        const { data, status, statusText } = err.response
+        // handle bad gateway errors
+        if (status === 502) toast.error(statusText)
         showErrorToasts(data.message)
       }
     },
@@ -76,46 +77,32 @@ const Register = (): JSX.Element => {
       <form className="mt-8" onSubmit={formik.handleSubmit}>
         <div className="space-y-4">
           <FormControl isInvalid={formik.touched.name && formik.errors.name}>
-            <Input
-              type="text"
-              placeholder=" "
-              {...formik.getFieldProps("name")}
-            />
             <Label>Name</Label>
+            <Input type="text" {...formik.getFieldProps("name")} />
             <ErrorMessage>{formik.errors.name}</ErrorMessage>
           </FormControl>
 
           <FormControl isInvalid={formik.touched.email && formik.errors.email}>
-            <Input
-              type="email"
-              placeholder=" "
-              {...formik.getFieldProps("email")}
-            />
             <Label>Email</Label>
+            <Input type="email" {...formik.getFieldProps("email")} />
             <ErrorMessage>{formik.errors.email}</ErrorMessage>
           </FormControl>
 
           <FormControl
             isInvalid={formik.touched.username && formik.errors.username}
           >
-            <Input
-              type="text"
-              placeholder=" "
-              {...formik.getFieldProps("username")}
-            />
             <Label>University ID</Label>
+
+            <Input type="text" {...formik.getFieldProps("username")} />
             <ErrorMessage>{formik.errors.username}</ErrorMessage>
           </FormControl>
 
           <FormControl
             isInvalid={formik.touched.password && formik.errors.password}
           >
-            <Input
-              type="password"
-              placeholder=" "
-              {...formik.getFieldProps("password")}
-            />
             <Label>Password</Label>
+
+            <Input type="password" {...formik.getFieldProps("password")} />
             <ErrorMessage>{formik.errors.password}</ErrorMessage>
           </FormControl>
         </div>

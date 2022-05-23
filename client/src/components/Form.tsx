@@ -16,7 +16,7 @@ const FormControl = ({
   children?: ReactNode
 }) => {
   const validChildren = React.Children.map(children, (child) => {
-    if (React.isValidElement(child) && typeof child.type !== "string") {
+    if (React.isValidElement(child)) {
       return child.type.name !== "ErrorMessage" ? child : null
     }
   })
@@ -26,15 +26,28 @@ const FormControl = ({
     }
   })
   return (
-    <div className={className ? className : "form-group"}>
+    <div>
       {validChildren}
       {isInvalid && errorChildren}
     </div>
   )
 }
 
-const Label = ({ children }: { children: ReactNode }) => {
-  return <label>{children}</label>
+const Label = ({
+  children,
+  htmlFor,
+}: {
+  children: ReactNode
+  htmlFor?: string
+}) => {
+  return (
+    <label
+      htmlFor={htmlFor}
+      className="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300"
+    >
+      {children}
+    </label>
+  )
 }
 
 const Input = (
@@ -43,7 +56,12 @@ const Input = (
     HTMLInputElement
   >
 ) => {
-  return <input {...props} />
+  return (
+    <input
+      {...props}
+      className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 shadow-sm disabled:text-gray-400 disabled:cursor-not-allowed disabled:bg-gray-100"
+    />
+  )
 }
 
 const ErrorMessage = ({ children }: { children: ReactNode }) => {
@@ -62,11 +80,11 @@ const Select = ({
   const styles: {
     [key: string]: string
   } = {
-    AC: "bg-lime-200 text-lime-900 rounded w-full font-medium text-center",
-    WA: "bg-red-200 text-red-900 rounded w-full font-medium text-center",
-    RTE: "bg-pink-200 text-pink-900 rounded w-full font-medium text-center",
-    TLE: "bg-amber-200 text-amber-900 rounded w-full font-medium text-center",
-    MLE: "bg-cyan-200 text-cyan-900 rounded w-full font-medium text-center",
+    AC: "bg-lime-200 text-lime-900 rounded-lg w-full font-medium text-center",
+    WA: "bg-red-200 text-red-900 rounded-lg w-full font-medium text-center",
+    RTE: "bg-pink-200 text-pink-900 rounded-lg w-full font-medium text-center",
+    TLE: "bg-amber-200 text-amber-900 rounded-lg w-full font-medium text-center",
+    MLE: "bg-cyan-200 text-cyan-900 rounded-lg w-full font-medium text-center",
   }
   return (
     <Listbox value={value} onChange={onChange}>
@@ -74,9 +92,11 @@ const Select = ({
         <>
           <div>
             <Listbox.Button
-              className={`${
-                styles[value] ? styles[value] : ""
-              } relative w-full py-2 h-[40px] pr-10 shadow-sm bg-white cursor-default focus:outline-none focus:ring-2 focus:ring-primary ${
+              className={`text-sm shadow-sm min-w-[96px] ${
+                styles[value]
+                  ? styles[value]
+                  : "rounded-lg w-full border border-gray-300"
+              } relative w-full py-2 h-[40px] pr-10 bg-white cursor-default focus:outline-none focus:ring-2 focus:ring-primary ${
                 open ? "ring-2 ring-primary ring-opacity-50" : ""
               }`}
             >
@@ -97,7 +117,7 @@ const Select = ({
               leaveFrom="opacity-100"
               leaveTo="opacity-0"
             >
-              <Listbox.Options className="absolute z-[9999] w-[160px] py-1 mt-1 overflow-auto text-base bg-white rounded-md shadow-lg max-h-60 ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm">
+              <Listbox.Options className="absolute z-[9999] w-[160px] py-1 mt-1 overflow-auto text-base bg-white rounded-lg shadow max-h-60 ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm">
                 {children}
               </Listbox.Options>
             </Transition>

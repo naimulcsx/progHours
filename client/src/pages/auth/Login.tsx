@@ -1,9 +1,10 @@
 import axios from "axios"
 import * as Yup from "yup"
 import { useFormik } from "formik"
-import { toast } from "react-toastify"
+// import toast from "react-hot-toast"
 import { Helmet } from "react-helmet-async"
 import { Link, useNavigate } from "react-router-dom"
+import toast from "react-hot-toast"
 
 /**
  * Import Components / Utilities
@@ -48,8 +49,9 @@ const Login = (): JSX.Element => {
         navigate("/dashboard")
         toast.success("Successfully logged in", { className: "toast" })
       } catch (error: any) {
-        const { data } = error.response
-        // toast.error(data.error, { className: "toast" })
+        const { data, status, statusText } = error.response
+        // handle bad gateway errors
+        if (status === 502) toast.error(statusText)
         showErrorToasts(data.message)
       }
     },
@@ -72,23 +74,16 @@ const Login = (): JSX.Element => {
         <FormControl
           isInvalid={formik.touched.username && formik.errors.username}
         >
-          <Input
-            type="text"
-            placeholder=" "
-            {...formik.getFieldProps("username")}
-          ></Input>
           <Label>University ID</Label>
+          <Input type="text" {...formik.getFieldProps("username")}></Input>
           <ErrorMessage>{formik.errors.username}</ErrorMessage>
         </FormControl>
         <FormControl
           isInvalid={formik.touched.password && formik.errors.password}
         >
-          <Input
-            type="password"
-            placeholder=" "
-            {...formik.getFieldProps("password")}
-          ></Input>
           <Label>Password</Label>
+          <Input type="password" {...formik.getFieldProps("password")}></Input>
+
           <ErrorMessage>{formik.errors.password}</ErrorMessage>
         </FormControl>
         <div>

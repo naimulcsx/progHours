@@ -202,7 +202,11 @@ export default function ImportCsvModal({
                   <p></p>
                 </div>
 
-                <div className="mt-6 space-y-3 h-64 bg-light rounded-lg px-5 py-3 overflow-x-hidden">
+                <div className="h-64 py-3 mt-6 -mx-6 overflow-x-hidden">
+                  <div className="flex px-5 py-2 space-x-12 text-sm uppercase bg-gray-100 border-t border-b">
+                    <p>ID</p>
+                    <p>Link</p>
+                  </div>
                   {items.map((item, i) => {
                     const [
                       link,
@@ -223,18 +227,21 @@ export default function ImportCsvModal({
 
                     return (
                       <div
-                        className="flex justify-between items-center text-gray-500 h-7 text-sm"
+                        className="flex items-center justify-between px-6 py-2 text-sm text-gray-500 border-b"
                         key={`${link}-${i}}`}
                       >
-                        <p
-                          className={`${isSuccess ? "text-green-500" : ""} ${
-                            isError ? "text-red-500" : ""
-                          }`}
-                        >
-                          {link}
-                        </p>
+                        <div className="flex space-x-12">
+                          <p>{i + 1}</p>
+                          <p
+                            className={`${isSuccess ? "text-green-500" : ""} ${
+                              isError ? "text-red-500" : ""
+                            }`}
+                          >
+                            {link}
+                          </p>
+                        </div>
                         {isSuccess && (
-                          <CheckIcon className="w-5 h-5 text-white rounded-full p-1 bg-green-500" />
+                          <CheckIcon className="w-5 h-5 p-1 text-white bg-green-500 rounded-full" />
                         )}
                         {isLoading && (
                           <p>
@@ -255,7 +262,7 @@ export default function ImportCsvModal({
                   {!importFinished && (
                     <button
                       type="button"
-                      className="inline-flex justify-center px-4 h-10 items-center text-sm font-medium text-blue-900 bg-blue-100 border border-transparent rounded-md hover:bg-blue-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-blue-500 disabled:bg-gray-100"
+                      className="inline-flex items-center justify-center h-10 px-4 text-sm font-medium text-blue-900 bg-blue-100 border border-transparent rounded-md hover:bg-blue-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-blue-500 disabled:bg-gray-100"
                       onClick={handleImportRequest}
                       disabled={importStarted && !importFinished}
                     >
@@ -271,7 +278,7 @@ export default function ImportCsvModal({
 
                   <button
                     type="button"
-                    className="inline-flex justify-center px-4 h-10 items-center text-sm font-medium text-blue-900 bg-blue-100 border border-transparent rounded-md hover:bg-blue-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-blue-500"
+                    className="inline-flex items-center justify-center h-10 px-4 text-sm font-medium text-blue-900 bg-blue-100 border border-transparent rounded-md hover:bg-blue-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-blue-500"
                     onClick={() => {
                       setIsOpen(false)
                       setStatus({})

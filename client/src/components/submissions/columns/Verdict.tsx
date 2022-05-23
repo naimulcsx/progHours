@@ -1,6 +1,6 @@
 import { useState } from "react"
 import { AxiosError } from "axios"
-import { toast } from "react-toastify"
+import toast from "react-hot-toast"
 import { Cell } from "react-table"
 import { useMutation, useQueryClient } from "react-query"
 

@@ -9,6 +9,7 @@ import Logo from "./Logo"
 import DropdownMenu from "./DropdownMenu"
 import { GlobalContext } from "@/GlobalStateProvider"
 import Avatar from "./Avatar"
+import { MenuAlt1Icon } from "@heroicons/react/solid"
 
 const Navbar = ({ className }: { className?: string }) => {
   const globalContext = useContext(GlobalContext)
@@ -16,13 +17,18 @@ const Navbar = ({ className }: { className?: string }) => {
   return (
     <header
       className={twMerge(
-        "fixed top-0 left-0 right-0 z-[1] flex items-center justify-between px-5 md:px-6 py-3 bg-white lg:bg-transparent",
+        "fixed h-14 bg-white border-b top-0 left-0 right-0 z-[1] flex items-center justify-between px-5 md:px-6 py-3",
         className
       )}
     >
-      <Link to="/dashboard">
-        <Logo className="text-gray-900" />
-      </Link>
+      <div className="flex items-center space-x-6">
+        <button>
+          <MenuAlt1Icon className="w-6 h-6 text-gray-900" />
+        </button>
+        <Link to="/dashboard">
+          <Logo className="text-gray-900" />
+        </Link>
+      </div>
       <nav>
         <ul className="flex items-center justify-end space-x-2">
           <li className="flex items-center">

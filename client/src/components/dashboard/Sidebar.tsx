@@ -22,44 +22,45 @@ import {
   ChartBarIcon,
   CogIcon,
   LogoutIcon,
-} from "@heroicons/react/outline"
+  DocumentTextIcon,
+} from "@heroicons/react/solid"
+import NavDropdown from "../NavDropdown"
 
-const Sidebar = (): JSX.Element => {
+const Sidebar = () => {
   /**
    * Get user information from global state
    */
   const globalContext = useContext(GlobalContext)
   const user = globalContext.user!
-
   const handleLogout = useLogout()
   return (
-    <div className="hidden md:block max-w-[250px] z-[40] w-full h-[100vh] py-3 fixed z-10 top-0 left-0 bottom-0 bg-white shadow shadow-primary/5">
-      {/* sidebar links */}
-      <div className="flex flex-col justify-between h-full px-5">
-        <div className="">
-          <div className="mb-12">
-            <Link to="/dashboard">
-              <Logo className="text-dark" />
-            </Link>
-          </div>
-          <nav>
-            <ul className="space-y-1">
-              <NavLink Icon={ViewGridIcon} to="/dashboard">
-                Dashboard
-              </NavLink>
-              <NavLink Icon={ClipboardListIcon} to="/submissions">
-                Tracking Sheet
-              </NavLink>
-              <NavLink Icon={ChartBarIcon} to="/leaderboard">
-                Leaderboard
-              </NavLink>
-              <NavLink Icon={CogIcon} to="/settings">
-                Settings
-              </NavLink>
-            </ul>
-          </nav>
-        </div>
-        <div className="flex items-start space-x-3">
+    <aside className="w-64 shrink-0" aria-label="Sidebar">
+      <div className="flex flex-col justify-between min-h-screen px-4 pt-24 pb-4 overflow-y-auto bg-white border-r border-gray-200 rounded dark:bg-gray-800">
+        <ul className="space-y-2">
+          <NavLink Icon={ViewGridIcon} to="/dashboard">
+            Dashboard
+          </NavLink>
+          <NavDropdown
+            Icon={ClipboardListIcon}
+            key="__xd4nbc"
+            items={[
+              ["Submissions", "/submissions"],
+              ["Study List", "/study-list"],
+            ]}
+          >
+            Practice
+          </NavDropdown>
+          <NavLink Icon={DocumentTextIcon} to="/resources">
+            Resources
+          </NavLink>
+          <NavLink Icon={ChartBarIcon} to="/leaderboard">
+            Leaderboard
+          </NavLink>
+          <NavLink Icon={CogIcon} to="/settings">
+            Settings
+          </NavLink>
+        </ul>
+        <div className="flex items-start px-2 space-x-4">
           <Avatar name={user.name} />
           <div className="relative bottom-1">
             <h6 className="text-lg font-medium">{user.name}</h6>
@@ -73,7 +74,7 @@ const Sidebar = (): JSX.Element => {
           </div>
         </div>
       </div>
-    </div>
+    </aside>
   )
 }
 
