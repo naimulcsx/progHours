@@ -42,7 +42,7 @@ const Sidebar = () => {
           </NavLink>
           <NavDropdown
             Icon={ClipboardListIcon}
-            key="__xd4nbc"
+            _key="__xd4nbc"
             items={[
               ["Submissions", "/submissions"],
               ["Study List", "/study-list"],

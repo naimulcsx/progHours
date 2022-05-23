@@ -61,8 +61,8 @@ const Avatar = ({
         color: textColor,
       }}
     >
-      {name.split(" ").map((word) => {
-        return <span>{word[0]}</span>
+      {name.split(" ").map((word, i) => {
+        return <span key={i}>{word[0]}</span>
       })}
     </div>
   )

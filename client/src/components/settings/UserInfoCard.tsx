@@ -27,7 +27,9 @@ const UserInfoCard = () => {
               <span>{user.email}</span>
             </p>
             <Link to={`/users/${user.username}`}>
-              <a className="inline-block mt-4 btn-primary-sm">View Profile</a>
+              <span className="inline-block mt-4 btn-primary-sm">
+                View Profile
+              </span>
             </Link>
           </div>
         </div>
