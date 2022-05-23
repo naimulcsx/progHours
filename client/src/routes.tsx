@@ -24,6 +24,7 @@ import Profile from "@/pages/profile"
  * Settings page
  */
 import Settings from "@/pages/Settings"
+import ResourcesPage from "@/pages/Resources"
 
 const AccessDenied = (): JSX.Element => {
   /**
@@ -57,6 +58,10 @@ const routes = (isLoggedIn: boolean): RouteObject[] => [
   {
     path: "/submissions",
     element: isLoggedIn ? <TrackingSheet /> : <AccessDenied />,
+  },
+  {
+    path: "/resources",
+    element: isLoggedIn ? <ResourcesPage /> : <AccessDenied />,
   },
   {
     path: "/settings",

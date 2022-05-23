@@ -68,7 +68,7 @@ const DashboardHome = () => {
       <Helmet>
         <title>Dashboard</title>
       </Helmet>
-      <div className="flex items-center justify-between mb-6">
+      {/* <div className="flex items-center justify-between mb-6">
         <div>
           <h3 className="font-bold">Hi! {user?.name}</h3>
           <p className="mt-1 text-gray-500">
@@ -76,7 +76,7 @@ const DashboardHome = () => {
             journey!
           </p>
         </div>
-      </div>
+      </div> */}
       <div className="space-y-4">
         {data && (
           <div className="">

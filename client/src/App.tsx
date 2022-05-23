@@ -1,12 +1,13 @@
 import { useEffect } from "react"
 import { HelmetProvider } from "react-helmet-async"
-import { toast, ToastContainer } from "react-toastify"
+import { ToastContainer } from "react-toastify"
 import { QueryClient, QueryClientProvider } from "react-query"
 import { useLocation, useNavigate, useRoutes } from "react-router-dom"
 import clearAuthData from "@/utils/clearAuthData"
 import axios from "axios"
 import { ReactQueryDevtools } from "react-query/devtools"
 import { Toaster } from "react-hot-toast"
+import toast from "react-hot-toast"
 
 /**
  * Import Styles
