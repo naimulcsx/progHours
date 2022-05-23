@@ -10,12 +10,18 @@ export class HandlesService {
     private handlesRepository: Repository<Handle>
   ) {}
 
-  findHandles({ user_id, judge_id }) {
+  /**
+   * Get a handle
+   */
+  findHandle({ user_id, judge_id }) {
     return this.handlesRepository.findOne({
       where: { user_id, judge_id },
     })
   }
 
+  /**
+   * Create a handle
+   */
   async createHandles({ handle, judge_id, user_id }) {
     const newHandles = this.handlesRepository.create({
       handle,
@@ -25,7 +31,10 @@ export class HandlesService {
     return this.handlesRepository.save(newHandles)
   }
 
-  async findAllHandles(userId) {
+  /**
+   * Find all handles
+   */
+  async findAllHandles(userId: number) {
     const handles = await this.handlesRepository
       .createQueryBuilder("handle")
       .where("handle.user_id = :userId", { userId })
@@ -35,5 +44,14 @@ export class HandlesService {
       .getMany()
 
     return handles
+  }
+
+  /**
+   * Delete handle
+   */
+  async deleteHandle(userId: number, judge_id: number) {
+    const foundHandle = await this.findHandle({ user_id: userId, judge_id })
+
+    return this.handlesRepository.delete(foundHandle)
   }
 }

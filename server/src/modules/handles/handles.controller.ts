@@ -1,6 +1,7 @@
 import {
   Body,
   Controller,
+  Delete,
   ForbiddenException,
   Get,
   Post,
@@ -12,15 +13,15 @@ import { CreateHandleDto } from "src/validators/create-handle-dto"
 import { HandlesService } from "./handles.service"
 
 @Controller("handles")
+@UseGuards(IsAuthenticatedGuard)
 export class HandlesController {
   constructor(private readonly handleService: HandlesService) {}
 
   @Post("")
-  @UseGuards(IsAuthenticatedGuard)
   async createOJHandles(@Body() body: CreateHandleDto, @Req() req: any) {
     const { handle, judge_id } = body
 
-    const foundHandle = await this.handleService.findHandles({
+    const foundHandle = await this.handleService.findHandle({
       user_id: req.user.id,
       judge_id,
     })
@@ -36,10 +37,14 @@ export class HandlesController {
   }
 
   @Get("")
-  @UseGuards(IsAuthenticatedGuard)
   async findHandles(@Req() req) {
     const handles = await this.handleService.findAllHandles(req.user.id)
-
     return { handles }
+  }
+
+  @Delete("")
+  async deleteHandle(@Req() req, @Body() body) {
+    await this.handleService.deleteHandle(req.user.id, body.judge_id)
+    return { status: "success", message: "Handle deleted" }
   }
 }
