@@ -12,21 +12,21 @@ export class OnlineJudgesService {
 
   async seed() {
     const judges = [
-      { id: 1, name: "CodeForces" },
+      { id: 1, name: "Codeforces" },
       { id: 2, name: "CodeChef" },
       { id: 3, name: "CSES" },
-      { id: 4, name: "UVa" },
+      { id: 4, name: "UVA" },
       { id: 5, name: "Toph" },
       { id: 6, name: "SPOJ" },
-      { id: 7, name: "Hackerrank" },
+      { id: 7, name: "HackerRank" },
       { id: 8, name: "LightOJ" },
       { id: 9, name: "AtCoder" },
-      { id: 10, name: "EOlymp" },
-      { id: 11, name: "BeeCrowd" },
+      { id: 10, name: "Eolymp" },
+      { id: 11, name: "Beecrowd" },
       { id: 12, name: "LeetCode" },
       { id: 13, name: "Timus" },
       { id: 14, name: "CodeToWin" },
-      { id: 15, name: "ICPC Live Archive" },
+      { id: 15, name: "UVALive" },
       { id: 16, name: "HackerEarth" },
       { id: 17, name: "Kattis" },
     ]

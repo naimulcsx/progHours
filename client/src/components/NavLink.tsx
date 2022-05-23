@@ -16,7 +16,9 @@ const NavLink: FunctionComponent<NavLinkProps> = ({ Icon, children, to }) => {
       <Link
         to={to}
         className={`group flex items-center px-3 p-2 text-base font-normal rounded-lg dark:text-white hover:bg-primary/[0.075] dark:hover:bg-gray-700 ${
-          location.pathname.includes(to) ? "text-primary" : "text-gray-600"
+          location.pathname.includes(to)
+            ? "text-primary bg-primary/[0.075]"
+            : "text-gray-600"
         }`}
       >
         {Icon && (

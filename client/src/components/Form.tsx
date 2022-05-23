@@ -16,7 +16,7 @@ const FormControl = ({
   children?: ReactNode
 }) => {
   const validChildren = React.Children.map(children, (child) => {
-    if (React.isValidElement(child) && typeof child.type !== "string") {
+    if (React.isValidElement(child)) {
       return child.type.name !== "ErrorMessage" ? child : null
     }
   })
@@ -26,16 +26,25 @@ const FormControl = ({
     }
   })
   return (
-    <div className="">
+    <div>
       {validChildren}
       {isInvalid && errorChildren}
     </div>
   )
 }
 
-const Label = ({ children }: { children: ReactNode }) => {
+const Label = ({
+  children,
+  htmlFor,
+}: {
+  children: ReactNode
+  htmlFor?: string
+}) => {
   return (
-    <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300">
+    <label
+      htmlFor={htmlFor}
+      className="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300"
+    >
       {children}
     </label>
   )
@@ -50,7 +59,7 @@ const Input = (
   return (
     <input
       {...props}
-      className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 shadow-sm"
+      className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 shadow-sm disabled:text-gray-400 disabled:cursor-not-allowed disabled:bg-gray-100"
     />
   )
 }
@@ -108,7 +117,7 @@ const Select = ({
               leaveFrom="opacity-100"
               leaveTo="opacity-0"
             >
-              <Listbox.Options className="absolute z-[9999] w-[160px] py-1 mt-1 overflow-auto text-base bg-white rounded-md shadow-lg max-h-60 ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm">
+              <Listbox.Options className="absolute z-[9999] w-[160px] py-1 mt-1 overflow-auto text-base bg-white rounded-lg shadow max-h-60 ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm">
                 {children}
               </Listbox.Options>
             </Transition>
