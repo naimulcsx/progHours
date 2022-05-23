@@ -1,35 +1,33 @@
 import { ChevronDownIcon } from "@heroicons/react/solid"
-import { FunctionComponent, useEffect, useRef, useState } from "react"
+import { FunctionComponent, useState } from "react"
 import { useLocation } from "react-router-dom"
 import { Link } from "react-router-dom"
-import { StringSchema } from "yup"
-import NavLink from "./NavLink"
 
 type HeroIconProps = (props: React.ComponentProps<"svg">) => JSX.Element
 
 interface NavLinkProps {
   Icon: HeroIconProps
-  key: string
+  _key: string
   items: [string, string][]
 }
 
 const NavDropdown: FunctionComponent<NavLinkProps> = ({
   Icon,
   children,
-  key,
+  _key,
   items,
 }) => {
   const location = useLocation()
   const [open, setOpen] = useState(
-    () => !!Number(localStorage.getItem(key)) || false
+    () => !!Number(localStorage.getItem(_key)) || false
   )
   const toggleDropdown = () => {
     setOpen((prev) => {
       if (!prev) {
-        localStorage.setItem(key, "1")
+        localStorage.setItem(_key, "1")
         return true
       }
-      localStorage.setItem(key, "0")
+      localStorage.setItem(_key, "0")
       return false
     })
   }
@@ -45,7 +43,7 @@ const NavDropdown: FunctionComponent<NavLinkProps> = ({
         <Icon className="flex-shrink-0 w-6 h-6 transition duration-75 group-hover:text-primary dark:text-gray-400 dark:group-hover:text-white" />
         <span
           className="flex-1 ml-3 text-left whitespace-nowrap group-hover:text-primary"
-          sidebar-toggle-item
+          sidebar-toggle-item=""
         >
           {children}
         </span>
@@ -57,17 +55,17 @@ const NavDropdown: FunctionComponent<NavLinkProps> = ({
       </button>
       {open && (
         <ul id="dropdown" className="py-2 space-y-2">
-          {items.map(([title, href]) => {
+          {items.map(([title, href], i) => {
             return (
-              <li>
+              <li key={i}>
                 <Link to={href}>
-                  <a
+                  <span
                     className={`flex items-center w-full p-2 text-base font-normal text-gray-900 transition duration-75 rounded-lg pl-11 group hover:bg-primary/[0.075] dark:text-white dark:hover:bg-gray-700 ${
                       location.pathname.includes(href) ? "text-primary" : ""
                     }`}
                   >
                     {title}
-                  </a>
+                  </span>
                 </Link>
               </li>
             )
