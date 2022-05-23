@@ -15,6 +15,7 @@ import showErrorToasts from "@/utils/showErrorToasts"
 import toast from "react-hot-toast"
 import { ExternalLinkIcon, TrashIcon } from "@heroicons/react/solid"
 import { CCIcon, CFIcon, LightOJIcon, OpenLinkIcon, TophIcon } from "../Icons"
+import { Link } from "react-router-dom"
 
 interface OJ {
   Codeforces: number
@@ -25,7 +26,7 @@ interface OJ {
 
 interface HandleState {
   handle: string
-  onlineJudge: "CodeForces" | "CodeChef" | "Toph" | "LightOJ"
+  onlineJudge: "Codeforces" | "CodeChef" | "Toph" | "LightOJ"
 }
 
 const profileSchema = Yup.object().shape({
@@ -39,7 +40,7 @@ const HandleSettings = () => {
   const formik = useFormik({
     initialValues: {
       handle: "",
-      onlineJudge: "CodeForces",
+      onlineJudge: "Codeforces",
     },
     validationSchema: profileSchema,
 
@@ -78,6 +79,24 @@ const HandleSettings = () => {
     },
   })
 
+  /**
+   * Get user online judge profile
+   */
+  const getProfileURL = (oj: string, handle: string) => {
+    switch (oj) {
+      case "Codeforces":
+        return `https://codeforces.com/profile/${handle}`
+      case "Toph":
+        return `https://toph.co/u/${handle}`
+      case "LightOJ":
+        return `https://lightoj.com/user/${handle}`
+      case "CodeChef":
+        return `https://www.codechef.com/users/${handle}`
+      default:
+        return ""
+    }
+  }
+
   return (
     <div className="p-8 bg-white rounded-lg shadow">
       <form className="space-y-8" onSubmit={formik.handleSubmit}>
@@ -91,7 +110,7 @@ const HandleSettings = () => {
                 <span>Action</span>
               </div>
             </div>
-            {handles.length > 0 ? (
+            {handles.length > 0 &&
               handles.map((item: any) => {
                 const iconMap = {
                   Codeforces: <CFIcon />,
@@ -108,20 +127,21 @@ const HandleSettings = () => {
                       <div className="w-6 h-6">
                         {iconMap[item.judge_id.name]}
                       </div>
-                      <p className="flex items-center space-x-1 text-blue-500 border-b border-blue-400">
+                      <a
+                        href={getProfileURL(item.judge_id.name, item.handle)}
+                        target="_blank"
+                        className="flex items-center space-x-1 text-blue-500 border-b border-blue-400"
+                      >
                         <span>{item.handle}</span>
                         <ExternalLinkIcon className="w-4 h-4" />
-                      </p>
+                      </a>
                     </div>
                     <button className="w-5 h-5 text-red-500">
                       <TrashIcon />
                     </button>
                   </div>
                 )
-              })
-            ) : (
-              <div></div>
-            )}
+              })}
           </div>
 
           <div className="flex space-x-5">
