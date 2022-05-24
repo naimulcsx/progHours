@@ -7,11 +7,18 @@ import { Helmet } from "react-helmet-async"
 import { useQuery } from "react-query"
 
 interface Resource {
+  id: number
   title: string
   type: string
   language: string
   link: string
-  difficulty: string
+  difficulty: string | number
+}
+
+interface Circle {
+  Beginner: number
+  Intermediate: number
+  Advanced: number
 }
 
 const ResourcesPage = () => {
@@ -30,7 +37,7 @@ const ResourcesPage = () => {
       </Helmet>
       <DashboardHeader title="Resources" />
       <div className="masonry-4-col">
-        {resources.map((item) => (
+        {resources.map((item: Resource) => (
           <ResourceCard key={item.id} {...item} />
         ))}
       </div>
@@ -60,13 +67,13 @@ function ResourceCard({ title, type, language, link, difficulty }: Resource) {
 
           <div className="flex items-center space-x-2">
             {[1, 2, 3].map((circle) => {
-              const map = {
+              const map: Circle = {
                 Beginner: 1,
                 Intermediate: 2,
                 Advanced: 3,
               }
 
-              while (circle <= map[difficulty]) {
+              while (circle <= map[difficulty as keyof Circle]) {
                 return (
                   <span
                     key={circle}
