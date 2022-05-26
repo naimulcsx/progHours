@@ -23,6 +23,7 @@ import { ResourcesService } from "./resources/resources.service"
 import { ResourcesController } from "./resources/resources.controller"
 import { ResourcesModule } from "./resources/resources.module"
 import { Resource } from "./resources/resources.entity"
+import { StudyListModule } from './study-list/study-list.module';
 
 @Module({
   imports: [
@@ -53,6 +54,7 @@ import { Resource } from "./resources/resources.entity"
     StatsModule,
     RankingModule,
     ResourcesModule,
+    StudyListModule,
   ],
 })
 export class AppModule {
