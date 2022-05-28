@@ -25,13 +25,14 @@ import {
   DocumentTextIcon,
 } from "@heroicons/react/solid"
 import NavDropdown from "../NavDropdown"
+import Spinner from "../Spinner"
 
 const Sidebar = () => {
   /**
    * Get user information from global state
    */
   const globalContext = useContext(GlobalContext)
-  const user = globalContext.user!
+  const user = globalContext.user
   const handleLogout = useLogout()
   return (
     <aside className="w-64 shrink-0" aria-label="Sidebar">
@@ -60,19 +61,23 @@ const Sidebar = () => {
             Settings
           </NavLink>
         </ul>
-        <div className="flex items-start px-2 space-x-4">
-          <Avatar name={user.name} />
-          <div className="relative bottom-1">
-            <h6 className="text-lg font-medium">{user.name}</h6>
-            <button
-              className="flex items-center space-x-1 text-sm text-red-500"
-              onClick={handleLogout}
-            >
-              <LogoutIcon className="w-4 h-4" />
-              <span>Logout</span>
-            </button>
+        {user ? (
+          <div className="flex items-start px-2 space-x-4">
+            <Avatar name={user.name} />
+            <div className="relative bottom-1">
+              <h6 className="text-lg font-medium">{user.name}</h6>
+              <button
+                className="flex items-center space-x-1 text-sm text-red-500"
+                onClick={handleLogout}
+              >
+                <LogoutIcon className="w-4 h-4" />
+                <span>Logout</span>
+              </button>
+            </div>
           </div>
-        </div>
+        ) : (
+          <Spinner />
+        )}
       </div>
     </aside>
   )

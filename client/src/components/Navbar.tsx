@@ -10,10 +10,11 @@ import DropdownMenu from "./DropdownMenu"
 import { GlobalContext } from "@/GlobalStateProvider"
 import Avatar from "./Avatar"
 import { MenuAlt1Icon } from "@heroicons/react/solid"
+import Spinner from "./Spinner"
 
 const Navbar = ({ className }: { className?: string }) => {
   const globalContext = useContext(GlobalContext)
-  const user = globalContext.user!
+  const user = globalContext.user
   return (
     <header
       className={twMerge(
@@ -32,15 +33,19 @@ const Navbar = ({ className }: { className?: string }) => {
       <nav>
         <ul className="flex items-center justify-end space-x-2">
           <li className="flex items-center">
-            <Link
-              to={`/users/${user.username}`}
-              className="flex items-center space-x-2"
-            >
-              <Avatar name={user.name} size="sm" />
-              <span className="hidden font-medium text-gray-900 md:block">
-                {user.name}
-              </span>
-            </Link>
+            {user ? (
+              <Link
+                to={`/users/${user.username!}`}
+                className="flex items-center space-x-2"
+              >
+                <Avatar name={user.name!} size="sm" />
+                <span className="hidden font-medium text-gray-900 md:block">
+                  {user.name!}
+                </span>
+              </Link>
+            ) : (
+              <Spinner />
+            )}
           </li>
           <li className="flex items-center">
             <DropdownMenu />

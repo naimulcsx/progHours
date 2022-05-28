@@ -4,21 +4,13 @@ import { useQuery } from "react-query"
 import { User } from "@/GlobalStateProvider"
 
 function useUser() {
-  const [user, setUser] = useState<User>({
-    id: -1,
-    name: "",
-    role: "",
-    email: "",
-    username: "",
-  })
+  const [user, setUser] = useState<User | null>(null)
   useQuery("user", getUser, {
     onSuccess: (data) => {
       setUser(data)
     },
   })
-  return {
-    ...user,
-  }
+  return user
 }
 
 export default useUser
