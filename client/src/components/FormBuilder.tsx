@@ -2,8 +2,9 @@ import * as Yup from "yup"
 import { useFormik } from "formik"
 import { twMerge } from "tailwind-merge"
 import axios, { AxiosResponse } from "axios"
-import { useNavigate } from "react-router-dom"
 import { ErrorMessage, FormControl, Input, Label } from "@/components/Form"
+import { Mutation, useMutation } from "react-query"
+import Spinner from "./Spinner"
 
 interface FormBuilderProps {
   className?: string
@@ -15,36 +16,41 @@ interface FormBuilderProps {
       validate: Yup.AnySchema
     }
   }
-  api: string
-  onSuccess: (value: AxiosResponse<any, any>) => void
+  mutation: any
+  onSuccess: (value: any) => void
   onError: (err: any) => void
   button: {
     className?: string
     type?: string
     label: string
+    loadingLabel: string
   }
 }
 
 const FormBuilder = ({
   className,
   fields,
-  api,
+  mutation,
   onError,
   onSuccess,
   button,
 }: FormBuilderProps) => {
-  const navigate = useNavigate()
   const values: any = {}
   const validationRules: { [key: string]: Yup.AnySchema } = {}
   Object.keys(fields).map((key) => {
     values[key] = fields[key].initialValue ? fields[key].initialValue : ""
     validationRules[key] = fields[key].validate
   })
+  const { mutateAsync, isLoading } = useMutation(mutation, {
+    onSuccess,
+    onError,
+    onMutate: async () => {},
+  })
   const { handleSubmit, getFieldProps, errors, touched } = useFormik({
     initialValues: values,
     validationSchema: Yup.object().shape(validationRules),
-    onSubmit: (values) => {
-      axios.post(api, values).then(onSuccess).catch(onError)
+    onSubmit: async (values) => {
+      await mutateAsync(values)
     },
   })
   return (
@@ -65,11 +71,15 @@ const FormBuilder = ({
       <button
         type="submit"
         className={twMerge(
-          "block w-full bg-primary text-white py-3 mt-4 rounded-lg",
+          "block w-full bg-primary text-white h-11 mt-4 rounded-lg disabled:bg-slate-300",
           button.className
         )}
+        disabled={isLoading}
       >
-        {button.label}
+        <span className="inline-flex items-center space-x-2">
+          {isLoading && <Spinner />}
+          {isLoading ? button.loadingLabel : button.label}
+        </span>
       </button>
     </form>
   )

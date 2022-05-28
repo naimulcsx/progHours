@@ -9,6 +9,7 @@ import { Link, useNavigate } from "react-router-dom"
 import showErrorToasts from "@/utils/showErrorToasts"
 import AuthContainer from "@/components/AuthContainer"
 import FormBuilder from "@/components/FormBuilder"
+import { registerMutation } from "@/api/auth"
 
 /**
  * Component for registration page
@@ -59,7 +60,7 @@ const Register = (): JSX.Element => {
             validate: Yup.string().trim().required("Password is required"),
           },
         }}
-        api="/api/auth/register"
+        mutation={registerMutation}
         onSuccess={(res) => {
           // redirect to the login page
           navigate("/login")
@@ -75,6 +76,7 @@ const Register = (): JSX.Element => {
         button={{
           label: "Register",
           className: "mt-6",
+          loadingLabel: "Registering",
         }}
       />
     </AuthContainer>
