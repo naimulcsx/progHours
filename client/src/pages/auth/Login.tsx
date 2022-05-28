@@ -50,10 +50,11 @@ const Login = (): JSX.Element => {
         mutation={loginMutation}
         onSuccess={(data) => {
           const { user } = data
-          localStorage.setItem("isLoggedIn", "1")
           localStorage.setItem("role", "user")
+          localStorage.setItem("isLoggedIn", "1")
           localStorage.setItem("userId", user.id)
           localStorage.setItem("name", user.name)
+          localStorage.setItem("username", user.username)
           navigate("/dashboard") // redirect to dashboard
           toast.success("Logged in") // create a toast
         }}

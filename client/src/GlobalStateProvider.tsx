@@ -18,7 +18,7 @@ export interface User {
 }
 
 interface GlobalContext {
-  user: User
+  user: User | null
   useSubmissionsResult: any
 }
 
@@ -33,7 +33,7 @@ const GlobalStateProvider = ({
   children: ReactNode
 }): JSX.Element => {
   const useSubmissionsResult = useSubmissions()
-  const user: User = useUser()
+  const user: User | null = useUser()
   return (
     <GlobalContext.Provider
       value={{

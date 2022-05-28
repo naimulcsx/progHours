@@ -33,7 +33,7 @@ export const DashboardLayout: FunctionComponent<DashboardLayoutProps> = ({
             return ![null, undefined].includes(el)
           })}
           enter="transform transition duration-[400ms]"
-          enterFrom="opacity-0 scale-[0.995]"
+          enterFrom="opacity-0"
           enterTo="opacity-100 rotate-0 scale-100"
           leave="transform duration-200 transition ease-in-out"
           leaveFrom="opacity-100 rotate-0 scale-100"
