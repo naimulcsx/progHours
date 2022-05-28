@@ -23,6 +23,8 @@ import { ResourcesService } from "./resources/resources.service"
 import { ResourcesController } from "./resources/resources.controller"
 import { ResourcesModule } from "./resources/resources.module"
 import { Resource } from "./resources/resources.entity"
+import { StudyListModule } from "./study-list/study-list.module"
+import { StudyList } from "./study-list/study-list.entity"
 
 @Module({
   imports: [
@@ -39,6 +41,7 @@ import { Resource } from "./resources/resources.entity"
         OnlineJudge,
         Ranking,
         Resource,
+        StudyList,
       ],
       synchronize: true,
     }),
@@ -53,6 +56,7 @@ import { Resource } from "./resources/resources.entity"
     StatsModule,
     RankingModule,
     ResourcesModule,
+    StudyListModule,
   ],
 })
 export class AppModule {
