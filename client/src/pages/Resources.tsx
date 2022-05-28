@@ -7,7 +7,7 @@ const ResourcesPage = () => {
   return (
     <DashboardLayout dataDependency={[]}>
       <Helmet>
-        <title>Settings</title>
+        <title>Resources</title>
       </Helmet>
       <DashboardHeader title="Resources" />
       <div className="masonry-4-col">
