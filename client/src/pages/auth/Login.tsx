@@ -9,6 +9,7 @@ import toast from "react-hot-toast"
 import showErrorToasts from "@/utils/showErrorToasts"
 import AuthContainer from "@/components/AuthContainer"
 import FormBuilder from "@/components/FormBuilder"
+import { loginMutation } from "@/api/auth"
 
 /**
  * Component for login page
@@ -46,9 +47,9 @@ const Login = (): JSX.Element => {
             validate: Yup.string().trim().required("Password is required"),
           },
         }}
-        api="/api/auth/login"
-        onSuccess={(res) => {
-          const { user } = res.data
+        mutation={loginMutation}
+        onSuccess={(data) => {
+          const { user } = data
           localStorage.setItem("isLoggedIn", "1")
           localStorage.setItem("role", "user")
           localStorage.setItem("userId", user.id)
@@ -65,6 +66,7 @@ const Login = (): JSX.Element => {
         button={{
           label: "Login",
           className: "mt-6",
+          loadingLabel: "Logging in",
         }}
       />
     </AuthContainer>
