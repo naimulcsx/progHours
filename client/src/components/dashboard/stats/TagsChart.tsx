@@ -19,7 +19,7 @@ export default function TagsChart({ data }) {
     series: [
       {
         name: "Solved problems",
-        data: data.map(({ count }) => parseInt(count)),
+        data: data.map(({ count }: { count: string }) => parseInt(count)),
       },
     ],
     options: {
@@ -30,7 +30,7 @@ export default function TagsChart({ data }) {
           show: false,
         },
       },
-      colors: data.map(({ name }) => stringToColour(name)),
+      colors: data.map(({ name }: { name: string }) => stringToColour(name)),
       plotOptions: {
         bar: {
           borderRadius: 10,
@@ -45,7 +45,7 @@ export default function TagsChart({ data }) {
       },
       dataLabels: {
         enabled: true,
-        formatter: function (val) {
+        formatter: function (val: any) {
           return val
         },
         offsetY: -32,
@@ -56,7 +56,7 @@ export default function TagsChart({ data }) {
       },
       xaxis: {
         type: "category",
-        categories: data.map(({ name }) => name),
+        categories: data.map(({ name }: { name: string }) => name),
         position: "bottom",
         axisBorder: {
           show: false,
@@ -81,7 +81,10 @@ export default function TagsChart({ data }) {
         },
       },
       yaxis: {
-        max: Math.max(...data.map(({ count }) => parseInt(count))) + 3,
+        max:
+          Math.max(
+            ...data.map(({ count }: { count: string }) => parseInt(count))
+          ) + 3,
         axisBorder: {
           show: false,
         },
@@ -90,7 +93,7 @@ export default function TagsChart({ data }) {
         },
         labels: {
           show: false,
-          formatter: function (val) {
+          formatter: function (val: any) {
             return val
           },
         },
