@@ -8,8 +8,8 @@ export class ParsersController {
   @Post("/test")
   async parseProblem(@Body() body, @Res({ passthrough: true }) res: Response) {
     let { link } = body
-    link = await this.parsersService.unifyLink(link)
     try {
+      link = await this.parsersService.unifyLink(link)
       const result = await this.parsersService.parseProblem(link)
       res.status(200)
       return result

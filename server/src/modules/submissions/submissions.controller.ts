@@ -9,6 +9,7 @@ import {
   Delete,
   Param,
   UseGuards,
+  BadRequestException,
 } from "@nestjs/common"
 
 import {
@@ -50,8 +51,12 @@ export class SubmissionsController {
   @ApiForbiddenResponse({ description: "Forbidden." })
   async createSubmission(@Body() body: CreateSubmissionDto, @Req() req) {
     const { user } = req
-    await this.submissionsService.createSubmission(body, user)
-    return {}
+    try {
+      await this.submissionsService.createSubmission(body, user)
+      return {}
+    } catch (err) {
+      throw new BadRequestException(err.message)
+    }
   }
 
   /**
