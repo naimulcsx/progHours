@@ -4,6 +4,8 @@ import { lastValueFrom } from "rxjs"
 import * as cheerio from "cheerio"
 import ShortUniqueId from "short-unique-id"
 import convertLinkToOriginal from "@/utils/converLinkToOriginal"
+import * as rp from "request-promise"
+
 import {
   spojLinkTransformer,
   cfLinkTransformer,
@@ -27,13 +29,17 @@ import {
   toHttps,
 } from "@/utils/globalLinkTransformers"
 import { isUppercase } from "class-validator"
+import { ConfigService } from "@nestjs/config"
 
 const UrlPattern = require("url-pattern")
 const genId = new ShortUniqueId({ length: 6 })
 
 @Injectable()
 export class ParsersService {
-  constructor(private httpService: HttpService) {}
+  constructor(
+    private httpService: HttpService,
+    private configService: ConfigService
+  ) {}
 
   /**
    * Checks if a link is valid
@@ -1077,14 +1083,66 @@ export class ParsersService {
    */
   async vjudgeParser(link) {
     /**
-     * TODO: fix vjudge parser
+     * For private vjudge pages
+     * We need to make a login request first to get the required cookies
      */
+
+    const linkURL = new URL(link.split("#problem").join("")) // ignoring page hash because UrlPattern can't recognize
+    // TODO: need to find a better way to match URLS
+
+    const vjudgePattern = new UrlPattern("/contest/:contestId/:problemId")
+    let matchedResult = vjudgePattern.match(linkURL.pathname)
+
+    let isInvalid: boolean = matchedResult === null
+    if (isInvalid) throw new Error("Invalid Vjudge link!")
+
+    const loginData = await rp({
+      method: "POST",
+      uri: "https://vjudge.net/user/login",
+      form: {
+        username: this.configService.get<string>("VJUDGE_USERNAME"),
+        password: this.configService.get<string>("VJUDGE_PASSWORD"),
+      },
+      resolveWithFullResponse: true,
+    })
+
+    console.log(process.env)
+
+    /**
+     * Make the cookie string seperated with `; `
+     */
+    let cookieString: string = ""
+    loginData.headers["set-cookie"].forEach((cookie) => {
+      cookieString += cookie.split(";")[0] + "; "
+    })
+
+    /**
+     * Send request to the private page using the cookie
+     */
+    const { data } = await lastValueFrom(
+      this.httpService.get(link, {
+        headers: {
+          Cookie: cookieString,
+        },
+      })
+    )
+
+    // .prob-origin
+    let problemLink = ""
+    const $ = cheerio.load(data)
+    $(".prob-num").each(function (i, elm) {
+      if (matchedResult.problemId === $(this).text()) {
+        problemLink = $(this).next().children().attr("href")
+      }
+    })
+
     return {
       pid: "test",
       name: "test",
       tags: [],
       difficulty: 0,
       judge_id: 2,
+      problemLink,
     }
   }
 }
