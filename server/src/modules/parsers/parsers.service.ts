@@ -54,7 +54,7 @@ export class ParsersService {
     return url.protocol === "http:" || url.protocol === "https:"
   }
 
-  unifyLink(link: string) {
+  async unifyLink(link: string) {
     const url = new URL(link)
     const { hostname } = url
 
@@ -73,7 +73,6 @@ export class ParsersService {
      *    https://vjudge.net/problem/CodeForces-1617B
      */
     const linkConverters = {
-      "vjudge.net": convertLinkToOriginal, // convert vjudge links to respective OJ link
       "codeforces.com": cfLinkTransformer, // convert problemset link to contest link
       "www.codeforces.com": cfLinkTransformer, // removes www + convert problemset link to contest link
       "codechef.com": ccLinkTransformer, // adds www + convert contest link to problemset link
@@ -94,6 +93,12 @@ export class ParsersService {
       "www.codeto.win": codetowinLinkTransformer, // removes www
       "hackerearth.com": hackerearthLinkTransformer, // adds www
     }
+
+    if (hostname === "vjudge.net") {
+      // convert vjudge links to respective OJ link
+      link = await convertLinkToOriginal(link)
+    }
+
     if (linkConverters[hostname]) link = linkConverters[hostname](link)
     return link
   }
@@ -1086,63 +1091,13 @@ export class ParsersService {
      * For private vjudge pages
      * We need to make a login request first to get the required cookies
      */
-
-    const linkURL = new URL(link.split("#problem").join("")) // ignoring page hash because UrlPattern can't recognize
-    // TODO: need to find a better way to match URLS
-
-    const vjudgePattern = new UrlPattern("/contest/:contestId/:problemId")
-    let matchedResult = vjudgePattern.match(linkURL.pathname)
-
-    let isInvalid: boolean = matchedResult === null
-    if (isInvalid) throw new Error("Invalid Vjudge link!")
-
-    const loginData = await rp({
-      method: "POST",
-      uri: "https://vjudge.net/user/login",
-      form: {
-        username: this.configService.get<string>("VJUDGE_USERNAME"),
-        password: this.configService.get<string>("VJUDGE_PASSWORD"),
-      },
-      resolveWithFullResponse: true,
-    })
-
-    console.log(process.env)
-
-    /**
-     * Make the cookie string seperated with `; `
-     */
-    let cookieString: string = ""
-    loginData.headers["set-cookie"].forEach((cookie) => {
-      cookieString += cookie.split(";")[0] + "; "
-    })
-
-    /**
-     * Send request to the private page using the cookie
-     */
-    const { data } = await lastValueFrom(
-      this.httpService.get(link, {
-        headers: {
-          Cookie: cookieString,
-        },
-      })
-    )
-
-    // .prob-origin
-    let problemLink = ""
-    const $ = cheerio.load(data)
-    $(".prob-num").each(function (i, elm) {
-      if (matchedResult.problemId === $(this).text()) {
-        problemLink = $(this).next().children().attr("href")
-      }
-    })
-
     return {
       pid: "test",
       name: "test",
       tags: [],
       difficulty: 0,
       judge_id: 2,
-      problemLink,
+      link,
     }
   }
 }
