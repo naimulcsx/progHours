@@ -25,9 +25,11 @@ import { ResourcesModule } from "./resources/resources.module"
 import { Resource } from "./resources/resources.entity"
 import { StudyListModule } from "./study-list/study-list.module"
 import { StudyList } from "./study-list/study-list.entity"
+import { ConfigModule } from "@nestjs/config"
 
 @Module({
   imports: [
+    ConfigModule.forRoot({ isGlobal: true }),
     TypeOrmModule.forRoot({
       type: "postgres",
       url: process.env.DATABASE_URL,
