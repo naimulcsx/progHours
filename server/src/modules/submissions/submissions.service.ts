@@ -60,7 +60,7 @@ export class SubmissionsService {
     /**
      * Apply link transformers
      */
-    link = this.parsersService.unifyLink(link)
+    link = await this.parsersService.unifyLink(link)
     /**
      * Check if the problem exists in database with the provided link
      */

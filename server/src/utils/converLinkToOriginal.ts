@@ -1,3 +1,8 @@
+import * as rp from "request-promise"
+import * as UrlPattern from "url-pattern"
+import axios from "axios"
+import * as cheerio from "cheerio"
+
 function vjudgeToCF(link) {
   const linkUrl = new URL(link)
   const problem = linkUrl.pathname.includes("CodeForces")
@@ -44,15 +49,67 @@ function vjudgeToEOlymp(link) {
   return `https://www.eolymp.com/en/problems/${problemId}`
 }
 
-function convertLinkToOriginal(link) {
+async function convertVjudgePrivateContestProblemLinkToOriginLink(link) {
+  /**
+   * For private vjudge contests
+   */
+  const linkURL = new URL(link.split("#problem").join("")) // ignoring page hash because UrlPattern can't recognize
+  // TODO: need to find a better way to match URLS
+
+  const vjudgePattern = new UrlPattern("/contest/:contestId/:problemId")
+  let matchedResult = vjudgePattern.match(linkURL.pathname)
+
+  let problemLink: string = link
+  if (matchedResult) {
+    const loginData = await rp({
+      method: "POST",
+      uri: "https://vjudge.net/user/login",
+      form: {
+        username: process.env.VJUDGE_USERNAME,
+        password: process.env.VJUDGE_PASSWORD,
+      },
+      resolveWithFullResponse: true,
+    })
+
+    /**
+     * Make the cookie string seperated with `; `
+     */
+    let cookieString: string = ""
+    loginData.headers["set-cookie"].forEach((cookie) => {
+      cookieString += cookie.split(";")[0] + "; "
+    })
+
+    /**
+     * Send request to the private page using the cookie
+     */
+    const { data } = await axios.get(link, {
+      headers: {
+        Cookie: cookieString,
+      },
+    })
+
+    // .prob-origin
+    const $ = cheerio.load(data)
+    $(".prob-num").each(function (i, elm) {
+      if (matchedResult.problemId === $(this).text()) {
+        problemLink = $(this).next().children().attr("href")
+      }
+    })
+  }
+  return `https://vjudge.net${problemLink.slice(0, -7)}`
+}
+
+async function convertLinkToOriginal(link) {
+  link = await convertVjudgePrivateContestProblemLinkToOriginLink(link)
   if (link.includes("CodeForces") || link.includes("Gym"))
-    return vjudgeToCF(link)
-  else if (link.includes("LightOJ")) return vjudgeToLightOJ(link)
-  else if (link.includes("AtCoder")) return vjudgeToAtCoder(link)
-  else if (link.includes("CodeChef")) return vjudgeToCodeChef(link)
-  else if (link.includes("SPOJ")) return vjudgeToSPOJ(link)
-  else if (link.includes("Toph")) return vjudgeTOTOPH(link)
-  else if (link.includes("EOlymp")) return vjudgeToEOlymp(link)
+    link = vjudgeToCF(link)
+  else if (link.includes("LightOJ")) link = vjudgeToLightOJ(link)
+  else if (link.includes("AtCoder")) link = vjudgeToAtCoder(link)
+  else if (link.includes("CodeChef")) link = vjudgeToCodeChef(link)
+  else if (link.includes("SPOJ")) link = vjudgeToSPOJ(link)
+  else if (link.includes("Toph")) link = vjudgeTOTOPH(link)
+  else if (link.includes("EOlymp")) link = vjudgeToEOlymp(link)
+  console.log(link)
   return link
 }
 
