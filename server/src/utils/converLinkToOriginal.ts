@@ -90,13 +90,19 @@ async function convertVjudgePrivateContestProblemLinkToOriginLink(link) {
 
     // .prob-origin
     const $ = cheerio.load(data)
+
+    if ($("#contest-login-form").length) {
+      throw new Error("Password protected contest.")
+    }
+
     $(".prob-num").each(function (i, elm) {
       if (matchedResult.problemId === $(this).text()) {
         problemLink = $(this).next().children().attr("href")
       }
     })
+    return `https://vjudge.net${problemLink.slice(0, -7)}`
   }
-  return `https://vjudge.net${problemLink.slice(0, -7)}`
+  return link
 }
 
 async function convertLinkToOriginal(link) {

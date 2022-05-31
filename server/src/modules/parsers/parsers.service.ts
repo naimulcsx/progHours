@@ -96,7 +96,10 @@ export class ParsersService {
 
     if (hostname === "vjudge.net") {
       // convert vjudge links to respective OJ link
-      link = await convertLinkToOriginal(link)
+      const convertedLink = await convertLinkToOriginal(link)
+      if (convertedLink === "VJUDGE_PASSWORD_PROTECTED") {
+        throw new Error("Vjudge passowrd protected.")
+      } else link = convertedLink
     }
 
     if (linkConverters[hostname]) link = linkConverters[hostname](link)
