@@ -46,7 +46,7 @@ const Sidebar = () => {
             _key="__xd4nbc"
             items={[
               ["Submissions", "/submissions"],
-              ["Study", "/study"],
+              ["Study List", "/study"],
             ]}
           >
             Practice

@@ -4,7 +4,7 @@ export default function WeekChart({ data }) {
   console.log(data)
   const series = [
     {
-      name: "series1",
+      name: "Solved",
       data: Object.keys(data).map((el) => data[el]),
     },
   ]
@@ -25,10 +25,8 @@ export default function WeekChart({ data }) {
     xaxis: {
       type: "text",
       categories: Object.keys(data).map((el) => `Week ${el}`),
-    },
-    tooltip: {
-      x: {
-        format: "dd/MM/yy HH:mm",
+      tooltip: {
+        enabled: false,
       },
     },
     title: {
