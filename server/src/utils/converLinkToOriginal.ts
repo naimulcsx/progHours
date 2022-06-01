@@ -3,6 +3,7 @@ import * as UrlPattern from "url-pattern"
 import axios from "axios"
 import * as cheerio from "cheerio"
 import { Cache } from "cache-manager"
+import getVjudgeCookie from "./getVjudgeCookie"
 
 function vjudgeToCF(link) {
   const linkUrl = new URL(link)
@@ -31,7 +32,6 @@ function vjudgeToAtCoder(link) {
 
 function vjudgeToCodeChef(link) {
   const problemId = link.split("CodeChef-").pop()
-  console.log(`https://www.codechef.com/problems/${problemId}`)
   return `https://www.codechef.com/problems/${problemId}`
 }
 
@@ -62,24 +62,10 @@ async function convertVjudgePrivateContestProblemLinkToOriginLink(
 
   let cookie: string = await cacheManager.get("VJUDGE_COOKIE")!
   if (!cookie) {
-    const loginData = await rp({
-      method: "POST",
-      uri: "https://vjudge.net/user/login",
-      form: {
-        username: process.env.VJUDGE_USERNAME,
-        password: process.env.VJUDGE_PASSWORD,
-      },
-      resolveWithFullResponse: true,
+    const cookieString = await getVjudgeCookie()
+    await cacheManager.set("VJUDGE_COOKIE", cookieString, {
+      ttl: parseInt(process.env.VJUDGE_COOKIE_TTL),
     })
-    if (loginData.body === "success") console.log("Logged in!")
-    /**
-     * Make the cookie string seperated with `; `
-     */
-    let cookieString: string = ""
-    loginData.headers["set-cookie"].forEach((cookie) => {
-      cookieString += cookie.split(";")[0] + "; "
-    })
-    await cacheManager.set("VJUDGE_COOKIE", cookieString, { ttl: 604800 }) // store cookie as cache for 7d
     cookie = await cacheManager.get("VJUDGE_COOKIE")!
   }
 
@@ -91,10 +77,11 @@ async function convertVjudgePrivateContestProblemLinkToOriginLink(
     /**
      * Send request to the private page using the cookie
      */
-    const url = link.split("?")[0]
-    const { data } = await axios.get(url, {
+    const { data } = await axios.get(link, {
       headers: {
         Cookie: cookie,
+        "User-Agent":
+          "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/42.0.2311.135 Safari/537.36 Edge/12.246",
       },
     })
 
@@ -108,7 +95,22 @@ async function convertVjudgePrivateContestProblemLinkToOriginLink(
       throw {
         status: "error",
         error_code: 1003,
+        contest_id: matchedResult.contestId,
         message: "Password protected contest.",
+      }
+    }
+
+    const contestData = JSON.parse($(`textarea[name="dataJson"]`).text())
+
+    if (!contestData.ended) {
+      /**
+       * If the contest is not ended.
+       */
+      throw {
+        status: "error",
+        error_code: 1005,
+        contest_id: matchedResult.contestId,
+        message: "Contest is not ended.",
       }
     }
 

@@ -13,6 +13,7 @@ interface FormBuilderProps {
       label: string
       initialValue?: string
       validate: Yup.AnySchema
+      value?: any
     }
   }
   mutation: any
