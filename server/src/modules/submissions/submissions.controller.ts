@@ -55,7 +55,7 @@ export class SubmissionsController {
       await this.submissionsService.createSubmission(body, user)
       return {}
     } catch (err) {
-      throw new BadRequestException(err.message)
+      throw err
     }
   }
 

@@ -63,7 +63,7 @@ export class SubmissionsService {
     try {
       link = await this.parsersService.unifyLink(link)
     } catch (err) {
-      throw err
+      throw new BadRequestException(err)
     }
     /**
      * Check if the problem exists in database with the provided link
