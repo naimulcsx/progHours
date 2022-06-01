@@ -9,6 +9,7 @@ import {
   Delete,
   Param,
   UseGuards,
+  BadRequestException,
 } from "@nestjs/common"
 
 import {
@@ -16,6 +17,7 @@ import {
   ApiTags,
   ApiOkResponse,
   ApiForbiddenResponse,
+  ApiBadRequestResponse,
 } from "@nestjs/swagger"
 
 /**
@@ -50,8 +52,12 @@ export class SubmissionsController {
   @ApiForbiddenResponse({ description: "Forbidden." })
   async createSubmission(@Body() body: CreateSubmissionDto, @Req() req) {
     const { user } = req
-    await this.submissionsService.createSubmission(body, user)
-    return {}
+    try {
+      await this.submissionsService.createSubmission(body, user)
+      return {}
+    } catch (err) {
+      throw err
+    }
   }
 
   /**
@@ -120,5 +126,26 @@ export class SubmissionsController {
       params.username
     )
     return result
+  }
+
+  /**
+   * GET /submissions/vjudge-contest-login
+   * Returns the submissions submitted by a particular user
+   */
+  @Post("/vjudge-contest-login/:contestId")
+  @ApiOperation({ summary: "Login into vjudge contest." })
+  @ApiOkResponse({ description: "Success." })
+  @ApiBadRequestResponse({ description: "Bad Request." })
+  async vjudgeContestLogin(@Body() body, @Param() params) {
+    const { password } = body
+    try {
+      const result = await this.submissionsService.loginIntoVjudgeContest(
+        params.contestId,
+        password
+      )
+      return result
+    } catch (err) {
+      throw new BadRequestException(err)
+    }
   }
 }

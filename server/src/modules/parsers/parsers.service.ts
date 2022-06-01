@@ -1,9 +1,11 @@
 import { HttpService } from "@nestjs/axios"
-import { Injectable } from "@nestjs/common"
+import { CACHE_MANAGER, Inject, Injectable } from "@nestjs/common"
 import { lastValueFrom } from "rxjs"
 import * as cheerio from "cheerio"
 import ShortUniqueId from "short-unique-id"
 import convertLinkToOriginal from "@/utils/converLinkToOriginal"
+import { Cache } from "cache-manager"
+
 import {
   spojLinkTransformer,
   cfLinkTransformer,
@@ -27,13 +29,17 @@ import {
   toHttps,
 } from "@/utils/globalLinkTransformers"
 import { isUppercase } from "class-validator"
+import { ConfigService } from "@nestjs/config"
 
 const UrlPattern = require("url-pattern")
 const genId = new ShortUniqueId({ length: 6 })
 
 @Injectable()
 export class ParsersService {
-  constructor(private httpService: HttpService) {}
+  constructor(
+    private httpService: HttpService,
+    @Inject(CACHE_MANAGER) private cacheManager: Cache
+  ) {}
 
   /**
    * Checks if a link is valid
@@ -48,7 +54,7 @@ export class ParsersService {
     return url.protocol === "http:" || url.protocol === "https:"
   }
 
-  unifyLink(link: string) {
+  async unifyLink(link: string) {
     const url = new URL(link)
     const { hostname } = url
 
@@ -67,7 +73,6 @@ export class ParsersService {
      *    https://vjudge.net/problem/CodeForces-1617B
      */
     const linkConverters = {
-      "vjudge.net": convertLinkToOriginal, // convert vjudge links to respective OJ link
       "codeforces.com": cfLinkTransformer, // convert problemset link to contest link
       "www.codeforces.com": cfLinkTransformer, // removes www + convert problemset link to contest link
       "codechef.com": ccLinkTransformer, // adds www + convert contest link to problemset link
@@ -88,6 +93,15 @@ export class ParsersService {
       "www.codeto.win": codetowinLinkTransformer, // removes www
       "hackerearth.com": hackerearthLinkTransformer, // adds www
     }
+
+    if (hostname === "vjudge.net") {
+      // convert vjudge links to respective OJ link
+      const convertedLink = await convertLinkToOriginal(link, this.cacheManager)
+      if (convertedLink === "VJUDGE_PASSWORD_PROTECTED") {
+        throw new Error("Vjudge passowrd protected.")
+      } else link = convertedLink
+    }
+
     if (linkConverters[hostname]) link = linkConverters[hostname](link)
     return link
   }
@@ -117,28 +131,24 @@ export class ParsersService {
       "open.kattis.com": this.kattisOJParser, // 17
       "vjudge.net": this.vjudgeParser,
     }
-    try {
-      let hostname = new URL(link).hostname
+    let hostname = new URL(link).hostname
+    /**
+     * If we have a dedicated parser for the OJ
+     */
+    if (parserMap[hostname]) {
+      const parsedResult = await parserMap[hostname].call(this, link)
+      return parsedResult
+    } else {
       /**
-       * If we have a dedicated parser for the OJ
+       * We don't have a parser for the link
        */
-      if (parserMap[hostname]) {
-        const parsedResult = await parserMap[hostname].call(this, link)
-        return parsedResult
-      } else {
-        /**
-         * We don't have a parser for the link
-         */
-        return {
-          pid: genId(),
-          name: this.isValidLink(link) ? genId() : link,
-          tags: [],
-          difficulty: 0,
-          judge_id: null,
-        }
+      return {
+        pid: genId(),
+        name: this.isValidLink(link) ? genId() : link,
+        tags: [],
+        difficulty: 0,
+        judge_id: null,
       }
-    } catch (err) {
-      throw err
     }
   }
 
@@ -379,6 +389,7 @@ export class ParsersService {
     const $ = cheerio.load(response.data)
 
     const str = $(".floatbox tr td h3").text().trim()
+    if (!str.length) throw new Error("UVA is down!")
 
     const parts = str.split(" - ")
 
@@ -1077,7 +1088,8 @@ export class ParsersService {
    */
   async vjudgeParser(link) {
     /**
-     * TODO: fix vjudge parser
+     * For private vjudge pages
+     * We need to make a login request first to get the required cookies
      */
     return {
       pid: "test",
@@ -1085,6 +1097,7 @@ export class ParsersService {
       tags: [],
       difficulty: 0,
       judge_id: 2,
+      link,
     }
   }
 }

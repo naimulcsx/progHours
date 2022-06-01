@@ -1,4 +1,4 @@
-import { Module } from "@nestjs/common"
+import { CacheModule, Module } from "@nestjs/common"
 import { AuthModule } from "./auth/auth.module"
 import { TypeOrmModule } from "@nestjs/typeorm"
 import { Connection } from "typeorm"
@@ -25,9 +25,12 @@ import { ResourcesModule } from "./resources/resources.module"
 import { Resource } from "./resources/resources.entity"
 import { StudyListModule } from "./study-list/study-list.module"
 import { StudyList } from "./study-list/study-list.entity"
+import { ConfigModule } from "@nestjs/config"
 
 @Module({
   imports: [
+    CacheModule.register({ isGlobal: true }),
+    ConfigModule.forRoot({ isGlobal: true }),
     TypeOrmModule.forRoot({
       type: "postgres",
       url: process.env.DATABASE_URL,

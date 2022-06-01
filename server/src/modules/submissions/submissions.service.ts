@@ -1,11 +1,14 @@
 import {
   BadRequestException,
+  CACHE_MANAGER,
   Inject,
   Injectable,
   NotFoundException,
 } from "@nestjs/common"
 import { InjectRepository } from "@nestjs/typeorm"
 import { Repository } from "typeorm"
+import * as rp from "request-promise"
+import { Cache } from "cache-manager"
 
 /**
  * Import Entities (models)
@@ -18,6 +21,7 @@ import { Submission } from "@/modules/submissions/submission.entity"
 import { ProblemsService } from "@/modules/problems/problems.service"
 import { ParsersService } from "@/modules/parsers/parsers.service"
 import { UsersService } from "@/modules/users/users.service"
+import getVjudgeCookie from "@/utils/getVjudgeCookie"
 
 @Injectable()
 export class SubmissionsService {
@@ -26,7 +30,8 @@ export class SubmissionsService {
     @Inject(ParsersService) private parsersService: ParsersService,
     @Inject(UsersService) private usersService: UsersService,
     @InjectRepository(Submission)
-    private submissionsRepository: Repository<Submission>
+    private submissionsRepository: Repository<Submission>,
+    @Inject(CACHE_MANAGER) private cacheManager: Cache
   ) {}
 
   async getSubmissions(userId) {
@@ -60,7 +65,11 @@ export class SubmissionsService {
     /**
      * Apply link transformers
      */
-    link = this.parsersService.unifyLink(link)
+    try {
+      link = await this.parsersService.unifyLink(link)
+    } catch (err) {
+      throw new BadRequestException(err)
+    }
     /**
      * Check if the problem exists in database with the provided link
      */
@@ -133,5 +142,37 @@ export class SubmissionsService {
     } catch (err) {
       throw err
     }
+  }
+
+  async loginIntoVjudgeContest(contest_id: string, password: string) {
+    let cookie = await this.cacheManager.get("VJUDGE_COOKIE")!
+    if (!cookie) {
+      const cookieString = await getVjudgeCookie()
+      await this.cacheManager.set("VJUDGE_COOKIE", cookieString, {
+        ttl: parseInt(process.env.VJUDGE_COOKIE_TTL),
+      })
+      cookie = await this.cacheManager.get("VJUDGE_COOKIE")
+    }
+    const response = await rp({
+      method: "POST",
+      uri: `https://vjudge.net/contest/login/${contest_id}`,
+      form: {
+        password,
+      },
+      headers: {
+        Cookie: cookie,
+        "User-Agent":
+          "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/42.0.2311.135 Safari/537.36 Edge/12.246",
+      },
+    })
+    const contestLoginData = JSON.parse(response)
+    if (contestLoginData.error) {
+      throw {
+        status: "error",
+        error_code: 1004,
+        message: contestLoginData.error,
+      }
+    }
+    return { status: "success" }
   }
 }
