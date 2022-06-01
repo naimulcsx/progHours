@@ -32,6 +32,7 @@ const submissionSchema = Yup.object().shape({
 
 const AddEntryRow = ({ id }: { id: string }) => {
   const queryClient = useQueryClient()
+  const [contestId, setContestId] = useState(0)
   const [contestPasswordDialogue, setContestPasswordDialogue] = useState(false)
 
   /**
@@ -45,10 +46,11 @@ const AddEntryRow = ({ id }: { id: string }) => {
     },
     onError: (err: AxiosError) => {
       if (typeof err.response !== "undefined") {
-        const { data } = err.response
+        const { contest_id, error_code, message } = err.response.data
+        setContestId(contest_id)
+        if (error_code === 1003) setContestPasswordDialogue(true)
         // show contest password dialouge
-        if (data.error_code === 1003) setContestPasswordDialogue(true)
-        else showErrorToasts(data.message)
+        else showErrorToasts(message)
       }
     },
   })
@@ -115,7 +117,7 @@ const AddEntryRow = ({ id }: { id: string }) => {
         isOpen={contestPasswordDialogue}
         setIsOpen={setContestPasswordDialogue}
       >
-        <p>Please enter the contest password below</p>
+        <p className="text-sm">Please enter the contest password below</p>
         <FormBuilder
           className="mt-6 space-y-4"
           fields={{
@@ -125,9 +127,21 @@ const AddEntryRow = ({ id }: { id: string }) => {
               validate: Yup.string().trim().required("Password is required"),
             },
           }}
-          mutation={() => {}}
-          onSuccess={(data) => {}}
-          onError={(err) => {}}
+          mutation={(values: any) =>
+            axios
+              .post(
+                `/api/submissions/vjudge-contest-login/${contestId}`,
+                values
+              )
+              .then((res) => res.data)
+          }
+          onSuccess={(data) => {
+            setContestPasswordDialogue(false)
+            formik.submitForm()
+          }}
+          onError={(err) => {
+            showErrorToasts(err.response.data.message)
+          }}
           button={{
             label: "Submit",
             className: "mt-6",
