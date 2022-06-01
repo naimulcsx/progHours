@@ -1,10 +1,10 @@
 import { HttpService } from "@nestjs/axios"
-import { Injectable } from "@nestjs/common"
+import { CACHE_MANAGER, Inject, Injectable } from "@nestjs/common"
 import { lastValueFrom } from "rxjs"
 import * as cheerio from "cheerio"
 import ShortUniqueId from "short-unique-id"
 import convertLinkToOriginal from "@/utils/converLinkToOriginal"
-import * as rp from "request-promise"
+import { Cache } from "cache-manager"
 
 import {
   spojLinkTransformer,
@@ -38,7 +38,7 @@ const genId = new ShortUniqueId({ length: 6 })
 export class ParsersService {
   constructor(
     private httpService: HttpService,
-    private configService: ConfigService
+    @Inject(CACHE_MANAGER) private cacheManager: Cache
   ) {}
 
   /**
@@ -96,7 +96,7 @@ export class ParsersService {
 
     if (hostname === "vjudge.net") {
       // convert vjudge links to respective OJ link
-      const convertedLink = await convertLinkToOriginal(link)
+      const convertedLink = await convertLinkToOriginal(link, this.cacheManager)
       if (convertedLink === "VJUDGE_PASSWORD_PROTECTED") {
         throw new Error("Vjudge passowrd protected.")
       } else link = convertedLink
@@ -131,28 +131,24 @@ export class ParsersService {
       "open.kattis.com": this.kattisOJParser, // 17
       "vjudge.net": this.vjudgeParser,
     }
-    try {
-      let hostname = new URL(link).hostname
+    let hostname = new URL(link).hostname
+    /**
+     * If we have a dedicated parser for the OJ
+     */
+    if (parserMap[hostname]) {
+      const parsedResult = await parserMap[hostname].call(this, link)
+      return parsedResult
+    } else {
       /**
-       * If we have a dedicated parser for the OJ
+       * We don't have a parser for the link
        */
-      if (parserMap[hostname]) {
-        const parsedResult = await parserMap[hostname].call(this, link)
-        return parsedResult
-      } else {
-        /**
-         * We don't have a parser for the link
-         */
-        return {
-          pid: genId(),
-          name: this.isValidLink(link) ? genId() : link,
-          tags: [],
-          difficulty: 0,
-          judge_id: null,
-        }
+      return {
+        pid: genId(),
+        name: this.isValidLink(link) ? genId() : link,
+        tags: [],
+        difficulty: 0,
+        judge_id: null,
       }
-    } catch (err) {
-      throw err
     }
   }
 
@@ -393,6 +389,7 @@ export class ParsersService {
     const $ = cheerio.load(response.data)
 
     const str = $(".floatbox tr td h3").text().trim()
+    if (!str.length) throw new Error("UVA is down!")
 
     const parts = str.split(" - ")
 
