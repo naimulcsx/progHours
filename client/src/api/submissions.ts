@@ -24,6 +24,10 @@ const addTag = ({ id, ...values }) => {
   return axios.post(`/api/problems/${id}/tags`, values).then((res) => res.data)
 }
 
+// const contestLogin = ({ contestId, password }) => {
+
+// }
+
 export {
   addTag,
   getSubmissions,
