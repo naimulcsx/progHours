@@ -2,6 +2,7 @@ import * as rp from "request-promise"
 import * as UrlPattern from "url-pattern"
 import axios from "axios"
 import * as cheerio from "cheerio"
+import { Cache } from "cache-manager"
 
 function vjudgeToCF(link) {
   const linkUrl = new URL(link)
@@ -49,18 +50,18 @@ function vjudgeToEOlymp(link) {
   return `https://www.eolymp.com/en/problems/${problemId}`
 }
 
-async function convertVjudgePrivateContestProblemLinkToOriginLink(link) {
+async function convertVjudgePrivateContestProblemLinkToOriginLink(
+  link,
+  cacheManager: Cache
+) {
   /**
    * For private vjudge contests
    */
   const linkURL = new URL(link.split("#problem").join("")) // ignoring page hash because UrlPattern can't recognize
   // TODO: need to find a better way to match URLS
 
-  const vjudgePattern = new UrlPattern("/contest/:contestId/:problemId")
-  let matchedResult = vjudgePattern.match(linkURL.pathname)
-
-  let problemLink: string = link
-  if (matchedResult) {
+  let cookie: string = await cacheManager.get("VJUDGE_COOKIE")!
+  if (!cookie) {
     const loginData = await rp({
       method: "POST",
       uri: "https://vjudge.net/user/login",
@@ -70,7 +71,7 @@ async function convertVjudgePrivateContestProblemLinkToOriginLink(link) {
       },
       resolveWithFullResponse: true,
     })
-
+    if (loginData.body === "success") console.log("Logged in!")
     /**
      * Make the cookie string seperated with `; `
      */
@@ -78,13 +79,22 @@ async function convertVjudgePrivateContestProblemLinkToOriginLink(link) {
     loginData.headers["set-cookie"].forEach((cookie) => {
       cookieString += cookie.split(";")[0] + "; "
     })
+    await cacheManager.set("VJUDGE_COOKIE", cookieString, { ttl: 604800 }) // store cookie as cache for 7d
+    cookie = await cacheManager.get("VJUDGE_COOKIE")!
+  }
 
+  const vjudgePattern = new UrlPattern("/contest/:contestId/:problemId")
+  let matchedResult = vjudgePattern.match(linkURL.pathname)
+
+  let problemLink: string = link
+  if (matchedResult) {
     /**
      * Send request to the private page using the cookie
      */
-    const { data } = await axios.get(link, {
+    const url = link.split("?")[0]
+    const { data } = await axios.get(url, {
       headers: {
-        Cookie: cookieString,
+        Cookie: cookie,
       },
     })
 
@@ -92,39 +102,13 @@ async function convertVjudgePrivateContestProblemLinkToOriginLink(link) {
     let $ = cheerio.load(data)
 
     if ($("#contest-login-form").length) {
-      const contestPassword = linkURL.searchParams.get("pw")
-      if (!contestPassword) {
-        throw new Error("Password protected contest.")
-      } else {
-        try {
-          const response = await rp({
-            method: "POST",
-            uri: `https://vjudge.net/contest/login/${matchedResult.contestId}`,
-            form: {
-              password: contestPassword,
-            },
-            headers: {
-              Cookie: cookieString,
-            },
-          })
-          const contestLoginData = JSON.parse(response)
-          if (contestLoginData.error) {
-            throw new Error(contestLoginData.error)
-          }
-          await axios.get(
-            `https://vjudge.net/contest/${matchedResult.contestId}`
-          )
-          const problemPage = await axios.get(link, {
-            headers: {
-              Cookie: cookieString,
-            },
-          })
-          // console.log(data)
-          $ = cheerio.load(problemPage.data)
-        } catch (err) {
-          // Password is not correct error
-          throw new Error(err)
-        }
+      /**
+       * If the contest password is not provided through a query param
+       */
+      throw {
+        status: "error",
+        error_code: 1003,
+        message: "Password protected contest.",
       }
     }
 
@@ -140,8 +124,11 @@ async function convertVjudgePrivateContestProblemLinkToOriginLink(link) {
   return link
 }
 
-async function convertLinkToOriginal(link) {
-  link = await convertVjudgePrivateContestProblemLinkToOriginLink(link)
+async function convertLinkToOriginal(link, cacheManager: Cache) {
+  link = await convertVjudgePrivateContestProblemLinkToOriginLink(
+    link,
+    cacheManager
+  )
   if (link.includes("CodeForces") || link.includes("Gym"))
     link = vjudgeToCF(link)
   else if (link.includes("LightOJ")) link = vjudgeToLightOJ(link)
@@ -150,7 +137,6 @@ async function convertLinkToOriginal(link) {
   else if (link.includes("SPOJ")) link = vjudgeToSPOJ(link)
   else if (link.includes("Toph")) link = vjudgeTOTOPH(link)
   else if (link.includes("EOlymp")) link = vjudgeToEOlymp(link)
-  console.log(link)
   return link
 }
 

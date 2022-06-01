@@ -1,4 +1,4 @@
-import { Module } from "@nestjs/common"
+import { CacheModule, Module } from "@nestjs/common"
 import { AuthModule } from "./auth/auth.module"
 import { TypeOrmModule } from "@nestjs/typeorm"
 import { Connection } from "typeorm"
@@ -29,6 +29,7 @@ import { ConfigModule } from "@nestjs/config"
 
 @Module({
   imports: [
+    CacheModule.register({ isGlobal: true }),
     ConfigModule.forRoot({ isGlobal: true }),
     TypeOrmModule.forRoot({
       type: "postgres",
