@@ -1,7 +1,14 @@
 import * as Yup from "yup"
 import { useFormik } from "formik"
 import { twMerge } from "tailwind-merge"
-import { ErrorMessage, FormControl, Input, Label } from "@/components/Form"
+import {
+  ErrorMessage,
+  FormControl,
+  Input,
+  Label,
+  Select,
+  Option,
+} from "@/components/Form"
 import { useMutation } from "react-query"
 import Spinner from "./Spinner"
 
@@ -14,6 +21,7 @@ interface FormBuilderProps {
       initialValue?: string
       validate: Yup.AnySchema
       value?: any
+      options?: string[]
     }
   }
   mutation: any
@@ -46,7 +54,14 @@ const FormBuilder = ({
     onError,
     onMutate: async () => {},
   })
-  const { handleSubmit, getFieldProps, errors, touched } = useFormik({
+  const {
+    handleSubmit,
+    getFieldProps,
+    errors,
+    touched,
+    setFieldValue,
+    values: formikValues,
+  } = useFormik({
     initialValues: values,
     validationSchema: Yup.object().shape(validationRules),
     onSubmit: async (values) => {
@@ -62,7 +77,22 @@ const FormBuilder = ({
               isInvalid={touched[key] && (errors[key] ? true : false)}
             >
               <Label>{fields[key].label}</Label>
-              <Input type={fields[key].type} {...getFieldProps(key)} />
+              {fields[key].type === "select" ? (
+                <Select
+                  {...getFieldProps(`${key}`)}
+                  value={formikValues[key]}
+                  onChange={(value: string) => {
+                    setFieldValue(`${key}`, value)
+                  }}
+                >
+                  {fields[key].options?.map((item) => {
+                    return <Option value={item}>{item}</Option>
+                  })}
+                </Select>
+              ) : (
+                <Input type={fields[key].type} {...getFieldProps(key)} />
+              )}
+
               <ErrorMessage>{errors[key]}</ErrorMessage>
             </FormControl>
           )
