@@ -15,6 +15,13 @@ const StudyPage = () => {
       <FormBuilder
         className="mt-6 space-y-4"
         fields={{
+          resourceType: {
+            type: "select",
+            label: "Type",
+            options: ["Article", "video"],
+            initialValue: "Article",
+            validate: Yup.string().trim().required("Resource type is required"),
+          },
           link: {
             type: "text",
             label: "Link",
