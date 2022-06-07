@@ -12,7 +12,7 @@ import {
 import { Tag } from "../problems/tag.entity"
 
 import { User } from "../users/user.entity"
-import { UserStudiesTag } from "./user-studies-tag"
+import { UserStudiesTag } from "./user-studies-tag.entity"
 
 @Entity({ name: "user_studies" })
 export class UserStudyList {

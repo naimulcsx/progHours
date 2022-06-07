@@ -23,6 +23,7 @@ import { StudyListModule } from "./study-list/study-list.module"
 import { ConfigModule } from "@nestjs/config"
 import { UserStudiesModule } from "./user-studies/user-studies.module"
 import { UserStudyList } from "./user-studies/user-studies.entity"
+import { UserStudiesTag } from "./user-studies/user-studies-tag.entity"
 
 @Module({
   imports: [
@@ -41,6 +42,7 @@ import { UserStudyList } from "./user-studies/user-studies.entity"
         OnlineJudge,
         Ranking,
         UserStudyList,
+        UserStudiesTag,
       ],
       synchronize: true,
     }),
@@ -54,7 +56,7 @@ import { UserStudyList } from "./user-studies/user-studies.entity"
     HandlesModule,
     StatsModule,
     RankingModule,
-    StudyListModule,
+    // StudyListModule,
     UserStudiesModule,
   ],
 })

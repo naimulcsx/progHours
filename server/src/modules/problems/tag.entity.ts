@@ -1,5 +1,5 @@
 import { Entity, Column, PrimaryGeneratedColumn, OneToMany } from "typeorm"
-import { UserStudiesTag } from "../user-studies/user-studies-tag"
+import { UserStudiesTag } from "../user-studies/user-studies-tag.entity"
 import { UserProblemTag } from "./user-problem-tag"
 
 @Entity({ name: "tags" })
