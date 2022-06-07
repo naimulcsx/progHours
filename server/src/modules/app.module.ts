@@ -19,13 +19,10 @@ import { UserProblemTag } from "./problems/user-problem-tag"
 import { StatsModule } from "./stats/stats.module"
 import { RankingModule } from "./ranking/ranking.module"
 import { Ranking } from "./ranking/ranking.entity"
-import { ResourcesService } from "./resources/resources.service"
-import { ResourcesController } from "./resources/resources.controller"
-import { ResourcesModule } from "./resources/resources.module"
-import { Resource } from "./resources/resources.entity"
 import { StudyListModule } from "./study-list/study-list.module"
-import { StudyList } from "./study-list/study-list.entity"
 import { ConfigModule } from "@nestjs/config"
+import { UserStudiesModule } from "./user-studies/user-studies.module"
+import { UserStudyList } from "./user-studies/user-studies.entity"
 
 @Module({
   imports: [
@@ -43,8 +40,7 @@ import { ConfigModule } from "@nestjs/config"
         Handle,
         OnlineJudge,
         Ranking,
-        Resource,
-        StudyList,
+        UserStudyList,
       ],
       synchronize: true,
     }),
@@ -58,8 +54,8 @@ import { ConfigModule } from "@nestjs/config"
     HandlesModule,
     StatsModule,
     RankingModule,
-    ResourcesModule,
     StudyListModule,
+    UserStudiesModule,
   ],
 })
 export class AppModule {
