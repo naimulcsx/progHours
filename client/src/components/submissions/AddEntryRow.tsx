@@ -72,6 +72,7 @@ const AddEntryRow = ({ id }: { id: string }) => {
       /**
        * Convert values.solve_time to number
        */
+      values.solved_at = new Date()
       const solveTimeString: string = values.solve_time.toString()
       values.solve_time = parseInt(solveTimeString)
 
