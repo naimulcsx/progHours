@@ -92,7 +92,7 @@ const ProblemName = (cell: Cell<Submission>) => {
         {icons.length > 0 && icons}
         {icons.length === 0 && <UnknownIcon size={20} />}
       </div>
-      <div className="w-full">
+      <div className="w-full overflow-hidden">
         {/* {link} */}
         <p className="flex items-center space-x-4 font-semibold text-gray-900">
           <span>{pid}</span>
@@ -101,7 +101,9 @@ const ProblemName = (cell: Cell<Submission>) => {
           </a>
         </p>
         {icons.length > 0 && (
-          <p className="-mt-[0.5px] text-sm text-gray-600 truncate">{name}</p>
+          <p className="-mt-[0.5px] text-sm text-gray-600 truncate text-ellipsis">
+            {name}
+          </p>
         )}
         {icons.length === 0 && (
           <p className="-mt-[0.5px] text-sm">
