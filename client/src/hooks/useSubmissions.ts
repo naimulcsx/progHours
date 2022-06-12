@@ -20,7 +20,6 @@ function useSubmissions() {
     if (!query.data) return
     const weekRanges = getWeekRanges(query.data.submissions)
     setWeekRanges(weekRanges)
-    console.log(selectedWeek)
     /**
      * Set default week to be the current week (only the first time we get the data)
      */

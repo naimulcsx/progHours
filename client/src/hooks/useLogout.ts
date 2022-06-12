@@ -15,7 +15,7 @@ const useLogout = () => {
     /**
      * Show success message and redirect to /login
      */
-    toast.success("Logged out", { className: "toast" })
+    toast.success("Logged out")
     navigate("/login")
   }
   return handleLogout
