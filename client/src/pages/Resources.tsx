@@ -72,7 +72,6 @@ function ResourceCard({ title, type, language, link, difficulty }: Resource) {
                 Intermediate: 2,
                 Advanced: 3,
               }
-
               while (circle <= map[difficulty as keyof Circle]) {
                 return (
                   <span
@@ -88,7 +87,6 @@ function ResourceCard({ title, type, language, link, difficulty }: Resource) {
                 />
               )
             })}
-
             <span>{difficulty}</span>
           </div>
         </div>

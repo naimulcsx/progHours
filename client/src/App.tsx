@@ -1,6 +1,5 @@
 import { useEffect } from "react"
 import { HelmetProvider } from "react-helmet-async"
-import { ToastContainer } from "react-toastify"
 import { QueryClient, QueryClientProvider } from "react-query"
 import { useLocation, useNavigate, useRoutes } from "react-router-dom"
 import clearAuthData from "@/utils/clearAuthData"
@@ -70,28 +69,9 @@ const App = (): JSX.Element => {
             <main>{matchedPage}</main>
           )}
         </div>
-        <ToastContainer
-          theme="colored"
-          autoClose={3000}
-          position="bottom-right"
-        />
         <Toaster
           position="top-center"
           reverseOrder={false}
-          // toastOptions={{
-          //   success: {
-          //     style: {
-          //       background: "#4BB543",
-          //       color: "white",
-          //     },
-          //   },
-          //   error: {
-          //     style: {
-          //       background: "red",
-          //       color: "white",
-          //     },
-          //   },
-          // }}
         />
         {/* <ReactQueryDevtools position="bottom-right" /> */}
       </HelmetProvider>
