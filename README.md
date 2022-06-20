@@ -6,6 +6,18 @@ Competitive programmers are always on the lookout for ways to improve their skil
 - Provide a competitive environment for competitive programmers to keep going without slowing down.
 - Assist coaches in identifying the most dedicated competitors.
 
+## Features
+- [x] Personal tracking system
+  - [x] Supports 17 online judges
+  - [x] supports vjudge private contests
+  - [ ] Automated tracking from online judges
+- [x] User profile and statistics
+- [ ] Role Based Access Control (RBAC)
+- [ ] Community system
+  - [ ] Messaging
+  - [ ] Notifications
+- [ ] Code execution engine
+
 ## Tech Stack
 - *Frontend:* React, TailwindCSS, React Query, Vite
 - *Backend:* NodeJS, NestJS, TypeORM
