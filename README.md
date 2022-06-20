@@ -6,6 +6,11 @@ Competitive programmers are always on the lookout for ways to improve their skil
 - Provide a competitive environment for competitive programmers to keep going without slowing down.
 - Assist coaches in identifying the most dedicated competitors.
 
+## Tech Stack
+- *Frontend:* React, TailwindCSS, React Query, Vite
+- *Backend:* NodeJS, NestJS, TypeORM
+- *Database:* PostgreSQL
+
 ## Installation
 
 ### Prerequisites
