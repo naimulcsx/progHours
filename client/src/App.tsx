@@ -14,7 +14,6 @@ import toast from "react-hot-toast"
 import "@/styles/fonts.css"
 import "@/styles/tailwind.css"
 import "@/styles/spinner.css"
-import "react-toastify/dist/ReactToastify.css"
 
 /**
  * Import Routes
