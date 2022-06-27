@@ -1,7 +1,7 @@
 import * as Yup from "yup"
 import { Helmet } from "react-helmet-async"
-import { Link, useNavigate } from "react-router-dom"
-import toast from "react-hot-toast"
+import { Link as ReactRouterLink, useNavigate } from "react-router-dom"
+import { Text, useToast, Link, HStack, VStack, Flex } from "@chakra-ui/react"
 
 /**
  * Import Components / Utilities
@@ -10,28 +10,31 @@ import showErrorToasts from "@/utils/showErrorToasts"
 import AuthContainer from "@/components/AuthContainer"
 import FormBuilder from "@/components/FormBuilder"
 import { loginMutation } from "@/api/auth"
+import { Heading } from "@chakra-ui/react"
+import { DEFAULT_TOAST_OPTIONS } from "@/configs/toast-config"
 
 /**
  * Component for login page
  */
 const Login = (): JSX.Element => {
+  const toast = useToast(DEFAULT_TOAST_OPTIONS)
   const navigate = useNavigate()
   return (
     <AuthContainer>
       <Helmet>
         <title>Login</title>
       </Helmet>
-      <div className="space-y-3">
-        <h2>Login to Account</h2>
-        <p>
+      <VStack align="start" spacing={2}>
+        <Heading size="lg">Login to Account</Heading>
+        <Flex as="p" gap={2}>
           Don't have an account?
-          <Link to="/register" className="ml-1 text-primary">
+          <Link as={ReactRouterLink} to="/register">
             Register
           </Link>
-        </p>
-      </div>
+        </Flex>
+      </VStack>
       <FormBuilder
-        className="mt-6 space-y-4"
+        mt={6}
         fields={{
           username: {
             type: "text",
@@ -56,13 +59,16 @@ const Login = (): JSX.Element => {
           localStorage.setItem("name", user.name)
           localStorage.setItem("username", user.username)
           navigate("/dashboard") // redirect to dashboard
-          toast.success("Logged in") // create a toast
+          toast({
+            status: "success",
+            title: "Logged in!",
+          }) // create a toast
         }}
         onError={(err) => {
           const { data, status, statusText } = err.response
           // handle bad gateway errors
-          if (status === 502) toast.error(statusText)
-          showErrorToasts(data.message)
+          if (status === 502) toast({ status: "error", title: statusText })
+          showErrorToasts(toast, data.message)
         }}
         button={{
           label: "Login",

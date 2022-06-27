@@ -6,7 +6,7 @@ import { Helmet } from "react-helmet-async"
  */
 import Spinner from "@/components/Spinner"
 import { DashboardLayout } from "@/components/layouts/Dashboard"
-import TrackingTable from "@/components/submissions/Table"
+import { SubmissionsTable } from "@/components/submissions-table"
 import WeekFilters from "@/components/submissions/filters/WeekFilter"
 
 /**
@@ -17,6 +17,7 @@ import { UploadIcon } from "@heroicons/react/solid"
 import ImportCsvModal from "./ImportCsvModal"
 import csvToArray from "@/utils/csvToArray"
 import DashboardHeader from "@/components/dashboard/Header"
+import { Box } from "@chakra-ui/react"
 
 export default function TrackingSheet() {
   const context = useContext(GlobalContext)
@@ -86,7 +87,9 @@ export default function TrackingSheet() {
         </div>
       </div>
       {/* tracking table */}
-      {query.data && <TrackingTable submissions={filteredData} />}
+      {query.data && (
+        <SubmissionsTable submissions={filteredData} isEditable={true} />
+      )}
     </DashboardLayout>
   )
 }

@@ -1,55 +1,41 @@
-import { Fragment, FunctionComponent } from "react"
-import { Transition } from "@headlessui/react"
+import { FC, ReactNode } from "react"
 
 /**
  * Import Components
  */
-import Navbar from "@/components/Navbar"
-import Sidebar from "@/components/dashboard/Sidebar"
+import Navbar from "@/components/navbar"
+import { Sidebar } from "@/components/sidebar"
 import MobileNav from "@/components/MobileNav"
 import { twMerge } from "tailwind-merge"
+import { Box, chakra } from "@chakra-ui/react"
+import { useIsFetching, useQueryClient } from "react-query"
+import { AnimatePresence } from "framer-motion"
 
 interface DashboardLayoutProps {
   dataDependency: Array<any>
   className?: string
+  children?: ReactNode
 }
 
-export const DashboardLayout: FunctionComponent<DashboardLayoutProps> = ({
+export const DashboardLayout: FC<DashboardLayoutProps> = ({
   children,
   dataDependency,
   className = "",
 }) => {
   return (
-    <div className="h-screen overflow-hidden">
+    <Box className="h-screen overflow-hidden">
       {/* topbar */}
       <Navbar />
       {/* sidebar */}
-      <div className="flex h-full">
+      <Box className="flex h-full">
+        {/* <Sidebar /> */}
         <Sidebar />
         {/* main content */}
-        <Transition
-          as={Fragment}
-          show={dataDependency.every((el) => {
-            return ![null, undefined].includes(el)
-          })}
-          enter="transform transition duration-[400ms]"
-          enterFrom="opacity-0"
-          enterTo="opacity-100 rotate-0 scale-100"
-          leave="transform duration-200 transition ease-in-out"
-          leaveFrom="opacity-100 rotate-0 scale-100"
-          leaveTo="opacity-0 scale-98"
-        >
-          <div
-            className={twMerge(
-              "w-full px-4 pt-4 pb-4 mt-14 overflow-y-auto bg-gray-50",
-              className
-            )}
-          >
-            {children}
-          </div>
-        </Transition>
-      </div>
+        <Box w="full" p={4} mt={14}>
+          {children}
+        </Box>
+      </Box>
       <MobileNav></MobileNav>
-    </div>
+    </Box>
   )
 }

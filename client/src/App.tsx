@@ -7,6 +7,8 @@ import axios from "axios"
 import { ReactQueryDevtools } from "react-query/devtools"
 import { Toaster } from "react-hot-toast"
 import toast from "react-hot-toast"
+import { ChakraProvider } from "@chakra-ui/react"
+import { Box } from "@chakra-ui/react"
 
 /**
  * Import Styles
@@ -14,6 +16,7 @@ import toast from "react-hot-toast"
 import "@/styles/fonts.css"
 import "@/styles/tailwind.css"
 import "@/styles/spinner.css"
+import { theme } from "@/styles/theme"
 
 /**
  * Import Routes
@@ -57,24 +60,23 @@ const App = (): JSX.Element => {
   const matchedPage = useRoutes(routes(isLoggedIn))
 
   return (
-    <QueryClientProvider client={queryClient}>
-      <HelmetProvider>
-        <div className="min-h-screen text-gray-500 bg-gray-50">
-          {isLoggedIn ? (
-            <GlobalStateProvider>
+    <ChakraProvider theme={theme}>
+      <QueryClientProvider client={queryClient}>
+        <HelmetProvider>
+          <Box minH="100vh" bg="gray.50">
+            {isLoggedIn ? (
+              <GlobalStateProvider>
+                <main>{matchedPage}</main>
+              </GlobalStateProvider>
+            ) : (
               <main>{matchedPage}</main>
-            </GlobalStateProvider>
-          ) : (
-            <main>{matchedPage}</main>
-          )}
-        </div>
-        <Toaster
-          position="top-center"
-          reverseOrder={false}
-        />
-        {/* <ReactQueryDevtools position="bottom-right" /> */}
-      </HelmetProvider>
-    </QueryClientProvider>
+            )}
+          </Box>
+          <ReactQueryDevtools position="bottom-right" />
+          <Toaster position="top-center" reverseOrder={false} />
+        </HelmetProvider>
+      </QueryClientProvider>
+    </ChakraProvider>
   )
 }
 

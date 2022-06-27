@@ -1,12 +1,13 @@
+import { Box, Heading, HStack } from "@chakra-ui/react"
 import { LogoIcon } from "./Icons"
 
-const Logo = ({ className }: { className: string }) => {
+const Logo = () => {
   return (
-    <div className="flex items-center space-x-3 text-primary">
+    <HStack spacing={3} color="blue.500">
       {/* color of the logo is picked from its parents text-color */}
       <LogoIcon width={32} height={32} />
-      <h4 className={`text-xl font-semibold ${className}`}>progHours</h4>
-    </div>
+      <Heading size="md">progHours</Heading>
+    </HStack>
   )
 }
 

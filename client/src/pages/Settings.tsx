@@ -3,22 +3,27 @@ import { DashboardLayout } from "@/components/layouts/Dashboard"
 import AccountSettings from "@/components/settings/AccountSettings"
 import UserInfoCard from "@/components/settings/UserInfoCard"
 import HandleSettings from "@/components/settings/HandleSettings"
+import { useContext } from "react"
+import { GlobalContext } from "@/GlobalStateProvider"
 
 const Settings = () => {
+  const { user } = useContext(GlobalContext)
   return (
     <DashboardLayout dataDependency={[]}>
       <Helmet>
         <title>Settings</title>
       </Helmet>
-      <div className="grid items-start grid-cols-3 gap-4">
-        <div className="space-y-4">
-          <UserInfoCard />
-          <HandleSettings />
+      {user && (
+        <div className="grid items-start grid-cols-3 gap-4">
+          <div className="space-y-4">
+            <UserInfoCard />
+            <HandleSettings />
+          </div>
+          <div className="col-span-2">
+            <AccountSettings />
+          </div>
         </div>
-        <div className="col-span-2">
-          <AccountSettings />
-        </div>
-      </div>
+      )}
     </DashboardLayout>
   )
 }

@@ -30,7 +30,7 @@ const submissionSchema = Yup.object().shape({
   solved_at: Yup.date().required("Date is required"),
 })
 
-const AddEntryRow = ({ id }: { id: string }) => {
+const AddEntryRow = ({ id }: { id: number }) => {
   const queryClient = useQueryClient()
   const [contestId, setContestId] = useState(0)
   const [contestPasswordDialogue, setContestPasswordDialogue] = useState(false)

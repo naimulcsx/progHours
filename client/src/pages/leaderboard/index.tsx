@@ -1,7 +1,7 @@
 import { Helmet } from "react-helmet-async"
 import { Transition } from "@headlessui/react"
-import { Fragment, useState } from "react"
-import { useQuery } from "react-query"
+import { Fragment, useEffect, useState } from "react"
+import { useQuery, useQueryClient } from "react-query"
 
 /**
  * Import Components
@@ -19,7 +19,7 @@ import { RanklistItem } from "@/types/RanklistItem"
 import DashboardHeader from "@/components/dashboard/Header"
 
 const LeaderboardPage = () => {
-  let [ranklist, setRanklist] = useState(null)
+  const [ranklist, setRanklist] = useState(null)
   const query = useQuery("ranklist", getRankList, {
     onSuccess: (data) => {
       /**
@@ -41,8 +41,9 @@ const LeaderboardPage = () => {
       setRanklist(data.ranklist)
     },
   })
+
   return (
-    <DashboardLayout dataDependency={[ranklist]}>
+    <DashboardLayout dataDependency={[]}>
       <Helmet>
         <title>Leaderboard</title>
       </Helmet>

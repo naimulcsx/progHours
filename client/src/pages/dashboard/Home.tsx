@@ -1,6 +1,7 @@
-import { Fragment, useContext, useState } from "react"
+import { useState } from "react"
 import { useQuery } from "react-query"
 import { Helmet } from "react-helmet-async"
+import { Box } from "@chakra-ui/react"
 
 /**
  * Import Components
@@ -9,7 +10,6 @@ import { DashboardLayout } from "@/components/layouts/Dashboard"
 import ProgressBox from "@/components/ProgressBox"
 import TagsChart from "@/components/dashboard/stats/TagsChart"
 import WeekChart from "@/components/dashboard/stats/WeekChart"
-import { GlobalContext } from "@/GlobalStateProvider"
 
 /**
  * Import helpers
@@ -17,7 +17,6 @@ import { GlobalContext } from "@/GlobalStateProvider"
 import { getStats } from "@/api/dashboard"
 import { getSubmissions } from "@/api/submissions"
 import { getWeekRanges } from "@/utils/getWeekRanges"
-import { Transition } from "@headlessui/react"
 
 const DashboardHome = () => {
   /**
@@ -58,40 +57,26 @@ const DashboardHome = () => {
       setFrequency(frequency)
     },
   })
-
-  /**
-   * Get user's name from global state context
-   */
-  const { user } = useContext(GlobalContext)
   return (
-    <DashboardLayout dataDependency={[user, data, frequency]}>
+    <DashboardLayout dataDependency={[]}>
       <Helmet>
         <title>Dashboard</title>
       </Helmet>
-      {/* <div className="flex items-center justify-between mb-6">
-        <div>
-          <h3 className="font-bold">Hi! {user?.name}</h3>
-          <p className="mt-1 text-gray-500">
-            Here&apos;s what&apos;s going on in your competitive programming
-            journey!
-          </p>
-        </div>
-      </div> */}
-      <div className="space-y-4">
-        {data && (
-          <div className="">
+      {data && frequency && data["tags_frequency"] && (
+        <>
+          <Box mb={4}>
             <ProgressBox progress={data} />
-          </div>
-        )}
-        <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
-          <div className="p-8 bg-white rounded-lg shadow xl:px-8">
-            <WeekChart data={frequency} />
-          </div>
-          <div className="w-full h-full col-span-2 px-8 pt-8 pb-0 bg-white rounded-lg shadow xl:px-8 md:px-16 lg:px-32">
-            <TagsChart data={data?.tags_frequency} />
-          </div>
-        </div>
-      </div>
+          </Box>
+          <Box className="grid grid-cols-1 gap-4 md:grid-cols-3">
+            <Box className="p-8 bg-white rounded-lg shadow xl:px-8">
+              {<WeekChart data={frequency} />}
+            </Box>
+            <Box className="w-full h-full col-span-2 px-8 pt-8 pb-0 bg-white rounded-lg shadow xl:px-8 md:px-16 lg:px-32">
+              <TagsChart data={data["tags_frequency"]} />
+            </Box>
+          </Box>
+        </>
+      )}
     </DashboardLayout>
   )
 }

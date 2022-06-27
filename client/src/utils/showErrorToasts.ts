@@ -1,11 +1,11 @@
-import toast from "react-hot-toast"
+import { useToast } from "@chakra-ui/react"
 
-function showErrorToasts(messages: string[]) {
+function showErrorToasts(toast, messages: string[]) {
   if (typeof messages === "string") {
-    toast.error(messages)
+    toast({ status: "error", title: messages })
   } else {
     messages?.forEach((errorMsg) => {
-      toast.error(errorMsg, { className: "toast" })
+      toast({ status: "error", title: errorMsg })
     })
   }
 }
