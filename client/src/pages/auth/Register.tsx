@@ -1,7 +1,7 @@
 import * as Yup from "yup"
-import toast from "react-hot-toast"
+import { useToast } from "@chakra-ui/react"
 import { Helmet } from "react-helmet-async"
-import { Link, useNavigate } from "react-router-dom"
+import { Link as ReactRouterLink, useNavigate } from "react-router-dom"
 
 /**
  * Import Components / Utilities
@@ -10,28 +10,32 @@ import showErrorToasts from "@/utils/showErrorToasts"
 import AuthContainer from "@/components/AuthContainer"
 import FormBuilder from "@/components/FormBuilder"
 import { registerMutation } from "@/api/auth"
+import { Flex, Heading, VStack, Link } from "@chakra-ui/react"
+import { DEFAULT_TOAST_OPTIONS } from "@/configs/toast-config"
 
 /**
  * Component for registration page
  */
 const Register = (): JSX.Element => {
+  const toast = useToast(DEFAULT_TOAST_OPTIONS)
   const navigate = useNavigate()
   return (
     <AuthContainer>
       <Helmet>
         <title>Register</title>
       </Helmet>
-      <div className="space-y-3">
-        <h2>Create New Account</h2>
-        <p>
-          Already have an account?
-          <Link to="/login" className="ml-1 text-primary">
+      <VStack align="start" spacing={2}>
+        <Heading size="lg">Login to Account</Heading>
+        <Flex as="p" gap={2}>
+          Already an account?
+          <Link as={ReactRouterLink} to="/login">
             Login
           </Link>
-        </p>
-      </div>
+        </Flex>
+      </VStack>
+      {/* regitstration form */}
       <FormBuilder
-        className="mt-6 space-y-4"
+        mt={6}
         fields={{
           name: {
             type: "text",
@@ -58,25 +62,28 @@ const Register = (): JSX.Element => {
             type: "password",
             label: "Password",
             validate: Yup.string().trim().required("Password is required"),
+            helperText: "Must contain at least 8 charecters.",
           },
-        }}
-        mutation={registerMutation}
-        onSuccess={(res) => {
-          // redirect to the login page
-          navigate("/login")
-          // create a toast
-          toast.success("Account created!")
-        }}
-        onError={(err) => {
-          const { data, status, statusText } = err.response
-          // handle bad gateway errors
-          if (status === 502) toast.error(statusText)
-          showErrorToasts(data.message)
         }}
         button={{
           label: "Register",
           className: "mt-6",
           loadingLabel: "Registering",
+        }}
+        mutation={registerMutation}
+        onSuccess={(res) => {
+          navigate("/login") // redirect to the login page
+          toast({
+            status: "success",
+            title: "Account created!",
+            description: "You may now login.",
+          }) // create the toast
+        }}
+        onError={(err) => {
+          const { data, status, statusText } = err.response
+          // handle bad gateway errors
+          if (status === 502) toast({ status: "error", title: statusText })
+          showErrorToasts(toast, data.message)
         }}
       />
     </AuthContainer>

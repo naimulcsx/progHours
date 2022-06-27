@@ -67,7 +67,6 @@ const HandleSettings = () => {
       client.invalidateQueries("handles")
       toast.success("create successfully")
     },
-
     onError: (err: any) => {
       showErrorToasts(err.response.data.message)
     },
@@ -87,7 +86,6 @@ const HandleSettings = () => {
       client.invalidateQueries("handles")
       toast.success("Deleted successfully")
     },
-
     onError: (err: any) => {
       showErrorToasts(err.response.data.message)
     },

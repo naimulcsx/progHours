@@ -181,22 +181,21 @@ table td[data-problem\.name] input.inset {
 table td[data-verdict] {
   @apply w-10 px-5;
 }
-table td[data-problem\.difficulty] {
+/* table td[data-problem\.difficulty] {
   @apply text-sm font-medium text-gray-700;
-  /* @apply w-10; */
-}
+} */
 table td[data-solve_time] {
   @apply relative w-32;
 }
 /* table td[data-solve_time] input {
   @apply absolute inset-0 px-6 rounded focus:outline-none focus:ring-2 focus:ring-inset ring-primary;
 } */
-table td[data-solved-at] {
+/* table td[data-solved-at] {
   @apply relative w-48 text-sm text-gray-700;
-}
-table td[data-solved-at] .react-datepicker__input-container input {
+} */
+/* table td[data-solved-at] .react-datepicker__input-container input {
   @apply bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500;
-}
+} */
 table td[data-tags] {
   @apply w-[520px] px-6 py-2;
 }

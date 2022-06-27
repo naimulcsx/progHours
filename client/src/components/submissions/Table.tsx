@@ -1,4 +1,4 @@
-import { useMemo } from "react"
+import { useMemo, ReactNode } from "react"
 import { usePagination, useTable, useSortBy, Column } from "react-table"
 import { Submission } from "@/types/Submission"
 
@@ -16,14 +16,9 @@ import Tags from "./columns/Tags"
 /**
  * Import Icons
  */
-import {
-  ArrowSmDownIcon,
-  ArrowSmUpIcon,
-  ChevronRightIcon,
-  ChevronLeftIcon,
-  ChevronDoubleLeftIcon,
-  ChevronDoubleRightIcon,
-} from "@heroicons/react/solid"
+import { ArrowSmDownIcon, ArrowSmUpIcon } from "@heroicons/react/solid"
+import { Box, Table, Tbody, Td, Th, Thead, Tr } from "@chakra-ui/react"
+import { Pagination } from "./Pagination"
 
 const TrackingTable = ({ submissions }: { submissions: Submission[] }) => {
   /**
@@ -118,54 +113,62 @@ const TrackingTable = ({ submissions }: { submissions: Submission[] }) => {
   )
 
   return (
-    <div className="relative">
-      <div className="mt-6 -mx-4 overflow-x-scroll rounded-lg md:overflow-visible">
-        <table {...getTableProps()} className="border-collapse">
-          <thead>
+    <Box position="relative">
+      <Box mt={6} mx={-4} overflowX={{ base: "scroll", md: "visible" }}>
+        <Table {...getTableProps()}>
+          <Thead>
             {headerGroups.map((headerGroup) => {
               return (
-                <tr
+                <Tr
+                  fontSize="xs"
+                  textTransform="uppercase"
+                  bg="gray.50"
+                  borderTop="1px solid"
+                  borderBottom="1px solid"
+                  borderColor="gray.200"
                   {...headerGroup.getHeaderGroupProps()}
-                  className="text-xs text-gray-500 uppercase bg-gray-100"
                 >
                   {headerGroup.headers.map((header) => {
                     return (
-                      <th
+                      <Th
+                        py={4}
                         {...header.getHeaderProps(
                           header.getSortByToggleProps()
                         )}
-                        className="py-4 border-t border-b"
                       >
-                        <div className="flex items-center justify-start">
-                          <span>{header.render("Header")}</span>
-                          <span>
-                            {header.isSorted ? (
-                              header.isSortedDesc ? (
-                                <ArrowSmDownIcon height={20} />
+                        <Box display="flex" alignItems="center" minH="5">
+                          <>
+                            {header.render("Header")}
+                            <Box display="inline" as="span" ml={1}>
+                              {header.isSorted ? (
+                                header.isSortedDesc ? (
+                                  <ArrowSmDownIcon height={20} />
+                                ) : (
+                                  <ArrowSmUpIcon height={20} />
+                                )
                               ) : (
-                                <ArrowSmUpIcon height={20} />
-                              )
-                            ) : (
-                              ""
-                            )}
-                          </span>
-                        </div>
-                      </th>
+                                ""
+                              )}
+                            </Box>
+                          </>
+                        </Box>
+                      </Th>
                     )
                   })}
-                </tr>
+                </Tr>
               )
             })}
-          </thead>
-          <tbody {...getTableBodyProps()}>
+          </Thead>
+          <Tbody {...getTableBodyProps()}>
             <AddEntryRow id={submissions.length + 1} />
             {page.map((row) => {
               prepareRow(row)
               return (
-                <tr
+                <Tr
+                  bg="white"
+                  _hover={{ bg: "gray.50" }}
                   {...row.getRowProps()}
                   key={row.original.id}
-                  className={`bg-white hover:bg-gray-100`}
                 >
                   {row.cells.map((cell) => {
                     const extraProps: {
@@ -178,88 +181,37 @@ const TrackingTable = ({ submissions }: { submissions: Submission[] }) => {
                         .join("-")}`
                     ] = cell.value
                     return (
-                      <td
+                      <Td
+                        py={3}
+                        borderBottom="1px solid"
+                        borderColor="gray.200"
                         {...cell.getCellProps()}
                         {...extraProps}
-                        className="py-3 border-b"
                       >
-                        {cell.render("Cell")}
-                      </td>
+                        {cell.render("Cell") as ReactNode}
+                      </Td>
                     )
                   })}
-                </tr>
+                </Tr>
               )
             })}
-          </tbody>
-        </table>
+          </Tbody>
+        </Table>
         {/* Pagination */}
-        <div className="flex items-center justify-between px-6 py-3 space-x-4 bg-white border-b pagination">
-          <div>
-            <span>
-              Page{" "}
-              <span className="font-medium">
-                {pageIndex + 1} of {pageOptions.length}
-              </span>
-            </span>
-            <select
-              value={pageSize}
-              className="py-1 ml-4 border-b"
-              onChange={(e) => {
-                setPageSize(Number(e.target.value))
-              }}
-            >
-              {[10, 20, 30, 40, 50].map((pageSize) => (
-                <option key={pageSize} value={pageSize}>
-                  Show {pageSize}
-                </option>
-              ))}
-            </select>
-          </div>
-          <div className="flex items-center space-x-4">
-            <button
-              className="p-1 border rounded"
-              onClick={() => gotoPage(0)}
-              disabled={!canPreviousPage}
-            >
-              <ChevronDoubleLeftIcon className="h-4" />
-            </button>
-            <button
-              className="p-1 border rounded"
-              onClick={() => previousPage()}
-              disabled={!canPreviousPage}
-            >
-              <ChevronLeftIcon className="h-4" />
-            </button>
-            <button
-              className="p-1 border rounded"
-              onClick={() => nextPage()}
-              disabled={!canNextPage}
-            >
-              <ChevronRightIcon className="h-4" />
-            </button>
-            <button
-              className="p-1 border rounded"
-              onClick={() => gotoPage(pageCount - 1)}
-              disabled={!canNextPage}
-            >
-              <ChevronDoubleRightIcon className="h-4" />
-            </button>
-            <span className="space-x-2">
-              <span className="font-medium">Go to page : </span>
-              <input
-                className="w-16 py-1 border-b"
-                type="number"
-                defaultValue={pageIndex + 1}
-                onChange={(e) => {
-                  const page = e.target.value ? Number(e.target.value) - 1 : 0
-                  gotoPage(page)
-                }}
-              />
-            </span>
-          </div>
-        </div>
-      </div>
-    </div>
+        <Pagination
+          pageIndex={pageIndex}
+          pageOptions={pageOptions}
+          pageSize={pageSize}
+          setPageSize={setPageSize}
+          canPreviousPage={canPreviousPage}
+          canNextPage={canNextPage}
+          gotoPage={gotoPage}
+          pageCount={pageCount}
+          previousPage={previousPage}
+          nextPage={nextPage}
+        />
+      </Box>
+    </Box>
   )
 }
 

@@ -2,14 +2,14 @@ import { AxiosError } from "axios"
 import { useQuery } from "react-query"
 import { useContext, useState } from "react"
 import { useNavigate, useParams } from "react-router-dom"
+import { useToast } from "@chakra-ui/react"
 
 /**
  * Import Components
  */
 import MobileNav from "@/components/MobileNav"
-import Navbar from "@/components/Navbar"
+import Navbar from "@/components/navbar"
 import ProgressBox from "@/components/ProgressBox"
-import { GlobalContext } from "@/GlobalStateProvider"
 import ProfileTable from "@/components/profile/Table"
 
 /**
@@ -26,15 +26,22 @@ import { getUserByUsername } from "@/api/user"
 import Spinner from "@/components/Spinner"
 import { Transition } from "@headlessui/react"
 import Avatar from "@/components/Avatar"
+import { UserCard } from "@/components/user"
+import { GlobalContext } from "@/GlobalStateProvider"
+import { Helmet } from "react-helmet-async"
+import { SubmissionsTable } from "@/components/submissions-table"
+import { DEFAULT_TOAST_OPTIONS } from "@/configs/toast-config"
 
 interface User {
   name?: string
   username?: string
   email?: string
   id?: number
+  member_since?: string
 }
 
 export default function Profile() {
+  const toast = useToast(DEFAULT_TOAST_OPTIONS)
   // const { user } = useContext(GlobalContext)
   const { username } = useParams()
   const navigate = useNavigate()
@@ -42,9 +49,9 @@ export default function Profile() {
   /**
    * Get statistics
    */
+  let [user, setUser] = useState<User>({})
   const progressQuery = useQuery("stats", getStats)
   let [submissions, setSubmissions] = useState([])
-  let [user, setUser] = useState<User>({})
 
   /**
    * Get submissions
@@ -53,65 +60,44 @@ export default function Profile() {
     `submissions/${username}`,
     () => getSubmissionsByUsername(username ? username : "-1"),
     {
-      retry: 1,
       onSuccess: (data) => {
         // setUser(data.user)
         setSubmissions(data.submissions)
-      },
-      onError: (err: AxiosError) => {
-        navigate("/dashboard")
-        showErrorToasts(err.response?.data.message)
       },
     }
   )
 
   const userQuery = useQuery(
-    `profile/${username}`,
+    `users/${username}`,
     () => getUserByUsername(username ? username : "-1"),
     {
+      retry: 1,
       onSuccess: (user) => {
         setUser(user)
       },
+      onError: (err) => {
+        showErrorToasts(toast, err.response?.data.message)
+      },
     }
   )
-
   return (
-    <div>
-      <Navbar className="lg:bg-white" />
-      <Transition
-        show={[
-          submissionQuery.isLoading,
-          userQuery.isLoading,
-          submissionQuery.isFetching,
-          userQuery.isFetching,
-        ].every((val) => val === false)}
-        appear={true}
-        enter="transform transition duration-[400ms]"
-        enterFrom="opacity-0 scale-[0.995]"
-        enterTo="opacity-100 rotate-0 scale-100"
-        leave="transform duration-200 transition ease-in-out"
-        leaveFrom="opacity-100 rotate-0 scale-100"
-        leaveTo="opacity-0 scale-98"
-      >
-        <div className="relative flex items-center justify-center pt-32 pb-32 overflow-clip">
-          <div className="space-y-6 text-center">
-            <Avatar
-              name={user?.name || ""}
-              size="xl"
-              className="mx-auto font-medium"
-            />
-            <h1 className="text-4xl">{user?.name}</h1>
-            <span className="text-2xl">{user?.username}</span>
+    <>
+      <Navbar />
+      {Object.keys(user).length && submissionQuery.data ? (
+        <>
+          <Helmet>
+            <title>{user.name}</title>
+          </Helmet>
+          <UserCard
+            name={user.name!}
+            username={user.username!}
+            member_since={user.member_since!}
+          />
+          <div className="container px-6 py-12 mx-auto space-y-8">
+            <SubmissionsTable submissions={submissions} />
           </div>
-        </div>
-        <div className="container relative px-6 mx-auto -mt-16 space-y-16">
-          {progressQuery.data && <ProgressBox progress={progressQuery.data} />}
-        </div>
-        <div className="container px-6 py-12 mx-auto space-y-8">
-          <ProfileTable submissions={submissions} />
-        </div>
-        <MobileNav></MobileNav>
-      </Transition>
-    </div>
+        </>
+      ) : null}
+    </>
   )
 }
