@@ -10,8 +10,8 @@ export const CELL_STYLES: any = {
     py: VERTICAL_PADDING,
   },
   Tags: {
-    minW: "560px",
-    w: "560px",
+    minW: "550px",
+    w: "550px",
     px: HORIZONTAL_PADDING,
     py: VERTICAL_PADDING,
   },
@@ -22,8 +22,8 @@ export const CELL_STYLES: any = {
     py: VERTICAL_PADDING,
   },
   "Solve Time": {
-    minW: 32,
-    w: 32,
+    minW: 36,
+    w: 36,
     px: HORIZONTAL_PADDING,
     py: VERTICAL_PADDING,
   },
