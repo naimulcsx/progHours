@@ -7,13 +7,18 @@ import { Link } from "react-router-dom"
  * Import Icons
  */
 import { ArrowSmDownIcon, ArrowSmUpIcon } from "@heroicons/react/solid"
-import Avatar from "../Avatar"
+import { Table, Avatar, Thead, Tr, Th, Td, Tbody } from "@chakra-ui/react"
+import { getAvatarColors } from "@/utils/getAvatarColors"
 
 const UserCell = (cell: Cell<RanklistItem>) => {
   return (
     <Link to={`/users/${cell.row.original.user.username}`}>
       <div className="flex items-center space-x-4">
-        <Avatar name={cell.row.original.user.name} />
+        <Avatar
+          name={cell.row.original.user.name}
+          size="sm"
+          {...getAvatarColors(cell.row.original.user.name)}
+        />
         <div>
           <p className="font-medium text-gray-900">{cell.value}</p>
           <p className="text-sm text-gray-500">
@@ -71,20 +76,17 @@ const LeaderboardTable = ({ ranklist }: { ranklist: RanklistItem[] }) => {
 
   return (
     <div className="-mx-4 overflow-x-scroll md:overflow-clip">
-      <table
-        {...getTableProps()}
-        className="text-gray-700 border-collapse leaderboard max-w-6"
-      >
-        <thead>
+      <Table w="full" {...getTableProps()}>
+        <Thead>
           {headerGroups.map((headerGroup) => {
             return (
-              <tr
+              <Tr
                 {...headerGroup.getHeaderGroupProps()}
                 className="text-xs text-gray-500 uppercase bg-gray-100"
               >
                 {headerGroup.headers.map((header) => {
                   return (
-                    <th
+                    <Th
                       {...header.getHeaderProps(header.getSortByToggleProps())}
                       className="py-4 border-t border-b"
                     >
@@ -102,30 +104,30 @@ const LeaderboardTable = ({ ranklist }: { ranklist: RanklistItem[] }) => {
                           )}
                         </span>
                       </div>
-                    </th>
+                    </Th>
                   )
                 })}
-              </tr>
+              </Tr>
             )
           })}
-        </thead>
-        <tbody>
+        </Thead>
+        <Tbody>
           {rows.map((row) => {
             prepareRow(row)
             return (
-              <tr {...row.getRowProps()} className={`bg-white`}>
+              <Tr {...row.getRowProps()} className={`bg-white`}>
                 {row.cells.map((cell) => {
                   return (
-                    <td {...cell.getCellProps()} className="py-3 border-b">
+                    <Td {...cell.getCellProps()} className="py-3 border-b">
                       {cell.render("Cell")}
-                    </td>
+                    </Td>
                   )
                 })}
-              </tr>
+              </Tr>
             )
           })}
-        </tbody>
-      </table>
+        </Tbody>
+      </Table>
     </div>
   )
 }

@@ -1,7 +1,7 @@
 import { Box, Flex } from "@chakra-ui/react"
-import Logo from "./Logo"
+import Logo from "../Logo"
 
-const AuthContainer = ({ children }: { children: React.ReactNode }) => {
+const AuthLayout = ({ children }: { children: React.ReactNode }) => {
   return (
     <Flex justify="center" align="center" minH="100vh">
       <Box p={8} bg="white" maxW="md" w="full" shadow="base" rounded="lg">
@@ -13,4 +13,4 @@ const AuthContainer = ({ children }: { children: React.ReactNode }) => {
   )
 }
 
-export default AuthContainer
+export default AuthLayout

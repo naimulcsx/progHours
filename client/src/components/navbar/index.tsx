@@ -5,11 +5,10 @@ import { Link } from "react-router-dom"
  * Import components
  */
 import Logo from "../Logo"
-import DropdownMenu from "../DropdownMenu"
 import { GlobalContext } from "@/GlobalStateProvider"
-import Spinner from "../Spinner"
-import { Box, Stack, Avatar, Text, HStack } from "@chakra-ui/react"
+import { Box, Stack, Avatar, Text, HStack, Spinner } from "@chakra-ui/react"
 import { getAvatarColors } from "@/utils/getAvatarColors"
+import NavbarMenu from "./NavbarMenu"
 
 const Navbar = () => {
   const { user } = useContext(GlobalContext)
@@ -21,14 +20,14 @@ const Navbar = () => {
       bg="white"
       left={0}
       right={0}
-      px={6}
-      py={3}
+      px={5}
+      height={14}
       display="flex"
       alignItems="center"
       justifyContent="space-between"
       borderBottom="1px solid"
       borderColor="gray.200"
-      zIndex={100}
+      zIndex={200}
     >
       <Box>
         <Link to="/dashboard">
@@ -47,8 +46,7 @@ const Navbar = () => {
           ) : (
             <Spinner />
           )}
-
-          <DropdownMenu />
+          <NavbarMenu />
         </Stack>
       </Box>
     </Box>

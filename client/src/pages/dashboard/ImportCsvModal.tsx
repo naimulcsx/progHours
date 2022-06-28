@@ -5,9 +5,9 @@ import { CheckIcon } from "@heroicons/react/solid"
 import { Fragment, useState } from "react"
 import { useMutation, useQueryClient } from "react-query"
 import { AxiosError } from "axios"
-import Spinner from "@/components/Spinner"
 import moment from "moment"
 import PopupBuilder from "@/components/PopupBuilder"
+import { Spinner } from "@chakra-ui/react"
 
 export default function ImportCsvModal({
   isOpen,

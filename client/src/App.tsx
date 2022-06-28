@@ -1,5 +1,5 @@
 import { useEffect } from "react"
-import { HelmetProvider } from "react-helmet-async"
+import { Helmet, HelmetProvider } from "react-helmet-async"
 import { QueryClient, QueryClientProvider } from "react-query"
 import { useLocation, useNavigate, useRoutes } from "react-router-dom"
 import clearAuthData from "@/utils/clearAuthData"

@@ -7,7 +7,7 @@ import { Link as ReactRouterLink, useNavigate } from "react-router-dom"
  * Import Components / Utilities
  */
 import showErrorToasts from "@/utils/showErrorToasts"
-import AuthContainer from "@/components/AuthContainer"
+import AuthLayout from "@/components/layouts/Auth"
 import FormBuilder from "@/components/FormBuilder"
 import { registerMutation } from "@/api/auth"
 import { Flex, Heading, VStack, Link } from "@chakra-ui/react"
@@ -20,7 +20,7 @@ const Register = (): JSX.Element => {
   const toast = useToast(DEFAULT_TOAST_OPTIONS)
   const navigate = useNavigate()
   return (
-    <AuthContainer>
+    <AuthLayout>
       <Helmet>
         <title>Register</title>
       </Helmet>
@@ -86,7 +86,7 @@ const Register = (): JSX.Element => {
           showErrorToasts(toast, data.message)
         }}
       />
-    </AuthContainer>
+    </AuthLayout>
   )
 }
 

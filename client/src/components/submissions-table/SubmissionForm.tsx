@@ -4,9 +4,9 @@ import { useFormik } from "formik"
 import toast from "react-hot-toast"
 import axios, { AxiosError } from "axios"
 import { useQueryClient, useMutation } from "react-query"
-import { FormControl, Select, Option, Input } from "@/components/Form"
-import { AddIcon } from "../Icons"
+// import { FormControl, Select, option, Input } from "@/components/Form"
 import moment from "moment"
+import { PlusIcon } from "@heroicons/react/solid"
 
 /**
  * Import utils
@@ -22,6 +22,19 @@ import "react-datepicker/dist/react-datepicker.css"
 import "@/styles/datepicker.css"
 import PopupBuilder from "../PopupBuilder"
 import FormBuilder from "../FormBuilder"
+import {
+  FormControl,
+  Select,
+  Input,
+  Button,
+  Spinner,
+  Td,
+  useToast,
+  Text,
+  Tr,
+} from "@chakra-ui/react"
+import { DEFAULT_TOAST_OPTIONS } from "@/configs/toast-config"
+import { CELL_STYLES } from "./cells/cellStyles"
 
 const submissionSchema = Yup.object().shape({
   link: Yup.string().trim().required("Problem link is required"),
@@ -30,7 +43,8 @@ const submissionSchema = Yup.object().shape({
   solved_at: Yup.date().required("Date is required"),
 })
 
-const AddEntryRow = ({ id }: { id: number }) => {
+const SubmissionForm = ({ id }: { id: number }) => {
+  const toast = useToast(DEFAULT_TOAST_OPTIONS)
   const queryClient = useQueryClient()
   const [contestId, setContestId] = useState(0)
   const [contestPasswordDialogue, setContestPasswordDialogue] = useState(false)
@@ -42,7 +56,7 @@ const AddEntryRow = ({ id }: { id: number }) => {
     onSuccess: (data) => {
       formik.resetForm()
       queryClient.invalidateQueries("practice")
-      toast.success("Problem submitted successfully")
+      toast({ title: "Submission added!", status: "success" })
     },
     onError: (err: AxiosError) => {
       if (typeof err.response !== "undefined") {
@@ -50,7 +64,7 @@ const AddEntryRow = ({ id }: { id: number }) => {
         setContestId(contest_id)
         if (error_code === 1003) setContestPasswordDialogue(true)
         // show contest password dialouge
-        else showErrorToasts(message)
+        else showErrorToasts(toast, message)
       }
     },
   })
@@ -104,10 +118,7 @@ const AddEntryRow = ({ id }: { id: number }) => {
       return
     }
     fields.forEach((el) => {
-      toast.error(formik.errors[el], {
-        className: "toast",
-        toastId: formik.errors[el] as string,
-      })
+      toast({ title: formik.errors[el] as string, status: "error" })
     })
   }
 
@@ -118,7 +129,7 @@ const AddEntryRow = ({ id }: { id: number }) => {
         isOpen={contestPasswordDialogue}
         setIsOpen={setContestPasswordDialogue}
       >
-        <p className="text-sm">Please enter the contest password below</p>
+        <Text>Please enter the contest password below</Text>
         <FormBuilder
           className="mt-6 space-y-4"
           fields={{
@@ -141,7 +152,7 @@ const AddEntryRow = ({ id }: { id: number }) => {
             formik.submitForm()
           }}
           onError={(err) => {
-            showErrorToasts(err.response.data.message)
+            showErrorToasts(toast, err.response.data.message!)
           }}
           button={{
             label: "Submit",
@@ -150,11 +161,15 @@ const AddEntryRow = ({ id }: { id: number }) => {
           }}
         />
       </PopupBuilder>
-      <tr className="bg-white">
-        <td className="py-3 border-b" data-serial>
-          {id}
-        </td>
-        <td className="py-3 border-b" data-problem-name>
+
+      {/* table row starts here */}
+
+      <Tr bg="white">
+        {/* serial */}
+        <Td {...CELL_STYLES["Id"]}>{id}</Td>
+
+        {/* problem name */}
+        <Td py={2} {...CELL_STYLES["Problem Name"]}>
           <form id="add-submission" onSubmit={handleSubmit}></form>
           <FormControl className="form">
             <Input
@@ -166,17 +181,22 @@ const AddEntryRow = ({ id }: { id: number }) => {
               {...formik.getFieldProps("link")}
             ></Input>
           </FormControl>
-        </td>
-        <td className="py-3 border-b" data-verdict>
-          <Select value={selected} onChange={handleSelected}>
-            <Option value="AC">AC</Option>
-            <Option value="WA">WA</Option>
-            <Option value="TLE">TLE</Option>
-            <Option value="RTE">RTE</Option>
-            <Option value="MLE">MLE</Option>
+        </Td>
+
+        {/* verdict */}
+        <Td {...CELL_STYLES["Verdict"]}>
+          <Select
+            value={selected}
+            onChange={(e) => handleSelected(e.target.value)}
+            fontSize="sm"
+          >
+            <option value="AC">AC</option>
+            <option value="WA">WA</option>
           </Select>
-        </td>
-        <td className="py-3 border-b" data-solve_time>
+        </Td>
+
+        {/* solve time */}
+        <Td {...CELL_STYLES["Solve Time"]}>
           <FormControl className="form">
             <Input
               type="text"
@@ -187,17 +207,19 @@ const AddEntryRow = ({ id }: { id: number }) => {
               {...formik.getFieldProps("solve_time")}
             ></Input>
           </FormControl>
-        </td>
+        </Td>
 
-        <td className="py-3 border-b" data-tags>
-          —
-        </td>
-        <td className="py-3 border-b">—</td>
-        <td className="py-3 border-b" data-solved_at>
+        {/* tags  */}
+        <Td {...CELL_STYLES["Tags"]}>—</Td>
+        {/* difficulty  */}
+        <Td {...CELL_STYLES["Difficulty"]}>—</Td>
+
+        {/* solved at */}
+        <Td {...CELL_STYLES["Solved On"]}>
           <ReactDatePicker
             dateFormat="EEE, dd MMM yyyy"
-            className="h-[40px] px-3 focus:outline-none rounded focus:ring-2 ring-primary ring-opacity-50"
             selected={formik.values.solved_at}
+            customInput={<Input fontSize="sm" />}
             onChange={(date) => {
               const currentDate = new Date()
               const dateToSend = moment(date)
@@ -208,23 +230,26 @@ const AddEntryRow = ({ id }: { id: number }) => {
               formik.setFieldValue("solved_at", dateToSend.toDate())
             }}
           />
-        </td>
-        <td className="py-3 border-b" data-actions>
-          <button
-            form="add-submission"
+        </Td>
+
+        {/* actions */}
+        <Td>
+          <Button
             type="submit"
-            className="flex items-center px-1 py-1 space-x-2 border rounded"
+            size="sm"
+            form="add-submission"
+            variant="outline"
           >
             {createSubmissionMutation.isLoading ? (
-              <div className="sp sp-circle"></div>
+              <Spinner size="sm" />
             ) : (
-              <AddIcon />
+              <PlusIcon width={16} height={16} />
             )}
-          </button>
-        </td>
-      </tr>
+          </Button>
+        </Td>
+      </Tr>
     </>
   )
 }
 
-export default AddEntryRow
+export default SubmissionForm

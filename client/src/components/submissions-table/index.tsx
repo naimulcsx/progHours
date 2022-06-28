@@ -5,7 +5,7 @@ import { Submission } from "@/types/Submission"
 /**
  * Import table columnes
  */
-import AddEntryRow from "./AddEntryRow"
+import SubmissionForm from "./SubmissionForm"
 
 /**
  * Import Icons
@@ -14,6 +14,7 @@ import { ArrowSmDownIcon, ArrowSmUpIcon } from "@heroicons/react/solid"
 import { Box, Table, Tbody, Td, Th, Thead, Tr } from "@chakra-ui/react"
 import { Pagination } from "./Pagination"
 import { getTableColumns } from "./getTableColumns"
+import { CELL_STYLES } from "./cells/cellStyles"
 
 export const SubmissionsTable = ({
   submissions,
@@ -73,7 +74,7 @@ export const SubmissionsTable = ({
         mx={isEditable ? -4 : 0}
         shadow={isEditable ? "initial" : "base"}
         rounded={isEditable ? "none" : "lg"}
-        overflow="hidden"
+        overflowX="auto"
       >
         <Table {...getTableProps()}>
           <Thead>
@@ -120,7 +121,7 @@ export const SubmissionsTable = ({
             })}
           </Thead>
           <Tbody {...getTableBodyProps()}>
-            {isEditable && <AddEntryRow id={submissions.length + 1} />}
+            {isEditable && <SubmissionForm id={submissions.length + 1} />}
             {page.map((row) => {
               prepareRow(row)
               return (
@@ -131,23 +132,14 @@ export const SubmissionsTable = ({
                   key={row.original.id}
                 >
                   {row.cells.map((cell) => {
-                    const extraProps: {
-                      [key: string]: string
-                    } = {}
-                    extraProps[
-                      `data-${cell.column.id
-                        .toLowerCase()
-                        .split(" ")
-                        .join("-")}`
-                    ] = cell.value
+                    const cellType: any = cell.column.Header
                     return (
                       <Td
-                        py={3}
                         borderBottom="1px solid"
                         borderColor="gray.200"
                         fontSize="sm"
                         {...cell.getCellProps()}
-                        {...extraProps}
+                        {...CELL_STYLES[cellType]}
                       >
                         {cell.render("Cell") as ReactNode}
                       </Td>

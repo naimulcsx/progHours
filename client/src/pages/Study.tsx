@@ -10,12 +10,10 @@ const StudyPage = () => {
   const [isOpen, setIsOpen] = useState(false)
 
   return (
-    <DashboardLayout dataDependency={[]}>
+    <DashboardLayout title="Study List">
       <Helmet>
         <title>Study List</title>
       </Helmet>
-      <DashboardHeader title="Study List" />
-
       {/* add new resource button  */}
       <div className="flex justify-end">
         <button

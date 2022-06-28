@@ -2,8 +2,18 @@ import { extendTheme, withDefaultColorScheme } from "@chakra-ui/react"
 const activeLabelStyles = {
   transform: "scale(0.85) translateY(-24px)",
 }
+
+const breakpoints = {
+  sm: "320px",
+  md: "768px",
+  lg: "960px",
+  xl: "1200px",
+  "2xl": "1536px",
+}
+
 export const theme = extendTheme(
   {
+    breakpoints,
     colors: {
       blue: {
         "50": "#EDF1FD",
@@ -22,6 +32,11 @@ export const theme = extendTheme(
       Link: {
         baseStyle: {
           color: "blue.500",
+        },
+      },
+      Container: {
+        baseStyle: {
+          maxW: Object.values(breakpoints),
         },
       },
     },

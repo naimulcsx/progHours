@@ -2,7 +2,7 @@ import { AxiosError } from "axios"
 import { useQuery } from "react-query"
 import { useContext, useState } from "react"
 import { useNavigate, useParams } from "react-router-dom"
-import { useToast } from "@chakra-ui/react"
+import { Container, useToast } from "@chakra-ui/react"
 
 /**
  * Import Components
@@ -23,11 +23,7 @@ import { getSubmissionsByUsername } from "@/api/submissions"
  */
 import showErrorToasts from "@/utils/showErrorToasts"
 import { getUserByUsername } from "@/api/user"
-import Spinner from "@/components/Spinner"
-import { Transition } from "@headlessui/react"
-import Avatar from "@/components/Avatar"
-import { UserCard } from "@/components/user"
-import { GlobalContext } from "@/GlobalStateProvider"
+import { UserCard } from "@/components/profile/UserCard"
 import { Helmet } from "react-helmet-async"
 import { SubmissionsTable } from "@/components/submissions-table"
 import { DEFAULT_TOAST_OPTIONS } from "@/configs/toast-config"
@@ -93,9 +89,9 @@ export default function Profile() {
             username={user.username!}
             member_since={user.member_since!}
           />
-          <div className="container px-6 py-12 mx-auto space-y-8">
+          <Container>
             <SubmissionsTable submissions={submissions} />
-          </div>
+          </Container>
         </>
       ) : null}
     </>

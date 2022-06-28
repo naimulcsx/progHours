@@ -7,9 +7,9 @@ import { Box } from "@chakra-ui/react"
  * Import Components
  */
 import { DashboardLayout } from "@/components/layouts/Dashboard"
-import ProgressBox from "@/components/ProgressBox"
-import TagsChart from "@/components/dashboard/stats/TagsChart"
-import WeekChart from "@/components/dashboard/stats/WeekChart"
+import UserStats from "@/components/stats/UserStats"
+import WeeklySolvedChart from "@/components/stats/visualizations/WeeklySolvedChart"
+import TagsFreqChart from "@/components/stats/visualizations/TagsFreqChart"
 
 /**
  * Import helpers
@@ -58,21 +58,21 @@ const DashboardHome = () => {
     },
   })
   return (
-    <DashboardLayout dataDependency={[]}>
+    <DashboardLayout title="Hi! Naimul Haque">
       <Helmet>
         <title>Dashboard</title>
       </Helmet>
       {data && frequency && data["tags_frequency"] && (
         <>
           <Box mb={4}>
-            <ProgressBox progress={data} />
+            <UserStats progress={data} />
           </Box>
           <Box className="grid grid-cols-1 gap-4 md:grid-cols-3">
             <Box className="p-8 bg-white rounded-lg shadow xl:px-8">
-              {<WeekChart data={frequency} />}
+              {<WeeklySolvedChart data={frequency} />}
             </Box>
             <Box className="w-full h-full col-span-2 px-8 pt-8 pb-0 bg-white rounded-lg shadow xl:px-8 md:px-16 lg:px-32">
-              <TagsChart data={data["tags_frequency"]} />
+              <TagsFreqChart data={data["tags_frequency"]} />
             </Box>
           </Box>
         </>

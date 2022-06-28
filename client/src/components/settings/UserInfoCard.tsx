@@ -2,16 +2,17 @@ import { GlobalContext } from "@/GlobalStateProvider"
 import { MailIcon, UserIcon } from "@heroicons/react/solid"
 import { useContext } from "react"
 import { Link } from "react-router-dom"
-import Avatar from "@/components/Avatar"
-import Spinner from "../Spinner"
+import { Avatar, Spinner } from "@chakra-ui/react"
+import { getAvatarColors } from "@/utils/getAvatarColors"
 
 const UserInfoCard = () => {
   const user = useContext(GlobalContext).user
+
   return (
     <div className="p-8 bg-white rounded-lg shadow">
       {user ? (
         <div className="flex space-x-8">
-          <Avatar name={user.name} size="xl" />
+          <Avatar name={user.name} size="xl" {...getAvatarColors(user.name)} />
           <div>
             <h2 className="flex items-center mb-2 space-x-2 text-2xl">
               <span>{user.name}</span>

@@ -16,7 +16,7 @@ function convertToHours(totalTimeInMin: number): string {
   return `${h}h ${m}m`
 }
 
-const ProgressBox = ({ progress }: { progress: Progress }) => {
+const UserStats = ({ progress }: { progress: Progress }) => {
   const { total_solved, total_solve_time, average_difficulty } = progress
   return (
     <SimpleGrid columns={4} gap={4}>
@@ -52,7 +52,7 @@ const ProgressBox = ({ progress }: { progress: Progress }) => {
   )
 }
 
-export default ProgressBox
+export default UserStats
 
 interface ProgressBox {
   title: string

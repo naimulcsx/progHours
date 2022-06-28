@@ -42,16 +42,13 @@ export const Sidebar: React.FC = () => {
       borderRightWidth="1px"
       flexShrink={0}
       flexGrow={0}
+      pt={6}
       px={6}
-      pt={3}
       pb={6}
       bg="white"
-      zIndex={200}
+      zIndex={100}
     >
-      <Box mb={12}>
-        <Logo />
-      </Box>
-      <Stack spacing={6}>
+      <Stack spacing={6} mt={16}>
         <Stack>
           <NavLink
             label="Dashboard"

@@ -9,7 +9,7 @@ import { GlobalContext } from "@/GlobalStateProvider"
 const Settings = () => {
   const { user } = useContext(GlobalContext)
   return (
-    <DashboardLayout dataDependency={[]}>
+    <DashboardLayout>
       <Helmet>
         <title>Settings</title>
       </Helmet>
