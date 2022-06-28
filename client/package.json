@@ -1,12 +1,11 @@
 {
   "name": "client-ts",
   "private": true,
-  "version": "0.0.0",
+  "version": "1.0.0",
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",
-    "preview": "vite preview",
-    "preinstall": "npm install --package-lock-only --ignore-scripts && npx npm-force-resolutions"
+    "preview": "vite preview"
   },
   "dependencies": {
     "@chakra-ui/react": "^2.2.1",
@@ -21,7 +20,7 @@
     "moment": "^2.29.1",
     "react": "^18.0.0",
     "react-apexcharts": "^1.4.0",
-    "react-datepicker": "^4.6.0",
+    "react-datepicker": "^4.8.0",
     "react-dom": "^18.0.0",
     "react-helmet-async": "^1.3.0",
     "react-hot-toast": "^2.2.0",
@@ -29,7 +28,6 @@
     "react-query": "^3.39.1",
     "react-router-dom": "6",
     "react-table": "^7.7.0",
-    "tailwind-merge": "^1.2.1",
     "yup": "^0.32.11"
   },
   "devDependencies": {
