@@ -1,7 +1,6 @@
 import moment from "moment"
-import { ReactNode, useState } from "react"
+import { useState } from "react"
 import { Cell } from "react-table"
-import toast from "react-hot-toast"
 import { Submission } from "@/types/Submission"
 import ReactDatePicker from "react-datepicker"
 import { updateSubmission } from "@/api/submissions"
@@ -13,9 +12,11 @@ import { AxiosError } from "axios"
  */
 import "react-datepicker/dist/react-datepicker.css"
 import "@/styles/datepicker.css"
-import { Input } from "@chakra-ui/react"
+import { Input, useToast } from "@chakra-ui/react"
+import { DEFAULT_TOAST_OPTIONS } from "@/configs/toast-config"
 
 const DatePicker = (cell: Cell<Submission>) => {
+  const toast = useToast(DEFAULT_TOAST_OPTIONS)
   const queryClient = useQueryClient()
   const [date, setDate] = useState(new Date(cell.value))
   const { mutate } = useMutation(updateSubmission, {
@@ -24,10 +25,10 @@ const DatePicker = (cell: Cell<Submission>) => {
       /**
        * Show toast message
        */
-      toast.success("Problem updated", { className: "toast" })
+      toast({ title: "Submission Updated!", status: "success" })
     },
     onError: (err: AxiosError) => {
-      toast.error(err.response?.data.message, { className: "toast" })
+      toast({ title: err.response?.data.message, status: "error" })
     },
   })
   const handleBlur = () => {

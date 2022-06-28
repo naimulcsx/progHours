@@ -83,7 +83,6 @@ const Verdict = (cell: Cell<Submission>) => {
       onChange={handleSelected}
       key={cell.value}
       fontWeight="bold"
-      width="20"
       fontSize="sm"
       {...styles[cell.value]}
     >

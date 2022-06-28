@@ -1,5 +1,10 @@
 import toast from "react-hot-toast"
-import { FormControl, Input, Label, ErrorMessage } from "@/components/Form"
+import {
+  FormControl,
+  Input,
+  FormLabel,
+  FormErrorMessage,
+} from "@chakra-ui/react"
 import { useMutation, useQuery, useQueryClient } from "react-query"
 import { useFormik } from "formik"
 import * as Yup from "yup"
@@ -78,33 +83,23 @@ const AccountSettings = () => {
             <FormControl
               isInvalid={formik.touched.name && !!formik.errors.name}
             >
-              <Label>Full Name</Label>
+              <FormLabel>Full Name</FormLabel>
               <Input type="text" {...formik.getFieldProps("name")} />
-              <ErrorMessage>{formik.errors.name}</ErrorMessage>
+              <FormErrorMessage>{formik.errors.name}</FormErrorMessage>
             </FormControl>
 
             <FormControl isInvalid={formik.touched.uid && !!formik.errors.uid}>
-              <Label>
-                <div className="flex items-center space-x-2">
-                  <span>University ID</span>
-                  <div
-                    className="text-cyan-600"
-                    title="Contact admin if you have used wrong university ID."
-                  >
-                    <QuestionMarkCircleIcon className="w-4 h-4" />
-                  </div>
-                </div>
-              </Label>
+              <FormLabel>University ID</FormLabel>
               <Input type="text" disabled {...formik.getFieldProps("uid")} />
-              <ErrorMessage>{formik.errors.uid}</ErrorMessage>
+              <FormErrorMessage>{formik.errors.uid}</FormErrorMessage>
             </FormControl>
 
             <FormControl
               isInvalid={formik.touched.email && !!formik.errors.email}
             >
-              <Label>Email</Label>
+              <FormLabel>Email</FormLabel>
               <Input type="email" {...formik.getFieldProps("email")} />
-              <ErrorMessage>{formik.errors.email}</ErrorMessage>
+              <FormErrorMessage>{formik.errors.email}</FormErrorMessage>
             </FormControl>
           </div>
         </div>
@@ -114,32 +109,32 @@ const AccountSettings = () => {
           <FormControl
             isInvalid={formik.touched && !!formik.errors.currentPassword}
           >
-            <Label>Current Password</Label>
+            <FormLabel>Current Password</FormLabel>
             <Input
               type="password"
               {...formik.getFieldProps("currentPassword")}
             />
-            <ErrorMessage>{formik.errors.currentPassword}</ErrorMessage>
+            <FormErrorMessage>{formik.errors.currentPassword}</FormErrorMessage>
           </FormControl>
 
           <div className="grid grid-cols-2 gap-8">
             <FormControl
               isInvalid={formik.touched && !!formik.errors.newPassword}
             >
-              <Label>New Password</Label>
+              <FormLabel>New Password</FormLabel>
               <Input type="password" {...formik.getFieldProps("newPassword")} />
-              <ErrorMessage>{formik.errors.newPassword}</ErrorMessage>
+              <FormErrorMessage>{formik.errors.newPassword}</FormErrorMessage>
             </FormControl>
 
             <FormControl
               isInvalid={formik.touched && !!formik.errors.confirmPassword}
             >
-              <Label>Confirm Password</Label>
+              <FormLabel>Confirm Password</FormLabel>
               <Input
                 type="password"
                 {...formik.getFieldProps("confirmPassword")}
               />
-              <ErrorMessage>{formik.errors.newPassword}</ErrorMessage>
+              <FormErrorMessage>{formik.errors.newPassword}</FormErrorMessage>
             </FormControl>
           </div>
         </div>

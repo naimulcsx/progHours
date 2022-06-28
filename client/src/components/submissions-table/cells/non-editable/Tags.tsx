@@ -1,4 +1,3 @@
-import { useContext } from "react"
 import { Cell } from "react-table"
 
 /**
@@ -6,13 +5,10 @@ import { Cell } from "react-table"
  */
 import { Tag } from "@/types/Tag"
 import { Submission } from "@/types/Submission"
-import { UserProblemTag } from "@/types/UserProblemTag"
 
 /**
  * Import components
  */
-import TagInputPopup from "@/components/submissions/TagInputPopup"
-import { GlobalContext } from "@/GlobalStateProvider"
 import { Badge, Flex } from "@chakra-ui/react"
 
 const NonEditableTags = (cell: Cell<Submission>) => {

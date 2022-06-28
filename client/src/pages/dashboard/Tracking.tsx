@@ -7,7 +7,7 @@ import { Helmet } from "react-helmet-async"
 import Spinner from "@/components/Spinner"
 import { DashboardLayout } from "@/components/layouts/Dashboard"
 import { SubmissionsTable } from "@/components/submissions-table"
-import WeekFilters from "@/components/submissions/filters/WeekFilter"
+import WeekFilters from "@/components/filters/WeekFilter"
 
 /**
  * Import helpers
@@ -17,7 +17,7 @@ import { UploadIcon } from "@heroicons/react/solid"
 import ImportCsvModal from "./ImportCsvModal"
 import csvToArray from "@/utils/csvToArray"
 import DashboardHeader from "@/components/dashboard/Header"
-import { Box } from "@chakra-ui/react"
+import { Box, Button, Flex } from "@chakra-ui/react"
 
 export default function TrackingSheet() {
   const context = useContext(GlobalContext)
@@ -50,42 +50,37 @@ export default function TrackingSheet() {
   }
 
   return (
-    <DashboardLayout dataDependency={[query.data]} className="pb-0 bg-white">
+    <DashboardLayout title="Submissions">
       <Helmet>
         <title>Tracking Sheet</title>
       </Helmet>
+      <Box>
+        <Flex justify="space-between">
+          {/* week filter button  */}
+          <Box>
+            <WeekFilters
+              numberOfWeeks={weekRanges.length}
+              selected={selectedWeek}
+              setSelected={setSelectedWeek}
+            />
+          </Box>
 
-      <div>
-        <DashboardHeader title="Submissions" />
-        <div className="flex justify-between">
-          <ul className="flex items-center space-x-4">
-            <li>
-              <WeekFilters
-                numberOfWeeks={weekRanges.length}
-                selected={selectedWeek}
-                setSelected={setSelectedWeek}
-              />
-            </li>
-          </ul>
-          <ul>
-            <li>
-              <label
-                htmlFor="csv-input"
-                className="flex items-center px-4 py-2 text-sm text-white rounded-lg cursor-pointer bg-primary"
-              >
-                <input type="file" id="csv-input" onInput={handleImport} />
-                <UploadIcon className="w-5 h-5 mr-2" />
+          {/* csv input button */}
+          <Box>
+            <label htmlFor="csv-input">
+              <input type="file" id="csv-input" onInput={handleImport} />
+              <Button as="div" leftIcon={<UploadIcon width={16} />} size="sm">
                 Import via .csv
-              </label>
-              <ImportCsvModal
-                isOpen={isOpen}
-                setIsOpen={setIsOpen}
-                items={items}
-              />
-            </li>
-          </ul>
-        </div>
-      </div>
+              </Button>
+            </label>
+            <ImportCsvModal
+              isOpen={isOpen}
+              setIsOpen={setIsOpen}
+              items={items}
+            />
+          </Box>
+        </Flex>
+      </Box>
       {/* tracking table */}
       {query.data && (
         <SubmissionsTable submissions={filteredData} isEditable={true} />

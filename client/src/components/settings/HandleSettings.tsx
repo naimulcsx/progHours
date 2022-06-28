@@ -1,13 +1,13 @@
 import { useFormik } from "formik"
 import * as Yup from "yup"
 import {
-  ErrorMessage,
+  FormErrorMessage,
   FormControl,
   Input,
-  Label,
+  FormLabel,
   Select,
-  Option,
-} from "@/components/Form"
+} from "@chakra-ui/react"
+
 import { useState } from "react"
 import { useMutation, useQuery, useQueryClient } from "react-query"
 import { createOJHandle, deleteHandle, getAllHandles } from "@/api/handle"
@@ -168,13 +168,13 @@ const HandleSettings = () => {
               <FormControl
                 isInvalid={formik.touched.handle && !!formik.errors.handle}
               >
-                <Label htmlFor="handle">Handle</Label>
+                <FormLabel htmlFor="handle">Handle</FormLabel>
                 <Input
                   id="handle"
                   type="text"
                   {...formik.getFieldProps("handle")}
                 />
-                <ErrorMessage>{formik.errors.handle}</ErrorMessage>
+                <FormErrorMessage>{formik.errors.handle}</FormErrorMessage>
               </FormControl>
             </div>
 
@@ -183,20 +183,20 @@ const HandleSettings = () => {
                 formik.touched.onlineJudge && !!formik.errors.onlineJudge
               }
             >
-              <Label htmlFor="oj">Judge</Label>
+              <FormLabel htmlFor="oj">Judge</FormLabel>
               <Select
                 {...formik.getFieldProps("onlineJudge")}
                 value={formik.values.onlineJudge}
-                onChange={(value: string) =>
-                  formik.setFieldValue("onlineJudge", value)
+                onChange={(e) =>
+                  formik.setFieldValue("onlineJudge", e.target.value)
                 }
               >
-                <Option value="CodeForces">Codeforces</Option>
-                <Option value="CodeChef">CodeChef</Option>
-                <Option value="Toph">Toph</Option>
-                <Option value="LightOJ">LightOJ</Option>
+                <option value="CodeForces">Codeforces</option>
+                <option value="CodeChef">CodeChef</option>
+                <option value="Toph">Toph</option>
+                <option value="LightOJ">LightOJ</option>
               </Select>
-              <ErrorMessage>{formik.errors.onlineJudge}</ErrorMessage>
+              <FormErrorMessage>{formik.errors.onlineJudge}</FormErrorMessage>
             </FormControl>
           </div>
         </div>

@@ -20,7 +20,14 @@ import { Cell } from "react-table"
 import { Submission } from "@/types/Submission"
 import { AxiosError } from "axios"
 import PopupBuilder from "@/components/PopupBuilder"
-import { Button } from "@chakra-ui/react"
+import {
+  Box,
+  Button,
+  HStack,
+  ModalBody,
+  ModalFooter,
+  Text,
+} from "@chakra-ui/react"
 
 interface Practice {
   submissions: Submission[]
@@ -72,30 +79,38 @@ const Actions = (cell: Cell<Submission>) => {
         <TrashIcon width={16} height={16} />
       </Button>
       <PopupBuilder
+        size="lg"
         isOpen={isOpen}
         setIsOpen={setIsOpen}
-        title="Delete Submission"
+        title={`Delete ${cell.row.original.problem.pid}`}
       >
-        <p className="test-sm">
-          Are you sure you want to delete this submission?
-        </p>
-
-        <div className="flex justify-end mt-12 space-x-4">
-          <button
-            type="button"
-            className="inline-flex justify-center px-4 py-2 text-sm font-medium text-gray-600 border border-transparent rounded-md bg-gray-200/75 focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-red-500"
-            onClick={() => setIsOpen(false)}
-          >
-            Cancel
-          </button>
-          <button
-            type="button"
-            className="inline-flex justify-center px-4 py-2 text-sm font-medium text-white bg-[#d11a2a]/75 border border-transparent rounded-md hover:bg-[#d11a2a] hover:text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-red-500"
-            onClick={() => mutate(cell.value)}
-          >
-            Delete
-          </button>
-        </div>
+        <ModalBody>
+          <Text>
+            Are you sure you want to delete{" "}
+            <Box as="span" fontWeight={500}>
+              {cell.row.original.problem.name} ({cell.row.original.problem.pid})
+            </Box>
+            ?
+          </Text>
+        </ModalBody>
+        <ModalFooter>
+          <HStack>
+            <Button
+              colorScheme="gray"
+              type="button"
+              onClick={() => setIsOpen(false)}
+            >
+              Cancel
+            </Button>
+            <Button
+              colorScheme="red"
+              type="button"
+              onClick={() => mutate(cell.value)}
+            >
+              Delete
+            </Button>
+          </HStack>
+        </ModalFooter>
       </PopupBuilder>
     </div>
   )

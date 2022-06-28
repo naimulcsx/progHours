@@ -7,7 +7,7 @@ import { Text, useToast, Link, HStack, VStack, Flex } from "@chakra-ui/react"
  * Import Components / Utilities
  */
 import showErrorToasts from "@/utils/showErrorToasts"
-import AuthContainer from "@/components/AuthContainer"
+import AuthLayout from "@/components/layouts/Auth"
 import FormBuilder from "@/components/FormBuilder"
 import { loginMutation } from "@/api/auth"
 import { Heading } from "@chakra-ui/react"
@@ -20,7 +20,7 @@ const Login = (): JSX.Element => {
   const toast = useToast(DEFAULT_TOAST_OPTIONS)
   const navigate = useNavigate()
   return (
-    <AuthContainer>
+    <AuthLayout>
       <Helmet>
         <title>Login</title>
       </Helmet>
@@ -76,7 +76,7 @@ const Login = (): JSX.Element => {
           loadingLabel: "Logging in",
         }}
       />
-    </AuthContainer>
+    </AuthLayout>
   )
 }
 

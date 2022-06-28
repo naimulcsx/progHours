@@ -20,7 +20,7 @@ import {
 import { useContext } from "react"
 import { GlobalContext } from "@/GlobalStateProvider"
 
-function DropdownMenu() {
+function NavbarMenu() {
   const handleLogout = useLogout()
   const navigate = useNavigate()
   const { user } = useContext(GlobalContext)
@@ -50,4 +50,4 @@ function DropdownMenu() {
   )
 }
 
-export default DropdownMenu
+export default NavbarMenu

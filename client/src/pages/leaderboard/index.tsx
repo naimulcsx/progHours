@@ -43,11 +43,10 @@ const LeaderboardPage = () => {
   })
 
   return (
-    <DashboardLayout dataDependency={[]}>
+    <DashboardLayout title="Submissions">
       <Helmet>
         <title>Leaderboard</title>
       </Helmet>
-      <DashboardHeader title="Leaderboard" />
       {ranklist && <LeaderboardTable ranklist={ranklist} />}
     </DashboardLayout>
   )

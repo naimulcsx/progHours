@@ -1,6 +1,5 @@
 import {
   HStack,
-  Icon,
   Link,
   LinkProps,
   useColorModeValue as mode,
