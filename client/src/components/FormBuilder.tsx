@@ -14,6 +14,7 @@ import {
   Select,
   BoxProps,
   FormHelperText,
+  ButtonProps,
 } from "@chakra-ui/react"
 
 const FormBuilder = ({
@@ -60,22 +61,16 @@ const FormBuilder = ({
               >
                 <FormLabel>{fields[key].label}</FormLabel>
                 {fields[key].type === "select" ? (
-                  <Select
-                    {...getFieldProps(`${key}`)}
-                    value={formikValues[key]}
-                    onChange={(value) => {
-                      setFieldValue(`${key}`, value)
-                    }}
-                  >
-                    {fields[key].options?.map((item) => {
-                      return <option value={item}>{item}</option>
+                  <Select {...getFieldProps(key)}>
+                    {fields[key].options?.map(([item, value]) => {
+                      return <option value={value}>{item}</option>
                     })}
                   </Select>
                 ) : (
                   <Input
                     type={fields[key].type}
                     {...getFieldProps(key)}
-                    placeholder=" "
+                    disabled={!!fields[key].disabled}
                   />
                 )}
                 {fields[key].helperText && (
@@ -86,7 +81,14 @@ const FormBuilder = ({
             )
           })}
         </VStack>
-        <Button type="submit" disabled={isLoading} w="full" mt="6">
+        <Button
+          type="submit"
+          disabled={isLoading}
+          mt="6"
+          w="full"
+          variant={button.variant ?? "solid"}
+          colorScheme={button.colorScheme ?? "blue"}
+        >
           <HStack spacing="2">
             {isLoading && <Spinner color="white" size="sm" />}
             <span>{isLoading ? button.loadingLabel : button.label}</span>
@@ -99,6 +101,11 @@ const FormBuilder = ({
 
 export default FormBuilder
 
+interface FormButton extends ButtonProps {
+  label: string
+  loadingLabel: string
+}
+
 interface FormBuilderProps extends BoxProps {
   className?: string
   fields: {
@@ -108,17 +115,13 @@ interface FormBuilderProps extends BoxProps {
       initialValue?: string
       validate: Yup.AnySchema
       value?: any
-      options?: string[]
+      options?: [string, string][]
       helperText?: string
+      disabled?: boolean
     }
   }
   mutation: any
   onSuccess: (value: any) => void
   onError: (err: any) => void
-  button: {
-    className?: string
-    type?: string
-    label: string
-    loadingLabel: string
-  }
+  button: FormButton
 }

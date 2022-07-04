@@ -119,25 +119,38 @@ export class UsersService {
   /**
    * Update Profile
    */
-  async updateProfile({ name, email }, userId) {
+  async updateProfile(
+    { name, email, mobile, department, batch, cgpa },
+    userId
+  ) {
     const user = await this.getUser({ id: userId })
     /**
      * This condition will never be hit, unless you have access token of an user which is not there in the database
      */
     if (!user) {
-      return new NotFoundException("User not found.")
+      throw new NotFoundException("User not found.")
     }
-    user.name = name
-    user.email = email
+
+    user.name = name || user.name
+    user.email = email || user.email
+
+    /**
+     * Optional Informations
+     * Implementing this way leaves no way to set the values to NULL
+     * Todo: Find a solution for this
+     */
+    user.mobile = mobile || user.mobile
+    user.department = department || user.department
+    user.batch = batch || user.batch
+    user.cgpa = cgpa || user.cgpa
+
     return this.usersRepository.save(user)
   }
 
   /**
    * Users user password
    */
-  async updatePassword(passwordFields, userId) {
-    const [currentPassword, newPassword, confirmPassword] = passwordFields
-
+  async updatePassword({ currentPassword, newPassword }, userId) {
     const user = await this.getUser({ id: userId })
     /**
      * This condition will never be hit, unless you have access token of an user which is not there in the database
@@ -154,14 +167,6 @@ export class UsersService {
     )
     if (!isValid) {
       throw new ForbiddenException("Current password is invalid.")
-    }
-    /**
-     * If new password and confirm password do not match
-     */
-    if (newPassword !== confirmPassword) {
-      throw new ForbiddenException(
-        "New password and confirm password do not match."
-      )
     }
     /**
      * Update the password

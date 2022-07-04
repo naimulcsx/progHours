@@ -103,9 +103,9 @@ export const SubmissionsTable = ({
                             <Box display="inline" as="span" ml={1}>
                               {header.isSorted ? (
                                 header.isSortedDesc ? (
-                                  <ArrowSmDownIcon height={20} />
+                                  <ArrowSmDownIcon height={16} />
                                 ) : (
-                                  <ArrowSmUpIcon height={20} />
+                                  <ArrowSmUpIcon height={16} />
                                 )
                               ) : (
                                 ""

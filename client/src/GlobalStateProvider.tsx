@@ -15,6 +15,10 @@ export interface User {
   role: string
   email: string
   username: string
+  mobile?: string
+  cgpa?: number
+  batch?: number
+  department?: string
 }
 
 interface GlobalContext {

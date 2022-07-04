@@ -28,7 +28,7 @@ import {
   DocumentTextIcon,
 } from "@heroicons/react/solid"
 
-const SIDEBAR_ICON_SIZE = 24
+export const SIDEBAR_ICON_SIZE = 24
 
 export const Sidebar: React.FC = () => {
   const location = useLocation()

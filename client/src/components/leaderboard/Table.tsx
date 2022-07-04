@@ -7,8 +7,19 @@ import { Link } from "react-router-dom"
  * Import Icons
  */
 import { ArrowSmDownIcon, ArrowSmUpIcon } from "@heroicons/react/solid"
-import { Table, Avatar, Thead, Tr, Th, Td, Tbody } from "@chakra-ui/react"
+import {
+  Box,
+  Table,
+  Avatar,
+  Thead,
+  Tr,
+  Th,
+  Td,
+  Tbody,
+  Flex,
+} from "@chakra-ui/react"
 import { getAvatarColors } from "@/utils/getAvatarColors"
+import { CELL_STYLES } from "./cellStyles"
 
 const UserCell = (cell: Cell<RanklistItem>) => {
   return (
@@ -75,14 +86,17 @@ const LeaderboardTable = ({ ranklist }: { ranklist: RanklistItem[] }) => {
   )
 
   return (
-    <div className="-mx-4 overflow-x-scroll md:overflow-clip">
+    <Box mx={-4} overflowX="auto">
       <Table w="full" {...getTableProps()}>
         <Thead>
           {headerGroups.map((headerGroup) => {
             return (
               <Tr
+                fontSize="xs"
+                textColor="gray.500"
+                textTransform="uppercase"
+                bg="gray.100"
                 {...headerGroup.getHeaderGroupProps()}
-                className="text-xs text-gray-500 uppercase bg-gray-100"
               >
                 {headerGroup.headers.map((header) => {
                   return (
@@ -90,20 +104,20 @@ const LeaderboardTable = ({ ranklist }: { ranklist: RanklistItem[] }) => {
                       {...header.getHeaderProps(header.getSortByToggleProps())}
                       className="py-4 border-t border-b"
                     >
-                      <div className="flex items-center justify-start space-x-1">
-                        <span>{header.render("Header")}</span>
-                        <span>
+                      <Flex align="center" minH="5">
+                        <Box as="span">{header.render("Header")}</Box>
+                        <Box as="span" ml={1}>
                           {header.isSorted ? (
                             header.isSortedDesc ? (
-                              <ArrowSmDownIcon height={20} />
+                              <ArrowSmDownIcon height={16} />
                             ) : (
-                              <ArrowSmUpIcon height={20} />
+                              <ArrowSmUpIcon height={16} />
                             )
                           ) : (
                             ""
                           )}
-                        </span>
-                      </div>
+                        </Box>
+                      </Flex>
                     </Th>
                   )
                 })}
@@ -117,8 +131,13 @@ const LeaderboardTable = ({ ranklist }: { ranklist: RanklistItem[] }) => {
             return (
               <Tr {...row.getRowProps()} className={`bg-white`}>
                 {row.cells.map((cell) => {
+                  const cellType: any = cell.column.Header
                   return (
-                    <Td {...cell.getCellProps()} className="py-3 border-b">
+                    <Td
+                      {...cell.getCellProps()}
+                      className="py-3 border-b"
+                      {...CELL_STYLES[cellType]}
+                    >
                       {cell.render("Cell")}
                     </Td>
                   )
@@ -128,7 +147,7 @@ const LeaderboardTable = ({ ranklist }: { ranklist: RanklistItem[] }) => {
           })}
         </Tbody>
       </Table>
-    </div>
+    </Box>
   )
 }
 
