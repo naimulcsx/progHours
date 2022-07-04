@@ -1,7 +1,4 @@
 import { extendTheme, withDefaultColorScheme } from "@chakra-ui/react"
-const activeLabelStyles = {
-  transform: "scale(0.85) translateY(-24px)",
-}
 
 const breakpoints = {
   sm: "320px",

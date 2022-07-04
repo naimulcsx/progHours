@@ -6,7 +6,7 @@ function calculatePoints(obj: any) {
   const x = average_difficulty
   const y = total_solved
   const z = total_solve_time
-  return (2 * x + y + z) / (4 * 100)
+  return (2 * x) / 100 + y + z
 }
 
 export default calculatePoints

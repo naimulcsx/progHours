@@ -15,6 +15,7 @@
     "@heroicons/react": "^1.0.5",
     "apexcharts": "^3.35.2",
     "axios": "^0.25.0",
+    "chakra-react-select": "^4.1.2",
     "formik": "^2.2.9",
     "framer-motion": "^6",
     "moment": "^2.29.1",
