@@ -1,39 +1,57 @@
 import { GlobalContext } from "@/GlobalStateProvider"
-import { Box, Button, Heading, Text, useColorModeValue } from "@chakra-ui/react"
+import {
+  Avatar,
+  Box,
+  Button,
+  Flex,
+  Heading,
+  Text,
+  useColorModeValue,
+} from "@chakra-ui/react"
 import * as React from "react"
 import { HiPencilAlt } from "react-icons/hi"
-import { CardWithAvatar } from "./CardWithAvatar"
 import { UserInfo } from "./UserInfo"
 import moment from "moment"
+import { Container } from "@chakra-ui/react"
+import { getAvatarColors } from "@/utils/getAvatarColors"
 
 export const UserCard: React.FC<UserCardProps> = ({
   name,
   username,
   member_since,
 }) => {
+  const { bg, color } = getAvatarColors(name)
   return (
     <Box as="section" pt="40" pb="12" position="relative">
-      <Box position="absolute" inset="0" height="64" bg="blue.600" />
-      <CardWithAvatar
-        maxW="xl"
-        avatarProps={{
-          name: name,
-        }}
-      >
-        <Box textAlign={{ sm: "center" }} pt="2">
-          <Heading size="lg" fontWeight={600} letterSpacing="tight">
-            {name}
-          </Heading>
-          <Text color={useColorModeValue("gray.600", "gray.400")}>
-            {username.toUpperCase()}
-          </Text>
-          <UserInfo
-            location="Memphis, USA"
-            website="esther.com"
-            memberSince={`Joined ${moment(member_since).format("MMM YYYY")}`}
+      <Box
+        position="absolute"
+        inset="0"
+        height="64"
+        bg="blue.50"
+        backgroundImage="url(/bg-profile.png)"
+        shadow="base"
+      />
+      <Container position="relative" zIndex={100}>
+        <Flex pt="28" gap={6}>
+          <Avatar
+            mt="-10"
+            borderWidth="6px"
+            borderColor={useColorModeValue("white", "gray.700")}
+            size="2xl"
+            bg={bg}
+            color={color}
+            name={name}
           />
-        </Box>
-      </CardWithAvatar>
+          <Box>
+            <Heading size="lg" fontWeight={600} letterSpacing="tight">
+              {name}
+            </Heading>
+            <Text color={useColorModeValue("gray.600", "gray.400")}>
+              {username.toUpperCase()}
+            </Text>
+          </Box>
+        </Flex>
+      </Container>
     </Box>
   )
 }

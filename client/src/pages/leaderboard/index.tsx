@@ -8,7 +8,6 @@ import { useQuery, useQueryClient } from "react-query"
  */
 import { DashboardLayout } from "@/components/layouts/Dashboard"
 import LeaderboardTable from "@/components/leaderboard/Table"
-import Spinner from "@/components/Spinner"
 
 /**
  * Import helpers
@@ -17,6 +16,7 @@ import calculatePoints from "@/utils/calculatePoints"
 import { getRankList } from "@/api/leaderboard"
 import { RanklistItem } from "@/types/RanklistItem"
 import DashboardHeader from "@/components/dashboard/Header"
+import { Spinner } from "@chakra-ui/react"
 
 const LeaderboardPage = () => {
   const [ranklist, setRanklist] = useState(null)
@@ -43,11 +43,15 @@ const LeaderboardPage = () => {
   })
 
   return (
-    <DashboardLayout title="Submissions">
+    <DashboardLayout title="Leaderboard">
       <Helmet>
         <title>Leaderboard</title>
       </Helmet>
-      {ranklist && <LeaderboardTable ranklist={ranklist} />}
+      {ranklist ? (
+        <LeaderboardTable ranklist={ranklist} />
+      ) : (
+        <Spinner size="sm" />
+      )}
     </DashboardLayout>
   )
 }

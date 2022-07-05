@@ -1,7 +1,7 @@
 import { useState } from "react"
 import { useQuery } from "react-query"
 import { Helmet } from "react-helmet-async"
-import { Box } from "@chakra-ui/react"
+import { Box, Spinner } from "@chakra-ui/react"
 
 /**
  * Import Components
@@ -62,7 +62,7 @@ const DashboardHome = () => {
       <Helmet>
         <title>Dashboard</title>
       </Helmet>
-      {data && frequency && data["tags_frequency"] && (
+      {data && frequency && data["tags_frequency"] ? (
         <>
           <Box mb={4}>
             <UserStats progress={data} />
@@ -76,6 +76,8 @@ const DashboardHome = () => {
             </Box>
           </Box>
         </>
+      ) : (
+        <Spinner size="sm" />
       )}
     </DashboardLayout>
   )

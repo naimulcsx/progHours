@@ -7,7 +7,7 @@ import axios from "axios"
 import { DEFAULT_TOAST_OPTIONS } from "@/configs/toast-config"
 import { useQueryClient } from "react-query"
 
-export const UpdateUserForm = () => {
+export const GeneralInformationForm = () => {
   const { user } = useContext(GlobalContext)
   const toast = useToast(DEFAULT_TOAST_OPTIONS)
   const queryClient = useQueryClient()

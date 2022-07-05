@@ -43,7 +43,7 @@ export const Sidebar: React.FC = () => {
       flexShrink={0}
       flexGrow={0}
       pt={6}
-      px={6}
+      px={4}
       pb={6}
       bg="white"
       zIndex={100}
