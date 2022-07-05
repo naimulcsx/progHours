@@ -3,9 +3,8 @@ const VERTICAL_PADDING = 2
 
 export const CELL_STYLES: any = {
   "#": {
-    w: 16,
-    minW: 16,
-    textAlign: "center",
+    w: 20,
+    minW: 20,
     px: HORIZONTAL_PADDING,
     py: VERTICAL_PADDING,
   },

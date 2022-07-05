@@ -5,7 +5,7 @@ import UserInfoCard from "@/components/settings/UserInfoCard"
 import HandleSettings from "@/components/settings/HandleSettings"
 import { useContext, useState } from "react"
 import { GlobalContext } from "@/GlobalStateProvider"
-import { UpdateUserForm } from "@/components/settings/UpdateUserForm"
+import { GeneralInformationForm } from "@/components/settings/GeneralInformationForm"
 import { Button, GridItem, SimpleGrid, VStack } from "@chakra-ui/react"
 import { NavLink } from "@/components/sidebar/NavLink"
 import { ViewGridIcon } from "@heroicons/react/solid"
@@ -25,14 +25,14 @@ const Settings = () => {
       {user && (
         <Tabs>
           <TabList>
-            <Tab>Account Settings</Tab>
-            <Tab>Change Password</Tab>
+            <Tab>General Information</Tab>
+            <Tab>Update Password</Tab>
             <Tab>Online Judge Handles</Tab>
             <Tab>Preferences</Tab>
           </TabList>
           <TabPanels>
             <TabPanel>
-              <UpdateUserForm />
+              <GeneralInformationForm />
             </TabPanel>
             <TabPanel>
               <UpdatePasswordForm />

@@ -2,7 +2,17 @@ import { AxiosError } from "axios"
 import { useQuery } from "react-query"
 import { useContext, useState } from "react"
 import { useNavigate, useParams } from "react-router-dom"
-import { Container, useToast } from "@chakra-ui/react"
+import {
+  Box,
+  Container,
+  Spinner,
+  Tab,
+  TabList,
+  TabPanel,
+  TabPanels,
+  Tabs,
+  useToast,
+} from "@chakra-ui/react"
 
 /**
  * Import Components
@@ -27,6 +37,8 @@ import { UserCard } from "@/components/profile/UserCard"
 import { Helmet } from "react-helmet-async"
 import { SubmissionsTable } from "@/components/submissions-table"
 import { DEFAULT_TOAST_OPTIONS } from "@/configs/toast-config"
+import { GeneralInformationForm } from "@/components/settings/GeneralInformationForm"
+import { UpdatePasswordForm } from "@/components/settings/UpdatePasswordForm"
 
 interface User {
   name?: string
@@ -90,10 +102,29 @@ export default function Profile() {
             member_since={user.member_since!}
           />
           <Container>
-            <SubmissionsTable submissions={submissions} />
+            <Tabs>
+              <TabList>
+                <Tab>About</Tab>
+                <Tab>Statistics</Tab>
+                <Tab>Submissions</Tab>
+              </TabList>
+              <TabPanels>
+                <TabPanel>Upcoming!</TabPanel>
+                <TabPanel>Upcoming!</TabPanel>
+                <TabPanel>
+                  <Box mx={-4}>
+                    <SubmissionsTable submissions={submissions} />
+                  </Box>
+                </TabPanel>
+              </TabPanels>
+            </Tabs>
           </Container>
         </>
-      ) : null}
+      ) : (
+        <Container pt={20}>
+          <Spinner size="sm" />
+        </Container>
+      )}
     </>
   )
 }

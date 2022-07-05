@@ -83,7 +83,7 @@ export const SubmissionsTable = ({
                 <Tr
                   fontSize="xs"
                   textTransform="uppercase"
-                  bg="gray.50"
+                  bg="gray.100"
                   borderTop="1px solid"
                   borderBottom="1px solid"
                   borderColor="gray.200"
