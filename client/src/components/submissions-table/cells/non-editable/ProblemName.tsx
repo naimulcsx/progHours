@@ -68,7 +68,7 @@ const ProblemName = (cell: Cell<Submission>) => {
         </Box>
       </Flex>
       <Box w="full" overflow="hidden">
-        <HStack as="p" display="flex" alignItems="center">
+        <HStack display="flex" alignItems="center">
           <Heading size="sm" fontWeight={600}>
             {pid}
           </Heading>

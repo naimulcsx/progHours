@@ -57,13 +57,18 @@ const FormBuilder = ({
           {Object.keys(fields).map((key) => {
             return (
               <FormControl
+                key={key}
                 isInvalid={touched[key] && (errors[key] ? true : false)}
               >
                 <FormLabel>{fields[key].label}</FormLabel>
                 {fields[key].type === "select" ? (
                   <Select {...getFieldProps(key)}>
-                    {fields[key].options?.map(([item, value]) => {
-                      return <option value={value}>{item}</option>
+                    {fields[key].options?.map((item, i) => {
+                      return (
+                        <option key={i} value={item}>
+                          {item}
+                        </option>
+                      )
                     })}
                   </Select>
                 ) : (
