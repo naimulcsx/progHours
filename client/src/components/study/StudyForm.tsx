@@ -4,7 +4,7 @@ import * as Yup from "yup"
 export default function StudyForm() {
   return (
     <FormBuilder
-      className="mt-6 space-y-4"
+      className="px-8 pb-8 mt-6 space-y-4"
       fields={{
         title: {
           type: "text",
