@@ -1,6 +1,7 @@
 import axios from "axios"
 
 const createOJHandle = (values: any) => {
+  console.log("api----------", values)
   return axios.post("/api/handles", values).then((res) => res.data)
 }
 

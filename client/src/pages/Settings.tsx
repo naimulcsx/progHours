@@ -1,21 +1,14 @@
 import { Helmet } from "react-helmet-async"
 import { DashboardLayout } from "@/components/layouts/Dashboard"
-import AccountSettings from "@/components/settings/AccountSettings"
-import UserInfoCard from "@/components/settings/UserInfoCard"
-import HandleSettings from "@/components/settings/HandleSettings"
-import { useContext, useState } from "react"
+import { useContext } from "react"
 import { GlobalContext } from "@/GlobalStateProvider"
 import { GeneralInformationForm } from "@/components/settings/GeneralInformationForm"
-import { Button, GridItem, SimpleGrid, VStack } from "@chakra-ui/react"
-import { NavLink } from "@/components/sidebar/NavLink"
-import { ViewGridIcon } from "@heroicons/react/solid"
-import { SIDEBAR_ICON_SIZE } from "@/components/sidebar"
 import { Tabs, TabList, TabPanels, Tab, TabPanel } from "@chakra-ui/react"
 import { UpdatePasswordForm } from "@/components/settings/UpdatePasswordForm"
+import HandleSettings from "@/components/settings/HandleSettings"
 
 const Settings = () => {
   const { user } = useContext(GlobalContext)
-  const [panel, setPanel] = useState(null)
 
   return (
     <DashboardLayout>
@@ -37,7 +30,9 @@ const Settings = () => {
             <TabPanel>
               <UpdatePasswordForm />
             </TabPanel>
-            <TabPanel>Upcoming!</TabPanel>
+            <TabPanel>
+              <HandleSettings />
+            </TabPanel>
             <TabPanel>Upcoming!</TabPanel>
           </TabPanels>
         </Tabs>

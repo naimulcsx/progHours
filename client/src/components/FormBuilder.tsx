@@ -119,8 +119,8 @@ interface FormBuilderProps extends BoxProps {
       label: string
       initialValue?: string
       validate: Yup.AnySchema
-      value?: any
-      options?: [string, string][]
+      value?: string
+      options?: Array<string>
       helperText?: string
       disabled?: boolean
     }

@@ -1,8 +1,8 @@
 import {
+  BadRequestException,
   Body,
   Controller,
   Delete,
-  ForbiddenException,
   Get,
   Post,
   Req,
@@ -25,7 +25,7 @@ export class HandlesController {
       user_id: req.user.id,
       judge_id,
     })
-    if (foundHandle) throw new ForbiddenException("handle already exists")
+    if (foundHandle) throw new BadRequestException("handle already exists")
 
     const newHandle = await this.handleService.createHandles({
       handle,
