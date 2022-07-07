@@ -30,7 +30,12 @@ export default function PopupBuilder({
   size = "lg",
 }: PopupBuilderProps) {
   return (
-    <Modal isOpen={isOpen} onClose={() => setIsOpen(false)} size={size}>
+    <Modal
+      isOpen={isOpen}
+      closeOnOverlayClick={false}
+      onClose={() => setIsOpen(false)}
+      size={size}
+    >
       <ModalOverlay />
       <ModalContent>
         <ModalHeader>{title}</ModalHeader>
