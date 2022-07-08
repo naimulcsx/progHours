@@ -4,7 +4,7 @@ import * as Yup from "yup"
 export default function StudyForm() {
   return (
     <FormBuilder
-      className="px-8 pb-8 mt-6 space-y-4"
+      isModal
       fields={{
         title: {
           type: "text",

@@ -15,7 +15,10 @@ import {
   BoxProps,
   FormHelperText,
   ButtonProps,
+  ModalBody,
+  ModalFooter,
 } from "@chakra-ui/react"
+import React from "react"
 
 const FormBuilder = ({
   fields,
@@ -23,6 +26,7 @@ const FormBuilder = ({
   onError,
   onSuccess,
   button,
+  isModal = false,
   ...props
 }: FormBuilderProps) => {
   const values: any = {}
@@ -53,52 +57,60 @@ const FormBuilder = ({
   return (
     <Box {...props}>
       <form onSubmit={handleSubmit}>
-        <VStack spacing={3}>
-          {Object.keys(fields).map((key) => {
-            return (
-              <FormControl
-                key={key}
-                isInvalid={touched[key] && (errors[key] ? true : false)}
-              >
-                <FormLabel>{fields[key].label}</FormLabel>
-                {fields[key].type === "select" ? (
-                  <Select {...getFieldProps(key)}>
-                    {fields[key].options?.map((item, i) => {
-                      return (
-                        <option key={i} value={item}>
-                          {item}
-                        </option>
-                      )
-                    })}
-                  </Select>
-                ) : (
-                  <Input
-                    type={fields[key].type}
-                    {...getFieldProps(key)}
-                    disabled={!!fields[key].disabled}
-                  />
-                )}
-                {fields[key].helperText && (
-                  <FormHelperText>{fields[key].helperText}</FormHelperText>
-                )}
-                <FormErrorMessage>{errors[key] as string}</FormErrorMessage>
-              </FormControl>
-            )
-          })}
-        </VStack>
-        <Button
-          type="submit"
-          disabled={isLoading}
-          mt="6"
-          w="full"
-          variant={button.variant ?? "solid"}
-          colorScheme={button.colorScheme ?? "blue"}
-        >
-          <HStack spacing="2">
-            {isLoading && <Spinner color="white" size="sm" />}
-            <span>{isLoading ? button.loadingLabel : button.label}</span>
-          </HStack>
-        </Button>
+        {React.createElement(
+          isModal ? ModalBody : "div",
+          {},
+          <VStack spacing={3}>
+            {Object.keys(fields).map((key) => {
+              return (
+                <FormControl
+                  key={key}
+                  isInvalid={touched[key] && (errors[key] ? true : false)}
+                >
+                  <FormLabel>{fields[key].label}</FormLabel>
+                  {fields[key].type === "select" ? (
+                    <Select {...getFieldProps(key)}>
+                      {fields[key].options?.map((item, i) => {
+                        return (
+                          <option key={i} value={item}>
+                            {item}
+                          </option>
+                        )
+                      })}
+                    </Select>
+                  ) : (
+                    <Input
+                      type={fields[key].type}
+                      {...getFieldProps(key)}
+                      disabled={!!fields[key].disabled}
+                    />
+                  )}
+                  {fields[key].helperText && (
+                    <FormHelperText>{fields[key].helperText}</FormHelperText>
+                  )}
+                  <FormErrorMessage>{errors[key] as string}</FormErrorMessage>
+                </FormControl>
+              )
+            })}
+          </VStack>
+        )}
+        {React.createElement(
+          isModal ? ModalFooter : "div",
+          {},
+          <Button
+            type="submit"
+            disabled={isLoading}
+            mt={isModal ? "0" : "6"}
+            w="full"
+            variant={button.variant ?? "solid"}
+            colorScheme={button.colorScheme ?? "blue"}
+          >
+            <HStack spacing="2">
+              {isLoading && <Spinner color="white" size="sm" />}
+              <span>{isLoading ? button.loadingLabel : button.label}</span>
+            </HStack>
+          </Button>
+        )}
       </form>
     </Box>
   )
@@ -112,6 +124,7 @@ interface FormButton extends ButtonProps {
 }
 
 interface FormBuilderProps extends BoxProps {
+  isModal?: boolean
   className?: string
   fields: {
     [key: string]: {

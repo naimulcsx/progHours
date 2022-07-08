@@ -15,7 +15,6 @@ import HandleForm from "./HandleForm"
 
 const HandleSettings = () => {
   const [handles, setHandles] = useState([])
-
   /**
    * find handle
    */
@@ -24,7 +23,6 @@ const HandleSettings = () => {
       setHandles(data?.handles)
     },
   })
-
   return (
     <Box>
       <Flex>
@@ -34,12 +32,10 @@ const HandleSettings = () => {
           </Text>
         </Box>
         <Spacer />
-
         <Box>
           <HandleForm />
         </Box>
       </Flex>
-
       <Box maxW={"xl"} mt={"5"}>
         <Grid templateColumns="repeat(2, 1fr)" gap={5}>
           {handles.map((item) => {

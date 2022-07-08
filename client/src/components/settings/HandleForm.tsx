@@ -1,6 +1,6 @@
 import FormBuilder from "../FormBuilder"
 import * as Yup from "yup"
-import { Button, useToast } from "@chakra-ui/react"
+import { Button, ModalBody, useToast } from "@chakra-ui/react"
 import { PlusIcon } from "../Icons"
 import { createOJHandle } from "@/api/handle"
 import { useQueryClient } from "react-query"
@@ -16,18 +16,20 @@ const HandleForm = () => {
 
   return (
     <>
-      <Button onClick={() => setIsOpen(true)}>
-        <PlusIcon className="w-5 h-5 mr-2 -ml-1" aria-hidden="true" />
-        New
+      <Button
+        size="sm"
+        onClick={() => setIsOpen(true)}
+        leftIcon={<PlusIcon height={24} width={24} />}
+      >
+        Add Handle
       </Button>
-
       <PopupBuilder
         isOpen={isOpen}
         setIsOpen={setIsOpen}
         title="Add a new handle"
       >
         <FormBuilder
-          className="px-8 pb-8 mt-6"
+          isModal
           fields={{
             handle: {
               type: "text",

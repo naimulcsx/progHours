@@ -2,6 +2,7 @@ import DashboardHeader from "@/components/dashboard/Header"
 import { DashboardLayout } from "@/components/layouts/Dashboard"
 import PopupBuilder from "@/components/PopupBuilder"
 import StudyForm from "@/components/study/StudyForm"
+import { Button } from "@chakra-ui/react"
 import { PlusIcon } from "@heroicons/react/outline"
 import { useState } from "react"
 import { Helmet } from "react-helmet-async"
@@ -16,14 +17,14 @@ const StudyPage = () => {
       </Helmet>
       {/* add new resource button  */}
       <div className="flex justify-end">
-        <button
+        <Button
+          size="sm"
           onClick={() => setIsOpen(true)}
           type="button"
-          className="inline-flex items-center px-4 py-2 text-sm font-medium text-white bg-indigo-600 border border-transparent rounded-md shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+          leftIcon={<PlusIcon height={20} width={20} aria-hidden="true" />}
         >
-          <PlusIcon className="w-5 h-5 mr-2 -ml-1" aria-hidden="true" />
           Add New
-        </button>
+        </Button>
       </div>
 
       {/* study form popup  */}
