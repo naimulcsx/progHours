@@ -164,8 +164,10 @@ export class SubmissionsService {
     if (solve_time) options.solve_time = solve_time
     if (solved_at) options.solved_at = solved_at
     try {
-      await this.submissionsRepository.update(id, options)
-      return { message: "submission updated" }
+      return await this.prisma.submission.update({
+        where: { id },
+        data: options,
+      })
     } catch (err) {
       throw err
     }
@@ -173,10 +175,7 @@ export class SubmissionsService {
 
   async deleteSubmission(id: any) {
     try {
-      const submissionToDelete = await this.submissionsRepository.findOne({
-        id,
-      })
-      await this.submissionsRepository.remove(submissionToDelete)
+      await this.prisma.submission.delete({ where: { id } })
       return { message: "Submission deleted" }
     } catch (err) {
       throw err
