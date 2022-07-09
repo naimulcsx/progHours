@@ -24,6 +24,7 @@ import { ConfigModule } from "@nestjs/config"
 import { UserStudiesModule } from "./user-studies/user-studies.module"
 import { UserStudyList } from "./user-studies/user-studies.entity"
 import { UserStudiesTag } from "./user-studies/user-studies-tag.entity"
+import { PrismaModule } from "./prisma/prisma.module"
 
 @Module({
   imports: [
@@ -44,7 +45,7 @@ import { UserStudiesTag } from "./user-studies/user-studies-tag.entity"
         UserStudyList,
         UserStudiesTag,
       ],
-      synchronize: true,
+      // synchronize: true,
     }),
     HttpModule,
     AuthModule,
@@ -58,6 +59,7 @@ import { UserStudiesTag } from "./user-studies/user-studies-tag.entity"
     RankingModule,
     // StudyListModule,
     UserStudiesModule,
+    PrismaModule,
   ],
 })
 export class AppModule {

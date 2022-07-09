@@ -9,6 +9,7 @@ import { InjectRepository } from "@nestjs/typeorm"
 import { Repository } from "typeorm"
 import * as rp from "request-promise"
 import { Cache } from "cache-manager"
+import { Verdict } from "@prisma/client"
 
 /**
  * Import Entities (models)
@@ -18,50 +19,60 @@ import { Submission } from "@/modules/submissions/submission.entity"
 /**
  * Import Services
  */
-import { ProblemsService } from "@/modules/problems/problems.service"
 import { ParsersService } from "@/modules/parsers/parsers.service"
-import { UsersService } from "@/modules/users/users.service"
 import getVjudgeCookie from "@/utils/getVjudgeCookie"
+import { PrismaService } from "../prisma/prisma.service"
 
 @Injectable()
 export class SubmissionsService {
   constructor(
-    @Inject(ProblemsService) private problemsService: ProblemsService,
+    private prisma: PrismaService,
     @Inject(ParsersService) private parsersService: ParsersService,
-    @Inject(UsersService) private usersService: UsersService,
     @InjectRepository(Submission)
     private submissionsRepository: Repository<Submission>,
     @Inject(CACHE_MANAGER) private cacheManager: Cache
   ) {}
 
-  async getSubmissions(userId) {
-    const submissions = await this.submissionsRepository
-      .createQueryBuilder("submissions")
-      .where("submissions.user_id = :userId", { userId })
-      .leftJoinAndSelect("submissions.problem", "problems")
-      .leftJoinAndSelect("problems.tags", "tags")
-      .leftJoinAndSelect("problems.user_problem_tags", "user_problem_tags")
-      .leftJoinAndSelect("user_problem_tags.tag", "tag")
-      .orderBy("submissions.solved_at", "DESC")
-      .getMany()
-    return submissions
-  }
-
   async getSubmissionsByUsername(username) {
-    const user = await this.usersService.getUser({ username })
+    username = username.toLowerCase()
+    const user = await this.prisma.user.findUnique({ where: { username } })
     if (!user) {
       throw new NotFoundException(["User not found"])
     }
-    const submissions = await this.getSubmissions(user.id)
-    return {
-      submissions,
-    }
+    const submissions = await this.prisma.submission.findMany({
+      where: { userId: user.id },
+      orderBy: {
+        solvedAt: "desc",
+      },
+      include: {
+        problem: {
+          include: {
+            tags: {
+              include: {
+                tag: true,
+              },
+            },
+          },
+        },
+      },
+    })
+    return submissions
   }
 
-  async createSubmission(body: any, user: any) {
-    let { link } = body
+  async createSubmission({
+    link,
+    verdict,
+    solveTime,
+    solvedAt,
+    userId,
+  }: {
+    link: string
+    verdict: Verdict
+    solveTime: number
+    solvedAt: Date
+    userId: number
+  }) {
     let problemId: number
-
     /**
      * Apply link transformers
      */
@@ -73,7 +84,7 @@ export class SubmissionsService {
     /**
      * Check if the problem exists in database with the provided link
      */
-    let foundProblem = await this.problemsService.getProblem(link)
+    let foundProblem = await this.prisma.problem.findUnique({ where: { link } })
 
     if (foundProblem) problemId = foundProblem.id
     else {
@@ -82,50 +93,61 @@ export class SubmissionsService {
        ** then we need to parse it and save it in our database
        */
       try {
-        const problemData = await this.parsersService.parseProblem(link)
-        const newProblem = await this.problemsService.createProblem({
-          link,
-          ...problemData,
+        const { name, pid, tags, difficulty, judge_id } =
+          await this.parsersService.parseProblem(link)
+
+        const newProblem = await this.prisma.problem.create({
+          data: {
+            name,
+            pid,
+            difficulty,
+            link,
+            tags: {
+              create: tags.map((tag) => ({ tag: { create: { name: tag } } })),
+            },
+          },
         })
         problemId = newProblem.id
       } catch (err) {
         throw new BadRequestException([err.message])
       }
     }
+
+    /**
+     ** Check if the same problem is added previously by the same user
+     */
     try {
-      const foundSubmission = await this.submissionsRepository.findOne({
-        problem_id: problemId,
-        user_id: user.id,
+      const foundSubmission = await this.prisma.submission.findFirst({
+        where: {
+          userId,
+          problemId,
+        },
       })
       if (foundSubmission) {
-        /**
-         ** If the same problem is added previously by the same user
-         */
         throw new BadRequestException("Submission already exists.")
       }
     } catch (err) {
       throw err
     }
-    const newSubmission = this.submissionsRepository.create({
-      problem_id: problemId,
-      user_id: user.id,
-      ...body,
+    return this.prisma.submission.create({
+      data: {
+        solveTime,
+        solvedAt,
+        verdict,
+        problemId,
+        userId,
+      },
     })
-    return this.submissionsRepository.save(newSubmission)
   }
 
   async updateSubmission(body: any, id: any) {
     const { verdict, solve_time, solved_at } = body
-
     const options: any = { id }
-
     if (verdict) options.verdict = verdict
     if (solve_time) options.solve_time = solve_time
     if (solved_at) options.solved_at = solved_at
-
     try {
       await this.submissionsRepository.update(id, options)
-
       return { message: "submission updated" }
     } catch (err) {
       throw err

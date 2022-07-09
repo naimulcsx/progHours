@@ -34,6 +34,15 @@ import { ConfigService } from "@nestjs/config"
 const UrlPattern = require("url-pattern")
 const genId = new ShortUniqueId({ length: 6 })
 
+interface ParsedResult {
+  name: string
+  pid: string
+  link: string
+  tags: string[]
+  judge_id: number
+  difficulty: number
+}
+
 @Injectable()
 export class ParsersService {
   constructor(
@@ -110,7 +119,7 @@ export class ParsersService {
    * Entry point for all links, links will get routed here depneding on the online judge
    * If there is no online judge for link, it also gets handled here
    */
-  async parseProblem(link: string) {
+  async parseProblem(link: string): Promise<ParsedResult> {
     const parserMap = {
       "codeforces.com": this.cfParser, // 1
       "www.codechef.com": this.ccParser, // 2
@@ -148,6 +157,7 @@ export class ParsersService {
         tags: [],
         difficulty: 0,
         judge_id: null,
+        link: null,
       }
     }
   }

@@ -1,0 +1,78 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id          Int          @id @default(autoincrement())
+  name        String
+  email       String       @unique
+  username    String       @unique
+  password    String
+  mobile      String?
+  department  String?
+  batch       Int?
+  cgpa        Float?
+  role        Role         @default(USER)
+  memberSince DateTime     @default(now())
+  submissions Submission[]
+}
+
+model Tag {
+  id       Int          @id @default(autoincrement())
+  name     String
+  problems ProblemTag[]
+}
+
+model Problem {
+  id          Int          @id @default(autoincrement())
+  pid         String       @unique
+  name        String
+  link        String       @unique
+  difficulty  Int
+  createdAt   DateTime     @default(now())
+  submissions Submission[]
+  tags        ProblemTag[]
+}
+
+model Submission {
+  id        Int      @id @default(autoincrement())
+  solveTime Int
+  verdict   Verdict
+  solvedAt  DateTime
+  User      User     @relation(fields: [userId], references: [id])
+  userId    Int
+  problem   Problem  @relation(fields: [problemId], references: [id])
+  problemId Int
+
+  @@index(userId)
+  @@index(problemId)
+}
+
+model ProblemTag {
+  tag       Tag     @relation(fields: [tagId], references: [id])
+  tagId     Int
+  problem   Problem @relation(fields: [problemId], references: [id])
+  problemId Int
+
+  @@id([problemId, tagId])
+}
+
+enum Role {
+  USER
+  MODERATOR
+  ADMIN
+}
+
+enum Verdict {
+  AC
+  WA
+  TLE
+}

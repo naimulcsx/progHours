@@ -32,18 +32,10 @@ import { LoginUserDto } from "@/validators/login-user-dto"
  */
 import { AuthService } from "@/modules/auth/auth.service"
 
-/**
- * Import Guards
- */
-import { UsersService } from "../users/users.service"
-
 @Controller("auth")
 @ApiTags("auth")
 export class AuthController {
-  constructor(
-    private readonly authService: AuthService,
-    private readonly usersService: UsersService
-  ) {}
+  constructor(private readonly authService: AuthService) {}
 
   /**
    * POST /auth/login
@@ -53,15 +45,14 @@ export class AuthController {
   @ApiForbiddenResponse({ description: "Forbidden (Password is wrong)." })
   @ApiNotFoundResponse({ description: "User not found." })
   @Post("/login")
-  async handleLogin(
-    @Body() body: LoginUserDto,
+  async signIn(
+    @Body() { username, password }: LoginUserDto,
     @Res({ passthrough: true }) res: Response
   ) {
-    const { username, password } = body
-    const { accessToken, user } = await this.authService.handleLogin(
+    const { accessToken, user } = await this.authService.signIn({
       username,
-      password
-    )
+      password,
+    })
     res.cookie("accessToken", accessToken)
     res.status(200)
     return {
@@ -80,20 +71,14 @@ export class AuthController {
     description: "Request body doesn't contain valid data.",
   })
   @Post("/register")
-  async handleRegister(@Body() body: CreateUserDto) {
-    try {
-      const { name, username, password, email } = body
-      const user = await this.usersService.createUser(
-        name,
-        email,
-        username,
-        password
-      )
-      return { user }
-    } catch (err) {
-      if (err instanceof ConflictException) throw err
-      throw new Error(err)
-    }
+  async signUp(@Body() { name, username, password, email }: CreateUserDto) {
+    const { password: pw, ...rest } = await this.authService.signUp({
+      name,
+      email,
+      username,
+      password,
+    })
+    return rest
   }
 
   /**
@@ -102,7 +87,8 @@ export class AuthController {
   @ApiOperation({ summary: "Logout user." })
   @ApiOkResponse({ description: "Logout success." })
   @Get("/logout")
-  async logoutUser(@Res({ passthrough: true }) res: Response) {
+  async logout(@Res({ passthrough: true }) res: Response) {
+    // ! TODO: use res.clearCookie()
     res.cookie("accessToken", "", { expires: new Date(Date.now() - 100) })
     return {
       statusCode: HttpStatus.OK,

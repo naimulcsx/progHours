@@ -17,10 +17,14 @@ import { Submission } from "@/modules/submissions/submission.entity"
 import { AuthService } from "../auth/auth.service"
 import { OnlineJudgesService } from "../online-judges/online-judges.service"
 import { Ranking } from "../ranking/ranking.entity"
+import { PrismaService } from "../prisma/prisma.service"
+import * as bcrypt from "bcryptjs"
 
 @Injectable()
 export class UsersService {
   constructor(
+    private prisma: PrismaService,
+
     @InjectRepository(User)
     private usersRepository: Repository<User>,
 
@@ -79,41 +83,32 @@ export class UsersService {
     email: string,
     username: string,
     password: string
-  ): Promise<User> {
-    /**
-     * Check if username or email is already taken
-     */
-    let usernameExists = await this.getUser({ username })
+  ) {
+    // * Check if username or email is already taken
+    username = username.toLowerCase()
+
+    const usernameExists = await this.prisma.user.findUnique({
+      where: { username },
+    })
     if (usernameExists) throw new ConflictException("Username already exists.")
 
-    let emailExists = await this.getUser({ email })
+    const emailExists = await this.prisma.user.findUnique({ where: { email } })
     if (emailExists) throw new ConflictException("Email already exists.")
 
-    /**
-     * If there is no users, we need to seed OJ table
-     */
+    // TODO: If there is no users, we need to seed OJ table
 
-    const numberOfUsers = await this.usersRepository.count({})
-    if (!numberOfUsers) {
-      await this.onlineJudgesService.seed()
-    }
-
-    /**
-     * All good! Create a new user
-     */
-    const newUser = this.usersRepository.create({
-      name,
-      username,
-      password,
-      email,
+    // * All good! Create a new user
+    const hashedPassword = await bcrypt.hash(password, 10)
+    const newUser = await this.prisma.user.create({
+      data: {
+        name,
+        email,
+        username,
+        password: hashedPassword,
+      },
     })
-    const savedUser = await this.usersRepository.save(newUser)
-
-    /**
-     * Create a ranking row for that user
-     */
-    await this.rankingRepository.save({ user_id: savedUser.id })
-    return savedUser
+    // TODO: Create a user ranking row for that user
+    return newUser
   }
 
   /**

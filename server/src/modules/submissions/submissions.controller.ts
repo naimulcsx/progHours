@@ -43,17 +43,25 @@ export class SubmissionsController {
   constructor(private readonly submissionsService: SubmissionsService) {}
 
   /**
-   * POST /submissions
+   ** POST /submissions
    * Create new submission
    */
   @Post("/")
   @ApiOperation({ summary: "Create new submission." })
   @ApiOkResponse({ description: "Success." })
   @ApiForbiddenResponse({ description: "Forbidden." })
-  async createSubmission(@Body() body: CreateSubmissionDto, @Req() req) {
-    const { user } = req
+  async createSubmission(
+    @Body() { link, verdict, solveTime, solvedAt }: CreateSubmissionDto,
+    @Req() req
+  ) {
     try {
-      await this.submissionsService.createSubmission(body, user)
+      await this.submissionsService.createSubmission({
+        link,
+        verdict,
+        solveTime,
+        solvedAt,
+        userId: req.user.id,
+      })
       return {}
     } catch (err) {
       throw err
@@ -61,7 +69,7 @@ export class SubmissionsController {
   }
 
   /**
-   * PATCH /submissions/:id
+   ** PATCH /submissions/:id
    * Update a particular submission
    */
   @Patch("/:id")
@@ -93,23 +101,6 @@ export class SubmissionsController {
     return {
       statusCode: HttpStatus.NO_CONTENT,
       message: "Resource deleted",
-    }
-  }
-
-  /**
-   * GET /submissions/by/me
-   * Returns the submissions of the current logged in user
-   */
-  @Get("/by/me")
-  @ApiOperation({ summary: "Returns the submissions by current user" })
-  @ApiOkResponse({ description: "Success." })
-  @ApiForbiddenResponse({ description: "Forbidden." })
-  async getSubmissionsForCurrentUser(@Req() req) {
-    const submissions = await this.submissionsService.getSubmissions(
-      req.user.id
-    )
-    return {
-      submissions,
     }
   }
 
