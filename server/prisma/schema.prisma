@@ -25,21 +25,29 @@ model User {
   submissions Submission[]
 }
 
+model OnlineJudge {
+  id       Int       @id @default(autoincrement())
+  name     String
+  problems Problem[]
+}
+
 model Tag {
   id       Int          @id @default(autoincrement())
-  name     String
+  name     String       @unique
   problems ProblemTag[]
 }
 
 model Problem {
-  id          Int          @id @default(autoincrement())
-  pid         String       @unique
-  name        String
-  link        String       @unique
-  difficulty  Int
-  createdAt   DateTime     @default(now())
-  submissions Submission[]
-  tags        ProblemTag[]
+  id            Int          @id @default(autoincrement())
+  pid           String       @unique
+  name          String
+  link          String       @unique
+  difficulty    Int
+  createdAt     DateTime     @default(now())
+  submissions   Submission[]
+  tags          ProblemTag[]
+  onlineJudge   OnlineJudge  @relation(fields: [onlineJudgeId], references: [id])
+  onlineJudgeId Int
 }
 
 model Submission {

@@ -96,20 +96,37 @@ export class SubmissionsService {
         const { name, pid, tags, difficulty, judge_id } =
           await this.parsersService.parseProblem(link)
 
+        /** Save the problem */
         const newProblem = await this.prisma.problem.create({
           data: {
             name,
             pid,
             difficulty,
             link,
-            tags: {
-              create: tags.map((tag) => ({ tag: { create: { name: tag } } })),
-            },
+            onlineJudgeId: judge_id,
           },
         })
+
+        /** Add the tags to the database */
+        for (let tag of tags) {
+          /** Find or create the tag */
+          const tagObject = await this.prisma.tag.upsert({
+            where: { name: tag },
+            update: {},
+            create: { name: tag },
+          })
+
+          /** Insert into the Juction Table */
+          await this.prisma.problemTag.create({
+            data: {
+              problemId: newProblem.id,
+              tagId: tagObject.id,
+            },
+          })
+        }
         problemId = newProblem.id
       } catch (err) {
-        throw new BadRequestException([err.message])
+        throw new BadRequestException(err.message)
       }
     }
 

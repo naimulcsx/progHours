@@ -14,7 +14,6 @@ import { PrismaService } from "../prisma/prisma.service"
  * Import Entities (models)
  */
 import { UsersService } from "../users/users.service"
-import { LoginUserDto } from "@/validators/login-user-dto"
 
 @Injectable()
 export class AuthService {

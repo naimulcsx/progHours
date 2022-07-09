@@ -10,7 +10,7 @@ export class ParsersController {
     let { link } = body
     try {
       link = await this.parsersService.unifyLink(link)
-      const result = await this.parsersService.parseProblem(link)
+      const result: any = await this.parsersService.parseProblem(link)
       res.status(200)
       return result
     } catch (err) {

@@ -2,6 +2,14 @@
 CREATE TYPE "Verdict" AS ENUM ('AC', 'WA', 'TLE');
 
 -- CreateTable
+CREATE TABLE "OnlineJudge" (
+    "id" SERIAL NOT NULL,
+    "name" TEXT NOT NULL,
+
+    CONSTRAINT "OnlineJudge_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
 CREATE TABLE "Tag" (
     "id" SERIAL NOT NULL,
     "name" TEXT NOT NULL,
@@ -17,6 +25,7 @@ CREATE TABLE "Problem" (
     "link" TEXT NOT NULL,
     "difficulty" INTEGER NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "onlineJudgeId" INTEGER NOT NULL,
 
     CONSTRAINT "Problem_pkey" PRIMARY KEY ("id")
 );
@@ -42,6 +51,9 @@ CREATE TABLE "ProblemTag" (
 );
 
 -- CreateIndex
+CREATE UNIQUE INDEX "Tag_name_key" ON "Tag"("name");
+
+-- CreateIndex
 CREATE UNIQUE INDEX "Problem_pid_key" ON "Problem"("pid");
 
 -- CreateIndex
@@ -52,6 +64,9 @@ CREATE INDEX "Submission_userId_idx" ON "Submission"("userId");
 
 -- CreateIndex
 CREATE INDEX "Submission_problemId_idx" ON "Submission"("problemId");
+
+-- AddForeignKey
+ALTER TABLE "Problem" ADD CONSTRAINT "Problem_onlineJudgeId_fkey" FOREIGN KEY ("onlineJudgeId") REFERENCES "OnlineJudge"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "Submission" ADD CONSTRAINT "Submission_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
