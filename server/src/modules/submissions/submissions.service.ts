@@ -5,16 +5,9 @@ import {
   Injectable,
   NotFoundException,
 } from "@nestjs/common"
-import { InjectRepository } from "@nestjs/typeorm"
-import { Repository } from "typeorm"
 import * as rp from "request-promise"
 import { Cache } from "cache-manager"
 import { Verdict } from "@prisma/client"
-
-/**
- * Import Entities (models)
- */
-import { Submission } from "@/modules/submissions/submission.entity"
 
 /**
  * Import Services
@@ -28,8 +21,6 @@ export class SubmissionsService {
   constructor(
     private prisma: PrismaService,
     @Inject(ParsersService) private parsersService: ParsersService,
-    @InjectRepository(Submission)
-    private submissionsRepository: Repository<Submission>,
     @Inject(CACHE_MANAGER) private cacheManager: Cache
   ) {}
 
@@ -157,19 +148,18 @@ export class SubmissionsService {
     })
   }
 
-  async updateSubmission(body: any, id: any) {
-    const { verdict, solve_time, solved_at } = body
-    const options: any = { id }
+  async updateSubmission({ id, verdict, solveTime, solvedAt }) {
+    const options: any = {}
     if (verdict) options.verdict = verdict
-    if (solve_time) options.solve_time = solve_time
-    if (solved_at) options.solved_at = solved_at
+    if (solveTime) options.solveTime = solveTime
+    if (solvedAt) options.solvedAt = solvedAt
     try {
-      return await this.prisma.submission.update({
+      await this.prisma.submission.update({
         where: { id },
         data: options,
       })
     } catch (err) {
-      throw err
+      throw new BadRequestException("Something went wrong!")
     }
   }
 

@@ -20,20 +20,9 @@ import {
   ApiBadRequestResponse,
 } from "@nestjs/swagger"
 
-/**
- * Import Data Transfer Objects (DTO)
- */
 import { CreateSubmissionDto } from "@/validators/create-submission-dto"
 import { UpdateSubmissionDto } from "@/validators/update-submission-dto"
-
-/**
- * Import Services
- */
 import { SubmissionsService } from "@/modules/submissions/submissions.service"
-
-/**
- * Import Guards
- */
 import { IsAuthenticatedGuard } from "@/guards/is-authenticated"
 
 @Controller("/submissions")
@@ -41,7 +30,6 @@ import { IsAuthenticatedGuard } from "@/guards/is-authenticated"
 @UseGuards(IsAuthenticatedGuard)
 export class SubmissionsController {
   constructor(private readonly submissionsService: SubmissionsService) {}
-
   /**
    ** POST /submissions
    * Create new submission
@@ -78,13 +66,17 @@ export class SubmissionsController {
   @ApiForbiddenResponse({ description: "Forbidden." })
   async updateSubmission(
     @Param("id") id: string,
-    @Body() body: UpdateSubmissionDto
+    @Body() { verdict, solveTime, solvedAt }: UpdateSubmissionDto
   ) {
-    await this.submissionsService.updateSubmission(body, id)
-
+    await this.submissionsService.updateSubmission({
+      id: Number(id),
+      verdict,
+      solveTime,
+      solvedAt,
+    })
     return {
       statusCode: HttpStatus.OK,
-      message: "resource updated",
+      message: "Submission Updated!",
     }
   }
 
@@ -99,8 +91,8 @@ export class SubmissionsController {
   async deleteSubmission(@Param("id") id: any) {
     await this.submissionsService.deleteSubmission(id)
     return {
-      statusCode: HttpStatus.NO_CONTENT,
-      message: "Resource deleted",
+      statusCode: HttpStatus.OK,
+      message: "Submission Deleted!",
     }
   }
 
