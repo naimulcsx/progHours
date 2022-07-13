@@ -20,7 +20,7 @@ export default function SolveTime(cell: Cell<Submission>) {
        * After data is updated in the server, we need to update it the client state
        */
       toast({ title: "Submission Updated!", status: "success" })
-      const oldData: Practice | undefined = client.getQueryData("practice")
+      const oldData: Practice | undefined = client.getQueryData("submissions")
       const newData = oldData?.submissions.map((el: Submission) => {
         /**
          * If this submission is the one, we updated on server, update it's solvetime
@@ -30,7 +30,7 @@ export default function SolveTime(cell: Cell<Submission>) {
         }
         return el
       })
-      client.setQueryData("practice", { submissions: newData })
+      client.setQueryData("submissions", { submissions: newData })
     },
     onError: (err: AxiosError) => {
       console.log(err)

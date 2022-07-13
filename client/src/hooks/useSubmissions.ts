@@ -4,7 +4,7 @@ import { useState, useEffect } from "react"
 import { useQuery } from "react-query"
 
 function useSubmissions() {
-  const query = useQuery("practice", getSubmissions, {
+  const query = useQuery("submissions", getSubmissions, {
     refetchOnWindowFocus: false,
   })
   let [filteredData, setFilteredData] = useState([])
@@ -66,6 +66,7 @@ function useSubmissions() {
    */
   useEffect(() => {
     if (!query.data) return
+    console.log(query.data)
     let arr = query.data.body.submissions
     const weekId = selectedWeek.id - 1
     if (weekId > 0) arr = filterByWeek(arr, weekRanges[weekId - 1])

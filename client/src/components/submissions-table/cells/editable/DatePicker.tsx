@@ -21,7 +21,7 @@ const DatePicker = (cell: Cell<Submission>) => {
   const [date, setDate] = useState(new Date(cell.value))
   const { mutate } = useMutation(updateSubmission, {
     onSuccess: () => {
-      queryClient.invalidateQueries("practice")
+      queryClient.invalidateQueries("submissions")
       /**
        * Show toast message
        */

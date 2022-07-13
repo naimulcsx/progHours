@@ -35,7 +35,7 @@ const DashboardHome = () => {
     [name: string]: number
   }
   let [frequency, setFrequency] = useState<Frequency | null>(null)
-  useQuery("practice", getSubmissions, {
+  useQuery("submissions", getSubmissions, {
     onSuccess: (data) => {
       const frequency: Frequency = {}
       const weekRanges = getWeekRanges(data.body.submissions)

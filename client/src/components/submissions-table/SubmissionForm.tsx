@@ -55,7 +55,7 @@ const SubmissionForm = ({ id }: { id: number }) => {
   const createSubmissionMutation = useMutation(createSubmission, {
     onSuccess: (data) => {
       formik.resetForm()
-      queryClient.invalidateQueries("practice")
+      queryClient.invalidateQueries("submissions")
       toast({ title: data.message, status: "success" })
     },
     onError: (err: AxiosError) => {

@@ -22,8 +22,8 @@ export const CELL_STYLES: any = {
     py: VERTICAL_PADDING,
   },
   "Solve Time": {
-    minW: 36,
-    w: 36,
+    minW: 32,
+    w: 32,
     px: HORIZONTAL_PADDING,
     py: VERTICAL_PADDING,
   },

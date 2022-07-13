@@ -39,7 +39,7 @@ const Verdict = (cell: Cell<Submission>) => {
 
   const handleSelected = (value: any) => {
     value = value.target.value
-    const oldData: Practice | undefined = client.getQueryData("practice")
+    const oldData: Practice | undefined = client.getQueryData("submissions")
     /**
      * If this submission is the one, we updated on, update it's verdict
      */
@@ -52,7 +52,7 @@ const Verdict = (cell: Cell<Submission>) => {
     /**
      * Update the new client state
      */
-    client.setQueryData("practice", { submissions: newData })
+    client.setQueryData("submissions", { submissions: newData })
 
     /**
      * Update the data in the server

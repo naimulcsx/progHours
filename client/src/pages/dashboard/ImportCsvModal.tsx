@@ -148,7 +148,7 @@ export default function ImportCsvModal({
      * Wait 250ms before invalidating previous data, that will update the submissions
      */
     await new Promise((resolve) => setTimeout(resolve, 250))
-    queryClient.invalidateQueries("practice")
+    queryClient.invalidateQueries("submissions")
   }
 
   return (

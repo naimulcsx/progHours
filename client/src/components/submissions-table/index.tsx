@@ -93,6 +93,7 @@ export const SubmissionsTable = ({
                     return (
                       <Th
                         py={4}
+                        letterSpacing="-0.5px"
                         {...header.getHeaderProps(
                           header.getSortByToggleProps()
                         )}

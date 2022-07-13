@@ -27,13 +27,18 @@ import {
   ModalBody,
   ModalFooter,
   Text,
+  useToast,
 } from "@chakra-ui/react"
+import { DEFAULT_TOAST_OPTIONS } from "@/configs/toast-config"
 
 interface Practice {
-  submissions: Submission[]
+  body: {
+    submissions: Submission[]
+  }
 }
 
 const Actions = (cell: Cell<Submission>) => {
+  const toast = useToast(DEFAULT_TOAST_OPTIONS)
   const queryClient = useQueryClient()
   const [isOpen, setIsOpen] = useState(false)
 
@@ -41,29 +46,34 @@ const Actions = (cell: Cell<Submission>) => {
    * Delete submission
    */
   const { mutate } = useMutation((id) => deleteSubmission(id), {
-    onSuccess: () => {
+    onSuccess: (res) => {
       setIsOpen(false)
-      const practice: Practice | undefined =
-        queryClient.getQueryData("practice")
+      const prevState: Practice | undefined =
+        queryClient.getQueryData("submissions")
       /**
        * Update the state by removing the submission with the id
        */
-      queryClient.setQueryData("practice", {
-        submissions: practice?.submissions.filter(
-          (el: Submission) => el.id !== cell.row.original.id
-        ),
+      queryClient.setQueryData("submissions", {
+        body: {
+          submissions: prevState?.body.submissions.filter(
+            (el: Submission) => el.id !== cell.row.original.id
+          ),
+        },
       })
       /**
        * Show toast message
        */
-      toast.success("Problem deleted", { className: "toast" })
+      toast({
+        status: "success",
+        title: res.message,
+      })
     },
     onError: (err: AxiosError) => {
       setIsOpen(false)
       /**
        * Show toast message
        */
-      toast.error(err.response?.data.message, { className: "toast" })
+      // toast.error(err.response?.data.message, { className: "toast" })
     },
   })
 

@@ -34,7 +34,7 @@ export default function TagInputField({ problemId, closePopover }) {
   const queryClient = useQueryClient()
   const { mutate, isLoading } = useMutation(addTag, {
     onSuccess: (data) => {
-      queryClient.invalidateQueries("practice")
+      queryClient.invalidateQueries("submissions")
       toast.success("Tag suggested.")
     },
     onError: (err) => {
