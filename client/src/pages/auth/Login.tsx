@@ -51,18 +51,19 @@ const Login = (): JSX.Element => {
           },
         }}
         mutation={loginMutation}
-        onSuccess={(data) => {
-          const { user } = data
-          localStorage.setItem("role", "user")
+        onSuccess={(res) => {
+          const { user } = res.body
           localStorage.setItem("isLoggedIn", "1")
           localStorage.setItem("userId", user.id)
           localStorage.setItem("name", user.name)
           localStorage.setItem("username", user.username)
+          localStorage.setItem("role", user.role)
           navigate("/dashboard") // redirect to dashboard
+          // create a toast
           toast({
             status: "success",
-            title: "Logged in!",
-          }) // create a toast
+            title: res.message,
+          })
         }}
         onError={(err) => {
           const { data, status, statusText } = err.response

@@ -19,9 +19,11 @@ import { UsersController } from "@/modules/users/users.controller"
 import { UsersService } from "@/modules/users/users.service"
 import { AuthModule } from "../auth/auth.module"
 import { OnlineJudgesModule } from "../online-judges/online-judges.module"
+import { SubmissionsModule } from "../submissions/submissions.module"
 
 @Module({
   imports: [
+    SubmissionsModule,
     OnlineJudgesModule,
     forwardRef(() => AuthModule),
     TypeOrmModule.forFeature([User, Submission, Ranking]),

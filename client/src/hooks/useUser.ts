@@ -6,7 +6,9 @@ import { User } from "@/GlobalStateProvider"
 function useUser() {
   const [user, setUser] = useState<User | null>(null)
   useQuery("user", getUser, {
-    onSuccess: (data) => setUser(data)
+    onSuccess: (data) => {
+      setUser(data.body.user)
+    },
   })
   return user
 }

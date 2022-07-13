@@ -1,8 +1,6 @@
 import {
-  BadRequestException,
   Body,
   Controller,
-  ForbiddenException,
   Get,
   HttpStatus,
   InternalServerErrorException,
@@ -22,46 +20,66 @@ import {
   ApiTags,
 } from "@nestjs/swagger"
 
-/**
- * Import Services
- */
 import { UsersService } from "@/modules/users/users.service"
-
-/**
- * Import Guards
- */
 import { IsAuthenticatedGuard } from "@/guards/is-authenticated"
-
-/**
- * Import Dto
- */
-import { UpdateUserDto } from "@/validators/update-user-dto"
+import { SubmissionsService } from "../submissions/submissions.service"
 
 @Controller("/users")
 @ApiTags("users")
 @UseGuards(IsAuthenticatedGuard)
 export class UsersController {
-  constructor(private readonly usersService: UsersService) {}
+  constructor(
+    private readonly usersService: UsersService,
+    private readonly submissionsService: SubmissionsService
+  ) {}
 
   /**
-   * GET /users/me
-   * Returns the current logged in user
+   * @GET /users/me
    */
   @Get("/me")
   @ApiOperation({ summary: "Returns the current logged in user." })
   @ApiOkResponse({ description: "Success." })
   @ApiForbiddenResponse({ description: "Forbidden." })
   async getCurrentUser(@Req() req) {
-    const user = await this.usersService.getUser({ id: req.user.id })
+    const user = await this.usersService.getUserById(req.user.id)
     if (!user) {
       throw new NotFoundException("User not found.")
     }
     const { password, ...rest } = user
-    return rest
+    return {
+      statusCode: HttpStatus.OK,
+      body: {
+        user: rest,
+      },
+    }
   }
 
   /**
-   * GET /users/{username}
+   * @Patch /users/me
+   */
+  @Patch("/me")
+  async updateUser(@Body() body: any, @Req() req) {
+    const { name, email, mobile, department, batch, cgpa } = body
+
+    const result = await this.usersService.updateProfile({
+      id: req.user.id,
+      name,
+      email,
+      mobile,
+      department,
+      batch,
+      cgpa,
+    })
+    return {
+      statusCode: HttpStatus.OK,
+      data: {
+        user: result,
+      },
+    }
+  }
+
+  /**
+   * @GET /users/{username}
    * Returns user by username.
    */
   @Get("/:username")
@@ -70,12 +88,17 @@ export class UsersController {
   @ApiNotFoundResponse({ description: "User not found." })
   @ApiForbiddenResponse({ description: "Forbidden." })
   async getUserByUsername(@Param() params) {
-    const user = await this.usersService.getUser({ username: params.username })
+    const user = await this.usersService.getUserByUsername(params.username)
     if (!user) {
       throw new NotFoundException("User not found.")
     }
     const { password, ...rest } = user
-    return rest
+    return {
+      statusCode: HttpStatus.OK,
+      body: {
+        user: rest,
+      },
+    }
   }
 
   @Patch("/update-password")
@@ -91,78 +114,16 @@ export class UsersController {
   }
 
   /**
-   * Patch /users/{username}
-   * Updates the user information
+   * @GET /users/{username}/submissions
    */
-  @Patch("/:username")
-  async updateUser(@Body() body, @Req() req, @Param() params) {
-    const { name, email, mobile, department, batch, cgpa } = body
-    /**
-     * Check if the user who authorized to make the change
-     * An user can change the account informations of a particular username if
-     * - His own personal info
-     * - He is the admin
-     */
-    if (params.username.toLowerCase() === req.user.username.toLowerCase()) {
-      try {
-        await this.usersService.updateProfile(
-          {
-            name,
-            email,
-            mobile,
-            department,
-            batch: parseInt(batch),
-            cgpa: parseFloat(cgpa),
-          },
-          req.user.id
-        )
-      } catch (e) {
-        throw new InternalServerErrorException("Something went wrong!")
-      }
-    } else {
-      throw new UnauthorizedException("You are not authorized!")
+  @Get("/:username/submissions")
+  async getSubmissions(@Param() params) {
+    const submissions = await this.submissionsService.getSubmissionsByUsername(
+      params.username
+    )
+    return {
+      statusCode: HttpStatus.OK,
+      body: { submissions },
     }
   }
-
-  // /**
-  //  * PATCH /users/me
-  //  * Updates the user information
-  //  */
-  // @Patch("/me")
-  // @ApiOperation({ summary: "Updates the user information." })
-  // @ApiOkResponse({ description: "Success." })
-  // @ApiForbiddenResponse({ description: "Forbidden." })
-  // async updateAccount(@Body() body: UpdateUserDto, @Req() req: any) {
-  //   const { name, email, confirmPassword, currentPassword, newPassword } = body
-
-  //   /**
-  //    * Handle profile update
-  //    */
-  //   await this.usersService.updateProfile({ name, email }, req.user.id)
-  //   /**
-  //    * Handle password update
-  //    */
-  //   const passwordFields = [currentPassword, newPassword, confirmPassword]
-  //   if (
-  //     passwordFields.every((el) => el.length === 0) ||
-  //     (passwordFields.some((el) => el.length > 0) &&
-  //       passwordFields.some((el) => el.length === 0))
-  //   ) {
-  //     if (!passwordFields.every((el) => el.length === 0)) {
-  //       throw new BadRequestException(
-  //         "Please fill all the password related fields in order to change your password."
-  //       )
-  //     }
-  //   } else {
-  //     // await this.usersService.updatePassword(passwordFields, req.user.id)
-  //   }
-
-  //   /**
-  //    * Send Response
-  //    */
-  //   return {
-  //     statusCode: HttpStatus.OK,
-  //     message: "Profile updated.",
-  //   }
-  // }
 }

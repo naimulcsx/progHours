@@ -38,9 +38,9 @@ import { CELL_STYLES } from "./cells/cellStyles"
 
 const submissionSchema = Yup.object().shape({
   link: Yup.string().trim().required("Problem link is required"),
-  solve_time: Yup.number().required("Solve time is required"),
+  solveTime: Yup.number().required("Solve time is required"),
   verdict: Yup.string().required("Verdict is required"),
-  solved_at: Yup.date().required("Date is required"),
+  solvedAt: Yup.date().required("Date is required"),
 })
 
 const SubmissionForm = ({ id }: { id: number }) => {
@@ -56,7 +56,7 @@ const SubmissionForm = ({ id }: { id: number }) => {
     onSuccess: (data) => {
       formik.resetForm()
       queryClient.invalidateQueries("practice")
-      toast({ title: "Submission added!", status: "success" })
+      toast({ title: data.message, status: "success" })
     },
     onError: (err: AxiosError) => {
       if (typeof err.response !== "undefined") {
@@ -77,18 +77,18 @@ const SubmissionForm = ({ id }: { id: number }) => {
   const formik = useFormik({
     initialValues: {
       link: "",
-      solve_time: 0,
+      solveTime: 0,
       verdict: "AC",
-      solved_at: new Date(),
+      solvedAt: new Date(),
     },
     validationSchema: submissionSchema,
     onSubmit: async (values) => {
       /**
-       * Convert values.solve_time to number
+       * Convert values.solveTime to number
        */
-      values.solved_at = new Date()
-      const solveTimeString: string = values.solve_time.toString()
-      values.solve_time = parseInt(solveTimeString)
+      values.solvedAt = new Date()
+      const solveTimeString: string = values.solveTime.toString()
+      values.solveTime = parseInt(solveTimeString)
 
       /**
        * Create the submission
@@ -111,7 +111,7 @@ const SubmissionForm = ({ id }: { id: number }) => {
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     const fields = Object.keys(formik.errors) as Array<
-      "link" | "solve_time" | "verdict" | "solved_at"
+      "link" | "solveTime" | "verdict" | "solvedAt"
     >
     if (fields.length === 0) {
       formik.handleSubmit()
@@ -204,7 +204,7 @@ const SubmissionForm = ({ id }: { id: number }) => {
               autoComplete="off"
               form="add-submission"
               className="w-full p-2 focus:outline-none"
-              {...formik.getFieldProps("solve_time")}
+              {...formik.getFieldProps("solveTime")}
             ></Input>
           </FormControl>
         </Td>
@@ -218,7 +218,7 @@ const SubmissionForm = ({ id }: { id: number }) => {
         <Td {...CELL_STYLES["Solved On"]}>
           <ReactDatePicker
             dateFormat="EEE, dd MMM yyyy"
-            selected={formik.values.solved_at}
+            selected={formik.values.solvedAt}
             customInput={<Input fontSize="sm" />}
             onChange={(date) => {
               const currentDate = new Date()
@@ -227,7 +227,7 @@ const SubmissionForm = ({ id }: { id: number }) => {
                 .set("minute", currentDate.getMinutes())
                 .set("second", currentDate.getSeconds())
                 .set("millisecond", currentDate.getMilliseconds())
-              formik.setFieldValue("solved_at", dateToSend.toDate())
+              formik.setFieldValue("solvedAt", dateToSend.toDate())
             }}
           />
         </Td>

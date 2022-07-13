@@ -38,7 +38,7 @@ export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
   /**
-   * POST /auth/login
+   * @POST /auth/login
    */
   @ApiOperation({ summary: "Handle user login." })
   @ApiOkResponse({ description: "Login successful." })
@@ -49,20 +49,24 @@ export class AuthController {
     @Body() { username, password }: LoginUserDto,
     @Res({ passthrough: true }) res: Response
   ) {
-    const { accessToken, user } = await this.authService.signIn({
+    const { accessToken, user } = await this.authService.handleLogin({
       username,
       password,
     })
     res.cookie("accessToken", accessToken)
     res.status(200)
     return {
-      accessToken,
-      user,
+      statusCode: HttpStatus.OK,
+      message: "Logged in!",
+      body: {
+        accessToken,
+        user,
+      },
     }
   }
 
   /**
-   * POST /auth/register
+   * @POST /auth/register
    */
   @ApiOperation({ summary: "Register new user." })
   @ApiCreatedResponse({ description: "User successfully created." })
@@ -72,27 +76,32 @@ export class AuthController {
   })
   @Post("/register")
   async signUp(@Body() { name, username, password, email }: CreateUserDto) {
-    const { password: pw, ...rest } = await this.authService.signUp({
+    const { password: pw, ...rest } = await this.authService.handleRegister({
       name,
       email,
       username,
       password,
     })
-    return rest
+    return {
+      statusCode: HttpStatus.CREATED,
+      message: "Registration successful!",
+      body: {
+        user: rest,
+      },
+    }
   }
 
   /**
-   * GET /auth/logout
+   * @GET /auth/logout
    */
   @ApiOperation({ summary: "Logout user." })
   @ApiOkResponse({ description: "Logout success." })
   @Get("/logout")
   async logout(@Res({ passthrough: true }) res: Response) {
-    // ! TODO: use res.clearCookie()
-    res.cookie("accessToken", "", { expires: new Date(Date.now() - 100) })
+    res.clearCookie("accessToken")
     return {
       statusCode: HttpStatus.OK,
-      success: true,
+      message: "Successfully logged out!",
     }
   }
 }

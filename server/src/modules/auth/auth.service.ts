@@ -41,7 +41,13 @@ export class AuthService {
    * @param body
    * @returns
    */
-  async signIn({ username, password }: { username: string; password: string }) {
+  async handleLogin({
+    username,
+    password,
+  }: {
+    username: string
+    password: string
+  }) {
     username = username.toLowerCase()
     /**
      * Get user by id
@@ -77,7 +83,7 @@ export class AuthService {
     }
   }
 
-  async signUp({
+  async handleRegister({
     username,
     name,
     email,
@@ -99,8 +105,6 @@ export class AuthService {
     const emailExists = await this.prisma.user.findUnique({ where: { email } })
     if (emailExists) throw new ConflictException("Email already exists.")
 
-    // TODO: If there is no users, we need to seed OJ table
-
     // * All good! Create a new user
     const hashedPassword = await bcrypt.hash(password, 10)
     const newUser = await this.prisma.user.create({
@@ -112,6 +116,12 @@ export class AuthService {
       },
     })
     // TODO: Create a user ranking row for that user
+    await this.prisma.userStat.create({
+      data: {
+        userId: newUser.id,
+      },
+    })
+
     return newUser
   }
 }

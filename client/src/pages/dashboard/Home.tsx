@@ -38,7 +38,7 @@ const DashboardHome = () => {
   useQuery("practice", getSubmissions, {
     onSuccess: (data) => {
       const frequency: Frequency = {}
-      const weekRanges = getWeekRanges(data.submissions)
+      const weekRanges = getWeekRanges(data.body.submissions)
       /**
        * For each week k, calculate how many problems are solved in the k'th week
        */

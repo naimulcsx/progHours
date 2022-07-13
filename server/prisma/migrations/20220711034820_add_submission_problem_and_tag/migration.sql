@@ -1,5 +1,14 @@
+/*
+  Warnings:
+
+  - Added the required column `statistics` to the `User` table without a default value. This is not possible if the table is not empty.
+
+*/
 -- CreateEnum
 CREATE TYPE "Verdict" AS ENUM ('AC', 'WA', 'TLE');
+
+-- AlterTable
+ALTER TABLE "User" ADD COLUMN     "statistics" JSONB NOT NULL;
 
 -- CreateTable
 CREATE TABLE "OnlineJudge" (
@@ -60,10 +69,13 @@ CREATE UNIQUE INDEX "Problem_pid_key" ON "Problem"("pid");
 CREATE UNIQUE INDEX "Problem_link_key" ON "Problem"("link");
 
 -- CreateIndex
-CREATE INDEX "Submission_userId_idx" ON "Submission"("userId");
+CREATE INDEX "Submission_problemId_idx" ON "Submission"("problemId");
 
 -- CreateIndex
-CREATE INDEX "Submission_problemId_idx" ON "Submission"("problemId");
+CREATE INDEX "Submission_userId_verdict_idx" ON "Submission"("userId", "verdict");
+
+-- CreateIndex
+CREATE INDEX "User_username_idx" ON "User"("username");
 
 -- AddForeignKey
 ALTER TABLE "Problem" ADD CONSTRAINT "Problem_onlineJudgeId_fkey" FOREIGN KEY ("onlineJudgeId") REFERENCES "OnlineJudge"("id") ON DELETE RESTRICT ON UPDATE CASCADE;

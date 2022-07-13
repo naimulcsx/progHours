@@ -30,9 +30,29 @@ import { IsAuthenticatedGuard } from "@/guards/is-authenticated"
 @UseGuards(IsAuthenticatedGuard)
 export class SubmissionsController {
   constructor(private readonly submissionsService: SubmissionsService) {}
+
   /**
-   ** POST /submissions
-   * Create new submission
+   * @GET /submissions
+   * Get submissions for the current
+   */
+  @Get("/")
+  @ApiOperation({ summary: "Returns the submissions for the current user" })
+  @ApiOkResponse({ description: "Success." })
+  @ApiForbiddenResponse({ description: "Forbidden." })
+  async getSubmissionsByUserId(@Param() params, @Req() req) {
+    const result = await this.submissionsService.getSubmissionsByUsername(
+      req.user.username
+    )
+    return {
+      statusCode: HttpStatus.OK,
+      body: {
+        submissions: result,
+      },
+    }
+  }
+
+  /**
+   * @POST /submissions
    */
   @Post("/")
   @ApiOperation({ summary: "Create new submission." })
@@ -42,23 +62,22 @@ export class SubmissionsController {
     @Body() { link, verdict, solveTime, solvedAt }: CreateSubmissionDto,
     @Req() req
   ) {
-    try {
-      await this.submissionsService.createSubmission({
-        link,
-        verdict,
-        solveTime,
-        solvedAt,
-        userId: req.user.id,
-      })
-      return {}
-    } catch (err) {
-      throw err
+    const createdSubmission = await this.submissionsService.createSubmission({
+      link,
+      verdict,
+      solveTime,
+      solvedAt,
+      userId: req.user.id,
+    })
+    return {
+      statusCode: HttpStatus.CREATED,
+      message: "Submission added!",
+      body: createdSubmission,
     }
   }
 
   /**
-   ** PATCH /submissions/:id
-   * Update a particular submission
+   * @PATCH /submissions/:id
    */
   @Patch("/:id")
   @ApiOperation({ summary: "Update a particular submission." })
@@ -81,39 +100,22 @@ export class SubmissionsController {
   }
 
   /**
-   * DELETE /submissions/:id
-   * Delete a particular submission
+   * @DELETE /submissions/:id
    */
   @Delete("/:id")
   @ApiOperation({ summary: "Delete a particular submission." })
   @ApiOkResponse({ description: "Success." })
   @ApiForbiddenResponse({ description: "Forbidden." })
   async deleteSubmission(@Param("id") id: any) {
-    await this.submissionsService.deleteSubmission(id)
+    await this.submissionsService.deleteSubmission(Number(id))
     return {
       statusCode: HttpStatus.OK,
-      message: "Submission Deleted!",
+      message: "Submission deleted!",
     }
   }
 
   /**
-   * GET /submissions/by/:username
-   * Returns the submissions submitted by a particular user
-   */
-  @Get("/by/:username")
-  @ApiOperation({ summary: "Returns the submissions by username" })
-  @ApiOkResponse({ description: "Success." })
-  @ApiForbiddenResponse({ description: "Forbidden." })
-  async getSubmissionsByUserId(@Param() params) {
-    const result = await this.submissionsService.getSubmissionsByUsername(
-      params.username
-    )
-    return result
-  }
-
-  /**
    * GET /submissions/vjudge-contest-login
-   * Returns the submissions submitted by a particular user
    */
   @Post("/vjudge-contest-login/:contestId")
   @ApiOperation({ summary: "Login into vjudge contest." })

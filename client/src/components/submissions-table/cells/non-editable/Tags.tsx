@@ -15,7 +15,8 @@ const NonEditableTags = (cell: Cell<Submission>) => {
   const { tags } = cell.row.original.problem
   return (
     <Flex gap={2} flexWrap="wrap">
-      {tags.map((tag: Tag) => {
+      {tags.map((item: any) => {
+        // TODO: Fix the type
         return (
           <Badge
             bg="blue.50"
@@ -23,9 +24,9 @@ const NonEditableTags = (cell: Cell<Submission>) => {
             fontWeight={500}
             py={1}
             px={2}
-            key={tag.id}
+            key={item.id}
           >
-            {tag.name}
+            {item.tag.name}
           </Badge>
         )
       })}

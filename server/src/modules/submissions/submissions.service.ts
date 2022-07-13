@@ -25,11 +25,15 @@ export class SubmissionsService {
   ) {}
 
   async getSubmissionsByUsername(username) {
-    username = username.toLowerCase()
-    const user = await this.prisma.user.findUnique({ where: { username } })
+    // Find the user in the database
+    const user = await this.prisma.user.findUnique({
+      where: { username: username.toLowerCase() },
+    })
+    // If the user doesn't exist in our app
     if (!user) {
       throw new NotFoundException(["User not found"])
     }
+    // Otherwise find the submissions by that particular user
     const submissions = await this.prisma.submission.findMany({
       where: { userId: user.id },
       orderBy: {
@@ -47,6 +51,7 @@ export class SubmissionsService {
         },
       },
     })
+    // and return the submissions
     return submissions
   }
 
@@ -64,30 +69,28 @@ export class SubmissionsService {
     userId: number
   }) {
     let problemId: number
-    /**
-     * Apply link transformers
-     */
+    // apply link transformers
     try {
       link = await this.parsersService.unifyLink(link)
     } catch (err) {
       throw new BadRequestException(err)
     }
-    /**
-     * Check if the problem exists in database with the provided link
-     */
+    // Check if the problem exists in database with the provided link
     let foundProblem = await this.prisma.problem.findUnique({ where: { link } })
 
     if (foundProblem) problemId = foundProblem.id
     else {
-      /**
-       ** If the problem does not exist in the database
-       ** then we need to parse it and save it in our database
-       */
+      // If the problem does not exist in the database
+      // then we need to parse it by making a network request
+      // and then save it in our database
       try {
+        // parse the problem with the help of parser service
         const { name, pid, tags, difficulty, judge_id } =
           await this.parsersService.parseProblem(link)
 
-        /** Save the problem */
+        console.log(name, pid, tags, difficulty, judge_id)
+
+        // save the problem that we've parsed
         const newProblem = await this.prisma.problem.create({
           data: {
             name,
@@ -98,16 +101,15 @@ export class SubmissionsService {
           },
         })
 
-        /** Add the tags to the database */
+        // insert the tags, if they do not exist in the database
         for (let tag of tags) {
-          /** Find or create the tag */
+          // find or create the tag
           const tagObject = await this.prisma.tag.upsert({
             where: { name: tag },
             update: {},
             create: { name: tag },
           })
-
-          /** Insert into the Juction Table */
+          // insert tagId and problemId into the junction table
           await this.prisma.problemTag.create({
             data: {
               problemId: newProblem.id,
@@ -115,15 +117,14 @@ export class SubmissionsService {
             },
           })
         }
+        // save the problem id
         problemId = newProblem.id
       } catch (err) {
         throw new BadRequestException(err.message)
       }
     }
 
-    /**
-     ** Check if the same problem is added previously by the same user
-     */
+    // Check if the problem is already added previously by the user
     try {
       const foundSubmission = await this.prisma.submission.findFirst({
         where: {
@@ -131,13 +132,15 @@ export class SubmissionsService {
           problemId,
         },
       })
+      // throw an error because an user can't add same problem twice
       if (foundSubmission) {
         throw new BadRequestException("Submission already exists.")
       }
     } catch (err) {
       throw err
     }
-    return this.prisma.submission.create({
+    // create the submission
+    const newSubmsision = await this.prisma.submission.create({
       data: {
         solveTime,
         solvedAt,
@@ -146,6 +149,8 @@ export class SubmissionsService {
         userId,
       },
     })
+    // return the submission
+    return newSubmsision
   }
 
   async updateSubmission({ id, verdict, solveTime, solvedAt }) {
@@ -165,10 +170,10 @@ export class SubmissionsService {
 
   async deleteSubmission(id: any) {
     try {
+      await this.prisma.submission.findFirstOrThrow({ where: { id } })
       await this.prisma.submission.delete({ where: { id } })
-      return { message: "Submission deleted" }
     } catch (err) {
-      throw err
+      throw new BadRequestException("Submission not found!")
     }
   }
 

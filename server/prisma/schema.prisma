@@ -23,6 +23,9 @@ model User {
   role        Role         @default(USER)
   memberSince DateTime     @default(now())
   submissions Submission[]
+  UserStat    UserStat?
+
+  @@index(username)
 }
 
 model OnlineJudge {
@@ -60,8 +63,8 @@ model Submission {
   problem   Problem  @relation(fields: [problemId], references: [id])
   problemId Int
 
-  @@index(userId)
   @@index(problemId)
+  @@index([userId, verdict])
 }
 
 model ProblemTag {
@@ -71,6 +74,16 @@ model ProblemTag {
   problemId Int
 
   @@id([problemId, tagId])
+}
+
+model UserStat {
+  id                        Int  @id @default(autoincrement())
+  user                      User @relation(fields: [userId], references: [id])
+  userId                    Int  @unique
+  totalSolveTime            Int  @default(0)
+  totalDifficulty           Int  @default(0)
+  totalSolved               Int  @default(0)
+  totalSolvedWithDifficulty Int  @default(0)
 }
 
 enum Role {

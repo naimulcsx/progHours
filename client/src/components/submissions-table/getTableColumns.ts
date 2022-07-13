@@ -20,7 +20,7 @@ export const getTableColumns = (isEditable: boolean = false) => {
     },
     {
       Header: "Solve Time",
-      accessor: "solve_time",
+      accessor: "solveTime",
       Cell: isEditable ? EditableCells.SolveTime : (cell) => cell.value,
     },
     {
@@ -34,7 +34,7 @@ export const getTableColumns = (isEditable: boolean = false) => {
     {
       id: "solved-at",
       Header: "Solved On",
-      accessor: "solved_at",
+      accessor: "solvedAt",
       Cell: isEditable ? EditableCells.DatePicker : NonEditableCells.Date,
     },
   ] as Column<Submission>[]

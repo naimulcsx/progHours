@@ -18,7 +18,9 @@ function useSubmissions() {
 
   useEffect(() => {
     if (!query.data) return
-    const weekRanges = getWeekRanges(query.data.submissions)
+
+    console.log(query.data)
+    const weekRanges = getWeekRanges(query.data.body.submissions)
     setWeekRanges(weekRanges)
     /**
      * Set default week to be the current week (only the first time we get the data)
@@ -36,7 +38,7 @@ function useSubmissions() {
       /**
        * If we are on the all weeks filter
        */
-      setFilteredData(query.data.submissions)
+      setFilteredData(query.data.body.submissions)
     } else {
       /**
        * Data has updated, but we don't want to change the selectedWeek, so keep the selectedWeek as it is
@@ -51,7 +53,10 @@ function useSubmissions() {
 
       if (selectedWeek.id >= 2)
         setFilteredData(
-          filterByWeek(query.data.submissions, weekRanges[selectedWeek.id - 2])
+          filterByWeek(
+            query.data.body.submissions,
+            weekRanges[selectedWeek.id - 2]
+          )
         )
     }
   }, [query.data])
@@ -61,7 +66,7 @@ function useSubmissions() {
    */
   useEffect(() => {
     if (!query.data) return
-    let arr = query.data.submissions
+    let arr = query.data.body.submissions
     const weekId = selectedWeek.id - 1
     if (weekId > 0) arr = filterByWeek(arr, weekRanges[weekId - 1])
     setFilteredData(arr)

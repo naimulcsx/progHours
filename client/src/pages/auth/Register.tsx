@@ -72,12 +72,13 @@ const Register = (): JSX.Element => {
         }}
         mutation={registerMutation}
         onSuccess={(res) => {
-          navigate("/login") // redirect to the login page
+          // redirect to the login page
+          navigate("/login")
+          // show the toast message
           toast({
             status: "success",
-            title: "Account created!",
-            description: "You may now login.",
-          }) // create the toast
+            title: res.message,
+          })
         }}
         onError={(err) => {
           const { data, status, statusText } = err.response
