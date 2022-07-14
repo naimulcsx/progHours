@@ -42,15 +42,17 @@ export default function SolveTime(cell: Cell<Submission>) {
   })
 
   const handleBlur = (value: string) => {
+    console.log(value)
     if (prevRef.current !== time) {
-      mutate({ id: cell.row.original.id, solveTime: parseInt(value, 10) })
+      mutate({ id: cell.row.original.id, solveTime: Number(value) })
       prevRef.current = value
     }
   }
 
   const handleEnter = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === "Enter") {
-      mutate({ id: cell.row.original.id, solveTime: parseInt(time, 10) })
+    console.log(time)
+    if (e.key === "Enter" && prevRef.current !== time) {
+      mutate({ id: cell.row.original.id, solveTime: parseInt(time) })
       prevRef.current = time
     }
   }

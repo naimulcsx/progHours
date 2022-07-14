@@ -17,6 +17,7 @@ const deleteSubmission = (id) => {
 }
 
 const updateSubmission = ({ id, ...values }) => {
+  console.log(values)
   return axios.patch(`/api/submissions/${id}`, values).then((res) => res.data)
 }
 
