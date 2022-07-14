@@ -95,7 +95,7 @@ export class SubmissionsController {
     })
     return {
       statusCode: HttpStatus.OK,
-      message: "Submission Updated!",
+      message: "Submission updated!",
     }
   }
 

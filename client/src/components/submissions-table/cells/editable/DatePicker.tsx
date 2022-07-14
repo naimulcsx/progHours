@@ -32,7 +32,7 @@ const DatePicker = (cell: Cell<Submission>) => {
     },
   })
   const handleBlur = () => {
-    mutate({ id: cell.row.original.id, solved_at: date })
+    mutate({ id: cell.row.original.id, solvedAt: date })
   }
   return (
     <ReactDatePicker

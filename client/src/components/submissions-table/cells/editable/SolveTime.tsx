@@ -15,39 +15,42 @@ export default function SolveTime(cell: Cell<Submission>) {
   const [time, setTime] = useState(cell.value)
 
   const { mutate } = useMutation(updateSubmission, {
-    onSuccess: () => {
+    onSuccess: (res) => {
       /**
        * After data is updated in the server, we need to update it the client state
        */
-      toast({ title: "Submission Updated!", status: "success" })
+      toast({ status: "success", title: res.message })
       const oldData: Practice | undefined = client.getQueryData("submissions")
-      const newData = oldData?.submissions.map((el: Submission) => {
+      const newData = oldData?.body.submissions.map((el: Submission) => {
         /**
          * If this submission is the one, we updated on server, update it's solvetime
          */
         if (el.id === cell.row.original.id) {
-          return { ...el, solve_time: parseInt(time) }
+          return { ...el, solveTime: parseInt(time) }
         }
         return el
       })
-      client.setQueryData("submissions", { submissions: newData })
+      client.setQueryData("submissions", {
+        body: {
+          submissions: newData,
+        },
+      })
     },
-    onError: (err: AxiosError) => {
-      console.log(err)
-      toast({ title: err.response?.data.message, status: "error" })
+    onError: (err: any) => {
+      toast({ title: err?.response?.data.message, status: "error" })
     },
   })
 
   const handleBlur = (value: string) => {
     if (prevRef.current !== time) {
-      mutate({ id: cell.row.original.id, solve_time: parseInt(value, 10) })
+      mutate({ id: cell.row.original.id, solveTime: parseInt(value, 10) })
       prevRef.current = value
     }
   }
 
   const handleEnter = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === "Enter") {
-      mutate({ id: cell.row.original.id, solve_time: parseInt(time, 10) })
+      mutate({ id: cell.row.original.id, solveTime: parseInt(time, 10) })
       prevRef.current = time
     }
   }

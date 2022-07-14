@@ -7,8 +7,8 @@ import moment from "moment"
 const filterByWeek = (arr: any, range: WeekRange) =>
   arr.filter((el: any) => {
     if (
-      new Date(el.solved_at) >= range.from &&
-      new Date(el.solved_at) <= range.to
+      new Date(el.solvedAt) >= range.from &&
+      new Date(el.solvedAt) <= range.to
     )
       return true
   })
@@ -21,8 +21,8 @@ function getMinDate(arr: any[]) {
   var len = arr.length,
     min = new Date()
   while (len--) {
-    if (new Date(arr[len].solved_at) < min) {
-      min = new Date(arr[len].solved_at)
+    if (new Date(arr[len].solvedAt) < min) {
+      min = new Date(arr[len].solvedAt)
     }
   }
   return moment(min).startOf("day").toDate()

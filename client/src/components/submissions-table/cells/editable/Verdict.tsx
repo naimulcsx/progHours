@@ -22,11 +22,11 @@ const Verdict = (cell: Cell<Submission>) => {
   const [selected, setSelected] = useState(cell.value)
 
   const { mutate } = useMutation(updateSubmission, {
-    onSuccess: () => {
+    onSuccess: (res) => {
       /**
        * Show toast message
        */
-      toast({ title: "Submission Updated!", status: "success" })
+      toast({ title: res.message, status: "success" })
     },
     onError: (err: AxiosError) => {
       /**
@@ -43,7 +43,7 @@ const Verdict = (cell: Cell<Submission>) => {
     /**
      * If this submission is the one, we updated on, update it's verdict
      */
-    const newData = oldData?.submissions.map((el) => {
+    const newData = oldData?.body.submissions.map((el) => {
       if (cell.row.original.id == el.id) {
         return { ...el, verdict: value }
       }
@@ -52,7 +52,7 @@ const Verdict = (cell: Cell<Submission>) => {
     /**
      * Update the new client state
      */
-    client.setQueryData("submissions", { submissions: newData })
+    client.setQueryData("submissions", { body: { submissions: newData } })
 
     /**
      * Update the data in the server
@@ -75,6 +75,11 @@ const Verdict = (cell: Cell<Submission>) => {
       color: "red.900",
       borderColor: "red.200",
     },
+    TLE: {
+      bg: "orange.100",
+      color: "orange.900",
+      borderColor: "orange.200",
+    },
   }
 
   return (
@@ -88,9 +93,7 @@ const Verdict = (cell: Cell<Submission>) => {
     >
       <option value="AC">AC</option>
       <option value="WA">WA</option>
-      {/* <option value="TLE">TLE</option>
-      <option value="RTE">RTE</option>
-      <option value="MLE">MLE</option> */}
+      <option value="TLE">TLE</option>
     </Select>
   )
 }
