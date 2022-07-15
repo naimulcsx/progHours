@@ -51,18 +51,6 @@ export class UsersService {
     })
   }
 
-  /**
-   * Find user that matches given properties
-   */
-  async getUser(match) {
-    /**
-     * Consider username to be case insensitive
-     */
-    if (typeof match.username === "string")
-      match.username = match.username.toLowerCase()
-    return this.usersRepository.findOne(match)
-  }
-
   createQueryBuilder(alias) {
     return this.usersRepository.createQueryBuilder(alias)
   }
@@ -127,7 +115,7 @@ export class UsersService {
   }
 
   async updatePassword({ currentPassword, newPassword }, userId) {
-    const user = await this.getUser({ id: userId })
+    const user = await this.getUserById(userId)
     /**
      * This condition will never be hit, unless you have access token of an user which is not there in the database
      */
