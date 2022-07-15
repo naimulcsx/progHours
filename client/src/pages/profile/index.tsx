@@ -105,7 +105,7 @@ export default function Profile() {
     <>
       <Navbar />
       {user && userStats && submissionQuery.data ? (
-        <>
+        <Box>
           <Helmet>
             <title>{user.name}</title>
           </Helmet>
@@ -124,10 +124,17 @@ export default function Profile() {
               <TabPanels>
                 <TabPanel mx={-4}>Hello world!</TabPanel>
                 <TabPanel>
-                  <Box mx={-4} mb={4}>
+                  <Box mx={-4} mb={4} mt={2}>
                     <UserStats progress={userStats} />
                   </Box>
-                  <Box p={8} bg="white" rounded="lg" shadow="base" mx={-4}>
+                  <Box
+                    p={8}
+                    pb={2}
+                    bg="white"
+                    rounded="lg"
+                    shadow="base"
+                    mx={-4}
+                  >
                     <TagsFreqChart data={userStats["tagsFrequency"]} />
                   </Box>
                 </TabPanel>
@@ -139,7 +146,7 @@ export default function Profile() {
               </TabPanels>
             </Tabs>
           </Container>
-        </>
+        </Box>
       ) : (
         <Container pt={20}>
           <Spinner size="sm" />

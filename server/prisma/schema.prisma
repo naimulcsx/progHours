@@ -23,7 +23,7 @@ model User {
   role        Role         @default(USER)
   memberSince DateTime     @default(now())
   submissions Submission[]
-  UserStat    UserStat?
+  userStat    UserStat?
 
   @@index(username)
 }

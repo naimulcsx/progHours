@@ -70,7 +70,7 @@ export const SubmissionsTable = ({
   return (
     <Box position="relative">
       <Box
-        mt={6}
+        mt={isEditable ? 6 : 4}
         mx={isEditable ? -4 : 0}
         shadow={isEditable ? "initial" : "base"}
         rounded={isEditable ? "none" : "lg"}
