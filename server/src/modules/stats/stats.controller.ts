@@ -6,6 +6,7 @@ import {
   UseGuards,
   Param,
   NotFoundException,
+  HttpStatus,
 } from "@nestjs/common"
 import {
   ApiForbiddenResponse,
@@ -36,23 +37,24 @@ export class StatsController {
   @ApiForbiddenResponse({ description: "Forbidden." })
   async getStats(@Req() req) {
     const stats = await this.statsService.getUserStats(req.user.id)
-    return {
-      ...stats,
-    }
+    return stats
   }
 
   /**
-   * GET /stats/ranklist
+   * GET /stats
    * Returns the ranklist of the users
    */
-  @Get("/ranklist")
+  @Get("/")
   @ApiOperation({ summary: "Returns the ranklist of the users." })
   @ApiOkResponse({ description: "Success." })
   @ApiForbiddenResponse({ description: "Forbidden." })
   async getRanklist() {
     const result = await this.statsService.getRankList()
     return {
-      ranklist: result,
+      statusCode: HttpStatus.OK,
+      body: {
+        stats: result,
+      },
     }
   }
 

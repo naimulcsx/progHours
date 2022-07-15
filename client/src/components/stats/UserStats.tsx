@@ -17,7 +17,13 @@ function convertToHours(totalTimeInMin: number): string {
 }
 
 const UserStats = ({ progress }: { progress: Progress }) => {
-  const { total_solved, total_solve_time, average_difficulty } = progress
+  let {
+    totalSolved,
+    totalSolveTime,
+    totalSolvedWithDifficulty,
+    totalDifficulty,
+  } = progress
+  progress.averageDifficulty = totalDifficulty / totalSolvedWithDifficulty || 0
   return (
     <SimpleGrid columns={4} gap={4}>
       <StatCard
@@ -31,21 +37,21 @@ const UserStats = ({ progress }: { progress: Progress }) => {
         icon={<TrendingUpIcon width={24} height={24} />}
         data={{
           label: "Problems Solved",
-          value: total_solved,
+          value: totalSolved,
         }}
       />
       <StatCard
         icon={<ClockIcon width={24} height={24} />}
         data={{
           label: "Solve Time",
-          value: convertToHours(total_solve_time),
+          value: convertToHours(totalSolveTime),
         }}
       />
       <StatCard
         icon={<LightningBoltIcon width={24} height={24} />}
         data={{
           label: "Average Difficulty",
-          value: average_difficulty.toFixed(2),
+          value: progress.averageDifficulty.toFixed(2),
         }}
       />
     </SimpleGrid>
@@ -61,14 +67,14 @@ interface ProgressBox {
 }
 
 interface Progress {
-  average_difficulty: number
-  total_solved: number
-  total_solve_time: number
-  verdict_count: {
+  averageDifficulty: number
+  totalDifficulty: number
+  totalSolved: number
+  totalSolveTime: number
+  totalSolvedWithDifficulty: number
+  verdictCount: {
     AC: number
     WA: number
-    RTE: number
-    MLE: number
     TLE: number
   }
 }

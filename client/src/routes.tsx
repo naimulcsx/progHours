@@ -13,7 +13,7 @@ import Register from "@/pages/auth/Register"
  */
 import DashboardHome from "@/pages/dashboard/Home"
 import TrackingSheet from "@/pages/dashboard/Tracking"
-import LeaderboardPage from "@/pages/leaderboard"
+import LeaderboardPage from "@/pages/Leaderboard"
 
 /**
  * Profile page

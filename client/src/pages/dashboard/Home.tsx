@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { useContext, useState } from "react"
 import { useQuery } from "react-query"
 import { Helmet } from "react-helmet-async"
 import { Box, Spinner } from "@chakra-ui/react"
@@ -17,8 +17,10 @@ import TagsFreqChart from "@/components/stats/visualizations/TagsFreqChart"
 import { getStats } from "@/api/dashboard"
 import { getSubmissions } from "@/api/submissions"
 import { getWeekRanges } from "@/utils/getWeekRanges"
+import { GlobalContext } from "@/GlobalStateProvider"
 
 const DashboardHome = () => {
+  const { user } = useContext(GlobalContext)
   /**
    * Get statistics: number of problem solved, total solve time and average_difficulty
    */
@@ -36,19 +38,16 @@ const DashboardHome = () => {
   }
   let [frequency, setFrequency] = useState<Frequency | null>(null)
   useQuery("submissions", getSubmissions, {
-    onSuccess: (data) => {
+    onSuccess: (res) => {
       const frequency: Frequency = {}
-      const weekRanges = getWeekRanges(data.body.submissions)
+      const weekRanges = getWeekRanges(res.body.submissions)
       /**
        * For each week k, calculate how many problems are solved in the k'th week
        */
-      for (let i = 0; i < data.submissions.length; ++i) {
+      for (let i = 0; i < res.body.submissions.length; ++i) {
         for (let j = 0; j < weekRanges.length; ++j) {
-          const solved_at = new Date(data.submissions[i].solved_at)
-          if (
-            solved_at >= weekRanges[j].from &&
-            solved_at <= weekRanges[j].to
-          ) {
+          const solvedAt = new Date(res.body.submissions[i].solvedAt)
+          if (solvedAt >= weekRanges[j].from && solvedAt <= weekRanges[j].to) {
             if (!frequency[j + 1]) frequency[j + 1] = 0
             frequency[j + 1]++
           }
@@ -58,11 +57,11 @@ const DashboardHome = () => {
     },
   })
   return (
-    <DashboardLayout title="Hi! Naimul Haque">
+    <DashboardLayout title={`Hi! ${user?.name || ""}`}>
       <Helmet>
         <title>Dashboard</title>
       </Helmet>
-      {data && frequency && data["tags_frequency"] ? (
+      {data && frequency && data["tagsFrequency"] ? (
         <>
           <Box mb={4}>
             <UserStats progress={data} />
@@ -72,7 +71,7 @@ const DashboardHome = () => {
               {<WeeklySolvedChart data={frequency} />}
             </Box>
             <Box className="w-full h-full col-span-2 px-8 pt-8 pb-0 bg-white rounded-lg shadow xl:px-8 md:px-16 lg:px-32">
-              <TagsFreqChart data={data["tags_frequency"]} />
+              <TagsFreqChart data={data["tagsFrequency"]} />
             </Box>
           </Box>
         </>

@@ -59,15 +59,15 @@ const LeaderboardTable = ({ ranklist }: { ranklist: RanklistItem[] }) => {
         },
         {
           Header: "Solve Count",
-          accessor: "total_solved",
+          accessor: "totalSolved",
         },
         {
           Header: "Solve Time",
-          accessor: "total_solve_time",
+          accessor: "totalSolveTime",
         },
         {
           Header: "Average Solve Difficulty",
-          accessor: "average_difficulty",
+          accessor: "averageDifficulty",
         },
         {
           Header: "Points",

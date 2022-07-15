@@ -4,10 +4,13 @@ import { Submission } from "@/modules/submissions/submission.entity"
 import { Connection, Repository } from "typeorm"
 import { UsersService } from "../users/users.service"
 import { Ranking } from "../ranking/ranking.entity"
+import { PrismaService } from "../prisma/prisma.service"
+import { stat } from "fs"
 
 @Injectable()
 export class StatsService {
   constructor(
+    private prisma: PrismaService,
     @InjectConnection() private readonly connection: Connection,
 
     @InjectRepository(Submission)
@@ -22,16 +25,18 @@ export class StatsService {
    * Uses all of the other helper methods and return all the statistics
    */
   async getUserStats(userId) {
-    const verdict_count = await this.getVerdictFrequency(userId)
-    const total_solve_time = await this.getSolveTime(userId)
-    const average_difficulty = await this.getAverageDifficulty(userId)
-    const tags_frequency = await this.getTagsFrequency(userId)
+    const verdictCount = await this.getVerdictFrequency(userId)
+    const userStat = await this.prisma.userStat.findUnique({
+      where: { userId },
+    })
+    const tagsFrequency = await this.getTagsFrequency(userId)
     return {
-      verdict_count,
-      total_solve_time,
-      average_difficulty,
-      total_solved: verdict_count.AC,
-      tags_frequency,
+      verdictCount,
+      totalSolved: userStat.totalSolved,
+      totalDifficulty: userStat.totalDifficulty,
+      totalSolveTime: userStat.totalSolveTime,
+      totalSolvedWithDifficulty: userStat.totalSolvedWithDifficulty,
+      tagsFrequency,
     }
   }
 
@@ -72,23 +77,15 @@ export class StatsService {
       GROUP BY 
         "submission"."verdict"
     */
-    const result = await this.submissionsRepository
-      .createQueryBuilder("submission")
-      .select(["submission.verdict", "COUNT(submission.verdict)"])
-      .where("submission.user_id = :userId", { userId })
-      .groupBy("submission.verdict")
-      .execute()
-    const freq = {
-      AC: 0,
-      WA: 0,
-      TLE: 0,
-      RTE: 0,
-      MLE: 0,
-    }
-    result.forEach(
-      ({ submission_verdict, count }) =>
-        (freq[submission_verdict] = parseInt(count))
-    )
+    const result = await this.prisma.submission.groupBy({
+      by: ["verdict"],
+      where: { userId },
+      _count: {
+        verdict: true,
+      },
+    })
+    const freq = {}
+    result.forEach(({ verdict, _count }) => (freq[verdict] = _count.verdict))
     return freq
   }
 
@@ -104,12 +101,13 @@ export class StatsService {
       WHERE 
         "submission"."user_id" = : userId
     */
-    const { total_solve_time } = await this.submissionsRepository
-      .createQueryBuilder("submission")
-      .select("SUM(submission.solve_time) as total_solve_time")
-      .where("submission.user_id = :userId", { userId })
-      .getRawOne()
-    return total_solve_time ? parseInt(total_solve_time) : 0
+    const {
+      _sum: { solveTime },
+    } = await this.prisma.submission.aggregate({
+      where: { userId },
+      _sum: { solveTime: true },
+    })
+    return solveTime
   }
 
   /**
@@ -129,18 +127,7 @@ export class StatsService {
         AND "submission"."verdict" = 'AC' 
         AND "problem"."difficulty" > 0
     */
-    let { average_difficulty } = await this.submissionsRepository
-      .createQueryBuilder("submission")
-      .where("submission.user_id = :userId", { userId: userId })
-      .andWhere("submission.verdict = 'AC'")
-      .innerJoinAndSelect("submission.problem", "problem")
-      .andWhere("problem.difficulty > 0")
-      .select([
-        "CAST(SUM(problem.difficulty) AS float) / COUNT(problem.difficulty) AS average_difficulty",
-      ])
-      .getRawOne()
-
-    return average_difficulty ? parseFloat(average_difficulty) : 0
+    return 0
   }
 
   /**
@@ -170,37 +157,36 @@ export class StatsService {
    * Get user ranklist
    */
   async getRankList() {
-    return await this.rankRepository
-      .createQueryBuilder("ranklist")
-      .leftJoinAndSelect("ranklist.user", "user")
-      .getMany()
+    return this.prisma.userStat.findMany({
+      include: { user: true },
+    })
   }
 
   /**
    * Get tags frequency
    */
   async getTagsFrequency(userId) {
-    const rawData = await this.connection.query(`
+    const rawData = await this.prisma.$queryRaw`
       SELECT 
-        tags.name, 
-        COUNT(tags.name) 
+        "Tag"."name", 
+        CAST(COUNT("Tag"."name") AS int)
       FROM 
-        problem_tags 
-      LEFT JOIN tags ON problem_tags.tag_id = tags.id 
+        "ProblemTag" 
+      LEFT JOIN "Tag" ON "ProblemTag"."tagId" = "Tag"."id"
       WHERE 
-        problem_tags.problem_id IN (
+        "ProblemTag"."problemId" IN (
           SELECT 
-            problems.id 
+            "Problem"."id"
           FROM 
-            submissions 
-            LEFT JOIN problems ON problems.id = submissions.problem_id 
+            "Submission" 
+            LEFT JOIN "Problem" ON "Problem"."id" = "Submission"."problemId" 
           WHERE 
-            submissions.user_id = ${userId}
-            AND submissions.verdict = 'AC'
+            "Submission"."userId" = ${userId}
+            AND "Submission"."verdict" = 'AC'
         ) 
       GROUP BY 
-        tags.name
-    `)
+        "Tag"."name"
+    `
     return rawData
   }
 }
