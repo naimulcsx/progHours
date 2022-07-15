@@ -17,10 +17,10 @@ import {
 /**
  * Import Components
  */
-import MobileNav from "@/components/MobileNav"
+// import MobileNav from "@/components/MobileNav"
 import Navbar from "@/components/navbar"
-import ProgressBox from "@/components/ProgressBox"
-import ProfileTable from "@/components/profile/Table"
+// import ProgressBox from "@/components/ProgressBox"
+// import ProfileTable from "@/components/profile/Table"
 
 /**
  * Import API
@@ -50,15 +50,12 @@ interface User {
 
 export default function Profile() {
   const toast = useToast(DEFAULT_TOAST_OPTIONS)
-  // const { user } = useContext(GlobalContext)
   const { username } = useParams()
-  const navigate = useNavigate()
 
   /**
    * Get statistics
    */
   let [user, setUser] = useState<User>({})
-  const progressQuery = useQuery("stats", getStats)
   let [submissions, setSubmissions] = useState([])
 
   /**
@@ -68,26 +65,28 @@ export default function Profile() {
     `submissions/${username}`,
     () => getSubmissionsByUsername(username ? username : "-1"),
     {
-      onSuccess: (data) => {
+      onSuccess: (res) => {
         // setUser(data.user)
-        setSubmissions(data.submissions)
+        setSubmissions(res.body.submissions)
       },
     }
   )
 
-  const userQuery = useQuery(
+  useQuery(
     `users/${username}`,
     () => getUserByUsername(username ? username : "-1"),
     {
       retry: 1,
-      onSuccess: (user) => {
-        setUser(user)
+      onSuccess: (res) => {
+        console.log(res.body.user)
+        setUser(res.body.user)
       },
       onError: (err) => {
-        showErrorToasts(toast, err.response?.data.message)
+        // showErrorToasts(toast, err.response?.data.message)
       },
     }
   )
+
   return (
     <>
       <Navbar />
@@ -99,7 +98,7 @@ export default function Profile() {
           <UserCard
             name={user.name!}
             username={user.username!}
-            member_since={user.member_since!}
+            member_since={user.memberSince!}
           />
           <Container>
             <Tabs>

@@ -7,10 +7,10 @@ import {
   ModalBody,
   ModalFooter,
   Button,
+  Text,
 } from "@chakra-ui/react"
 import { Dialog, Transition } from "@headlessui/react"
 import { Fragment, ReactNode, useState } from "react"
-import { twMerge } from "tailwind-merge"
 
 interface PopupBuilderProps {
   children?: ReactNode
@@ -19,6 +19,7 @@ interface PopupBuilderProps {
   setIsOpen: Function
   className?: string
   size?: string
+  description?: string
 }
 
 export default function PopupBuilder({
@@ -28,6 +29,7 @@ export default function PopupBuilder({
   setIsOpen,
   className,
   size = "lg",
+  description,
 }: PopupBuilderProps) {
   return (
     <Modal
@@ -38,7 +40,14 @@ export default function PopupBuilder({
     >
       <ModalOverlay />
       <ModalContent>
-        <ModalHeader>{title}</ModalHeader>
+        <ModalHeader display="flex" flexDirection="column">
+          <span>{title}</span>
+          {description && (
+            <Text as="span" color="gray.500" fontSize="sm">
+              {description}
+            </Text>
+          )}
+        </ModalHeader>
         <ModalCloseButton />
         {children}
       </ModalContent>

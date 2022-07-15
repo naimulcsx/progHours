@@ -4,7 +4,6 @@ import { Helmet } from "react-helmet-async"
 /**
  * Import Components and helpers
  */
-import Spinner from "@/components/Spinner"
 import { DashboardLayout } from "@/components/layouts/Dashboard"
 import { SubmissionsTable } from "@/components/submissions-table"
 import WeekFilters from "@/components/filters/WeekFilter"
@@ -16,7 +15,6 @@ import { GlobalContext } from "@/GlobalStateProvider"
 import { UploadIcon } from "@heroicons/react/solid"
 import ImportCsvModal from "./ImportCsvModal"
 import csvToArray from "@/utils/csvToArray"
-import DashboardHeader from "@/components/dashboard/Header"
 import { Box, Button, Flex } from "@chakra-ui/react"
 
 export default function TrackingSheet() {

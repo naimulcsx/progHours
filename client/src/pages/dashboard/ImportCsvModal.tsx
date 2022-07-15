@@ -7,7 +7,23 @@ import { useMutation, useQueryClient } from "react-query"
 import { AxiosError } from "axios"
 import moment from "moment"
 import PopupBuilder from "@/components/PopupBuilder"
-import { Spinner } from "@chakra-ui/react"
+import {
+  Box,
+  Button,
+  HStack,
+  ModalBody,
+  ModalFooter,
+  Spinner,
+  Table,
+  Tbody,
+  Td,
+  Text,
+  Th,
+  Thead,
+  Tooltip,
+  Tr,
+  VStack,
+} from "@chakra-ui/react"
 
 export default function ImportCsvModal({
   isOpen,
@@ -100,7 +116,7 @@ export default function ImportCsvModal({
         link,
         solvedDuringContest,
         verdict,
-        solve_time,
+        solveTime,
         date,
         submissionLink,
         comment,
@@ -133,8 +149,8 @@ export default function ImportCsvModal({
         await mutateAsync({
           link,
           verdict,
-          solve_time: parseInt(solve_time),
-          solved_at: date,
+          solveTime: parseInt(solveTime),
+          solvedAt: date,
         })
       } catch (err) {}
     }
@@ -154,99 +170,103 @@ export default function ImportCsvModal({
   return (
     <PopupBuilder
       title={`Import Submissions (${successCount} / ${items.length})`}
+      description="Please wait until we process your .csv file. Don't close the browser window."
       isOpen={isOpen}
       setIsOpen={setIsOpen}
-      className="max-w-2xl"
+      size="3xl"
     >
-      <p className="text-sm text-gray-500">
-        Please wait until we process your .csv file. Don't close the browser
-        window.
-      </p>
+      <ModalBody>
+        <Box maxH="96" overflowX="hidden">
+          <Table fontSize="sm">
+            <Thead>
+              <Tr>
+                <Th>ID</Th>
+                <Th>Link</Th>
+                <Th>Status</Th>
+              </Tr>
+            </Thead>
+            <Tbody>
+              {items.map((item, i) => {
+                const [
+                  link,
+                  solvedDuringContest,
+                  verdict,
+                  solve_time,
+                  date,
+                  submissionLink,
+                  comment,
+                ]: Array<string> = item
 
-      <div className="w-full h-64 max-w-2xl py-3 mt-4 overflow-x-hidden">
-        <div className="flex px-5 py-2 space-x-12 text-sm uppercase bg-gray-100 border-t border-b">
-          <p>ID</p>
-          <p>Link</p>
-        </div>
-        {items.map((item, i) => {
-          const [
-            link,
-            solvedDuringContest,
-            verdict,
-            solve_time,
-            date,
-            submissionLink,
-            comment,
-          ]: Array<string> = item
+                const isSuccess =
+                  importStarted && status[link].status === "success"
+                const isLoading =
+                  importStarted && status[link].status === "loading"
+                const isError = importStarted && status[link].status === "error"
 
-          const isSuccess = importStarted && status[link].status === "success"
-          const isLoading = importStarted && status[link].status === "loading"
-          const isError = importStarted && status[link].status === "error"
-
-          return (
-            <div
-              className="flex items-center justify-between px-6 py-2 text-sm text-gray-500 border-b"
-              key={`${link}-${i}}`}
+                return (
+                  <Tr key={`${link}-${i}}`}>
+                    <Td maxW={16} w={16}>
+                      <Text w={16}>{i + 1}</Text>
+                    </Td>
+                    <Td
+                      w="500px"
+                      maxW="500px"
+                      className={`${isSuccess ? "text-green-500" : ""} ${
+                        isError ? "text-red-500" : ""
+                      }`}
+                    >
+                      {link}
+                    </Td>
+                    <Td>
+                      {isSuccess && (
+                        <CheckIcon className="w-5 h-5 p-1 text-white bg-green-500 rounded-full shrink-0 grow-0" />
+                      )}
+                      {isLoading && <Spinner size="sm" />}
+                      {isError && (
+                        <Tooltip label={status[link].error}>
+                          <div className="shrink-0 grow-0">
+                            <InformationCircleIcon className="w-5 h-5 text-red-500 rounded-full" />
+                          </div>
+                        </Tooltip>
+                      )}
+                    </Td>
+                  </Tr>
+                )
+              })}
+            </Tbody>
+          </Table>
+        </Box>
+      </ModalBody>
+      <ModalFooter>
+        <HStack>
+          {!importFinished && (
+            <Button
+              colorScheme="blue"
+              onClick={handleImportRequest}
+              disabled={importStarted && !importFinished}
             >
-              <div className="flex space-x-12">
-                <p>{i + 1}</p>
-                <p
-                  className={`${isSuccess ? "text-green-500" : ""} ${
-                    isError ? "text-red-500" : ""
-                  }`}
-                >
-                  {link}
-                </p>
-              </div>
-              {isSuccess && (
-                <CheckIcon className="w-5 h-5 p-1 text-white bg-green-500 rounded-full shrink-0 grow-0" />
+              {importStarted && !importFinished && (
+                <Text display="flex" alignItems="center" gap={2}>
+                  <Spinner size="sm" />
+                  <span>Importing</span>
+                </Text>
               )}
-              {isLoading && (
-                <p>
-                  <Spinner />
-                </p>
-              )}
-              {isError && (
-                <div title={status[link].error} className="shrink-0 grow-0">
-                  <InformationCircleIcon className="w-5 h-5 text-red-500 rounded-full" />
-                </div>
-              )}
-            </div>
-          )
-        })}
-      </div>
-
-      <div className="flex mt-8 space-x-4">
-        {!importFinished && (
-          <button
-            type="button"
-            className="inline-flex items-center justify-center h-10 px-4 text-sm font-medium text-blue-900 bg-blue-100 border border-transparent rounded-md hover:bg-blue-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-blue-500 disabled:bg-gray-100"
-            onClick={handleImportRequest}
-            disabled={importStarted && !importFinished}
+              {!importStarted && <span>Start import</span>}
+            </Button>
+          )}
+          <Button
+            colorScheme="gray"
+            onClick={() => {
+              setIsOpen(false)
+              setStatus({})
+              setImportStarted(false)
+              setImportFinished(false)
+            }}
           >
-            {importStarted && !importFinished && (
-              <p className="flex items-center space-x-2">
-                <Spinner show={true} />
-                <span>Importing</span>
-              </p>
-            )}
-            {!importStarted && <span>Start import</span>}
-          </button>
-        )}
-
-        <button
-          type="button"
-          className="inline-flex items-center justify-center h-10 px-4 text-sm font-medium text-blue-900 bg-blue-100 border border-transparent rounded-md hover:bg-blue-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-blue-500"
-          onClick={() => {
-            setIsOpen(false)
-            setStatus({})
-            setImportStarted(false)
-            setImportFinished(false)
-          }}
-        >
-          Close
-        </button>
-      </div>
+            Close
+          </Button>
+        </HStack>
+      </ModalFooter>
     </PopupBuilder>
   )
 }
