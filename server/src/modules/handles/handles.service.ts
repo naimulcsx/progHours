@@ -1,59 +1,78 @@
 import { Injectable } from "@nestjs/common"
-import { InjectRepository } from "@nestjs/typeorm"
-import { Repository } from "typeorm"
-import { Handle } from "./handles.entity"
+import { PrismaService } from "../prisma/prisma.service"
 
 @Injectable()
 export class HandlesService {
-  constructor(
-    @InjectRepository(Handle)
-    private handlesRepository: Repository<Handle>
-  ) {}
+  constructor(private prisma: PrismaService) {}
 
   /**
    * Get a handle
    */
-  findHandle({ user_id, judge_id }) {
-    return this.handlesRepository.findOne({
-      where: { user_id, judge_id },
+  findHandle({ userId, onlineJudgeId }) {
+    return this.prisma.handle.findFirst({
+      where: {
+        userId,
+        onlineJudgeId,
+      },
     })
   }
 
   /**
    * Create a handle
    */
-  async createHandles({ handle, judge_id, user_id }) {
-    const newHandles = this.handlesRepository.create({
-      handle,
-      judge_id,
-      user_id,
+  async createHandles({ handle, onlineJudgeId, userId }) {
+    return this.prisma.handle.create({
+      data: {
+        handle,
+        onlineJudgeId,
+        userId,
+      },
     })
-    return this.handlesRepository.save(newHandles)
   }
 
   /**
    * Find all handles
    */
   async findAllHandles(userId: number) {
-    const handles = await this.handlesRepository
-      .createQueryBuilder("handle")
-      .where("handle.user_id = :userId", { userId })
-      .innerJoinAndSelect("handle.judge_id", "judge_id")
-      .innerJoinAndSelect("handle.user_id", "user_id")
-      .select(["handle", "user_id.username", "judge_id.name", "judge_id.id"])
-      .getMany()
-
-    return handles
+    return this.prisma.handle.findMany({
+      where: {
+        userId,
+      },
+      include: {
+        user: true,
+        onlineJudge: true,
+      },
+    })
   }
 
   /**
    * Delete handle
    */
-  async deleteHandle(userId: number, judge_id: number) {
-    const foundHandle = await this.findHandle({ user_id: userId, judge_id })
+  async deleteHandle(userId: number, onlineJudgeId: number) {
+    const foundHandle = await this.findHandle({ userId, onlineJudgeId })
 
-    console.log("foundHandle", judge_id, userId)
+    return this.prisma.handle.delete({
+      where: {
+        id: foundHandle.id,
+      },
+    })
+  }
 
-    return this.handlesRepository.delete(foundHandle)
+  /**
+   * Update handle
+   */
+  async updateHandle(userId: number, onlineJudgeId: number, handle: string) {
+    const foundHandle = await this.findHandle({ userId, onlineJudgeId })
+
+    return this.prisma.handle.update({
+      where: {
+        id: foundHandle.id,
+      },
+      data: {
+        handle,
+        onlineJudgeId,
+        userId,
+      },
+    })
   }
 }
