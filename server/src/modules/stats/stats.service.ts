@@ -5,20 +5,14 @@ import { Connection, Repository } from "typeorm"
 import { UsersService } from "../users/users.service"
 import { Ranking } from "../ranking/ranking.entity"
 import { PrismaService } from "../prisma/prisma.service"
-import { stat } from "fs"
 
 @Injectable()
 export class StatsService {
   constructor(
     private prisma: PrismaService,
-    @InjectConnection() private readonly connection: Connection,
-
     @InjectRepository(Submission)
     private submissionsRepository: Repository<Submission>,
-    private readonly usersService: UsersService,
-
-    @InjectRepository(Ranking)
-    private rankRepository: Repository<Ranking>
+    private readonly usersService: UsersService
   ) {}
 
   /**
@@ -38,28 +32,6 @@ export class StatsService {
       totalSolvedWithDifficulty: userStat.totalSolvedWithDifficulty,
       tagsFrequency,
     }
-  }
-
-  /**
-   * Returns the number of total solved problems by a particular user
-   */
-  async getTotalSolvedCount(userId) {
-    /* -------------- SQL Query ----------------
-      SELECT 
-        COUNT("submission"."verdict") 
-      FROM 
-        "submissions" "submission" 
-      WHERE 
-        "submission"."verdict" = 'AC' 
-        AND "submission"."user_id" = : userId
-  */
-    const { count } = await this.submissionsRepository
-      .createQueryBuilder("submission")
-      .where("submission.verdict = 'AC'")
-      .andWhere("submission.user_id = :userId", { userId })
-      .select("COUNT(submission.verdict)")
-      .getRawOne()
-    return count ? parseInt(count) : 0
   }
 
   /**
@@ -133,25 +105,25 @@ export class StatsService {
   /**
    * Get user live ranklist
    */
-  async getLiveRanklist() {
-    const users = await this.usersService
-      .createQueryBuilder("user")
-      .select(["user.username", "user.name", "user.id"])
-      .getMany()
-    const result = []
-    for (let user of users) {
-      const average_difficulty = await this.getAverageDifficulty(user.id)
-      const total_solve_time = await this.getSolveTime(user.id)
-      const total_solved = await this.getTotalSolvedCount(user.id)
-      result.push({
-        ...user,
-        average_difficulty,
-        total_solve_time,
-        total_solved,
-      })
-    }
-    return result
-  }
+  // async getLiveRanklist() {
+  //   const users = await this.usersService
+  //     .createQueryBuilder("user")
+  //     .select(["user.username", "user.name", "user.id"])
+  //     .getMany()
+  //   const result = []
+  //   for (let user of users) {
+  //     const average_difficulty = await this.getAverageDifficulty(user.id)
+  //     const total_solve_time = await this.getSolveTime(user.id)
+  //     const total_solved = await this.getTotalSolvedCount(user.id)
+  //     result.push({
+  //       ...user,
+  //       average_difficulty,
+  //       total_solve_time,
+  //       total_solved,
+  //     })
+  //   }
+  //   return result
+  // }
 
   /**
    * Get user ranklist

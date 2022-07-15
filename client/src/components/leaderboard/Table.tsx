@@ -67,7 +67,7 @@ const LeaderboardTable = ({ ranklist }: { ranklist: RanklistItem[] }) => {
         },
         {
           Header: "Average Solve Difficulty",
-          accessor: "averageDifficulty",
+          accessor: (row: RanklistItem) => row.averageDifficulty.toFixed(2),
         },
         {
           Header: "Points",
