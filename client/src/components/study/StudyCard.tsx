@@ -1,12 +1,15 @@
-import { Box, Heading, Flex } from "@chakra-ui/react"
+import { Box, Heading, Flex, IconButton } from "@chakra-ui/react"
 import {
   NewspaperIcon,
   PlayIcon,
   TranslateIcon,
 } from "@heroicons/react/outline"
 import moment from "moment"
+import { useState } from "react"
+import { EditIcon } from "../Icons"
+import PopupBuilder from "../PopupBuilder"
 import DeleteStudyList from "./DeleteStudyList"
-import EditStudyList from "./EditStudyList"
+import StudyForm from "./StudyForm"
 
 interface Study {
   title: string
@@ -18,9 +21,11 @@ interface Study {
   studyTime: number
 }
 
-export default function StudyCard(props: Study) {
+export default function StudyCard(studies: Study) {
+  const [isOpen, setIsOpen] = useState(false)
+
   const { title, type, language, link, difficulty, studyTime, studyDate } =
-    props
+    studies
 
   return (
     <Box
@@ -65,7 +70,7 @@ export default function StudyCard(props: Study) {
       <Flex alignItems={"center"} justifyContent="space-between">
         <Flex alignItems={"center"} columnGap="6px">
           {[1, 2, 3].map((circle) => {
-            const map = {
+            const map: any = {
               Beginner: 1,
               Intermediate: 2,
               Advanced: 3,
@@ -98,8 +103,25 @@ export default function StudyCard(props: Study) {
         </Flex>
 
         <Flex alignItems={"center"}>
-          <EditStudyList item={props} />
-          <DeleteStudyList item={props} />
+          <Box>
+            <IconButton
+              aria-label="edit study button"
+              variant={"outline"}
+              border="none"
+              color={"green.500"}
+              icon={<EditIcon />}
+              onClick={() => setIsOpen(true)}
+            />
+            <PopupBuilder
+              isOpen={isOpen}
+              setIsOpen={setIsOpen}
+              title={`Edit ${title}`}
+            >
+              <StudyForm setIsOpen={setIsOpen} studies={studies} />
+            </PopupBuilder>
+          </Box>
+
+          <DeleteStudyList item={studies} />
         </Flex>
       </Flex>
     </Box>

@@ -41,7 +41,7 @@ const DeleteStudyList = ({ item }: any) => {
   })
 
   return (
-    <Box>
+    <>
       <IconButton
         aria-label="delete study button"
         variant={"outline"}
@@ -76,7 +76,7 @@ const DeleteStudyList = ({ item }: any) => {
           </HStack>
         </ModalFooter>
       </PopupBuilder>
-    </Box>
+    </>
   )
 }
 

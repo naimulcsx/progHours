@@ -42,7 +42,7 @@ const StudyPage = () => {
         setIsOpen={setIsOpen}
         title="Add a new resource on your study list"
       >
-        <StudyForm setIsOpen={setIsOpen} />
+        <StudyForm setIsOpen={setIsOpen} isCreate={true} />
       </PopupBuilder>
 
       <Grid gridTemplateColumns={"repeat(4, 1fr)"} gap={"5"}>

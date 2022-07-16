@@ -18,7 +18,7 @@ const HandleForm = ({ setIsOpen, isCreate, handle, onlineJudge }: any) => {
             type: "text",
             label: "Handle",
             validate: Yup.string().trim().required("Handle is required"),
-            initialValue: handle || "",
+            initialValue: handle || null,
           },
           onlineJudge: {
             type: "select",
@@ -45,10 +45,15 @@ const HandleForm = ({ setIsOpen, isCreate, handle, onlineJudge }: any) => {
         }}
         onSuccess={() => {
           client.invalidateQueries("handles")
-          toast({
-            status: "success",
-            title: "new handle added",
-          })
+          isCreate
+            ? toast({
+                status: "success",
+                title: "new handle added",
+              })
+            : toast({
+                status: "success",
+                title: "handle updated",
+              })
           setIsOpen(false)
         }}
         onError={(err) => {
@@ -61,7 +66,7 @@ const HandleForm = ({ setIsOpen, isCreate, handle, onlineJudge }: any) => {
         button={{
           label: "Save",
           className: "mt-6",
-          loadingLabel: "Saving",
+          loadingLabel: "Saving...",
         }}
       />
     </>
