@@ -26,6 +26,10 @@ export const Pagination = (props: any) => {
       py={3}
       borderBottom="1px solid gray.200"
       justify="space-between"
+      position="fixed"
+      bottom={0}
+      left={[0, 0, 64]}
+      right={0}
     >
       <Flex align="center" gap={4}>
         <Box fontSize="sm">

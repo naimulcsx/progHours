@@ -11,7 +11,12 @@ export const StatCard = (props: any) => {
   const { data, icon } = props
   const { label, value } = data
   return (
-    <Box bg={mode("white", "gray.700")} p={6} shadow="base" rounded="lg">
+    <Box
+      bg={mode("white", "gray.700")}
+      p={[4, 4, 4, 4, 6]}
+      shadow="base"
+      rounded="lg"
+    >
       <HStack align="start" spacing={[4, 4, 4, 4, 6]}>
         <Circle
           bg="blue.50"
