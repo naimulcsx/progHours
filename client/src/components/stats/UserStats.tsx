@@ -25,7 +25,7 @@ const UserStats = ({ progress }: { progress: Progress }) => {
   } = progress
   progress.averageDifficulty = totalDifficulty / totalSolvedWithDifficulty || 0
   return (
-    <SimpleGrid columns={4} gap={4}>
+    <SimpleGrid columns={[2, 2, 2, 4]} gap={4}>
       <StatCard
         icon={<StarIcon width={24} height={24} />}
         data={{

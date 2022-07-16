@@ -7,6 +7,7 @@ import Navbar from "@/components/navbar"
 import { Sidebar } from "@/components/sidebar"
 // import MobileNav from "@/components/MobileNav"
 import { Box, Heading } from "@chakra-ui/react"
+import { Show, Hide } from "@chakra-ui/react"
 
 interface DashboardLayoutProps {
   children?: ReactNode
@@ -26,7 +27,10 @@ export const DashboardLayout: FC<DashboardLayoutProps> = ({
       {/* sidebar */}
       <Box h="100vh" className="flex" overflow="hidden">
         {/* <Sidebar /> */}
-        <Sidebar />
+        <Show above="md">
+          <Sidebar />
+        </Show>
+
         {/* main content */}
         <Box w="full" p={4} mt={14} overflowY="auto">
           {title && (
@@ -43,3 +47,8 @@ export const DashboardLayout: FC<DashboardLayoutProps> = ({
     </Box>
   )
 }
+/*
+<Show above="Xl">
+  <Box>This text appears only on screens 400px and smaller.</Box>
+</Show>
+*/
