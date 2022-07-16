@@ -6,7 +6,15 @@ import { Link } from "react-router-dom"
  */
 import Logo from "../Logo"
 import { GlobalContext } from "@/GlobalStateProvider"
-import { Box, Stack, Avatar, Text, HStack, Spinner } from "@chakra-ui/react"
+import {
+  Box,
+  Stack,
+  Avatar,
+  Text,
+  HStack,
+  Spinner,
+  Show,
+} from "@chakra-ui/react"
 import { getAvatarColors } from "@/utils/getAvatarColors"
 import NavbarMenu from "./NavbarMenu"
 
@@ -40,7 +48,9 @@ const Navbar = () => {
             <Link to={`/users/${user.username!}`}>
               <HStack spacing={2}>
                 <Avatar name={user.name!} size="sm" bg={bg} color={color} />
-                <Text>{user.name!}</Text>
+                <Show above="md">
+                  <Text>{user.name!}</Text>
+                </Show>
               </HStack>
             </Link>
           ) : (
