@@ -1,7 +1,6 @@
 import axios from "axios"
 
 const createOJHandle = (values: any) => {
-  console.log("api----------", values)
   return axios.post("/api/handles", values).then((res) => res.data)
 }
 
@@ -15,4 +14,8 @@ const deleteHandle = (judge_id: any) => {
     .then((res) => res.data)
 }
 
-export { createOJHandle, getAllHandles, deleteHandle }
+const updateOJHandle = (values: any) => {
+  return axios.patch("/api/handles", values).then((res) => res.data)
+}
+
+export { createOJHandle, getAllHandles, deleteHandle, updateOJHandle }

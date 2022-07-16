@@ -46,7 +46,7 @@ export class HandlesController {
       userId: req.user.id,
     })
 
-    return { statusCode: HttpStatus.CREATED, body: newHandle }
+    return { statusCode: HttpStatus.CREATED, body: { handles: newHandle } }
   }
 
   @ApiOperation({ summary: "Find OJ handles" })
@@ -55,7 +55,7 @@ export class HandlesController {
   @Get("")
   async findHandles(@Req() req) {
     const handles = await this.handleService.findAllHandles(req.user.id)
-    return { statusCode: HttpStatus.OK, body: handles }
+    return { statusCode: HttpStatus.OK, body: { handles } }
   }
 
   @ApiOperation({ summary: "Delete a OJ handle" })

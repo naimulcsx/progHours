@@ -5,7 +5,7 @@ import { GlobalContext } from "@/GlobalStateProvider"
 import { GeneralInformationForm } from "@/components/settings/GeneralInformationForm"
 import { Tabs, TabList, TabPanels, Tab, TabPanel } from "@chakra-ui/react"
 import { UpdatePasswordForm } from "@/components/settings/UpdatePasswordForm"
-import HandleSettings from "@/components/settings/HandleSettings"
+import HandleSettings from "@/components/settings/handles/HandleSettings"
 
 const Settings = () => {
   const { user } = useContext(GlobalContext)
