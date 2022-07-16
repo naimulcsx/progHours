@@ -38,7 +38,7 @@ export const NavLink = (props: NavLinkProps) => {
     >
       <HStack spacing={4}>
         {icon}
-        <Text as="span">{label}</Text>
+        {label != "" && <Text as="span">{label}</Text>}
       </HStack>
     </Link>
   )

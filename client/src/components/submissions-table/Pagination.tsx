@@ -27,7 +27,7 @@ export const Pagination = (props: any) => {
       borderBottom="1px solid gray.200"
       justify="space-between"
       position="fixed"
-      bottom={0}
+      bottom={[12, 12, 0]}
       left={[0, 0, 64]}
       right={0}
     >

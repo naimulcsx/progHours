@@ -4,6 +4,7 @@ import { FC, ReactNode } from "react"
  * Import Components
  */
 import Navbar from "@/components/navbar"
+import MobileNav from "../MobilNavbar"
 import { Sidebar } from "@/components/sidebar"
 // import MobileNav from "@/components/MobileNav"
 import { Box, Heading } from "@chakra-ui/react"
@@ -44,6 +45,9 @@ export const DashboardLayout: FC<DashboardLayoutProps> = ({
         </Box>
       </Box>
       {/* <MobileNav></MobileNav> */}
+      <Hide above="md">
+        <MobileNav />
+      </Hide>
     </Box>
   )
 }
