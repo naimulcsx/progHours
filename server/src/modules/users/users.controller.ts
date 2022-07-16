@@ -4,14 +4,12 @@ import {
   Delete,
   Get,
   HttpStatus,
-  InternalServerErrorException,
   NotFoundException,
   Param,
   ParseIntPipe,
   Patch,
   Post,
   Req,
-  UnauthorizedException,
   UseGuards,
 } from "@nestjs/common"
 

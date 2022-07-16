@@ -13,10 +13,7 @@ import { Repository } from "typeorm"
  * Import Entities (models)
  */
 import { User } from "@/modules/users/user.entity"
-import { Submission } from "@/modules/submissions/submission.entity"
 import { AuthService } from "../auth/auth.service"
-import { OnlineJudgesService } from "../online-judges/online-judges.service"
-import { Ranking } from "../ranking/ranking.entity"
 import { PrismaService } from "../prisma/prisma.service"
 import * as bcrypt from "bcryptjs"
 
@@ -28,17 +25,8 @@ export class UsersService {
     @InjectRepository(User)
     private usersRepository: Repository<User>,
 
-    @InjectRepository(Submission)
-    private submissionsRepository: Repository<Submission>,
-
-    @InjectRepository(Ranking)
-    private rankingRepository: Repository<Ranking>,
-
     @Inject(forwardRef(() => AuthService))
-    private authService: AuthService,
-
-    @Inject(OnlineJudgesService)
-    private onlineJudgesService: OnlineJudgesService
+    private authService: AuthService
   ) {}
 
   async getUserById(id) {
