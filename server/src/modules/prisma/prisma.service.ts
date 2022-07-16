@@ -79,8 +79,10 @@ export class PrismaService extends PrismaClient implements OnModuleInit {
         (params.action === "create" || params.action === "update")
       ) {
         const user = params.args.data
-        user.password = await bcrypt.hash(user.password, 10)
-        params.args.data = user
+        if (user.password) {
+          user.password = await bcrypt.hash(user.password, 10)
+          params.args.data = user
+        }
       }
 
       return await next(params)
