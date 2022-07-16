@@ -18,8 +18,6 @@ import EditHandle from "./EditHandle"
 const HandleSettings = () => {
   const [handles, setHandles] = useState([])
 
-  console.log("=---------handles", handles)
-
   /**
    * find handle
    */

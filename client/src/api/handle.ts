@@ -8,9 +8,9 @@ const getAllHandles = () => {
   return axios("/api/handles").then((res) => res.data)
 }
 
-const deleteHandle = (judge_id: any) => {
+const deleteHandle = (onlineJudgeId: any) => {
   return axios
-    .delete("/api/handles", { data: { judge_id } })
+    .delete("/api/handles", { data: { onlineJudgeId } })
     .then((res) => res.data)
 }
 
