@@ -24,11 +24,11 @@ export class UserProblemTag {
   @Column()
   public tag_id!: number
 
-  @ManyToOne(() => Problem, (post) => post.user_problem_tags)
-  @JoinColumn({ name: "problem_id" })
-  public problem!: Problem
+  // @ManyToOne(() => Problem, (post) => post.user_problem_tags)
+  // @JoinColumn({ name: "problem_id" })
+  // public problem!: Problem
 
-  @ManyToOne(() => Tag, (category) => category.user_problem_tags)
-  @JoinColumn({ name: "tag_id" })
-  public tag!: Tag
+  // @ManyToOne(() => Tag, (category) => category.user_problem_tags)
+  // @JoinColumn({ name: "tag_id" })
+  // public tag!: Tag
 }

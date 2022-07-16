@@ -37,7 +37,7 @@ const HandleSettings = () => {
         </Box>
       </Flex>
       <Box maxW={"xl"} mt={"5"}>
-        <Grid templateColumns="repeat(2, 1fr)" gap={5}>
+        {/* <Grid templateColumns="repeat(2, 1fr)" gap={5}>
           {handles.map((item) => {
             console.log(item)
             const iconMap = {
@@ -54,7 +54,7 @@ const HandleSettings = () => {
               />
             )
           })}
-        </Grid>
+        </Grid> */}
       </Box>
     </Box>
   )

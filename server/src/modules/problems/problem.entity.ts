@@ -55,6 +55,6 @@ export class Problem {
   @JoinColumn({ name: "judge_id" })
   judge_id: number
 
-  @OneToMany(() => UserProblemTag, (userProblemTag) => userProblemTag.problem)
-  public user_problem_tags!: UserProblemTag[]
+  // @OneToMany(() => UserProblemTag, (userProblemTag) => userProblemTag.problem)
+  // public user_problem_tags!: UserProblemTag[]
 }

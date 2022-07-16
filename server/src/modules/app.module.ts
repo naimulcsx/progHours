@@ -19,12 +19,9 @@ import { UserProblemTag } from "./problems/user-problem-tag"
 import { StatsModule } from "./stats/stats.module"
 import { RankingModule } from "./ranking/ranking.module"
 import { Ranking } from "./ranking/ranking.entity"
-import { StudyListModule } from "./study-list/study-list.module"
 import { ConfigModule } from "@nestjs/config"
-import { UserStudiesModule } from "./user-studies/user-studies.module"
-import { UserStudyList } from "./user-studies/user-studies.entity"
-import { UserStudiesTag } from "./user-studies/user-studies-tag.entity"
 import { PrismaModule } from "./prisma/prisma.module"
+import { UserStudyModule } from "./user-study/user-study.module"
 
 @Module({
   imports: [
@@ -42,8 +39,6 @@ import { PrismaModule } from "./prisma/prisma.module"
         Handle,
         OnlineJudge,
         Ranking,
-        UserStudyList,
-        UserStudiesTag,
       ],
       // synchronize: true,
     }),
@@ -57,9 +52,8 @@ import { PrismaModule } from "./prisma/prisma.module"
     HandlesModule,
     StatsModule,
     RankingModule,
-    // StudyListModule,
-    UserStudiesModule,
     PrismaModule,
+    UserStudyModule,
   ],
 })
 export class AppModule {
