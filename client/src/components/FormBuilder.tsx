@@ -69,7 +69,10 @@ const FormBuilder = ({
                 >
                   <FormLabel>{fields[key].label}</FormLabel>
                   {fields[key].type === "select" ? (
-                    <Select {...getFieldProps(key)}>
+                    <Select
+                      {...getFieldProps(key)}
+                      placeholder={fields[key].placeholder}
+                    >
                       {fields[key].options?.map((item, i) => {
                         return (
                           <option key={i} value={item}>
@@ -136,6 +139,7 @@ interface FormBuilderProps extends BoxProps {
       options?: Array<string>
       helperText?: string
       disabled?: boolean
+      placeholder?: string
     }
   }
   mutation: any

@@ -50,10 +50,11 @@ export const GeneralInformationForm = () => {
             department: {
               type: "select",
               label: "Department",
+              placeholder: "Select",
               options: [
-                ["Computer Science and Engineering (CSE)", "CSE"],
-                ["Computer and Communication Engineering (CCE)", "CCE"],
-                ["Electrical and Electronic Engineering (EEE)", "EEE"],
+                "Computer Science and Engineering (CSE)",
+                "Computer and Communication Engineering (CCE)",
+                "Electrical and Electronic Engineering (EEE)",
               ],
               validate: Yup.string().trim(),
               initialValue: user.department,
@@ -76,15 +77,16 @@ export const GeneralInformationForm = () => {
             loadingLabel: "Updating",
             colorScheme: "gray",
           }}
-          mutation={(values: any) =>
-            axios.patch(`/api/users/${user.username}`, values)
-          }
+          mutation={(values: any) => {
+            console.log({ values })
+            return axios.patch(`/api/users/me`, values)
+          }}
           onSuccess={() => {
             queryClient.invalidateQueries("user")
             toast({ status: "success", title: "Account updated!" })
           }}
           onError={() => {
-            toast({ status: "success", title: "Some error occurred!" })
+            toast({ status: "error", title: "Some error occurred!" })
           }}
         />
       ) : (
