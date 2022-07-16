@@ -189,7 +189,7 @@ export class UsersController {
     @Body() body: UpdateStudyDto,
     @Req() req
   ) {
-    await this.userStudyService.updateUserStudy(req.user.id, id, body)
+    await this.userStudyService.updateUserStudy(id, req.user.id, body)
 
     return { statusCode: HttpStatus.OK, message: "User study Updated" }
   }
