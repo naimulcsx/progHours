@@ -8,6 +8,8 @@ import { PrismaClient } from "@prisma/client"
 import { afterCreate } from "./subscribers/submissions.afterCreate"
 import { afterDelete } from "./subscribers/submissions.afterDelete"
 
+import * as bcrypt from "bcryptjs"
+
 @Injectable()
 export class PrismaService extends PrismaClient implements OnModuleInit {
   async onModuleInit() {
@@ -66,6 +68,24 @@ export class PrismaService extends PrismaClient implements OnModuleInit {
       // See results here
       return result
     })
+
+    /**
+     * Password hash before create a new user
+     * Password hash before update password
+     */
+    this.$use(async (params, next) => {
+      if (
+        params.model === "User" &&
+        (params.action === "create" || params.action === "update")
+      ) {
+        const user = params.args.data
+        user.password = await bcrypt.hash(user.password, 10)
+        params.args.data = user
+      }
+
+      return await next(params)
+    })
+
     await this.$connect()
   }
 

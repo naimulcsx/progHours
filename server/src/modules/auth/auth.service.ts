@@ -106,13 +106,12 @@ export class AuthService {
     if (emailExists) throw new ConflictException("Email already exists.")
 
     // * All good! Create a new user
-    const hashedPassword = await bcrypt.hash(password, 10)
     const newUser = await this.prisma.user.create({
       data: {
         name,
         email,
         username,
-        password: hashedPassword,
+        password,
       },
     })
     // TODO: Create a user ranking row for that user

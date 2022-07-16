@@ -39,18 +39,6 @@ export class UsersService {
     })
   }
 
-  createQueryBuilder(alias) {
-    return this.usersRepository.createQueryBuilder(alias)
-  }
-
-  getUserWithPassword(username: string) {
-    return this.usersRepository
-      .createQueryBuilder("user")
-      .where("user.username = :username", { username: username.toLowerCase() })
-      .addSelect("user.password")
-      .getOne()
-  }
-
   async createUser(
     name: string,
     email: string,
@@ -123,7 +111,11 @@ export class UsersService {
     /**
      * Update the password
      */
-    user.password = newPassword
-    return this.usersRepository.save(user)
+    return this.prisma.user.update({
+      where: { username: user.username },
+      data: {
+        password: newPassword,
+      },
+    })
   }
 }
