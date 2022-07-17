@@ -1,32 +1,33 @@
-import { GlobalContext } from "@/GlobalStateProvider"
 import {
   Avatar,
   Box,
-  Button,
   Flex,
   Heading,
-  HStack,
   Text,
+  Tooltip,
   useColorModeValue,
+  Container,
 } from "@chakra-ui/react"
-import * as React from "react"
-import { HiPencilAlt } from "react-icons/hi"
-import { UserInfo } from "./UserInfo"
-import moment from "moment"
-import { Container } from "@chakra-ui/react"
+import { useState } from "react"
 import { getAvatarColors } from "@/utils/getAvatarColors"
-import {
-  Solved100,
-  Solved250,
-  Solved50,
-} from "@/assets/achievements/SolveCount"
+import { getAllHandles } from "@/api/handle"
+import { useQuery } from "react-query"
+import { CCIcon, CFIcon, LightOJIcon, TophIcon } from "../Icons"
+import getOJProfileURL from "@/utils/getOJProfileUrl"
 
-export const UserCard: React.FC<UserCardProps> = ({
-  name,
-  username,
-  member_since,
-}) => {
+export const UserCard: React.FC<UserCardProps> = ({ name, username }) => {
   const { bg, color } = getAvatarColors(name)
+  const [handles, setHandles] = useState([])
+
+  /**
+   * Get all handles
+   */
+  useQuery("handles", getAllHandles, {
+    onSuccess(data) {
+      setHandles(data?.body.handles)
+    },
+  })
+
   return (
     <Box as="section" pt="24" pb="8" position="relative">
       <Box
@@ -57,7 +58,52 @@ export const UserCard: React.FC<UserCardProps> = ({
                 {username.toUpperCase()}
               </Text>
             </Box>
-            <Box></Box>
+            <Box>
+              {/* <Heading as="h2" size="sm">
+                Handles
+              </Heading> */}
+              <Flex columnGap={4}>
+                {handles.map((item: any) => {
+                  const iconMap: any = {
+                    Codeforces: <CFIcon />,
+                    CodeChef: <CCIcon />,
+                    Toph: <TophIcon />,
+                    LightOJ: <LightOJIcon />,
+                  }
+
+                  return (
+                    <Tooltip
+                      hasArrow
+                      label={item.handle}
+                      bg="gray.700"
+                      color="white"
+                    >
+                      <a
+                        target={"_blank"}
+                        href={getOJProfileURL(
+                          item.onlineJudge.name,
+                          item.handle
+                        )}
+                      >
+                        <Box
+                          h={14}
+                          w={14}
+                          p={2}
+                          rounded={"md"}
+                          border={"1px"}
+                          borderColor="gray.200"
+                          display={"flex"}
+                          justifyContent="center"
+                          alignItems={"center"}
+                        >
+                          {iconMap[item.onlineJudge.name]}
+                        </Box>
+                      </a>
+                    </Tooltip>
+                  )
+                })}
+              </Flex>
+            </Box>
           </Box>
         </Flex>
       </Container>

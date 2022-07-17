@@ -1,5 +1,6 @@
 import { EditIcon, OpenLinkIcon } from "@/components/Icons"
 import PopupBuilder from "@/components/PopupBuilder"
+import getOJProfileURL from "@/utils/getOJProfileUrl"
 import { Box, Button, Flex, IconButton, Text } from "@chakra-ui/react"
 import { useState } from "react"
 import DeleteHandle from "./DeleteHandle"
@@ -7,24 +8,6 @@ import HandleForm from "./HandleForm"
 
 const HandleOJBox = ({ icon, handle, onlineJudge }: any) => {
   const [isOpen, setIsOpen] = useState(false)
-
-  /**
-   * Get user online judge profile
-   */
-  const getProfileURL = (oj: string, handle: string) => {
-    switch (oj) {
-      case "Codeforces":
-        return `https://codeforces.com/profile/${handle}`
-      case "Toph":
-        return `https://toph.co/u/${handle}`
-      case "LightOJ":
-        return `https://lightoj.com/user/${handle}`
-      case "CodeChef":
-        return `https://www.codechef.com/users/${handle}`
-      default:
-        return ""
-    }
-  }
 
   return (
     <Flex
@@ -63,7 +46,7 @@ const HandleOJBox = ({ icon, handle, onlineJudge }: any) => {
               {handle}
             </Text>
           </Box>
-          <a href={getProfileURL(onlineJudge.name, handle)} target="_blank">
+          <a href={getOJProfileURL(onlineJudge.name, handle)} target="_blank">
             <Button
               variant={"outline"}
               border={"none"}
