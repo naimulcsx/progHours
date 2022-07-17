@@ -22,7 +22,7 @@ const HandleSettings = () => {
   })
   return (
     <Box>
-      <Flex justifyContent={"flex-end"} mb={4}>
+      <Flex justifyContent="flex-end" mb={4}>
         <Button
           size="sm"
           onClick={() => setIsOpen(true)}
@@ -38,7 +38,7 @@ const HandleSettings = () => {
       >
         <HandleForm setIsOpen={setIsOpen} isCreate={true} />
       </PopupBuilder>
-      <Box flex={"1"}>
+      <Box flex={1} mx={-4}>
         <Grid
           gridTemplateColumns={[
             "repeat(1, 1fr)",
@@ -46,7 +46,7 @@ const HandleSettings = () => {
             "repeat(2, 1fr)",
             "repeat(3, 1fr)",
             "repeat(4, 1fr)",
-            "repeat(4, 1fr)",
+            "repeat(5, 1fr)",
           ]}
           gap={4}
         >

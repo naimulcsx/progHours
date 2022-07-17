@@ -33,8 +33,10 @@ export default function StudyCard(studies: Study) {
       as="article"
       p="5"
       borderWidth="1px"
-      rounded="md"
-      _hover={{ borderColor: "blue.200" }}
+      rounded="lg"
+      _hover={{ shadow: "base" }}
+      bg="white"
+      shadow="sm"
     >
       <Heading size="md" my="1">
         <Box

@@ -126,7 +126,7 @@ export default function Profile() {
     <>
       <Navbar />
       {user && userStats && frequency && submissionQuery.data ? (
-        <Box>
+        <Box overflow="hidden">
           <Helmet>
             <title>{user.name}</title>
           </Helmet>
@@ -173,7 +173,7 @@ export default function Profile() {
                   </Box>
                 </TabPanel>
                 <TabPanel>
-                  <Box mx={-4}>
+                  <Box mx={-4} overflowX="auto">
                     <SubmissionsTable submissions={submissions} />
                   </Box>
                 </TabPanel>

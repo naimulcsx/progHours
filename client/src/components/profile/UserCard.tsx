@@ -48,10 +48,10 @@ export const UserCard: React.FC<UserCardProps> = ({ name, username }) => {
         >
           <Flex columnGap={4}>
             <Avatar
-              mt="-12"
+              mt={[-10, -12]}
               borderWidth="6px"
               borderColor={useColorModeValue("white", "gray.700")}
-              size="2xl"
+              size={useBreakpointValue({ base: "xl", md: "2xl" })}
               bg={bg}
               color={color}
               name={name}
