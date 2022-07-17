@@ -7,19 +7,21 @@ import Navbar from "@/components/navbar"
 import MobileNav from "../MobilNavbar"
 import { Sidebar } from "@/components/sidebar"
 // import MobileNav from "@/components/MobileNav"
-import { Box, Heading } from "@chakra-ui/react"
+import { Box, Flex, Heading } from "@chakra-ui/react"
 import { Show, Hide } from "@chakra-ui/react"
 
 interface DashboardLayoutProps {
   children?: ReactNode
   title?: string
   description?: string
+  rightButton?: ReactNode
 }
 
 export const DashboardLayout: FC<DashboardLayoutProps> = ({
   children,
   title,
   description,
+  rightButton,
 }) => {
   return (
     <Box>
@@ -35,11 +37,14 @@ export const DashboardLayout: FC<DashboardLayoutProps> = ({
         {/* main content */}
         <Box w="full" p={4} mt={14} overflowY="auto">
           {title && (
-            <Box className="mb-4">
-              <Heading fontSize={["xl", "xl", "2xl"]} fontWeight={700}>
-                {title}
-              </Heading>
-            </Box>
+            <Flex justifyContent="space-between">
+              <Box className="mb-4">
+                <Heading fontSize={["xl", "xl", "2xl"]} fontWeight={700}>
+                  {title}
+                </Heading>
+              </Box>
+              {rightButton}
+            </Flex>
           )}
           {children}
         </Box>

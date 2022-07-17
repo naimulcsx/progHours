@@ -20,23 +20,23 @@ const StudyPage = () => {
   })
 
   return (
-    <DashboardLayout title="Study List">
+    <DashboardLayout
+      title="Study List"
+      rightButton={
+        <Button
+          size="sm"
+          onClick={() => setIsOpen(true)}
+          type="button"
+          leftIcon={<PlusSmIcon height={24} width={24} />}
+        >
+          Add New
+        </Button>
+      }
+    >
       <Helmet>
         <title>Study List</title>
       </Helmet>
       <Box mb={50}>
-        {/* add new resource button  */}
-        <Flex justifyContent={"flex-end"} mb={4}>
-          <Button
-            size="sm"
-            onClick={() => setIsOpen(true)}
-            type="button"
-            leftIcon={<PlusSmIcon height={24} width={24} />}
-          >
-            Add New
-          </Button>
-        </Flex>
-
         {/* study form popup  */}
         <PopupBuilder
           isOpen={isOpen}
