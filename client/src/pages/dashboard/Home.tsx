@@ -1,7 +1,7 @@
 import { useContext, useState } from "react"
 import { useQuery } from "react-query"
 import { Helmet } from "react-helmet-async"
-import { Box, Spinner } from "@chakra-ui/react"
+import { Box, Grid, GridItem, Spinner } from "@chakra-ui/react"
 
 /**
  * Import Components
@@ -66,14 +66,37 @@ const DashboardHome = () => {
           <Box mb={4}>
             <UserStats progress={data} />
           </Box>
-          <Box className="grid grid-cols-1 gap-4 md:grid-cols-3">
-            <Box className="p-8 bg-white rounded-lg shadow xl:px-8">
+          <Grid
+            templateColumns={[
+              "repeat(1, 1fr)",
+              "repeat(1, 1fr)",
+              "repeat(1, 1fr)",
+              "repeat(1, 1fr)",
+              "repeat(3, 1fr)",
+            ]}
+            gap={[0, 0, 0, 4]}
+            mb={[14]}
+          >
+            <GridItem
+              p={[4, 4, 4, 8]}
+              bg="white"
+              rounded="lg"
+              shadow="base"
+              mb={[4, 4, 4, 0]}
+            >
               {<WeeklySolvedChart data={frequency} />}
-            </Box>
-            <Box className="w-full h-full col-span-2 px-8 pt-8 pb-0 bg-white rounded-lg shadow xl:px-8 md:px-16 lg:px-32">
+            </GridItem>
+            <GridItem
+              p={[4, 4, 4, 8]}
+              pb={[0, 0, 0, 2]}
+              bg="white"
+              rounded="lg"
+              shadow="base"
+              colSpan={2}
+            >
               <TagsFreqChart data={data["tagsFrequency"]} />
-            </Box>
-          </Box>
+            </GridItem>
+          </Grid>
         </>
       ) : (
         <Spinner size="sm" />

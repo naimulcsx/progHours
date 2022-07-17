@@ -1,4 +1,12 @@
-import { Flex, Select, Button, Input, Box, Text } from "@chakra-ui/react"
+import {
+  Flex,
+  Select,
+  Button,
+  Input,
+  Box,
+  Text,
+  HStack,
+} from "@chakra-ui/react"
 import {
   ChevronDoubleLeftIcon,
   ChevronLeftIcon,
@@ -18,6 +26,7 @@ export const Pagination = (props: any) => {
     pageCount,
     previousPage,
     nextPage,
+    isEditable,
   } = props
   return (
     <Flex
@@ -26,21 +35,20 @@ export const Pagination = (props: any) => {
       py={3}
       borderBottom="1px solid gray.200"
       justify="space-between"
-      position="fixed"
+      position={isEditable ? "fixed" : "unset"}
       bottom={[12, 12, 0]}
       left={[0, 0, 64]}
       right={0}
     >
       <Flex align="center" gap={4}>
         <Box fontSize="sm">
-          Page{" "}
           <span className="font-medium">
-            {pageIndex + 1} of {pageOptions.length}
+            {pageIndex + 1}/{pageOptions.length}
           </span>
         </Box>
         <Select
           size="sm"
-          width={40}
+          width={[32, 32, 40]}
           value={pageSize}
           onChange={(e) => {
             setPageSize(Number(e.target.value))
@@ -53,7 +61,7 @@ export const Pagination = (props: any) => {
           ))}
         </Select>
       </Flex>
-      <Box className="flex items-center space-x-4">
+      <HStack>
         <Button
           size="xs"
           variant="outline"
@@ -86,7 +94,7 @@ export const Pagination = (props: any) => {
         >
           <ChevronDoubleRightIcon height={12} />
         </Button>
-        <Flex align="center" className="space-x-2">
+        {/* <Flex align="center" className="space-x-2">
           <Text fontSize="sm">Go to page : </Text>
           <Input
             size="sm"
@@ -98,8 +106,8 @@ export const Pagination = (props: any) => {
               gotoPage(page)
             }}
           />
-        </Flex>
-      </Box>
+        </Flex> */}
+      </HStack>
     </Flex>
   )
 }

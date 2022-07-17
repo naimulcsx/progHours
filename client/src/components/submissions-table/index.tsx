@@ -154,6 +154,7 @@ export const SubmissionsTable = ({
         </Table>
         {/* Pagination */}
         <Pagination
+          isEditable={isEditable}
           pageIndex={pageIndex}
           pageOptions={pageOptions}
           pageSize={pageSize}

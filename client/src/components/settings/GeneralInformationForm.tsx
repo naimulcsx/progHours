@@ -12,7 +12,7 @@ export const GeneralInformationForm = () => {
   const toast = useToast(DEFAULT_TOAST_OPTIONS)
   const queryClient = useQueryClient()
   return (
-    <Box p={8} bg="white" shadow="base" rounded="lg" mx={-4}>
+    <Box p={[4, 4, 4, 8]} bg="white" shadow="base" rounded="lg" mx={-4}>
       {user ? (
         <FormBuilder
           fields={{

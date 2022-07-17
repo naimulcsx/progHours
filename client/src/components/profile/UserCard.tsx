@@ -14,6 +14,7 @@ import { getHandlesByUsername } from "@/api/handle"
 import { useQuery } from "react-query"
 import { CCIcon, CFIcon, LightOJIcon, TophIcon } from "../Icons"
 import getOJProfileURL from "@/utils/getOJProfileUrl"
+import { useBreakpointValue } from "@chakra-ui/media-query"
 
 export const UserCard: React.FC<UserCardProps> = ({ name, username }) => {
   const { bg, color } = getAvatarColors(name)

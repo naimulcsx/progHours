@@ -72,7 +72,7 @@ const App = (): JSX.Element => {
               <main>{matchedPage}</main>
             )}
           </Box>
-          <ReactQueryDevtools position="bottom-right" />
+          {/* <ReactQueryDevtools position="bottom-right" /> */}
           <Toaster position="top-center" reverseOrder={false} />
         </HelmetProvider>
       </QueryClientProvider>

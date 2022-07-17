@@ -18,9 +18,9 @@ const Settings = () => {
       {user && (
         <Tabs>
           <TabList>
-            <Tab>General Information</Tab>
-            <Tab>Update Password</Tab>
-            <Tab>Online Judge Handles</Tab>
+            <Tab fontSize={["xs", "sm", "base"]}>General Information</Tab>
+            <Tab fontSize={["xs", "sm", "base"]}>Update Password</Tab>
+            <Tab fontSize={["xs", "sm", "base"]}>Online Judge Handles</Tab>
             {/* <Tab>Preferences</Tab> */}
           </TabList>
           <TabPanels>

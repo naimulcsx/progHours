@@ -36,7 +36,7 @@ export const DashboardLayout: FC<DashboardLayoutProps> = ({
         <Box w="full" p={4} mt={14} overflowY="auto">
           {title && (
             <Box className="mb-4">
-              <Heading fontSize="2xl" fontWeight={700}>
+              <Heading fontSize={["xl", "xl", "2xl"]} fontWeight={700}>
                 {title}
               </Heading>
             </Box>

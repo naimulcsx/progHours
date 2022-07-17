@@ -35,6 +35,9 @@ export default function MobileNav() {
       justifyContent="space-between"
       paddingY={2}
       paddingX={[8, 16, 16]}
+      shadow="lg"
+      borderTop="1px solid"
+      borderColor="gray.200"
     >
       <NavLink
         label=""

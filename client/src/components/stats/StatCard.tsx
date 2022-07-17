@@ -22,7 +22,7 @@ export const StatCard = (props: any) => {
           bg="blue.50"
           color="blue.500"
           rounded="full"
-          size={["10", "10", "10", "10", "12"]}
+          size={[10, 10, 10, 10, 12]}
         >
           {icon}
         </Circle>
@@ -30,7 +30,11 @@ export const StatCard = (props: any) => {
           <Text fontWeight="600" color={mode("gray.700", "gray.400")}>
             {label}
           </Text>
-          <Heading as="h4" fontSize={["2xl", "2xl", "2xl", "xl", "3xl"]} my="3">
+          <Heading
+            as="h4"
+            fontSize={["xl", "xl", "xl", "xl", "3xl"]}
+            mt={[2, 2, 2, 3]}
+          >
             {value}
           </Heading>
         </Box>
