@@ -32,7 +32,10 @@ export default function StudyForm({ setIsOpen, studies, isCreate }: any) {
           type: "text",
           label: "Link",
           initialValue: studies?.link,
-          validate: Yup.string().trim().required("Resource link is required"),
+          validate: Yup.string()
+            .url()
+            .trim()
+            .required("Resource link is required"),
         },
         studyTime: {
           type: "number",

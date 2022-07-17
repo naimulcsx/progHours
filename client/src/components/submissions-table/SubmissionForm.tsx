@@ -37,7 +37,7 @@ import { DEFAULT_TOAST_OPTIONS } from "@/configs/toast-config"
 import { CELL_STYLES } from "./cells/cellStyles"
 
 const submissionSchema = Yup.object().shape({
-  link: Yup.string().trim().required("Problem link is required"),
+  link: Yup.string().url().trim().required("Problem link is required"),
   solveTime: Yup.number().required("Solve time is required"),
   verdict: Yup.string().required("Verdict is required"),
   solvedAt: Yup.date().required("Date is required"),

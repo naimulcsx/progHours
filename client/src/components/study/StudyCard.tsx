@@ -1,5 +1,6 @@
 import { Box, Heading, Flex, IconButton } from "@chakra-ui/react"
 import {
+  ExternalLinkIcon,
   NewspaperIcon,
   PencilAltIcon,
   PlayIcon,
@@ -37,9 +38,17 @@ export default function StudyCard(studies: Study) {
       _hover={{ borderColor: "blue.200" }}
     >
       <Heading size="md" my="1">
-        <a href={link} target={"_blank"}>
+        <Box
+          as={"a"}
+          display="flex"
+          columnGap={"5px"}
+          color="blue.500"
+          href={link}
+          target={"_blank"}
+        >
           {title}
-        </a>
+          <ExternalLinkIcon width={22} height={22} />
+        </Box>
       </Heading>
 
       <Flex alignItems={"center"} my="2" justifyContent="space-between">

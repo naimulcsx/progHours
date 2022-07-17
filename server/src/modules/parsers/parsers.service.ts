@@ -1,5 +1,10 @@
 import { HttpService } from "@nestjs/axios"
-import { CACHE_MANAGER, Inject, Injectable } from "@nestjs/common"
+import {
+  BadRequestException,
+  CACHE_MANAGER,
+  Inject,
+  Injectable,
+} from "@nestjs/common"
 import { lastValueFrom } from "rxjs"
 import * as cheerio from "cheerio"
 import ShortUniqueId from "short-unique-id"
@@ -151,14 +156,15 @@ export class ParsersService {
       /**
        * We don't have a parser for the link
        */
-      return {
-        pid: genId(),
-        name: this.isValidLink(link) ? genId() : link,
-        tags: [],
-        difficulty: 0,
-        judge_id: null,
-        link: null,
-      }
+      throw new BadRequestException("Parser unavailable for this link!")
+      // return {
+      //   pid: genId(),
+      //   name: this.isValidLink(link) ? genId() : link,
+      //   tags: [],
+      //   difficulty: 0,
+      //   judge_id: null,
+      //   link: null,
+      // }
     }
   }
 

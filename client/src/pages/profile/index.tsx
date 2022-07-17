@@ -144,13 +144,12 @@ export default function Profile() {
               </TabList>
               <TabPanels>
                 <TabPanel mx={-4}>
+                  <Box mx={-4} mb={5} mt={2}>
+                    <UserStats progress={userStats} />
+                  </Box>
                   <UserAbout user={user} userStats={userStats} />
                 </TabPanel>
                 <TabPanel>
-                  <Box mx={-4} mb={4} mt={2}>
-                    <UserStats progress={userStats} />
-                  </Box>
-
                   <Box
                     p={8}
                     pb={2}
