@@ -1,11 +1,12 @@
 import { Button, Box, Flex, Grid } from "@chakra-ui/react"
-import { CCIcon, CFIcon, LightOJIcon, PlusIcon, TophIcon } from "../../Icons"
+import { CCIcon, CFIcon, LightOJIcon, TophIcon } from "../../Icons"
 import { getAllHandles } from "@/api/handle"
 import { useQuery } from "react-query"
 import { useState } from "react"
 import HandleForm from "./HandleForm"
 import PopupBuilder from "@/components/PopupBuilder"
 import HandleOJBox from "./HandleOJBox"
+import { PlusIcon, PlusSmIcon } from "@heroicons/react/outline"
 
 const HandleSettings = () => {
   const [handles, setHandles] = useState([])
@@ -46,7 +47,7 @@ const HandleSettings = () => {
         <Button
           size="sm"
           onClick={() => setIsOpen(true)}
-          leftIcon={<PlusIcon height={24} width={24} />}
+          leftIcon={<PlusSmIcon height={24} width={24} />}
         >
           Add Handle
         </Button>

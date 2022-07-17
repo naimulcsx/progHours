@@ -1,7 +1,7 @@
-import { EditIcon, OpenLinkIcon } from "@/components/Icons"
 import PopupBuilder from "@/components/PopupBuilder"
 import getOJProfileURL from "@/utils/getOJProfileUrl"
 import { Box, Button, Flex, IconButton, Text } from "@chakra-ui/react"
+import { ExternalLinkIcon, PencilAltIcon } from "@heroicons/react/outline"
 import { useState } from "react"
 import DeleteHandle from "./DeleteHandle"
 import HandleForm from "./HandleForm"
@@ -51,10 +51,10 @@ const HandleOJBox = ({ icon, handle, onlineJudge }: any) => {
               variant={"outline"}
               border={"none"}
               bgColor="transparent"
-              color={"blue.500"}
+              color={"blue.300"}
               p={0}
             >
-              <OpenLinkIcon size={18} />
+              <ExternalLinkIcon width={24} height={24} />
             </Button>
           </a>
         </Flex>
@@ -65,7 +65,7 @@ const HandleOJBox = ({ icon, handle, onlineJudge }: any) => {
               variant={"outline"}
               border="none"
               color={"green.500"}
-              icon={<EditIcon />}
+              icon={<PencilAltIcon width={24} height={24} />}
               onClick={() => setIsOpen(true)}
             />
 

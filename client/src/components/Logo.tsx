@@ -1,4 +1,4 @@
-import { Box, Text, Heading, HStack, Flex } from "@chakra-ui/react"
+import { Box, Text, Heading, HStack } from "@chakra-ui/react"
 import { LogoIcon } from "./Icons"
 
 const Logo = () => {

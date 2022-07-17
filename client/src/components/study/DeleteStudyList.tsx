@@ -1,7 +1,6 @@
 import { deleteUserStudy } from "@/api/userStudies"
 import { DEFAULT_TOAST_OPTIONS } from "@/configs/toast-config"
 import {
-  Box,
   Button,
   HStack,
   IconButton,
@@ -10,9 +9,9 @@ import {
   Text,
   useToast,
 } from "@chakra-ui/react"
+import { TrashIcon } from "@heroicons/react/outline"
 import { useState } from "react"
 import { useMutation, useQueryClient } from "react-query"
-import { TrashIcon } from "../Icons"
 import PopupBuilder from "../PopupBuilder"
 
 const DeleteStudyList = ({ item }: any) => {
@@ -46,9 +45,9 @@ const DeleteStudyList = ({ item }: any) => {
         aria-label="delete study button"
         variant={"outline"}
         border="none"
-        color={"red.500"}
+        color={"red.300"}
         onClick={() => setIsOpen(true)}
-        icon={<TrashIcon />}
+        icon={<TrashIcon width={24} height={24} />}
       />
       <PopupBuilder
         size="lg"

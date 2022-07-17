@@ -1,5 +1,4 @@
 import { deleteHandle } from "@/api/handle"
-import { TrashIcon } from "@/components/Icons"
 import PopupBuilder from "@/components/PopupBuilder"
 import { DEFAULT_TOAST_OPTIONS } from "@/configs/toast-config"
 import {
@@ -12,6 +11,7 @@ import {
   Text,
   useToast,
 } from "@chakra-ui/react"
+import { TrashIcon } from "@heroicons/react/outline"
 import { useState } from "react"
 import { useMutation, useQueryClient } from "react-query"
 
@@ -44,9 +44,9 @@ const DeleteHandle = ({ title, id }: any) => {
         aria-label="delete handle button"
         variant={"outline"}
         border="none"
-        color={"red.500"}
+        color={"red.300"}
         onClick={() => setIsOpen(true)}
-        icon={<TrashIcon />}
+        icon={<TrashIcon width={24} height={24} />}
       />
       <PopupBuilder
         size="lg"

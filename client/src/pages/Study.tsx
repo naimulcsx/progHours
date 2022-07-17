@@ -4,7 +4,7 @@ import PopupBuilder from "@/components/PopupBuilder"
 import StudyCard from "@/components/study/StudyCard"
 import StudyForm from "@/components/study/StudyForm"
 import { Button, Grid, GridItem } from "@chakra-ui/react"
-import { PlusIcon } from "@heroicons/react/outline"
+import { PlusSmIcon } from "@heroicons/react/outline"
 import { useState } from "react"
 import { Helmet } from "react-helmet-async"
 import { useQuery } from "react-query"
@@ -30,7 +30,7 @@ const StudyPage = () => {
           size="sm"
           onClick={() => setIsOpen(true)}
           type="button"
-          leftIcon={<PlusIcon height={20} width={20} aria-hidden="true" />}
+          leftIcon={<PlusSmIcon height={24} width={24} />}
         >
           Add New
         </Button>

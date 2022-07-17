@@ -1,12 +1,12 @@
 import { Box, Heading, Flex, IconButton } from "@chakra-ui/react"
 import {
   NewspaperIcon,
+  PencilAltIcon,
   PlayIcon,
   TranslateIcon,
 } from "@heroicons/react/outline"
 import moment from "moment"
 import { useState } from "react"
-import { EditIcon } from "../Icons"
 import PopupBuilder from "../PopupBuilder"
 import DeleteStudyList from "./DeleteStudyList"
 import StudyForm from "./StudyForm"
@@ -109,7 +109,7 @@ export default function StudyCard(studies: Study) {
               variant={"outline"}
               border="none"
               color={"green.500"}
-              icon={<EditIcon />}
+              icon={<PencilAltIcon width={24} height={24} />}
               onClick={() => setIsOpen(true)}
             />
             <PopupBuilder
