@@ -39,17 +39,23 @@ export const UserCard: React.FC<UserCardProps> = ({ name, username }) => {
         shadow="base"
       />
       <Container position="relative" zIndex={100}>
-        <Flex pt="28" gap={6}>
-          <Avatar
-            mt="-12"
-            borderWidth="6px"
-            borderColor={useColorModeValue("white", "gray.700")}
-            size="2xl"
-            bg={bg}
-            color={color}
-            name={name}
-          />
-          <Box w="full" display="flex" justifyContent="space-between">
+        <Flex
+          pt="28"
+          gap={6}
+          justifyContent="space-between"
+          flexDirection={{ base: "column", md: "row", lg: "row" }}
+        >
+          <Flex columnGap={4}>
+            <Avatar
+              mt="-12"
+              borderWidth="6px"
+              borderColor={useColorModeValue("white", "gray.700")}
+              size="2xl"
+              bg={bg}
+              color={color}
+              name={name}
+            />
+
             <Box>
               <Heading size="lg" fontWeight={600} letterSpacing="tight">
                 {name}
@@ -58,52 +64,47 @@ export const UserCard: React.FC<UserCardProps> = ({ name, username }) => {
                 {username.toUpperCase()}
               </Text>
             </Box>
-            <Box>
-              {/* <Heading as="h2" size="sm">
-                Handles
-              </Heading> */}
-              <Flex columnGap={4}>
-                {handles.map((item: any) => {
-                  const iconMap: any = {
-                    Codeforces: <CFIcon />,
-                    CodeChef: <CCIcon />,
-                    Toph: <TophIcon />,
-                    LightOJ: <LightOJIcon />,
-                  }
+          </Flex>
 
-                  return (
-                    <Tooltip
-                      hasArrow
-                      label={item.handle}
-                      bg="gray.700"
-                      color="white"
+          <Box>
+            <Flex columnGap={4}>
+              {handles.map((item: any) => {
+                const iconMap: any = {
+                  Codeforces: <CFIcon />,
+                  CodeChef: <CCIcon />,
+                  Toph: <TophIcon />,
+                  LightOJ: <LightOJIcon />,
+                }
+
+                return (
+                  <Tooltip
+                    hasArrow
+                    label={item.handle}
+                    bg="gray.700"
+                    color="white"
+                  >
+                    <a
+                      target={"_blank"}
+                      href={getOJProfileURL(item.onlineJudge.name, item.handle)}
                     >
-                      <a
-                        target={"_blank"}
-                        href={getOJProfileURL(
-                          item.onlineJudge.name,
-                          item.handle
-                        )}
+                      <Box
+                        h={14}
+                        w={14}
+                        p={2}
+                        rounded={"md"}
+                        border={"1px"}
+                        borderColor="gray.200"
+                        display={"flex"}
+                        justifyContent="center"
+                        alignItems={"center"}
                       >
-                        <Box
-                          h={14}
-                          w={14}
-                          p={2}
-                          rounded={"md"}
-                          border={"1px"}
-                          borderColor="gray.200"
-                          display={"flex"}
-                          justifyContent="center"
-                          alignItems={"center"}
-                        >
-                          {iconMap[item.onlineJudge.name]}
-                        </Box>
-                      </a>
-                    </Tooltip>
-                  )
-                })}
-              </Flex>
-            </Box>
+                        {iconMap[item.onlineJudge.name]}
+                      </Box>
+                    </a>
+                  </Tooltip>
+                )
+              })}
+            </Flex>
           </Box>
         </Flex>
       </Container>
