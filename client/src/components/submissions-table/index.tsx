@@ -68,7 +68,7 @@ export const SubmissionsTable = ({
   )
 
   return (
-    <Box position="relative">
+    <Box position="relative" pb={[24, 10]}>
       <Box
         mt={isEditable ? 6 : 2}
         mx={isEditable ? -4 : 0}

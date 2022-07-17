@@ -29,15 +29,7 @@ export default function StudyCard(studies: Study) {
     studies
 
   return (
-    <Box
-      as="article"
-      p="5"
-      borderWidth="1px"
-      rounded="lg"
-      _hover={{ shadow: "base" }}
-      bg="white"
-      shadow="sm"
-    >
+    <Box as="article" p="5" rounded="lg" bg="white" shadow="base">
       <Heading size="md" my="1">
         <Box
           as={"a"}
@@ -48,7 +40,7 @@ export default function StudyCard(studies: Study) {
           target={"_blank"}
         >
           {title}
-          <ExternalLinkIcon width={22} height={22} />
+          <ExternalLinkIcon width={20} height={20} />
         </Box>
       </Heading>
 
@@ -119,7 +111,7 @@ export default function StudyCard(studies: Study) {
               variant={"outline"}
               border="none"
               color={"green.500"}
-              icon={<PencilAltIcon width={24} height={24} />}
+              icon={<PencilAltIcon width={20} height={20} />}
               onClick={() => setIsOpen(true)}
             />
             <PopupBuilder

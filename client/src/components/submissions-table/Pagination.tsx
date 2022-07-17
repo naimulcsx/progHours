@@ -33,7 +33,9 @@ export const Pagination = (props: any) => {
       bg="white"
       px={6}
       py={3}
-      borderBottom="1px solid gray.200"
+      borderTop="1px solid"
+      borderBottom="1px solid"
+      borderColor="gray.200"
       justify="space-between"
       position={isEditable ? "fixed" : "unset"}
       bottom={[12, 12, 0]}

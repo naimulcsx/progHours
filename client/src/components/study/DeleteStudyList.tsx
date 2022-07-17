@@ -47,7 +47,7 @@ const DeleteStudyList = ({ item }: any) => {
         border="none"
         color={"red.300"}
         onClick={() => setIsOpen(true)}
-        icon={<TrashIcon width={24} height={24} />}
+        icon={<TrashIcon width={20} height={20} />}
       />
       <PopupBuilder
         size="lg"

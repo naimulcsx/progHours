@@ -1,4 +1,3 @@
-import {} from "axios"
 import { useQuery } from "react-query"
 import { useState } from "react"
 import { useParams } from "react-router-dom"
@@ -17,10 +16,7 @@ import {
 /**
  * Import Components
  */
-// import MobileNav from "@/components/MobileNav"
 import Navbar from "@/components/navbar"
-// import ProgressBox from "@/components/ProgressBox"
-// import ProfileTable from "@/components/profile/Table"
 
 /**
  * Import API
@@ -126,7 +122,7 @@ export default function Profile() {
     <>
       <Navbar />
       {user && userStats && frequency && submissionQuery.data ? (
-        <Box overflow="hidden">
+        <Box overflow="hidden" pb={10}>
           <Helmet>
             <title>{user.name}</title>
           </Helmet>
@@ -154,6 +150,7 @@ export default function Profile() {
                     p={8}
                     pb={2}
                     mb={4}
+                    mt={2}
                     bg="white"
                     rounded="lg"
                     shadow="base"
