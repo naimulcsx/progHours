@@ -18,4 +18,14 @@ const updateOJHandle = (values: any) => {
   return axios.patch("/api/handles", values).then((res) => res.data)
 }
 
-export { createOJHandle, getAllHandles, deleteHandle, updateOJHandle }
+const getHandlesByUsername = (username: string) => {
+  return axios(`/api/handles/${username}`).then((res) => res.data)
+}
+
+export {
+  createOJHandle,
+  getAllHandles,
+  deleteHandle,
+  updateOJHandle,
+  getHandlesByUsername,
+}

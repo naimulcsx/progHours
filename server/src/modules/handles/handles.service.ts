@@ -75,4 +75,28 @@ export class HandlesService {
       },
     })
   }
+
+  async getUserByUsername(username: string) {
+    return await this.prisma.user.findFirst({
+      where: {
+        username: username.toLowerCase(),
+      },
+    })
+  }
+
+  /**
+   * Get handle by username
+   */
+  async getHandleByUsername(username: string) {
+    const findUser = await this.getUserByUsername(username)
+
+    return this.prisma.handle.findMany({
+      where: {
+        userId: findUser.id,
+      },
+      include: {
+        onlineJudge: true,
+      },
+    })
+  }
 }

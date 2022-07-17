@@ -10,7 +10,7 @@ import {
 } from "@chakra-ui/react"
 import { useState } from "react"
 import { getAvatarColors } from "@/utils/getAvatarColors"
-import { getAllHandles } from "@/api/handle"
+import { getHandlesByUsername } from "@/api/handle"
 import { useQuery } from "react-query"
 import { CCIcon, CFIcon, LightOJIcon, TophIcon } from "../Icons"
 import getOJProfileURL from "@/utils/getOJProfileUrl"
@@ -22,7 +22,7 @@ export const UserCard: React.FC<UserCardProps> = ({ name, username }) => {
   /**
    * Get all handles
    */
-  useQuery("handles", getAllHandles, {
+  useQuery("handles", () => getHandlesByUsername(username), {
     onSuccess(data) {
       setHandles(data?.body.handles)
     },

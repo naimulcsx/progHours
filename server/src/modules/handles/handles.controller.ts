@@ -5,6 +5,8 @@ import {
   Delete,
   Get,
   HttpStatus,
+  NotFoundException,
+  Param,
   Patch,
   Post,
   Req,
@@ -55,6 +57,19 @@ export class HandlesController {
   @Get("")
   async findHandles(@Req() req) {
     const handles = await this.handleService.findAllHandles(req.user.id)
+    return { statusCode: HttpStatus.OK, body: { handles } }
+  }
+
+  @ApiOperation({ summary: "Get Handles by username" })
+  @ApiOkResponse({ description: "Success" })
+  @ApiForbiddenResponse({ description: "Forbidden." })
+  @Get("/:username")
+  async getHandleByUsername(@Param("username") username: string) {
+    const findUser = await this.handleService.getUserByUsername(username)
+    if (!findUser) throw new NotFoundException("User not found!")
+
+    const handles = await this.handleService.getHandleByUsername(username)
+
     return { statusCode: HttpStatus.OK, body: { handles } }
   }
 

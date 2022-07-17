@@ -21,7 +21,7 @@ const Settings = () => {
             <Tab>General Information</Tab>
             <Tab>Update Password</Tab>
             <Tab>Online Judge Handles</Tab>
-            <Tab>Preferences</Tab>
+            {/* <Tab>Preferences</Tab> */}
           </TabList>
           <TabPanels>
             <TabPanel>
@@ -33,7 +33,7 @@ const Settings = () => {
             <TabPanel>
               <HandleSettings />
             </TabPanel>
-            <TabPanel>Upcoming!</TabPanel>
+            {/* <TabPanel>Upcoming!</TabPanel> */}
           </TabPanels>
         </Tabs>
       )}
