@@ -80,7 +80,7 @@ export class UsersService {
       data: {
         name,
         email,
-        mobile,
+        mobile: mobile || null,
         department,
         batch: Number(batch) || null,
         cgpa: Number(cgpa) || null,

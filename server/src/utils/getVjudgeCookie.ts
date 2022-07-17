@@ -1,6 +1,11 @@
+import { BadRequestException } from "@nestjs/common"
 import * as rp from "request-promise"
 
 export default async function getVjudgeCookie() {
+  if (!process.env.VJUDGE_USERNAME || !process.env.VJUDGE_PASSWORD) {
+    throw new BadRequestException("Missing environment variables!")
+  }
+
   const loginData = await rp({
     method: "POST",
     uri: "https://vjudge.net/user/login",

@@ -70,7 +70,7 @@ export const SubmissionsTable = ({
   return (
     <Box position="relative">
       <Box
-        mt={isEditable ? 6 : 4}
+        mt={isEditable ? 6 : 2}
         mx={isEditable ? -4 : 0}
         shadow={isEditable ? "initial" : "base"}
         rounded={isEditable ? "none" : "lg"}
@@ -136,6 +136,8 @@ export const SubmissionsTable = ({
                     const cellType: any = cell.column.Header
                     return (
                       <Td
+                        h={16}
+                        minH={16}
                         borderBottom="1px solid"
                         borderColor="gray.200"
                         fontSize="sm"

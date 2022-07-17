@@ -5,6 +5,7 @@ import {
   Button,
   Flex,
   Heading,
+  HStack,
   Text,
   useColorModeValue,
 } from "@chakra-ui/react"
@@ -14,6 +15,11 @@ import { UserInfo } from "./UserInfo"
 import moment from "moment"
 import { Container } from "@chakra-ui/react"
 import { getAvatarColors } from "@/utils/getAvatarColors"
+import {
+  Solved100,
+  Solved250,
+  Solved50,
+} from "@/assets/achievements/SolveCount"
 
 export const UserCard: React.FC<UserCardProps> = ({
   name,
@@ -42,13 +48,16 @@ export const UserCard: React.FC<UserCardProps> = ({
             color={color}
             name={name}
           />
-          <Box>
-            <Heading size="lg" fontWeight={600} letterSpacing="tight">
-              {name}
-            </Heading>
-            <Text color={useColorModeValue("gray.600", "gray.400")}>
-              {username.toUpperCase()}
-            </Text>
+          <Box w="full" display="flex" justifyContent="space-between">
+            <Box>
+              <Heading size="lg" fontWeight={600} letterSpacing="tight">
+                {name}
+              </Heading>
+              <Text color={useColorModeValue("gray.600", "gray.400")}>
+                {username.toUpperCase()}
+              </Text>
+            </Box>
+            <Box></Box>
           </Box>
         </Flex>
       </Container>

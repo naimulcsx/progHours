@@ -52,9 +52,9 @@ export const GeneralInformationForm = () => {
               label: "Department",
               placeholder: "Select",
               options: [
-                "Computer Science and Engineering (CSE)",
-                "Computer and Communication Engineering (CCE)",
-                "Electrical and Electronic Engineering (EEE)",
+                ["Computer Science and Engineering (CSE)", "CSE"],
+                ["Computer and Communication Engineering (CCE)", "CCE"],
+                ["Electrical and Electronic Engineering (EEE)", "EEE"],
               ],
               validate: Yup.string().trim(),
               initialValue: user.department,

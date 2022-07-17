@@ -19,6 +19,7 @@ export interface User {
   cgpa?: number
   batch?: number
   department?: string
+  memberSince?: string
 }
 
 interface GlobalContext {

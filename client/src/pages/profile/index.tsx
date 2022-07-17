@@ -1,7 +1,7 @@
-import { AxiosError } from "axios"
+import {} from "axios"
 import { useQuery } from "react-query"
-import { useContext, useState } from "react"
-import { useNavigate, useParams } from "react-router-dom"
+import { useState } from "react"
+import { useParams } from "react-router-dom"
 import {
   Box,
   Container,
@@ -25,24 +25,22 @@ import Navbar from "@/components/navbar"
 /**
  * Import API
  */
-import { getStats } from "@/api/dashboard"
 import { getSubmissionsByUsername } from "@/api/submissions"
 
 /**
  * Import helpers
  */
-import showErrorToasts from "@/utils/showErrorToasts"
 import { getUserByUsername } from "@/api/user"
 import { UserCard } from "@/components/profile/UserCard"
 import { Helmet } from "react-helmet-async"
 import { SubmissionsTable } from "@/components/submissions-table"
 import { DEFAULT_TOAST_OPTIONS } from "@/configs/toast-config"
-import { GeneralInformationForm } from "@/components/settings/GeneralInformationForm"
-import { UpdatePasswordForm } from "@/components/settings/UpdatePasswordForm"
 import { getStatsByUsername } from "@/api/leaderboard"
 import UserStats from "@/components/stats/UserStats"
-import WeeklySolvedChart from "@/components/stats/visualizations/WeeklySolvedChart"
 import TagsFreqChart from "@/components/stats/visualizations/TagsFreqChart"
+import { UserAbout } from "@/components/profile/UserAbout"
+import { getWeekRanges } from "@/utils/getWeekRanges"
+import WeeklySolvedChart from "@/components/stats/visualizations/WeeklySolvedChart"
 
 interface User {
   name: string
@@ -54,6 +52,10 @@ interface User {
   mobile: string
   batch: number
   role: string
+}
+
+interface Frequency {
+  [name: string]: number
 }
 
 export default function Profile() {
@@ -69,12 +71,31 @@ export default function Profile() {
   /**
    * Get submissions
    */
+  let [frequency, setFrequency] = useState<Frequency | null>(null)
+
   const submissionQuery = useQuery(
     `submissions/${username}`,
     () => getSubmissionsByUsername(username ? username : "-1"),
     {
       onSuccess: (res) => {
-        // setUser(data.user)
+        const frequency: Frequency = {}
+        const weekRanges = getWeekRanges(res.body.submissions)
+        /**
+         * For each week k, calculate how many problems are solved in the k'th week
+         */
+        for (let i = 0; i < res.body.submissions.length; ++i) {
+          for (let j = 0; j < weekRanges.length; ++j) {
+            const solvedAt = new Date(res.body.submissions[i].solvedAt)
+            if (
+              solvedAt >= weekRanges[j].from &&
+              solvedAt <= weekRanges[j].to
+            ) {
+              if (!frequency[j + 1]) frequency[j + 1] = 0
+              frequency[j + 1]++
+            }
+          }
+        }
+        setFrequency(frequency)
         setSubmissions(res.body.submissions)
       },
     }
@@ -94,7 +115,7 @@ export default function Profile() {
     }
   )
 
-  const [userStats, setUserStats] = useState(null)
+  const [userStats, setUserStats] = useState<any>(null)
   useQuery(`stats/${username}`, () => getStatsByUsername(username || ""), {
     onSuccess: (res) => {
       setUserStats(res.body.stats)
@@ -104,7 +125,7 @@ export default function Profile() {
   return (
     <>
       <Navbar />
-      {user && userStats && submissionQuery.data ? (
+      {user && userStats && frequency && submissionQuery.data ? (
         <Box>
           <Helmet>
             <title>{user.name}</title>
@@ -122,10 +143,24 @@ export default function Profile() {
                 <Tab>Submissions</Tab>
               </TabList>
               <TabPanels>
-                <TabPanel mx={-4}>Hello world!</TabPanel>
+                <TabPanel mx={-4}>
+                  <UserAbout user={user} userStats={userStats} />
+                </TabPanel>
                 <TabPanel>
                   <Box mx={-4} mb={4} mt={2}>
                     <UserStats progress={userStats} />
+                  </Box>
+
+                  <Box
+                    p={8}
+                    pb={2}
+                    mb={4}
+                    bg="white"
+                    rounded="lg"
+                    shadow="base"
+                    mx={-4}
+                  >
+                    <WeeklySolvedChart data={frequency} />
                   </Box>
                   <Box
                     p={8}

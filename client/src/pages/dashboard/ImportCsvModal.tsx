@@ -202,6 +202,8 @@ export default function ImportCsvModal({
                 const isLoading =
                   importStarted && status[link].status === "loading"
                 const isError = importStarted && status[link].status === "error"
+                const isSubmissionExistsError =
+                  isError && status[link].error === "Submission already exists!"
 
                 return (
                   <Tr key={`${link}-${i}}`}>
@@ -212,7 +214,11 @@ export default function ImportCsvModal({
                       w="500px"
                       maxW="500px"
                       className={`${isSuccess ? "text-green-500" : ""} ${
-                        isError ? "text-red-500" : ""
+                        isError
+                          ? isSubmissionExistsError
+                            ? "text-blue-500"
+                            : "text-red-500"
+                          : ""
                       }`}
                     >
                       {link}

@@ -85,10 +85,11 @@ export class SubmissionsService {
       // and then save it in our database
       try {
         // parse the problem with the help of parser service
-        const { name, pid, tags, difficulty, judge_id } =
-          await this.parsersService.parseProblem(link)
+        const problem = await this.parsersService.parseProblem(link)
 
-        console.log(name, pid, tags, difficulty, judge_id)
+        const { name, pid, tags, difficulty, judge_id } = problem
+
+        console.log(problem)
 
         // save the problem that we've parsed
         const newProblem = await this.prisma.problem.create({
@@ -101,7 +102,15 @@ export class SubmissionsService {
           },
         })
 
-        // insert the tags, if they do not exist in the database
+        // * insert the tags, if they do not exist in the database
+        /**
+         * Some problem in codeforces have the same tag twice
+         * And our system constrains same tag multiple times for a problem
+         * So it results in an error. In order to fix it, we keep a map of booleans
+         * Eg. https://codeforces.com/contest/1593/problem/B
+         */
+        const tagMap = {}
+
         for (let tag of tags) {
           // find or create the tag
           const tagObject = await this.prisma.tag.upsert({
@@ -109,13 +118,16 @@ export class SubmissionsService {
             update: {},
             create: { name: tag },
           })
-          // insert tagId and problemId into the junction table
-          await this.prisma.problemTag.create({
-            data: {
-              problemId: newProblem.id,
-              tagId: tagObject.id,
-            },
-          })
+          if (!tagMap[tagObject.id]) {
+            // insert tagId and problemId into the junction table
+            await this.prisma.problemTag.create({
+              data: {
+                problemId: newProblem.id,
+                tagId: tagObject.id,
+              },
+            })
+            tagMap[tagObject.id] = true
+          }
         }
         // save the problem id
         problemId = newProblem.id
@@ -134,7 +146,7 @@ export class SubmissionsService {
       })
       // throw an error because an user can't add same problem twice
       if (foundSubmission) {
-        throw new BadRequestException("Submission already exists.")
+        throw new BadRequestException("Submission already exists!")
       }
     } catch (err) {
       throw err

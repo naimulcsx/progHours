@@ -74,6 +74,13 @@ const FormBuilder = ({
                       placeholder={fields[key].placeholder}
                     >
                       {fields[key].options?.map((item, i) => {
+                        const isArray = Array.isArray(item)
+                        if (isArray)
+                          return (
+                            <option key={i} value={item[1]}>
+                              {item[0]}
+                            </option>
+                          )
                         return (
                           <option key={i} value={item}>
                             {item}
@@ -136,7 +143,7 @@ interface FormBuilderProps extends BoxProps {
       initialValue?: string
       validate: Yup.AnySchema
       value?: string
-      options?: Array<string>
+      options?: Array<string> | [string, string][]
       helperText?: string
       disabled?: boolean
       placeholder?: string
