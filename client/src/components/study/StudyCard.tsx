@@ -31,7 +31,6 @@ export default function StudyCard(studies: Study) {
   return (
     <Box
       as="article"
-      maxW="sm"
       p="5"
       borderWidth="1px"
       rounded="md"

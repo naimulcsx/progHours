@@ -21,9 +21,35 @@ const HandleSettings = () => {
     },
   })
   return (
-    <Flex justifyContent={"space-between"} columnGap={20}>
+    <Box>
+      <Flex justifyContent={"flex-end"} mb={4}>
+        <Button
+          size="sm"
+          onClick={() => setIsOpen(true)}
+          leftIcon={<PlusSmIcon height={24} width={24} />}
+        >
+          Add Handle
+        </Button>
+      </Flex>
+      <PopupBuilder
+        isOpen={isOpen}
+        setIsOpen={setIsOpen}
+        title="Add a new handle"
+      >
+        <HandleForm setIsOpen={setIsOpen} isCreate={true} />
+      </PopupBuilder>
       <Box flex={"1"}>
-        <Grid templateColumns="repeat(4, 1fr)" gap={5}>
+        <Grid
+          gridTemplateColumns={[
+            "repeat(1, 1fr)",
+            "repeat(1, 1fr)",
+            "repeat(2, 1fr)",
+            "repeat(3, 1fr)",
+            "repeat(4, 1fr)",
+            "repeat(4, 1fr)",
+          ]}
+          gap={4}
+        >
           {handles.map((item: any) => {
             const iconMap: any = {
               Codeforces: <CFIcon />,
@@ -42,24 +68,7 @@ const HandleSettings = () => {
           })}
         </Grid>
       </Box>
-
-      <Flex justifyContent={"flex-end"}>
-        <Button
-          size="sm"
-          onClick={() => setIsOpen(true)}
-          leftIcon={<PlusSmIcon height={24} width={24} />}
-        >
-          Add Handle
-        </Button>
-      </Flex>
-      <PopupBuilder
-        isOpen={isOpen}
-        setIsOpen={setIsOpen}
-        title="Add a new handle"
-      >
-        <HandleForm setIsOpen={setIsOpen} isCreate={true} />
-      </PopupBuilder>
-    </Flex>
+    </Box>
   )
 }
 
