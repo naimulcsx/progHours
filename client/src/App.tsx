@@ -52,7 +52,14 @@ const App = (): JSX.Element => {
     /**
      * Excluding from checking since these are public pages
      */
-    if (!["/", "/leaderboard", "/login", "/register"].includes(pathname))
+    function userOrOtherPath(pathname: string) {
+      return pathname.substring(0, 6) === "/users" ? "/users" : pathname
+    }
+    if (
+      !["/", "/leaderboard", "/login", "/register", "/users"].includes(
+        userOrOtherPath(pathname)
+      )
+    )
       checkUser()
   }, [])
 
