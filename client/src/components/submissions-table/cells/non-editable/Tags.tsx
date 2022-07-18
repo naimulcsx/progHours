@@ -13,6 +13,7 @@ import { Badge, Flex } from "@chakra-ui/react"
 
 const NonEditableTags = (cell: Cell<Submission>) => {
   const { tags } = cell.row.original.problem
+  if (tags.length === 0) return "—"
   return (
     <Flex gap={2} flexWrap="wrap">
       {tags.map((item: any, index) => {

@@ -1,6 +1,8 @@
 import React from "react"
-import ReactDOM from 'react-dom'
+import ReactDOM from "react-dom"
 import { BrowserRouter as Router } from "react-router-dom"
+import { ChakraProvider } from "@chakra-ui/react"
+import { theme } from "@/styles/theme"
 
 /**
  * Import App
@@ -12,9 +14,11 @@ import App from "@/App"
  */
 ReactDOM.render(
   <React.StrictMode>
-    <Router>
-      <App />
-    </Router>
+    <ChakraProvider theme={theme}>
+      <Router>
+        <App />
+      </Router>
+    </ChakraProvider>
   </React.StrictMode>,
   document.getElementById("root")
 )

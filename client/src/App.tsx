@@ -1,13 +1,11 @@
 import { useEffect } from "react"
-import { Helmet, HelmetProvider } from "react-helmet-async"
+import { HelmetProvider } from "react-helmet-async"
 import { QueryClient, QueryClientProvider } from "react-query"
 import { useLocation, useNavigate, useRoutes } from "react-router-dom"
 import clearAuthData from "@/utils/clearAuthData"
 import axios from "axios"
 import { ReactQueryDevtools } from "react-query/devtools"
-import { Toaster } from "react-hot-toast"
-import toast from "react-hot-toast"
-import { ChakraProvider } from "@chakra-ui/react"
+import { useToast } from "@chakra-ui/react"
 import { Box } from "@chakra-ui/react"
 
 /**
@@ -16,7 +14,6 @@ import { Box } from "@chakra-ui/react"
 import "@/styles/fonts.css"
 import "@/styles/tailwind.css"
 import "@/styles/spinner.css"
-import { theme } from "@/styles/theme"
 
 /**
  * Import Routes
@@ -27,6 +24,7 @@ import routes from "./routes"
  * Import Components
  */
 import { GlobalStateProvider } from "./GlobalStateProvider"
+import { DEFAULT_TOAST_OPTIONS } from "./configs/toast-config"
 
 /**
  * Initialize query client
@@ -34,6 +32,7 @@ import { GlobalStateProvider } from "./GlobalStateProvider"
 const queryClient = new QueryClient()
 
 const App = (): JSX.Element => {
+  const toast = useToast(DEFAULT_TOAST_OPTIONS)
   const navigate = useNavigate()
   const { pathname } = useLocation()
 
@@ -47,37 +46,35 @@ const App = (): JSX.Element => {
       } catch (err) {
         await clearAuthData()
         navigate("/login")
-        toast.error("Access denied", { className: "toast" })
+        toast({ status: "error", title: "Access denied!" })
       }
     }
     /**
-     * Excluding /login and /register from checking since these are public pages
+     * Excluding from checking since these are public pages
      */
-    if (!["/login", "/register"].includes(pathname)) checkUser()
+    if (!["/", "/leaderboard", "/login", "/register"].includes(pathname))
+      checkUser()
   }, [])
 
   const isLoggedIn: boolean = !!localStorage.getItem("isLoggedIn")
   const matchedPage = useRoutes(routes(isLoggedIn))
 
   return (
-    <ChakraProvider theme={theme}>
-      <QueryClientProvider client={queryClient}>
-        {/* @ts-ignore */}
-        <HelmetProvider>
-          <Box minH="100vh" bg="gray.50">
-            {isLoggedIn ? (
-              <GlobalStateProvider>
-                <main>{matchedPage}</main>
-              </GlobalStateProvider>
-            ) : (
+    <QueryClientProvider client={queryClient}>
+      {/* @ts-ignore */}
+      <HelmetProvider>
+        <Box minH="100vh" bg="gray.50">
+          {isLoggedIn ? (
+            <GlobalStateProvider>
               <main>{matchedPage}</main>
-            )}
-          </Box>
-          {/* <ReactQueryDevtools position="bottom-right" /> */}
-          <Toaster position="top-center" reverseOrder={false} />
-        </HelmetProvider>
-      </QueryClientProvider>
-    </ChakraProvider>
+            </GlobalStateProvider>
+          ) : (
+            <main>{matchedPage}</main>
+          )}
+        </Box>
+        {/* <ReactQueryDevtools position="bottom-right" /> */}
+      </HelmetProvider>
+    </QueryClientProvider>
   )
 }
 

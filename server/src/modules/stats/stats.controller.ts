@@ -20,7 +20,6 @@ import { StatsService } from "./stats.service"
 
 @Controller("/stats")
 @ApiTags("stats")
-@UseGuards(IsAuthenticatedGuard)
 export class StatsController {
   constructor(
     private readonly statsService: StatsService,
@@ -35,6 +34,7 @@ export class StatsController {
   @ApiOperation({ summary: "Returns the statistics of the current user." })
   @ApiOkResponse({ description: "Success." })
   @ApiForbiddenResponse({ description: "Forbidden." })
+  @UseGuards(IsAuthenticatedGuard)
   async getStats(@Req() req) {
     const stats = await this.statsService.getUserStats(req.user.id)
     return stats

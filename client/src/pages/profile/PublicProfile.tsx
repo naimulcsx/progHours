@@ -55,7 +55,7 @@ interface Frequency {
   [name: string]: number
 }
 
-export default function Profile() {
+export default function PublicProfile() {
   const toast = useToast(DEFAULT_TOAST_OPTIONS)
   const { username } = useParams()
 
@@ -119,11 +119,9 @@ export default function Profile() {
     },
   })
 
-  const isLoggedIn: boolean = !!localStorage.getItem("isLoggedIn")
-
   return (
     <>
-      {isLoggedIn ? <Navbar /> : <PublicNavbar />}
+      <PublicNavbar />
       {user && userStats && frequency && submissionQuery.data ? (
         <Box overflow="hidden" pb={10}>
           {/* @ts-ignore */}

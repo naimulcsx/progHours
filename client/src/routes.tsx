@@ -1,5 +1,4 @@
 import { useEffect } from "react"
-import toast from "react-hot-toast"
 import { Navigate, RouteObject } from "react-router-dom"
 
 /**
@@ -24,24 +23,17 @@ import Profile from "@/pages/profile"
  * Settings page
  */
 import Settings from "@/pages/Settings"
-import StudyPage from "./pages/Study"
-
-const AccessDenied = (): JSX.Element => {
-  /**
-   * Show the Access denied toast and redirect users to /login
-   */
-  useEffect(() => {
-    toast.error("Access denied", {
-      className: "toast",
-    })
-  }, [])
-  return <Navigate to="/login" />
-}
+import StudyPage from "@/pages/Study"
+import PublicLeaderboard from "@/pages/PublicLeaderboard"
 
 const routes = (isLoggedIn: boolean): RouteObject[] => [
   {
     path: "/",
-    element: isLoggedIn ? <Navigate to="/dashboard" /> : <Login />,
+    element: isLoggedIn ? (
+      <Navigate to="/dashboard" />
+    ) : (
+      <Navigate to="/leaderboard" />
+    ),
   },
   {
     path: "/login",
@@ -53,19 +45,19 @@ const routes = (isLoggedIn: boolean): RouteObject[] => [
   },
   {
     path: "/dashboard",
-    element: isLoggedIn ? <DashboardHome /> : <AccessDenied />,
+    element: isLoggedIn ? <DashboardHome /> : <Navigate to="/login" />,
   },
   {
     path: "/submissions",
-    element: isLoggedIn ? <TrackingSheet /> : <AccessDenied />,
+    element: isLoggedIn ? <TrackingSheet /> : <Navigate to="/login" />,
   },
   {
     path: "/study",
-    element: isLoggedIn ? <StudyPage /> : <AccessDenied />,
+    element: isLoggedIn ? <StudyPage /> : <Navigate to="/login" />,
   },
   {
     path: "/settings",
-    element: isLoggedIn ? <Settings /> : <AccessDenied />,
+    element: isLoggedIn ? <Settings /> : <Navigate to="/login" />,
   },
   {
     path: "/users/:username",
@@ -73,7 +65,7 @@ const routes = (isLoggedIn: boolean): RouteObject[] => [
   },
   {
     path: "/leaderboard",
-    element: <LeaderboardPage />,
+    element: isLoggedIn ? <LeaderboardPage /> : <PublicLeaderboard />,
   },
 ]
 

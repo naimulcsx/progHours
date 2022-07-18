@@ -31,7 +31,6 @@ import { UpdateStudyDto } from "@/validators/update-study-dto"
 
 @Controller("/users")
 @ApiTags("users")
-@UseGuards(IsAuthenticatedGuard)
 export class UsersController {
   constructor(
     private readonly usersService: UsersService,
@@ -46,6 +45,7 @@ export class UsersController {
   @ApiOperation({ summary: "Returns the current logged in user." })
   @ApiOkResponse({ description: "Success." })
   @ApiForbiddenResponse({ description: "Forbidden." })
+  @UseGuards(IsAuthenticatedGuard)
   async getCurrentUser(@Req() req) {
     const user = await this.usersService.getUserById(req.user.id)
     if (!user) {
@@ -64,6 +64,7 @@ export class UsersController {
    * @Patch /users/me
    */
   @Patch("/me")
+  @UseGuards(IsAuthenticatedGuard)
   async updateUser(@Body() body: any, @Req() req) {
     const { name, email, mobile, department, batch, cgpa } = body
 
@@ -108,6 +109,7 @@ export class UsersController {
   }
 
   @Patch("/update-password")
+  @UseGuards(IsAuthenticatedGuard)
   async updatePassword(@Body() body, @Req() req: any) {
     const { currentPassword, newPassword } = body
     await this.usersService.updatePassword(
@@ -137,6 +139,7 @@ export class UsersController {
    * @Post /users/user-study
    */
   @Post("/studies")
+  @UseGuards(IsAuthenticatedGuard)
   @ApiOperation({ summary: "Create new user study" })
   @ApiCreatedResponse({ description: "User Study successfully created" })
   @ApiForbiddenResponse({ description: "Forbidden." })
@@ -153,6 +156,7 @@ export class UsersController {
    * @GET /users/:userId/user-study
    */
   @Get("/me/studies")
+  @UseGuards(IsAuthenticatedGuard)
   @ApiOperation({ summary: "Get all user studies" })
   @ApiOkResponse({ description: "Success." })
   @ApiForbiddenResponse({ description: "Forbidden." })
@@ -168,6 +172,7 @@ export class UsersController {
    * @Get
    */
   @Get("/me/studies/:id")
+  @UseGuards(IsAuthenticatedGuard)
   @ApiOperation({ summary: "Get a particular user study" })
   @ApiOkResponse({ description: "Success." })
   @ApiForbiddenResponse({ description: "Forbidden." })
@@ -181,6 +186,7 @@ export class UsersController {
    * update user study
    */
   @Patch("/me/studies/:id")
+  @UseGuards(IsAuthenticatedGuard)
   @ApiOperation({ summary: "Update a particular user study" })
   @ApiOkResponse({ description: "Success." })
   @ApiForbiddenResponse({ description: "Forbidden." })
@@ -195,6 +201,7 @@ export class UsersController {
   }
 
   @Delete("/me/studies/:id")
+  @UseGuards(IsAuthenticatedGuard)
   @ApiOperation({ summary: "Delete a particular user study" })
   @ApiOkResponse({ description: "Success." })
   @ApiForbiddenResponse({ description: "Forbidden." })

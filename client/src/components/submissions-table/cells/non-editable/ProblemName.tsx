@@ -7,7 +7,6 @@ import {
   CSESIcon,
   TophIcon,
   AtCoder,
-  UnknownIcon,
   EOlympIcon,
   BeeCrowd,
   HackerRankIcon,
@@ -22,6 +21,7 @@ import { Cell } from "react-table"
 import { Submission } from "@/types/Submission"
 import { Box, Flex, Heading, HStack, Text } from "@chakra-ui/react"
 import { ExternalLinkIcon } from "@heroicons/react/outline"
+import { QuestionMarkCircleIcon } from "@heroicons/react/solid"
 
 const iconMap = [
   { prefix: "Gym-", icon: CFIcon },
@@ -51,7 +51,7 @@ const ProblemName = (cell: Cell<Submission>) => {
     .filter((item, i) => (pid.includes(item.prefix) ? true : false))
     .at(0)?.icon
   /** If there is no match, use the Unknown icon */
-  if (!OnlineJudgeIcon) OnlineJudgeIcon = UnknownIcon
+  if (!OnlineJudgeIcon) OnlineJudgeIcon = QuestionMarkCircleIcon
   return (
     <HStack spacing={4}>
       <Flex
