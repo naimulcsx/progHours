@@ -49,6 +49,7 @@ export default function TrackingSheet() {
 
   return (
     <DashboardLayout title="Submissions">
+      {/* @ts-ignore */}
       <Helmet>
         <title>Tracking Sheet</title>
       </Helmet>

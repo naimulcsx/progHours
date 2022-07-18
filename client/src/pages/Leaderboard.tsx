@@ -43,6 +43,7 @@ const LeaderboardPage = () => {
 
   return (
     <DashboardLayout title="Leaderboard">
+      {/* @ts-ignore */}
       <Helmet>
         <title>Leaderboard</title>
       </Helmet>

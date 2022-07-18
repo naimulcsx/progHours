@@ -21,6 +21,7 @@ const Register = (): JSX.Element => {
   const navigate = useNavigate()
   return (
     <AuthLayout>
+      {/* @ts-ignore */}
       <Helmet>
         <title>Register</title>
       </Helmet>

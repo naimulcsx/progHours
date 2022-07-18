@@ -1,0 +1,61 @@
+version: "3"
+services:
+  nginx:
+    container_name: nginx
+    build:
+      context: ./client
+      dockerfile: Dockerfile.prod
+    ports:
+      - 80:80
+    environment:
+      - PORT=80
+      - CHOKIDAR_USEPOLLING="true"
+    depends_on:
+      - api_server
+    networks:
+      - mern_app
+  api_server:
+    container_name: api_server
+    build:
+      context: ./server
+      dockerfile: Dockerfile.prod
+    environment:
+      - DATABASE_URL=postgres://user:pass@db_server:5432/app
+      - NODE_ENV=production
+      - ACCESS_TOKEN_SECRET=4e7cd74b005aa9a6a550875b2908bf56b10103341b60ef7c952c03e8b6bbff9b7b8d01cbc7352b79bebe91295c6b4b4cf2312970df555aa50df6eb167ff8ef17
+    volumes:
+      - ./server:/home/node/server
+      - /home/node/server/node_modules
+    depends_on:
+      - db_server
+    networks:
+      - mern_app
+  db_server:
+    container_name: db_server
+    image: postgres:14
+    restart: always
+    ports:
+      - 5432:5432
+    environment:
+      - POSTGRES_USER=user
+      - POSTGRES_PASSWORD=pass
+      - POSTGRES_DB=app
+    volumes:
+      - /var/lib/postgresql/data
+    networks:
+      - mern_app
+  adminer:
+    container_name: adminer
+    image: adminer
+    restart: always
+    ports:
+      - 8080:8080
+    environment:
+      - ADMINER_DEFAULT_DB_DRIVER=pgsql
+    depends_on:
+      - db_server
+    networks:
+      - mern_app
+networks:
+  mern_app:
+    driver: bridge

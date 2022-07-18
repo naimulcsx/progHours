@@ -123,6 +123,7 @@ export default function Profile() {
       <Navbar />
       {user && userStats && frequency && submissionQuery.data ? (
         <Box overflow="hidden" pb={10}>
+          {/* @ts-ignore */}
           <Helmet>
             <title>{user.name}</title>
           </Helmet>

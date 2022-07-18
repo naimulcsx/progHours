@@ -33,6 +33,7 @@ const StudyPage = () => {
         </Button>
       }
     >
+      {/* @ts-ignore */}
       <Helmet>
         <title>Study List</title>
       </Helmet>

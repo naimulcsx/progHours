@@ -1,5 +1,5 @@
 import ReactApexChart from "react-apexcharts"
-
+// @ts-ignore
 export default function WeeklySolvedChart({ data }) {
   console.log(data)
   const series = [
@@ -42,6 +42,7 @@ export default function WeeklySolvedChart({ data }) {
     },
   }
   return (
+    // @ts-ignore
     <ReactApexChart
       options={options as any}
       series={series}

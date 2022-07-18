@@ -13,7 +13,7 @@ function stringToColour(str: string) {
   }
   return colour
 }
-
+// @ts-ignore
 export default function TagsFreqChart({ data }) {
   const state = {
     series: [
@@ -110,9 +110,10 @@ export default function TagsFreqChart({ data }) {
       },
     },
   }
-
   return (
+    // @ts-ignore
     <ReactApexChart
+      // @ts-ignore
       options={state.options}
       series={state.series}
       type="bar"

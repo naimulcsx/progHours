@@ -21,6 +21,7 @@ const Login = (): JSX.Element => {
   const navigate = useNavigate()
   return (
     <AuthLayout>
+      {/* @ts-ignore */}
       <Helmet>
         <title>Login</title>
       </Helmet>

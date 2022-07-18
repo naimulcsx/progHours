@@ -58,6 +58,7 @@ const DashboardHome = () => {
   })
   return (
     <DashboardLayout title={`Hi! ${user?.name || ""}`}>
+      {/* @ts-ignore */}
       <Helmet>
         <title>Dashboard</title>
       </Helmet>

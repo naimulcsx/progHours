@@ -20,6 +20,7 @@ import { CgMenuGridO as GridViewIcon } from "react-icons/cg"
 import { IoOpenOutline as OpenLinkIcon } from "react-icons/io5"
 import { IoHelp as UnknownIcon } from "react-icons/io5"
 
+// @ts-ignore
 const LogoIcon = ({ width, height }) => {
   return (
     <svg
@@ -45,7 +46,7 @@ const LogoIcon = ({ width, height }) => {
     </svg>
   )
 }
-
+// @ts-ignore
 const CFIcon = (props) => (
   <svg
     width="100%"
@@ -105,6 +106,7 @@ const CFIcon = (props) => (
   </svg>
 )
 
+// @ts-ignore
 function TrashIcon(props) {
   return (
     <svg
@@ -130,7 +132,7 @@ function TrashIcon(props) {
     </svg>
   )
 }
-
+// @ts-ignore
 function EditIcon(props) {
   return (
     <svg

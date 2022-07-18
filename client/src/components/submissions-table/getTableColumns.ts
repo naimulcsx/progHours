@@ -21,6 +21,7 @@ export const getTableColumns = (isEditable: boolean = false) => {
     {
       Header: "Solve Time",
       accessor: "solveTime",
+      // @ts-ignore
       Cell: isEditable ? EditableCells.SolveTime : (cell) => cell.value,
     },
     {
@@ -43,6 +44,7 @@ export const getTableColumns = (isEditable: boolean = false) => {
     columns.push({
       Header: "Actions",
       accessor: "id",
+      // @ts-ignore
       Cell: EditableCells.Actions,
     })
   return columns

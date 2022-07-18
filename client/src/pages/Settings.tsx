@@ -12,6 +12,7 @@ const Settings = () => {
 
   return (
     <DashboardLayout>
+      {/* @ts-ignore */}
       <Helmet>
         <title>Settings</title>
       </Helmet>

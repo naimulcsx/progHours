@@ -62,6 +62,7 @@ const App = (): JSX.Element => {
   return (
     <ChakraProvider theme={theme}>
       <QueryClientProvider client={queryClient}>
+        {/* @ts-ignore */}
         <HelmetProvider>
           <Box minH="100vh" bg="gray.50">
             {isLoggedIn ? (
