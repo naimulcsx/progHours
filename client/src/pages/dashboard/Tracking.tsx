@@ -65,7 +65,7 @@ export default function TrackingSheet() {
           </Box>
 
           {/* csv input button */}
-          <Box>
+          <Box id="import-button" display="none">
             <label htmlFor="csv-input">
               <input type="file" id="csv-input" onInput={handleImport} />
               <Button as="div" leftIcon={<UploadIcon width={16} />} size="sm">

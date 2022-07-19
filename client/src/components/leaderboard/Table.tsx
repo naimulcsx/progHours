@@ -102,6 +102,7 @@ const LeaderboardTable = ({ ranklist }: { ranklist: RanklistItem[] }) => {
                     <Th
                       {...header.getHeaderProps(header.getSortByToggleProps())}
                       className="py-4 border-t border-b"
+                      letterSpacing="-0.5px"
                     >
                       <Flex align="center" minH="5">
                         <Box as="span" fontSize={["11px", "xs"]}>
