@@ -89,8 +89,6 @@ export class SubmissionsService {
 
         const { name, pid, tags, difficulty, judge_id } = problem
 
-        console.log(problem)
-
         // save the problem that we've parsed
         const newProblem = await this.prisma.problem.create({
           data: {

@@ -33,7 +33,6 @@ export class ProblemsService {
     /**
      * ~ ONLY FOR LIGHTOJ - NEED TO CHECK IF the problem exists with the pid from link
      */
-    console.log(link)
     if (!foundProblem && new URL(link).hostname === "lightoj.com") {
       const pattern = new UrlPattern("/problem/:problemId")
       const patternResult = pattern.match(new URL(link).pathname)
@@ -86,7 +85,6 @@ export class ProblemsService {
      * Find or Create the tag
      */
     const tag = await this.findOrCreateTag(tag_name)
-    console.log(tag)
     const dataToStore = {
       problem_id,
       user_id,

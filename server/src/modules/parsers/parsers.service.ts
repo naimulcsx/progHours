@@ -915,7 +915,6 @@ export class ParsersService {
     const $ = cheerio.load(data)
 
     const name = $(".problem > .row > h4.railway-font").text().trim()
-    console.log("nameeeeee", name)
     const pid = "CW-" + matchedResult.problemId
 
     return {
