@@ -268,6 +268,7 @@ export class ParsersService {
     const linkUrl = new URL(link)
     const ccUrlPatterns = [
       new UrlPattern("/problems/:problemId"),
+      new UrlPattern("/submit/:problemId"),
       new UrlPattern("/:contestId/problems/:problemId"),
     ]
     let isInvalid = true
