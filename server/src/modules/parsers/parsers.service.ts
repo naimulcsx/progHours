@@ -1107,13 +1107,14 @@ export class ParsersService {
      * For private vjudge pages
      * We need to make a login request first to get the required cookies
      */
-    return {
-      pid: "test",
-      name: "test",
-      tags: [],
-      difficulty: 0,
-      judge_id: 2,
-      link,
-    }
+    throw new BadRequestException("Online Judge not supported!")
+    // return {
+    //   pid: "test",
+    //   name: "test",
+    //   tags: [],
+    //   difficulty: 0,
+    //   judge_id: 2,
+    //   link,
+    // }
   }
 }
