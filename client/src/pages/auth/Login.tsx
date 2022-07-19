@@ -1,106 +1,84 @@
-import axios from "axios"
 import * as Yup from "yup"
-import { useFormik } from "formik"
-// import toast from "react-hot-toast"
 import { Helmet } from "react-helmet-async"
-import { Link, useNavigate } from "react-router-dom"
-import toast from "react-hot-toast"
+import { Link as ReactRouterLink, useNavigate } from "react-router-dom"
+import { Text, useToast, Link, HStack, VStack, Flex } from "@chakra-ui/react"
 
 /**
  * Import Components / Utilities
  */
 import showErrorToasts from "@/utils/showErrorToasts"
-import AuthContainer from "@/components/AuthContainer"
-import { FormControl, Input, ErrorMessage, Label } from "@/components/Form"
-
-/**
- * Yup validation schema for login form
- */
-const loginSchema = Yup.object().shape({
-  username: Yup.string()
-    .trim()
-    .required("University ID is required")
-    .length(7, "Invalid University ID"),
-  password: Yup.string().trim().required("Password is required"),
-})
+import AuthLayout from "@/components/layouts/Auth"
+import FormBuilder from "@/components/FormBuilder"
+import { loginMutation } from "@/api/auth"
+import { Heading } from "@chakra-ui/react"
+import { DEFAULT_TOAST_OPTIONS } from "@/configs/toast-config"
 
 /**
  * Component for login page
  */
 const Login = (): JSX.Element => {
+  const toast = useToast(DEFAULT_TOAST_OPTIONS)
   const navigate = useNavigate()
-  const formik = useFormik({
-    initialValues: {
-      username: "",
-      password: "",
-    },
-    validationSchema: loginSchema,
-    onSubmit: async (values) => {
-      try {
-        /**
-         * TODO: REPLACE THIS WITH REACT-QUERY MUTATION
-         */
-        const { data } = await axios.post("/api/auth/login", values)
-        const { user } = data
-        localStorage.setItem("isLoggedIn", "1")
-        localStorage.setItem("role", "user")
-        localStorage.setItem("userId", user.id)
-        localStorage.setItem("name", user.name)
-        navigate("/dashboard")
-        toast.success("Successfully logged in", { className: "toast" })
-      } catch (error: any) {
-        const { data, status, statusText } = error.response
-        // handle bad gateway errors
-        if (status === 502) toast.error(statusText)
-        showErrorToasts(data.message)
-      }
-    },
-  })
   return (
-    <AuthContainer>
+    <AuthLayout>
+      {/* @ts-ignore */}
       <Helmet>
         <title>Login</title>
       </Helmet>
-      <div className="space-y-3">
-        <h2>Login to Account</h2>
-        <p>
+      <VStack align="start" spacing={2}>
+        <Heading size="lg">Login to Account</Heading>
+        <Flex as="p" gap={2}>
           Don't have an account?
-          <Link to="/register" className="ml-1 text-primary">
+          <Link as={ReactRouterLink} to="/register">
             Register
           </Link>
-        </p>
-      </div>
-      <form onSubmit={formik.handleSubmit} className="mt-8 space-y-4">
-        <FormControl
-          isInvalid={formik.touched.username && formik.errors.username}
-        >
-          <Label>University ID</Label>
-          <Input
-            type="text"
-            placeholder=" "
-            {...formik.getFieldProps("username")}
-          ></Input>
-          <ErrorMessage>{formik.errors.username}</ErrorMessage>
-        </FormControl>
-        <FormControl
-          isInvalid={formik.touched.password && formik.errors.password}
-        >
-          <Label>Password</Label>
-          <Input
-            type="password"
-            placeholder=" "
-            {...formik.getFieldProps("password")}
-          ></Input>
-
-          <ErrorMessage>{formik.errors.password}</ErrorMessage>
-        </FormControl>
-        <div>
-          <button type="submit" className="block mt-6 btn-primary">
-            Login
-          </button>
-        </div>
-      </form>
-    </AuthContainer>
+        </Flex>
+      </VStack>
+      <FormBuilder
+        mt={6}
+        fields={{
+          username: {
+            type: "text",
+            label: "University ID",
+            validate: Yup.string()
+              .trim()
+              .required("University ID is required")
+              .length(7, "Invalid University ID"),
+          },
+          password: {
+            type: "password",
+            label: "Password",
+            validate: Yup.string().trim().required("Password is required"),
+          },
+        }}
+        mutation={loginMutation}
+        onSuccess={(res) => {
+          const { user } = res.body
+          localStorage.setItem("isLoggedIn", "1")
+          localStorage.setItem("userId", user.id)
+          localStorage.setItem("name", user.name)
+          localStorage.setItem("username", user.username)
+          localStorage.setItem("role", user.role)
+          navigate("/dashboard") // redirect to dashboard
+          // create a toast
+          toast({
+            status: "success",
+            title: res.message,
+          })
+        }}
+        onError={(err) => {
+          const { data, status, statusText } = err.response
+          // handle bad gateway errors
+          if (status === 502) toast({ status: "error", title: statusText })
+          showErrorToasts(toast, data.message)
+        }}
+        button={{
+          label: "Login",
+          className: "mt-6",
+          loadingLabel: "Logging in",
+        }}
+      />
+    </AuthLayout>
   )
 }
 

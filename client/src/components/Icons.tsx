@@ -1,25 +1,4 @@
-import {
-  IoLogOutOutline as LogoutIcon,
-  IoSettingsOutline as SettingsIcon,
-  IoListOutline as ListViewIcon,
-} from "react-icons/io5"
-import {
-  HiOutlineUser as UserIcon,
-  HiOutlinePlusSm as PlusIcon,
-  HiOutlineDotsVertical as VerticalDotsIcon,
-  HiOutlineArrowNarrowDown as ArrowDown,
-} from "react-icons/hi"
-import {
-  BiChevronDown as ChevronDownIcon,
-  BiChevronUp as ChevronUpIcon,
-  BiLineChart as LeaderboardIcon,
-} from "react-icons/bi"
-import { RiAppsLine as DashboardIcon } from "react-icons/ri"
-import { MdOutlineListAlt as TrackingIcon } from "react-icons/md"
-import { CgMenuGridO as GridViewIcon } from "react-icons/cg"
-import { IoOpenOutline as OpenLinkIcon } from "react-icons/io5"
-import { IoHelp as UnknownIcon } from "react-icons/io5"
-
+// @ts-ignore
 const LogoIcon = ({ width, height }) => {
   return (
     <svg
@@ -45,7 +24,7 @@ const LogoIcon = ({ width, height }) => {
     </svg>
   )
 }
-
+// @ts-ignore
 const CFIcon = (props) => (
   <svg
     width="100%"
@@ -105,6 +84,7 @@ const CFIcon = (props) => (
   </svg>
 )
 
+// @ts-ignore
 function TrashIcon(props) {
   return (
     <svg
@@ -130,7 +110,7 @@ function TrashIcon(props) {
     </svg>
   )
 }
-
+// @ts-ignore
 function EditIcon(props) {
   return (
     <svg
@@ -484,13 +464,10 @@ function AddIcon() {
       xmlns="http://www.w3.org/2000/svg"
       width="18"
       height="18"
-      fill="none"
+      fill="currentColor"
       viewBox="0 0 24 24"
     >
-      <path
-        fill="#000"
-        d="M12.75 5a.75.75 0 00-1.5 0v6.25H5a.75.75 0 000 1.5h6.25V19a.75.75 0 001.5 0v-6.25H19a.75.75 0 000-1.5h-6.25V5z"
-      ></path>
+      <path d="M12.75 5a.75.75 0 00-1.5 0v6.25H5a.75.75 0 000 1.5h6.25V19a.75.75 0 001.5 0v-6.25H19a.75.75 0 000-1.5h-6.25V5z"></path>
     </svg>
   )
 }
@@ -779,19 +756,6 @@ export {
   CodeToWinIcon,
   LeetCodeIcon,
   HackerEarthIcon,
-  LogoutIcon,
-  SettingsIcon,
-  UserIcon,
-  ChevronDownIcon,
-  ChevronUpIcon,
-  DashboardIcon,
-  LeaderboardIcon,
-  TrackingIcon,
-  ListViewIcon,
-  GridViewIcon,
-  PlusIcon,
-  VerticalDotsIcon,
-  ArrowDown,
   CFIcon,
   TrashIcon,
   EditIcon,
@@ -802,8 +766,6 @@ export {
   CSESIcon,
   TophIcon,
   AtCoder,
-  OpenLinkIcon,
-  UnknownIcon,
   AddIcon,
   EOlympIcon,
   BeeCrowd,

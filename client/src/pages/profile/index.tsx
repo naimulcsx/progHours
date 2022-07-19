@@ -1,117 +1,192 @@
-import { AxiosError } from "axios"
 import { useQuery } from "react-query"
-import { useContext, useState } from "react"
-import { useNavigate, useParams } from "react-router-dom"
+import { useState } from "react"
+import { useParams } from "react-router-dom"
+import {
+  Box,
+  Container,
+  Spinner,
+  Tab,
+  TabList,
+  TabPanel,
+  TabPanels,
+  Tabs,
+  useToast,
+} from "@chakra-ui/react"
 
 /**
  * Import Components
  */
-import MobileNav from "@/components/MobileNav"
-import Navbar from "@/components/Navbar"
-import ProgressBox from "@/components/ProgressBox"
-import { GlobalContext } from "@/GlobalStateProvider"
-import ProfileTable from "@/components/profile/Table"
+import Navbar from "@/components/navbar"
 
 /**
  * Import API
  */
-import { getStats } from "@/api/dashboard"
 import { getSubmissionsByUsername } from "@/api/submissions"
 
 /**
  * Import helpers
  */
-import showErrorToasts from "@/utils/showErrorToasts"
 import { getUserByUsername } from "@/api/user"
-import Spinner from "@/components/Spinner"
-import { Transition } from "@headlessui/react"
-import Avatar from "@/components/Avatar"
+import { UserCard } from "@/components/profile/UserCard"
+import { Helmet } from "react-helmet-async"
+import { SubmissionsTable } from "@/components/submissions-table"
+import { DEFAULT_TOAST_OPTIONS } from "@/configs/toast-config"
+import { getStatsByUsername } from "@/api/leaderboard"
+import UserStats from "@/components/stats/UserStats"
+import TagsFreqChart from "@/components/stats/visualizations/TagsFreqChart"
+import { UserAbout } from "@/components/profile/UserAbout"
+import { getWeekRanges } from "@/utils/getWeekRanges"
+import WeeklySolvedChart from "@/components/stats/visualizations/WeeklySolvedChart"
+import { PublicNavbar } from "@/components/navbar/PublicNavbar"
 
 interface User {
-  name?: string
-  username?: string
-  email?: string
-  id?: number
+  name: string
+  username: string
+  email: string
+  id: number
+  memberSince: string
+  department: string
+  mobile: string
+  batch: number
+  role: string
+}
+
+interface Frequency {
+  [name: string]: number
 }
 
 export default function Profile() {
-  // const { user } = useContext(GlobalContext)
+  const toast = useToast(DEFAULT_TOAST_OPTIONS)
   const { username } = useParams()
-  const navigate = useNavigate()
 
   /**
    * Get statistics
    */
-  const progressQuery = useQuery("stats", getStats)
+  let [user, setUser] = useState<User | null>(null)
   let [submissions, setSubmissions] = useState([])
-  let [user, setUser] = useState<User>({})
 
   /**
    * Get submissions
    */
+  let [frequency, setFrequency] = useState<Frequency | null>(null)
+
   const submissionQuery = useQuery(
     `submissions/${username}`,
     () => getSubmissionsByUsername(username ? username : "-1"),
     {
-      retry: 1,
-      onSuccess: (data) => {
-        // setUser(data.user)
-        setSubmissions(data.submissions)
-      },
-      onError: (err: AxiosError) => {
-        navigate("/dashboard")
-        showErrorToasts(err.response?.data.message)
+      onSuccess: (res) => {
+        const frequency: Frequency = {}
+        const weekRanges = getWeekRanges(res.body.submissions)
+        /**
+         * For each week k, calculate how many problems are solved in the k'th week
+         */
+        for (let i = 0; i < res.body.submissions.length; ++i) {
+          for (let j = 0; j < weekRanges.length; ++j) {
+            const solvedAt = new Date(res.body.submissions[i].solvedAt)
+            if (
+              solvedAt >= weekRanges[j].from &&
+              solvedAt <= weekRanges[j].to
+            ) {
+              if (!frequency[j + 1]) frequency[j + 1] = 0
+              frequency[j + 1]++
+            }
+          }
+        }
+        setFrequency(frequency)
+        setSubmissions(res.body.submissions)
       },
     }
   )
 
-  const userQuery = useQuery(
-    `profile/${username}`,
+  useQuery(
+    `users/${username}`,
     () => getUserByUsername(username ? username : "-1"),
     {
-      onSuccess: (user) => {
-        setUser(user)
+      retry: 1,
+      onSuccess: (res) => {
+        setUser(res.body.user)
+      },
+      onError: (err) => {
+        // showErrorToasts(toast, err.response?.data.message)
       },
     }
   )
 
+  const [userStats, setUserStats] = useState<any>(null)
+  useQuery(`stats/${username}`, () => getStatsByUsername(username || ""), {
+    onSuccess: (res) => {
+      setUserStats(res.body.stats)
+    },
+  })
+
+  const isLoggedIn: boolean = !!localStorage.getItem("isLoggedIn")
+
   return (
-    <div>
-      <Navbar className="lg:bg-white" />
-      <Transition
-        show={[
-          submissionQuery.isLoading,
-          userQuery.isLoading,
-          submissionQuery.isFetching,
-          userQuery.isFetching,
-        ].every((val) => val === false)}
-        appear={true}
-        enter="transform transition duration-[400ms]"
-        enterFrom="opacity-0 scale-[0.995]"
-        enterTo="opacity-100 rotate-0 scale-100"
-        leave="transform duration-200 transition ease-in-out"
-        leaveFrom="opacity-100 rotate-0 scale-100"
-        leaveTo="opacity-0 scale-98"
-      >
-        <div className="relative flex items-center justify-center pt-32 pb-32 overflow-clip">
-          <div className="space-y-6 text-center">
-            <Avatar
-              name={user?.name || ""}
-              size="xl"
-              className="mx-auto font-medium"
-            />
-            <h1 className="text-4xl">{user?.name}</h1>
-            <span className="text-2xl">{user?.username}</span>
-          </div>
-        </div>
-        <div className="container relative px-6 mx-auto -mt-16 space-y-16">
-          {progressQuery.data && <ProgressBox progress={progressQuery.data} />}
-        </div>
-        <div className="container px-6 py-12 mx-auto space-y-8">
-          <ProfileTable submissions={submissions} />
-        </div>
-        <MobileNav></MobileNav>
-      </Transition>
-    </div>
+    <>
+      {isLoggedIn ? <Navbar /> : <PublicNavbar />}
+      {user && userStats && frequency && submissionQuery.data ? (
+        <Box overflow="hidden" pb={10}>
+          {/* @ts-ignore */}
+          <Helmet>
+            <title>{user.name}</title>
+          </Helmet>
+          <UserCard
+            name={user.name}
+            username={user.username}
+            member_since={user.memberSince}
+          />
+          <Container>
+            <Tabs>
+              <TabList>
+                <Tab>About</Tab>
+                <Tab>Statistics</Tab>
+                <Tab>Submissions</Tab>
+              </TabList>
+              <TabPanels>
+                <TabPanel mx={-4}>
+                  <Box mb={5} mt={2}>
+                    <UserStats progress={userStats} />
+                  </Box>
+                  <UserAbout user={user} userStats={userStats} />
+                </TabPanel>
+                <TabPanel>
+                  <Box
+                    p={8}
+                    pb={2}
+                    mb={4}
+                    mt={2}
+                    bg="white"
+                    rounded="lg"
+                    shadow="base"
+                    mx={-4}
+                  >
+                    <WeeklySolvedChart data={frequency} />
+                  </Box>
+                  <Box
+                    p={8}
+                    pb={2}
+                    bg="white"
+                    rounded="lg"
+                    shadow="base"
+                    mx={-4}
+                  >
+                    <TagsFreqChart data={userStats["tagsFrequency"]} />
+                  </Box>
+                </TabPanel>
+                <TabPanel>
+                  <Box mx={-4} overflowX="auto">
+                    <SubmissionsTable submissions={submissions} />
+                  </Box>
+                </TabPanel>
+              </TabPanels>
+            </Tabs>
+          </Container>
+        </Box>
+      ) : (
+        <Container pt={20}>
+          <Spinner size="sm" />
+        </Container>
+      )}
+    </>
   )
 }

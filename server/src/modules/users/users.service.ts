@@ -13,132 +13,85 @@ import { Repository } from "typeorm"
  * Import Entities (models)
  */
 import { User } from "@/modules/users/user.entity"
-import { Submission } from "@/modules/submissions/submission.entity"
 import { AuthService } from "../auth/auth.service"
-import { OnlineJudgesService } from "../online-judges/online-judges.service"
-import { Ranking } from "../ranking/ranking.entity"
+import { PrismaService } from "../prisma/prisma.service"
+import * as bcrypt from "bcryptjs"
 
 @Injectable()
 export class UsersService {
   constructor(
+    private prisma: PrismaService,
+
     @InjectRepository(User)
     private usersRepository: Repository<User>,
 
-    @InjectRepository(Submission)
-    private submissionsRepository: Repository<Submission>,
-
-    @InjectRepository(Ranking)
-    private rankingRepository: Repository<Ranking>,
-
     @Inject(forwardRef(() => AuthService))
-    private authService: AuthService,
-
-    @Inject(OnlineJudgesService)
-    private onlineJudgesService: OnlineJudgesService
+    private authService: AuthService
   ) {}
 
-  /**
-   * Find user that matches given properties
-   */
-  async getUser(match) {
-    /**
-     * Consider username to be case insensitive
-     */
-    if (typeof match.username === "string")
-      match.username = match.username.toLowerCase()
-    /**
-     * Find out the user
-     */
-    return this.usersRepository.findOne(match)
+  async getUserById(id) {
+    return this.prisma.user.findUnique({ where: { id } })
   }
 
-  /**
-   * Query builder for users repository
-   */
-  createQueryBuilder(alias) {
-    return this.usersRepository.createQueryBuilder(alias)
+  async getUserByUsername(username) {
+    return this.prisma.user.findUnique({
+      where: { username: username.toLowerCase() },
+    })
   }
 
-  /**
-   * Find user password
-   */
-
-  getUserWithPassword(username: string) {
-    return this.usersRepository
-      .createQueryBuilder("user")
-      .where("user.username = :username", { username: username.toLowerCase() })
-      .addSelect("user.password")
-      .getOne()
-  }
-
-  /**
-   * Creates a new user
-   */
   async createUser(
     name: string,
     email: string,
     username: string,
     password: string
-  ): Promise<User> {
-    /**
-     * Check if username or email is already taken
-     */
-    let usernameExists = await this.getUser({ username })
-    if (usernameExists) throw new ConflictException("Username already exists.")
-
-    let emailExists = await this.getUser({ email })
-    if (emailExists) throw new ConflictException("Email already exists.")
-
-    /**
-     * If there is no users, we need to seed OJ table
-     */
-
-    const numberOfUsers = await this.usersRepository.count({})
-    if (!numberOfUsers) {
-      await this.onlineJudgesService.seed()
-    }
-
-    /**
-     * All good! Create a new user
-     */
-    const newUser = this.usersRepository.create({
-      name,
-      username,
-      password,
-      email,
+  ) {
+    // Check if username or email is already taken
+    username = username.toLowerCase()
+    const usernameExists = await this.prisma.user.findUnique({
+      where: { username },
     })
-    const savedUser = await this.usersRepository.save(newUser)
-
-    /**
-     * Create a ranking row for that user
-     */
-    await this.rankingRepository.save({ user_id: savedUser.id })
-    return savedUser
+    if (usernameExists) throw new ConflictException("Username already exists.")
+    const emailExists = await this.prisma.user.findUnique({ where: { email } })
+    if (emailExists) throw new ConflictException("Email already exists.")
+    // TODO: If there is no users, we need to seed OJ table
+    // All good! Create a new user
+    const hashedPassword = await bcrypt.hash(password, 10)
+    const newUser = await this.prisma.user.create({
+      data: {
+        name,
+        email,
+        username,
+        password: hashedPassword,
+      },
+    })
+    // TODO: Create a user ranking row for that user
+    return newUser
   }
 
-  /**
-   * Update Profile
-   */
-  async updateProfile({ name, email }, userId) {
-    const user = await this.getUser({ id: userId })
-    /**
-     * This condition will never be hit, unless you have access token of an user which is not there in the database
-     */
+  async updateProfile({ id, name, email, mobile, department, batch, cgpa }) {
+    const user = await this.prisma.user.findUnique({ where: { id } })
+    // This condition will never be hit, unless you have access
+    // token of an user which is not there in the database
     if (!user) {
-      return new NotFoundException("User not found.")
+      throw new NotFoundException("User not found.")
     }
-    user.name = name
-    user.email = email
-    return this.usersRepository.save(user)
+    const result = await this.prisma.user.update({
+      where: { id: id },
+      data: {
+        name,
+        email,
+        mobile: mobile || null,
+        department,
+        batch: Number(batch) || null,
+        cgpa: Number(cgpa) || null,
+      },
+    })
+    // return the updated profile
+    return result
   }
 
-  /**
-   * Users user password
-   */
-  async updatePassword(passwordFields, userId) {
-    const [currentPassword, newPassword, confirmPassword] = passwordFields
-
-    const user = await this.getUser({ id: userId })
+  async updatePassword({ currentPassword, newPassword }, userId) {
+    const user = await this.getUserById(userId)
     /**
      * This condition will never be hit, unless you have access token of an user which is not there in the database
      */
@@ -156,17 +109,13 @@ export class UsersService {
       throw new ForbiddenException("Current password is invalid.")
     }
     /**
-     * If new password and confirm password do not match
-     */
-    if (newPassword !== confirmPassword) {
-      throw new ForbiddenException(
-        "New password and confirm password do not match."
-      )
-    }
-    /**
      * Update the password
      */
-    user.password = newPassword
-    return this.usersRepository.save(user)
+    return this.prisma.user.update({
+      where: { username: user.username },
+      data: {
+        password: newPassword,
+      },
+    })
   }
 }

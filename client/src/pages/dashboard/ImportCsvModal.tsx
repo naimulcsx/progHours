@@ -5,8 +5,25 @@ import { CheckIcon } from "@heroicons/react/solid"
 import { Fragment, useState } from "react"
 import { useMutation, useQueryClient } from "react-query"
 import { AxiosError } from "axios"
-import Spinner from "@/components/Spinner"
 import moment from "moment"
+import PopupBuilder from "@/components/PopupBuilder"
+import {
+  Box,
+  Button,
+  HStack,
+  ModalBody,
+  ModalFooter,
+  Spinner,
+  Table,
+  Tbody,
+  Td,
+  Text,
+  Th,
+  Thead,
+  Tooltip,
+  Tr,
+  VStack,
+} from "@chakra-ui/react"
 
 export default function ImportCsvModal({
   isOpen,
@@ -99,7 +116,7 @@ export default function ImportCsvModal({
         link,
         solvedDuringContest,
         verdict,
-        solve_time,
+        solveTime,
         date,
         submissionLink,
         comment,
@@ -132,8 +149,8 @@ export default function ImportCsvModal({
         await mutateAsync({
           link,
           verdict,
-          solve_time: parseInt(solve_time),
-          solved_at: date,
+          solveTime: parseInt(solveTime),
+          solvedAt: date,
         })
       } catch (err) {}
     }
@@ -147,153 +164,115 @@ export default function ImportCsvModal({
      * Wait 250ms before invalidating previous data, that will update the submissions
      */
     await new Promise((resolve) => setTimeout(resolve, 250))
-    queryClient.invalidateQueries("practice")
+    queryClient.invalidateQueries("submissions")
   }
 
   return (
-    <>
-      <Transition appear show={isOpen} as={Fragment}>
-        <Dialog
-          as="div"
-          className="fixed inset-0 z-10 overflow-y-auto"
-          onClose={() => {}}
-        >
-          <div className="min-h-screen px-4 text-center">
-            <Transition.Child
-              as={Fragment}
-              enter="ease-out duration-300"
-              enterFrom="opacity-0"
-              enterTo="opacity-100"
-              leave="ease-in duration-200"
-              leaveFrom="opacity-100"
-              leaveTo="opacity-0"
-            >
-              <Dialog.Overlay className="fixed inset-0 bg-gray-600 bg-opacity-60" />
-            </Transition.Child>
+    <PopupBuilder
+      title={`Import Submissions (${successCount} / ${items.length})`}
+      description="Please wait until we process your .csv file. Don't close the browser window."
+      isOpen={isOpen}
+      setIsOpen={setIsOpen}
+      size="3xl"
+    >
+      <ModalBody>
+        <Box maxH="96" overflowX="hidden">
+          <Table fontSize="sm">
+            <Thead>
+              <Tr>
+                <Th>ID</Th>
+                <Th>Link</Th>
+                <Th>Status</Th>
+              </Tr>
+            </Thead>
+            <Tbody>
+              {items.map((item, i) => {
+                const [
+                  link,
+                  solvedDuringContest,
+                  verdict,
+                  solve_time,
+                  date,
+                  submissionLink,
+                  comment,
+                ]: Array<string> = item
 
-            {/* This element is to trick the browser into centering the modal contents. */}
-            <span
-              className="inline-block h-screen align-middle"
-              aria-hidden="true"
-            >
-              &#8203;
-            </span>
-            <Transition.Child
-              as={Fragment}
-              enter="ease-out duration-300"
-              enterFrom="opacity-0 scale-95"
-              enterTo="opacity-100 scale-100"
-              leave="ease-in duration-200"
-              leaveFrom="opacity-100 scale-100"
-              leaveTo="opacity-0 scale-95"
-            >
-              <div className="inline-block w-full max-w-3xl p-6 my-8 overflow-hidden text-left align-middle transition-all transform bg-white shadow-xl rounded-2xl">
-                <Dialog.Title
-                  as="h3"
-                  className="text-lg font-medium leading-6 text-gray-900"
-                >
-                  Import Submissions ({successCount} / {items.length})
-                </Dialog.Title>
-                <div className="mt-2">
-                  <p className="text-sm text-gray-500">
-                    Please wait until we process your .csv file. Don't close the
-                    browser window.
-                  </p>
-                  <p></p>
-                </div>
+                const isSuccess =
+                  importStarted && status[link].status === "success"
+                const isLoading =
+                  importStarted && status[link].status === "loading"
+                const isError = importStarted && status[link].status === "error"
+                const isSubmissionExistsError =
+                  isError && status[link].error === "Submission already exists!"
 
-                <div className="h-64 py-3 mt-6 -mx-6 overflow-x-hidden">
-                  <div className="flex px-5 py-2 space-x-12 text-sm uppercase bg-gray-100 border-t border-b">
-                    <p>ID</p>
-                    <p>Link</p>
-                  </div>
-                  {items.map((item, i) => {
-                    const [
-                      link,
-                      solvedDuringContest,
-                      verdict,
-                      solve_time,
-                      date,
-                      submissionLink,
-                      comment,
-                    ]: Array<string> = item
-
-                    const isSuccess =
-                      importStarted && status[link].status === "success"
-                    const isLoading =
-                      importStarted && status[link].status === "loading"
-                    const isError =
-                      importStarted && status[link].status === "error"
-
-                    return (
-                      <div
-                        className="flex items-center justify-between px-6 py-2 text-sm text-gray-500 border-b"
-                        key={`${link}-${i}}`}
-                      >
-                        <div className="flex space-x-12">
-                          <p>{i + 1}</p>
-                          <p
-                            className={`${isSuccess ? "text-green-500" : ""} ${
-                              isError ? "text-red-500" : ""
-                            }`}
-                          >
-                            {link}
-                          </p>
-                        </div>
-                        {isSuccess && (
-                          <CheckIcon className="w-5 h-5 p-1 text-white bg-green-500 rounded-full" />
-                        )}
-                        {isLoading && (
-                          <p>
-                            <Spinner show={true} />
-                          </p>
-                        )}
-                        {isError && (
-                          <div title={status[link].error}>
-                            <InformationCircleIcon className="w-6 h-6 text-red-500 rounded-full" />
-                          </div>
-                        )}
-                      </div>
-                    )
-                  })}
-                </div>
-
-                <div className="flex mt-8 space-x-4">
-                  {!importFinished && (
-                    <button
-                      type="button"
-                      className="inline-flex items-center justify-center h-10 px-4 text-sm font-medium text-blue-900 bg-blue-100 border border-transparent rounded-md hover:bg-blue-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-blue-500 disabled:bg-gray-100"
-                      onClick={handleImportRequest}
-                      disabled={importStarted && !importFinished}
+                return (
+                  <Tr key={`${link}-${i}}`}>
+                    <Td maxW={16} w={16}>
+                      <Text w={16}>{i + 1}</Text>
+                    </Td>
+                    <Td
+                      w="500px"
+                      maxW="500px"
+                      className={`${isSuccess ? "text-green-500" : ""} ${
+                        isError
+                          ? isSubmissionExistsError
+                            ? "text-blue-500"
+                            : "text-red-500"
+                          : ""
+                      }`}
                     >
-                      {importStarted && !importFinished && (
-                        <p className="flex items-center space-x-2">
-                          <Spinner show={true} />
-                          <span>Importing</span>
-                        </p>
+                      {link}
+                    </Td>
+                    <Td>
+                      {isSuccess && (
+                        <CheckIcon className="w-5 h-5 p-1 text-white bg-green-500 rounded-full shrink-0 grow-0" />
                       )}
-                      {!importStarted && <span>Start import</span>}
-                    </button>
-                  )}
-
-                  <button
-                    type="button"
-                    className="inline-flex items-center justify-center h-10 px-4 text-sm font-medium text-blue-900 bg-blue-100 border border-transparent rounded-md hover:bg-blue-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-blue-500"
-                    onClick={() => {
-                      setIsOpen(false)
-                      setStatus({})
-                      setImportStarted(false)
-                      setImportFinished(false)
-                    }}
-                  >
-                    Close
-                  </button>
-                </div>
-              </div>
-            </Transition.Child>
-          </div>
-        </Dialog>
-      </Transition>
-    </>
+                      {isLoading && <Spinner size="sm" />}
+                      {isError && (
+                        <Tooltip label={status[link].error}>
+                          <div className="shrink-0 grow-0">
+                            <InformationCircleIcon className="w-5 h-5 text-red-500 rounded-full" />
+                          </div>
+                        </Tooltip>
+                      )}
+                    </Td>
+                  </Tr>
+                )
+              })}
+            </Tbody>
+          </Table>
+        </Box>
+      </ModalBody>
+      <ModalFooter>
+        <HStack>
+          {!importFinished && (
+            <Button
+              colorScheme="blue"
+              onClick={handleImportRequest}
+              disabled={importStarted && !importFinished}
+            >
+              {importStarted && !importFinished && (
+                <Text display="flex" alignItems="center" gap={2}>
+                  <Spinner size="sm" />
+                  <span>Importing</span>
+                </Text>
+              )}
+              {!importStarted && <span>Start import</span>}
+            </Button>
+          )}
+          <Button
+            colorScheme="gray"
+            onClick={() => {
+              setIsOpen(false)
+              setStatus({})
+              setImportStarted(false)
+              setImportFinished(false)
+            }}
+          >
+            Close
+          </Button>
+        </HStack>
+      </ModalFooter>
+    </PopupBuilder>
   )
 }

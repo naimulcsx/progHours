@@ -6,6 +6,7 @@ import {
   UseGuards,
   Param,
   NotFoundException,
+  HttpStatus,
 } from "@nestjs/common"
 import {
   ApiForbiddenResponse,
@@ -19,7 +20,6 @@ import { StatsService } from "./stats.service"
 
 @Controller("/stats")
 @ApiTags("stats")
-@UseGuards(IsAuthenticatedGuard)
 export class StatsController {
   constructor(
     private readonly statsService: StatsService,
@@ -34,25 +34,27 @@ export class StatsController {
   @ApiOperation({ summary: "Returns the statistics of the current user." })
   @ApiOkResponse({ description: "Success." })
   @ApiForbiddenResponse({ description: "Forbidden." })
+  @UseGuards(IsAuthenticatedGuard)
   async getStats(@Req() req) {
     const stats = await this.statsService.getUserStats(req.user.id)
-    return {
-      ...stats,
-    }
+    return stats
   }
 
   /**
-   * GET /stats/ranklist
+   * GET /stats
    * Returns the ranklist of the users
    */
-  @Get("/ranklist")
+  @Get("/")
   @ApiOperation({ summary: "Returns the ranklist of the users." })
   @ApiOkResponse({ description: "Success." })
   @ApiForbiddenResponse({ description: "Forbidden." })
   async getRanklist() {
     const result = await this.statsService.getRankList()
     return {
-      ranklist: result,
+      statusCode: HttpStatus.OK,
+      body: {
+        stats: result,
+      },
     }
   }
 
@@ -60,19 +62,19 @@ export class StatsController {
    * GET /stats/ranklist-live
    * Returns the ranklist of the users
    */
-  @Get("/ranklist-live")
-  @ApiOperation({
-    summary:
-      "Returns the ranklist of the users (aggregate from current database state).",
-  })
-  @ApiOkResponse({ description: "Success." })
-  @ApiForbiddenResponse({ description: "Forbidden." })
-  async getLiveRanklist() {
-    const result = await this.statsService.getLiveRanklist()
-    return {
-      ranklist: result,
-    }
-  }
+  // @Get("/ranklist-live")
+  // @ApiOperation({
+  //   summary:
+  //     "Returns the ranklist of the users (aggregate from current database state).",
+  // })
+  // @ApiOkResponse({ description: "Success." })
+  // @ApiForbiddenResponse({ description: "Forbidden." })
+  // async getLiveRanklist() {
+  //   const result = await this.statsService.getLiveRanklist()
+  //   return {
+  //     ranklist: result,
+  //   }
+  // }
 
   /**
    * GET /stats/{username}
@@ -84,13 +86,16 @@ export class StatsController {
   @ApiNotFoundResponse({ description: "Username not found!" })
   @ApiForbiddenResponse({ description: "Forbidden." })
   async getStatsByUsername(@Param() params) {
-    const user = await this.usersService.getUser({ username: params.username })
+    const user = await this.usersService.getUserByUsername(params.username)
     if (!user) {
       return new NotFoundException("User not found!")
     }
     const stats = await this.statsService.getUserStats(user.id)
     return {
-      ...stats,
+      statusCode: HttpStatus.OK,
+      body: {
+        stats,
+      },
     }
   }
 }

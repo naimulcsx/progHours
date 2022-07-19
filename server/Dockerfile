@@ -7,5 +7,6 @@ COPY package.json .
 # Install node dependencies
 RUN yarn
 COPY . ./
+RUN yarn generate
 EXPOSE 4000
 CMD ["yarn", "start:dev"]

@@ -1,55 +1,63 @@
-import { Fragment, FunctionComponent } from "react"
-import { Transition } from "@headlessui/react"
+import { FC, ReactNode } from "react"
 
 /**
  * Import Components
  */
-import Navbar from "@/components/Navbar"
-import Sidebar from "@/components/dashboard/Sidebar"
-import MobileNav from "@/components/MobileNav"
-import { twMerge } from "tailwind-merge"
+import Navbar from "@/components/navbar"
+import MobileNav from "../MobilNavbar"
+import { Sidebar } from "@/components/sidebar"
+// import MobileNav from "@/components/MobileNav"
+import { Box, Flex, Heading } from "@chakra-ui/react"
+import { Show, Hide } from "@chakra-ui/react"
 
 interface DashboardLayoutProps {
-  dataDependency: Array<any>
-  className?: string
+  children?: ReactNode
+  title?: string
+  description?: string
+  rightButton?: ReactNode
 }
 
-export const DashboardLayout: FunctionComponent<DashboardLayoutProps> = ({
+export const DashboardLayout: FC<DashboardLayoutProps> = ({
   children,
-  dataDependency,
-  className = "",
+  title,
+  description,
+  rightButton,
 }) => {
   return (
-    <div className="h-screen overflow-hidden">
+    <Box>
       {/* topbar */}
       <Navbar />
       {/* sidebar */}
-      <div className="flex h-full">
-        <Sidebar />
+      <Box h="100vh" className="flex" overflow="hidden">
+        {/* <Sidebar /> */}
+        <Show above="md">
+          <Sidebar />
+        </Show>
+
         {/* main content */}
-        <Transition
-          as={Fragment}
-          show={dataDependency.every((el) => {
-            return ![null, undefined].includes(el)
-          })}
-          enter="transform transition duration-[400ms]"
-          enterFrom="opacity-0 scale-[0.995]"
-          enterTo="opacity-100 rotate-0 scale-100"
-          leave="transform duration-200 transition ease-in-out"
-          leaveFrom="opacity-100 rotate-0 scale-100"
-          leaveTo="opacity-0 scale-98"
-        >
-          <div
-            className={twMerge(
-              "w-full px-4 pt-4 pb-4 mt-14 overflow-y-auto bg-gray-50",
-              className
-            )}
-          >
-            {children}
-          </div>
-        </Transition>
-      </div>
-      <MobileNav></MobileNav>
-    </div>
+        <Box w="full" p={4} mt={14} overflowY="auto">
+          {title && (
+            <Flex justifyContent="space-between">
+              <Box className="mb-4">
+                <Heading fontSize={["xl", "xl", "2xl"]} fontWeight={700}>
+                  {title}
+                </Heading>
+              </Box>
+              {rightButton}
+            </Flex>
+          )}
+          {children}
+        </Box>
+      </Box>
+      {/* <MobileNav></MobileNav> */}
+      <Hide above="md">
+        <MobileNav />
+      </Hide>
+    </Box>
   )
 }
+/*
+<Show above="Xl">
+  <Box>This text appears only on screens 400px and smaller.</Box>
+</Show>
+*/

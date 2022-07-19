@@ -1,30 +1,27 @@
-import {
-  IsEmail,
-  IsString,
-  MinLength,
-  IsOptional,
-  ValidateIf,
-} from "class-validator"
+import { IsEmail, IsString, IsNumber, IsOptional } from "class-validator"
 
 export class UpdateUserDto {
   @IsString()
+  @IsOptional()
   name: string
 
   @IsEmail()
+  @IsOptional()
   email: string
 
-  @IsString()
-  @ValidateIf((body) => body.currentPassword.length > 0)
-  @MinLength(8)
-  currentPassword: string
+  @IsNumber()
+  @IsOptional()
+  batch: string
+
+  @IsNumber()
+  @IsOptional()
+  cgpa: string
 
   @IsString()
-  @ValidateIf((body) => body.newPassword.length > 0)
-  @MinLength(8)
-  newPassword: string
+  @IsOptional()
+  department: string
 
-  @IsString()
-  @ValidateIf((body) => body.confirmPassword.length > 0)
-  @MinLength(8)
-  confirmPassword: string
+  @IsNumber()
+  @IsOptional()
+  mobile: string
 }

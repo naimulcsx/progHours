@@ -1,17 +1,20 @@
 import {
-  BadRequestException,
   Body,
   Controller,
+  Delete,
   Get,
   HttpStatus,
   NotFoundException,
   Param,
+  ParseIntPipe,
   Patch,
+  Post,
   Req,
   UseGuards,
 } from "@nestjs/common"
 
 import {
+  ApiCreatedResponse,
   ApiForbiddenResponse,
   ApiNotFoundResponse,
   ApiOkResponse,
@@ -19,46 +22,71 @@ import {
   ApiTags,
 } from "@nestjs/swagger"
 
-/**
- * Import Services
- */
 import { UsersService } from "@/modules/users/users.service"
-
-/**
- * Import Guards
- */
 import { IsAuthenticatedGuard } from "@/guards/is-authenticated"
-
-/**
- * Import Dto
- */
-import { UpdateUserDto } from "@/validators/update-user-dto"
+import { SubmissionsService } from "../submissions/submissions.service"
+import { CreateStudyDto } from "@/validators/create-study-dto"
+import { UserStudyService } from "../user-study/user-study.service"
+import { UpdateStudyDto } from "@/validators/update-study-dto"
 
 @Controller("/users")
 @ApiTags("users")
-@UseGuards(IsAuthenticatedGuard)
 export class UsersController {
-  constructor(private readonly usersService: UsersService) {}
+  constructor(
+    private readonly usersService: UsersService,
+    private readonly submissionsService: SubmissionsService,
+    private readonly userStudyService: UserStudyService
+  ) {}
 
   /**
-   * GET /users/me
-   * Returns the current logged in user
+   * @GET /users/me
    */
   @Get("/me")
   @ApiOperation({ summary: "Returns the current logged in user." })
   @ApiOkResponse({ description: "Success." })
   @ApiForbiddenResponse({ description: "Forbidden." })
+  @UseGuards(IsAuthenticatedGuard)
   async getCurrentUser(@Req() req) {
-    const user = await this.usersService.getUser({ id: req.user.id })
+    const user = await this.usersService.getUserById(req.user.id)
     if (!user) {
       throw new NotFoundException("User not found.")
     }
-    const { id, name, email, username, role } = user
-    return { id, name, email, username, role }
+    const { password, ...rest } = user
+    return {
+      statusCode: HttpStatus.OK,
+      body: {
+        user: rest,
+      },
+    }
   }
 
   /**
-   * GET /users/{username}
+   * @Patch /users/me
+   */
+  @Patch("/me")
+  @UseGuards(IsAuthenticatedGuard)
+  async updateUser(@Body() body: any, @Req() req) {
+    const { name, email, mobile, department, batch, cgpa } = body
+
+    const result = await this.usersService.updateProfile({
+      id: req.user.id,
+      name,
+      email,
+      mobile,
+      department,
+      batch,
+      cgpa,
+    })
+    return {
+      statusCode: HttpStatus.OK,
+      data: {
+        user: result,
+      },
+    }
+  }
+
+  /**
+   * @GET /users/{username}
    * Returns user by username.
    */
   @Get("/:username")
@@ -67,53 +95,119 @@ export class UsersController {
   @ApiNotFoundResponse({ description: "User not found." })
   @ApiForbiddenResponse({ description: "Forbidden." })
   async getUserByUsername(@Param() params) {
-    const user = await this.usersService.getUser({ username: params.username })
+    const user = await this.usersService.getUserByUsername(params.username)
     if (!user) {
       throw new NotFoundException("User not found.")
     }
-    const { id, name, email, username, role } = user
-    return { id, name, email, username, role }
+    const { password, ...rest } = user
+    return {
+      statusCode: HttpStatus.OK,
+      body: {
+        user: rest,
+      },
+    }
+  }
+
+  @Patch("/update-password")
+  @UseGuards(IsAuthenticatedGuard)
+  async updatePassword(@Body() body, @Req() req: any) {
+    const { currentPassword, newPassword } = body
+    await this.usersService.updatePassword(
+      { currentPassword, newPassword },
+      req.user.id
+    )
+    return {
+      status: "success",
+    }
   }
 
   /**
-   * PATCH /users/me
-   * Updates the user information
+   * @GET /users/{username}/submissions
    */
-  @Patch("/me")
-  @ApiOperation({ summary: "Updates the user information." })
-  @ApiOkResponse({ description: "Success." })
-  @ApiForbiddenResponse({ description: "Forbidden." })
-  async updateAccount(@Body() body: UpdateUserDto, @Req() req: any) {
-    const { name, email, confirmPassword, currentPassword, newPassword } = body
-
-    /**
-     * Handle profile update
-     */
-    await this.usersService.updateProfile({ name, email }, req.user.id)
-    /**
-     * Handle password update
-     */
-    const passwordFields = [currentPassword, newPassword, confirmPassword]
-    if (
-      passwordFields.every((el) => el.length === 0) ||
-      (passwordFields.some((el) => el.length > 0) &&
-        passwordFields.some((el) => el.length === 0))
-    ) {
-      if (!passwordFields.every((el) => el.length === 0)) {
-        throw new BadRequestException(
-          "Please fill all the password related fields in order to change your password."
-        )
-      }
-    } else {
-      // await this.usersService.updatePassword(passwordFields, req.user.id)
-    }
-
-    /**
-     * Send Response
-     */
+  @Get("/:username/submissions")
+  async getSubmissions(@Param() params) {
+    const submissions = await this.submissionsService.getSubmissionsByUsername(
+      params.username
+    )
     return {
       statusCode: HttpStatus.OK,
-      message: "Profile updated.",
+      body: { submissions },
     }
+  }
+
+  /**
+   * @Post /users/user-study
+   */
+  @Post("/studies")
+  @UseGuards(IsAuthenticatedGuard)
+  @ApiOperation({ summary: "Create new user study" })
+  @ApiCreatedResponse({ description: "User Study successfully created" })
+  @ApiForbiddenResponse({ description: "Forbidden." })
+  async createUserStudy(@Body() body: CreateStudyDto, @Req() req: any) {
+    const newUserStudy = await this.userStudyService.createUserStudy(
+      body,
+      req.user.id
+    )
+
+    return { statusCode: HttpStatus.CREATED, body: { studies: newUserStudy } }
+  }
+
+  /**
+   * @GET /users/:userId/user-study
+   */
+  @Get("/me/studies")
+  @UseGuards(IsAuthenticatedGuard)
+  @ApiOperation({ summary: "Get all user studies" })
+  @ApiOkResponse({ description: "Success." })
+  @ApiForbiddenResponse({ description: "Forbidden." })
+  async getAllUserStudies(@Req() req) {
+    const userStudies = await this.userStudyService.getAllUserStudies(
+      req.user.id
+    )
+
+    return { statusCode: HttpStatus.OK, body: { studies: userStudies } }
+  }
+
+  /**
+   * @Get
+   */
+  @Get("/me/studies/:id")
+  @UseGuards(IsAuthenticatedGuard)
+  @ApiOperation({ summary: "Get a particular user study" })
+  @ApiOkResponse({ description: "Success." })
+  @ApiForbiddenResponse({ description: "Forbidden." })
+  async getUserStudy(@Param("id", ParseIntPipe) id: any, @Req() req: any) {
+    const userStudy = await this.userStudyService.getUserStudy(req.user.id, id)
+
+    return { statusCode: HttpStatus.OK, body: { study: userStudy } }
+  }
+
+  /**
+   * update user study
+   */
+  @Patch("/me/studies/:id")
+  @UseGuards(IsAuthenticatedGuard)
+  @ApiOperation({ summary: "Update a particular user study" })
+  @ApiOkResponse({ description: "Success." })
+  @ApiForbiddenResponse({ description: "Forbidden." })
+  async updateStudyList(
+    @Param("id", ParseIntPipe) id: any,
+    @Body() body: UpdateStudyDto,
+    @Req() req
+  ) {
+    await this.userStudyService.updateUserStudy(id, req.user.id, body)
+
+    return { statusCode: HttpStatus.OK, message: "User study Updated" }
+  }
+
+  @Delete("/me/studies/:id")
+  @UseGuards(IsAuthenticatedGuard)
+  @ApiOperation({ summary: "Delete a particular user study" })
+  @ApiOkResponse({ description: "Success." })
+  @ApiForbiddenResponse({ description: "Forbidden." })
+  async deleteUserStudy(@Param("id", ParseIntPipe) id: any, @Req() req) {
+    await this.userStudyService.deleteUserStudy(id, req.user.id)
+
+    return { statusCode: HttpStatus.OK, message: "user study deleted" }
   }
 }

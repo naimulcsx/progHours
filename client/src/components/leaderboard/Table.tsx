@@ -7,13 +7,29 @@ import { Link } from "react-router-dom"
  * Import Icons
  */
 import { ArrowSmDownIcon, ArrowSmUpIcon } from "@heroicons/react/solid"
-import Avatar from "../Avatar"
+import {
+  Box,
+  Table,
+  Avatar,
+  Thead,
+  Tr,
+  Th,
+  Td,
+  Tbody,
+  Flex,
+} from "@chakra-ui/react"
+import { getAvatarColors } from "@/utils/getAvatarColors"
+import { CELL_STYLES } from "./cellStyles"
 
 const UserCell = (cell: Cell<RanklistItem>) => {
   return (
     <Link to={`/users/${cell.row.original.user.username}`}>
       <div className="flex items-center space-x-4">
-        <Avatar name={cell.row.original.user.name} />
+        <Avatar
+          name={cell.row.original.user.name}
+          size="sm"
+          {...getAvatarColors(cell.row.original.user.name)}
+        />
         <div>
           <p className="font-medium text-gray-900">{cell.value}</p>
           <p className="text-sm text-gray-500">
@@ -43,15 +59,15 @@ const LeaderboardTable = ({ ranklist }: { ranklist: RanklistItem[] }) => {
         },
         {
           Header: "Solve Count",
-          accessor: "total_solved",
+          accessor: "totalSolved",
         },
         {
           Header: "Solve Time",
-          accessor: "total_solve_time",
+          accessor: "totalSolveTime",
         },
         {
           Header: "Average Solve Difficulty",
-          accessor: "average_difficulty",
+          accessor: (row: RanklistItem) => row.averageDifficulty.toFixed(2),
         },
         {
           Header: "Points",
@@ -70,63 +86,68 @@ const LeaderboardTable = ({ ranklist }: { ranklist: RanklistItem[] }) => {
   )
 
   return (
-    <div className="-mx-4 overflow-x-scroll md:overflow-clip">
-      <table
-        {...getTableProps()}
-        className="text-gray-700 border-collapse leaderboard max-w-6"
-      >
-        <thead>
+    <Box mx={-4} overflowX="auto">
+      <Table w="full" {...getTableProps()}>
+        <Thead>
           {headerGroups.map((headerGroup) => {
             return (
-              <tr
+              <Tr
+                fontSize="xs"
+                textColor="gray.500"
+                textTransform="uppercase"
+                bg="gray.100"
                 {...headerGroup.getHeaderGroupProps()}
-                className="text-xs text-gray-500 uppercase bg-gray-100"
               >
                 {headerGroup.headers.map((header) => {
                   return (
-                    <th
+                    <Th
                       {...header.getHeaderProps(header.getSortByToggleProps())}
                       className="py-4 border-t border-b"
                     >
-                      <div className="flex items-center justify-start space-x-1">
-                        <span>{header.render("Header")}</span>
-                        <span>
+                      <Flex align="center" minH="5">
+                        <Box as="span">{header.render("Header")}</Box>
+                        <Box as="span" ml={1}>
                           {header.isSorted ? (
                             header.isSortedDesc ? (
-                              <ArrowSmDownIcon height={20} />
+                              <ArrowSmDownIcon height={16} />
                             ) : (
-                              <ArrowSmUpIcon height={20} />
+                              <ArrowSmUpIcon height={16} />
                             )
                           ) : (
                             ""
                           )}
-                        </span>
-                      </div>
-                    </th>
+                        </Box>
+                      </Flex>
+                    </Th>
                   )
                 })}
-              </tr>
+              </Tr>
             )
           })}
-        </thead>
-        <tbody>
+        </Thead>
+        <Tbody>
           {rows.map((row) => {
             prepareRow(row)
             return (
-              <tr {...row.getRowProps()} className={`bg-white`}>
+              <Tr {...row.getRowProps()} className={`bg-white`}>
                 {row.cells.map((cell) => {
+                  const cellType: any = cell.column.Header
                   return (
-                    <td {...cell.getCellProps()} className="py-3 border-b">
+                    <Td
+                      {...cell.getCellProps()}
+                      className="py-3 border-b"
+                      {...CELL_STYLES[cellType]}
+                    >
                       {cell.render("Cell")}
-                    </td>
+                    </Td>
                   )
                 })}
-              </tr>
+              </Tr>
             )
           })}
-        </tbody>
-      </table>
-    </div>
+        </Tbody>
+      </Table>
+    </Box>
   )
 }
 

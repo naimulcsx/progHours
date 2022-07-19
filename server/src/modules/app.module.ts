@@ -1,4 +1,4 @@
-import { Module } from "@nestjs/common"
+import { CacheModule, Module } from "@nestjs/common"
 import { AuthModule } from "./auth/auth.module"
 import { TypeOrmModule } from "@nestjs/typeorm"
 import { Connection } from "typeorm"
@@ -19,9 +19,14 @@ import { UserProblemTag } from "./problems/user-problem-tag"
 import { StatsModule } from "./stats/stats.module"
 import { RankingModule } from "./ranking/ranking.module"
 import { Ranking } from "./ranking/ranking.entity"
+import { ConfigModule } from "@nestjs/config"
+import { PrismaModule } from "./prisma/prisma.module"
+import { UserStudyModule } from "./user-study/user-study.module"
 
 @Module({
   imports: [
+    CacheModule.register({ isGlobal: true }),
+    ConfigModule.forRoot({ isGlobal: true }),
     TypeOrmModule.forRoot({
       type: "postgres",
       url: process.env.DATABASE_URL,
@@ -35,7 +40,7 @@ import { Ranking } from "./ranking/ranking.entity"
         OnlineJudge,
         Ranking,
       ],
-      synchronize: true,
+      // synchronize: true,
     }),
     HttpModule,
     AuthModule,
@@ -47,6 +52,8 @@ import { Ranking } from "./ranking/ranking.entity"
     HandlesModule,
     StatsModule,
     RankingModule,
+    PrismaModule,
+    UserStudyModule,
   ],
 })
 export class AppModule {

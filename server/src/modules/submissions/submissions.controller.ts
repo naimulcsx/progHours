@@ -9,6 +9,7 @@ import {
   Delete,
   Param,
   UseGuards,
+  BadRequestException,
 } from "@nestjs/common"
 
 import {
@@ -16,22 +17,12 @@ import {
   ApiTags,
   ApiOkResponse,
   ApiForbiddenResponse,
+  ApiBadRequestResponse,
 } from "@nestjs/swagger"
 
-/**
- * Import Data Transfer Objects (DTO)
- */
 import { CreateSubmissionDto } from "@/validators/create-submission-dto"
 import { UpdateSubmissionDto } from "@/validators/update-submission-dto"
-
-/**
- * Import Services
- */
 import { SubmissionsService } from "@/modules/submissions/submissions.service"
-
-/**
- * Import Guards
- */
 import { IsAuthenticatedGuard } from "@/guards/is-authenticated"
 
 @Controller("/submissions")
@@ -41,22 +32,52 @@ export class SubmissionsController {
   constructor(private readonly submissionsService: SubmissionsService) {}
 
   /**
-   * POST /submissions
-   * Create new submission
+   * @GET /submissions
+   * Get submissions for the current
+   */
+  @Get("/")
+  @ApiOperation({ summary: "Returns the submissions for the current user" })
+  @ApiOkResponse({ description: "Success." })
+  @ApiForbiddenResponse({ description: "Forbidden." })
+  async getSubmissionsByUserId(@Param() params, @Req() req) {
+    const result = await this.submissionsService.getSubmissionsByUsername(
+      req.user.username
+    )
+    return {
+      statusCode: HttpStatus.OK,
+      body: {
+        submissions: result,
+      },
+    }
+  }
+
+  /**
+   * @POST /submissions
    */
   @Post("/")
   @ApiOperation({ summary: "Create new submission." })
   @ApiOkResponse({ description: "Success." })
   @ApiForbiddenResponse({ description: "Forbidden." })
-  async createSubmission(@Body() body: CreateSubmissionDto, @Req() req) {
-    const { user } = req
-    await this.submissionsService.createSubmission(body, user)
-    return {}
+  async createSubmission(
+    @Body() { link, verdict, solveTime, solvedAt }: CreateSubmissionDto,
+    @Req() req
+  ) {
+    const createdSubmission = await this.submissionsService.createSubmission({
+      link,
+      verdict,
+      solveTime,
+      solvedAt,
+      userId: req.user.id,
+    })
+    return {
+      statusCode: HttpStatus.CREATED,
+      message: "Submission added!",
+      body: createdSubmission,
+    }
   }
 
   /**
-   * PATCH /submissions/:id
-   * Update a particular submission
+   * @PATCH /submissions/:id
    */
   @Patch("/:id")
   @ApiOperation({ summary: "Update a particular submission." })
@@ -64,61 +85,52 @@ export class SubmissionsController {
   @ApiForbiddenResponse({ description: "Forbidden." })
   async updateSubmission(
     @Param("id") id: string,
-    @Body() body: UpdateSubmissionDto
+    @Body() { verdict, solveTime, solvedAt }: UpdateSubmissionDto
   ) {
-    await this.submissionsService.updateSubmission(body, id)
-
+    await this.submissionsService.updateSubmission({
+      id: Number(id),
+      verdict,
+      solveTime,
+      solvedAt,
+    })
     return {
       statusCode: HttpStatus.OK,
-      message: "resource updated",
+      message: "Submission updated!",
     }
   }
 
   /**
-   * DELETE /submissions/:id
-   * Delete a particular submission
+   * @DELETE /submissions/:id
    */
   @Delete("/:id")
   @ApiOperation({ summary: "Delete a particular submission." })
   @ApiOkResponse({ description: "Success." })
   @ApiForbiddenResponse({ description: "Forbidden." })
   async deleteSubmission(@Param("id") id: any) {
-    await this.submissionsService.deleteSubmission(id)
+    await this.submissionsService.deleteSubmission(Number(id))
     return {
-      statusCode: HttpStatus.NO_CONTENT,
-      message: "Resource deleted",
+      statusCode: HttpStatus.OK,
+      message: "Submission deleted!",
     }
   }
 
   /**
-   * GET /submissions/by/me
-   * Returns the submissions of the current logged in user
+   * GET /submissions/vjudge-contest-login
    */
-  @Get("/by/me")
-  @ApiOperation({ summary: "Returns the submissions by current user" })
+  @Post("/vjudge-contest-login/:contestId")
+  @ApiOperation({ summary: "Login into vjudge contest." })
   @ApiOkResponse({ description: "Success." })
-  @ApiForbiddenResponse({ description: "Forbidden." })
-  async getSubmissionsForCurrentUser(@Req() req) {
-    const submissions = await this.submissionsService.getSubmissions(
-      req.user.id
-    )
-    return {
-      submissions,
+  @ApiBadRequestResponse({ description: "Bad Request." })
+  async vjudgeContestLogin(@Body() body, @Param() params) {
+    const { password } = body
+    try {
+      const result = await this.submissionsService.loginIntoVjudgeContest(
+        params.contestId,
+        password
+      )
+      return result
+    } catch (err) {
+      throw new BadRequestException(err)
     }
-  }
-
-  /**
-   * GET /submissions/by/:username
-   * Returns the submissions submitted by a particular user
-   */
-  @Get("/by/:username")
-  @ApiOperation({ summary: "Returns the submissions by username" })
-  @ApiOkResponse({ description: "Success." })
-  @ApiForbiddenResponse({ description: "Forbidden." })
-  async getSubmissionsByUserId(@Param() params) {
-    const result = await this.submissionsService.getSubmissionsByUsername(
-      params.username
-    )
-    return result
   }
 }

@@ -4,19 +4,21 @@ import {
   Inject,
   NotFoundException,
   forwardRef,
+  ConflictException,
 } from "@nestjs/common"
 import * as jwt from "jsonwebtoken"
 import * as bcrypt from "bcryptjs"
+import { PrismaService } from "../prisma/prisma.service"
 
 /**
  * Import Entities (models)
  */
 import { UsersService } from "../users/users.service"
-import { LoginUserDto } from "@/validators/login-user-dto"
 
 @Injectable()
 export class AuthService {
   constructor(
+    private prisma: PrismaService,
     @Inject(forwardRef(() => UsersService)) private usersService: UsersService
   ) {}
 
@@ -39,21 +41,29 @@ export class AuthService {
    * @param body
    * @returns
    */
-  async handleLogin(username: string, password: string) {
+  async handleLogin({
+    username,
+    password,
+  }: {
+    username: string
+    password: string
+  }) {
+    username = username.toLowerCase()
     /**
      * Get user by id
      */
-    const user = await this.usersService.getUserWithPassword(username)
+    // const user = await this.usersService.getUserWithPassword(username)
+    const user = await this.prisma.user.findUnique({ where: { username } })
 
     /**
-     * If username doesn't exist in our database
+     ** If username doesn't exist in our database
      */
     if (!user) {
       throw new NotFoundException("User not found.")
     }
 
     /**
-     * Username exists, need to check if the provided password is valid
+     ** Username exists, need to check if the provided password is valid
      */
     const isValidPassword = await this.comparePassword(password, user.password)
 
@@ -65,18 +75,52 @@ export class AuthService {
     /**
      * Password is valid, generate access token
      */
-    const userObj = {
-      id: user.id,
-      username: user.username,
-      name: user.name,
-      email: user.email,
-      role: user.role,
-    }
+    const { password: pw, ...userObj } = user
     const accessToken = this.generateAccessToken(userObj)
-
     return {
       user: userObj,
       accessToken,
     }
+  }
+
+  async handleRegister({
+    username,
+    name,
+    email,
+    password,
+  }: {
+    name: string
+    email: string
+    username: string
+    password: string
+  }) {
+    // * Check if username or email is already taken
+    username = username.toLowerCase()
+
+    const usernameExists = await this.prisma.user.findUnique({
+      where: { username },
+    })
+    if (usernameExists) throw new ConflictException("Username already exists.")
+
+    const emailExists = await this.prisma.user.findUnique({ where: { email } })
+    if (emailExists) throw new ConflictException("Email already exists.")
+
+    // * All good! Create a new user
+    const newUser = await this.prisma.user.create({
+      data: {
+        name,
+        email,
+        username,
+        password,
+      },
+    })
+    // TODO: Create a user ranking row for that user
+    await this.prisma.userStat.create({
+      data: {
+        userId: newUser.id,
+      },
+    })
+
+    return newUser
   }
 }

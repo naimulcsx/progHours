@@ -1,12 +1,12 @@
 import { useEffect } from "react"
 import { HelmetProvider } from "react-helmet-async"
-import { toast, ToastContainer } from "react-toastify"
 import { QueryClient, QueryClientProvider } from "react-query"
 import { useLocation, useNavigate, useRoutes } from "react-router-dom"
 import clearAuthData from "@/utils/clearAuthData"
 import axios from "axios"
 import { ReactQueryDevtools } from "react-query/devtools"
-import { Toaster } from "react-hot-toast"
+import { useToast } from "@chakra-ui/react"
+import { Box } from "@chakra-ui/react"
 
 /**
  * Import Styles
@@ -14,7 +14,6 @@ import { Toaster } from "react-hot-toast"
 import "@/styles/fonts.css"
 import "@/styles/tailwind.css"
 import "@/styles/spinner.css"
-import "react-toastify/dist/ReactToastify.css"
 
 /**
  * Import Routes
@@ -25,6 +24,7 @@ import routes from "./routes"
  * Import Components
  */
 import { GlobalStateProvider } from "./GlobalStateProvider"
+import { DEFAULT_TOAST_OPTIONS } from "./configs/toast-config"
 
 /**
  * Initialize query client
@@ -32,6 +32,7 @@ import { GlobalStateProvider } from "./GlobalStateProvider"
 const queryClient = new QueryClient()
 
 const App = (): JSX.Element => {
+  const toast = useToast(DEFAULT_TOAST_OPTIONS)
   const navigate = useNavigate()
   const { pathname } = useLocation()
 
@@ -45,13 +46,21 @@ const App = (): JSX.Element => {
       } catch (err) {
         await clearAuthData()
         navigate("/login")
-        toast.error("Access denied", { className: "toast" })
+        toast({ status: "error", title: "Access denied!" })
       }
     }
     /**
-     * Excluding /login and /register from checking since these are public pages
+     * Excluding from checking since these are public pages
      */
-    if (!["/login", "/register"].includes(pathname)) checkUser()
+    function userOrOtherPath(pathname: string) {
+      return pathname.substring(0, 6) === "/users" ? "/users" : pathname
+    }
+    if (
+      !["/", "/leaderboard", "/login", "/register", "/users"].includes(
+        userOrOtherPath(pathname)
+      )
+    )
+      checkUser()
   }, [])
 
   const isLoggedIn: boolean = !!localStorage.getItem("isLoggedIn")
@@ -59,8 +68,9 @@ const App = (): JSX.Element => {
 
   return (
     <QueryClientProvider client={queryClient}>
+      {/* @ts-ignore */}
       <HelmetProvider>
-        <div className="min-h-screen text-gray-500 bg-gray-50">
+        <Box minH="100vh" bg="gray.50">
           {isLoggedIn ? (
             <GlobalStateProvider>
               <main>{matchedPage}</main>
@@ -68,30 +78,7 @@ const App = (): JSX.Element => {
           ) : (
             <main>{matchedPage}</main>
           )}
-        </div>
-        <ToastContainer
-          theme="colored"
-          autoClose={3000}
-          position="bottom-right"
-        />
-        <Toaster
-          position="top-center"
-          reverseOrder={false}
-          // toastOptions={{
-          //   success: {
-          //     style: {
-          //       background: "#4BB543",
-          //       color: "white",
-          //     },
-          //   },
-          //   error: {
-          //     style: {
-          //       background: "red",
-          //       color: "white",
-          //     },
-          //   },
-          // }}
-        />
+        </Box>
         {/* <ReactQueryDevtools position="bottom-right" /> */}
       </HelmetProvider>
     </QueryClientProvider>

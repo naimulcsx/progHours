@@ -1,15 +1,15 @@
-import { Fragment, useContext, useState } from "react"
+import { useContext, useState } from "react"
 import { useQuery } from "react-query"
 import { Helmet } from "react-helmet-async"
+import { Box, Grid, GridItem, Spinner } from "@chakra-ui/react"
 
 /**
  * Import Components
  */
 import { DashboardLayout } from "@/components/layouts/Dashboard"
-import ProgressBox from "@/components/ProgressBox"
-import TagsChart from "@/components/dashboard/stats/TagsChart"
-import WeekChart from "@/components/dashboard/stats/WeekChart"
-import { GlobalContext } from "@/GlobalStateProvider"
+import UserStats from "@/components/stats/UserStats"
+import WeeklySolvedChart from "@/components/stats/visualizations/WeeklySolvedChart"
+import TagsFreqChart from "@/components/stats/visualizations/TagsFreqChart"
 
 /**
  * Import helpers
@@ -17,9 +17,10 @@ import { GlobalContext } from "@/GlobalStateProvider"
 import { getStats } from "@/api/dashboard"
 import { getSubmissions } from "@/api/submissions"
 import { getWeekRanges } from "@/utils/getWeekRanges"
-import { Transition } from "@headlessui/react"
+import { GlobalContext } from "@/GlobalStateProvider"
 
 const DashboardHome = () => {
+  const { user } = useContext(GlobalContext)
   /**
    * Get statistics: number of problem solved, total solve time and average_difficulty
    */
@@ -36,20 +37,17 @@ const DashboardHome = () => {
     [name: string]: number
   }
   let [frequency, setFrequency] = useState<Frequency | null>(null)
-  useQuery("practice", getSubmissions, {
-    onSuccess: (data) => {
+  useQuery("submissions", getSubmissions, {
+    onSuccess: (res) => {
       const frequency: Frequency = {}
-      const weekRanges = getWeekRanges(data.submissions)
+      const weekRanges = getWeekRanges(res.body.submissions)
       /**
        * For each week k, calculate how many problems are solved in the k'th week
        */
-      for (let i = 0; i < data.submissions.length; ++i) {
+      for (let i = 0; i < res.body.submissions.length; ++i) {
         for (let j = 0; j < weekRanges.length; ++j) {
-          const solved_at = new Date(data.submissions[i].solved_at)
-          if (
-            solved_at >= weekRanges[j].from &&
-            solved_at <= weekRanges[j].to
-          ) {
+          const solvedAt = new Date(res.body.submissions[i].solvedAt)
+          if (solvedAt >= weekRanges[j].from && solvedAt <= weekRanges[j].to) {
             if (!frequency[j + 1]) frequency[j + 1] = 0
             frequency[j + 1]++
           }
@@ -58,40 +56,52 @@ const DashboardHome = () => {
       setFrequency(frequency)
     },
   })
-
-  /**
-   * Get user's name from global state context
-   */
-  const { user } = useContext(GlobalContext)
   return (
-    <DashboardLayout dataDependency={[user, data, frequency]}>
+    <DashboardLayout title={`Hi! ${user?.name || ""}`}>
+      {/* @ts-ignore */}
       <Helmet>
         <title>Dashboard</title>
       </Helmet>
-      <div className="flex items-center justify-between mb-6">
-        <div>
-          <h3 className="font-bold">Hi! {user?.name}</h3>
-          <p className="mt-1 text-gray-500">
-            Here&apos;s what&apos;s going on in your competitive programming
-            journey!
-          </p>
-        </div>
-      </div>
-      <div className="space-y-4">
-        {data && (
-          <div className="">
-            <ProgressBox progress={data} />
-          </div>
-        )}
-        <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
-          <div className="p-8 bg-white rounded-lg shadow xl:px-8">
-            <WeekChart data={frequency} />
-          </div>
-          <div className="w-full h-full col-span-2 px-8 pt-8 pb-0 bg-white rounded-lg shadow xl:px-8 md:px-16 lg:px-32">
-            <TagsChart data={data?.tags_frequency} />
-          </div>
-        </div>
-      </div>
+      {data && frequency && data["tagsFrequency"] ? (
+        <>
+          <Box mb={4}>
+            <UserStats progress={data} />
+          </Box>
+          <Grid
+            templateColumns={[
+              "repeat(1, 1fr)",
+              "repeat(1, 1fr)",
+              "repeat(1, 1fr)",
+              "repeat(1, 1fr)",
+              "repeat(3, 1fr)",
+            ]}
+            gap={[0, 0, 0, 4]}
+            mb={[14]}
+          >
+            <GridItem
+              p={[4, 4, 4, 8]}
+              bg="white"
+              rounded="lg"
+              shadow="base"
+              mb={[4, 4, 4, 0]}
+            >
+              {<WeeklySolvedChart data={frequency} />}
+            </GridItem>
+            <GridItem
+              p={[4, 4, 4, 8]}
+              pb={[0, 0, 0, 2]}
+              bg="white"
+              rounded="lg"
+              shadow="base"
+              colSpan={2}
+            >
+              <TagsFreqChart data={data["tagsFrequency"]} />
+            </GridItem>
+          </Grid>
+        </>
+      ) : (
+        <Spinner size="sm" />
+      )}
     </DashboardLayout>
   )
 }

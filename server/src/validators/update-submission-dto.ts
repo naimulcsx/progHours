@@ -1,15 +1,16 @@
 import { IsString, IsNumber, IsDateString, IsOptional } from "class-validator"
+import { Verdict } from "@prisma/client"
 
 export class UpdateSubmissionDto {
   @IsNumber()
   @IsOptional()
-  solve_time: number
+  solveTime: number
 
   @IsString()
   @IsOptional()
-  verdict: string
+  verdict: Verdict
 
   @IsDateString()
   @IsOptional()
-  solved_at: Date
+  solvedAt: Date
 }

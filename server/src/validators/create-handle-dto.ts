@@ -5,5 +5,5 @@ export class CreateHandleDto {
   handle: string
 
   @IsNumber()
-  judge_id: number
+  onlineJudgeId: number
 }
