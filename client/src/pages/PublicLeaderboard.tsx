@@ -1,24 +1,12 @@
 import { getRankList } from "@/api/leaderboard"
 import LeaderboardTable from "@/components/leaderboard/Table"
-import Logo from "@/components/Logo"
 import { PublicNavbar } from "@/components/navbar/PublicNavbar"
 import { RanklistItem } from "@/types/RanklistItem"
 import calculatePoints from "@/utils/calculatePoints"
-import {
-  Box,
-  Button,
-  Container,
-  Divider,
-  Flex,
-  Heading,
-  HStack,
-  Link,
-  Spinner,
-} from "@chakra-ui/react"
+import { Box, Container, Heading, Spinner } from "@chakra-ui/react"
 import { useState } from "react"
 import { Helmet } from "react-helmet-async"
 import { useQuery } from "react-query"
-import { Link as ReactRouterLink } from "react-router-dom"
 
 function PublicLeaderboard() {
   const [ranklist, setRanklist] = useState(null)
@@ -52,8 +40,8 @@ function PublicLeaderboard() {
       </Helmet>
       <PublicNavbar />
       <Container pt={14}>
-        <Box mt={6} mx={4}>
-          <Heading size="lg" mx={-4} mb={4}>
+        <Box mt={6} mx={[0, 0, 0, 0, 0, 4]}>
+          <Heading size="lg" mx={[0, 0, 0, 0, 0, -4]} mb={4}>
             Leaderboard
           </Heading>
           {ranklist ? (

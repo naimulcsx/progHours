@@ -66,7 +66,7 @@ const LeaderboardTable = ({ ranklist }: { ranklist: RanklistItem[] }) => {
           accessor: "totalSolveTime",
         },
         {
-          Header: "Average Solve Difficulty",
+          Header: "Average Difficulty",
           accessor: (row: RanklistItem) => row.averageDifficulty.toFixed(2),
         },
         {
@@ -92,7 +92,6 @@ const LeaderboardTable = ({ ranklist }: { ranklist: RanklistItem[] }) => {
           {headerGroups.map((headerGroup) => {
             return (
               <Tr
-                fontSize="xs"
                 textColor="gray.500"
                 textTransform="uppercase"
                 bg="gray.100"
@@ -105,7 +104,9 @@ const LeaderboardTable = ({ ranklist }: { ranklist: RanklistItem[] }) => {
                       className="py-4 border-t border-b"
                     >
                       <Flex align="center" minH="5">
-                        <Box as="span">{header.render("Header")}</Box>
+                        <Box as="span" fontSize={["11px", "xs"]}>
+                          {header.render("Header")}
+                        </Box>
                         <Box as="span" ml={1}>
                           {header.isSorted ? (
                             header.isSortedDesc ? (

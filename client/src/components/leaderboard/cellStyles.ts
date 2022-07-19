@@ -1,41 +1,41 @@
-const HORIZONTAL_PADDING = 5
+const HORIZONTAL_PADDING = 6
 const VERTICAL_PADDING = 2
 
 export const CELL_STYLES: any = {
   "#": {
-    w: 20,
-    minW: 20,
+    w: [8, 20],
+    minW: [8, 20],
     px: HORIZONTAL_PADDING,
     py: VERTICAL_PADDING,
   },
   Name: {
-    minW: "400px",
-    w: "400px",
+    minW: ["240px", "400px"],
+    w: ["240px", "400px"],
     px: HORIZONTAL_PADDING,
     py: VERTICAL_PADDING,
   },
   "Solve Count": {
-    minW: 48,
-    w: 48,
+    minW: [40, 48],
+    w: [40, 48],
     px: HORIZONTAL_PADDING,
     py: VERTICAL_PADDING,
   },
   "Solve Time": {
-    minW: 48,
-    w: 48,
+    minW: [40, 48],
+    w: [40, 48],
     px: HORIZONTAL_PADDING,
     py: VERTICAL_PADDING,
   },
-  "Average Solve Difficulty": {
-    minW: 96,
-    w: 96,
+  "Average Difficulty": {
+    minW: [60, 96],
+    w: [60, 96],
     px: HORIZONTAL_PADDING,
     py: VERTICAL_PADDING,
   },
-  // Points: {
-  //   minW: 24,
-  //   w: 24,
-  //   px: HORIZONTAL_PADDING,
-  //   py: VERTICAL_PADDING,
-  // },
+  Points: {
+    // minW: 32,
+    // w: 32,
+    px: HORIZONTAL_PADDING,
+    py: VERTICAL_PADDING,
+  },
 }
