@@ -267,8 +267,8 @@ export class ParsersService {
      */
     const linkUrl = new URL(link)
     const ccUrlPatterns = [
-      new UrlPattern("/problems/:problemId"),
       new UrlPattern("/submit/:problemId"),
+      new UrlPattern("/problems/:problemId"),
       new UrlPattern("/:contestId/problems/:problemId"),
     ]
     let isInvalid = true
@@ -316,56 +316,34 @@ export class ParsersService {
    *  Parser for CSES, id = 3
    */
   async csesParser(link) {
-    const linkURl = new URL(link)
-
+    const linkURL = new URL(link)
     /**
      * Check if the problem link is valid
-     * https://cses.fi/:contestId/task/:problemId
      * https://cses.fi/problemset/task/:problemId
      */
 
-    const csesOJPattern = new UrlPattern("/:contestId/task/:problemId")
-    let matchedResult = csesOJPattern.match(linkURl.pathname)
+    const pattern = new UrlPattern("/problemset/task/:problemId")
+    let matchedResult = pattern.match(linkURL.pathname)
 
-    let isInvalid: boolean = matchedResult === null
-    if (isInvalid) throw new Error("Invalid CSES link!")
+    if (matchedResult === null) throw new Error("Invalid CSES link!")
 
+    // make network request
     const { data } = await lastValueFrom(this.httpService.get(link))
+
+    // parse name from the webpage
     const $ = cheerio.load(data)
-
     const name = $(".title-block h1").text().trim()
+    if (!name) throw new Error("Problem doesn't exist!")
 
-    const { contestId, problemId } = matchedResult
-
-    /**
-     * Problem Id
-     */
-    let pid
-    if (contestId !== "problemset") pid = `CSES-${contestId}${problemId}`
-    else pid = "CSES-" + problemId
-
-    /**
-     * Problem Difficulty
-     */
-    const difficulty = 0
-
-    /**
-     * Problem Tags
-     */
-    const tags = []
-
-    /**
-     *  attached judge_id
-     */
-    const judge_id = 3
+    const { problemId } = matchedResult
 
     return {
-      pid,
+      pid: `CSES-${problemId}`,
       name,
-      tags,
-      difficulty,
-      judge_id,
-      link: `https://cses.fi/${contestId}/task/${problemId}`,
+      tags: [],
+      difficulty: 0,
+      judge_id: 3,
+      link: `https://cses.fi/problemset/task/${problemId}`,
     }
   }
 

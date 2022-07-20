@@ -5,7 +5,7 @@ import { ParsersService } from "./parsers.service"
 @Controller("/parsers")
 export class ParsersController {
   constructor(private readonly parsersService: ParsersService) {}
-  @Post("/test")
+  @Post("/debug")
   async parseProblem(@Body() body, @Res({ passthrough: true }) res: Response) {
     let { link } = body
     try {
