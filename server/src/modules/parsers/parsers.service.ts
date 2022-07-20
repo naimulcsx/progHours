@@ -2,6 +2,7 @@ import { HttpService } from "@nestjs/axios"
 import {
   BadRequestException,
   CACHE_MANAGER,
+  ConsoleLogger,
   Inject,
   Injectable,
 } from "@nestjs/common"
@@ -98,14 +99,14 @@ export class ParsersService {
       "www.atcoder.jp": atCoderLinkTransformer, // removes www
       "www.onlinejudge.org": uvaLinkTransformer, // removes www
       "eolymp.com": eolympLinkTransformer, // adds www
-      "beecrowd.com.br": beecrowdLinkTransformer, // adds www + convert repository link
-      "www.beecrowd.com.br": beecrowdLinkTransformer, // convert repository link
+      // "beecrowd.com.br": beecrowdLinkTransformer, // adds www + convert repository link
+      // "www.beecrowd.com.br": beecrowdLinkTransformer, // convert repository link
       "www.toph.co": tophLinkTransformer, // removes www
       "hackerrank.com": hackrrankLinkTransformer, // adds www
       "www.hackerrank.com": hackrrankLinkTransformer, // adds www + unify links
       "www.leetcode.com": leetcodeLinkTransformer, // removes www
       "www.codeto.win": codetowinLinkTransformer, // removes www
-      "hackerearth.com": hackerearthLinkTransformer, // adds www
+      // "hackerearth.com": hackerearthLinkTransformer, // adds www
     }
 
     if (hostname === "vjudge.net") {
@@ -136,12 +137,12 @@ export class ParsersService {
       "lightoj.com": this.lightOJParser, // 8
       "atcoder.jp": this.atCoderParser, // 9
       "www.eolymp.com": this.eolympParser, // 10
-      "www.beecrowd.com.br": this.beeCrowdParser, // 11
+      // "www.beecrowd.com.br": this.beeCrowdParser, // 11
       "leetcode.com": this.leetCodeParser, // 12
       "acm.timus.ru": this.timusParser, // 13
       "codeto.win": this.codeToWinParser, // 14
-      "icpcarchive.ecs.baylor.edu": this.icpcarchiveParser, // 15
-      "www.hackerearth.com": this.hackerEarthParser, // 16
+      // "icpcarchive.ecs.baylor.edu": this.icpcarchiveParser, // 15
+      // "www.hackerearth.com": this.hackerEarthParser, // 16
       "open.kattis.com": this.kattisOJParser, // 17
       "vjudge.net": this.vjudgeParser,
     }
@@ -267,6 +268,7 @@ export class ParsersService {
      */
     const linkUrl = new URL(link)
     const ccUrlPatterns = [
+      new UrlPattern("/submit/:problemId"),
       new UrlPattern("/problems/:problemId"),
       new UrlPattern("/:contestId/problems/:problemId"),
     ]
@@ -294,18 +296,14 @@ export class ParsersService {
     /**
      * If the problem id is invalid
      */
-    if (response.data?.status === "error") {
-      throw new Error("Invalid CodeChef link!")
-    }
-
-    const pid = `CC-${response.data.problem_code}`
-    const name = response.data.problem_name.trim()
+    if (response.data.status === "error")
+      throw new Error("Invalid CodeChef problem!")
 
     return {
-      pid,
-      name,
-      tags: [],
-      difficulty: 0,
+      pid: `CC-${response.data.problem_code}`.trim(),
+      name: response.data.problem_name.trim(),
+      tags: response.data.user_tags.map((e) => e.toLowerCase()),
+      difficulty: Number(response.data.difficulty_rating),
       judge_id: 2,
       link: `https://www.codechef.com/problems/${response.data.problem_code}`,
     }
@@ -315,56 +313,34 @@ export class ParsersService {
    *  Parser for CSES, id = 3
    */
   async csesParser(link) {
-    const linkURl = new URL(link)
-
+    const linkURL = new URL(link)
     /**
      * Check if the problem link is valid
-     * https://cses.fi/:contestId/task/:problemId
      * https://cses.fi/problemset/task/:problemId
      */
 
-    const csesOJPattern = new UrlPattern("/:contestId/task/:problemId")
-    let matchedResult = csesOJPattern.match(linkURl.pathname)
+    const pattern = new UrlPattern("/problemset/task/:problemId")
+    let matchedResult = pattern.match(linkURL.pathname)
 
-    let isInvalid: boolean = matchedResult === null
-    if (isInvalid) throw new Error("Invalid CSES link!")
+    if (matchedResult === null) throw new Error("Invalid CSES link!")
 
+    // make network request
     const { data } = await lastValueFrom(this.httpService.get(link))
+
+    // parse name from the webpage
     const $ = cheerio.load(data)
-
     const name = $(".title-block h1").text().trim()
+    if (!name) throw new Error("Problem doesn't exist!")
 
-    const { contestId, problemId } = matchedResult
-
-    /**
-     * Problem Id
-     */
-    let pid
-    if (contestId !== "problemset") pid = `CSES-${contestId}${problemId}`
-    else pid = "CSES-" + problemId
-
-    /**
-     * Problem Difficulty
-     */
-    const difficulty = 0
-
-    /**
-     * Problem Tags
-     */
-    const tags = []
-
-    /**
-     *  attached judge_id
-     */
-    const judge_id = 3
+    const { problemId } = matchedResult
 
     return {
-      pid,
+      pid: `CSES-${problemId}`,
       name,
-      tags,
-      difficulty,
-      judge_id,
-      link: `https://cses.fi/${contestId}/task/${problemId}`,
+      tags: [],
+      difficulty: 0,
+      judge_id: 3,
+      link: `https://cses.fi/problemset/task/${problemId}`,
     }
   }
 
@@ -395,7 +371,6 @@ export class ParsersService {
       page &&
       itemId
     )
-
     if (isInvalid) throw new Error("Invalid UVA link!")
 
     /**
@@ -405,10 +380,9 @@ export class ParsersService {
     const $ = cheerio.load(response.data)
 
     const str = $(".floatbox tr td h3").text().trim()
-    if (!str.length) throw new Error("UVA is down!")
+    if (!str.length) throw new Error("Invalid problem link!")
 
     const parts = str.split(" - ")
-
     const pid = "UVA-" + parts[0]
     const name = parts.slice(1).join(" - ").trim()
 
@@ -446,29 +420,16 @@ export class ParsersService {
      * Problem name
      */
     const name = $(".artifact__caption h1").text().trim()
-
     const { problemId } = matchedResult
-
-    /**
-     * problem id
-     */
-    const pid = "TH-" + problemId
-
-    /**
-     * problem difficulty
-     */
-    const difficulty = 0
 
     /**
      * problem tags
      */
     const tags = []
-
     function convertTagNames(tag: string) {
       let result = ""
       for (let ch of tag) {
         if (isUppercase(ch)) result += " "
-
         result += ch.toLowerCase()
       }
       return result.substring(1)
@@ -477,17 +438,17 @@ export class ParsersService {
     $(".flair__item .text a").each(function () {
       let tag = $(this).text().trim()
       tag = convertTagNames(tag)
-      tags.push(tag)
+
+      // make sure if the tag is not the problem setters handle
+      if (!$(this).hasClass("handle")) tags.push(tag)
     })
 
-    const judge_id = 5
-
     return {
-      pid,
+      pid: `Toph-${problemId}`,
       name,
       tags,
-      difficulty,
-      judge_id,
+      difficulty: 0,
+      judge_id: 5,
       link: `https://toph.co/p/${problemId}`,
     }
   }
@@ -500,71 +461,33 @@ export class ParsersService {
     /**
      * Check if the problem link is valid
      */
-    const sopjUrlPatterns = [
-      new UrlPattern("/:contestId/problems/:problemId"),
-      new UrlPattern("/problems/:problemId"),
-    ]
-    let isInvalid = true
-    let matchedResult: any
-    sopjUrlPatterns.forEach((pattern) => {
-      const result = pattern.match(linkURL.pathname)
-      if (result) {
-        matchedResult = result
-        isInvalid = false
-      }
-    })
-    if (isInvalid) throw new Error("Invalid SPOJ link!")
+    const pattern = new UrlPattern("/problems/:problemId")
+    const result = pattern.match(linkURL.pathname)
+
+    if (!result) throw new Error("Invalid SPOJ link!")
 
     /**
      * Parse data from link
      */
     const { data } = await lastValueFrom(this.httpService.get(link))
     const $ = cheerio.load(data)
-
-    const { contestId, problemId } = matchedResult
+    const { problemId } = result
 
     /**
      * Get problem name and link
      */
-    let parseName, problemLink
-    if (!contestId) {
-      parseName = $(".prob #problem-name").text().trim()
-      problemLink = `https://www.spoj.com/problems/${problemId}`
-    } else {
-      parseName = $("#content table td > h2").text().trim()
-      problemLink = `https://www.spoj.com/${contestId}/problems/${problemId}`
-    }
-
-    const parts = parseName.split(" - ")
-    const name = parts[1]
-
-    /**
-     * Define problem id
-     */
-    const pid = "SPOJ-" + parts[0]
-
-    /**
-     * problem difficulty
-     */
-    const difficulty = 0
-
-    /**
-     * Problem tags
-     */
-    const tags = []
-
-    /**
-     * Judge Id
-     */
-    const judge_id = 6
+    const [problemCode, name] = $(".prob #problem-name")
+      .text()
+      .trim()
+      .split(" - ")
 
     return {
-      pid,
+      pid: `SPOJ-${problemCode}`,
       name,
-      tags,
-      difficulty,
-      judge_id,
-      link: problemLink,
+      tags: [],
+      difficulty: 0,
+      judge_id: 6,
+      link: `https://www.spoj.com/problems/${problemId}`,
     }
   }
 
@@ -659,6 +582,8 @@ export class ParsersService {
        */
       const originalUrl =
         response?.request?.socket?._httpMessage?.res?.responseUrl
+
+      console.log(originalUrl)
 
       const $ = cheerio.load(response.data)
       /**
@@ -788,10 +713,17 @@ export class ParsersService {
     /**
      * Make HTTP Request and parse from the source code
      */
-    const { data } = await lastValueFrom(this.httpService.get(link))
+    const { data } = await lastValueFrom(
+      this.httpService.get(link, {
+        headers: {
+          "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64)",
+        },
+      })
+    )
     const $ = cheerio.load(data)
-
     const name = $("title").text().trim().split(" - ")[1]
+
+    console.log("hellow world")
 
     return {
       name,
@@ -914,7 +846,6 @@ export class ParsersService {
     const $ = cheerio.load(data)
 
     const name = $(".problem > .row > h4.railway-font").text().trim()
-    console.log("nameeeeee", name)
     const pid = "CW-" + matchedResult.problemId
 
     return {
@@ -1107,13 +1038,14 @@ export class ParsersService {
      * For private vjudge pages
      * We need to make a login request first to get the required cookies
      */
-    return {
-      pid: "test",
-      name: "test",
-      tags: [],
-      difficulty: 0,
-      judge_id: 2,
-      link,
-    }
+    throw new BadRequestException("Online Judge not supported!")
+    // return {
+    //   pid: "test",
+    //   name: "test",
+    //   tags: [],
+    //   difficulty: 0,
+    //   judge_id: 2,
+    //   link,
+    // }
   }
 }

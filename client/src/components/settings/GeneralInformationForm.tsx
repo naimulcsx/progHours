@@ -78,7 +78,6 @@ export const GeneralInformationForm = () => {
             colorScheme: "gray",
           }}
           mutation={(values: any) => {
-            console.log({ values })
             return axios.patch(`/api/users/me`, values)
           }}
           onSuccess={() => {

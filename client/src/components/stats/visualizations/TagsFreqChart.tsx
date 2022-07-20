@@ -19,7 +19,10 @@ export default function TagsFreqChart({ data }) {
     series: [
       {
         name: "Solved problems",
-        data: data.map(({ count }: { count: string }) => parseInt(count)),
+        data:
+          data.length > 0
+            ? data.map(({ count }: { count: string }) => parseInt(count))
+            : [null],
       },
     ],
     options: {
@@ -33,7 +36,7 @@ export default function TagsFreqChart({ data }) {
       colors: data.map(({ name }: { name: string }) => stringToColour(name)),
       plotOptions: {
         bar: {
-          borderRadius: 10,
+          borderRadius: 4,
           dataLabels: {
             position: "top", // top, center, bottom
           },
@@ -56,7 +59,10 @@ export default function TagsFreqChart({ data }) {
       },
       xaxis: {
         type: "category",
-        categories: data.map(({ name }: { name: string }) => name),
+        categories:
+          data.length > 0
+            ? data.map(({ name }: { name: string }) => name)
+            : [null],
         position: "bottom",
         axisBorder: {
           show: false,

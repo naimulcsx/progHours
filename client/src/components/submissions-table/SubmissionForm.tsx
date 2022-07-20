@@ -125,12 +125,13 @@ const SubmissionForm = ({ id }: { id: number }) => {
     <>
       <PopupBuilder
         title="Password Protected Contest"
+        description="Please enter the contest password below"
         isOpen={contestPasswordDialogue}
         setIsOpen={setContestPasswordDialogue}
       >
-        <Text>Please enter the contest password below</Text>
         <FormBuilder
-          className="mt-6 space-y-4"
+          isModal
+          className="space-y-4"
           fields={{
             password: {
               type: "password",

@@ -32,7 +32,6 @@ const Verdict = (cell: Cell<Submission>) => {
       /**
        * Show toast message
        */
-      console.log(err)
       // toast.error(err.response?.data.message, { className: "toast" })
     },
   })

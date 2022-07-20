@@ -42,7 +42,6 @@ export default function SolveTime(cell: Cell<Submission>) {
   })
 
   const handleBlur = (value: string) => {
-    console.log(value)
     if (prevRef.current !== time) {
       mutate({ id: cell.row.original.id, solveTime: Number(value) })
       prevRef.current = value
@@ -50,7 +49,6 @@ export default function SolveTime(cell: Cell<Submission>) {
   }
 
   const handleEnter = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    console.log(time)
     if (e.key === "Enter" && prevRef.current !== time) {
       mutate({ id: cell.row.original.id, solveTime: parseInt(time) })
       prevRef.current = time
