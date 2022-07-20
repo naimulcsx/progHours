@@ -8,7 +8,7 @@ const Logo = () => {
       <LogoIcon width={32} height={32} />
       <Box>
         <Heading size="md">progHours</Heading>
-        <Text fontSize="10px">v1.0.0 RC1</Text>
+        <Text fontSize="10px">v0.1.1</Text>
       </Box>
     </HStack>
   )
