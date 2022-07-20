@@ -38,11 +38,19 @@ export const ccLinkTransformer = (link: string) => {
     linkURL.hostname = "www.codechef.com"
   }
   link = linkURL.toString()
+  // check for /{contestId}/problems/{problemId}
   const pattern = new UrlPattern("/:contestId/problems/:problemId")
   const patternResult = pattern.match(new URL(link).pathname)
   if (patternResult) {
     link = `${linkURL.origin}/problems/${patternResult.problemId}`
   }
+  // check for /submit/{problemId}
+  const pattern2 = new UrlPattern("/submit/:problemId")
+  const patternResult2 = pattern2.match(new URL(link).pathname)
+  if (patternResult2) {
+    link = `${linkURL.origin}/problems/${patternResult2.problemId}`
+  }
+  console.log(link)
   return link
 }
 

@@ -40,7 +40,7 @@ function vjudgeToSPOJ(link) {
   return `https://www.spoj.com/problems/${problemId}`
 }
 
-function vjudgeTOTOPH(link) {
+function vjudgeToToph(link) {
   const problemId = link.split("Toph-").pop()
   return `https://toph.co/p/${problemId}`
 }
@@ -137,7 +137,7 @@ async function convertLinkToOriginal(link, cacheManager: Cache) {
   else if (link.includes("AtCoder")) link = vjudgeToAtCoder(link)
   else if (link.includes("CodeChef")) link = vjudgeToCodeChef(link)
   else if (link.includes("SPOJ")) link = vjudgeToSPOJ(link)
-  else if (link.includes("Toph")) link = vjudgeTOTOPH(link)
+  else if (link.includes("Toph")) link = vjudgeToToph(link)
   else if (link.includes("EOlymp")) link = vjudgeToEOlymp(link)
   return link
 }

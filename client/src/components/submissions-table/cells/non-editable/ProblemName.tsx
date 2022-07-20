@@ -29,17 +29,17 @@ const iconMap = [
   { prefix: "SPOJ-", icon: SPOJIcon },
   { prefix: "CC-", icon: CCIcon },
   { prefix: "LOJ-", icon: LightOJIcon },
-  { prefix: "UVA-", icon: UVAIcon },
+  { prefix: "UVA-", icon: UVAIcon, spacing: 1 },
   { prefix: "ICPCLive-", icon: UVAIcon },
-  { prefix: "CSES-", icon: CSESIcon },
-  { prefix: "TH-", icon: TophIcon },
+  { prefix: "CSES-", icon: CSESIcon, spacing: 1 },
+  { prefix: "Toph-", icon: TophIcon },
   { prefix: "AC-", icon: AtCoder },
   { prefix: "Eolymp-", icon: EOlympIcon },
   { prefix: "BC-", icon: BeeCrowd },
-  { prefix: "HR-", icon: HackerRankIcon },
+  { prefix: "HR-", icon: HackerRankIcon, spacing: 1 },
   { prefix: "LC-", icon: LeetCodeIcon },
   { prefix: "Tim-", icon: TimusIcon },
-  { prefix: "CW-", icon: CodeToWinIcon },
+  { prefix: "CW-", icon: CodeToWinIcon, spacing: 1 },
   { prefix: "HE-", icon: HackerEarthIcon },
   { prefix: "KT-", icon: KattisOJIcon },
 ]
@@ -49,9 +49,9 @@ const ProblemName = (cell: Cell<Submission>) => {
   /** Select Icon based on the online judge */
   let OnlineJudgeIcon: any = iconMap
     .filter((item, i) => (pid.includes(item.prefix) ? true : false))
-    .at(0)?.icon
+    .at(0)
   /** If there is no match, use the Unknown icon */
-  if (!OnlineJudgeIcon) OnlineJudgeIcon = QuestionMarkCircleIcon
+  if (!OnlineJudgeIcon) OnlineJudgeIcon.icon = QuestionMarkCircleIcon
   return (
     <HStack spacing={4}>
       <Flex
@@ -63,8 +63,8 @@ const ProblemName = (cell: Cell<Submission>) => {
         border="1px solid"
         borderColor="gray.200"
       >
-        <Box h={10} w={10} p={1.5}>
-          <OnlineJudgeIcon />
+        <Box h={10} w={10} p={OnlineJudgeIcon.spacing || 1.5}>
+          <OnlineJudgeIcon.icon />
         </Box>
       </Flex>
       <Box w="full" overflow="hidden">
