@@ -1,9 +1,7 @@
 {
-  "name": "server",
-  "version": "1.0.0",
-  "description": "",
-  "author": "",
-  "private": true,
+  "name": "server-app",
+  "version": "0.1.1",
+  "author": "Naimul Haque",
   "license": "UNLICENSED",
   "prisma": {
     "seed": "ts-node prisma/seed.ts"
