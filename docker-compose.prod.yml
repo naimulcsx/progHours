@@ -20,6 +20,8 @@ services:
     build:
       context: ./server
       dockerfile: Dockerfile.prod
+    ports:
+      - ${POSTGRES_PORT}:5432
     environment:
       NODE_ENV: production
       DATABASE_URL: postgres://${POSTGRES_USER}:${POSTGRES_PASSWORD}@db_server:${POSTGRES_PORT}/${POSTGRES_DB}
