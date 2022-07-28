@@ -15,6 +15,7 @@ import calculatePoints from "@/utils/calculatePoints"
 import { getRankList } from "@/api/leaderboard"
 import { RanklistItem } from "@/types/RanklistItem"
 import { Spinner } from "@chakra-ui/react"
+import { AnimateLoading } from "@/components/AnimateLoading"
 
 const LeaderboardPage = () => {
   const [ranklist, setRanklist] = useState(null)
@@ -47,11 +48,9 @@ const LeaderboardPage = () => {
       <Helmet>
         <title>Leaderboard</title>
       </Helmet>
-      {ranklist ? (
-        <LeaderboardTable ranklist={ranklist} />
-      ) : (
-        <Spinner size="sm" />
-      )}
+      <AnimateLoading isLoaded={ranklist}>
+        {ranklist && <LeaderboardTable ranklist={ranklist} />}
+      </AnimateLoading>
     </DashboardLayout>
   )
 }

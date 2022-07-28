@@ -18,6 +18,7 @@ import { getStats } from "@/api/dashboard"
 import { getSubmissions } from "@/api/submissions"
 import { getWeekRanges } from "@/utils/getWeekRanges"
 import { GlobalContext } from "@/GlobalStateProvider"
+import { AnimateLoading } from "@/components/AnimateLoading"
 
 const DashboardHome = () => {
   const { user } = useContext(GlobalContext)
@@ -62,46 +63,46 @@ const DashboardHome = () => {
       <Helmet>
         <title>Dashboard</title>
       </Helmet>
-      {data && frequency && data["tagsFrequency"] ? (
-        <>
-          <Box mb={4}>
-            <UserStats progress={data} />
-          </Box>
-          <Grid
-            templateColumns={[
-              "repeat(1, 1fr)",
-              "repeat(1, 1fr)",
-              "repeat(1, 1fr)",
-              "repeat(1, 1fr)",
-              "repeat(3, 1fr)",
-            ]}
-            gap={[0, 0, 0, 4]}
-            mb={[14]}
-          >
-            <GridItem
-              p={[4, 4, 4, 8]}
-              bg="white"
-              rounded="lg"
-              shadow="base"
-              mb={[4, 4, 4, 0]}
+      <AnimateLoading isLoaded={data && frequency && data["tagsFrequency"]}>
+        {data && frequency && data["tagsFrequency"] && (
+          <>
+            <Box mb={4}>
+              <UserStats progress={data} />
+            </Box>
+            <Grid
+              templateColumns={[
+                "repeat(1, 1fr)",
+                "repeat(1, 1fr)",
+                "repeat(1, 1fr)",
+                "repeat(1, 1fr)",
+                "repeat(3, 1fr)",
+              ]}
+              gap={[0, 0, 0, 4]}
+              mb={[14]}
             >
-              {<WeeklySolvedChart data={frequency} />}
-            </GridItem>
-            <GridItem
-              p={[4, 4, 4, 8]}
-              pb={[0, 0, 0, 2]}
-              bg="white"
-              rounded="lg"
-              shadow="base"
-              colSpan={2}
-            >
-              <TagsFreqChart data={data["tagsFrequency"]} />
-            </GridItem>
-          </Grid>
-        </>
-      ) : (
-        <Spinner size="sm" />
-      )}
+              <GridItem
+                p={[4, 4, 4, 8]}
+                bg="white"
+                rounded="lg"
+                shadow="base"
+                mb={[4, 4, 4, 0]}
+              >
+                {<WeeklySolvedChart data={frequency} />}
+              </GridItem>
+              <GridItem
+                p={[4, 4, 4, 8]}
+                pb={[0, 0, 0, 2]}
+                bg="white"
+                rounded="lg"
+                shadow="base"
+                colSpan={2}
+              >
+                <TagsFreqChart data={data["tagsFrequency"]} />
+              </GridItem>
+            </Grid>
+          </>
+        )}
+      </AnimateLoading>
     </DashboardLayout>
   )
 }

@@ -14,7 +14,7 @@ export const AnimateLoading = ({
           <motion.div
             initial={{ opacity: 0, height: 0 }}
             animate={{ opacity: 1, height: "auto" }}
-            transition={{ delay: 0.5, duration: 0.25 }}
+            transition={{ delay: 0.25, duration: 0.25 }}
           >
             {children}
           </motion.div>
@@ -25,7 +25,7 @@ export const AnimateLoading = ({
           <motion.div
             initial={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            transition={{ duration: 0.5 }}
+            transition={{ duration: 0.25 }}
           >
             {SkeletonComponent ? (
               <SkeletonComponent />

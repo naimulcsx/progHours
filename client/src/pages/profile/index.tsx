@@ -6,6 +6,7 @@ import {
   Container,
   Skeleton,
   SkeletonCircle,
+  SkeletonText,
   Spinner,
   Stack,
   Tab,
@@ -129,63 +130,77 @@ export default function Profile() {
   return (
     <>
       {isLoggedIn ? <Navbar /> : <PublicNavbar />}
-      {user && userStats && frequency && submissionQuery.data && (
-        <Box overflow="hidden" pb={10}>
-          {/* @ts-ignore */}
-          <Helmet>{/* @ts-ignore */}</Helmet>
-          <UserCard
-            name={user.name}
-            username={user.username}
-            member_since={user.memberSince}
-          />
-          <Container>
-            <Tabs>
-              <TabList>
-                <Tab>About</Tab>
-                <Tab>Statistics</Tab>
-                <Tab>Submissions</Tab>
-              </TabList>
-              <TabPanels>
-                <TabPanel mx={-4}>
-                  <Box mb={5} mt={2}>
-                    <UserStats progress={userStats} />
-                  </Box>
-                  <UserAbout user={user} userStats={userStats} />
-                </TabPanel>
-                <TabPanel>
-                  <Box
-                    p={8}
-                    pb={2}
-                    mb={4}
-                    mt={2}
-                    bg="white"
-                    rounded="lg"
-                    shadow="base"
-                    mx={-4}
-                  >
-                    <WeeklySolvedChart data={frequency} />
-                  </Box>
-                  <Box
-                    p={8}
-                    pb={2}
-                    bg="white"
-                    rounded="lg"
-                    shadow="base"
-                    mx={-4}
-                  >
-                    <TagsFreqChart data={userStats["tagsFrequency"]} />
-                  </Box>
-                </TabPanel>
-                <TabPanel>
-                  <Box mx={-4} overflowX="auto">
-                    <SubmissionsTable submissions={submissions} />
-                  </Box>
-                </TabPanel>
-              </TabPanels>
-            </Tabs>
+      <AnimateLoading
+        isLoaded={user && userStats && frequency && submissionQuery.data}
+        SkeletonComponent={() => (
+          <Container pt={20}>
+            <Stack>
+              <Skeleton h="20px" />
+              <Skeleton h="20px" />
+              <Skeleton h="20px" />
+              <Skeleton h="20px" />
+            </Stack>
           </Container>
-        </Box>
-      )}
+        )}
+      >
+        {user && userStats && frequency && submissionQuery.data && (
+          <Box overflow="hidden" pb={10}>
+            {/* @ts-ignore */}
+            <Helmet>{/* @ts-ignore */}</Helmet>
+            <UserCard
+              name={user.name}
+              username={user.username}
+              member_since={user.memberSince}
+            />
+            <Container>
+              <Tabs>
+                <TabList>
+                  <Tab>About</Tab>
+                  <Tab>Statistics</Tab>
+                  <Tab>Submissions</Tab>
+                </TabList>
+                <TabPanels>
+                  <TabPanel mx={-4}>
+                    <Box mb={5} mt={2}>
+                      <UserStats progress={userStats} />
+                    </Box>
+                    <UserAbout user={user} userStats={userStats} />
+                  </TabPanel>
+                  <TabPanel>
+                    <Box
+                      p={8}
+                      pb={2}
+                      mb={4}
+                      mt={2}
+                      bg="white"
+                      rounded="lg"
+                      shadow="base"
+                      mx={-4}
+                    >
+                      <WeeklySolvedChart data={frequency} />
+                    </Box>
+                    <Box
+                      p={8}
+                      pb={2}
+                      bg="white"
+                      rounded="lg"
+                      shadow="base"
+                      mx={-4}
+                    >
+                      <TagsFreqChart data={userStats["tagsFrequency"]} />
+                    </Box>
+                  </TabPanel>
+                  <TabPanel>
+                    <Box mx={-4} overflowX="auto">
+                      <SubmissionsTable submissions={submissions} />
+                    </Box>
+                  </TabPanel>
+                </TabPanels>
+              </Tabs>
+            </Container>
+          </Box>
+        )}
+      </AnimateLoading>
     </>
   )
 }
