@@ -7,6 +7,7 @@ import axios from "axios"
 import { ReactQueryDevtools } from "react-query/devtools"
 import { useToast } from "@chakra-ui/react"
 import { Box } from "@chakra-ui/react"
+import { useColorModeValue as mode } from "@chakra-ui/react"
 
 /**
  * Import Styles
@@ -70,7 +71,7 @@ const App = (): JSX.Element => {
     <QueryClientProvider client={queryClient}>
       {/* @ts-ignore */}
       <HelmetProvider>
-        <Box minH="100vh" bg="gray.50">
+        <Box minH="100vh" bg={mode("gray.50", "gray.900")}>
           {isLoggedIn ? (
             <GlobalStateProvider>
               <main>{matchedPage}</main>

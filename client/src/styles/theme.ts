@@ -10,6 +10,8 @@ const breakpoints = {
 
 export const theme = extendTheme(
   {
+    initialColorMode: "light",
+    useSystemColorMode: false,
     breakpoints,
     colors: {
       blue: {

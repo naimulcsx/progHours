@@ -35,7 +35,7 @@ export const UserCard: React.FC<UserCardProps> = ({ name, username }) => {
         position="absolute"
         inset="0"
         height="48"
-        bg="blue.400"
+        bg="white"
         backgroundImage="url(/bg-profile.png)"
         shadow="base"
       />

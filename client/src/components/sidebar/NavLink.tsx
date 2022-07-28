@@ -21,9 +21,9 @@ export const NavLink = (props: NavLinkProps) => {
       py={2}
       px={3}
       borderRadius="md"
-      transition="all 0.3s"
       fontWeight="medium"
       lineHeight="1.5rem"
+      transition="none"
       aria-current={isActive ? "page" : undefined}
       color={mode("blackAlpha.800", "whiteAlpha.800")}
       _hover={{
@@ -31,8 +31,8 @@ export const NavLink = (props: NavLinkProps) => {
         color: mode("black", "white"),
       }}
       _activeLink={{
-        bg: mode("blue.50", "blue.300"),
-        color: mode("blue.500", "black"),
+        bg: mode("blue.50", "gray.700"),
+        color: mode("blue.500", "white"),
       }}
       {...rest}
     >

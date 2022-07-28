@@ -1,6 +1,11 @@
 import FormBuilder from "@/components/FormBuilder"
 import * as Yup from "yup"
-import { Box, Spinner, useToast } from "@chakra-ui/react"
+import {
+  Box,
+  Spinner,
+  useColorModeValue as mode,
+  useToast,
+} from "@chakra-ui/react"
 import { useContext } from "react"
 import { GlobalContext } from "@/GlobalStateProvider"
 import axios from "axios"
@@ -10,7 +15,13 @@ export const UpdatePasswordForm = () => {
   const { user } = useContext(GlobalContext)
   const toast = useToast(DEFAULT_TOAST_OPTIONS)
   return (
-    <Box p={[4, 4, 4, 8]} bg="white" shadow="base" rounded="lg" mx={-4}>
+    <Box
+      p={[4, 4, 4, 8]}
+      bg={mode("white", "gray.800")}
+      shadow="base"
+      rounded="lg"
+      mx={-4}
+    >
       {user ? (
         <FormBuilder
           fields={{

@@ -27,6 +27,7 @@ import {
   CogIcon,
   DocumentTextIcon,
 } from "@heroicons/react/solid"
+import { useColorModeValue as mode } from "@chakra-ui/react"
 
 export const SIDEBAR_ICON_SIZE = 24
 
@@ -45,7 +46,7 @@ export const Sidebar: React.FC = () => {
       pt={6}
       px={4}
       pb={6}
-      bg="white"
+      bg={mode("white", "gray.800")}
       zIndex={100}
     >
       <Stack spacing={6} mt={16}>

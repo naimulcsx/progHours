@@ -85,7 +85,6 @@ const SubmissionForm = ({ id }: { id: number }) => {
       /**
        * Convert values.solveTime to number
        */
-      values.solvedAt = new Date()
       const solveTimeString: string = values.solveTime.toString()
       values.solveTime = parseInt(solveTimeString)
 
