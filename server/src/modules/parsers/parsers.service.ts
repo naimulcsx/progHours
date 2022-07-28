@@ -980,53 +980,26 @@ export class ParsersService {
    *  Parser for Open Kattis, id = 17
    */
   async kattisOJParser(link) {
-    const linkUrl = new URL(link)
+    const linkURL = new URL(link)
+    const pattern = new UrlPattern("/problems/:problemId")
 
-    const heURLPatterns = [
-      new UrlPattern("/problems/:problemId"),
-      new UrlPattern("/contests/:contestId/problems/:problemId"),
-    ]
+    let result = pattern.match(linkURL.pathname)
+    if (!result) throw new Error("Invalid kattis problem link!")
 
-    let matchedResult: any
-    let isInvalid: boolean = true
-    heURLPatterns.forEach((pattern) => {
-      let result = pattern.match(linkUrl.pathname)
-
-      if (result) {
-        matchedResult = result
-        isInvalid = false
-      }
-    })
-
-    if (isInvalid) throw new Error("Invalid kattis problem link!")
-
-    const { contestId, problemId } = matchedResult
-
+    const { problemId } = result
     /**
      * Extract data from provided link
      */
     const { data } = await lastValueFrom(this.httpService.get(link))
     const $ = cheerio.load(data)
 
-    /**
-     * Problem link
-     */
-    let pLink, name
-    if (contestId) {
-      name = $(".headline-wrapper h1").text().trim()
-      pLink = `https://open.kattis.com/contests/${contestId}/problems/${problemId}`
-    } else {
-      name = $(".headline-wrapper h1").text().trim()
-      pLink = `https://open.kattis.com/problems/${problemId}`
-    }
-
     return {
-      name,
+      name: $(".book-page-heading").text().trim(),
       pid: "KT-" + problemId,
       tags: [],
       difficulty: 0,
       judge_id: 17,
-      link: pLink,
+      link: `https://open.kattis.com/problems/${problemId}`,
     }
   }
 
