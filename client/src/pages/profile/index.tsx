@@ -4,7 +4,10 @@ import { useParams } from "react-router-dom"
 import {
   Box,
   Container,
+  Skeleton,
+  SkeletonCircle,
   Spinner,
+  Stack,
   Tab,
   TabList,
   TabPanel,
@@ -12,6 +15,7 @@ import {
   Tabs,
   useToast,
 } from "@chakra-ui/react"
+import { motion } from "framer-motion"
 
 /**
  * Import Components
@@ -38,6 +42,7 @@ import { UserAbout } from "@/components/profile/UserAbout"
 import { getWeekRanges } from "@/utils/getWeekRanges"
 import WeeklySolvedChart from "@/components/stats/visualizations/WeeklySolvedChart"
 import { PublicNavbar } from "@/components/navbar/PublicNavbar"
+import { AnimateLoading } from "@/components/AnimateLoading"
 
 interface User {
   name: string
@@ -124,12 +129,10 @@ export default function Profile() {
   return (
     <>
       {isLoggedIn ? <Navbar /> : <PublicNavbar />}
-      {user && userStats && frequency && submissionQuery.data ? (
+      {user && userStats && frequency && submissionQuery.data && (
         <Box overflow="hidden" pb={10}>
           {/* @ts-ignore */}
-          <Helmet>
-            <title>{user.name}</title>
-          </Helmet>
+          <Helmet>{/* @ts-ignore */}</Helmet>
           <UserCard
             name={user.name}
             username={user.username}
@@ -182,10 +185,6 @@ export default function Profile() {
             </Tabs>
           </Container>
         </Box>
-      ) : (
-        <Container pt={20}>
-          <Spinner size="sm" />
-        </Container>
       )}
     </>
   )

@@ -58,10 +58,11 @@ export const UserAbout = ({
           </Th>
           <Td>
             <HStack spacing="8">
-              {achievementsBySolveCount.map((el) => {
+              {achievementsBySolveCount.map((el, idx) => {
                 const isUnlocked = userStats.totalSolved > el.count
                 return (
                   <Tooltip
+                    key={idx}
                     label={
                       isUnlocked
                         ? `Solved ${el.count} problems!`
