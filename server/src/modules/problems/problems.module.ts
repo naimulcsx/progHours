@@ -17,9 +17,13 @@ import { ProblemsController } from "@/modules/problems/problems.controller"
  * Import Services
  */
 import { ProblemsService } from "@/modules/problems/problems.service"
+import { ParsersModule } from "../parsers/parsers.module"
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Problem, Tag, UserProblemTag])],
+  imports: [
+    ParsersModule,
+    TypeOrmModule.forFeature([Problem, Tag, UserProblemTag]),
+  ],
   controllers: [ProblemsController],
   providers: [ProblemsService],
   exports: [ProblemsService],

@@ -1,4 +1,14 @@
-import { Controller, Param, Post, Req, UseGuards } from "@nestjs/common"
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  HttpStatus,
+  Param,
+  Patch,
+  Post,
+  UseGuards,
+} from "@nestjs/common"
 
 /**
  * Import Guards
@@ -9,22 +19,52 @@ import { IsAuthenticatedGuard } from "@/guards/is-authenticated"
  * Import Services
  */
 import { ProblemsService } from "@/modules/problems/problems.service"
+import {
+  ApiCreatedResponse,
+  ApiForbiddenResponse,
+  ApiOperation,
+} from "@nestjs/swagger"
 
 @Controller("problems")
 @UseGuards(IsAuthenticatedGuard)
 export class ProblemsController {
   constructor(private readonly problemService: ProblemsService) {}
-  @Post(":id/tags")
-  async addTag(@Param("id") id: string, @Req() req) {
-    const { body, user } = req
-    const result = await this.problemService.findOrCreateUserTag(
-      user.id,
-      parseInt(id),
-      body.tag_name
-    )
-    return {
-      id,
-      result,
-    }
+
+  @Post("")
+  @ApiOperation({ summary: "Create a new problem" })
+  @ApiCreatedResponse({ description: "problem successfully created" })
+  @ApiForbiddenResponse({ description: "Forbidden." })
+  async createProblem(@Body() body) {
+    const newProblem = await this.problemService.createProblem(body)
+
+    return { statusCode: HttpStatus.CREATED, body: { problems: newProblem } }
+  }
+
+  @Get("/:pid")
+  @ApiOperation({ summary: "Get a particular problem" })
+  @ApiCreatedResponse({ description: "Success" })
+  @ApiForbiddenResponse({ description: "Forbidden." })
+  async getProblemByProblemId(@Param("pid") pid) {
+    const problem = await this.problemService.getProblem(pid)
+
+    return { statusCode: HttpStatus.OK, body: { problem } }
+  }
+
+  @ApiOperation({ summary: "Update a problem" })
+  @ApiForbiddenResponse({ description: "Forbidden." })
+  @Patch("/:pid")
+  async updateProblemByProblemId(@Body() body, @Param("pid") pid: string) {
+    await this.problemService.updateProblem(body, pid)
+
+    return { statusCode: HttpStatus.OK, message: "Problem Updated" }
+  }
+
+  @ApiOperation({ summary: "Delete a problem" })
+  @ApiForbiddenResponse({ description: "Forbidden." })
+  @Delete("/:pid")
+  async deleteProblem(@Param("pid") pid: string) {
+    await this.problemService.deleteProblem(pid)
+
+    return { statusCode: HttpStatus.OK, message: "Problem deleted" }
   }
 }
