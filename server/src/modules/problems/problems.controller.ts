@@ -24,6 +24,7 @@ import {
   ApiForbiddenResponse,
   ApiOperation,
 } from "@nestjs/swagger"
+import { ProblemDto } from "@/validators/problem-dto"
 
 @Controller("problems")
 @UseGuards(IsAuthenticatedGuard)
@@ -34,7 +35,7 @@ export class ProblemsController {
   @ApiOperation({ summary: "Create a new problem" })
   @ApiCreatedResponse({ description: "problem successfully created" })
   @ApiForbiddenResponse({ description: "Forbidden." })
-  async createProblem(@Body() body) {
+  async createProblem(@Body() body: ProblemDto) {
     const newProblem = await this.problemService.createProblem(body)
 
     return { statusCode: HttpStatus.CREATED, body: { problems: newProblem } }
@@ -53,7 +54,10 @@ export class ProblemsController {
   @ApiOperation({ summary: "Update a problem" })
   @ApiForbiddenResponse({ description: "Forbidden." })
   @Patch("/:pid")
-  async updateProblemByProblemId(@Body() body, @Param("pid") pid: string) {
+  async updateProblemByProblemId(
+    @Body() body: ProblemDto,
+    @Param("pid") pid: string
+  ) {
     await this.problemService.updateProblem(body, pid)
 
     return { statusCode: HttpStatus.OK, message: "Problem Updated" }
