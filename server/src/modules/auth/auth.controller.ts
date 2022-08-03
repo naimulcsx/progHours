@@ -1,12 +1,4 @@
-import {
-  Body,
-  Controller,
-  Post,
-  Res,
-  Get,
-  ConflictException,
-  HttpStatus,
-} from "@nestjs/common"
+import { Body, Controller, Post, Res, Get, HttpStatus } from "@nestjs/common"
 
 import {
   ApiBadRequestResponse,
@@ -33,7 +25,7 @@ import { LoginUserDto } from "@/validators/login-user-dto"
 import { AuthService } from "@/modules/auth/auth.service"
 
 @Controller("auth")
-@ApiTags("auth")
+@ApiTags("Auth")
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
 

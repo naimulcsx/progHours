@@ -89,7 +89,7 @@ export const GeneralInformationForm = () => {
             colorScheme: "gray",
           }}
           mutation={(values: any) => {
-            return axios.patch(`/api/users/me`, values)
+            return axios.patch(`/api/users/me?update=data`, values)
           }}
           onSuccess={() => {
             queryClient.invalidateQueries("user")

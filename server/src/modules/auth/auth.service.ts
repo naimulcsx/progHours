@@ -49,37 +49,28 @@ export class AuthService {
     password: string
   }) {
     username = username.toLowerCase()
-    /**
-     * Get user by id
-     */
-    // const user = await this.usersService.getUserWithPassword(username)
+    // get user by id
     const user = await this.prisma.user.findUnique({ where: { username } })
 
-    /**
-     ** If username doesn't exist in our database
-     */
+    // if username doesn't exist in our database
     if (!user) {
       throw new NotFoundException("User not found.")
     }
 
-    /**
-     ** Username exists, need to check if the provided password is valid
-     */
+    // username exists, need to check if the provided password is valid
     const isValidPassword = await this.comparePassword(password, user.password)
 
-    /**
-     * if the user exists, but the provided password is wrong
-     */
+    // if the user exists, but the provided password is wrong
     if (!isValidPassword) throw new ForbiddenException("Password incorrect.")
 
-    /**
-     * Password is valid, generate access token
-     */
-    const { password: pw, ...userObj } = user
-    const accessToken = this.generateAccessToken(userObj)
+    delete user.password
+
+    // password is valid, generate access token
+    const accessToken = this.generateAccessToken(user)
+
     return {
-      user: userObj,
       accessToken,
+      user,
     }
   }
 
@@ -94,7 +85,7 @@ export class AuthService {
     username: string
     password: string
   }) {
-    // * Check if username or email is already taken
+    // Check if username is taken
     username = username.toLowerCase()
 
     const usernameExists = await this.prisma.user.findUnique({
@@ -102,10 +93,11 @@ export class AuthService {
     })
     if (usernameExists) throw new ConflictException("Username already exists.")
 
+    // check if the email is taken
     const emailExists = await this.prisma.user.findUnique({ where: { email } })
     if (emailExists) throw new ConflictException("Email already exists.")
 
-    // * All good! Create a new user
+    // All good! Create a new user
     const newUser = await this.prisma.user.create({
       data: {
         name,
@@ -114,7 +106,8 @@ export class AuthService {
         password,
       },
     })
-    // TODO: Create a user ranking row for that user
+
+    // Create a user stats row for that user
     await this.prisma.userStat.create({
       data: {
         userId: newUser.id,

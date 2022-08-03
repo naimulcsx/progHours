@@ -25,15 +25,15 @@ export class SubmissionsService {
   ) {}
 
   async getSubmissionsByUsername(username) {
-    // Find the user in the database
+    // find the user in the database
     const user = await this.prisma.user.findUnique({
       where: { username: username.toLowerCase() },
     })
-    // If the user doesn't exist in our app
+    // if the user doesn't exist in our app
     if (!user) {
       throw new NotFoundException(["User not found"])
     }
-    // Otherwise find the submissions by that particular user
+    // otherwise find the submissions by that particular user
     const submissions = await this.prisma.submission.findMany({
       where: { userId: user.id },
       orderBy: {
@@ -51,7 +51,7 @@ export class SubmissionsService {
         },
       },
     })
-    // and return the submissions
+    // return the submissions
     return submissions
   }
 
