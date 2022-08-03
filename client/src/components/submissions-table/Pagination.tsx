@@ -13,6 +13,7 @@ import {
   ChevronRightIcon,
   ChevronDoubleRightIcon,
 } from "@heroicons/react/outline"
+import { useColorModeValue as mode } from "@chakra-ui/react"
 
 export const Pagination = (props: any) => {
   const {
@@ -30,12 +31,11 @@ export const Pagination = (props: any) => {
   } = props
   return (
     <Flex
-      bg="white"
+      bg={mode("white", "gray.800")}
       px={6}
       py={3}
       borderTop="1px solid"
-      borderBottom="1px solid"
-      borderColor="gray.200"
+      borderColor={mode("gray.200", "gray.700")}
       justify="space-between"
       position={isEditable ? "fixed" : "unset"}
       bottom={[12, 12, 0]}

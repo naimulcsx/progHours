@@ -5,6 +5,7 @@ import { Cell } from "react-table"
  */
 import { Tag } from "@/types/Tag"
 import { Submission } from "@/types/Submission"
+import { useColorModeValue as mode } from "@chakra-ui/react"
 
 /**
  * Import components
@@ -20,8 +21,8 @@ const NonEditableTags = (cell: Cell<Submission>) => {
         // TODO: Fix the type
         return (
           <Badge
-            bg="blue.50"
-            color="blue.500"
+            bg={mode("blue.50", "gray.700")}
+            color={mode("blue.500", "gray.200")}
             fontWeight={500}
             py={1}
             px={2}

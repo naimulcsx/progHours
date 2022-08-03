@@ -41,6 +41,7 @@ export const Sidebar: React.FC = () => {
       width={{ base: "full", sm: "256px" }}
       direction="column"
       borderRightWidth="1px"
+      borderRightColor={mode("gray.200", "gray.700")}
       flexShrink={0}
       flexGrow={0}
       pt={6}

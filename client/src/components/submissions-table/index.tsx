@@ -1,6 +1,7 @@
 import { useMemo, ReactNode } from "react"
 import { usePagination, useTable, useSortBy, Column } from "react-table"
 import { Submission } from "@/types/Submission"
+import { useColorModeValue as mode } from "@chakra-ui/react"
 
 /**
  * Import table columnes
@@ -82,10 +83,10 @@ export const SubmissionsTable = ({
                 <Tr
                   fontSize="xs"
                   textTransform="uppercase"
-                  bg="gray.100"
+                  bg={mode("gray.100", "gray.900")}
                   borderTop="1px solid"
                   borderBottom="1px solid"
-                  borderColor="gray.200"
+                  borderColor={mode("gray.200", "gray.700")}
                   {...headerGroup.getHeaderGroupProps()}
                 >
                   {headerGroup.headers.map((header) => {
@@ -96,6 +97,7 @@ export const SubmissionsTable = ({
                         {...header.getHeaderProps(
                           header.getSortByToggleProps()
                         )}
+                        border={0}
                       >
                         <Box display="flex" alignItems="center" minH="5">
                           <>
@@ -126,8 +128,8 @@ export const SubmissionsTable = ({
               prepareRow(row)
               return (
                 <Tr
-                  bg="white"
-                  _hover={{ bg: "gray.50" }}
+                  bg={mode("white", "gray.800")}
+                  _hover={{ bg: mode("gray.50", "gray.700") }}
                   {...row.getRowProps()}
                   key={row.original.id}
                 >
@@ -138,7 +140,7 @@ export const SubmissionsTable = ({
                         h={16}
                         minH={16}
                         borderBottom="1px solid"
-                        borderColor="gray.200"
+                        borderColor={mode("gray.200", "gray.700")}
                         fontSize="sm"
                         {...cell.getCellProps()}
                         {...CELL_STYLES[cellType]}

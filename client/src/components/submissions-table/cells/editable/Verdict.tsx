@@ -2,6 +2,7 @@ import { useState } from "react"
 import { AxiosError } from "axios"
 import { Cell } from "react-table"
 import { useMutation, useQueryClient } from "react-query"
+import { useColorModeValue as mode } from "@chakra-ui/react"
 
 /**
  * Import Components
@@ -65,9 +66,9 @@ const Verdict = (cell: Cell<Submission>) => {
 
   const styles: any = {
     AC: {
-      bg: "green.100",
-      color: "green.900",
-      borderColor: "green.200",
+      bg: mode("green.100", "green.400"),
+      color: mode("green.900", "green.900"),
+      borderColor: mode("green.200", "gray.700"),
     },
     WA: {
       bg: "red.100",
