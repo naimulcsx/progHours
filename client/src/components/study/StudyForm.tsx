@@ -84,11 +84,11 @@ export default function StudyForm({ setIsOpen, studies, isCreate }: any) {
         isCreate
           ? toast({
               status: "success",
-              title: "new study list added",
+              title: "new study added",
             })
           : toast({
               status: "success",
-              title: "study list updated",
+              title: "study updated",
             })
 
         setIsOpen(false)
