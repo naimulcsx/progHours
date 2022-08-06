@@ -1,7 +1,15 @@
 import * as Yup from "yup"
 import { Helmet } from "react-helmet-async"
 import { Link as ReactRouterLink, useNavigate } from "react-router-dom"
-import { Text, useToast, Link, HStack, VStack, Flex } from "@chakra-ui/react"
+import {
+  Text,
+  useToast,
+  Link,
+  HStack,
+  VStack,
+  Flex,
+  useColorModeValue as mode,
+} from "@chakra-ui/react"
 
 /**
  * Import Components / Utilities
@@ -20,13 +28,15 @@ const Login = (): JSX.Element => {
   const toast = useToast(DEFAULT_TOAST_OPTIONS)
   const navigate = useNavigate()
   return (
-    <AuthLayout>
+    <AuthLayout >
       {/* @ts-ignore */}
       <Helmet>
-        <title>Login</title>
+        <title className={mode("text-black", "text-white")}>Login</title>
       </Helmet>
-      <VStack align="start" spacing={2}>
-        <Heading size="lg">Login to Account</Heading>
+      <VStack  align="start" spacing={2}>
+        <Heading color={mode("black", "white")} size="lg">
+          Login to Account
+        </Heading>
         <Flex as="p" gap={2}>
           Don't have an account?
           <Link as={ReactRouterLink} to="/register">

@@ -20,6 +20,7 @@ import {
   InputLeftAddon,
   InputGroup,
   Textarea,
+  useColorModeValue as mode,
 } from "@chakra-ui/react"
 import React from "react"
 
