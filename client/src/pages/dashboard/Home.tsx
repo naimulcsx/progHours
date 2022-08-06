@@ -1,7 +1,13 @@
 import { useContext, useState } from "react"
 import { useQuery } from "react-query"
 import { Helmet } from "react-helmet-async"
-import { Box, Grid, GridItem, Spinner } from "@chakra-ui/react"
+import {
+  Box,
+  Grid,
+  GridItem,
+  Spinner,
+  useColorModeValue as mode,
+} from "@chakra-ui/react"
 
 /**
  * Import Components
@@ -82,7 +88,7 @@ const DashboardHome = () => {
             >
               <GridItem
                 p={[4, 4, 4, 8]}
-                bg="white"
+                bg={mode("white", "gray.700")}
                 rounded="lg"
                 shadow="base"
                 mb={[4, 4, 4, 0]}
@@ -92,7 +98,7 @@ const DashboardHome = () => {
               <GridItem
                 p={[4, 4, 4, 8]}
                 pb={[0, 0, 0, 2]}
-                bg="white"
+                bg={mode("white", "gray.700")}
                 rounded="lg"
                 shadow="base"
                 colSpan={2}

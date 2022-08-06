@@ -1,4 +1,5 @@
 import ReactApexChart from "react-apexcharts"
+import { useColorModeValue as mode } from "@chakra-ui/react"
 
 function stringToColour(str: string) {
   str = str + "_"
