@@ -15,6 +15,7 @@ import {
   TabPanels,
   Tabs,
   useToast,
+  useColorModeValue as mode,
 } from "@chakra-ui/react"
 import { motion } from "framer-motion"
 
@@ -172,7 +173,7 @@ export default function Profile() {
                       pb={2}
                       mb={4}
                       mt={2}
-                      bg="white"
+                      bg={mode("white", "gray.700")}
                       rounded="lg"
                       shadow="base"
                       mx={-4}
@@ -182,7 +183,7 @@ export default function Profile() {
                     <Box
                       p={8}
                       pb={2}
-                      bg="white"
+                      bg={mode("white", "gray.700")}
                       rounded="lg"
                       shadow="base"
                       mx={-4}

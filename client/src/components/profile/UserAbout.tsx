@@ -15,6 +15,7 @@ import {
   Td,
   HStack,
   Box,
+  useColorModeValue as mode,
 } from "@chakra-ui/react"
 import { LockClosedIcon } from "@heroicons/react/outline"
 import moment from "moment"
@@ -51,12 +52,12 @@ export const UserAbout = ({
 }) => {
   return (
     <Table>
-      <Tbody>
+      <Tbody borderColor={"red"}>
         <Tr>
-          <Th>
+          <Th borderColor={mode("gray.200", "gray.700")}>
             <Tooltip label="More medals are coming soon!">Achievements</Tooltip>
           </Th>
-          <Td>
+          <Td borderColor={mode("gray.200", "gray.700")}>
             <HStack spacing="8">
               {achievementsBySolveCount.map((el, idx) => {
                 const isUnlocked = userStats.totalSolved > el.count
@@ -94,29 +95,37 @@ export const UserAbout = ({
           </Td>
         </Tr>
         <Tr>
-          <Th>Full Name</Th>
-          <Td>{user.name}</Td>
+          <Th borderColor={mode("gray.200", "gray.700")}>Full Name</Th>
+          <Td borderColor={mode("gray.200", "gray.700")}>{user.name}</Td>
         </Tr>
         <Tr>
-          <Th>University ID</Th>
-          <Td>{user.username.toUpperCase()}</Td>
+          <Th borderColor={mode("gray.200", "gray.700")}>University ID</Th>
+          <Td borderColor={mode("gray.200", "gray.700")}>
+            {user.username.toUpperCase()}
+          </Td>
         </Tr>
         <Tr>
-          <Th>Department</Th>
-          <Td>{user.department || "—"}</Td>
+          <Th borderColor={mode("gray.200", "gray.700")}>Department</Th>
+          <Td borderColor={mode("gray.200", "gray.700")}>
+            {user.department || "—"}
+          </Td>
         </Tr>
         <Tr>
-          <Th>Email</Th>
-          <Td>{user.email}</Td>
+          <Th borderColor={mode("gray.200", "gray.700")}>Email</Th>
+          <Td borderColor={mode("gray.200", "gray.700")}>{user.email}</Td>
         </Tr>
 
         <Tr>
-          <Th>Batch</Th>
-          <Td>{user.batch || "—"}</Td>
+          <Th borderColor={mode("gray.200", "gray.700")}>Batch</Th>
+          <Td borderColor={mode("gray.200", "gray.700")}>
+            {user.batch || "—"}
+          </Td>
         </Tr>
         <Tr>
-          <Th>Member Since</Th>
-          <Td>{moment(user.memberSince).fromNow()}</Td>
+          <Th borderColor={mode("gray.200", "gray.700")}>Member Since</Th>
+          <Td borderColor={mode("gray.200", "gray.700")}>
+            {moment(user.memberSince).fromNow()}
+          </Td>
         </Tr>
       </Tbody>
     </Table>
