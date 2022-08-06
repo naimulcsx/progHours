@@ -13,6 +13,9 @@ export const theme = extendTheme(
     initialColorMode: "light",
     useSystemColorMode: false,
     breakpoints,
+    shadows: {
+      outline: "",
+    },
     colors: {
       blue: {
         "50": "#EDF1FD",

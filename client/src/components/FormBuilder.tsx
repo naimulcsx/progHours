@@ -17,6 +17,8 @@ import {
   ButtonProps,
   ModalBody,
   ModalFooter,
+  InputLeftAddon,
+  InputGroup,
 } from "@chakra-ui/react"
 import React from "react"
 
@@ -51,6 +53,7 @@ const FormBuilder = ({
     initialValues: values,
     validationSchema: Yup.object().shape(validationRules),
     onSubmit: async (values) => {
+      console.log(values)
       await mutateAsync(values)
     },
   })
@@ -89,11 +92,16 @@ const FormBuilder = ({
                       })}
                     </Select>
                   ) : (
-                    <Input
-                      type={fields[key].type}
-                      {...getFieldProps(key)}
-                      disabled={!!fields[key].disabled}
-                    />
+                    <InputGroup>
+                      {fields[key].leftAddon && (
+                        <InputLeftAddon children={fields[key].leftAddon} />
+                      )}
+                      <Input
+                        type={fields[key].type}
+                        {...getFieldProps(key)}
+                        disabled={!!fields[key].disabled}
+                      />
+                    </InputGroup>
                   )}
                   {fields[key].helperText && (
                     <FormHelperText>{fields[key].helperText}</FormHelperText>
@@ -147,6 +155,7 @@ interface FormBuilderProps extends BoxProps {
       helperText?: string
       disabled?: boolean
       placeholder?: string
+      leftAddon?: string
     }
   }
   mutation: any

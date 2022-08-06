@@ -39,7 +39,7 @@ export const Pagination = (props: any) => {
       justify="space-between"
       position={isEditable ? "fixed" : "unset"}
       bottom={[12, 12, 0]}
-      left={[0, 0, 64]}
+      left={[0, 0, "220px"]}
       right={0}
     >
       <Flex align="center" gap={4}>

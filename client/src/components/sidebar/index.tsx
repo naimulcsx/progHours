@@ -26,6 +26,7 @@ import {
   ChartBarIcon,
   CogIcon,
   DocumentTextIcon,
+  UserGroupIcon,
 } from "@heroicons/react/solid"
 import { useColorModeValue as mode } from "@chakra-ui/react"
 
@@ -38,20 +39,20 @@ export const Sidebar: React.FC = () => {
   return (
     <Flex
       height="100vh"
-      width={{ base: "full", sm: "256px" }}
+      width={{ base: "full", sm: "220px" }}
       direction="column"
       borderRightWidth="1px"
       borderRightColor={mode("gray.200", "gray.700")}
       flexShrink={0}
       flexGrow={0}
       pt={6}
-      px={4}
+      px={2.5}
       pb={6}
       bg={mode("white", "gray.800")}
       zIndex={100}
     >
       <Stack spacing={6} mt={16}>
-        <Stack>
+        <Stack spacing={2}>
           <NavLink
             label="Dashboard"
             icon={<ViewGridIcon width={SIDEBAR_ICON_SIZE} />}
@@ -69,6 +70,12 @@ export const Sidebar: React.FC = () => {
             icon={<DocumentTextIcon width={SIDEBAR_ICON_SIZE} />}
             onClick={() => navigate("/study")}
             isActive={location.pathname === "/study"}
+          />
+          <NavLink
+            label="Groups"
+            icon={<UserGroupIcon width={SIDEBAR_ICON_SIZE} />}
+            onClick={() => navigate("/groups")}
+            isActive={location.pathname === "/groups"}
           />
           <NavLink
             label="Leaderboard"

@@ -20,9 +20,11 @@ export const NavLink = (props: NavLinkProps) => {
       display="block"
       py={2}
       px={3}
-      borderRadius="md"
-      fontWeight="medium"
+      borderRadius="lg"
+      fontWeight={600}
       lineHeight="1.5rem"
+      fontSize="16px"
+      letterSpacing={-0.1}
       transition="none"
       aria-current={isActive ? "page" : undefined}
       color={mode("blackAlpha.800", "whiteAlpha.800")}
@@ -36,7 +38,7 @@ export const NavLink = (props: NavLinkProps) => {
       }}
       {...rest}
     >
-      <HStack spacing={4}>
+      <HStack spacing={3}>
         {icon}
         {label != "" && <Text as="span">{label}</Text>}
       </HStack>

@@ -14,13 +14,10 @@ export const UserProfile = (props: UserProfileProps) => {
   const handleLogout = useLogout()
   return (
     <>
-      <HStack spacing="4" px="2">
+      <HStack spacing="2" px="2">
         <Avatar name={name} bg={bg} color={color} size="sm" />
         <Flex direction="column">
           <Text fontWeight="medium">{name}</Text>
-          <Text fontSize="sm" lineHeight="shorter">
-            {email}
-          </Text>
         </Flex>
       </HStack>
     </>

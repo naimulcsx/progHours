@@ -1,12 +1,8 @@
-import { Skeleton, Stack } from "@chakra-ui/react"
+import { Box, Flex, Skeleton, Spinner, Stack } from "@chakra-ui/react"
 import { AnimatePresence } from "framer-motion"
 import { motion } from "framer-motion"
 
-export const AnimateLoading = ({
-  isLoaded,
-  children,
-  SkeletonComponent,
-}: any) => {
+export const AnimateLoading = ({ isLoaded, children, CustomLoader }: any) => {
   return (
     <>
       <AnimatePresence>
@@ -27,15 +23,12 @@ export const AnimateLoading = ({
             exit={{ opacity: 0 }}
             transition={{ duration: 0.25 }}
           >
-            {SkeletonComponent ? (
-              <SkeletonComponent />
+            {CustomLoader ? (
+              <CustomLoader />
             ) : (
-              <Stack>
-                <Skeleton h="20px" />
-                <Skeleton h="20px" />
-                <Skeleton h="20px" />
-                <Skeleton h="20px" />
-              </Stack>
+              <Box>
+                <Spinner size="sm" />
+              </Box>
             )}
           </motion.div>
         )}
