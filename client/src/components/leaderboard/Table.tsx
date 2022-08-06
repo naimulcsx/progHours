@@ -17,6 +17,7 @@ import {
   Td,
   Tbody,
   Flex,
+  useColorModeValue as mode,
 } from "@chakra-ui/react"
 import { getAvatarColors } from "@/utils/getAvatarColors"
 import { CELL_STYLES } from "./cellStyles"
@@ -31,7 +32,7 @@ const UserCell = (cell: Cell<RanklistItem>) => {
           {...getAvatarColors(cell.row.original.user.name)}
         />
         <div>
-          <p className="font-medium text-gray-900">{cell.value}</p>
+          <p className="font-medium " color={mode("gray.900","white")} >{cell.value}</p>
           <p className="text-sm text-gray-500">
             {cell.row.original.user.username.toUpperCase()}
           </p>
@@ -94,7 +95,7 @@ const LeaderboardTable = ({ ranklist }: { ranklist: RanklistItem[] }) => {
               <Tr
                 textColor="gray.500"
                 textTransform="uppercase"
-                bg="gray.100"
+                bg={mode("gray.100", "gray.900")}
                 {...headerGroup.getHeaderGroupProps()}
               >
                 {headerGroup.headers.map((header) => {
@@ -102,6 +103,7 @@ const LeaderboardTable = ({ ranklist }: { ranklist: RanklistItem[] }) => {
                     <Th
                       {...header.getHeaderProps(header.getSortByToggleProps())}
                       className="py-4 border-t border-b"
+                      borderColor={mode("gray.200", "gray.700")}
                       letterSpacing="-0.5px"
                     >
                       <Flex align="center" minH="5">
@@ -131,13 +133,18 @@ const LeaderboardTable = ({ ranklist }: { ranklist: RanklistItem[] }) => {
           {rows.map((row) => {
             prepareRow(row)
             return (
-              <Tr {...row.getRowProps()} className={`bg-white`}>
+              <Tr
+                {...row.getRowProps()}
+                _hover={{ bg: mode("gray.50", "gray.700") }}
+                bg={mode("white", "gray.800")}
+              >
                 {row.cells.map((cell) => {
                   const cellType: any = cell.column.Header
                   return (
                     <Td
                       {...cell.getCellProps()}
                       className="py-3 border-b"
+                      borderColor={mode("gray.200", "gray.700")}
                       {...CELL_STYLES[cellType]}
                     >
                       {cell.render("Cell")}
