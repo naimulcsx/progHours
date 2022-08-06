@@ -3,9 +3,6 @@ import { useColorModeValue as mode } from "@chakra-ui/react"
 
 // @ts-ignore
 export default function WeeklySolvedChart({ data }) {
-
-
-  
   //const color = useColorModeValue("white", "gray.800")
   const series = [
     {
@@ -20,16 +17,11 @@ export default function WeeklySolvedChart({ data }) {
       },
       height: 350,
       type: "area",
+      background: `${mode("white", "gray.700")}`,
     },
     theme: {
       mode: `${mode("light", "dark")}`,
       palette: "palette1",
-      monochrome: {
-        enabled: false,
-        color: "#255aee",
-        shadeTo: "light",
-        shadeIntensity: 0.65,
-      },
     },
     dataLabels: {
       enabled: false,
@@ -52,7 +44,7 @@ export default function WeeklySolvedChart({ data }) {
       align: "center",
       style: {
         fontWeight: 600,
-        color: "#444",
+        color: `${mode("black", "white")}`,
       },
     },
   }
