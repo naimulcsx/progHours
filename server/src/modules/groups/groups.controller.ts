@@ -41,7 +41,7 @@ export class GroupsController {
     await this.groupsService.joinOnGroup({
       userId: req.user.id as number,
       groupId: group.id,
-      role: GroupRole.OWNER,
+      role: GroupRole.ADMIN,
     })
 
     // return the response
@@ -121,7 +121,7 @@ export class GroupsController {
     let isOwner = false
     for (let i = 0; i < groupUsers.length; ++i) {
       const user = groupUsers[i]
-      if (user.userId === req.user.id && user.role === GroupRole.OWNER) {
+      if (user.userId === req.user.id && user.role === GroupRole.ADMIN) {
         isOwner = true
         break
       }
@@ -179,12 +179,3 @@ export class GroupsController {
     }
   }
 }
-
-/*
-
-C181064
-C181065
-C181066
-C181059
-C181083
-*/

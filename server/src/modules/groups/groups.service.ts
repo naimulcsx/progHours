@@ -155,7 +155,7 @@ export class GroupsService {
     const userGroup = await this.prisma.userGroup.findFirst({
       where: { userId, groupId },
     })
-    return userGroup.role === GroupRole.OWNER
+    return userGroup.role === GroupRole.ADMIN
   }
 
   async removeUserFromGroup(groupId: number, userId: number) {
@@ -165,7 +165,7 @@ export class GroupsService {
     if (!userGroup) {
       throw new BadRequestException("The user is not a member of the group!")
     }
-    if (userGroup.role === GroupRole.OWNER) {
+    if (userGroup.role === GroupRole.ADMIN) {
       throw new BadRequestException("Group owner can't be removed!")
     }
     // delete the entry

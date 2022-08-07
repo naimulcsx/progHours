@@ -4,6 +4,10 @@ import {
   Flex,
   useToast,
   useColorModeValue as mode,
+  Heading,
+  Alert,
+  AlertIcon,
+  Stack,
 } from "@chakra-ui/react"
 import FormBuilder from "../FormBuilder"
 import * as Yup from "yup"
@@ -15,7 +19,7 @@ import { useState } from "react"
 import { editGroup } from "@/api/groups"
 import { useNavigate } from "react-router-dom"
 
-const EditGroup = ({ group }: any) => {
+const UpdateGroup = ({ group }: any) => {
   const [isOpen, setIsOpen] = useState(false)
 
   const toast = useToast(DEFAULT_TOAST_OPTIONS)
@@ -68,12 +72,16 @@ const EditGroup = ({ group }: any) => {
           toast({ status: "error", title: errorMessage })
         }}
         button={{
-          label: "Edit Group",
-          className: "mt-6",
+          label: "Save",
           loadingLabel: "Saving...",
         }}
       />
-      <Flex mt={"10"} justify="end">
+
+      <Stack mt={"8"} align="start" spacing={4}>
+        <Alert status="warning">
+          <AlertIcon />
+          Warning! This will delete your group permanently.
+        </Alert>
         <Button
           leftIcon={<TrashIcon height={20} />}
           colorScheme="red"
@@ -82,7 +90,7 @@ const EditGroup = ({ group }: any) => {
         >
           Delete Group
         </Button>
-      </Flex>
+      </Stack>
 
       {/* delete popup */}
       <DeleteGroupModal
@@ -96,4 +104,4 @@ const EditGroup = ({ group }: any) => {
   )
 }
 
-export default EditGroup
+export default UpdateGroup

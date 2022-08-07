@@ -30,7 +30,7 @@ import {
 } from "@heroicons/react/solid"
 import MemberCard from "@/components/groups/MemberCard"
 import { AddUserToGroupModal } from "@/components/modals/AddUserToGroupModal"
-import EditGroup from "@/components/groups/EditGroup"
+import UpdateGroup from "@/components/groups/UpdateGroup"
 
 const GroupPage = () => {
   const navigate = useNavigate()
@@ -107,10 +107,10 @@ const GroupPage = () => {
             </Helmet>
             <Tabs>
               <TabList>
-                <Tab fontSize={["xs", "sm", "16px"]}>Members</Tab>
-                <Tab fontSize={["xs", "sm", "16px"]}> Leaderboard</Tab>
+                <Tab fontSize={["14px", "16px"]}>Members</Tab>
+                <Tab fontSize={["14px", "16px"]}> Leaderboard</Tab>
                 {data?.body?.isOwner && (
-                  <Tab fontSize={["xs", "sm", "16px"]}>Settings</Tab>
+                  <Tab fontSize={["sm", "16px"]}>Settings</Tab>
                 )}
               </TabList>
               <TabPanels>
@@ -134,7 +134,7 @@ const GroupPage = () => {
                   ></LeaderboardTable>
                 </TabPanel>
                 {data?.body?.isOwner && (
-                  <TabPanel>{<EditGroup group={data.body.group} />}</TabPanel>
+                  <TabPanel>{<UpdateGroup group={data.body.group} />}</TabPanel>
                 )}
               </TabPanels>
             </Tabs>

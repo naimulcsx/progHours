@@ -137,7 +137,7 @@ model UserGroup {
 }
 
 enum GroupRole {
-  OWNER
+  ADMIN
   MEMBER
 }
 

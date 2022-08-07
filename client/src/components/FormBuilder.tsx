@@ -77,7 +77,9 @@ const FormBuilder = ({
                   }
                   isInvalid={touched[key] && (errors[key] ? true : false)}
                 >
-                  <FormLabel>{fields[key].label}</FormLabel>
+                  <FormLabel mb={fields[key].type === "switch" ? 0 : 2}>
+                    {fields[key].label}
+                  </FormLabel>
                   {fields[key].type === "select" ? (
                     <Select
                       {...getFieldProps(key)}
@@ -140,9 +142,9 @@ const FormBuilder = ({
             type="submit"
             disabled={isLoading}
             mt={isModal ? "0" : "6"}
-            w="full"
             variant={button.variant ?? "solid"}
             colorScheme={button.colorScheme ?? "blue"}
+            px={8}
           >
             <HStack spacing="2">
               {isLoading && <Spinner color="white" size="sm" />}
