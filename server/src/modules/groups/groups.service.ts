@@ -165,4 +165,21 @@ export class GroupsService {
       },
     })
   }
+
+  async editGroup(id: number, name: string, hashtag: string) {
+    const group = await this.prisma.group.findFirst({ where: { hashtag } })
+    if (group) {
+      throw new BadRequestException("Hashtag is taken!")
+    }
+
+    return this.prisma.group.update({
+      where: {
+        id,
+      },
+      data: {
+        name,
+        hashtag,
+      },
+    })
+  }
 }

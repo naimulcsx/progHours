@@ -11,6 +11,7 @@ import {
   Get,
   HttpStatus,
   Param,
+  Patch,
   Post,
   Req,
   UseGuards,
@@ -71,6 +72,31 @@ export class GroupsController {
     await this.groupsService.joinGroupByCode(body.accessCode, req.user.id)
     return {
       statusCode: HttpStatus.OK,
+    }
+  }
+
+  @Patch("/:id")
+  async editGroup(@Param() params, @Body() body, @Req() req) {
+    const { name, hashtag } = body
+
+    // check if the hashtag has spaces in it
+    if (hashtag.includes(" ")) {
+      throw new BadRequestException("Spaces in hashtag is not allowed!")
+    }
+
+    // edit the group
+    const group = await this.groupsService.editGroup(
+      Number(params.id),
+      name,
+      hashtag
+    )
+
+    // return the response
+    return {
+      statusCode: HttpStatus.OK,
+      body: {
+        group,
+      },
     }
   }
 

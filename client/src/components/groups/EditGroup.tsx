@@ -2,17 +2,17 @@ import {
   Box,
   Button,
   Flex,
-  toast,
   useToast,
   useColorModeValue as mode,
 } from "@chakra-ui/react"
 import FormBuilder from "../FormBuilder"
 import * as Yup from "yup"
 import { DEFAULT_TOAST_OPTIONS } from "@/configs/toast-config"
-import { useMutation, useQueryClient } from "react-query"
+import { useQueryClient } from "react-query"
 import { TrashIcon } from "@heroicons/react/outline"
 import { DeleteGroupModal } from "../modals/DeleteGroupModal"
 import { useState } from "react"
+import { editGroup } from "@/api/groups"
 
 const EditGroup = ({ group }: any) => {
   const [isOpen, setIsOpen] = useState(false)
@@ -44,9 +44,12 @@ const EditGroup = ({ group }: any) => {
             initialValue: group?.hashtag,
           },
         }}
-        mutation={() => {}}
-        onSuccess={(res) => {
-          toast({ status: "success", title: res.message })
+        mutation={(values: any) => {
+          return editGroup(group.id, values)
+        }}
+        onSuccess={() => {
+          queryClient.invalidateQueries(`groups/${group.hashtag}`)
+          toast({ status: "success", title: "Group Info updated" })
         }}
         onError={(err) => {
           const errorMessage =
