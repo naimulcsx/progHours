@@ -55,7 +55,6 @@ const FormBuilder = ({
     initialValues: values,
     validationSchema: Yup.object().shape(validationRules),
     onSubmit: async (values) => {
-      console.log(values)
       await mutateAsync(values)
     },
   })
