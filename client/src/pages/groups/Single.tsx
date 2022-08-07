@@ -18,6 +18,7 @@ import {
   Button,
   useClipboard,
   ButtonGroup,
+  IconButton,
 } from "@chakra-ui/react"
 import LeaderboardTable from "@/components/leaderboard/Table"
 import processRanklist from "@/utils/processRanklist"
@@ -55,14 +56,25 @@ const GroupPage = () => {
             hashtag={data?.body?.group?.hashtag}
           />
           {data?.body?.isOwner && (
-            <Button
-              aria-label="Add Member"
-              leftIcon={<PlusIcon height={20} />}
-              size="sm"
-              onClick={() => setIsOpen(true)}
-            >
-              Add Member
-            </Button>
+            <>
+              <IconButton
+                aria-label="Add Member"
+                icon={<PlusIcon height={20} />}
+                size="sm"
+                display={{ lg: "none", base: "flex" }}
+                onClick={() => setIsOpen(true)}
+              />
+
+              <Button
+                aria-label="Add Member"
+                leftIcon={<PlusIcon height={20} />}
+                size="sm"
+                display={{ lg: "flex", base: "none" }}
+                onClick={() => setIsOpen(true)}
+              >
+                Add Member
+              </Button>
+            </>
           )}
           <Button
             size="sm"
@@ -78,7 +90,6 @@ const GroupPage = () => {
             }
           >
             <Text>
-              {" "}
               {hasCopied ? `Copied` : `${data?.body?.group?.accessCode}`}
             </Text>
           </Button>
@@ -104,7 +115,7 @@ const GroupPage = () => {
               </TabList>
               <TabPanels>
                 <TabPanel mx={-4}>
-                  <SimpleGrid columns={5} gap={4}>
+                  <SimpleGrid columns={[1, 2, 3, 4, 5, 5]} gap={4}>
                     {data.body.users.map((userGroup: any) => {
                       return (
                         <MemberCard

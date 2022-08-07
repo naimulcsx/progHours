@@ -65,7 +65,7 @@ const GroupsPage = () => {
       <AnimateLoading isLoaded={groups && !isRefetching}>
         {groups && (
           <>
-            <SimpleGrid columns={5} gap={4}>
+            <SimpleGrid columns={[1, 2, 3, 4, 5, 5]} gap={4}>
               {groups.map((el: any) => (
                 <GroupCard key={el.group.id} {...el} />
               ))}
