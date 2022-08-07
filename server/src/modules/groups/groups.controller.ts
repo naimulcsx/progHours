@@ -139,9 +139,7 @@ export class GroupsController {
 
   @Post("/:id/members")
   async addUser(@Param() params, @Body() body: AddUserToGroupDto, @Req() req) {
-    const usernames = body.username.includes(", ")
-      ? body.username.split(", ")
-      : body.username.split(",")
+    const usernames = body.username.split("\n").filter((el) => el.length > 0)
 
     // check if user is allowed to add members
     const groupOwner = await this.groupsService.isGroupOwner(
@@ -153,10 +151,16 @@ export class GroupsController {
     }
 
     // add the user
-    await this.groupsService.addUserToGroup(Number(params.id), usernames)
+    const { failed } = await this.groupsService.addUsersToGroup(
+      Number(params.id),
+      usernames
+    )
     return {
       statusCode: HttpStatus.CREATED,
-      message: "Member added!",
+      message: `${usernames.length - failed.length} Members added!`,
+      body: {
+        failed,
+      },
     }
   }
 
@@ -174,3 +178,12 @@ export class GroupsController {
     }
   }
 }
+
+/*
+
+C181064
+C181065
+C181066
+C181059
+C181083
+*/

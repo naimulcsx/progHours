@@ -94,6 +94,7 @@ const FormBuilder = ({
                     </Select>
                   ) : fields[key].type === "textarea" ? (
                     <Textarea
+                      rows={8}
                       placeholder={fields[key].placeholder}
                       {...getFieldProps(key)}
                     />
