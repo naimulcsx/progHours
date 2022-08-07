@@ -55,7 +55,6 @@ const FormBuilder = ({
     initialValues: values,
     validationSchema: Yup.object().shape(validationRules),
     onSubmit: async (values) => {
-      console.log(values)
       await mutateAsync(values)
     },
   })
@@ -95,6 +94,7 @@ const FormBuilder = ({
                     </Select>
                   ) : fields[key].type === "textarea" ? (
                     <Textarea
+                      rows={8}
                       placeholder={fields[key].placeholder}
                       {...getFieldProps(key)}
                     />

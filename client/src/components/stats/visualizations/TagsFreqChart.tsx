@@ -23,7 +23,7 @@ export default function TagsFreqChart({ data }) {
         data:
           data.length > 0
             ? data.map(({ count }: { count: string }) => parseInt(count))
-            : [null],
+            : [],
       },
     ],
     options: {
@@ -35,7 +35,10 @@ export default function TagsFreqChart({ data }) {
         },
         background: `${mode("white", "gray.700")}`,
       },
-      colors: data.map(({ name }: { name: string }) => stringToColour(name)),
+      colors:
+        data.length > 0
+          ? data.map(({ name }: { name: string }) => stringToColour(name))
+          : ["#fff"],
       theme: {
         mode: `${mode("light", "dark")}`,
         palette: "palette1",
@@ -68,7 +71,7 @@ export default function TagsFreqChart({ data }) {
         categories:
           data.length > 0
             ? data.map(({ name }: { name: string }) => name)
-            : [null],
+            : [""],
         position: "bottom",
         axisBorder: {
           show: false,

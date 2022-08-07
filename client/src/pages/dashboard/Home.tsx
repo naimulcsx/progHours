@@ -63,6 +63,9 @@ const DashboardHome = () => {
       setFrequency(frequency)
     },
   })
+
+  const bg = mode("white", "gray.700")
+
   return (
     <DashboardLayout title={`Hi! ${user?.name || ""}`}>
       {/* @ts-ignore */}
@@ -88,7 +91,7 @@ const DashboardHome = () => {
             >
               <GridItem
                 p={[4, 4, 4, 8]}
-                bg={mode("white", "gray.700")}
+                bg={bg}
                 rounded="lg"
                 shadow="base"
                 mb={[4, 4, 4, 0]}
@@ -98,7 +101,7 @@ const DashboardHome = () => {
               <GridItem
                 p={[4, 4, 4, 8]}
                 pb={[0, 0, 0, 2]}
-                bg={mode("white", "gray.700")}
+                bg={bg}
                 rounded="lg"
                 shadow="base"
                 colSpan={2}

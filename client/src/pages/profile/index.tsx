@@ -127,6 +127,7 @@ export default function Profile() {
   })
 
   const isLoggedIn: boolean = !!localStorage.getItem("isLoggedIn")
+  const bg = mode("white", "gray.700")
 
   return (
     <>
@@ -173,7 +174,7 @@ export default function Profile() {
                       pb={2}
                       mb={4}
                       mt={2}
-                      bg={mode("white", "gray.700")}
+                      bg={bg}
                       rounded="lg"
                       shadow="base"
                       mx={-4}
@@ -183,7 +184,7 @@ export default function Profile() {
                     <Box
                       p={8}
                       pb={2}
-                      bg={mode("white", "gray.700")}
+                      bg={bg}
                       rounded="lg"
                       shadow="base"
                       mx={-4}

@@ -123,33 +123,9 @@ export const SubmissionsTable = ({
           </Thead>
           <Tbody {...getTableBodyProps()}>
             {isEditable && <SubmissionForm id={submissions.length + 1} />}
-            {page.map((row) => {
+            {page.map((row, idx) => {
               prepareRow(row)
-              return (
-                <Tr
-                  bg={mode("white", "gray.800")}
-                  _hover={{ bg: mode("gray.50", "gray.700") }}
-                  {...row.getRowProps()}
-                  key={row.original.id}
-                >
-                  {row.cells.map((cell) => {
-                    const cellType: any = cell.column.Header
-                    return (
-                      <Td
-                        h={16}
-                        minH={16}
-                        borderBottom="1px solid"
-                        borderColor={mode("gray.200", "gray.700")}
-                        fontSize="sm"
-                        {...cell.getCellProps()}
-                        {...CELL_STYLES[cellType]}
-                      >
-                        {cell.render("Cell") as ReactNode}
-                      </Td>
-                    )
-                  })}
-                </Tr>
-              )
+              return <SubmissionRow key={row.original.id} row={row} />
             })}
           </Tbody>
         </Table>
@@ -169,5 +145,32 @@ export const SubmissionsTable = ({
         />
       </Box>
     </Box>
+  )
+}
+
+const SubmissionRow = ({ row }: any) => {
+  return (
+    <Tr
+      bg={mode("white", "gray.800")}
+      _hover={{ bg: mode("gray.50", "gray.700") }}
+      {...row.getRowProps()}
+    >
+      {row.cells.map((cell: any) => {
+        const cellType: any = cell.column.Header
+        return (
+          <Td
+            h={16}
+            minH={16}
+            borderBottom="1px solid"
+            // borderColor={mode("gray.200", "gray.700")}
+            fontSize="sm"
+            {...cell.getCellProps()}
+            {...CELL_STYLES[cellType]}
+          >
+            {cell.render("Cell") as ReactNode}
+          </Td>
+        )
+      })}
+    </Tr>
   )
 }

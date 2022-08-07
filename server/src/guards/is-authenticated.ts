@@ -12,7 +12,6 @@ export class IsAuthenticatedGuard implements CanActivate {
     // ! If there is no accessToken
     if (!accessToken) return false
     try {
-      console.log("guard")
       const data: any = jwt.verify(accessToken, process.env.ACCESS_TOKEN_SECRET)
       req.user = data
       return true
