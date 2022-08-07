@@ -1,4 +1,8 @@
-import { BadRequestException, Injectable } from "@nestjs/common"
+import {
+  BadRequestException,
+  Injectable,
+  NotFoundException,
+} from "@nestjs/common"
 import { PrismaService } from "../prisma/prisma.service"
 import * as crypto from "crypto"
 import { GroupRole, User } from "@prisma/client"
@@ -172,10 +176,15 @@ export class GroupsService {
     })
   }
 
-  async editGroup(id: number, name: string, hashtag: string) {
-    const group = await this.prisma.group.findFirst({ where: { hashtag } })
-    if (group) {
-      throw new BadRequestException("Hashtag is taken!")
+  async editGroup(
+    id: number,
+    name: string,
+    hashtag: string,
+    isPrivate: boolean
+  ) {
+    const group = await this.prisma.group.findFirst({ where: { id } })
+    if (!group) {
+      throw new NotFoundException("Group is not found!")
     }
 
     return this.prisma.group.update({
@@ -185,6 +194,7 @@ export class GroupsService {
       data: {
         name,
         hashtag,
+        private: isPrivate,
       },
     })
   }

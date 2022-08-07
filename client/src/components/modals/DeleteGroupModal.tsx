@@ -9,6 +9,7 @@ import {
   useToast,
 } from "@chakra-ui/react"
 import { useMutation, useQueryClient } from "react-query"
+import { useNavigate } from "react-router-dom"
 import PopupBuilder from "../PopupBuilder"
 
 export const DeleteGroupModal = ({
@@ -20,10 +21,14 @@ export const DeleteGroupModal = ({
 }: any) => {
   const toast = useToast(DEFAULT_TOAST_OPTIONS)
   const queryClient = useQueryClient()
+
+  const navigate = useNavigate()
+
   const { mutate } = useMutation(deleteGroup, {
     onSuccess: () => {
       toast({ status: "success", title: "Group deleted!" })
       queryClient.invalidateQueries("groups")
+      navigate("/groups")
     },
   })
   return (

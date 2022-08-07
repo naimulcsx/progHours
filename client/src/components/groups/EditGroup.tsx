@@ -13,12 +13,15 @@ import { TrashIcon } from "@heroicons/react/outline"
 import { DeleteGroupModal } from "../modals/DeleteGroupModal"
 import { useState } from "react"
 import { editGroup } from "@/api/groups"
+import { useNavigate } from "react-router-dom"
 
 const EditGroup = ({ group }: any) => {
   const [isOpen, setIsOpen] = useState(false)
 
   const toast = useToast(DEFAULT_TOAST_OPTIONS)
   const queryClient = useQueryClient()
+
+  const navigate = useNavigate()
 
   return (
     <Box
@@ -43,13 +46,21 @@ const EditGroup = ({ group }: any) => {
             validate: Yup.string().trim().required("Group tag is required"),
             initialValue: group?.hashtag,
           },
+          private: {
+            type: "switch",
+            label: "Private Group",
+            validate: Yup.boolean(),
+            initialValue: group?.private || false,
+          },
         }}
         mutation={(values: any) => {
           return editGroup(group.id, values)
         }}
-        onSuccess={() => {
-          queryClient.invalidateQueries(`groups/${group.hashtag}`)
+        onSuccess={(data) => {
+          queryClient.invalidateQueries(`groups/${group?.hashtag}`)
           toast({ status: "success", title: "Group Info updated" })
+
+          navigate(`/groups/${data?.body.group.hashtag}`)
         }}
         onError={(err) => {
           const errorMessage =

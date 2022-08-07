@@ -21,6 +21,7 @@ import {
   InputGroup,
   Textarea,
   useColorModeValue as mode,
+  Switch,
 } from "@chakra-ui/react"
 import React from "react"
 
@@ -36,7 +37,8 @@ const FormBuilder = ({
   const values: any = {}
   const validationRules: { [key: string]: Yup.AnySchema } = {}
   Object.keys(fields).map((key) => {
-    values[key] = fields[key].initialValue ? fields[key].initialValue : ""
+    values[key] =
+      fields[key].initialValue !== undefined ? fields[key].initialValue : ""
     validationRules[key] = fields[key].validate
   })
   const { mutateAsync, isLoading } = useMutation(mutation, {
@@ -69,6 +71,10 @@ const FormBuilder = ({
               return (
                 <FormControl
                   key={key}
+                  display={fields[key].type === "switch" ? "flex" : "block"}
+                  alignItems={
+                    fields[key].type === "switch" ? "center" : "normal"
+                  }
                   isInvalid={touched[key] && (errors[key] ? true : false)}
                 >
                   <FormLabel>{fields[key].label}</FormLabel>
@@ -97,6 +103,14 @@ const FormBuilder = ({
                       rows={8}
                       placeholder={fields[key].placeholder}
                       {...getFieldProps(key)}
+                    />
+                  ) : fields[key].type === "switch" ? (
+                    <Switch
+                      size={"md"}
+                      defaultChecked={fields[key].initialValue as boolean}
+                      onChange={(e) =>
+                        setFieldValue(`${key}`, e.target.checked)
+                      }
                     />
                   ) : (
                     <InputGroup>
@@ -154,8 +168,8 @@ interface FormBuilderProps extends BoxProps {
   fields: {
     [key: string]: {
       type: string
-      label: string
-      initialValue?: string
+      label?: string
+      initialValue?: string | boolean
       validate: Yup.AnySchema
       value?: string
       options?: Array<string> | [string, string][]

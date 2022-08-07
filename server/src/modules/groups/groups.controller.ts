@@ -76,8 +76,8 @@ export class GroupsController {
   }
 
   @Patch("/:id")
-  async editGroup(@Param() params, @Body() body, @Req() req) {
-    const { name, hashtag } = body
+  async editGroup(@Param() params, @Body() body) {
+    const { name, hashtag, private: isPrivate } = body
 
     // check if the hashtag has spaces in it
     if (hashtag.includes(" ")) {
@@ -88,7 +88,8 @@ export class GroupsController {
     const group = await this.groupsService.editGroup(
       Number(params.id),
       name,
-      hashtag
+      hashtag,
+      isPrivate
     )
 
     // return the response
