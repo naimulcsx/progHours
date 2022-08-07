@@ -47,7 +47,7 @@ export default function StudyCard(studies: Study) {
           as={"a"}
           display="flex"
           columnGap={"5px"}
-          color="blue.500"
+          color={mode("blue.500", "blue.300")}
           href={link}
           target={"_blank"}
         >
@@ -95,7 +95,7 @@ export default function StudyCard(studies: Study) {
                 <Box
                   key={circle}
                   rounded="full"
-                  bgColor={"blue.600"}
+                  bgColor={mode("blue.500", "blue.300")}
                   width={"3"}
                   height={"3"}
                 />
@@ -105,7 +105,7 @@ export default function StudyCard(studies: Study) {
               <Box
                 key={circle}
                 rounded="full"
-                borderColor={"blue.600"}
+                borderColor={mode("blue.500", "blue.300")}
                 width={"3"}
                 height={"3"}
                 border="2px"
