@@ -1,15 +1,19 @@
 import {
   Box,
+  Button,
   Container,
   Flex,
   HStack,
   Link,
+  useColorMode,
   useColorModeValue as mode,
 } from "@chakra-ui/react"
+import { MoonIcon, SunIcon } from "@heroicons/react/solid"
 import { Link as ReactRouterLink } from "react-router-dom"
 import Logo from "../Logo"
 
 export const PublicNavbar = () => {
+  const { colorMode, toggleColorMode } = useColorMode()
   return (
     <Flex
       as="header"
@@ -31,6 +35,19 @@ export const PublicNavbar = () => {
           </ReactRouterLink>
           <Box>
             <HStack spacing={8}>
+              <Button
+                onClick={toggleColorMode}
+                variant="unstyled"
+                display="flex"
+                size="sm"
+                color={mode("gray.600", "white")}
+              >
+                {colorMode === "light" ? (
+                  <MoonIcon height={20} />
+                ) : (
+                  <SunIcon height={20} />
+                )}
+              </Button>
               <Link fontWeight="500" as={ReactRouterLink} to="/login">
                 Login
               </Link>
