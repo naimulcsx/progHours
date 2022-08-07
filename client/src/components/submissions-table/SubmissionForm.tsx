@@ -131,7 +131,6 @@ const SubmissionForm = ({ id }: { id: number }) => {
       >
         <FormBuilder
           isModal
-          className="space-y-4"
           fields={{
             password: {
               type: "password",
@@ -156,7 +155,6 @@ const SubmissionForm = ({ id }: { id: number }) => {
           }}
           button={{
             label: "Submit",
-            className: "mt-6",
             loadingLabel: "Submitting",
           }}
         />
@@ -175,7 +173,7 @@ const SubmissionForm = ({ id }: { id: number }) => {
           {id}
         </Td>
 
-        {/* problem name */}
+        {/* problem link */}
         <Td py={2} {...CELL_STYLES["Problem Name"]} border={0}>
           <form id="add-submission" onSubmit={handleSubmit}></form>
           <FormControl className="form">
@@ -185,6 +183,7 @@ const SubmissionForm = ({ id }: { id: number }) => {
               placeholder="Problem Link"
               autoComplete="off"
               className="inset"
+              borderColor={mode("gray.200", "gray.600")}
               {...formik.getFieldProps("link")}
             ></Input>
           </FormControl>
@@ -196,6 +195,7 @@ const SubmissionForm = ({ id }: { id: number }) => {
             value={selected}
             onChange={(e) => handleSelected(e.target.value)}
             fontSize="sm"
+            borderColor={mode("gray.200", "gray.600")}
           >
             <option value="AC">AC</option>
             <option value="WA">WA</option>
@@ -210,7 +210,7 @@ const SubmissionForm = ({ id }: { id: number }) => {
               placeholder="eg. 80"
               autoComplete="off"
               form="add-submission"
-              className="w-full p-2 focus:outline-none"
+              borderColor={mode("gray.200", "gray.600")}
               {...formik.getFieldProps("solveTime")}
             ></Input>
           </FormControl>

@@ -13,7 +13,6 @@ import { useColorModeValue as mode } from "@chakra-ui/react"
  * Import Styles
  */
 import "@/styles/fonts.css"
-import "@/styles/tailwind.css"
 import "@/styles/spinner.css"
 
 /**

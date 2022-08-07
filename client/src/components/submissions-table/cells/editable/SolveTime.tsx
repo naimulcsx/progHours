@@ -3,10 +3,10 @@ import { updateSubmission } from "@/api/submissions"
 import React, { useRef, useState } from "react"
 import { Cell } from "react-table"
 import { Submission } from "@/types/Submission"
-import { AxiosError } from "axios"
 import { Practice } from "@/types/Practice"
 import { Input, useToast } from "@chakra-ui/react"
 import { DEFAULT_TOAST_OPTIONS } from "@/configs/toast-config"
+import { useColorModeValue as mode } from "@chakra-ui/react"
 
 export default function SolveTime(cell: Cell<Submission>) {
   const toast = useToast(DEFAULT_TOAST_OPTIONS)
@@ -63,6 +63,7 @@ export default function SolveTime(cell: Cell<Submission>) {
       onChange={(e) => setTime(e.target.value)}
       onBlur={(e) => handleBlur(e.target.value)}
       onKeyUp={(e) => handleEnter(e)}
+      borderColor={mode("gray.200", "gray.600")}
     />
   )
 }

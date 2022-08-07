@@ -73,11 +73,11 @@ export const UserAbout = ({
                     }
                   >
                     <Box position="relative">
-                      <Box h="24" opacity={isUnlocked ? "1" : "0.25"}>
+                      <Box h="24" opacity={isUnlocked ? "1" : "0.15"}>
                         {el.badge}
                       </Box>
                       <Box
-                        color="gray.700"
+                        color={mode("gray.700", "gray.200")}
                         position="absolute"
                         left="50%"
                         top="40%"

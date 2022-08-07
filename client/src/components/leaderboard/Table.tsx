@@ -18,6 +18,7 @@ import {
   Tbody,
   Flex,
   useColorModeValue as mode,
+  Text,
 } from "@chakra-ui/react"
 import { getAvatarColors } from "@/utils/getAvatarColors"
 import { CELL_STYLES } from "./cellStyles"
@@ -25,21 +26,19 @@ import { CELL_STYLES } from "./cellStyles"
 const UserCell = (cell: Cell<RanklistItem>) => {
   return (
     <Link to={`/users/${cell.row.original.user.username}`}>
-      <div className="flex items-center space-x-4">
+      <Flex alignItems="center" gap={4}>
         <Avatar
           name={cell.row.original.user.name}
           size="sm"
           {...getAvatarColors(cell.row.original.user.name)}
         />
-        <div>
-          <p className="font-medium " color={mode("gray.900", "white")}>
-            {cell.value}
-          </p>
-          <p className="text-sm text-gray-500">
+        <Box>
+          <Text color={mode("gray.900", "white")}>{cell.value}</Text>
+          <Text color={mode("gray.500", "gray.400")} fontSize="sm">
             {cell.row.original.user.username.toUpperCase()}
-          </p>
-        </div>
-      </div>
+          </Text>
+        </Box>
+      </Flex>
     </Link>
   )
 }

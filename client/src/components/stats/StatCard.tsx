@@ -19,8 +19,8 @@ export const StatCard = (props: any) => {
     >
       <HStack align="start" spacing={[4, 4, 4, 4, 6]}>
         <Circle
-          bg="blue.50"
-          color="blue.500"
+          bg={mode("gray.50", "gray.800")}
+          color={mode("blue.500", "blue.500")}
           rounded="full"
           size={[10, 10, 10, 10, 12]}
         >
