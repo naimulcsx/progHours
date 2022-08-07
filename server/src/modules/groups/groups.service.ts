@@ -114,25 +114,30 @@ export class GroupsService {
     }
   }
 
-  async addUserToGroup(groupId: number, username: string) {
-    username = username.toLowerCase()
-    // find user by username
-    const user = await this.prisma.user.findUnique({ where: { username } })
-    if (!user) {
-      throw new BadRequestException("User does not exist")
-    }
-    const userGroup = await this.prisma.userGroup.findFirst({
-      where: { groupId, userId: user.id },
-    })
+  async addUserToGroup(groupId: number, usernames: string[]) {
+    let groups = []
 
-    if (userGroup) {
-      throw new BadRequestException("User exists in the group.")
+    for (let i = 0; i < usernames.length; i++) {
+      let username = usernames[i].toLowerCase()
+
+      // find user by username
+      const user = await this.prisma.user.findUnique({ where: { username } })
+      if (!user) {
+        throw new BadRequestException("User does not exist")
+      }
+      const userGroup = await this.prisma.userGroup.findFirst({
+        where: { groupId, userId: user.id },
+      })
+
+      if (userGroup) {
+        throw new BadRequestException("User exists in the group.")
+      }
+
+      groups.push({ groupId, userId: user.id })
     }
-    return this.prisma.userGroup.create({
-      data: {
-        groupId,
-        userId: user.id,
-      },
+
+    return this.prisma.userGroup.createMany({
+      data: groups,
     })
   }
 

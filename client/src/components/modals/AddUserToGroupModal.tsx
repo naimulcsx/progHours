@@ -25,13 +25,13 @@ export const AddUserToGroupModal = ({
         isModal
         fields={{
           username: {
-            type: "text",
+            type: "textarea",
             label: "Username",
-            validate: yup
-              .string()
-              .trim()
-              .required("University ID is required")
-              .length(7, "Invalid University ID"),
+            placeholder: "eg: (C181059, C181065)",
+            validate: yup.string(),
+            // .trim()
+            // .required("University ID is required")
+            // .length(7, "Invalid University ID"),
           },
         }}
         mutation={addMember(groupId)}

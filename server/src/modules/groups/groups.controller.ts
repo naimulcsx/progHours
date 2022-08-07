@@ -113,6 +113,10 @@ export class GroupsController {
 
   @Post("/:id/members")
   async addUser(@Param() params, @Body() body: AddUserToGroupDto, @Req() req) {
+    const usernames = body.username.includes(", ")
+      ? body.username.split(", ")
+      : body.username.split(",")
+
     // check if user is allowed to add members
     const groupOwner = await this.groupsService.isGroupOwner(
       Number(params.id),
@@ -123,7 +127,7 @@ export class GroupsController {
     }
 
     // add the user
-    await this.groupsService.addUserToGroup(Number(params.id), body.username)
+    await this.groupsService.addUserToGroup(Number(params.id), usernames)
     return {
       statusCode: HttpStatus.CREATED,
       message: "Member added!",

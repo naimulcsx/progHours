@@ -19,6 +19,7 @@ import {
   ModalFooter,
   InputLeftAddon,
   InputGroup,
+  Textarea,
 } from "@chakra-ui/react"
 import React from "react"
 
@@ -91,6 +92,11 @@ const FormBuilder = ({
                         )
                       })}
                     </Select>
+                  ) : fields[key].type === "textarea" ? (
+                    <Textarea
+                      placeholder={fields[key].placeholder}
+                      {...getFieldProps(key)}
+                    />
                   ) : (
                     <InputGroup>
                       {fields[key].leftAddon && (
