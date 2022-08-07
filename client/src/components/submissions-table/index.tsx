@@ -166,7 +166,7 @@ const SubmissionRow = ({ row }: any) => {
             h={16}
             minH={16}
             borderBottom="1px solid"
-            // borderColor={mode("gray.200", "gray.700")}
+            borderColor={mode("gray.200", "gray.700")}
             fontSize="sm"
             {...cell.getCellProps()}
             {...CELL_STYLES[cellType]}
