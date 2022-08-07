@@ -1,4 +1,11 @@
-import { Box, Container, Flex, HStack, Link } from "@chakra-ui/react"
+import {
+  Box,
+  Container,
+  Flex,
+  HStack,
+  Link,
+  useColorModeValue as mode,
+} from "@chakra-ui/react"
 import { Link as ReactRouterLink } from "react-router-dom"
 import Logo from "../Logo"
 
@@ -10,10 +17,10 @@ export const PublicNavbar = () => {
       left={0}
       right={0}
       top={0}
-      bg="white"
+      bg={mode("white", "gray.800")}
       h={14}
       borderBottom="1px solid"
-      borderColor="gray.200"
+      borderColor={mode("gray.200", "gray.700")}
       alignItems="center"
       zIndex={200}
     >
