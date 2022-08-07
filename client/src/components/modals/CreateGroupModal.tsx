@@ -27,7 +27,7 @@ export const CreateGroupModal = ({ isOpen, setIsOpen }: any) => {
             type: "text",
             label: "Hashtag",
             leftAddon: "#",
-            validate: yup.string().trim().required("Group Name is required"),
+            validate: yup.string().trim().required("Group tag is required"),
           },
         }}
         mutation={(values: any) => createGroup(values)}

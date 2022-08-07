@@ -8,6 +8,10 @@ export const createGroup = (data: any) => {
   return axios.post("/api/groups", data).then((res) => res.data)
 }
 
+export const editGroup = (groupId: any, values: any) => {
+  return axios.patch(`/api/groups/${groupId}`, values).then((res) => res.data)
+}
+
 export const deleteGroup = (groupId: any) => {
   return axios.delete(`/api/groups/${groupId}`).then((res) => res.data)
 }

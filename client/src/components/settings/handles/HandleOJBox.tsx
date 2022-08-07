@@ -8,6 +8,7 @@ import {
   IconButton,
   Text,
   VStack,
+  useColorModeValue as mode,
 } from "@chakra-ui/react"
 import { ExternalLinkIcon, PencilAltIcon } from "@heroicons/react/outline"
 import { useState } from "react"
@@ -18,15 +19,22 @@ const HandleOJBox = ({ icon, handle, onlineJudge }: any) => {
   const [isOpen, setIsOpen] = useState(false)
 
   return (
-    <Flex gap="10px" p={4} bg="white" rounded="lg" shadow="base">
+    <Flex
+      gap="10px"
+      p={4}
+      bg={mode("white", "gray.700")}
+      rounded="lg"
+      shadow="base"
+    >
       <Box
         h={14}
         w={14}
         p={2}
         rounded="full"
         border="1px"
-        borderColor="gray.200"
+        borderColor={mode("gray.200", "gray.600")}
         display="flex"
+        bg={mode("white", "gray.700")}
         justifyContent="center"
         alignItems="center"
       >
@@ -35,10 +43,14 @@ const HandleOJBox = ({ icon, handle, onlineJudge }: any) => {
       <Flex flexDirection="column" flex={1}>
         <Flex justifyContent="space-between">
           <Box>
-            <Text fontSize="lg" fontWeight="semibold" color="blackAlpha.800">
+            <Text
+              fontSize="lg"
+              fontWeight="semibold"
+              color={mode("blackAlpha.800", "gray.300")}
+            >
               {onlineJudge.name}
             </Text>
-            <Text fontSize="sm" color="gray.400">
+            <Text fontSize="sm" color="gray.500">
               {handle}
             </Text>
           </Box>

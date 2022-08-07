@@ -1,4 +1,4 @@
-import { Box, HStack, Flex, useColorModeValue as mode } from "@chakra-ui/react"
+import { Box, useColorModeValue as mode } from "@chakra-ui/react"
 import { useLocation, useNavigate } from "react-router-dom"
 
 /**
@@ -14,9 +14,8 @@ import {
   ClipboardListIcon,
   ViewGridIcon,
   ChartBarIcon,
-  CogIcon,
-  LogoutIcon,
   DocumentTextIcon,
+  UserGroupIcon,
 } from "@heroicons/react/solid"
 
 export default function MobileNav() {
@@ -56,6 +55,12 @@ export default function MobileNav() {
         icon={<DocumentTextIcon width={SIDEBAR_ICON_SIZE} />}
         onClick={() => navigate("/study")}
         isActive={location.pathname === "/study"}
+      />
+      <NavLink
+        label=""
+        icon={<UserGroupIcon width={SIDEBAR_ICON_SIZE} />}
+        onClick={() => navigate("/groups")}
+        isActive={location.pathname === "/groups"}
       />
       <NavLink
         label=""

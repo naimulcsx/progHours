@@ -11,6 +11,7 @@ import {
   Get,
   HttpStatus,
   Param,
+  Patch,
   Post,
   Req,
   UseGuards,
@@ -40,7 +41,7 @@ export class GroupsController {
     await this.groupsService.joinOnGroup({
       userId: req.user.id as number,
       groupId: group.id,
-      role: GroupRole.OWNER,
+      role: GroupRole.ADMIN,
     })
 
     // return the response
@@ -74,6 +75,32 @@ export class GroupsController {
     }
   }
 
+  @Patch("/:id")
+  async editGroup(@Param() params, @Body() body) {
+    const { name, hashtag, private: isPrivate } = body
+
+    // check if the hashtag has spaces in it
+    if (hashtag.includes(" ")) {
+      throw new BadRequestException("Spaces in hashtag is not allowed!")
+    }
+
+    // edit the group
+    const group = await this.groupsService.editGroup(
+      Number(params.id),
+      name,
+      hashtag,
+      isPrivate
+    )
+
+    // return the response
+    return {
+      statusCode: HttpStatus.OK,
+      body: {
+        group,
+      },
+    }
+  }
+
   @Delete("/:id")
   async deleteGroup(@Param() params) {
     // delete the group
@@ -94,7 +121,7 @@ export class GroupsController {
     let isOwner = false
     for (let i = 0; i < groupUsers.length; ++i) {
       const user = groupUsers[i]
-      if (user.userId === req.user.id && user.role === GroupRole.OWNER) {
+      if (user.userId === req.user.id && user.role === GroupRole.ADMIN) {
         isOwner = true
         break
       }
@@ -113,9 +140,7 @@ export class GroupsController {
 
   @Post("/:id/members")
   async addUser(@Param() params, @Body() body: AddUserToGroupDto, @Req() req) {
-    const usernames = body.username.includes(", ")
-      ? body.username.split(", ")
-      : body.username.split(",")
+    const usernames = body.username.split("\n").filter((el) => el.length > 0)
 
     // check if user is allowed to add members
     const groupOwner = await this.groupsService.isGroupOwner(
@@ -127,10 +152,16 @@ export class GroupsController {
     }
 
     // add the user
-    await this.groupsService.addUserToGroup(Number(params.id), usernames)
+    const { failed } = await this.groupsService.addUsersToGroup(
+      Number(params.id),
+      usernames
+    )
     return {
       statusCode: HttpStatus.CREATED,
-      message: "Member added!",
+      message: `${usernames.length - failed.length} Members added!`,
+      body: {
+        failed,
+      },
     }
   }
 

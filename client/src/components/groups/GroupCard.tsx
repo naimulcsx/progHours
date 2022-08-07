@@ -31,9 +31,11 @@ const GroupCard = ({ group, role }: any) => {
         <Heading size="md">{group.name}</Heading>
       </Link>
 
-      <Text color="blue.500" fontWeight="500">
-        #{group.hashtag}
-      </Text>
+      <Link to={`/groups/${group.hashtag}`}>
+        <Text color={mode("blue.500", "blue.300")} fontWeight="500">
+          #{group.hashtag}
+        </Text>
+      </Link>
       <Badge colorScheme="purple">{role}</Badge>
       <Menu>
         <MenuButton

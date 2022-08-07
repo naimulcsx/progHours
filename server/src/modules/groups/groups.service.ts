@@ -1,4 +1,8 @@
-import { BadRequestException, Injectable } from "@nestjs/common"
+import {
+  BadRequestException,
+  Injectable,
+  NotFoundException,
+} from "@nestjs/common"
 import { PrismaService } from "../prisma/prisma.service"
 import * as crypto from "crypto"
 import { GroupRole, User } from "@prisma/client"
@@ -114,8 +118,9 @@ export class GroupsService {
     }
   }
 
-  async addUserToGroup(groupId: number, usernames: string[]) {
-    let groups = []
+  async addUsersToGroup(groupId: number, usernames: string[]) {
+    let groups = [],
+      failed = []
 
     for (let i = 0; i < usernames.length; i++) {
       let username = usernames[i].toLowerCase()
@@ -123,29 +128,34 @@ export class GroupsService {
       // find user by username
       const user = await this.prisma.user.findUnique({ where: { username } })
       if (!user) {
-        throw new BadRequestException("User does not exist")
+        failed.push({ username, message: "User not found!" })
+        continue
       }
+
       const userGroup = await this.prisma.userGroup.findFirst({
         where: { groupId, userId: user.id },
       })
 
-      if (userGroup) {
-        throw new BadRequestException("User exists in the group.")
+      // if the user is not in the group
+      if (!userGroup) {
+        groups.push({ groupId, userId: user.id })
+      } else {
+        failed.push({ username, message: "User already exist!" })
       }
-
-      groups.push({ groupId, userId: user.id })
     }
 
-    return this.prisma.userGroup.createMany({
+    await this.prisma.userGroup.createMany({
       data: groups,
     })
+
+    return { failed }
   }
 
   async isGroupOwner(groupId, userId) {
     const userGroup = await this.prisma.userGroup.findFirst({
       where: { userId, groupId },
     })
-    return userGroup.role === GroupRole.OWNER
+    return userGroup.role === GroupRole.ADMIN
   }
 
   async removeUserFromGroup(groupId: number, userId: number) {
@@ -155,13 +165,36 @@ export class GroupsService {
     if (!userGroup) {
       throw new BadRequestException("The user is not a member of the group!")
     }
-    if (userGroup.role === GroupRole.OWNER) {
+    if (userGroup.role === GroupRole.ADMIN) {
       throw new BadRequestException("Group owner can't be removed!")
     }
     // delete the entry
     return this.prisma.userGroup.delete({
       where: {
         id: userGroup.id,
+      },
+    })
+  }
+
+  async editGroup(
+    id: number,
+    name: string,
+    hashtag: string,
+    isPrivate: boolean
+  ) {
+    const group = await this.prisma.group.findFirst({ where: { id } })
+    if (!group) {
+      throw new NotFoundException("Group is not found!")
+    }
+
+    return this.prisma.group.update({
+      where: {
+        id,
+      },
+      data: {
+        name,
+        hashtag,
+        private: isPrivate,
       },
     })
   }

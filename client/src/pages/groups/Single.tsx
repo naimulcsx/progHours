@@ -18,6 +18,7 @@ import {
   Button,
   useClipboard,
   ButtonGroup,
+  IconButton,
 } from "@chakra-ui/react"
 import LeaderboardTable from "@/components/leaderboard/Table"
 import processRanklist from "@/utils/processRanklist"
@@ -29,6 +30,7 @@ import {
 } from "@heroicons/react/solid"
 import MemberCard from "@/components/groups/MemberCard"
 import { AddUserToGroupModal } from "@/components/modals/AddUserToGroupModal"
+import UpdateGroup from "@/components/groups/UpdateGroup"
 
 const GroupPage = () => {
   const navigate = useNavigate()
@@ -54,14 +56,25 @@ const GroupPage = () => {
             hashtag={data?.body?.group?.hashtag}
           />
           {data?.body?.isOwner && (
-            <Button
-              aria-label="Add Member"
-              leftIcon={<PlusIcon height={20} />}
-              size="sm"
-              onClick={() => setIsOpen(true)}
-            >
-              Add Member
-            </Button>
+            <>
+              <IconButton
+                aria-label="Add Member"
+                icon={<PlusIcon height={20} />}
+                size="sm"
+                display={{ lg: "none", base: "flex" }}
+                onClick={() => setIsOpen(true)}
+              />
+
+              <Button
+                aria-label="Add Member"
+                leftIcon={<PlusIcon height={20} />}
+                size="sm"
+                display={{ lg: "flex", base: "none" }}
+                onClick={() => setIsOpen(true)}
+              >
+                Add Member
+              </Button>
+            </>
           )}
           <Button
             size="sm"
@@ -77,7 +90,6 @@ const GroupPage = () => {
             }
           >
             <Text>
-              {" "}
               {hasCopied ? `Copied` : `${data?.body?.group?.accessCode}`}
             </Text>
           </Button>
@@ -95,15 +107,15 @@ const GroupPage = () => {
             </Helmet>
             <Tabs>
               <TabList>
-                <Tab fontSize={["xs", "sm", "16px"]}>Members</Tab>
-                <Tab fontSize={["xs", "sm", "16px"]}> Leaderboard</Tab>
+                <Tab fontSize={["14px", "16px"]}>Members</Tab>
+                <Tab fontSize={["14px", "16px"]}> Leaderboard</Tab>
                 {data?.body?.isOwner && (
-                  <Tab fontSize={["xs", "sm", "16px"]}>Settings</Tab>
+                  <Tab fontSize={["sm", "16px"]}>Settings</Tab>
                 )}
               </TabList>
               <TabPanels>
                 <TabPanel mx={-4}>
-                  <SimpleGrid columns={5} gap={4}>
+                  <SimpleGrid columns={[1, 2, 3, 4, 5, 5]} gap={4}>
                     {data.body.users.map((userGroup: any) => {
                       return (
                         <MemberCard
@@ -122,9 +134,7 @@ const GroupPage = () => {
                   ></LeaderboardTable>
                 </TabPanel>
                 {data?.body?.isOwner && (
-                  <TabPanel>
-                    <p>three!</p>
-                  </TabPanel>
+                  <TabPanel>{<UpdateGroup group={data.body.group} />}</TabPanel>
                 )}
               </TabPanels>
             </Tabs>
