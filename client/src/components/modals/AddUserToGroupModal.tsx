@@ -28,10 +28,7 @@ export const AddUserToGroupModal = ({
             type: "textarea",
             label: "Username",
             placeholder: "eg: (C181059, C181065)",
-            validate: yup.string(),
-            // .trim()
-            // .required("University ID is required")
-            // .length(7, "Invalid University ID"),
+            validate: yup.string().trim().required("University ID is required"),
           },
         }}
         mutation={addMember(groupId)}
