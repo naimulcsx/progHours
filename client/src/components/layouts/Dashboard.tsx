@@ -28,7 +28,7 @@ export const DashboardLayout: FC<DashboardLayoutProps> = ({
       {/* topbar */}
       <Navbar />
       {/* sidebar */}
-      <Box h="100vh" className="flex" overflow="hidden">
+      <Box h="100vh" display="flex" overflow="hidden">
         {/* <Sidebar /> */}
         <Show above="md">
           <Sidebar />
@@ -38,7 +38,7 @@ export const DashboardLayout: FC<DashboardLayoutProps> = ({
         <Box w="full" p={4} mt={14} overflowY="auto">
           {title && (
             <Flex justifyContent="space-between">
-              <Box className="mb-4">
+              <Box mb={4}>
                 <Heading fontSize={["xl", "xl", "2xl"]} fontWeight={700}>
                   {title}
                 </Heading>

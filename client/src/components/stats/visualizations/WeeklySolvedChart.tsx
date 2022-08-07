@@ -1,6 +1,9 @@
 import ReactApexChart from "react-apexcharts"
+import { useColorModeValue as mode } from "@chakra-ui/react"
+
 // @ts-ignore
 export default function WeeklySolvedChart({ data }) {
+  //const color = useColorModeValue("white", "gray.800")
   const series = [
     {
       name: "Solved",
@@ -14,6 +17,11 @@ export default function WeeklySolvedChart({ data }) {
       },
       height: 350,
       type: "area",
+      background: `${mode("white", "gray.700")}`,
+    },
+    theme: {
+      mode: `${mode("light", "dark")}`,
+      palette: "palette1",
     },
     dataLabels: {
       enabled: false,
@@ -36,7 +44,7 @@ export default function WeeklySolvedChart({ data }) {
       align: "center",
       style: {
         fontWeight: 600,
-        color: "#444",
+        color: `${mode("black", "white")}`,
       },
     },
   }

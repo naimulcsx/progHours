@@ -6,6 +6,7 @@ import { useQueryClient, useMutation } from "react-query"
 // import { FormControl, Select, option, Input } from "@/components/Form"
 import moment from "moment"
 import { PlusIcon } from "@heroicons/react/solid"
+import { useColorModeValue as mode } from "@chakra-ui/react"
 
 /**
  * Import utils
@@ -130,7 +131,6 @@ const SubmissionForm = ({ id }: { id: number }) => {
       >
         <FormBuilder
           isModal
-          className="space-y-4"
           fields={{
             password: {
               type: "password",
@@ -155,7 +155,6 @@ const SubmissionForm = ({ id }: { id: number }) => {
           }}
           button={{
             label: "Submit",
-            className: "mt-6",
             loadingLabel: "Submitting",
           }}
         />
@@ -163,12 +162,19 @@ const SubmissionForm = ({ id }: { id: number }) => {
 
       {/* table row starts here */}
 
-      <Tr bg="white">
+      <Tr
+        bg={mode("white", "gray.800")}
+        borderBottom="1px solid"
+        borderColor={mode("gray.200", "gray.700")}
+      >
         {/* serial */}
-        <Td {...CELL_STYLES["Id"]}>{id}</Td>
+        <Td {...CELL_STYLES["Id"]} border={0}>
+          {" "}
+          {id}
+        </Td>
 
-        {/* problem name */}
-        <Td py={2} {...CELL_STYLES["Problem Name"]}>
+        {/* problem link */}
+        <Td py={2} {...CELL_STYLES["Problem Name"]} border={0}>
           <form id="add-submission" onSubmit={handleSubmit}></form>
           <FormControl className="form">
             <Input
@@ -177,17 +183,19 @@ const SubmissionForm = ({ id }: { id: number }) => {
               placeholder="Problem Link"
               autoComplete="off"
               className="inset"
+              borderColor={mode("gray.200", "gray.600")}
               {...formik.getFieldProps("link")}
             ></Input>
           </FormControl>
         </Td>
 
         {/* verdict */}
-        <Td {...CELL_STYLES["Verdict"]}>
+        <Td {...CELL_STYLES["Verdict"]} border={0}>
           <Select
             value={selected}
             onChange={(e) => handleSelected(e.target.value)}
             fontSize="sm"
+            borderColor={mode("gray.200", "gray.600")}
           >
             <option value="AC">AC</option>
             <option value="WA">WA</option>
@@ -195,26 +203,30 @@ const SubmissionForm = ({ id }: { id: number }) => {
         </Td>
 
         {/* solve time */}
-        <Td {...CELL_STYLES["Solve Time"]}>
+        <Td {...CELL_STYLES["Solve Time"]} border={0}>
           <FormControl className="form">
             <Input
               type="text"
               placeholder="eg. 80"
               autoComplete="off"
               form="add-submission"
-              className="w-full p-2 focus:outline-none"
+              borderColor={mode("gray.200", "gray.600")}
               {...formik.getFieldProps("solveTime")}
             ></Input>
           </FormControl>
         </Td>
 
         {/* tags  */}
-        <Td {...CELL_STYLES["Tags"]}>—</Td>
+        <Td {...CELL_STYLES["Tags"]} border={0}>
+          —
+        </Td>
         {/* difficulty  */}
-        <Td {...CELL_STYLES["Difficulty"]}>—</Td>
+        <Td {...CELL_STYLES["Difficulty"]} border={0}>
+          —
+        </Td>
 
         {/* solved at */}
-        <Td {...CELL_STYLES["Solved On"]}>
+        <Td {...CELL_STYLES["Solved On"]} border={0}>
           <ReactDatePicker
             dateFormat="EEE, dd MMM yyyy"
             selected={formik.values.solvedAt}
@@ -232,7 +244,7 @@ const SubmissionForm = ({ id }: { id: number }) => {
         </Td>
 
         {/* actions */}
-        <Td>
+        <Td border={0}>
           <Button
             type="submit"
             size="sm"

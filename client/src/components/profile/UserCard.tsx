@@ -7,6 +7,8 @@ import {
   Tooltip,
   useColorModeValue,
   Container,
+  useColorMode,
+  useColorModeValue as mode,
 } from "@chakra-ui/react"
 import { useState } from "react"
 import { getAvatarColors } from "@/utils/getAvatarColors"
@@ -19,6 +21,7 @@ import { useBreakpointValue } from "@chakra-ui/media-query"
 export const UserCard: React.FC<UserCardProps> = ({ name, username }) => {
   const { bg, color } = getAvatarColors(name)
   const [handles, setHandles] = useState([])
+  const { colorMode } = useColorMode()
 
   /**
    * Get all handles
@@ -35,8 +38,12 @@ export const UserCard: React.FC<UserCardProps> = ({ name, username }) => {
         position="absolute"
         inset="0"
         height="48"
-        bg="white"
-        backgroundImage="url(/bg-profile.png)"
+        bg={mode("white", "gray.700")}
+        backgroundImage={
+          colorMode == "light"
+            ? "url(/bg-profile.png)"
+            : "url(/bg-profile-dark.png)"
+        }
         shadow="base"
       />
       <Container position="relative" zIndex={100}>

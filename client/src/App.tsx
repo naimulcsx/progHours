@@ -13,7 +13,6 @@ import { useColorModeValue as mode } from "@chakra-ui/react"
  * Import Styles
  */
 import "@/styles/fonts.css"
-import "@/styles/tailwind.css"
 import "@/styles/spinner.css"
 
 /**
@@ -80,7 +79,7 @@ const App = (): JSX.Element => {
             <main>{matchedPage}</main>
           )}
         </Box>
-        {/* <ReactQueryDevtools position="bottom-right" /> */}
+        <ReactQueryDevtools position="bottom-right" />
       </HelmetProvider>
     </QueryClientProvider>
   )

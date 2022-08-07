@@ -17,6 +17,8 @@ import {
   Td,
   Tbody,
   Flex,
+  useColorModeValue as mode,
+  Text,
 } from "@chakra-ui/react"
 import { getAvatarColors } from "@/utils/getAvatarColors"
 import { CELL_STYLES } from "./cellStyles"
@@ -24,19 +26,19 @@ import { CELL_STYLES } from "./cellStyles"
 const UserCell = (cell: Cell<RanklistItem>) => {
   return (
     <Link to={`/users/${cell.row.original.user.username}`}>
-      <div className="flex items-center space-x-4">
+      <Flex alignItems="center" gap={4}>
         <Avatar
           name={cell.row.original.user.name}
           size="sm"
           {...getAvatarColors(cell.row.original.user.name)}
         />
-        <div>
-          <p className="font-medium text-gray-900">{cell.value}</p>
-          <p className="text-sm text-gray-500">
+        <Box>
+          <Text color={mode("gray.900", "white")}>{cell.value}</Text>
+          <Text color={mode("gray.500", "gray.400")} fontSize="sm">
             {cell.row.original.user.username.toUpperCase()}
-          </p>
-        </div>
-      </div>
+          </Text>
+        </Box>
+      </Flex>
     </Link>
   )
 }
@@ -94,14 +96,16 @@ const LeaderboardTable = ({ ranklist }: { ranklist: RanklistItem[] }) => {
               <Tr
                 textColor="gray.500"
                 textTransform="uppercase"
-                bg="gray.100"
+                bg={mode("gray.100", "gray.900")}
                 {...headerGroup.getHeaderGroupProps()}
               >
                 {headerGroup.headers.map((header) => {
                   return (
                     <Th
                       {...header.getHeaderProps(header.getSortByToggleProps())}
-                      className="py-4 border-t border-b"
+                      py={3}
+                      borderBottom="1px solid"
+                      borderColor={mode("gray.200", "gray.700")}
                       letterSpacing="-0.5px"
                     >
                       <Flex align="center" minH="5">
@@ -131,13 +135,18 @@ const LeaderboardTable = ({ ranklist }: { ranklist: RanklistItem[] }) => {
           {rows.map((row) => {
             prepareRow(row)
             return (
-              <Tr {...row.getRowProps()} className={`bg-white`}>
+              <Tr
+                {...row.getRowProps()}
+                _hover={{ bg: mode("gray.50", "gray.700") }}
+                bg={mode("white", "gray.800")}
+              >
                 {row.cells.map((cell) => {
                   const cellType: any = cell.column.Header
                   return (
                     <Td
                       {...cell.getCellProps()}
                       className="py-3 border-b"
+                      borderColor={mode("gray.200", "gray.700")}
                       {...CELL_STYLES[cellType]}
                     >
                       {cell.render("Cell")}

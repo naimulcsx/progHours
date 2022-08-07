@@ -1,4 +1,5 @@
 import ReactApexChart from "react-apexcharts"
+import { useColorModeValue as mode } from "@chakra-ui/react"
 
 function stringToColour(str: string) {
   str = str + "_"
@@ -32,8 +33,13 @@ export default function TagsFreqChart({ data }) {
         toolbar: {
           show: false,
         },
+        background: `${mode("white", "gray.700")}`,
       },
       colors: data.map(({ name }: { name: string }) => stringToColour(name)),
+      theme: {
+        mode: `${mode("light", "dark")}`,
+        palette: "palette1",
+      },
       plotOptions: {
         bar: {
           borderRadius: 4,
@@ -111,7 +117,7 @@ export default function TagsFreqChart({ data }) {
         margin: 10,
         align: "center",
         style: {
-          color: "#444",
+          color: `${mode("black", "white")}`,
         },
       },
     },

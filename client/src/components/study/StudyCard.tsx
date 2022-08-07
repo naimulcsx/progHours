@@ -1,4 +1,10 @@
-import { Box, Heading, Flex, IconButton } from "@chakra-ui/react"
+import {
+  Box,
+  Heading,
+  Flex,
+  IconButton,
+  useColorModeValue as mode,
+} from "@chakra-ui/react"
 import {
   ExternalLinkIcon,
   NewspaperIcon,
@@ -29,7 +35,13 @@ export default function StudyCard(studies: Study) {
     studies
 
   return (
-    <Box as="article" p="5" rounded="lg" bg="white" shadow="base">
+    <Box
+      as="article"
+      p="5"
+      rounded="lg"
+      bg={mode("white", "gray.700")}
+      shadow="base"
+    >
       <Heading size="md" my="1">
         <Box
           as={"a"}

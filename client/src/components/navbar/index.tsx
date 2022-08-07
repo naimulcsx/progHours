@@ -39,7 +39,7 @@ const Navbar = () => {
       alignItems="center"
       justifyContent="space-between"
       borderBottom="1px solid"
-      borderColor={mode("gray.200", "gray.600")}
+      borderColor={mode("gray.200", "gray.700")}
       zIndex={200}
     >
       <Box>
@@ -49,7 +49,7 @@ const Navbar = () => {
       </Box>
       <Box as="nav">
         <Stack direction="row" alignItems="center" spacing={6}>
-          {/* <Button
+          <Button
             onClick={toggleColorMode}
             variant="unstyled"
             display="flex"
@@ -61,20 +61,22 @@ const Navbar = () => {
             ) : (
               <SunIcon height={20} />
             )}
-          </Button> */}
-          {user ? (
-            <Link to={`/users/${user.username!}`}>
-              <HStack spacing={2}>
-                <Avatar name={user.name!} size="sm" bg={bg} color={color} />
-                <Show above="md">
-                  <Text>{user.name!}</Text>
-                </Show>
-              </HStack>
-            </Link>
-          ) : (
-            <Spinner />
-          )}
-          <NavbarMenu />
+          </Button>
+          <Box display="flex" gap={2}>
+            {user ? (
+              <Link to={`/users/${user.username!}`}>
+                <HStack spacing={2}>
+                  <Avatar name={user.name!} size="sm" bg={bg} color={color} />
+                  <Show above="md">
+                    <Text>{user.name!}</Text>
+                  </Show>
+                </HStack>
+              </Link>
+            ) : (
+              <Spinner />
+            )}
+            <NavbarMenu />
+          </Box>
         </Stack>
       </Box>
     </Box>

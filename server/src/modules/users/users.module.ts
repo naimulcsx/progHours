@@ -17,15 +17,15 @@ import { UsersController } from "@/modules/users/users.controller"
  * Import Services
  */
 import { UsersService } from "@/modules/users/users.service"
-import { AuthModule } from "../auth/auth.module"
-import { OnlineJudgesModule } from "../online-judges/online-judges.module"
-import { SubmissionsModule } from "../submissions/submissions.module"
-import { UserStudyModule } from "../user-study/user-study.module"
+import { AuthModule } from "@/modules/auth/auth.module"
+import { OnlineJudgesModule } from "@/modules/online-judges/online-judges.module"
+import { SubmissionsModule } from "@/modules/submissions/submissions.module"
+import { StudiesModule } from "@/modules/studies/studies.module"
 
 @Module({
   imports: [
     SubmissionsModule,
-    UserStudyModule,
+    StudiesModule,
     OnlineJudgesModule,
     forwardRef(() => AuthModule),
     TypeOrmModule.forFeature([User, Submission, Ranking]),

@@ -1,4 +1,4 @@
-import { Box, HStack, Flex } from "@chakra-ui/react"
+import { Box, HStack, Flex, useColorModeValue as mode } from "@chakra-ui/react"
 import { useLocation, useNavigate } from "react-router-dom"
 
 /**
@@ -29,7 +29,7 @@ export default function MobileNav() {
       left="0"
       right={0}
       zIndex={200}
-      bg="white"
+      bg={mode("white", "gray.800")}
       display="flex"
       flexDirection="row"
       justifyContent="space-between"
@@ -37,7 +37,7 @@ export default function MobileNav() {
       paddingX={[8, 16, 16]}
       shadow="lg"
       borderTop="1px solid"
-      borderColor="gray.200"
+      borderColor={mode("gray.200", "gray.700")}
     >
       <NavLink
         label=""

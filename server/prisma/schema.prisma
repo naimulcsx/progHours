@@ -24,9 +24,10 @@ model User {
   memberSince DateTime     @default(now())
   submissions Submission[]
   userStat    UserStat?
+  groups      UserGroup[]
+  studies     UserStudy[]
+  handles     Handle[]
 
-  UserStudy UserStudy[]
-  Handle    Handle[]
   @@index(username)
 }
 
@@ -109,6 +110,35 @@ model Handle {
   userId        Int
   onlineJudge   OnlineJudge @relation(fields: [onlineJudgeId], references: [id])
   onlineJudgeId Int
+}
+
+model Group {
+  id         Int         @id @default(autoincrement())
+  name       String
+  hashtag    String      @unique
+  accessCode String
+  createdAt  DateTime    @default(now())
+  users      UserGroup[]
+  private    Boolean     @default(false)
+
+  @@index(accessCode)
+}
+
+model UserGroup {
+  id      Int       @id @default(autoincrement())
+  group   Group     @relation(fields: [groupId], references: [id])
+  groupId Int
+  user    User      @relation(fields: [userId], references: [id])
+  userId  Int
+  role    GroupRole @default(MEMBER)
+
+  @@index(userId)
+  @@index(groupId)
+}
+
+enum GroupRole {
+  OWNER
+  MEMBER
 }
 
 enum Role {

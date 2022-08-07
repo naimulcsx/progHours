@@ -17,7 +17,7 @@ export const UpdatePasswordForm = () => {
   return (
     <Box
       p={[4, 4, 4, 8]}
-      bg={mode("white", "gray.800")}
+      bg={mode("white", "gray.700")}
       shadow="base"
       rounded="lg"
       mx={-4}
@@ -44,7 +44,7 @@ export const UpdatePasswordForm = () => {
             colorScheme: "gray",
           }}
           mutation={(values: any) =>
-            axios.patch(`/api/users/update-password`, values)
+            axios.patch(`/api/users/me?update=password`, values)
           }
           onSuccess={() => {
             toast({ status: "success", title: "Account updated!" })

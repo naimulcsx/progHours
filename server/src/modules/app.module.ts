@@ -21,7 +21,8 @@ import { RankingModule } from "./ranking/ranking.module"
 import { Ranking } from "./ranking/ranking.entity"
 import { ConfigModule } from "@nestjs/config"
 import { PrismaModule } from "./prisma/prisma.module"
-import { UserStudyModule } from "./user-study/user-study.module"
+import { StudiesModule } from "./studies/studies.module"
+import { GroupsModule } from "./groups/groups.module"
 
 @Module({
   imports: [
@@ -53,7 +54,8 @@ import { UserStudyModule } from "./user-study/user-study.module"
     StatsModule,
     RankingModule,
     PrismaModule,
-    UserStudyModule,
+    StudiesModule,
+    GroupsModule,
   ],
 })
 export class AppModule {
