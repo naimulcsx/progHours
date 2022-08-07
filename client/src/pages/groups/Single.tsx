@@ -95,9 +95,11 @@ const GroupPage = () => {
             </Helmet>
             <Tabs>
               <TabList>
-                <Tab>Members</Tab>
-                <Tab>Leaderboard</Tab>
-                {data?.body?.isOwner && <Tab>Settings</Tab>}
+                <Tab fontSize={["xs", "sm", "16px"]}>Members</Tab>
+                <Tab fontSize={["xs", "sm", "16px"]}> Leaderboard</Tab>
+                {data?.body?.isOwner && (
+                  <Tab fontSize={["xs", "sm", "16px"]}>Settings</Tab>
+                )}
               </TabList>
               <TabPanels>
                 <TabPanel mx={-4}>

@@ -32,7 +32,9 @@ const UserCell = (cell: Cell<RanklistItem>) => {
           {...getAvatarColors(cell.row.original.user.name)}
         />
         <div>
-          <p className="font-medium " color={mode("gray.900","white")} >{cell.value}</p>
+          <p className="font-medium " color={mode("gray.900", "white")}>
+            {cell.value}
+          </p>
           <p className="text-sm text-gray-500">
             {cell.row.original.user.username.toUpperCase()}
           </p>
@@ -102,7 +104,8 @@ const LeaderboardTable = ({ ranklist }: { ranklist: RanklistItem[] }) => {
                   return (
                     <Th
                       {...header.getHeaderProps(header.getSortByToggleProps())}
-                      className="py-4 border-t border-b"
+                      py={3}
+                      borderBottom="1px solid"
                       borderColor={mode("gray.200", "gray.700")}
                       letterSpacing="-0.5px"
                     >

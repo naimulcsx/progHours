@@ -19,7 +19,14 @@ import {
 
 import { Cell } from "react-table"
 import { Submission } from "@/types/Submission"
-import { Box, Flex, Heading, HStack, Text } from "@chakra-ui/react"
+import {
+  Box,
+  Flex,
+  Heading,
+  HStack,
+  Text,
+  useColorModeValue as mode,
+} from "@chakra-ui/react"
 import { ExternalLinkIcon } from "@heroicons/react/outline"
 import { QuestionMarkCircleIcon } from "@heroicons/react/solid"
 
@@ -61,7 +68,7 @@ const ProblemName = (cell: Cell<Submission>) => {
         align="center"
         justify="center"
         border="1px solid"
-        borderColor="gray.200"
+        borderColor={mode("gray.200", "gray.600")}
       >
         <Box h={10} w={10} p={OnlineJudgeIcon.spacing || 1.5}>
           <OnlineJudgeIcon.icon />

@@ -19,7 +19,7 @@ export const GeneralInformationForm = () => {
   return (
     <Box
       p={[4, 4, 4, 8]}
-      bg={mode("white", "gray.800")}
+      bg={mode("white", "gray.700")}
       shadow="base"
       rounded="lg"
       mx={-4}

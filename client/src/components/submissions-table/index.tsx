@@ -84,7 +84,6 @@ export const SubmissionsTable = ({
                   fontSize="xs"
                   textTransform="uppercase"
                   bg={mode("gray.100", "gray.900")}
-                  borderTop="1px solid"
                   borderBottom="1px solid"
                   borderColor={mode("gray.200", "gray.700")}
                   {...headerGroup.getHeaderGroupProps()}
