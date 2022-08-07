@@ -29,6 +29,7 @@ import {
 } from "@heroicons/react/solid"
 import MemberCard from "@/components/groups/MemberCard"
 import { AddUserToGroupModal } from "@/components/modals/AddUserToGroupModal"
+import EditGroup from "@/components/groups/EditGroup"
 
 const GroupPage = () => {
   const navigate = useNavigate()
@@ -122,9 +123,7 @@ const GroupPage = () => {
                   ></LeaderboardTable>
                 </TabPanel>
                 {data?.body?.isOwner && (
-                  <TabPanel>
-                    <p>three!</p>
-                  </TabPanel>
+                  <TabPanel>{<EditGroup group={data.body.group} />}</TabPanel>
                 )}
               </TabPanels>
             </Tabs>
