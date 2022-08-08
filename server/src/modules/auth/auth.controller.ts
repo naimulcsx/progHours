@@ -45,7 +45,10 @@ export class AuthController {
       username,
       password,
     })
-    res.cookie("accessToken", accessToken)
+    res.cookie("accessToken", accessToken, {
+      maxAge: 7 * 24 * 3600 * 1000,
+      httpOnly: true,
+    })
     res.status(200)
     return {
       statusCode: HttpStatus.OK,
