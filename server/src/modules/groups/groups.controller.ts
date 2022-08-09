@@ -1,7 +1,20 @@
 import { IsAdmin } from "@/guards/is-admin"
 import { IsAuthenticatedGuard } from "@/guards/is-authenticated"
+
 import { AddUserToGroupDto } from "@/validators/add-user-to-group-dto"
 import { CreateGroupDto } from "@/validators/create-group-dto"
+
+import {
+  ApiBadRequestResponse,
+  ApiConflictResponse,
+  ApiCreatedResponse,
+  ApiForbiddenResponse,
+  ApiNotFoundResponse,
+  ApiOkResponse,
+  ApiOperation,
+  ApiTags,
+} from "@nestjs/swagger"
+
 import {
   BadRequestException,
   Body,
@@ -19,6 +32,7 @@ import {
 import { GroupRole } from "@prisma/client"
 import { GroupsService } from "./groups.service"
 
+@ApiTags("Groups")
 @Controller("groups")
 @UseGuards(IsAuthenticatedGuard)
 export class GroupsController {
@@ -26,6 +40,11 @@ export class GroupsController {
 
   @Post("/")
   @UseGuards(IsAdmin)
+  @ApiOperation({ summary: "Create new group." })
+  @ApiCreatedResponse({ description: "Login successful." })
+  @ApiBadRequestResponse({
+    description: "Hashtag taken or there are spaces in hashtag.",
+  })
   async createGroup(@Body() body: CreateGroupDto, @Req() req) {
     const { name, hashtag } = body
 

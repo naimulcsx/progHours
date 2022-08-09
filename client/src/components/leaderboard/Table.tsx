@@ -6,7 +6,11 @@ import { Link } from "react-router-dom"
 /**
  * Import Icons
  */
-import { ArrowSmDownIcon, ArrowSmUpIcon } from "@heroicons/react/solid"
+import {
+  ArrowSmDownIcon,
+  ArrowSmUpIcon,
+  PlusIcon,
+} from "@heroicons/react/solid"
 import {
   Box,
   Table,
@@ -19,9 +23,20 @@ import {
   Flex,
   useColorModeValue as mode,
   Text,
+  Button,
+  Menu,
+  MenuButton,
+  MenuList,
+  MenuItem,
+  MenuItemOption,
+  MenuGroup,
+  MenuOptionGroup,
+  MenuDivider,
+  useDisclosure,
 } from "@chakra-ui/react"
 import { getAvatarColors } from "@/utils/getAvatarColors"
 import { CELL_STYLES } from "./cellStyles"
+import { Filter } from "./Filter"
 
 const UserCell = (cell: Cell<RanklistItem>) => {
   return (
@@ -89,6 +104,9 @@ const LeaderboardTable = ({ ranklist }: { ranklist: RanklistItem[] }) => {
 
   return (
     <Box mx={-4} overflowX="auto">
+      <Box mx={4} mb={4}>
+        <Filter />
+      </Box>
       <Table w="full" {...getTableProps()}>
         <Thead>
           {headerGroups.map((headerGroup) => {
