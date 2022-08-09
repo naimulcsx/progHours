@@ -20,10 +20,8 @@ services:
     build:
       context: ./server
       dockerfile: Dockerfile.prod
-    environment:
-      NODE_ENV: production
-      DATABASE_URL: postgres://${POSTGRES_USER}:${POSTGRES_PASSWORD}@db_server:${POSTGRES_PORT}/${POSTGRES_DB}
-      ACCESS_TOKEN_SECRET: ${ACCESS_TOKEN_SECRET}
+    env_file:
+      - .env
     depends_on:
       - db_server
     networks:
