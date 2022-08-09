@@ -17,11 +17,15 @@ services:
   # NestJS API server
   api_server:
     container_name: api_server
+    env_file:
+      - .env
     build:
       context: ./server
       dockerfile: Dockerfile.prod
-    env_file:
-      - .env
+    environment:
+      NODE_ENV: production
+      DATABASE_URL: postgres://${POSTGRES_USER}:${POSTGRES_PASSWORD}@db_server:${POSTGRES_PORT}/${POSTGRES_DB}
+      ACCESS_TOKEN_SECRET: ${ACCESS_TOKEN_SECRET}
     depends_on:
       - db_server
     networks:
