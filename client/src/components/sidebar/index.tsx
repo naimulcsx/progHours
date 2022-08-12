@@ -12,6 +12,7 @@ import {
   Box,
   Divider,
   Flex,
+  Heading,
   HStack,
   Spacer,
   Stack,
@@ -109,6 +110,30 @@ export const Sidebar: React.FC = () => {
           />
         </Stack>
         <Divider />
+
+        {role === "ADMIN" && (
+          <>
+            <Stack>
+              <Heading size="sm" mb={2} ml={2}>
+                Admin Panel
+              </Heading>
+              <NavLink
+                label="Users"
+                icon={<UsersIcon width={SIDEBAR_ICON_SIZE} />}
+                onClick={() => navigate("/admin/users")}
+                isActive={location.pathname === "/admin/users"}
+              />
+              {/* <NavLink
+                label="Problems"
+                icon={<ViewGridAddIcon width={SIDEBAR_ICON_SIZE} />}
+                onClick={() => navigate("/admin/problem")}
+                isActive={location.pathname === "/admin/problem"}
+              /> */}
+            </Stack>
+            <Divider />
+          </>
+        )}
+
         <Stack>
           <NavLink
             label="Settings"
@@ -116,49 +141,6 @@ export const Sidebar: React.FC = () => {
             onClick={() => navigate("/settings")}
             isActive={location.pathname === "/settings"}
           />
-
-          {role === "ADMIN" && (
-            <Accordion allowToggle>
-              <AccordionItem border={0}>
-                <h2>
-                  <AccordionButton p={3}>
-                    <Box
-                      flex="1"
-                      textAlign="left"
-                      borderRadius="lg"
-                      fontWeight={600}
-                      lineHeight="1.5rem"
-                      fontSize="16px"
-                      letterSpacing={-0.1}
-                      transition="none"
-                    >
-                      <HStack spacing={3} bg={mode("white", "gray.800")}>
-                        <AdminIcon width={21} height={21} />
-                        <span>Admin</span>
-                      </HStack>
-                    </Box>
-                    <AccordionIcon />
-                  </AccordionButton>
-                </h2>
-                <AccordionPanel pb={4}>
-                  <Stack>
-                    <NavLink
-                      label="User"
-                      icon={<UsersIcon width={SIDEBAR_ICON_SIZE} />}
-                      onClick={() => navigate("/admin/users")}
-                      isActive={location.pathname === "/admin/users"}
-                    />
-                    <NavLink
-                      label="Problem"
-                      icon={<ViewGridAddIcon width={SIDEBAR_ICON_SIZE} />}
-                      onClick={() => navigate("/admin/problem")}
-                      isActive={location.pathname === "/admin/problem"}
-                    />
-                  </Stack>
-                </AccordionPanel>
-              </AccordionItem>
-            </Accordion>
-          )}
         </Stack>
       </Stack>
       <Spacer />

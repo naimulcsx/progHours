@@ -2,6 +2,7 @@ import { getAllUsers } from "@/api/user"
 import UserManagementTable from "@/components/admin/user/userTable"
 import { AnimateLoading } from "@/components/AnimateLoading"
 import { DashboardLayout } from "@/components/layouts/Dashboard"
+import { User } from "@/GlobalStateProvider"
 import { useState } from "react"
 import { Helmet } from "react-helmet-async"
 import { useQuery } from "react-query"
@@ -11,17 +12,19 @@ export default function UserManagement() {
 
   useQuery("users", getAllUsers, {
     onSuccess: (res) => {
+      res.body.sort(function (a: User, b: User) {
+        return a.id - b.id
+      })
       setUsers(res.body)
     },
   })
 
   return (
-    <DashboardLayout>
+    <DashboardLayout title="Users">
       {/* @ts-ignore */}
       <Helmet>
         <title>Admin | User Management</title>
       </Helmet>
-
       <AnimateLoading isLoaded={users}>
         {users && <UserManagementTable users={users} />}
       </AnimateLoading>

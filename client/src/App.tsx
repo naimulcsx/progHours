@@ -64,7 +64,7 @@ const App = (): JSX.Element => {
   }, [])
 
   const isLoggedIn: boolean = !!localStorage.getItem("isLoggedIn")
-  const role: any = localStorage.getItem("role")
+  const role: string = localStorage.getItem("role")!
   const matchedPage = useRoutes(routes(isLoggedIn, role))
 
   return (

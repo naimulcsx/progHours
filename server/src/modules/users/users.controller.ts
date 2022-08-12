@@ -195,7 +195,7 @@ export class UsersController {
    */
   @Patch("/")
   @ApiOperation({ summary: "Update user data" })
-  @UseGuards(IsAuthenticatedGuard)
+  @UseGuards(IsAuthenticatedGuard, IsAdmin)
   async updateUserData(@Body() body: any) {
     return await this.usersService.updateUserData(body)
   }

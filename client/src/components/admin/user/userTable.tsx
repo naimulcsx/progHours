@@ -17,19 +17,35 @@ import { ArrowSmDownIcon, ArrowSmUpIcon } from "@heroicons/react/outline"
 import { Users } from "@/types/User"
 import { PencilIcon } from "@heroicons/react/solid"
 import EditUserTable from "./EditUserTable"
+import { Link } from "react-router-dom"
+import { getAvatarColors } from "@/utils/getAvatarColors"
 
 export default function UserManagementTable({ users }: { users: Users[] }) {
-  console.log(users)
-  // define table columns
   const tableColumns = useMemo(() => {
     return [
       {
-        Header: "#",
-        accessor: (row: Users, i: number) => i + 1,
+        Header: "ID",
+        accessor: (row) => row.id,
       },
       {
         Header: "Name",
         accessor: "name",
+        Cell: ({ cell }) => {
+          return (
+            <Link to={`/users/${cell.row.original.username}`}>
+              <Flex alignItems="center" gap={4}>
+                <Avatar
+                  name={cell.row.original.name}
+                  size="sm"
+                  {...getAvatarColors(cell.row.original.name)}
+                />
+                <Box>
+                  <Text color={mode("gray.900", "white")}>{cell.value}</Text>
+                </Box>
+              </Flex>
+            </Link>
+          )
+        },
       },
       {
         Header: "University ID",
@@ -38,18 +54,22 @@ export default function UserManagementTable({ users }: { users: Users[] }) {
       {
         Header: "department",
         accessor: "department",
+        Cell: ({ cell }) => (cell.value ? cell.value : "—"),
       },
       {
         Header: "batch",
         accessor: "batch",
+        Cell: ({ cell }) => (cell.value ? cell.value : "—"),
       },
       {
         Header: "mobile",
         accessor: "mobile",
+        Cell: ({ cell }) => (cell.value ? cell.value : "—"),
       },
       {
         Header: "cgpa",
         accessor: "cgpa",
+        Cell: ({ cell }) => (cell.value ? cell.value : "—"),
       },
       {
         Header: "role",
@@ -126,12 +146,11 @@ export default function UserManagementTable({ users }: { users: Users[] }) {
                 bg={mode("white", "gray.800")}
               >
                 {row.cells.map((cell) => {
-                  // console.log(cell)
-
                   return (
                     <Td
                       {...cell.getCellProps()}
-                      className="py-3 border-b"
+                      py={2}
+                      color="gray.700"
                       borderColor={mode("gray.200", "gray.700")}
                     >
                       {cell.render("Cell")}
