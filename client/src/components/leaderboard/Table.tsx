@@ -1,4 +1,4 @@
-import { useMemo } from "react"
+import { useEffect, useMemo } from "react"
 import { useTable, useSortBy, Cell, Column } from "react-table"
 import { RanklistItem } from "@/types/RanklistItem"
 import { Link } from "react-router-dom"
@@ -23,20 +23,11 @@ import {
   Flex,
   useColorModeValue as mode,
   Text,
-  Button,
-  Menu,
-  MenuButton,
-  MenuList,
-  MenuItem,
-  MenuItemOption,
-  MenuGroup,
-  MenuOptionGroup,
-  MenuDivider,
-  useDisclosure,
+  Badge,
 } from "@chakra-ui/react"
 import { getAvatarColors } from "@/utils/getAvatarColors"
 import { CELL_STYLES } from "./cellStyles"
-import { Filter } from "./Filter"
+import { FilterButton } from "./FilterButton"
 
 const UserCell = (cell: Cell<RanklistItem>) => {
   return (
@@ -58,7 +49,15 @@ const UserCell = (cell: Cell<RanklistItem>) => {
   )
 }
 
-const LeaderboardTable = ({ ranklist }: { ranklist: RanklistItem[] }) => {
+const LeaderboardTable = ({
+  ranklist,
+  setFilters,
+  filters,
+}: {
+  ranklist: RanklistItem[]
+  setFilters: any
+  filters: any
+}) => {
   /**
    * Define table columns
    */
@@ -105,7 +104,23 @@ const LeaderboardTable = ({ ranklist }: { ranklist: RanklistItem[] }) => {
   return (
     <Box mx={-4} overflowX="auto">
       <Box mx={4} mb={4}>
-        <Filter />
+        <FilterButton setFilters={setFilters} />
+        {Object.keys(filters).map((key: any) => {
+          return (
+            <Badge
+              key={key}
+              bg="blue.50"
+              border="1px solid"
+              borderColor="blue.100"
+              rounded="md"
+              py={1.5}
+              px={2}
+              ml={4}
+            >
+              {key}: {filters[key].value}
+            </Badge>
+          )
+        })}
       </Box>
       <Table w="full" {...getTableProps()}>
         <Thead>
