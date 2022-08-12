@@ -2,21 +2,17 @@ import {
   BadRequestException,
   Body,
   Controller,
-  Delete,
   Get,
   HttpStatus,
   NotFoundException,
   Param,
-  ParseIntPipe,
   Patch,
-  Post,
   Query,
   Req,
   UseGuards,
 } from "@nestjs/common"
 
 import {
-  ApiCreatedResponse,
   ApiForbiddenResponse,
   ApiNotFoundResponse,
   ApiOkResponse,
@@ -28,9 +24,7 @@ import {
 import { UsersService } from "@/modules/users/users.service"
 import { IsAuthenticatedGuard } from "@/guards/is-authenticated"
 import { SubmissionsService } from "../submissions/submissions.service"
-import { CreateStudyDto } from "@/validators/create-study-dto"
-import { StudiesService } from "@/modules/studies/studies.service"
-import { UpdateStudyDto } from "@/validators/update-study-dto"
+import { IsAdmin } from "@/guards/is-admin"
 
 @Controller("/users")
 @ApiTags("Users")
@@ -175,5 +169,34 @@ export class UsersController {
       statusCode: HttpStatus.OK,
       body: { submissions },
     }
+  }
+
+  /**********************  ADMIN  ******************** */
+  /**
+   * @GET /users
+   */
+  @Get("/")
+  @ApiOperation({ summary: "Get all users" })
+  @ApiOkResponse({ description: "Success." })
+  @ApiForbiddenResponse({ description: "Forbidden." })
+  @UseGuards(IsAuthenticatedGuard, IsAdmin)
+  async getAllUsers() {
+    const users = await this.usersService.getAllUsers()
+
+    return {
+      statusCode: HttpStatus.OK,
+      body: users,
+    }
+  }
+
+  /**
+   * @Patch /users
+   * Update user data
+   */
+  @Patch("/")
+  @ApiOperation({ summary: "Update user data" })
+  @UseGuards(IsAuthenticatedGuard)
+  async updateUserData(@Body() body: any) {
+    return await this.usersService.updateUserData(body)
   }
 }

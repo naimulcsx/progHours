@@ -112,4 +112,37 @@ export class UsersService {
       },
     })
   }
+
+  /**********************  ADMIN  ******************** */
+  async getAllUsers() {
+    return this.prisma.user.findMany()
+  }
+
+  async updateUserData({
+    id,
+    name,
+    batch,
+    department,
+    role,
+    mobile,
+    cgpa,
+    username,
+    email,
+  }) {
+    return this.prisma.user.update({
+      where: {
+        id,
+      },
+      data: {
+        username,
+        email,
+        name,
+        batch,
+        department,
+        role,
+        mobile,
+        cgpa,
+      },
+    })
+  }
 }

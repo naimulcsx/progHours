@@ -28,6 +28,7 @@ import PublicLeaderboard from "@/pages/PublicLeaderboard"
 import GroupsPage from "./pages/groups/Groups"
 import GroupPage from "./pages/groups/Single"
 import ActivitiesPage from "./pages/Activities"
+import UserManagement from "./pages/admin/userManagement"
 
 const routes = (isLoggedIn: boolean): RouteObject[] => [
   {
@@ -61,6 +62,10 @@ const routes = (isLoggedIn: boolean): RouteObject[] => [
   {
     path: "/settings",
     element: isLoggedIn ? <Settings /> : <Navigate to="/login" />,
+  },
+  {
+    path: "/admin/user",
+    element: isLoggedIn ? <UserManagement /> : <Navigate to="/login" />,
   },
   {
     path: "/users/:username",

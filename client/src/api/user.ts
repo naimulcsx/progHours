@@ -12,4 +12,19 @@ const updateUserAccount = (values: any) => {
   return axios.patch("/api/users/me", values).then((res) => res.data)
 }
 
-export { getUser, updateUserAccount, getUserByUsername }
+/**********************  ADMIN  ******************** */
+const getAllUsers = () => {
+  return axios("/api/users").then((res) => res.data)
+}
+
+const udpateUserData = (values: any) => {
+  return axios.patch("/api/users", values).then((res) => res.data)
+}
+
+export {
+  getUser,
+  updateUserAccount,
+  getUserByUsername,
+  getAllUsers,
+  udpateUserData,
+}

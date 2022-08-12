@@ -3,8 +3,19 @@
  */
 import { NavLink } from "./NavLink"
 import { UserProfile } from "./UserProfile"
-import { Box, Divider, Flex, Spacer, Stack } from "@chakra-ui/react"
-import Logo from "@/components/Logo"
+import {
+  Accordion,
+  AccordionButton,
+  AccordionIcon,
+  AccordionItem,
+  AccordionPanel,
+  Box,
+  Divider,
+  Flex,
+  HStack,
+  Spacer,
+  Stack,
+} from "@chakra-ui/react"
 
 /**
  * Import hooks
@@ -28,8 +39,11 @@ import {
   DocumentTextIcon,
   UserGroupIcon,
   TrendingUpIcon,
+  UsersIcon,
+  ViewGridAddIcon,
 } from "@heroicons/react/solid"
 import { useColorModeValue as mode } from "@chakra-ui/react"
+import { AdminIcon } from "../Icons"
 
 export const SIDEBAR_ICON_SIZE = 24
 
@@ -37,6 +51,9 @@ export const Sidebar: React.FC = () => {
   const location = useLocation()
   const navigate = useNavigate()
   const { user } = useContext(GlobalContext)
+
+  const role = localStorage.getItem("role")
+
   return (
     <Flex
       height="100vh"
@@ -99,6 +116,49 @@ export const Sidebar: React.FC = () => {
             onClick={() => navigate("/settings")}
             isActive={location.pathname === "/settings"}
           />
+
+          {role === "ADMIN" && (
+            <Accordion allowToggle>
+              <AccordionItem border={0}>
+                <h2>
+                  <AccordionButton p={3}>
+                    <Box
+                      flex="1"
+                      textAlign="left"
+                      borderRadius="lg"
+                      fontWeight={600}
+                      lineHeight="1.5rem"
+                      fontSize="16px"
+                      letterSpacing={-0.1}
+                      transition="none"
+                    >
+                      <HStack spacing={3} bg={mode("white", "gray.800")}>
+                        <AdminIcon width={21} height={21} />
+                        <span>Admin</span>
+                      </HStack>
+                    </Box>
+                    <AccordionIcon />
+                  </AccordionButton>
+                </h2>
+                <AccordionPanel pb={4}>
+                  <Stack>
+                    <NavLink
+                      label="User"
+                      icon={<UsersIcon width={SIDEBAR_ICON_SIZE} />}
+                      onClick={() => navigate("/admin/user")}
+                      isActive={location.pathname === "/admin/user"}
+                    />
+                    <NavLink
+                      label="Problem"
+                      icon={<ViewGridAddIcon width={SIDEBAR_ICON_SIZE} />}
+                      onClick={() => navigate("/admin/problem")}
+                      isActive={location.pathname === "/admin/problem"}
+                    />
+                  </Stack>
+                </AccordionPanel>
+              </AccordionItem>
+            </Accordion>
+          )}
         </Stack>
       </Stack>
       <Spacer />
