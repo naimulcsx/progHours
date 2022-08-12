@@ -28,11 +28,6 @@ export default function EditUserTable(cell: any) {
         onClick={() => setIsOpen(true)}
         icon={<PencilAltIcon width={22} height={22} />}
       />
-
-      {/* <Button onClick={() => setIsOpen(true)} p={1} variant="outline" colorScheme={}>
-        <PencilIcon width={20} height={20} />
-      </Button> */}
-
       <PopupBuilder
         isOpen={isOpen}
         setIsOpen={setIsOpen}
