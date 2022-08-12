@@ -30,7 +30,7 @@ import GroupPage from "./pages/groups/Single"
 import ActivitiesPage from "./pages/Activities"
 import UserManagement from "./pages/admin/userManagement"
 
-const routes = (isLoggedIn: boolean): RouteObject[] => [
+const routes = (isLoggedIn: boolean, role: string): RouteObject[] => [
   {
     path: "/",
     element: isLoggedIn ? (
@@ -64,8 +64,13 @@ const routes = (isLoggedIn: boolean): RouteObject[] => [
     element: isLoggedIn ? <Settings /> : <Navigate to="/login" />,
   },
   {
-    path: "/admin/user",
-    element: isLoggedIn ? <UserManagement /> : <Navigate to="/login" />,
+    path: "/admin/users",
+    element:
+      isLoggedIn && role === "ADMIN" ? (
+        <UserManagement />
+      ) : (
+        <Navigate to="/login" />
+      ),
   },
   {
     path: "/users/:username",

@@ -64,7 +64,8 @@ const App = (): JSX.Element => {
   }, [])
 
   const isLoggedIn: boolean = !!localStorage.getItem("isLoggedIn")
-  const matchedPage = useRoutes(routes(isLoggedIn))
+  const role: any = localStorage.getItem("role")
+  const matchedPage = useRoutes(routes(isLoggedIn, role))
 
   return (
     <QueryClientProvider client={queryClient}>

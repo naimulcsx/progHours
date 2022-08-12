@@ -145,8 +145,8 @@ export const Sidebar: React.FC = () => {
                     <NavLink
                       label="User"
                       icon={<UsersIcon width={SIDEBAR_ICON_SIZE} />}
-                      onClick={() => navigate("/admin/user")}
-                      isActive={location.pathname === "/admin/user"}
+                      onClick={() => navigate("/admin/users")}
+                      isActive={location.pathname === "/admin/users"}
                     />
                     <NavLink
                       label="Problem"
