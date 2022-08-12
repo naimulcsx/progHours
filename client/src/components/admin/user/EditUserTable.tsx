@@ -4,8 +4,8 @@ import { useState } from "react"
 import * as Yup from "yup"
 import { useQueryClient } from "react-query"
 import { DEFAULT_TOAST_OPTIONS } from "@/configs/toast-config"
-import { Box, IconButton, useToast } from "@chakra-ui/react"
-import { PencilIcon } from "@heroicons/react/solid"
+import { Box, Button, IconButton, useToast } from "@chakra-ui/react"
+import { PencilAltIcon } from "@heroicons/react/outline"
 import { udpateUserData } from "@/api/user"
 
 export default function EditUserTable(cell: any) {
@@ -21,12 +21,17 @@ export default function EditUserTable(cell: any) {
     <Box>
       <IconButton
         variant="outline"
-        colorScheme="teal"
-        aria-label="Call Sage"
-        fontSize="20px"
-        icon={<PencilIcon width={24} height={24} />}
+        p={1}
+        color="green.500"
+        aria-label="Edit User Button"
+        border={"none"}
         onClick={() => setIsOpen(true)}
+        icon={<PencilAltIcon width={22} height={22} />}
       />
+
+      {/* <Button onClick={() => setIsOpen(true)} p={1} variant="outline" colorScheme={}>
+        <PencilIcon width={20} height={20} />
+      </Button> */}
 
       <PopupBuilder
         isOpen={isOpen}
