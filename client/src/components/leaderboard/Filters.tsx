@@ -4,22 +4,36 @@ import {
   MenuButton,
   Button,
   MenuList,
-  MenuItem,
   Text,
   Box,
   Input,
   Checkbox,
   Select,
   Flex,
+  useColorModeValue as mode,
 } from "@chakra-ui/react"
-import { PlusIcon } from "@heroicons/react/outline"
 import { ChevronUpIcon, ChevronDownIcon } from "@heroicons/react/solid"
+
+import { FilterIcon } from "@heroicons/react/outline"
 import { useEffect, useState } from "react"
 
-const NumberFilter = ({ name, setState }: { name: string; setState: any }) => {
+const NumberFilter = ({
+  name,
+  state,
+  setState,
+}: {
+  name: string
+  state: any
+  setState: any
+}) => {
   const [isOpen, setIsOpen] = useState(false)
   return (
-    <Box w="260px" borderBottom="1px" borderColor="gray.200" py={2}>
+    <Box
+      w="260px"
+      borderBottom="1px"
+      borderColor={mode("gray.200", "gray.600")}
+      py={2}
+    >
       <Box mx={4}>
         <Button
           onClick={() => setIsOpen((prev) => !prev)}
@@ -33,6 +47,7 @@ const NumberFilter = ({ name, setState }: { name: string; setState: any }) => {
           <Checkbox
             height={20}
             width={20}
+            isChecked={state.enabled}
             onChange={(e) => {
               setState((prev: any) => ({
                 ...prev,
@@ -62,15 +77,25 @@ const NumberFilter = ({ name, setState }: { name: string; setState: any }) => {
               }))
             }
           >
-            <option value="eq"> = </option>
-            <option value="gte"> ≥ </option>
-            <option value="lte"> ≤ </option>
+            <option value="eq" selected={state.type === "eq"}>
+              {" "}
+              ={" "}
+            </option>
+            <option value="gte" selected={state.type === "gte"}>
+              {" "}
+              ≥{" "}
+            </option>
+            <option value="lte" selected={state.type === "lte"}>
+              {" "}
+              ≤{" "}
+            </option>
           </Select>
           <Input
             type="number"
             placeholder="eg. 46"
             w={48}
             size="sm"
+            value={state.value || ""}
             onChange={(e) =>
               setState((prev: any) => ({
                 ...prev,
@@ -84,13 +109,13 @@ const NumberFilter = ({ name, setState }: { name: string; setState: any }) => {
   )
 }
 
-export const FilterButton = ({ setFilters }: any) => {
+export const LeaderboardFilters = ({ setFilters, filters }: any) => {
   const { isOpen, onOpen, onClose } = useDisclosure()
 
   // form states
   const [batch, setBatch] = useState({ type: "eq", enabled: false, value: 0 })
   const [totalSolved, setTotalSolved] = useState({
-    type: "eq",
+    type: "gte",
     enabled: false,
     value: 0,
   })
@@ -109,25 +134,38 @@ export const FilterButton = ({ setFilters }: any) => {
     setLocalFilters(filters)
   }, [batch, totalSolved])
 
+  useEffect(() => {
+    if (!filters.batch) {
+      setBatch({ type: "eq", enabled: false, value: 0 })
+    }
+    if (!filters.totalSolved) {
+      setTotalSolved({ type: "gte", enabled: false, value: 0 })
+    }
+    setLocalFilters(filters)
+  }, [filters])
+
   return (
-    <Menu isOpen={isOpen} onOpen={onOpen} onClose={onClose}>
+    <Menu
+      isOpen={isOpen}
+      onOpen={onOpen}
+      onClose={onClose}
+      closeOnSelect={false}
+    >
       <MenuButton
         as={Button}
-        colorScheme="gray"
+        colorScheme={Object.keys(filters).length > 0 ? "blue" : "gray"}
         size="sm"
-        leftIcon={<PlusIcon height={14} />}
+        leftIcon={<FilterIcon height={16} />}
       >
         Filter
       </MenuButton>
       <MenuList py={0}>
-        <NumberFilter name="Batch" setState={setBatch} />
-        <NumberFilter name="Solve Count" setState={setTotalSolved} />
-        {/* <NumberFilter name="Solve Time" state={batch} setState={setBatch} />
+        <NumberFilter name="Batch" state={batch} setState={setBatch} />
         <NumberFilter
-          name="Average Difficulty"
-          state={batch}
-          setState={setBatch}
-        /> */}
+          name="Solve Count"
+          state={totalSolved}
+          setState={setTotalSolved}
+        />
         <Box px={4}>
           <Button
             size="sm"

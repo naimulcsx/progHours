@@ -10,7 +10,10 @@ import {
   ArrowSmDownIcon,
   ArrowSmUpIcon,
   PlusIcon,
+  FilterIcon,
+  XIcon,
 } from "@heroicons/react/solid"
+
 import {
   Box,
   Table,
@@ -24,10 +27,12 @@ import {
   useColorModeValue as mode,
   Text,
   Badge,
+  Button,
+  IconButton,
 } from "@chakra-ui/react"
 import { getAvatarColors } from "@/utils/getAvatarColors"
 import { CELL_STYLES } from "./cellStyles"
-import { FilterButton } from "./FilterButton"
+import { LeaderboardFilters } from "./Filters"
 
 const UserCell = (cell: Cell<RanklistItem>) => {
   return (
@@ -104,20 +109,42 @@ const LeaderboardTable = ({
   return (
     <Box mx={-4} overflowX="auto">
       <Box mx={4} mb={4}>
-        <FilterButton setFilters={setFilters} />
+        <LeaderboardFilters setFilters={setFilters} filters={filters} />
         {Object.keys(filters).map((key: any) => {
+          const obj: any = {
+            eq: "==",
+            gte: ">=",
+            lte: "<=",
+          }
           return (
             <Badge
               key={key}
-              bg="blue.50"
-              border="1px solid"
-              borderColor="blue.100"
-              rounded="md"
+              bg={mode("blue.50", "gray.700")}
+              rounded="full"
               py={1.5}
-              px={2}
-              ml={4}
+              px={3}
+              ml={3}
+              color={mode("blue.600", "blue.200")}
+              border="1px solid"
+              borderColor={mode("blue.100", "gray.600")}
+              display="inline-flex"
+              gap={2}
             >
-              {key}: {filters[key].value}
+              <Text>
+                {key} {obj[filters[key].type]} {filters[key].value}
+              </Text>
+              <Box
+                as="button"
+                onClick={() => {
+                  setFilters((prev: any) => {
+                    const newState = { ...prev }
+                    delete newState[key]
+                    return newState
+                  })
+                }}
+              >
+                <XIcon height={16} />
+              </Box>
             </Badge>
           )
         })}
