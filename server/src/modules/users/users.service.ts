@@ -1,4 +1,5 @@
 import {
+  BadRequestException,
   ConflictException,
   ForbiddenException,
   forwardRef,
@@ -129,20 +130,25 @@ export class UsersService {
     username,
     email,
   }) {
-    return this.prisma.user.update({
-      where: {
-        id,
-      },
-      data: {
-        username,
-        email,
-        name,
-        batch: Number(batch),
-        department,
-        role,
-        mobile,
-        cgpa: Number(cgpa),
-      },
-    })
+    try {
+      return this.prisma.user.update({
+        where: {
+          id,
+        },
+        data: {
+          username: username.toLowerCase(),
+          email,
+          name,
+          batch: Number(batch),
+          department,
+          role,
+          mobile,
+          cgpa: Number(cgpa),
+        },
+      })
+    } catch (err) {
+      console.log(err.message)
+      throw err
+    }
   }
 }

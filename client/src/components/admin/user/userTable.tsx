@@ -19,6 +19,7 @@ import { PencilIcon } from "@heroicons/react/solid"
 import EditUserTable from "./EditUserTable"
 import { Link } from "react-router-dom"
 import { getAvatarColors } from "@/utils/getAvatarColors"
+import { CELL_STYLES } from "./cellStyles"
 
 export default function UserManagementTable({ users }: { users: Users[] }) {
   const tableColumns = useMemo(() => {
@@ -40,7 +41,7 @@ export default function UserManagementTable({ users }: { users: Users[] }) {
                   {...getAvatarColors(cell.row.original.name)}
                 />
                 <Box>
-                  <Text color={mode("gray.900", "white")}>{cell.value}</Text>
+                  <Text color={mode("gray.700", "gray.500")}>{cell.value}</Text>
                 </Box>
               </Flex>
             </Link>
@@ -150,8 +151,9 @@ export default function UserManagementTable({ users }: { users: Users[] }) {
                     <Td
                       {...cell.getCellProps()}
                       py={2}
-                      color="gray.700"
+                      color={mode("gray.700", "gray.500")}
                       borderColor={mode("gray.200", "gray.700")}
+                      {...CELL_STYLES[cell.column.Header as string]}
                     >
                       {cell.render("Cell")}
                     </Td>

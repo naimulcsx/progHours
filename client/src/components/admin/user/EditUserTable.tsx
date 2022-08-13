@@ -39,20 +39,20 @@ export default function EditUserTable(cell: any) {
             username: {
               type: "text",
               label: "University ID",
-              initialValue: username,
+              initialValue: username || "",
               validate: Yup.string().trim(),
             },
 
             name: {
               type: "text",
               label: "Name",
-              initialValue: name,
+              initialValue: name || "",
               validate: Yup.string().trim(),
             },
             email: {
               type: "text",
               label: "Email Address",
-              initialValue: email,
+              initialValue: email || "",
               validate: Yup.string().email("Invalid email").trim(),
             },
             batch: {
@@ -83,7 +83,7 @@ export default function EditUserTable(cell: any) {
               type: "select",
               label: "Role",
               options: ["ADMIN", "MODERATOR", "USER"],
-              initialValue: role,
+              initialValue: role || "",
               validate: Yup.string().trim(),
             },
           }}

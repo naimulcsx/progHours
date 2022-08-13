@@ -32,7 +32,7 @@ export const GeneralInformationForm = () => {
               type: "text",
               label: "Full Name",
               validate: Yup.string().trim().required("Name is required"),
-              initialValue: user.name,
+              initialValue: user.name || "",
             },
             email: {
               type: "text",
@@ -41,7 +41,7 @@ export const GeneralInformationForm = () => {
                 .trim()
                 .required("Email is required")
                 .email("Invalid email"),
-              initialValue: user.email,
+              initialValue: user.email || "",
             },
             mobile: {
               type: "text",
@@ -57,7 +57,7 @@ export const GeneralInformationForm = () => {
                 .trim()
                 .required("University ID is required")
                 .length(7, "Invalid University ID"),
-              initialValue: user.username.toUpperCase(),
+              initialValue: user.username.toUpperCase() || "",
               disabled: true,
             },
             department: {
