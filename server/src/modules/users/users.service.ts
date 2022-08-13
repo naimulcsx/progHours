@@ -137,11 +137,11 @@ export class UsersService {
         username,
         email,
         name,
-        batch,
+        batch: Number(batch),
         department,
         role,
         mobile,
-        cgpa,
+        cgpa: Number(cgpa),
       },
     })
   }

@@ -197,6 +197,8 @@ export class UsersController {
   @ApiOperation({ summary: "Update user data" })
   @UseGuards(IsAuthenticatedGuard, IsAdmin)
   async updateUserData(@Body() body: any) {
-    return await this.usersService.updateUserData(body)
+    const user = await this.usersService.updateUserData(body)
+
+    return { statusCode: HttpStatus.OK, message: "User Updated", body: user }
   }
 }

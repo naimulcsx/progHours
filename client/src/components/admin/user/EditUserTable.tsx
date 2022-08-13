@@ -40,54 +40,51 @@ export default function EditUserTable(cell: any) {
               type: "text",
               label: "University ID",
               initialValue: username,
-              validate: Yup.string().trim().required("ID is required"),
+              validate: Yup.string().trim(),
             },
 
             name: {
               type: "text",
               label: "Name",
               initialValue: name,
-              validate: Yup.string().trim().required("Name is required"),
+              validate: Yup.string().trim(),
             },
             email: {
               type: "text",
               label: "Email Address",
               initialValue: email,
-              validate: Yup.string()
-                .email("Invalid email")
-                .trim()
-                .required("Email is required"),
+              validate: Yup.string().email("Invalid email").trim(),
             },
             batch: {
               type: "text",
               label: "Batch",
-              initialValue: batch,
-              validate: Yup.string().trim(),
+              initialValue: batch || undefined,
+              validate: Yup.number(),
             },
             department: {
               type: "text",
               label: "Department",
-              initialValue: department,
-              validate: Yup.string().trim(),
+              initialValue: department || "",
+              validate: Yup.string(),
             },
             mobile: {
               type: "text",
               label: "Mobile No.",
-              initialValue: mobile,
+              initialValue: mobile || "",
               validate: Yup.string().trim(),
             },
             cgpa: {
               type: "text",
               label: "CGPA",
-              initialValue: cgpa,
-              validate: Yup.string().trim(),
+              initialValue: cgpa || undefined,
+              validate: Yup.number().min(0.0).max(4.0),
             },
             role: {
               type: "select",
               label: "Role",
               options: ["ADMIN", "MODERATOR", "USER"],
               initialValue: role,
-              validate: Yup.string().trim().required("Role is required"),
+              validate: Yup.string().trim(),
             },
           }}
           mutation={(values: any) => {
@@ -98,8 +95,11 @@ export default function EditUserTable(cell: any) {
 
             return udpateUserData(body)
           }}
-          onSuccess={() => {
+          onSuccess={({ body }) => {
             client.invalidateQueries("users")
+
+            if (username !== body.username || name !== body.name)
+              client.invalidateQueries("user")
 
             toast({
               status: "success",
