@@ -16,8 +16,9 @@ Competitive programmers are always on the lookout for ways to improve their skil
 - [ ] Role Based Access Control (RBAC)
   - [ ] User Management
   - [ ] Problem Management
-- [ ] User Groups
 - [ ] Problem Lists
+- [x] User Groups
+  - [ ] Problem Lists integration for Groups
 - [ ] Gamified Elements
   - [x] Medals based on solve count
 - [ ] Code execution engine
@@ -57,6 +58,8 @@ Right now we have support for 17 Online Judges, but some of them might have a fe
   - `https://acm.timus.ru/problem.aspx?space=1&num={problemId}`
 - **CodeToWin**
   - `https://codeto.win/problem/{problemId}`
+- **Kattis**
+  - `https://open.kattis.com/problems/${problemId}`
 - **Vjudge**
   - Supports `Codeforces`, `Codechef`, `AtCoder`, `LightOJ`, `SPOJ`, `Toph`, `EOlymp` from both problem pages or private contests (need password).
 
