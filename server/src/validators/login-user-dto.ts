@@ -5,9 +5,9 @@ export class LoginUserDto {
   @ApiProperty({
     description: "Username of the user",
     example: "C181065",
-    pattern: "^[cC][0-9]{6}$",
+    pattern: "^(c|C|e|E|et|ET|cce|CCE)[0-9]{6}$",
   })
-  @Matches(/^[cC][0-9]{6}$/, { message: "Invalid UID" })
+  @Matches(/^(c|C|e|E|et|ET|cce|CCE)[0-9]{6}$/, { message: "Invalid UID" })
   username: string
 
   @ApiProperty({

@@ -114,7 +114,7 @@ const GroupPage = () => {
                 )}
               </TabList>
               <TabPanels>
-                <TabPanel mx={-4}>
+                <TabPanel mx={-4} mb={10}>
                   <SimpleGrid columns={[1, 2, 3, 4, 5, 5]} gap={4}>
                     {data.body.users.map((userGroup: any) => {
                       return (
@@ -128,13 +128,15 @@ const GroupPage = () => {
                     })}
                   </SimpleGrid>
                 </TabPanel>
-                <TabPanel mx={-4}>
+                <TabPanel mx={-4} mb={-4}>
                   <LeaderboardTable
                     ranklist={processRanklist(data.body.ranklist)}
                   ></LeaderboardTable>
                 </TabPanel>
                 {data?.body?.isOwner && (
-                  <TabPanel>{<UpdateGroup group={data.body.group} />}</TabPanel>
+                  <TabPanel mb={10}>
+                    {<UpdateGroup group={data.body.group} />}
+                  </TabPanel>
                 )}
               </TabPanels>
             </Tabs>

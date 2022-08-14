@@ -14,6 +14,7 @@ import {
   ChevronDoubleRightIcon,
 } from "@heroicons/react/outline"
 import { useColorModeValue as mode } from "@chakra-ui/react"
+import { useEffect, useState } from "react"
 
 export const Pagination = (props: any) => {
   const {
@@ -28,7 +29,17 @@ export const Pagination = (props: any) => {
     previousPage,
     nextPage,
     isEditable,
+    noMobileNavbar,
   } = props
+
+  const [width, setWidth] = useState(0)
+
+  useEffect(() => {
+    let table = document.getElementById("leaderboard-table")!
+    if (!table) table = document.getElementById("submissions-table")!
+    setWidth(table?.clientWidth)
+  }, [])
+
   return (
     <Flex
       bg={mode("white", "gray.800")}
@@ -37,10 +48,7 @@ export const Pagination = (props: any) => {
       borderTop="1px solid"
       borderColor={mode("gray.200", "gray.700")}
       justify="space-between"
-      position={isEditable ? "fixed" : "unset"}
-      bottom={[14, 14, 0]}
-      left={[0, 0, "220px"]}
-      right={0}
+      w={width}
     >
       <Flex align="center" gap={4}>
         <Box fontSize="sm">

@@ -28,12 +28,12 @@ const Login = (): JSX.Element => {
   const toast = useToast(DEFAULT_TOAST_OPTIONS)
   const navigate = useNavigate()
   return (
-    <AuthLayout >
+    <AuthLayout>
       {/* @ts-ignore */}
       <Helmet>
         <title className={mode("text-black", "text-white")}>Login</title>
       </Helmet>
-      <VStack  align="start" spacing={2}>
+      <VStack align="start" spacing={2}>
         <Heading color={mode("black", "white")} size="lg">
           Login to Account
         </Heading>
@@ -53,7 +53,10 @@ const Login = (): JSX.Element => {
             validate: Yup.string()
               .trim()
               .required("University ID is required")
-              .length(7, "Invalid University ID"),
+              .matches(
+                /^(c|C|e|E|et|ET|cce|CCE)[0-9]{6}$/,
+                "Invalid University ID"
+              ),
           },
           password: {
             type: "password",

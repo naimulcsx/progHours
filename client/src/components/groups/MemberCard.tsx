@@ -49,7 +49,9 @@ export default function MemberCard({ user, role, groupId, hashtag }: any) {
       align="center"
     >
       <Avatar name={user.name} size="lg" bg={bg} color={color} />
-      <Heading size="md">{user.name}</Heading>
+      <Heading size="md" textAlign="center">
+        {user.name}
+      </Heading>
       <Badge colorScheme="purple">{role}</Badge>
       <Text>{user.username.toUpperCase()}</Text>
       <Menu>

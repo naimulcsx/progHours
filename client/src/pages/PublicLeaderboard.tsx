@@ -56,7 +56,7 @@ function PublicLeaderboard() {
       <PublicNavbar />
       <Container pt={14}>
         <Box mt={6} mx={[0, 0, 0, 0, 0, 4]}>
-          <Heading size="lg" mx={[0, 0, 0, 0, 0, -4]} mb={4}>
+          <Heading size="lg" mx={[0, 0, 0, 0, 0, -4]} mb={2}>
             Leaderboard
           </Heading>
           <AnimateLoading isLoaded={filteredData}>

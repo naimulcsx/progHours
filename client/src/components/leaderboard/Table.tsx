@@ -117,8 +117,8 @@ const LeaderboardTable = ({ ranklist }: { ranklist: RanklistItem[] }) => {
   )
 
   return (
-    <Box mx={-4} overflowX="auto" pb={[24, 10]}>
-      <Table w="full" {...getTableProps()}>
+    <Box mx={-4} overflowX="auto" mb={10} display="flex" flexDirection="column">
+      <Table w="full" {...getTableProps()} id="leaderboard-table">
         <Thead>
           {headerGroups.map((headerGroup) => {
             return (
@@ -189,6 +189,7 @@ const LeaderboardTable = ({ ranklist }: { ranklist: RanklistItem[] }) => {
       </Table>
       <Pagination
         isEditable
+        noMobileNavbar
         pageIndex={pageIndex}
         pageOptions={pageOptions}
         pageSize={pageSize}

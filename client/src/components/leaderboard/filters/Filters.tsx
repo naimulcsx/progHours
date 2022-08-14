@@ -13,53 +13,59 @@ export const LeaderboardFilters = ({ filters, setFilters }: any) => {
   const color = mode("blue.600", "blue.200")
   const borderColor = mode("blue.100", "gray.600")
   return (
-    <Flex mb={4} direction={["column", "column", "row"]} gap={[0, 0, 4]}>
+    <Flex
+      mb={4}
+      direction={["column", "column", "row"]}
+      gap={[0, 0, 4]}
+      alignItems="start"
+    >
       <FiltersMenu filters={filters} setFilters={setFilters} />
-      <Flex gap={2} mt={[4, 4, 0]}>
-        {Object.keys(filters).map((key: any) => {
-          const obj: any = {
-            eq: "==",
-            gte: ">=",
-            lte: "<=",
-          }
-          const name: any = {
-            batch: "Batch",
-            totalSolved: "Solved",
-            totalSolveTime: "Solve Time",
-          }
-          return (
-            <Badge
-              key={key}
-              bg={bg}
-              rounded="full"
-              py={1.5}
-              px={3}
-              color={color}
-              border="1px solid"
-              borderColor={borderColor}
-              display="inline-flex"
-              gap={1}
-              fontSize={["10px", "12px"]}
-            >
-              <Text>
-                {name[key]} {obj[filters[key].type]} {filters[key].value}
-              </Text>
-              <Box
-                as="button"
-                onClick={() => {
-                  setFilters((prev: any) => {
-                    const newState = { ...prev }
-                    delete newState[key]
-                    return newState
-                  })
-                }}
+      {Object.keys(filters).length > 0 && (
+        <Flex gap={2} mt={[4, 4, 0]} flexWrap="wrap">
+          {Object.keys(filters).map((key: any) => {
+            const obj: any = {
+              eq: "==",
+              gte: ">=",
+              lte: "<=",
+            }
+            const name: any = {
+              batch: "Batch",
+              totalSolved: "Solved",
+              totalSolveTime: "Solve Time",
+            }
+            return (
+              <Badge
+                key={key}
+                bg={bg}
+                rounded="full"
+                py={1.5}
+                px={3}
+                color={color}
+                border="1px solid"
+                borderColor={borderColor}
+                display="inline-flex"
+                gap={1}
               >
-                <XIcon height={14} />
-              </Box>
-            </Badge>
-          )
-        })}
-      </Flex>
+                <Text>
+                  {name[key]} {obj[filters[key].type]} {filters[key].value}
+                </Text>
+                <Box
+                  as="button"
+                  onClick={() => {
+                    setFilters((prev: any) => {
+                      const newState = { ...prev }
+                      delete newState[key]
+                      return newState
+                    })
+                  }}
+                >
+                  <XIcon height={14} />
+                </Box>
+              </Badge>
+            )
+          })}
+        </Flex>
+      )}
     </Flex>
   )
 }

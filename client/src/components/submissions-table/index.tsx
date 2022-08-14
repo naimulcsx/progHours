@@ -71,7 +71,7 @@ export const SubmissionsTable = ({
   return (
     <Box
       position="relative"
-      pb={[24, 10]}
+      mb={10}
       mt={isEditable ? 6 : 2}
       mx={isEditable ? -4 : 0}
       overflowX="auto"
@@ -80,7 +80,7 @@ export const SubmissionsTable = ({
         shadow={isEditable ? "initial" : "base"}
         rounded={isEditable ? "none" : "lg"}
       >
-        <Table {...getTableProps()}>
+        <Table {...getTableProps()} id="submissions-table">
           <Thead>
             {headerGroups.map((headerGroup) => {
               return (

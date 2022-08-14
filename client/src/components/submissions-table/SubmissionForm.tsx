@@ -168,7 +168,7 @@ const SubmissionForm = ({ id }: { id: number }) => {
         borderColor={mode("gray.200", "gray.700")}
       >
         {/* serial */}
-        <Td {...CELL_STYLES["Id"]} border={0}>
+        <Td {...CELL_STYLES["Id"]} border={0} fontSize="sm">
           {" "}
           {id}
         </Td>

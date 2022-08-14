@@ -57,7 +57,10 @@ const Register = (): JSX.Element => {
             validate: Yup.string()
               .trim()
               .required("University ID is required")
-              .length(7, "Invalid University ID"),
+              .matches(
+                /^(c|C|e|E|et|ET|cce|CCE)[0-9]{6}$/,
+                "Invalid University ID"
+              ),
           },
           password: {
             type: "password",
