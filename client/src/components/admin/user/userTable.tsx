@@ -41,7 +41,7 @@ export default function UserManagementTable({ users }: { users: Users[] }) {
                   {...getAvatarColors(cell.row.original.name)}
                 />
                 <Box>
-                  <Text color={mode("gray.700", "gray.500")}>{cell.value}</Text>
+                  <Text color={mode("gray.700", "white")}>{cell.value}</Text>
                 </Box>
               </Flex>
             </Link>
@@ -70,7 +70,7 @@ export default function UserManagementTable({ users }: { users: Users[] }) {
       {
         Header: "cgpa",
         accessor: "cgpa",
-        Cell: ({ cell }) => (cell.value ? cell.value : "—"),
+        Cell: ({ cell }) => (cell.value ? cell.value.toFixed(2) : "—"),
       },
       {
         Header: "role",
@@ -165,7 +165,7 @@ export default function UserManagementTable({ users }: { users: Users[] }) {
                   return (
                     <Td
                       {...cell.getCellProps()}
-                      color={mode("gray.700", "gray.500")}
+                      color={mode("gray.700", "white")}
                       borderColor={mode("gray.200", "gray.700")}
                       {...CELL_STYLES[cell.column.Header as string]}
                     >
