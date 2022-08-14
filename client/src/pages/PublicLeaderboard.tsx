@@ -1,9 +1,12 @@
 import { getRankList } from "@/api/leaderboard"
 import { AnimateLoading } from "@/components/AnimateLoading"
+import { filterData } from "@/components/leaderboard/filters/filterData"
+import { LeaderboardFilters } from "@/components/leaderboard/filters/Filters"
 import LeaderboardTable from "@/components/leaderboard/Table"
 import { PublicNavbar } from "@/components/navbar/PublicNavbar"
 import { RanklistItem } from "@/types/RanklistItem"
 import calculatePoints from "@/utils/calculatePoints"
+import processRanklist from "@/utils/processRanklist"
 import {
   Box,
   Container,
@@ -14,34 +17,36 @@ import {
 } from "@chakra-ui/react"
 import { motion } from "framer-motion"
 import { AnimatePresence } from "framer-motion"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { Helmet } from "react-helmet-async"
 import { useQuery } from "react-query"
 
 function PublicLeaderboard() {
-  const [ranklist, setRanklist] = useState(null)
+  const [ranklist, setRanklist] = useState<any>(null)
+  const [filteredData, setFilteredData] = useState<any>(null)
+
   useQuery("ranklist", getRankList, {
-    onSuccess: async (res) => {
+    onSuccess: (res) => {
       const { stats } = res.body
-      /**
-       * Data is sent unsorted by the server
-       * We need to caluclate the points
-       */
-      stats.forEach((el: RanklistItem) => {
-        el.averageDifficulty =
-          el.totalDifficulty / el.totalSolvedWithDifficulty || 0
-        el.points = calculatePoints(el)
-      })
-      /**
-       * Sort the array according to the points calculated
-       * in the previous step and update the ranklist state
-       */
-      stats.sort((a: RanklistItem, b: RanklistItem) => {
-        return b.points - a.points
-      })
-      setRanklist(stats)
+      const result = processRanklist(stats)
+      setRanklist(result)
     },
   })
+
+  const [filters, setFilters] = useState<any>({})
+
+  useEffect(() => {
+    if (Object.keys(filters).length > 0)
+      setFilteredData(filterData(ranklist, filters))
+    else setFilteredData(ranklist)
+  }, [ranklist])
+
+  useEffect(() => {
+    if (Object.keys(filters).length > 0)
+      setFilteredData(filterData(ranklist, filters))
+    else setFilteredData(ranklist)
+  }, [filters])
+
   return (
     <Box>
       {/* @ts-ignore */}
@@ -54,20 +59,18 @@ function PublicLeaderboard() {
           <Heading size="lg" mx={[0, 0, 0, 0, 0, -4]} mb={4}>
             Leaderboard
           </Heading>
-          <AnimateLoading
-            isLoaded={ranklist}
-            SkeletonComponent={() => {
-              return (
-                <Stack mx={-4}>
-                  <Skeleton height="24px" />
-                  <Skeleton height="24px" />
-                  <Skeleton height="24px" />
-                  <Skeleton height="24px" />
-                </Stack>
-              )
-            }}
-          >
-            {ranklist && <LeaderboardTable ranklist={ranklist} />}
+          <AnimateLoading isLoaded={filteredData}>
+            {filteredData && (
+              <>
+                <Box mx={[0, -4]}>
+                  <LeaderboardFilters
+                    filters={filters}
+                    setFilters={setFilters}
+                  />
+                </Box>
+                <LeaderboardTable ranklist={filteredData} />
+              </>
+            )}
           </AnimateLoading>
         </Box>
       </Container>

@@ -11,60 +11,20 @@ import LeaderboardTable from "@/components/leaderboard/Table"
 /**
  * Import helpers
  */
-import calculatePoints from "@/utils/calculatePoints"
 import { getRankList } from "@/api/leaderboard"
-import { RanklistItem } from "@/types/RanklistItem"
-import { Spinner } from "@chakra-ui/react"
 import { AnimateLoading } from "@/components/AnimateLoading"
 import processRanklist from "@/utils/processRanklist"
-
-const filterLeaderboard = (ranklist: any, filters: any) => {
-  return ranklist?.filter((el: any) => {
-    let batchFlag = false,
-      totalSolvedFlag = false
-    let flags = []
-    if (filters.batch) {
-      switch (filters.batch.type) {
-        case "gte":
-          batchFlag = el.user.batch >= filters.batch.value
-          break
-        case "eq":
-          batchFlag = el.user.batch === filters.batch.value
-          break
-        case "lte":
-          batchFlag = el.user.batch <= filters.batch.value
-          break
-      }
-      flags.push(batchFlag)
-    }
-    if (filters.totalSolved) {
-      switch (filters.totalSolved.type) {
-        case "gte":
-          totalSolvedFlag = el.totalSolved >= filters.totalSolved.value
-          break
-        case "eq":
-          totalSolvedFlag = el.totalSolved == filters.totalSolved.value
-          break
-        case "lte":
-          totalSolvedFlag = el.totalSolved <= filters.totalSolved.value
-          break
-      }
-      flags.push(totalSolvedFlag)
-    }
-    let result = true
-    flags.forEach((flag) => (result = result && flag))
-    return flags.length === 0 ? false : result
-  })
-}
+import { filterData } from "@/components/leaderboard/filters/filterData"
+import { LeaderboardFilters } from "@/components/leaderboard/filters/Filters"
 
 const LeaderboardPage = () => {
   const [ranklist, setRanklist] = useState<any>(null)
   const [filteredData, setFilteredData] = useState<any>(null)
+
   useQuery("ranklist", getRankList, {
     onSuccess: (res) => {
       const { stats } = res.body
       const result = processRanklist(stats)
-      console.log(stats)
       setRanklist(result)
     },
   })
@@ -73,21 +33,17 @@ const LeaderboardPage = () => {
 
   useEffect(() => {
     if (Object.keys(filters).length > 0)
-      setFilteredData(filterLeaderboard(ranklist, filters))
+      setFilteredData(filterData(ranklist, filters))
     else setFilteredData(ranklist)
   }, [ranklist])
 
   useEffect(() => {
     if (Object.keys(filters).length > 0)
-      setFilteredData(filterLeaderboard(ranklist, filters))
+      setFilteredData(filterData(ranklist, filters))
     else setFilteredData(ranklist)
   }, [filters])
 
   console.log(filters)
-
-  /**
-   * { name: "batch", type: "<=", value: 46 }
-   */
 
   return (
     <DashboardLayout title="Leaderboard">
@@ -95,13 +51,12 @@ const LeaderboardPage = () => {
       <Helmet>
         <title>Leaderboard</title>
       </Helmet>
-      <AnimateLoading isLoaded={ranklist}>
+      <AnimateLoading isLoaded={filteredData}>
         {filteredData && (
-          <LeaderboardTable
-            ranklist={filteredData}
-            filters={filters}
-            setFilters={setFilters}
-          />
+          <>
+            <LeaderboardFilters filters={filters} setFilters={setFilters} />
+            <LeaderboardTable ranklist={filteredData} />
+          </>
         )}
       </AnimateLoading>
     </DashboardLayout>

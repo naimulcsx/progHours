@@ -32,7 +32,6 @@ import {
 } from "@chakra-ui/react"
 import { getAvatarColors } from "@/utils/getAvatarColors"
 import { CELL_STYLES } from "./cellStyles"
-import { LeaderboardFilters } from "./Filters"
 
 const UserCell = (cell: Cell<RanklistItem>) => {
   return (
@@ -54,15 +53,7 @@ const UserCell = (cell: Cell<RanklistItem>) => {
   )
 }
 
-const LeaderboardTable = ({
-  ranklist,
-  setFilters,
-  filters,
-}: {
-  ranklist: RanklistItem[]
-  setFilters: any
-  filters: any
-}) => {
+const LeaderboardTable = ({ ranklist }: { ranklist: RanklistItem[] }) => {
   /**
    * Define table columns
    */
@@ -108,47 +99,6 @@ const LeaderboardTable = ({
 
   return (
     <Box mx={-4} overflowX="auto">
-      <Box mx={4} mb={4}>
-        <LeaderboardFilters setFilters={setFilters} filters={filters} />
-        {Object.keys(filters).map((key: any) => {
-          const obj: any = {
-            eq: "==",
-            gte: ">=",
-            lte: "<=",
-          }
-          return (
-            <Badge
-              key={key}
-              bg={mode("blue.50", "gray.700")}
-              rounded="full"
-              py={1.5}
-              px={3}
-              ml={3}
-              color={mode("blue.600", "blue.200")}
-              border="1px solid"
-              borderColor={mode("blue.100", "gray.600")}
-              display="inline-flex"
-              gap={2}
-            >
-              <Text>
-                {key} {obj[filters[key].type]} {filters[key].value}
-              </Text>
-              <Box
-                as="button"
-                onClick={() => {
-                  setFilters((prev: any) => {
-                    const newState = { ...prev }
-                    delete newState[key]
-                    return newState
-                  })
-                }}
-              >
-                <XIcon height={16} />
-              </Box>
-            </Badge>
-          )
-        })}
-      </Box>
       <Table w="full" {...getTableProps()}>
         <Thead>
           {headerGroups.map((headerGroup) => {

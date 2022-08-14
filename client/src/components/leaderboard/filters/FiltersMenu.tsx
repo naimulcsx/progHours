@@ -49,6 +49,7 @@ const NumberFilter = ({
             width={20}
             isChecked={state.enabled}
             onChange={(e) => {
+              e.preventDefault()
               setState((prev: any) => ({
                 ...prev,
                 enabled: !prev.enabled,
@@ -70,6 +71,7 @@ const NumberFilter = ({
           <Select
             size="sm"
             w={20}
+            defaultValue={state.type}
             onChange={(e) =>
               setState((prev: any) => ({
                 ...prev,
@@ -77,18 +79,9 @@ const NumberFilter = ({
               }))
             }
           >
-            <option value="eq" selected={state.type === "eq"}>
-              {" "}
-              ={" "}
-            </option>
-            <option value="gte" selected={state.type === "gte"}>
-              {" "}
-              ≥{" "}
-            </option>
-            <option value="lte" selected={state.type === "lte"}>
-              {" "}
-              ≤{" "}
-            </option>
+            <option value="eq"> = </option>
+            <option value="gte"> ≥ </option>
+            <option value="lte"> ≤ </option>
           </Select>
           <Input
             type="number"
@@ -109,12 +102,16 @@ const NumberFilter = ({
   )
 }
 
-export const LeaderboardFilters = ({ setFilters, filters }: any) => {
+export const FiltersMenu = ({ filters, setFilters }: any) => {
   const { isOpen, onOpen, onClose } = useDisclosure()
 
-  // form states
   const [batch, setBatch] = useState({ type: "eq", enabled: false, value: 0 })
   const [totalSolved, setTotalSolved] = useState({
+    type: "gte",
+    enabled: false,
+    value: 0,
+  })
+  const [totalSolveTime, setTotalSolveTime] = useState({
     type: "gte",
     enabled: false,
     value: 0,
@@ -131,8 +128,11 @@ export const LeaderboardFilters = ({ setFilters, filters }: any) => {
     if (totalSolved.value > 0 && totalSolved.enabled)
       filters.totalSolved = totalSolved
 
+    if (totalSolveTime.value > 0 && totalSolveTime.enabled)
+      filters.totalSolveTime = totalSolveTime
+
     setLocalFilters(filters)
-  }, [batch, totalSolved])
+  }, [batch, totalSolved, totalSolveTime])
 
   useEffect(() => {
     if (!filters.batch) {
@@ -140,6 +140,9 @@ export const LeaderboardFilters = ({ setFilters, filters }: any) => {
     }
     if (!filters.totalSolved) {
       setTotalSolved({ type: "gte", enabled: false, value: 0 })
+    }
+    if (!filters.totalSolveTime) {
+      setTotalSolveTime({ type: "gte", enabled: false, value: 0 })
     }
     setLocalFilters(filters)
   }, [filters])
@@ -165,6 +168,11 @@ export const LeaderboardFilters = ({ setFilters, filters }: any) => {
           name="Solve Count"
           state={totalSolved}
           setState={setTotalSolved}
+        />
+        <NumberFilter
+          name="Solve Time"
+          state={totalSolveTime}
+          setState={setTotalSolveTime}
         />
         <Box px={4}>
           <Button
