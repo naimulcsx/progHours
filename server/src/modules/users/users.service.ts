@@ -130,19 +130,31 @@ export class UsersService {
     return this.prisma.user.findMany()
   }
 
-  async updateUserData({
-    id,
-    name,
-    batch,
-    department,
-    role,
-    mobile,
-    cgpa,
-    section,
-    username,
-    email,
-  }) {
+  async updateUserData(
+    {
+      id,
+      name,
+      batch,
+      department,
+      role,
+      mobile,
+      cgpa,
+      section,
+      username,
+      email,
+    },
+    userId
+  ) {
     try {
+      const userFound = await this.prisma.user.findUnique({
+        where: {
+          id,
+        },
+      })
+
+      if (userFound && userId !== userFound.id)
+        throw new BadRequestException("Username already exist!")
+
       return this.prisma.user.update({
         where: {
           id,
@@ -152,11 +164,11 @@ export class UsersService {
           email,
           name,
           batch: Number(batch) || null,
-          department,
+          department: department || null,
           role,
           mobile: mobile || null,
           cgpa: Number(cgpa) || null,
-          section,
+          section: section || null,
         },
       })
     } catch (err) {

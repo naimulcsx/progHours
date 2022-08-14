@@ -67,7 +67,7 @@ export default function EditUserTable(cell: any) {
             batch: {
               type: "number",
               label: "Batch",
-              initialValue: batch ? batch.toString() : "",
+              initialValue: batch ? batch : "",
               validate: Yup.number(),
             },
             section: {
@@ -99,7 +99,7 @@ export default function EditUserTable(cell: any) {
             cgpa: {
               type: "number",
               label: "CGPA",
-              initialValue: cgpa ? cgpa.toString() : "",
+              initialValue: cgpa ? cgpa : "",
               validate: Yup.number().min(0).max(4),
             },
             role: {
