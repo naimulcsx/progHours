@@ -25,6 +25,7 @@ import { UsersService } from "@/modules/users/users.service"
 import { IsAuthenticatedGuard } from "@/guards/is-authenticated"
 import { SubmissionsService } from "../submissions/submissions.service"
 import { IsAdmin } from "@/guards/is-admin"
+import { UpdateUserDto } from "@/validators/update-user-dto"
 
 @Controller("/users")
 @ApiTags("Users")
@@ -198,7 +199,7 @@ export class UsersController {
   @Patch("/")
   @ApiOperation({ summary: "Update user data" })
   @UseGuards(IsAuthenticatedGuard, IsAdmin)
-  async updateUserData(@Body() body: any) {
+  async updateUserData(@Body() body: UpdateUserDto) {
     const user = await this.usersService.updateUserData(body)
 
     return { statusCode: HttpStatus.OK, message: "User Updated", body: user }

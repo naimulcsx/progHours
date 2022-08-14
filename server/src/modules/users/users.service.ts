@@ -14,6 +14,7 @@ import {
 import { AuthService } from "../auth/auth.service"
 import { PrismaService } from "../prisma/prisma.service"
 import * as bcrypt from "bcryptjs"
+import { UpdateUserDto } from "@/validators/update-user-dto"
 
 @Injectable()
 export class UsersService {
@@ -150,11 +151,11 @@ export class UsersService {
           username: username.toLowerCase(),
           email,
           name,
-          batch: Number(batch),
+          batch: Number(batch) || null,
           department,
           role,
-          mobile,
-          cgpa: Number(cgpa),
+          mobile: mobile || null,
+          cgpa: Number(cgpa) || null,
           section,
         },
       })

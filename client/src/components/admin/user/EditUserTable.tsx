@@ -59,15 +59,15 @@ export default function EditUserTable(cell: any) {
               validate: Yup.string().trim(),
             },
             email: {
-              type: "text",
+              type: "email",
               label: "Email Address",
               initialValue: email || "",
               validate: Yup.string().email("Invalid email").trim(),
             },
             batch: {
-              type: "text",
+              type: "number",
               label: "Batch",
-              initialValue: batch || undefined,
+              initialValue: batch || null,
               validate: Yup.number(),
             },
             section: {
@@ -97,10 +97,10 @@ export default function EditUserTable(cell: any) {
               validate: Yup.string().trim(),
             },
             cgpa: {
-              type: "text",
+              type: "number",
               label: "CGPA",
               initialValue: cgpa || undefined,
-              validate: Yup.number().min(0.0).max(4.0),
+              validate: Yup.number().min(0).max(4),
             },
             role: {
               type: "select",
