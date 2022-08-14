@@ -156,7 +156,7 @@ const SubmissionRow = ({ row }: any) => {
   return (
     <Tr
       bg={mode("white", "gray.800")}
-      _hover={{ bg: mode("gray.50", "gray.700") }}
+      _hover={{ bg: mode("gray.50", "gray.750") }}
       {...row.getRowProps()}
     >
       {row.cells.map((cell: any) => {

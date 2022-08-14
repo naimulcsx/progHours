@@ -29,6 +29,9 @@ export const theme = extendTheme(
         "800": "#112769",
         "900": "#091539",
       },
+      gray: {
+        "750": "#202837",
+      },
     },
     components: {
       Checkbox: {

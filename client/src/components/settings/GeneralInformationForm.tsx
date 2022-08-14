@@ -23,6 +23,7 @@ export const GeneralInformationForm = () => {
       shadow="base"
       rounded="lg"
       mx={-4}
+      mb={10}
     >
       {user ? (
         <FormBuilder
@@ -46,7 +47,8 @@ export const GeneralInformationForm = () => {
               type: "text",
               label: "Mobile",
               validate: Yup.string().trim(),
-              initialValue: user.mobile,
+              initialValue: user.mobile || "",
+              optional: true,
             },
             username: {
               type: "text",
@@ -68,19 +70,22 @@ export const GeneralInformationForm = () => {
                 ["Electrical and Electronic Engineering (EEE)", "EEE"],
               ],
               validate: Yup.string().trim(),
-              initialValue: user.department,
+              initialValue: user.department || "",
+              optional: true,
             },
             batch: {
               type: "number",
               label: "Batch",
-              validate: Yup.string().trim(),
+              validate: Yup.number(),
               initialValue: user.batch ? user.batch.toString() : "",
+              optional: true,
             },
             cgpa: {
               type: "number",
               label: "CGPA",
-              validate: Yup.string().trim(),
+              validate: Yup.number().min(0.0).max(4.0),
               initialValue: user.cgpa ? user.cgpa.toString() : "",
+              optional: true,
             },
           }}
           button={{

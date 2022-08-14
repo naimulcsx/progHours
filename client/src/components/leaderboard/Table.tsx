@@ -1,5 +1,5 @@
 import { useEffect, useMemo } from "react"
-import { useTable, useSortBy, Cell, Column } from "react-table"
+import { useTable, useSortBy, Cell, Column, usePagination } from "react-table"
 import { RanklistItem } from "@/types/RanklistItem"
 import { Link } from "react-router-dom"
 
@@ -32,6 +32,7 @@ import {
 } from "@chakra-ui/react"
 import { getAvatarColors } from "@/utils/getAvatarColors"
 import { CELL_STYLES } from "./cellStyles"
+import { Pagination } from "../submissions-table/Pagination"
 
 const UserCell = (cell: Cell<RanklistItem>) => {
   return (
@@ -89,16 +90,34 @@ const LeaderboardTable = ({ ranklist }: { ranklist: RanklistItem[] }) => {
     []
   )
 
-  const { getTableProps, rows, prepareRow, headerGroups } = useTable(
+  const {
+    getTableProps,
+    prepareRow,
+    headerGroups,
+    page,
+    canPreviousPage,
+    canNextPage,
+    pageOptions,
+    pageCount,
+    gotoPage,
+    nextPage,
+    previousPage,
+    setPageSize,
+    state: { pageIndex, pageSize },
+  } = useTable(
     {
       data: ranklist,
       columns: tableColumns,
+      initialState: {
+        pageSize: 50,
+      },
     },
-    useSortBy
+    useSortBy,
+    usePagination
   )
 
   return (
-    <Box mx={-4} overflowX="auto">
+    <Box mx={-4} overflowX="auto" pb={[24, 10]}>
       <Table w="full" {...getTableProps()}>
         <Thead>
           {headerGroups.map((headerGroup) => {
@@ -142,12 +161,12 @@ const LeaderboardTable = ({ ranklist }: { ranklist: RanklistItem[] }) => {
           })}
         </Thead>
         <Tbody>
-          {rows.map((row) => {
+          {page.map((row) => {
             prepareRow(row)
             return (
               <Tr
                 {...row.getRowProps()}
-                _hover={{ bg: mode("gray.50", "gray.700") }}
+                _hover={{ bg: mode("gray.50", "gray.750") }}
                 bg={mode("white", "gray.800")}
               >
                 {row.cells.map((cell) => {
@@ -168,6 +187,19 @@ const LeaderboardTable = ({ ranklist }: { ranklist: RanklistItem[] }) => {
           })}
         </Tbody>
       </Table>
+      <Pagination
+        isEditable
+        pageIndex={pageIndex}
+        pageOptions={pageOptions}
+        pageSize={pageSize}
+        setPageSize={setPageSize}
+        canPreviousPage={canPreviousPage}
+        canNextPage={canNextPage}
+        gotoPage={gotoPage}
+        pageCount={pageCount}
+        previousPage={previousPage}
+        nextPage={nextPage}
+      />
     </Box>
   )
 }

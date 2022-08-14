@@ -16,6 +16,7 @@ import {
   ChartBarIcon,
   DocumentTextIcon,
   UserGroupIcon,
+  TrendingUpIcon,
 } from "@heroicons/react/solid"
 
 export default function MobileNav() {
@@ -32,8 +33,9 @@ export default function MobileNav() {
       display="flex"
       flexDirection="row"
       justifyContent="space-between"
-      paddingY={2}
-      paddingX={[8, 16, 16]}
+      h="14"
+      py={2}
+      paddingX={[4, 16, 16]}
       shadow="lg"
       borderTop="1px solid"
       borderColor={mode("gray.200", "gray.700")}
@@ -67,6 +69,12 @@ export default function MobileNav() {
         icon={<ChartBarIcon width={SIDEBAR_ICON_SIZE} />}
         onClick={() => navigate("/leaderboard")}
         isActive={location.pathname === "/leaderboard"}
+      />
+      <NavLink
+        label=""
+        icon={<TrendingUpIcon width={SIDEBAR_ICON_SIZE} />}
+        onClick={() => navigate("/activities")}
+        isActive={location.pathname === "/activities"}
       />
     </Box>
   )

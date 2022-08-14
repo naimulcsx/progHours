@@ -57,7 +57,17 @@ const FormBuilder = ({
     initialValues: values,
     validationSchema: Yup.object().shape(validationRules),
     onSubmit: async (values) => {
-      await mutateAsync(values)
+      const newValues: any = {}
+      Object.keys(values).forEach((key) => {
+        console.log(fields[key])
+        if (fields[key].optional === true && values[key] === "") {
+          newValues[key] = null
+        } else {
+          newValues[key] = values[key]
+        }
+      })
+      console.log(newValues)
+      await mutateAsync(newValues)
     },
   })
   return (
@@ -179,6 +189,7 @@ interface FormBuilderProps extends BoxProps {
       disabled?: boolean
       placeholder?: string
       leftAddon?: string
+      optional?: boolean
     }
   }
   mutation: any

@@ -43,8 +43,6 @@ const LeaderboardPage = () => {
     else setFilteredData(ranklist)
   }, [filters])
 
-  console.log(filters)
-
   return (
     <DashboardLayout title="Leaderboard">
       {/* @ts-ignore */}

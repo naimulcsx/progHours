@@ -102,7 +102,7 @@ const ActivitiesPage = () => {
                 >
                   <Flex align="center" gap={4}>
                     <Avatar size="sm" name={sub.user.name} fontWeight="bold" />
-                    <Text>
+                    <Box>
                       <Link
                         as={RouterLink}
                         to={`/users/${sub.user.username}`}
@@ -118,7 +118,7 @@ const ActivitiesPage = () => {
                       >
                         {sub.problem.name} [{sub.problem.pid}]
                       </Link>
-                    </Text>
+                    </Box>
                   </Flex>
                   <Flex align="center" gap={2} color={color} ml={[12, 0]}>
                     <ClockIcon height={16} />

@@ -38,7 +38,7 @@ export const Pagination = (props: any) => {
       borderColor={mode("gray.200", "gray.700")}
       justify="space-between"
       position={isEditable ? "fixed" : "unset"}
-      bottom={[12, 12, 0]}
+      bottom={[14, 14, 0]}
       left={[0, 0, "220px"]}
       right={0}
     >
@@ -56,7 +56,7 @@ export const Pagination = (props: any) => {
             setPageSize(Number(e.target.value))
           }}
         >
-          {[10, 20, 30, 40, 50].map((pageSize) => (
+          {[20, 30, 40, 50, 100].map((pageSize) => (
             <option key={pageSize} value={pageSize}>
               Show {pageSize}
             </option>
