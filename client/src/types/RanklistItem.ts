@@ -1,4 +1,5 @@
 export interface RanklistItem {
+  id: number
   userId: number
   totalDifficulty: number
   totalSolveTime: number

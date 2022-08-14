@@ -131,6 +131,7 @@ const GroupPage = () => {
                 <TabPanel mx={-4} mb={-4}>
                   <LeaderboardTable
                     ranklist={processRanklist(data.body.ranklist)}
+                    isPublic={false}
                   ></LeaderboardTable>
                 </TabPanel>
                 {data?.body?.isOwner && (

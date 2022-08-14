@@ -68,7 +68,7 @@ function PublicLeaderboard() {
                     setFilters={setFilters}
                   />
                 </Box>
-                <LeaderboardTable ranklist={filteredData} />
+                <LeaderboardTable ranklist={filteredData} isPublic={true} />
               </>
             )}
           </AnimateLoading>

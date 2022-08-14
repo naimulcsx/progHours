@@ -146,7 +146,7 @@ export default function Profile() {
         )}
       >
         {user && userStats && frequency && submissionQuery.data && (
-          <Box overflow="hidden" pb={10}>
+          <Box overflow="hidden">
             {/* @ts-ignore */}
             <Helmet>{/* @ts-ignore */}</Helmet>
             <UserCard
@@ -192,8 +192,8 @@ export default function Profile() {
                       <TagsFreqChart data={userStats["tagsFrequency"]} />
                     </Box>
                   </TabPanel>
-                  <TabPanel>
-                    <Box mx={-4} overflowX="auto">
+                  <TabPanel mx={-8}>
+                    <Box overflowX="auto">
                       <SubmissionsTable submissions={submissions} />
                     </Box>
                   </TabPanel>

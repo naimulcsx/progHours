@@ -31,6 +31,9 @@ export const UserCard: React.FC<UserCardProps> = ({ name, username }) => {
     },
   })
 
+  const bg = mode("white", "gray.700")
+  const borderColor = mode("gray.200", "gray.600")
+
   return (
     <Box as="section" pt="24" pb="8" position="relative">
       <Box
@@ -72,7 +75,7 @@ export const UserCard: React.FC<UserCardProps> = ({ name, username }) => {
 
           <Box>
             <Flex columnGap={4}>
-              {handles.map((item: any) => {
+              {handles.map((item: any, idx: any) => {
                 const iconMap: any = {
                   Codeforces: <CFIcon />,
                   CodeChef: <CCIcon />,
@@ -80,12 +83,7 @@ export const UserCard: React.FC<UserCardProps> = ({ name, username }) => {
                   LightOJ: <LightOJIcon />,
                 }
                 return (
-                  <Tooltip
-                    hasArrow
-                    label={item.handle}
-                    bg="gray.700"
-                    color="white"
-                  >
+                  <Tooltip hasArrow label={item.handle} color="white" key={idx}>
                     <a
                       target={"_blank"}
                       href={getOJProfileURL(item.onlineJudge.name, item.handle)}
@@ -94,10 +92,10 @@ export const UserCard: React.FC<UserCardProps> = ({ name, username }) => {
                         h={12}
                         w={12}
                         p={2}
-                        bg="white"
+                        bg={bg}
                         rounded="full"
                         border="1px"
-                        borderColor="gray.300"
+                        borderColor={borderColor}
                         display="flex"
                         justifyContent="center"
                         alignItems="center"

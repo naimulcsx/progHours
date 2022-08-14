@@ -54,7 +54,13 @@ const UserCell = (cell: Cell<RanklistItem>) => {
   )
 }
 
-const LeaderboardTable = ({ ranklist }: { ranklist: RanklistItem[] }) => {
+const LeaderboardTable = ({
+  ranklist,
+  isPublic = false,
+}: {
+  ranklist: RanklistItem[]
+  isPublic: boolean
+}) => {
   /**
    * Define table columns
    */
@@ -117,7 +123,13 @@ const LeaderboardTable = ({ ranklist }: { ranklist: RanklistItem[] }) => {
   )
 
   return (
-    <Box mx={-4} overflowX="auto" mb={10} display="flex" flexDirection="column">
+    <Box
+      mx={-4}
+      pb={isPublic ? [0, 0, 10] : 10}
+      overflowX="auto"
+      display="flex"
+      flexDirection="column"
+    >
       <Table w="full" {...getTableProps()} id="leaderboard-table">
         <Thead>
           {headerGroups.map((headerGroup) => {
@@ -163,27 +175,7 @@ const LeaderboardTable = ({ ranklist }: { ranklist: RanklistItem[] }) => {
         <Tbody>
           {page.map((row) => {
             prepareRow(row)
-            return (
-              <Tr
-                {...row.getRowProps()}
-                _hover={{ bg: mode("gray.50", "gray.750") }}
-                bg={mode("white", "gray.800")}
-              >
-                {row.cells.map((cell) => {
-                  const cellType: any = cell.column.Header
-                  return (
-                    <Td
-                      {...cell.getCellProps()}
-                      className="py-3 border-b"
-                      borderColor={mode("gray.200", "gray.700")}
-                      {...CELL_STYLES[cellType]}
-                    >
-                      {cell.render("Cell")}
-                    </Td>
-                  )
-                })}
-              </Tr>
-            )
+            return <TableRow key={row.original.id} row={row} />
           })}
         </Tbody>
       </Table>
@@ -202,6 +194,30 @@ const LeaderboardTable = ({ ranklist }: { ranklist: RanklistItem[] }) => {
         nextPage={nextPage}
       />
     </Box>
+  )
+}
+
+const TableRow = ({ row }: any) => {
+  return (
+    <Tr
+      {...row.getRowProps()}
+      _hover={{ bg: mode("gray.50", "gray.750") }}
+      bg={mode("white", "gray.800")}
+    >
+      {row.cells.map((cell: any) => {
+        const cellType: any = cell.column.Header
+        return (
+          <Td
+            {...cell.getCellProps()}
+            className="py-3 border-b"
+            borderColor={mode("gray.200", "gray.700")}
+            {...CELL_STYLES[cellType]}
+          >
+            {cell.render("Cell")}
+          </Td>
+        )
+      })}
+    </Tr>
   )
 }
 
