@@ -25,11 +25,11 @@ import { HandlesService } from "./handles.service"
 
 @Controller("handles")
 @ApiTags("Online Judge Handle")
-@UseGuards(IsAuthenticatedGuard)
 export class HandlesController {
   constructor(private readonly handleService: HandlesService) {}
 
   @Post("")
+  @UseGuards(IsAuthenticatedGuard)
   @ApiOperation({ summary: "Create a online judge handle" })
   @ApiCreatedResponse({ description: "Handle successfully created" })
   @ApiForbiddenResponse({ description: "Forbidden." })
@@ -51,6 +51,7 @@ export class HandlesController {
     return { statusCode: HttpStatus.CREATED, body: { handles: newHandle } }
   }
 
+  @UseGuards(IsAuthenticatedGuard)
   @ApiOperation({ summary: "Find OJ handles" })
   @ApiOkResponse({ description: "Success." })
   @ApiForbiddenResponse({ description: "Forbidden." })
@@ -60,10 +61,10 @@ export class HandlesController {
     return { statusCode: HttpStatus.OK, body: { handles } }
   }
 
+  @Get("/:username")
   @ApiOperation({ summary: "Get Handles by username" })
   @ApiOkResponse({ description: "Success" })
   @ApiForbiddenResponse({ description: "Forbidden." })
-  @Get("/:username")
   async getHandleByUsername(@Param("username") username: string) {
     const findUser = await this.handleService.getUserByUsername(username)
     if (!findUser) throw new NotFoundException("User not found!")
@@ -73,18 +74,20 @@ export class HandlesController {
     return { statusCode: HttpStatus.OK, body: { handles } }
   }
 
+  @Delete("")
+  @UseGuards(IsAuthenticatedGuard)
   @ApiOperation({ summary: "Delete a OJ handle" })
   @ApiForbiddenResponse({ description: "Forbidden." })
-  @Delete("")
   async deleteHandle(@Req() req, @Body() body) {
     await this.handleService.deleteHandle(req.user.id, body.onlineJudgeId)
 
     return { statusCode: HttpStatus.OK, message: "Handle deleted" }
   }
 
+  @Patch("")
   @ApiOperation({ summary: "Update a OJ handle" })
   @ApiForbiddenResponse({ description: "Forbidden." })
-  @Patch("")
+  @UseGuards(IsAuthenticatedGuard)
   async updateHandle(@Req() req, @Body() body) {
     const { handle, onlineJudgeId } = body
     await this.handleService.updateHandle(req.user.id, onlineJudgeId, handle)
