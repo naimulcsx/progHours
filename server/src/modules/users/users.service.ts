@@ -63,7 +63,16 @@ export class UsersService {
     return newUser
   }
 
-  async updateProfile({ id, name, email, mobile, department, batch, cgpa }) {
+  async updateProfile({
+    id,
+    name,
+    email,
+    mobile,
+    department,
+    batch,
+    cgpa,
+    section,
+  }) {
     const user = await this.prisma.user.findUnique({ where: { id } })
     // This condition will never be hit, unless you have access
     // token of an user which is not there in the database
@@ -79,6 +88,7 @@ export class UsersService {
         department,
         batch: Number(batch) || null,
         cgpa: Number(cgpa) || null,
+        section,
       },
     })
     // return the updated profile
@@ -127,6 +137,7 @@ export class UsersService {
     role,
     mobile,
     cgpa,
+    section,
     username,
     email,
   }) {
@@ -144,6 +155,7 @@ export class UsersService {
           role,
           mobile,
           cgpa: Number(cgpa),
+          section,
         },
       })
     } catch (err) {

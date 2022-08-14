@@ -80,6 +80,14 @@ export const GeneralInformationForm = () => {
               initialValue: user.batch ? user.batch.toString() : "",
               optional: true,
             },
+            section: {
+              type: "select",
+              label: "Section",
+              placeholder: "Select",
+              options: ["AM", "BM", "CM", "DM", "EM", "FM", "AF", "BF", "CF"],
+              validate: Yup.string().trim(),
+              initialValue: user.section || "",
+            },
             cgpa: {
               type: "number",
               label: "CGPA",

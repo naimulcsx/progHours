@@ -87,6 +87,7 @@ export class UsersController {
       cgpa,
       currentPassword,
       newPassword,
+      section,
     } = body
 
     // handle user data update
@@ -100,6 +101,7 @@ export class UsersController {
         department,
         batch,
         cgpa,
+        section,
       })
 
       // return response

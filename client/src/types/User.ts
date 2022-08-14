@@ -8,4 +8,5 @@ export interface Users {
   mobile: string
   cgpa: number
   department: string
+  section: string
 }

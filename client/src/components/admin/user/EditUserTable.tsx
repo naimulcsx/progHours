@@ -14,8 +14,18 @@ export default function EditUserTable(cell: any) {
   const client = useQueryClient()
   const toast = useToast(DEFAULT_TOAST_OPTIONS)
 
-  const { id, name, username, email, batch, department, mobile, role, cgpa } =
-    cell.row.original
+  const {
+    id,
+    name,
+    username,
+    email,
+    section,
+    batch,
+    department,
+    mobile,
+    role,
+    cgpa,
+  } = cell.row.original
 
   return (
     <Box>
@@ -60,11 +70,25 @@ export default function EditUserTable(cell: any) {
               initialValue: batch || undefined,
               validate: Yup.number(),
             },
+            section: {
+              type: "select",
+              label: "Section",
+              placeholder: "Select",
+              options: ["AM", "BM", "CM", "DM", "EM", "FM", "AF", "BF", "CF"],
+              validate: Yup.string().trim(),
+              initialValue: section || "",
+            },
             department: {
-              type: "text",
+              type: "select",
               label: "Department",
+              placeholder: "Select",
+              options: [
+                ["Computer Science and Engineering (CSE)", "CSE"],
+                ["Computer and Communication Engineering (CCE)", "CCE"],
+                ["Electrical and Electronic Engineering (EEE)", "EEE"],
+              ],
+              validate: Yup.string().trim(),
               initialValue: department || "",
-              validate: Yup.string(),
             },
             mobile: {
               type: "text",
