@@ -19,6 +19,7 @@ model User {
   mobile      String?
   department  String?
   batch       Int?
+  section     String?
   cgpa        Float?
   role        Role         @default(USER)
   memberSince DateTime     @default(now())
@@ -62,7 +63,7 @@ model Submission {
   solveTime Int
   verdict   Verdict
   solvedAt  DateTime
-  User      User     @relation(fields: [userId], references: [id])
+  user      User     @relation(fields: [userId], references: [id])
   userId    Int
   problem   Problem  @relation(fields: [problemId], references: [id])
   problemId Int
