@@ -53,7 +53,7 @@ const LeaderboardPage = () => {
         {filteredData && (
           <>
             <LeaderboardFilters filters={filters} setFilters={setFilters} />
-            <LeaderboardTable ranklist={filteredData} />
+            <LeaderboardTable ranklist={filteredData} isPublic={false} />
           </>
         )}
       </AnimateLoading>

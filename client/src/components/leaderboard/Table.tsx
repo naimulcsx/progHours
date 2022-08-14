@@ -59,7 +59,7 @@ const LeaderboardTable = ({
   isPublic = false,
 }: {
   ranklist: RanklistItem[]
-  isPublic: boolean
+  isPublic?: boolean
 }) => {
   /**
    * Define table columns
