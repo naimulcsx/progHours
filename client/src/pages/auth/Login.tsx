@@ -39,7 +39,11 @@ const Login = (): JSX.Element => {
         </Heading>
         <Flex as="p" gap={2}>
           Don't have an account?
-          <Link as={ReactRouterLink} to="/register">
+          <Link
+            as={ReactRouterLink}
+            to="/register"
+            color={mode("blue.500", "blue.300")}
+          >
             Register
           </Link>
         </Flex>

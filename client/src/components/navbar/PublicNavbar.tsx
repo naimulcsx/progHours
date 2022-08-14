@@ -34,7 +34,7 @@ export const PublicNavbar = () => {
             <Logo />
           </ReactRouterLink>
           <Box>
-            <HStack spacing={8}>
+            <HStack spacing={[4, 4, 8]}>
               <Button
                 onClick={toggleColorMode}
                 variant="unstyled"
@@ -48,10 +48,20 @@ export const PublicNavbar = () => {
                   <SunIcon height={20} />
                 )}
               </Button>
-              <Link fontWeight="500" as={ReactRouterLink} to="/login">
+              <Link
+                fontWeight="500"
+                as={ReactRouterLink}
+                to="/login"
+                color={mode("blue.500", "blue.300")}
+              >
                 Login
               </Link>
-              <Link fontWeight="500" as={ReactRouterLink} to="/register">
+              <Link
+                fontWeight="500"
+                as={ReactRouterLink}
+                to="/register"
+                color={mode("blue.500", "blue.300")}
+              >
                 Register
               </Link>
             </HStack>

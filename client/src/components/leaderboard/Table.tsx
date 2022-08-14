@@ -125,7 +125,7 @@ const LeaderboardTable = ({
   return (
     <Box
       mx={-4}
-      pb={isPublic ? [0, 0, 10] : 10}
+      pb={isPublic ? [0, 0, 10] : [10, 10, 0]}
       overflowX="auto"
       display="flex"
       flexDirection="column"

@@ -10,7 +10,13 @@ import showErrorToasts from "@/utils/showErrorToasts"
 import AuthLayout from "@/components/layouts/Auth"
 import FormBuilder from "@/components/FormBuilder"
 import { registerMutation } from "@/api/auth"
-import { Flex, Heading, VStack, Link } from "@chakra-ui/react"
+import {
+  Flex,
+  Heading,
+  VStack,
+  Link,
+  useColorModeValue as mode,
+} from "@chakra-ui/react"
 import { DEFAULT_TOAST_OPTIONS } from "@/configs/toast-config"
 
 /**
@@ -29,7 +35,11 @@ const Register = (): JSX.Element => {
         <Heading size="lg">Login to Account</Heading>
         <Flex as="p" gap={2}>
           Already an account?
-          <Link as={ReactRouterLink} to="/login">
+          <Link
+            as={ReactRouterLink}
+            to="/login"
+            color={mode("blue.500", "blue.300")}
+          >
             Login
           </Link>
         </Flex>

@@ -83,7 +83,7 @@ export const UserCard: React.FC<UserCardProps> = ({ name, username }) => {
                   LightOJ: <LightOJIcon />,
                 }
                 return (
-                  <Tooltip hasArrow label={item.handle} color="white" key={idx}>
+                  <Tooltip hasArrow label={item.handle} key={idx}>
                     <a
                       target={"_blank"}
                       href={getOJProfileURL(item.onlineJudge.name, item.handle)}
