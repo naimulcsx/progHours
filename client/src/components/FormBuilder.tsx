@@ -59,7 +59,6 @@ const FormBuilder = ({
     onSubmit: async (values) => {
       const newValues: any = {}
       Object.keys(values).forEach((key) => {
-        console.log(fields[key])
         if (fields[key].optional === true && values[key] === "") {
           newValues[key] = null
         } else {

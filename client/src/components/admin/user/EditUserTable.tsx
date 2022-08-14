@@ -49,25 +49,25 @@ export default function EditUserTable(cell: any) {
             username: {
               type: "text",
               label: "University ID",
-              initialValue: username || "",
+              initialValue: username ? username : "",
               validate: Yup.string().trim(),
             },
             name: {
               type: "text",
               label: "Name",
-              initialValue: name || "",
+              initialValue: name ? name : "",
               validate: Yup.string().trim(),
             },
             email: {
               type: "email",
               label: "Email Address",
-              initialValue: email || "",
+              initialValue: email ? email : "",
               validate: Yup.string().email("Invalid email").trim(),
             },
             batch: {
               type: "number",
               label: "Batch",
-              initialValue: batch || null,
+              initialValue: batch ? batch.toString() : "",
               validate: Yup.number(),
             },
             section: {
@@ -76,7 +76,7 @@ export default function EditUserTable(cell: any) {
               placeholder: "Select",
               options: ["AM", "BM", "CM", "DM", "EM", "FM", "AF", "BF", "CF"],
               validate: Yup.string().trim(),
-              initialValue: section || "",
+              initialValue: section ? section : "",
             },
             department: {
               type: "select",
@@ -88,25 +88,25 @@ export default function EditUserTable(cell: any) {
                 ["Electrical and Electronic Engineering (EEE)", "EEE"],
               ],
               validate: Yup.string().trim(),
-              initialValue: department || "",
+              initialValue: department ? department : "",
             },
             mobile: {
               type: "text",
               label: "Mobile No.",
-              initialValue: mobile || "",
+              initialValue: mobile ? mobile : "",
               validate: Yup.string().trim(),
             },
             cgpa: {
               type: "number",
               label: "CGPA",
-              initialValue: cgpa || undefined,
+              initialValue: cgpa ? cgpa.toString() : "",
               validate: Yup.number().min(0).max(4),
             },
             role: {
               type: "select",
               label: "Role",
               options: ["ADMIN", "MODERATOR", "USER"],
-              initialValue: role || "",
+              initialValue: role ? role : "",
               validate: Yup.string().trim(),
             },
           }}
