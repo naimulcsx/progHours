@@ -40,7 +40,7 @@ const UserCell = (cell: Cell<RanklistItem>) => {
         <Avatar
           name={cell.row.original.user.name}
           size="sm"
-          {...getAvatarColors(cell.row.original.user.name)}
+          fontWeight="bold"
         />
         <Box>
           <Text color={mode("gray.900", "white")}>{cell.value}</Text>

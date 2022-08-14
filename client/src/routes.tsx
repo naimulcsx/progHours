@@ -27,6 +27,7 @@ import StudyPage from "@/pages/Study"
 import PublicLeaderboard from "@/pages/PublicLeaderboard"
 import GroupsPage from "./pages/groups/Groups"
 import GroupPage from "./pages/groups/Single"
+import ActivitiesPage from "./pages/Activities"
 
 const routes = (isLoggedIn: boolean): RouteObject[] => [
   {
@@ -72,6 +73,10 @@ const routes = (isLoggedIn: boolean): RouteObject[] => [
   {
     path: "/groups",
     element: isLoggedIn ? <GroupsPage /> : <Navigate to="/login" />,
+  },
+  {
+    path: "/activities",
+    element: isLoggedIn ? <ActivitiesPage /> : <Navigate to="/login" />,
   },
   {
     path: "/groups/:hashtag",

@@ -187,6 +187,33 @@ export class SubmissionsService {
     }
   }
 
+  async getAllSubmissions() {
+    const submissions = await this.prisma.submission.findMany({
+      take: 100,
+      orderBy: [
+        {
+          solvedAt: "desc",
+        },
+      ],
+      include: {
+        User: {
+          select: {
+            username: true,
+            name: true,
+          },
+        },
+        problem: {
+          select: {
+            name: true,
+            link: true,
+            pid: true,
+          },
+        },
+      },
+    })
+    return submissions
+  }
+
   async loginIntoVjudgeContest(contest_id: string, password: string) {
     let cookie = await this.cacheManager.get("VJUDGE_COOKIE")!
     if (!cookie) {

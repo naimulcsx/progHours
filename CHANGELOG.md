@@ -5,6 +5,18 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [Unreleased]
+
+### Added
+
+- **Recent Activities**: Now you can see what others are solving
+- **Leaderboard Filters**: You can filter leaderboard on various criteria: by batch / solve count / solve time etc.
+
+### Fixed
+
+- Fixed a Bug where the handle was not changing on profile pages.
+- Allow registration for other departments.
+
 ## [0.2.0] - 2022-08-13
 
 ### Added

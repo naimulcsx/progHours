@@ -27,6 +27,7 @@ import {
   CogIcon,
   DocumentTextIcon,
   UserGroupIcon,
+  TrendingUpIcon,
 } from "@heroicons/react/solid"
 import { useColorModeValue as mode } from "@chakra-ui/react"
 
@@ -82,6 +83,12 @@ export const Sidebar: React.FC = () => {
             icon={<ChartBarIcon width={SIDEBAR_ICON_SIZE} />}
             onClick={() => navigate("/leaderboard")}
             isActive={location.pathname === "/leaderboard"}
+          />
+          <NavLink
+            label="Activities"
+            icon={<TrendingUpIcon width={SIDEBAR_ICON_SIZE} />}
+            onClick={() => navigate("/activities")}
+            isActive={location.pathname === "/activities"}
           />
         </Stack>
         <Divider />

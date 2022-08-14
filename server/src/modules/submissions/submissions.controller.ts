@@ -51,6 +51,17 @@ export class SubmissionsController {
     }
   }
 
+  @Get("/all")
+  async getAllSubmissions() {
+    const submissions = await this.submissionsService.getAllSubmissions()
+    return {
+      statusCode: HttpStatus.OK,
+      body: {
+        submissions,
+      },
+    }
+  }
+
   /**
    * @POST /submissions
    */

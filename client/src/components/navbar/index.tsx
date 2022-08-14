@@ -24,7 +24,7 @@ import { MoonIcon, SunIcon } from "@heroicons/react/outline"
 
 const Navbar = () => {
   const { user } = useContext(GlobalContext)
-  const { bg, color } = getAvatarColors(user?.name!)
+  // const { bg, color } = getAvatarColors(user?.name!)
   const { colorMode, toggleColorMode } = useColorMode()
   return (
     <Box
@@ -66,7 +66,7 @@ const Navbar = () => {
             {user ? (
               <Link to={`/users/${user.username!}`}>
                 <HStack spacing={2}>
-                  <Avatar name={user.name!} size="sm" bg={bg} color={color} />
+                  <Avatar name={user.name!} size="sm" fontWeight="bold" />
                   <Show above="md">
                     <Text>{user.name!}</Text>
                   </Show>

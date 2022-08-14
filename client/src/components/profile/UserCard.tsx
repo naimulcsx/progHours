@@ -19,7 +19,6 @@ import getOJProfileURL from "@/utils/getOJProfileUrl"
 import { useBreakpointValue } from "@chakra-ui/media-query"
 
 export const UserCard: React.FC<UserCardProps> = ({ name, username }) => {
-  const { bg, color } = getAvatarColors(name)
   const [handles, setHandles] = useState([])
   const { colorMode } = useColorMode()
 
@@ -59,8 +58,6 @@ export const UserCard: React.FC<UserCardProps> = ({ name, username }) => {
               borderWidth="6px"
               borderColor={useColorModeValue("white", "gray.700")}
               size={useBreakpointValue({ base: "xl", md: "2xl" })}
-              bg={bg}
-              color={color}
               name={name}
             />
             <Box>
