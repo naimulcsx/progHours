@@ -15,7 +15,7 @@ const Logo = () => {
       </Box>
       <Box>
         <Heading size="md">progHours</Heading>
-        <Text fontSize="10px">v0.2.0</Text>
+        <Text fontSize="10px">v0.2.1</Text>
       </Box>
     </HStack>
   )

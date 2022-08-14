@@ -31,6 +31,13 @@ export const theme = extendTheme(
       },
     },
     components: {
+      Checkbox: {
+        baseStyle: {
+          label: {
+            touchAction: "none",
+          },
+        },
+      },
       Link: {
         baseStyle: {
           color: "blue.500",

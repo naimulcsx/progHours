@@ -1,5 +1,5 @@
 import { Helmet } from "react-helmet-async"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { useQuery } from "react-query"
 
 /**
@@ -11,21 +11,39 @@ import LeaderboardTable from "@/components/leaderboard/Table"
 /**
  * Import helpers
  */
-import calculatePoints from "@/utils/calculatePoints"
 import { getRankList } from "@/api/leaderboard"
-import { RanklistItem } from "@/types/RanklistItem"
-import { Spinner } from "@chakra-ui/react"
 import { AnimateLoading } from "@/components/AnimateLoading"
 import processRanklist from "@/utils/processRanklist"
+import { filterData } from "@/components/leaderboard/filters/filterData"
+import { LeaderboardFilters } from "@/components/leaderboard/filters/Filters"
 
 const LeaderboardPage = () => {
-  const [ranklist, setRanklist] = useState(null)
+  const [ranklist, setRanklist] = useState<any>(null)
+  const [filteredData, setFilteredData] = useState<any>(null)
+
   useQuery("ranklist", getRankList, {
     onSuccess: (res) => {
       const { stats } = res.body
-      setRanklist(processRanklist(stats))
+      const result = processRanklist(stats)
+      setRanklist(result)
     },
   })
+
+  const [filters, setFilters] = useState<any>({})
+
+  useEffect(() => {
+    if (Object.keys(filters).length > 0)
+      setFilteredData(filterData(ranklist, filters))
+    else setFilteredData(ranklist)
+  }, [ranklist])
+
+  useEffect(() => {
+    if (Object.keys(filters).length > 0)
+      setFilteredData(filterData(ranklist, filters))
+    else setFilteredData(ranklist)
+  }, [filters])
+
+  console.log(filters)
 
   return (
     <DashboardLayout title="Leaderboard">
@@ -33,8 +51,13 @@ const LeaderboardPage = () => {
       <Helmet>
         <title>Leaderboard</title>
       </Helmet>
-      <AnimateLoading isLoaded={ranklist}>
-        {ranklist && <LeaderboardTable ranklist={ranklist} />}
+      <AnimateLoading isLoaded={filteredData}>
+        {filteredData && (
+          <>
+            <LeaderboardFilters filters={filters} setFilters={setFilters} />
+            <LeaderboardTable ranklist={filteredData} />
+          </>
+        )}
       </AnimateLoading>
     </DashboardLayout>
   )

@@ -17,6 +17,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Submission entry where date was not changing.
 - Fixed Kattis parser where the problem name we were getting was empty. #176
+- Cookie is automatically getting deleted because of not specifying the `maxAge` #179
 
 ## [0.1.1] - 2022-07-20
 

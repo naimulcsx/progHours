@@ -1,4 +1,4 @@
-import { useMemo } from "react"
+import { useEffect, useMemo } from "react"
 import { useTable, useSortBy, Cell, Column } from "react-table"
 import { RanklistItem } from "@/types/RanklistItem"
 import { Link } from "react-router-dom"
@@ -6,7 +6,14 @@ import { Link } from "react-router-dom"
 /**
  * Import Icons
  */
-import { ArrowSmDownIcon, ArrowSmUpIcon } from "@heroicons/react/solid"
+import {
+  ArrowSmDownIcon,
+  ArrowSmUpIcon,
+  PlusIcon,
+  FilterIcon,
+  XIcon,
+} from "@heroicons/react/solid"
+
 import {
   Box,
   Table,
@@ -19,6 +26,9 @@ import {
   Flex,
   useColorModeValue as mode,
   Text,
+  Badge,
+  Button,
+  IconButton,
 } from "@chakra-ui/react"
 import { getAvatarColors } from "@/utils/getAvatarColors"
 import { CELL_STYLES } from "./cellStyles"
