@@ -25,7 +25,7 @@ export const UserCard: React.FC<UserCardProps> = ({ name, username }) => {
   /**
    * Get all handles
    */
-  useQuery("handles", () => getHandlesByUsername(username), {
+  useQuery(`handles/${username}`, () => getHandlesByUsername(username), {
     onSuccess(data) {
       setHandles(data?.body.handles)
     },
