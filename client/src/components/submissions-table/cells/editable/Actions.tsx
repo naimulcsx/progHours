@@ -4,7 +4,8 @@ import { useMutation, useQueryClient } from "react-query"
 /**
  * Import Components
  */
-import { TrashIcon } from "@/components/Icons"
+// import { TrashIcon } from "@/components/Icons"
+import { TrashIcon } from "@heroicons/react/outline"
 
 /**
  * Import helpers
@@ -78,7 +79,7 @@ const Actions = (cell: Cell<Submission>) => {
   return (
     <div className="flex space-x-4">
       <Button
-        size="sm"
+        size="xs"
         variant="outline"
         colorScheme="red"
         onClick={() => setIsOpen(true)}

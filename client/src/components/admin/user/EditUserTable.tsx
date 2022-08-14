@@ -4,7 +4,7 @@ import { useState } from "react"
 import * as Yup from "yup"
 import { useQueryClient } from "react-query"
 import { DEFAULT_TOAST_OPTIONS } from "@/configs/toast-config"
-import { Box, Button, IconButton, useToast } from "@chakra-ui/react"
+import { Box, Button, useToast } from "@chakra-ui/react"
 import { PencilAltIcon } from "@heroicons/react/outline"
 import { udpateUserData } from "@/api/user"
 
@@ -19,15 +19,15 @@ export default function EditUserTable(cell: any) {
 
   return (
     <Box>
-      <IconButton
+      <Button
         variant="outline"
-        p={1}
-        color="green.500"
+        size="xs"
+        colorScheme="green"
         aria-label="Edit User Button"
-        border={"none"}
         onClick={() => setIsOpen(true)}
-        icon={<PencilAltIcon width={22} height={22} />}
-      />
+      >
+        <PencilAltIcon width={16} height={16} />
+      </Button>
       <PopupBuilder
         isOpen={isOpen}
         setIsOpen={setIsOpen}
@@ -42,7 +42,6 @@ export default function EditUserTable(cell: any) {
               initialValue: username || "",
               validate: Yup.string().trim(),
             },
-
             name: {
               type: "text",
               label: "Name",

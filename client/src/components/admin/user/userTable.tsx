@@ -11,11 +11,11 @@ import {
   Flex,
   useColorModeValue as mode,
   Text,
+  Badge,
 } from "@chakra-ui/react"
 import { Column, useSortBy, useTable } from "react-table"
 import { ArrowSmDownIcon, ArrowSmUpIcon } from "@heroicons/react/outline"
 import { Users } from "@/types/User"
-import { PencilIcon } from "@heroicons/react/solid"
 import EditUserTable from "./EditUserTable"
 import { Link } from "react-router-dom"
 import { getAvatarColors } from "@/utils/getAvatarColors"
@@ -75,6 +75,21 @@ export default function UserManagementTable({ users }: { users: Users[] }) {
       {
         Header: "role",
         accessor: "role",
+        Cell: ({ cell }) => {
+          const props: any = {
+            ADMIN: {
+              colorScheme: "green",
+            },
+            USER: {
+              colorScheme: "purple",
+            },
+          }
+          return (
+            <Badge {...props[cell.value]} variant="subtle">
+              {cell.value}
+            </Badge>
+          )
+        },
       },
       {
         Header: "action",
@@ -150,7 +165,6 @@ export default function UserManagementTable({ users }: { users: Users[] }) {
                   return (
                     <Td
                       {...cell.getCellProps()}
-                      py={2}
                       color={mode("gray.700", "gray.500")}
                       borderColor={mode("gray.200", "gray.700")}
                       {...CELL_STYLES[cell.column.Header as string]}

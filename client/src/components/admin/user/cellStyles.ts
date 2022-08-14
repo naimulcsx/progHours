@@ -1,5 +1,5 @@
 const HORIZONTAL_PADDING = 6
-const VERTICAL_PADDING = 2
+const VERTICAL_PADDING = 2.5
 
 export const CELL_STYLES: any = {
   "#": {
@@ -15,8 +15,8 @@ export const CELL_STYLES: any = {
     py: VERTICAL_PADDING,
   },
   "University ID": {
-    minW: [32, 48],
-    w: [32, 48],
+    minW: [40, 48],
+    w: [40, 48],
     px: HORIZONTAL_PADDING,
     py: VERTICAL_PADDING,
   },

@@ -247,7 +247,7 @@ const SubmissionForm = ({ id }: { id: number }) => {
         <Td border={0}>
           <Button
             type="submit"
-            size="sm"
+            size="xs"
             form="add-submission"
             variant="outline"
           >

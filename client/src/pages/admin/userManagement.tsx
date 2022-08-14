@@ -23,7 +23,7 @@ export default function UserManagement() {
     <DashboardLayout title="Users">
       {/* @ts-ignore */}
       <Helmet>
-        <title>Admin | User Management</title>
+        <title>Users</title>
       </Helmet>
       <AnimateLoading isLoaded={users}>
         {users && <UserManagementTable users={users} />}
