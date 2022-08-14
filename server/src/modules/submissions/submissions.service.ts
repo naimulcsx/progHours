@@ -187,16 +187,18 @@ export class SubmissionsService {
     }
   }
 
-  async getAllSubmissions() {
+  async getAllSubmissions(page: number) {
+    const totalSubmissions = await this.prisma.submission.count()
     const submissions = await this.prisma.submission.findMany({
-      take: 100,
+      take: 20,
+      skip: 20 * (page - 1),
       orderBy: [
         {
           solvedAt: "desc",
         },
       ],
       include: {
-        User: {
+        user: {
           select: {
             username: true,
             name: true,
@@ -211,7 +213,10 @@ export class SubmissionsService {
         },
       },
     })
-    return submissions
+    return {
+      submissions,
+      totalSubmissions,
+    }
   }
 
   async loginIntoVjudgeContest(contest_id: string, password: string) {

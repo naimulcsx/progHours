@@ -10,6 +10,7 @@ import {
   Param,
   UseGuards,
   BadRequestException,
+  Query,
 } from "@nestjs/common"
 
 import {
@@ -51,14 +52,12 @@ export class SubmissionsController {
     }
   }
 
-  @Get("/all")
-  async getAllSubmissions() {
-    const submissions = await this.submissionsService.getAllSubmissions()
+  @Get("/activities")
+  async getAllSubmissions(@Query("page") page: number) {
+    const result = await this.submissionsService.getAllSubmissions(page)
     return {
       statusCode: HttpStatus.OK,
-      body: {
-        submissions,
-      },
+      body: result,
     }
   }
 
