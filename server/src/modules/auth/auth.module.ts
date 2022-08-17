@@ -12,17 +12,12 @@ import { AuthController } from "@/modules/auth/auth.controller"
 import { AuthService } from "@/modules/auth/auth.service"
 
 /**
- * Import Entities (models)
- */
-import { User } from "@/modules/users/user.entity"
-
-/**
  * Imoport Modules
  */
 import { UsersModule } from "@/modules/users/users.module"
 
 @Module({
-  imports: [forwardRef(() => UsersModule), TypeOrmModule.forFeature([User])],
+  imports: [forwardRef(() => UsersModule)],
   controllers: [AuthController],
   providers: [AuthService],
   exports: [AuthService],

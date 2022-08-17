@@ -2,13 +2,6 @@ import { Module } from "@nestjs/common"
 import { TypeOrmModule } from "@nestjs/typeorm"
 
 /**
- * Import Entities (models)
- */
-import { Tag } from "@/modules/problems/tag.entity"
-import { Problem } from "@/modules/problems/problem.entity"
-import { UserProblemTag } from "@/modules/problems/user-problem-tag"
-
-/**
  * Import Controllers
  */
 import { ProblemsController } from "@/modules/problems/problems.controller"
@@ -20,10 +13,7 @@ import { ProblemsService } from "@/modules/problems/problems.service"
 import { ParsersModule } from "../parsers/parsers.module"
 
 @Module({
-  imports: [
-    ParsersModule,
-    TypeOrmModule.forFeature([Problem, Tag, UserProblemTag]),
-  ],
+  imports: [ParsersModule],
   controllers: [ProblemsController],
   providers: [ProblemsService],
   exports: [ProblemsService],

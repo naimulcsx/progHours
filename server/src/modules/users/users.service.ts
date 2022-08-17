@@ -6,13 +6,10 @@ import {
   Injectable,
   NotFoundException,
 } from "@nestjs/common"
-import { InjectRepository } from "@nestjs/typeorm"
-import { Repository } from "typeorm"
 
 /**
  * Import Entities (models)
  */
-import { User } from "@/modules/users/user.entity"
 import { AuthService } from "../auth/auth.service"
 import { PrismaService } from "../prisma/prisma.service"
 import * as bcrypt from "bcryptjs"
@@ -21,9 +18,6 @@ import * as bcrypt from "bcryptjs"
 export class UsersService {
   constructor(
     private prisma: PrismaService,
-
-    @InjectRepository(User)
-    private usersRepository: Repository<User>,
 
     @Inject(forwardRef(() => AuthService))
     private authService: AuthService
