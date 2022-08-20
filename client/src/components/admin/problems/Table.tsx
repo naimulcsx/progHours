@@ -33,7 +33,7 @@ export default function UserManagementTable({ prob }) {
         accessor: "name",
         Cell: ({ cell }) => {
           return (
-            <Link to={`/problems/${cell.row.original.id}`}>
+            <Link to={`/admin/problems/${cell.row.original.pid}`}>
               <Flex alignItems="center" gap={4}>
                 <Avatar
                   name={cell.row.original.name}

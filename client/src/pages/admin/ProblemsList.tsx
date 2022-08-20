@@ -1,8 +1,6 @@
-import { getAllUsers } from "@/api/user"
 import ProblemListTable from "@/components/admin/problems/Table"
 import { AnimateLoading } from "@/components/AnimateLoading"
 import { DashboardLayout } from "@/components/layouts/Dashboard"
-import { User } from "@/GlobalStateProvider"
 import { useState } from "react"
 import { Helmet } from "react-helmet-async"
 import { useQuery } from "react-query"
