@@ -29,6 +29,7 @@ import GroupsPage from "./pages/groups/Groups"
 import GroupPage from "./pages/groups/Single"
 import ActivitiesPage from "./pages/Activities"
 import UserManagement from "./pages/admin/userManagement"
+import ProblemsList from "./pages/admin/ProblemsList"
 
 const routes = (isLoggedIn: boolean, role: string): RouteObject[] => [
   {
@@ -68,6 +69,24 @@ const routes = (isLoggedIn: boolean, role: string): RouteObject[] => [
     element:
       isLoggedIn && role === "ADMIN" ? (
         <UserManagement />
+      ) : (
+        <Navigate to="/login" />
+      ),
+  },
+  {
+    path: "/admin/problems",
+    element:
+      isLoggedIn && role === "ADMIN" ? (
+        <ProblemsList />
+      ) : (
+        <Navigate to="/login" />
+      ),
+  },
+  {
+    path: "/admin/problem/:id",
+    element:
+      isLoggedIn && role === "ADMIN" ? (
+        <ProblemsList />
       ) : (
         <Navigate to="/login" />
       ),
