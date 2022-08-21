@@ -1,19 +1,9 @@
 import { Injectable } from "@nestjs/common"
-import { InjectConnection, InjectRepository } from "@nestjs/typeorm"
-import { Submission } from "@/modules/submissions/submission.entity"
-import { Connection, Repository } from "typeorm"
-import { UsersService } from "../users/users.service"
-import { Ranking } from "../ranking/ranking.entity"
 import { PrismaService } from "../prisma/prisma.service"
 
 @Injectable()
 export class StatsService {
-  constructor(
-    private prisma: PrismaService,
-    @InjectRepository(Submission)
-    private submissionsRepository: Repository<Submission>,
-    private readonly usersService: UsersService
-  ) {}
+  constructor(private prisma: PrismaService) {}
 
   /**
    * Uses all of the other helper methods and return all the statistics
