@@ -2,21 +2,17 @@ import {
   BadRequestException,
   Body,
   Controller,
-  Delete,
   Get,
   HttpStatus,
   NotFoundException,
   Param,
-  ParseIntPipe,
   Patch,
-  Post,
   Query,
   Req,
   UseGuards,
 } from "@nestjs/common"
 
 import {
-  ApiCreatedResponse,
   ApiForbiddenResponse,
   ApiNotFoundResponse,
   ApiOkResponse,
@@ -28,9 +24,8 @@ import {
 import { UsersService } from "@/modules/users/users.service"
 import { IsAuthenticatedGuard } from "@/guards/is-authenticated"
 import { SubmissionsService } from "../submissions/submissions.service"
-import { CreateStudyDto } from "@/validators/create-study-dto"
-import { StudiesService } from "@/modules/studies/studies.service"
-import { UpdateStudyDto } from "@/validators/update-study-dto"
+import { IsAdmin } from "@/guards/is-admin"
+import { UpdateUserDto } from "@/validators/update-user-dto"
 
 @Controller("/users")
 @ApiTags("Users")
@@ -93,6 +88,7 @@ export class UsersController {
       cgpa,
       currentPassword,
       newPassword,
+      section,
     } = body
 
     // handle user data update
@@ -106,6 +102,7 @@ export class UsersController {
         department,
         batch,
         cgpa,
+        section,
       })
 
       // return response
@@ -175,5 +172,45 @@ export class UsersController {
       statusCode: HttpStatus.OK,
       body: { submissions },
     }
+  }
+
+  /**********************  ADMIN  ******************** */
+  /**
+   * @GET /users
+   */
+  @Get("/")
+  @ApiOperation({ summary: "Get all users" })
+  @ApiOkResponse({ description: "Success." })
+  @ApiForbiddenResponse({ description: "Forbidden." })
+  @UseGuards(IsAuthenticatedGuard, IsAdmin)
+  async getAllUsers() {
+    const users = await this.usersService.getAllUsers()
+
+    return {
+      statusCode: HttpStatus.OK,
+      body: users,
+    }
+  }
+
+  /**
+   * @Patch /users/:id
+   * Update user data
+   */
+  @Patch("/:id")
+  @ApiOperation({ summary: "Update user data" })
+  @UseGuards(IsAuthenticatedGuard, IsAdmin)
+  async updateUserData(
+    @Body() body: UpdateUserDto,
+    @Param("id") id,
+    @Req() req
+  ) {
+    console.log(body)
+    const user = await this.usersService.updateUserData(
+      body,
+      Number(id),
+      req.user.id
+    )
+
+    return { statusCode: HttpStatus.OK, message: "User Updated", body: user }
   }
 }

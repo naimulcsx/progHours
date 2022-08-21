@@ -86,7 +86,7 @@ const ActivitiesPage = () => {
             mx={-4}
             borderTop="1px solid"
             borderColor={borderColor}
-            pb={[10, 10, 0]}
+            pb={["54px", "54px", 0]}
           >
             {submissions.map((sub: any) => {
               return (

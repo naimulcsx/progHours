@@ -1,4 +1,5 @@
 import {
+  BadRequestException,
   ConflictException,
   ForbiddenException,
   forwardRef,
@@ -13,6 +14,7 @@ import {
 import { AuthService } from "../auth/auth.service"
 import { PrismaService } from "../prisma/prisma.service"
 import * as bcrypt from "bcryptjs"
+import { UpdateUserDto } from "@/validators/update-user-dto"
 
 @Injectable()
 export class UsersService {
@@ -62,7 +64,16 @@ export class UsersService {
     return newUser
   }
 
-  async updateProfile({ id, name, email, mobile, department, batch, cgpa }) {
+  async updateProfile({
+    id,
+    name,
+    email,
+    mobile,
+    department,
+    batch,
+    cgpa,
+    section,
+  }) {
     const user = await this.prisma.user.findUnique({ where: { id } })
     // This condition will never be hit, unless you have access
     // token of an user which is not there in the database
@@ -78,6 +89,7 @@ export class UsersService {
         department,
         batch: Number(batch) || null,
         cgpa: Number(cgpa) || null,
+        section,
       },
     })
     // return the updated profile
@@ -111,5 +123,47 @@ export class UsersService {
         password: newPassword,
       },
     })
+  }
+
+  /**********************  ADMIN  ******************** */
+  async getAllUsers() {
+    return this.prisma.user.findMany()
+  }
+
+  async updateUserData(
+    { name, batch, department, role, mobile, cgpa, section, username, email },
+    id: number,
+    userId: number
+  ) {
+    try {
+      // const userFound = await this.prisma.user.findUnique({
+      //   where: {
+      //     id,
+      //   },
+      // })
+
+      // if (userFound && userId === userFound.id)
+      //   throw new BadRequestException("Username already exist!")
+
+      return this.prisma.user.update({
+        where: {
+          id,
+        },
+        data: {
+          username: username.toLowerCase(),
+          email,
+          name,
+          batch: Number(batch) || null,
+          department: department || null,
+          role,
+          mobile: mobile || null,
+          cgpa: Number(cgpa) || null,
+          section: section || null,
+        },
+      })
+    } catch (err) {
+      console.log(err.message)
+      throw err
+    }
   }
 }

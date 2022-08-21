@@ -68,15 +68,15 @@ export default function StudyCard(studies: Study) {
       <Flex alignItems={"center"} my="2" justifyContent="space-between">
         <Flex alignItems={"center"} columnGap="4px">
           {type === "Video" ? (
-            <PlayIcon className="w-4 h-4" />
+            <PlayIcon width={18} height={18} />
           ) : (
-            <NewspaperIcon className="w-4 h-4" />
+            <NewspaperIcon width={18} height={18} />
           )}
           <Box fontSize={"sm"}>{type}</Box>
         </Flex>
 
         <Flex alignItems={"center"} columnGap="4px">
-          <TranslateIcon className="w-4 h-4" />
+          <TranslateIcon width={18} height={18} />
           <Box fontSize={"sm"}>{language}</Box>
         </Flex>
       </Flex>

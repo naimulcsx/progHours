@@ -3,8 +3,20 @@
  */
 import { NavLink } from "./NavLink"
 import { UserProfile } from "./UserProfile"
-import { Box, Divider, Flex, Spacer, Stack } from "@chakra-ui/react"
-import Logo from "@/components/Logo"
+import {
+  Accordion,
+  AccordionButton,
+  AccordionIcon,
+  AccordionItem,
+  AccordionPanel,
+  Box,
+  Divider,
+  Flex,
+  Heading,
+  HStack,
+  Spacer,
+  Stack,
+} from "@chakra-ui/react"
 
 /**
  * Import hooks
@@ -28,8 +40,11 @@ import {
   DocumentTextIcon,
   UserGroupIcon,
   TrendingUpIcon,
+  UsersIcon,
+  ViewGridAddIcon,
 } from "@heroicons/react/solid"
 import { useColorModeValue as mode } from "@chakra-ui/react"
+import { AdminIcon } from "../Icons"
 
 export const SIDEBAR_ICON_SIZE = 24
 
@@ -37,6 +52,11 @@ export const Sidebar: React.FC = () => {
   const location = useLocation()
   const navigate = useNavigate()
   const { user } = useContext(GlobalContext)
+
+  // user.role
+
+  // const role = localStorage.getItem("role")
+
   return (
     <Flex
       height="100vh"
@@ -92,6 +112,30 @@ export const Sidebar: React.FC = () => {
           />
         </Stack>
         <Divider />
+
+        {user?.role === "ADMIN" && (
+          <>
+            <Stack>
+              <Heading size="sm" mb={2} ml={2}>
+                Admin Panel
+              </Heading>
+              <NavLink
+                label="Users"
+                icon={<UsersIcon width={SIDEBAR_ICON_SIZE} />}
+                onClick={() => navigate("/admin/users")}
+                isActive={location.pathname === "/admin/users"}
+              />
+              {/* <NavLink
+                label="Problems"
+                icon={<ViewGridAddIcon width={SIDEBAR_ICON_SIZE} />}
+                onClick={() => navigate("/admin/problems")}
+                isActive={location.pathname === "/admin/problems"}
+              />  */}
+            </Stack>
+            <Divider />
+          </>
+        )}
+
         <Stack>
           <NavLink
             label="Settings"

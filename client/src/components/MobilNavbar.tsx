@@ -1,4 +1,16 @@
-import { Box, useColorModeValue as mode } from "@chakra-ui/react"
+import {
+  Box,
+  useColorModeValue as mode,
+  Menu,
+  MenuButton,
+  MenuList,
+  MenuItem,
+  MenuItemOption,
+  MenuGroup,
+  MenuOptionGroup,
+  MenuDivider,
+  IconButton,
+} from "@chakra-ui/react"
 import { useLocation, useNavigate } from "react-router-dom"
 
 /**
@@ -17,11 +29,17 @@ import {
   DocumentTextIcon,
   UserGroupIcon,
   TrendingUpIcon,
+  DotsVerticalIcon,
+  PlusIcon,
+  UsersIcon,
 } from "@heroicons/react/solid"
+import { useContext } from "react"
+import { GlobalContext } from "@/GlobalStateProvider"
 
 export default function MobileNav() {
   const location = useLocation()
   const navigate = useNavigate()
+  const { user } = useContext(GlobalContext)
   return (
     <Box
       position="fixed"
@@ -58,24 +76,55 @@ export default function MobileNav() {
         onClick={() => navigate("/study")}
         isActive={location.pathname === "/study"}
       />
-      <NavLink
+      {/* <NavLink
         label=""
         icon={<UserGroupIcon width={SIDEBAR_ICON_SIZE} />}
         onClick={() => navigate("/groups")}
         isActive={location.pathname === "/groups"}
-      />
+      /> */}
       <NavLink
         label=""
         icon={<ChartBarIcon width={SIDEBAR_ICON_SIZE} />}
         onClick={() => navigate("/leaderboard")}
         isActive={location.pathname === "/leaderboard"}
       />
-      <NavLink
+      {/* <NavLink
         label=""
         icon={<TrendingUpIcon width={SIDEBAR_ICON_SIZE} />}
         onClick={() => navigate("/activities")}
         isActive={location.pathname === "/activities"}
-      />
+      /> */}
+      <Menu>
+        <MenuButton
+          as={IconButton}
+          aria-label="Options"
+          icon={<DotsVerticalIcon width={24} />}
+          variant="unstyled"
+          display="flex"
+        />
+        <MenuList>
+          <MenuItem
+            icon={<UserGroupIcon width={20} />}
+            onClick={() => navigate("/groups")}
+          >
+            Groups
+          </MenuItem>
+          <MenuItem
+            icon={<TrendingUpIcon width={20} />}
+            onClick={() => navigate("/activities")}
+          >
+            Activity
+          </MenuItem>
+          {user?.role === "ADMIN" && (
+            <MenuItem
+              icon={<UsersIcon width={20} />}
+              onClick={() => navigate("/admin/users")}
+            >
+              Users
+            </MenuItem>
+          )}
+        </MenuList>
+      </Menu>
     </Box>
   )
 }

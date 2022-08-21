@@ -10,7 +10,6 @@ export class IsAdmin implements CanActivate {
   ): boolean | Promise<boolean> | Observable<boolean> {
     const req = context.switchToHttp().getRequest()
     const { user } = req
-    console.log(user.role)
     if (user.role === Role.ADMIN) return true
     return false
   }

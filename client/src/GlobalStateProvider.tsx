@@ -20,6 +20,7 @@ export interface User {
   batch?: number
   department?: string
   memberSince?: string
+  section?: string
 }
 
 interface GlobalContext {

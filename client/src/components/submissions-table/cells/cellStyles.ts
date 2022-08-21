@@ -28,8 +28,8 @@ export const CELL_STYLES: any = {
     py: VERTICAL_PADDING,
   },
   "Problem Name": {
-    minW: 72,
-    w: 72,
+    minW: [72, 80],
+    w: [72, 80],
     px: HORIZONTAL_PADDING,
     py: VERTICAL_PADDING,
   },

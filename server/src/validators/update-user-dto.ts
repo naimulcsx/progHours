@@ -1,9 +1,22 @@
-import { IsEmail, IsString, IsNumber, IsOptional } from "class-validator"
+import { Role } from "@prisma/client"
+import {
+  IsEmail,
+  IsString,
+  IsNumber,
+  IsOptional,
+  IsPositive,
+  Min,
+  Max,
+} from "class-validator"
 
 export class UpdateUserDto {
   @IsString()
   @IsOptional()
   name: string
+
+  @IsString()
+  @IsOptional()
+  username: string
 
   @IsEmail()
   @IsOptional()
@@ -11,17 +24,29 @@ export class UpdateUserDto {
 
   @IsNumber()
   @IsOptional()
-  batch: string
+  @IsPositive()
+  batch: number
 
   @IsNumber()
+  @IsPositive()
+  @Min(0)
+  @Max(4)
   @IsOptional()
-  cgpa: string
+  cgpa: number
 
   @IsString()
   @IsOptional()
   department: string
 
-  @IsNumber()
+  @IsString()
   @IsOptional()
   mobile: string
+
+  @IsString()
+  @IsOptional()
+  role: Role
+
+  @IsString()
+  @IsOptional()
+  section: string
 }

@@ -59,7 +59,6 @@ const FormBuilder = ({
     onSubmit: async (values) => {
       const newValues: any = {}
       Object.keys(values).forEach((key) => {
-        console.log(fields[key])
         if (fields[key].optional === true && values[key] === "") {
           newValues[key] = null
         } else {
@@ -67,6 +66,7 @@ const FormBuilder = ({
         }
       })
       console.log(newValues)
+
       await mutateAsync(newValues)
     },
   })
@@ -181,7 +181,7 @@ interface FormBuilderProps extends BoxProps {
     [key: string]: {
       type: string
       label?: string
-      initialValue?: string | boolean
+      initialValue?: string | boolean | number
       validate: Yup.AnySchema
       value?: string
       options?: Array<string> | [string, string][]

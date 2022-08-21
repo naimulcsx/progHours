@@ -105,4 +105,8 @@ export class ProblemsService {
       throw err
     }
   }
+
+  async getAllProblems() {
+    return this.prisma.problem.findMany()
+  }
 }
