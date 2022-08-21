@@ -60,6 +60,7 @@ export default function ProblemManagementTable({
   const { getTableProps, rows, prepareRow, headerGroups, getTableBodyProps } =
     useTable(
       {
+        /* @ts-ignore */
         data: problems,
         columns: tableColumns,
       },
