@@ -69,7 +69,8 @@ model Submission {
   problemId Int
 
   @@index(problemId)
-  @@index([userId, verdict])
+  @@index(userId)
+  @@index(solvedAt)
 }
 
 model ProblemTag {
