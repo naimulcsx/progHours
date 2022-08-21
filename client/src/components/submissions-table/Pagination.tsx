@@ -5,6 +5,7 @@ import {
   Input,
   Box,
   Text,
+  useColorModeValue as mode,
   HStack,
 } from "@chakra-ui/react"
 import {
@@ -13,8 +14,6 @@ import {
   ChevronRightIcon,
   ChevronDoubleRightIcon,
 } from "@heroicons/react/outline"
-import { useColorModeValue as mode } from "@chakra-ui/react"
-import { useEffect, useState } from "react"
 
 export const Pagination = (props: any) => {
   const {
@@ -28,35 +27,32 @@ export const Pagination = (props: any) => {
     pageCount,
     previousPage,
     nextPage,
-    isEditable,
-    noMobileNavbar,
   } = props
-
   return (
     <Flex
       bg={mode("white", "gray.800")}
       px={6}
       py={3}
-      borderTop="1px solid"
+      borderBottom="1px solid gray.200"
       borderColor={mode("gray.200", "gray.700")}
       justify="space-between"
-      w="full"
     >
       <Flex align="center" gap={4}>
         <Box fontSize="sm">
+          Page{" "}
           <span className="font-medium">
-            {pageIndex + 1}/{pageOptions.length}
+            {pageIndex + 1} of {pageOptions.length}
           </span>
         </Box>
         <Select
           size="sm"
-          width={[32, 32, 40]}
+          width={40}
           value={pageSize}
           onChange={(e) => {
             setPageSize(Number(e.target.value))
           }}
         >
-          {[20, 30, 40, 50, 100].map((pageSize) => (
+          {[10, 20, 30, 40, 50].map((pageSize) => (
             <option key={pageSize} value={pageSize}>
               Show {pageSize}
             </option>
@@ -96,19 +92,6 @@ export const Pagination = (props: any) => {
         >
           <ChevronDoubleRightIcon height={12} />
         </Button>
-        {/* <Flex align="center" className="space-x-2">
-          <Text fontSize="sm">Go to page : </Text>
-          <Input
-            size="sm"
-            w="20"
-            type="number"
-            defaultValue={pageIndex + 1}
-            onChange={(e) => {
-              const page = e.target.value ? Number(e.target.value) - 1 : 0
-              gotoPage(page)
-            }}
-          />
-        </Flex> */}
       </HStack>
     </Flex>
   )

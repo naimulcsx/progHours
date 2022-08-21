@@ -5,6 +5,7 @@ import { useQueryClient } from "react-query"
 import { DEFAULT_TOAST_OPTIONS } from "@/configs/toast-config"
 import { useToast } from "@chakra-ui/react"
 import { udpateUserData } from "@/api/user"
+import { User } from "@/GlobalStateProvider"
 
 export default function EditUserTable({ data, isOpen, setIsOpen }: any) {
   const client = useQueryClient()
@@ -104,9 +105,11 @@ export default function EditUserTable({ data, isOpen, setIsOpen }: any) {
           return udpateUserData(Number(id), values)
         }}
         onSuccess={({ body }) => {
+          console.log(data)
           client.invalidateQueries("users")
-          // if (username !== body.username || name !== body.name)
-          //   client.invalidateQueries("user")
+          if (username !== body.username || name !== body.name)
+            client.invalidateQueries("user")
+
           toast({
             status: "success",
             title: "user updated",
@@ -128,4 +131,10 @@ export default function EditUserTable({ data, isOpen, setIsOpen }: any) {
       />
     </PopupBuilder>
   )
+}
+
+interface EditUser {
+  body: {
+    users: User[]
+  }
 }

@@ -224,20 +224,21 @@ export default function UserManagementTable({ users }: { users: User[] }) {
             })}
           </Tbody>
         </Table>
+
+        <Pagination
+          isEditable={true}
+          pageIndex={pageIndex}
+          pageOptions={pageOptions}
+          pageSize={pageSize}
+          setPageSize={setPageSize}
+          canPreviousPage={canPreviousPage}
+          canNextPage={canNextPage}
+          gotoPage={gotoPage}
+          pageCount={pageCount}
+          previousPage={previousPage}
+          nextPage={nextPage}
+        />
       </Box>
-      <Pagination
-        isEditable={true}
-        pageIndex={pageIndex}
-        pageOptions={pageOptions}
-        pageSize={pageSize}
-        setPageSize={setPageSize}
-        canPreviousPage={canPreviousPage}
-        canNextPage={canNextPage}
-        gotoPage={gotoPage}
-        pageCount={pageCount}
-        previousPage={previousPage}
-        nextPage={nextPage}
-      />
     </>
   )
 }
