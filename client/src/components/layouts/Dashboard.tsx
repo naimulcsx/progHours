@@ -35,7 +35,7 @@ export const DashboardLayout: FC<DashboardLayoutProps> = ({
         </Show>
 
         {/* main content */}
-        <Box w="full" p={4} mt={14} overflowY="auto">
+        <Box w="full" pt={4} px={4} mt={14} overflowY="auto">
           {title && (
             <Flex justifyContent="space-between">
               <Box mb={4}>

@@ -32,21 +32,25 @@ export const Pagination = (props: any) => {
     <Flex
       bg={mode("white", "gray.800")}
       px={6}
-      py={3}
-      borderBottom="1px solid gray.200"
+      py={[2, 3]}
+      borderTop="1px solid"
       borderColor={mode("gray.200", "gray.700")}
       justify="space-between"
+      position="fixed"
+      bottom={props.isPublic ? 0 : [14, 0]}
+      right={0}
+      left={props.isPublic ? 0 : [0, "220px"]}
     >
       <Flex align="center" gap={4}>
-        <Box fontSize="sm">
-          Page{" "}
+        <Box fontSize={["xs", "sm"]}>
           <span className="font-medium">
-            {pageIndex + 1} of {pageOptions.length}
+            {pageIndex + 1} / {pageOptions.length}
           </span>
         </Box>
         <Select
           size="sm"
-          width={40}
+          fontSize={["xs", "sm"]}
+          width={32}
           value={pageSize}
           onChange={(e) => {
             setPageSize(Number(e.target.value))

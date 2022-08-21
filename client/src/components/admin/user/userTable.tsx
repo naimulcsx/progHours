@@ -153,7 +153,7 @@ export default function UserManagementTable({ users }: { users: User[] }) {
   return (
     <>
       <EditUserTable data={data} isOpen={isOpen} setIsOpen={setIsOpen} />
-      <Box mx={-4} overflowX="auto">
+      <Box mx={-4} overflowX="auto" mb={["104px", 14]}>
         <Table w="full" {...getTableProps()}>
           <Thead>
             {headerGroups.map((headerGroup) => {

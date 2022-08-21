@@ -53,7 +53,9 @@ export const Sidebar: React.FC = () => {
   const navigate = useNavigate()
   const { user } = useContext(GlobalContext)
 
-  const role = localStorage.getItem("role")
+  // user.role
+
+  // const role = localStorage.getItem("role")
 
   return (
     <Flex
@@ -111,7 +113,7 @@ export const Sidebar: React.FC = () => {
         </Stack>
         <Divider />
 
-        {role === "ADMIN" && (
+        {user?.role === "ADMIN" && (
           <>
             <Stack>
               <Heading size="sm" mb={2} ml={2}>
@@ -123,12 +125,12 @@ export const Sidebar: React.FC = () => {
                 onClick={() => navigate("/admin/users")}
                 isActive={location.pathname === "/admin/users"}
               />
-               <NavLink
+              {/* <NavLink
                 label="Problems"
                 icon={<ViewGridAddIcon width={SIDEBAR_ICON_SIZE} />}
                 onClick={() => navigate("/admin/problems")}
                 isActive={location.pathname === "/admin/problems"}
-              /> 
+              />  */}
             </Stack>
             <Divider />
           </>

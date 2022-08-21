@@ -71,11 +71,11 @@ export const SubmissionsTable = ({
   return (
     <Box
       position="relative"
-      pb={["88px", 10]}
+      pb={["64px", 10]}
       mt={isEditable ? 6 : 2}
       mx={isEditable ? -4 : 0}
       overflowX="auto"
-      mb={10}
+      mb={[10, 4]}
     >
       <Box
         shadow={isEditable ? "initial" : "base"}

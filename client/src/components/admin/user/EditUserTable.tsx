@@ -109,7 +109,6 @@ export default function EditUserTable({ data, isOpen, setIsOpen }: any) {
           client.invalidateQueries("users")
           if (username !== body.username || name !== body.name)
             client.invalidateQueries("user")
-
           toast({
             status: "success",
             title: "user updated",
