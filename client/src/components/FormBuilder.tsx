@@ -181,7 +181,7 @@ interface FormBuilderProps extends BoxProps {
     [key: string]: {
       type: string
       label?: string
-      initialValue?: string | boolean
+      initialValue?: string | boolean | number
       validate: Yup.AnySchema
       value?: string
       options?: Array<string> | [string, string][]

@@ -193,15 +193,23 @@ export class UsersController {
   }
 
   /**
-   * @Patch /users
+   * @Patch /users/:id
    * Update user data
    */
-  @Patch("/")
+  @Patch("/:id")
   @ApiOperation({ summary: "Update user data" })
   @UseGuards(IsAuthenticatedGuard, IsAdmin)
-  async updateUserData(@Body() body: UpdateUserDto, @Req() req) {
+  async updateUserData(
+    @Body() body: UpdateUserDto,
+    @Param("id") id,
+    @Req() req
+  ) {
     console.log(body)
-    const user = await this.usersService.updateUserData(body, req.user.id)
+    const user = await this.usersService.updateUserData(
+      body,
+      Number(id),
+      req.user.id
+    )
 
     return { statusCode: HttpStatus.OK, message: "User Updated", body: user }
   }

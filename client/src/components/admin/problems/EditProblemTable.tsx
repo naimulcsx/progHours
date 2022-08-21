@@ -2,34 +2,23 @@ import { DashboardLayout } from "@/components/layouts/Dashboard"
 import { Helmet } from "react-helmet-async"
 import { useParams } from "react-router-dom"
 import { useQuery } from "react-query"
-import axios from "axios"
 import { useState } from "react"
 
 import FormBuilder from "@/components/FormBuilder"
 import * as Yup from "yup"
-import {
-  Box,
-  Spinner,
-  useColorModeValue as mode,
-  useToast,
-} from "@chakra-ui/react"
+import { Spinner, useToast } from "@chakra-ui/react"
 import { DEFAULT_TOAST_OPTIONS } from "@/configs/toast-config"
-import { updateProblemInfo } from "@/api/problems"
+import { getProblemByPid, updateProblemInfo } from "@/api/problems"
+import { Problem } from "@/types/Problem"
 
-export default function Problem() {
-  const [probInfo, setProbInfo] = useState(null)
+export default function EditProblemTable() {
+  const [problem, setProblem] = useState<Problem>()
   const toast = useToast(DEFAULT_TOAST_OPTIONS)
   const { pid } = useParams()
-  const getProblemInfo = () => {
-    return axios(`/api/problems/${pid}`)
-      .then((res) => res.data)
-      .catch((err) => {
-        //console.log("err", err)
-      })
-  }
-  useQuery("users", getProblemInfo, {
+
+  useQuery("problem", getProblemByPid, {
     onSuccess: (res) => {
-      setProbInfo(res.body.problem)
+      setProblem(res.body.problem)
     },
   })
 
@@ -39,20 +28,20 @@ export default function Problem() {
       <Helmet>
         <title>{pid}</title>
       </Helmet>
-      {probInfo ? (
+      {problem ? (
         <FormBuilder
           fields={{
             name: {
               type: "text",
               label: "Problem Name",
               validate: Yup.string().trim().required("Name is required"),
-              initialValue: probInfo.name || "",
+              initialValue: problem.name || "",
             },
             difficulty: {
               type: "text",
               label: "Difficulty",
               validate: Yup.string().trim().required("Name is required"),
-              initialValue: probInfo.difficulty || "",
+              initialValue: problem.difficulty || "",
             },
           }}
           button={{
@@ -61,8 +50,6 @@ export default function Problem() {
             colorScheme: "gray",
           }}
           mutation={(values: any) => {
-            // console.log(values,"t")
-
             return updateProblemInfo(pid, values)
           }}
           onSuccess={() => {

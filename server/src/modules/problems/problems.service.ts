@@ -106,7 +106,7 @@ export class ProblemsService {
     }
   }
 
-  async getAllProblems () {
+  async getAllProblems() {
     return this.prisma.problem.findMany()
   }
 }

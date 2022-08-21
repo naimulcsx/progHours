@@ -68,7 +68,8 @@ export default function EditUserTable(cell: any) {
               type: "number",
               label: "Batch",
               initialValue: batch ? batch : "",
-              validate: Yup.number(),
+              validate: Yup.number().positive("Invalid Batch"),
+              optional: true,
             },
             section: {
               type: "select",
@@ -89,18 +90,21 @@ export default function EditUserTable(cell: any) {
               ],
               validate: Yup.string().trim(),
               initialValue: department ? department : "",
+              optional: true,
             },
             mobile: {
               type: "text",
               label: "Mobile No.",
               initialValue: mobile ? mobile : "",
               validate: Yup.string().trim(),
+              optional: true,
             },
             cgpa: {
               type: "number",
               label: "CGPA",
               initialValue: cgpa ? cgpa : "",
               validate: Yup.number().min(0).max(4),
+              optional: true,
             },
             role: {
               type: "select",
@@ -111,12 +115,7 @@ export default function EditUserTable(cell: any) {
             },
           }}
           mutation={(values: any) => {
-            const body = {
-              id,
-              ...values,
-            }
-
-            return udpateUserData(body)
+            return udpateUserData(Number(id), values)
           }}
           onSuccess={({ body }) => {
             client.invalidateQueries("users")

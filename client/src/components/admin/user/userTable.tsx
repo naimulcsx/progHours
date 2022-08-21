@@ -15,13 +15,13 @@ import {
 } from "@chakra-ui/react"
 import { Column, useSortBy, useTable } from "react-table"
 import { ArrowSmDownIcon, ArrowSmUpIcon } from "@heroicons/react/outline"
-import { Users } from "@/types/User"
+import { User } from "@/GlobalStateProvider"
 import EditUserTable from "./EditUserTable"
 import { Link } from "react-router-dom"
 import { getAvatarColors } from "@/utils/getAvatarColors"
 import { CELL_STYLES } from "./cellStyles"
 
-export default function UserManagementTable({ users }: { users: Users[] }) {
+export default function UserManagementTable({ users }: { users: User[] }) {
   const tableColumns = useMemo(() => {
     return [
       {
@@ -96,7 +96,7 @@ export default function UserManagementTable({ users }: { users: Users[] }) {
         accessor: "action",
         Cell: EditUserTable,
       },
-    ] as Column<Users>[]
+    ] as Column<User>[]
   }, [])
 
   const { getTableProps, rows, prepareRow, headerGroups, getTableBodyProps } =

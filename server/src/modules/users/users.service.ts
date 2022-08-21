@@ -131,29 +131,19 @@ export class UsersService {
   }
 
   async updateUserData(
-    {
-      id,
-      name,
-      batch,
-      department,
-      role,
-      mobile,
-      cgpa,
-      section,
-      username,
-      email,
-    },
-    userId
+    { name, batch, department, role, mobile, cgpa, section, username, email },
+    id: number,
+    userId: number
   ) {
     try {
-      const userFound = await this.prisma.user.findUnique({
-        where: {
-          id,
-        },
-      })
+      // const userFound = await this.prisma.user.findUnique({
+      //   where: {
+      //     id,
+      //   },
+      // })
 
-      if (userFound && userId !== userFound.id)
-        throw new BadRequestException("Username already exist!")
+      // if (userFound && userId === userFound.id)
+      //   throw new BadRequestException("Username already exist!")
 
       return this.prisma.user.update({
         where: {

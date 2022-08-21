@@ -1,19 +1,18 @@
-import ProblemListTable from "@/components/admin/problems/Table"
+import ProblemTable from "@/components/admin/problems/ProblemTable"
 import { AnimateLoading } from "@/components/AnimateLoading"
 import { DashboardLayout } from "@/components/layouts/Dashboard"
 import { useState } from "react"
 import { Helmet } from "react-helmet-async"
 import { useQuery } from "react-query"
 import axios from "axios"
+import { getAllProblems } from "@/api/problems"
 
-export default function ProblemsList() {
-  const [prob, setProb] = useState(null)
-  const getAllProblems = () => {
-    return axios("/api/problems").then((res) => res.data)
-  }
-  useQuery("users", getAllProblems, {
+export default function ProblemManagement() {
+  const [problems, setProblems] = useState(null)
+
+  useQuery("problems", getAllProblems, {
     onSuccess: (res) => {
-      setProb(res.body.problems)
+      setProblems(res.body.problems)
     },
   })
 
@@ -23,8 +22,8 @@ export default function ProblemsList() {
       <Helmet>
         <title>Problems</title>
       </Helmet>
-      <AnimateLoading isLoaded={prob}>
-        {prob && <ProblemListTable prob={prob} />}
+      <AnimateLoading isLoaded={problems}>
+        {problems && <ProblemTable problems={problems} />}
       </AnimateLoading>
     </DashboardLayout>
   )

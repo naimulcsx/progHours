@@ -4,14 +4,12 @@ import {
   IsString,
   IsNumber,
   IsOptional,
-  Max,
+  IsPositive,
   Min,
+  Max,
 } from "class-validator"
 
 export class UpdateUserDto {
-  @IsNumber()
-  id: number
-
   @IsString()
   @IsOptional()
   name: string
@@ -26,11 +24,13 @@ export class UpdateUserDto {
 
   @IsNumber()
   @IsOptional()
+  @IsPositive()
   batch: number
 
   @IsNumber()
-  // @Min(0)
-  // @Max(4)
+  @IsPositive()
+  @Min(0)
+  @Max(4)
   @IsOptional()
   cgpa: number
 

@@ -29,8 +29,7 @@ import GroupsPage from "./pages/groups/Groups"
 import GroupPage from "./pages/groups/Single"
 import ActivitiesPage from "./pages/Activities"
 import UserManagement from "./pages/admin/userManagement"
-import ProblemsList from "./pages/admin/ProblemsList"
-import Problem from "./pages/admin/Problem"
+import ProblemManagement from "./pages/admin/problemManagement"
 
 const routes = (isLoggedIn: boolean, role: string): RouteObject[] => [
   {
@@ -78,16 +77,16 @@ const routes = (isLoggedIn: boolean, role: string): RouteObject[] => [
     path: "/admin/problems",
     element:
       isLoggedIn && role === "ADMIN" ? (
-        <ProblemsList />
+        <ProblemManagement />
       ) : (
         <Navigate to="/login" />
       ),
   },
-  {
-    path: "/admin/problems/:pid",
-    element:
-      isLoggedIn && role === "ADMIN" ? <Problem /> : <Navigate to="/login" />,
-  },
+  // {
+  //   path: "/admin/problems/:pid",
+  //   element:
+  //     isLoggedIn && role === "ADMIN" ? <Problem /> : <Navigate to="/login" />,
+  // },
   {
     path: "/users/:username",
     element: <Profile />,

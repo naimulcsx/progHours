@@ -2,7 +2,6 @@ import { useMemo } from "react"
 import {
   Box,
   Table,
-  Avatar,
   Thead,
   Tr,
   Th,
@@ -11,17 +10,19 @@ import {
   Flex,
   useColorModeValue as mode,
   Text,
-  Badge,
 } from "@chakra-ui/react"
 import { Column, useSortBy, useTable } from "react-table"
 import { ArrowSmDownIcon, ArrowSmUpIcon } from "@heroicons/react/outline"
-import { Users } from "@/types/User"
 
 import { Link } from "react-router-dom"
-import { getAvatarColors } from "@/utils/getAvatarColors"
 import { CELL_STYLES } from "./cellStyles"
+import { Problem } from "@/types/Problem"
 
-export default function UserManagementTable({ prob }) {
+export default function ProblemManagementTable({
+  problems,
+}: {
+  problems: Problem
+}) {
   const tableColumns = useMemo(() => {
     return [
       {
@@ -53,13 +54,13 @@ export default function UserManagementTable({ prob }) {
         Header: "onlineJudge",
         accessor: (row) => row.onlineJudgeId,
       },
-    ]
+    ] as Column<Problem>[]
   }, [])
 
   const { getTableProps, rows, prepareRow, headerGroups, getTableBodyProps } =
     useTable(
       {
-        data: prob,
+        data: problems,
         columns: tableColumns,
       },
       useSortBy
