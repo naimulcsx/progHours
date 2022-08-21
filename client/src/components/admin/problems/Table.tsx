@@ -34,16 +34,9 @@ export default function UserManagementTable({ prob }) {
         Cell: ({ cell }) => {
           return (
             <Link to={`/admin/problems/${cell.row.original.pid}`}>
-              <Flex alignItems="center" gap={4}>
-                <Avatar
-                  name={cell.row.original.name}
-                  size="sm"
-                  {...getAvatarColors(cell.row.original.name)}
-                />
-                <Box>
-                  <Text color={mode("gray.700", "white")}>{cell.value}</Text>
-                </Box>
-              </Flex>
+              <Box>
+                <Text color={mode("gray.700", "white")}>{cell.value}</Text>
+              </Box>
             </Link>
           )
         },

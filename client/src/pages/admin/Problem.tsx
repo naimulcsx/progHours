@@ -14,24 +14,22 @@ import {
   useToast,
 } from "@chakra-ui/react"
 import { DEFAULT_TOAST_OPTIONS } from "@/configs/toast-config"
+import { updateProblemInfo } from "@/api/problems"
 
 export default function Problem() {
   const [probInfo, setProbInfo] = useState(null)
   const toast = useToast(DEFAULT_TOAST_OPTIONS)
   const { pid } = useParams()
-  console.log(pid)
   const getProblemInfo = () => {
     return axios(`/api/problems/${pid}`)
       .then((res) => res.data)
       .catch((err) => {
-        console.log("err", err)
+        //console.log("err", err)
       })
   }
   useQuery("users", getProblemInfo, {
     onSuccess: (res) => {
-      console.log(res)
       setProbInfo(res.body.problem)
-      console.log()
     },
   })
 
@@ -52,7 +50,7 @@ export default function Problem() {
             },
             difficulty: {
               type: "text",
-              label: "Problem Name",
+              label: "Difficulty",
               validate: Yup.string().trim().required("Name is required"),
               initialValue: probInfo.difficulty || "",
             },
@@ -63,10 +61,12 @@ export default function Problem() {
             colorScheme: "gray",
           }}
           mutation={(values: any) => {
-            return axios.patch(`/api/problems/${pid}?update=data`, values)
+            // console.log(values,"t")
+
+            return updateProblemInfo(pid, values)
           }}
           onSuccess={() => {
-            toast({ status: "success", title: "Account updated!" })
+            toast({ status: "success", title: "Problem updated!" })
           }}
           onError={() => {
             toast({ status: "error", title: "Some error occurred!" })
