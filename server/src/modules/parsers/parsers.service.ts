@@ -200,48 +200,72 @@ export class ParsersService {
     /**
      * Get the source of the provided codeforces link
      */
-    const { data } = await lastValueFrom(
-      this.httpService.get(
-        `https://codeforces.com/api/contest.standings?contestId=${
-          matchedResult.contestId || matchedResult.gymId
-        }&from=1&count=1`
-      )
-    )
-
-    /**
-     * Sometimes the API sends down HTML when API server is down
-     */
-    if (typeof data === "string") {
-      throw new Error("Codeforces API down. Please try again later!")
-    }
-
     let pid: string,
       name: string,
-      tags: string[],
-      difficulty: number,
+      tags: string[] = [],
+      difficulty: number = 0,
       judge_id = 1
 
-    isInvalid = true
-    for (let problem of data.result.problems) {
-      if (problem.index === matchedResult.problemId) {
-        isInvalid = false
-        pid = matchedResult.contestId
-          ? `CF-${matchedResult.contestId}${problem.index}`
-          : `Gym-${matchedResult.gymId}${problem.index}`
-        name = problem.name
-        difficulty = problem.rating || 0
-        tags = problem.tags
-        break
-      }
-    }
+    try {
+      const { data } = await lastValueFrom(
+        this.httpService.get(
+          `https://codeforces.com/api/contest.standings?contestId=${
+            matchedResult.contestId || matchedResult.gymId
+          }&from=1&count=1`
+        )
+      )
 
-    /**
-     * Valid pattern but wrong URL, example problem `Z` would less likely to exist in
-     * Codeforces rounds. In that case, https://codeforces.com/contest/1616/problem/Z
-     * is a valid matching pattern but the problem doesn't exist
-     */
-    if (isInvalid) {
-      throw new Error("Invalid codeforces link!")
+      /**
+       * Sometimes the API sends down HTML when API server is down
+       */
+      if (typeof data === "string") {
+        throw new Error("Codeforces API down. Please try again later!")
+      }
+
+      isInvalid = true
+      for (let problem of data.result.problems) {
+        if (problem.index === matchedResult.problemId) {
+          isInvalid = false
+          pid = matchedResult.contestId
+            ? `CF-${matchedResult.contestId}${problem.index}`
+            : `Gym-${matchedResult.gymId}${problem.index}`
+          name = problem.name
+          difficulty = problem.rating
+          tags = problem.tags
+          break
+        }
+      }
+
+      /**
+       * Valid pattern but wrong URL, example problem `Z` would less likely to exist in
+       * Codeforces rounds. In that case, https://codeforces.com/contest/1616/problem/Z
+       * is a valid matching pattern but the problem doesn't exist
+       */
+      if (isInvalid) {
+        throw new Error("Invalid codeforces link!")
+      }
+    } catch (err) {
+      console.log("Crawling from webpage!!")
+
+      // If the API call fails for some reason, we try to crawl the problem data from the webpage
+      const response = await lastValueFrom(this.httpService.get(link))
+      const $ = cheerio.load(response.data)
+
+      name = $("div.header > div.title")
+        .text()
+        .trim()
+        .split(". ")
+        .slice(1)
+        .join("")
+
+      pid = matchedResult.contestId
+        ? `CF-${matchedResult.contestId}${matchedResult.problemId}`
+        : `Gym-${matchedResult.gymId}${matchedResult.problemId}`
+      $(".tag-box").each(function () {
+        let tag = $(this).text().trim()
+        if (tag.indexOf("*") === 0) difficulty = Number(tag.slice(1))
+        else tags.push(tag)
+      })
     }
 
     return {
