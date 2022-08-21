@@ -32,14 +32,6 @@ export const Pagination = (props: any) => {
     noMobileNavbar,
   } = props
 
-  const [width, setWidth] = useState(0)
-
-  useEffect(() => {
-    let table = document.getElementById("leaderboard-table")!
-    if (!table) table = document.getElementById("submissions-table")!
-    setWidth(table.offsetWidth)
-  }, [pageIndex])
-
   return (
     <Flex
       bg={mode("white", "gray.800")}
@@ -48,7 +40,7 @@ export const Pagination = (props: any) => {
       borderTop="1px solid"
       borderColor={mode("gray.200", "gray.700")}
       justify="space-between"
-      w={width || "full"}
+      w="full"
     >
       <Flex align="center" gap={4}>
         <Box fontSize="sm">
