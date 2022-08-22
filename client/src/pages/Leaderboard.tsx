@@ -67,7 +67,6 @@ const LeaderboardPage = () => {
               justifyContent="space-between"
               alignItems={["start", "center"]}
               mb={4}
-              mx={[0, 0, -4]}
               flexDirection={["column-reverse", "row"]}
             >
               <LeaderboardFilters filters={filters} setFilters={setFilters} />
@@ -79,7 +78,7 @@ const LeaderboardPage = () => {
                 gap={4}
                 mb={4}
               >
-                <Box fontSize="sm" minW="180">
+                <Box fontSize="sm" minW="180" textAlign="right">
                   {Object.keys(dateRange).length == 2 && (
                     <>
                       <Text as="span">
