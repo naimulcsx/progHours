@@ -38,6 +38,7 @@
     "class-validator": "^0.13.2",
     "cookie-parser": "^1.4.6",
     "jsonwebtoken": "^8.5.1",
+    "moment": "^2.29.4",
     "pg": "^8.7.3",
     "prisma": "4.0.0",
     "reflect-metadata": "^0.1.13",

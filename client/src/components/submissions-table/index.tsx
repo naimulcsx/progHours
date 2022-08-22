@@ -77,10 +77,7 @@ export const SubmissionsTable = ({
       overflowX="auto"
       mb={[10, 4]}
     >
-      <Box
-        shadow={isEditable ? "initial" : "base"}
-        rounded={isEditable ? "none" : "lg"}
-      >
+      <Box rounded={isEditable ? "none" : "lg"}>
         <Table {...getTableProps()} id="submissions-table">
           <Thead>
             {headerGroups.map((headerGroup) => {
@@ -136,7 +133,7 @@ export const SubmissionsTable = ({
         </Table>
         {/* Pagination */}
         <Pagination
-          isEditable={isEditable}
+          isPublic={!isEditable}
           pageIndex={pageIndex}
           pageOptions={pageOptions}
           pageSize={pageSize}

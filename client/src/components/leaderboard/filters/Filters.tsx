@@ -14,7 +14,6 @@ export const LeaderboardFilters = ({ filters, setFilters }: any) => {
   const borderColor = mode("blue.100", "gray.600")
   return (
     <Flex
-      mb={4}
       direction={["column", "column", "row"]}
       gap={[0, 0, 4]}
       alignItems="start"

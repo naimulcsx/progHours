@@ -10,12 +10,12 @@ const breakpoints = {
 
 export const theme = extendTheme(
   {
+    fonts: {
+      sans: `'Inter'`,
+    },
     initialColorMode: "light",
     useSystemColorMode: false,
     breakpoints,
-    shadows: {
-      outline: "",
-    },
     colors: {
       blue: {
         "50": "#EDF1FD",
@@ -33,6 +33,7 @@ export const theme = extendTheme(
         "750": "#202837",
       },
     },
+    shadows: { outline: "" },
     components: {
       Checkbox: {
         baseStyle: {

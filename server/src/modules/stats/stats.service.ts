@@ -1,5 +1,12 @@
 import { Injectable } from "@nestjs/common"
 import { PrismaService } from "../prisma/prisma.service"
+import * as moment from "moment"
+
+// fix prisma bigint issue: https://github.com/prisma/studio/issues/614
+const bigIntPrototype = BigInt.prototype as any
+bigIntPrototype.toJSON = function () {
+  return Number(this)
+}
 
 @Injectable()
 export class StatsService {
@@ -150,5 +157,47 @@ export class StatsService {
         "Tag"."name"
     `
     return rawData
+  }
+
+  async getWeeklyLeaderboard(fromDate: string, toDate: string) {
+    console.log(fromDate, toDate)
+
+    const result: any = await this.prisma.$queryRaw`
+      SELECT 
+        "User"."id", 
+        "User".name, 
+        "User".username,
+        "User".batch,
+        SUM("Submission"."solveTime") AS "totalSolveTime", 
+        SUM("Problem".difficulty) AS "totalDifficulty",
+        COUNT("Problem".id) AS "totalSolved",
+        COUNT(case when "Problem"."difficulty" > 0 then 1 else null end) AS "totalSolvedWithDifficulty"
+      FROM 
+        "Submission" 
+        LEFT JOIN "Problem" ON "Submission"."problemId" = "Problem"."id" 
+        LEFT JOIN "User" ON "User"."id" = "Submission"."userId" 
+      WHERE 
+        "Submission".verdict = 'AC' 
+        AND "Submission"."solvedAt" >= TO_TIMESTAMP(${fromDate}, 'YYYY-MM-DD') 
+        AND "Submission"."solvedAt" < TO_TIMESTAMP(${toDate}, 'YYYY-MM-DD')
+      GROUP BY 
+        "User"."id"
+      `
+
+    return result.map((stat) => {
+      return {
+        id: stat.id,
+        totalSolveTime: stat.totalSolveTime,
+        totalDifficulty: stat.totalDifficulty,
+        totalSolved: stat.totalSolved,
+        totalSolvedWithDifficulty: stat.totalSolvedWithDifficulty,
+        user: {
+          id: stat.id,
+          name: stat.name,
+          username: stat.username,
+          batch: stat.batch,
+        },
+      }
+    })
   }
 }

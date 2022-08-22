@@ -53,10 +53,6 @@ export const Sidebar: React.FC = () => {
   const navigate = useNavigate()
   const { user } = useContext(GlobalContext)
 
-  // user.role
-
-  // const role = localStorage.getItem("role")
-
   return (
     <Flex
       height="100vh"

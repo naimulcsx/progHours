@@ -327,7 +327,10 @@ export class ParsersService {
       pid: `CC-${response.data.problem_code}`.trim(),
       name: response.data.problem_name.trim(),
       tags: response.data.user_tags.map((e) => e.toLowerCase()),
-      difficulty: Number(response.data.difficulty_rating),
+      difficulty:
+        Number(response.data.difficulty_rating) < 0
+          ? 0
+          : Number(response.data.difficulty_rating),
       judge_id: 2,
       link: `https://www.codechef.com/problems/${response.data.problem_code}`,
     }

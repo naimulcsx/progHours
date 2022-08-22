@@ -16,16 +16,26 @@ import { AnimateLoading } from "@/components/AnimateLoading"
 import processRanklist from "@/utils/processRanklist"
 import { filterData } from "@/components/leaderboard/filters/filterData"
 import { LeaderboardFilters } from "@/components/leaderboard/filters/Filters"
+import { Box, Flex, HStack, Select, Text, VStack } from "@chakra-ui/react"
+import moment from "moment"
 
 const LeaderboardPage = () => {
   const [ranklist, setRanklist] = useState<any>(null)
   const [filteredData, setFilteredData] = useState<any>(null)
 
-  useQuery("ranklist", getRankList, {
+  const [leaderboardType, setLeaderboardType] = useState<
+    "full" | "currentWeek" | "lastWeek" | "currentMonth"
+  >("full")
+
+  const [dateRange, setDateRange] = useState<any>({})
+
+  useQuery(["ranklist", leaderboardType], () => getRankList(leaderboardType), {
     onSuccess: (res) => {
-      const { stats } = res.body
+      const { stats, fromDate, toDate } = res.body
       const result = processRanklist(stats)
       setRanklist(result)
+      if (fromDate && toDate) setDateRange({ from: fromDate, to: toDate })
+      else setDateRange({})
     },
   })
 
@@ -52,7 +62,43 @@ const LeaderboardPage = () => {
       <AnimateLoading isLoaded={filteredData}>
         {filteredData && (
           <>
-            <LeaderboardFilters filters={filters} setFilters={setFilters} />
+            <Box
+              display="flex"
+              justifyContent="space-between"
+              alignItems="center"
+              mb={4}
+            >
+              <LeaderboardFilters filters={filters} setFilters={setFilters} />
+              <Box ml="auto" mr={4} fontSize="sm">
+                {Object.keys(dateRange).length == 2 && (
+                  <>
+                    <Text as="span">
+                      {moment(dateRange.from).format("ddd, D MMM")}
+                    </Text>
+                    {" - "}
+                    <Text as="span">
+                      {moment(dateRange.to).format("ddd, D MMM")}
+                    </Text>
+                  </>
+                )}
+              </Box>
+              <Select
+                size="sm"
+                maxW="140"
+                placeholder="Select option"
+                defaultValue="full"
+                rounded="lg"
+                onChange={(e: any) => {
+                  setLeaderboardType(e.target.value)
+                }}
+              >
+                <option value="full">All Time</option>
+                <option value="currentWeek">This Week</option>
+                <option value="lastWeek">Last Week</option>
+                <option value="currentMonth">Current Month</option>
+                <option value="lastMonth">Last Month</option>
+              </Select>
+            </Box>
             <LeaderboardTable ranklist={filteredData} />
           </>
         )}

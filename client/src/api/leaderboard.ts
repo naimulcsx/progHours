@@ -1,7 +1,16 @@
 import axios from "axios"
 
-const getRankList = () => {
-  return axios.get("/api/stats").then((res) => res.data)
+const getRankList = (
+  type: "full" | "currentWeek" | "lastWeek" | "currentMonth"
+) => {
+  const obj = {
+    full: "/api/stats",
+    currentWeek: "/api/stats?type=currentWeek",
+    lastWeek: "/api/stats?type=lastWeek",
+    currentMonth: "/api/stats?type=currentMonth",
+    lastMonth: "/api/stats?type=lastMonth",
+  }
+  return axios.get(obj[type]).then((res) => res.data)
 }
 
 const getStatsByUsername = (username: string) => {
