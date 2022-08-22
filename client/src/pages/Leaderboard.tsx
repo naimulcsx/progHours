@@ -67,6 +67,7 @@ const LeaderboardPage = () => {
               justifyContent="space-between"
               alignItems={["start", "center"]}
               mb={4}
+              mx={[0, 0, -4]}
               flexDirection={["column-reverse", "row"]}
             >
               <LeaderboardFilters filters={filters} setFilters={setFilters} />
