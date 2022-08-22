@@ -16,7 +16,7 @@ import { AnimateLoading } from "@/components/AnimateLoading"
 import processRanklist from "@/utils/processRanklist"
 import { filterData } from "@/components/leaderboard/filters/filterData"
 import { LeaderboardFilters } from "@/components/leaderboard/filters/Filters"
-import { Box, Select, Text } from "@chakra-ui/react"
+import { Box, Flex, Select, Text } from "@chakra-ui/react"
 import moment from "moment"
 
 const LeaderboardPage = () => {
@@ -65,39 +65,49 @@ const LeaderboardPage = () => {
             <Box
               display="flex"
               justifyContent="space-between"
-              alignItems="center"
+              alignItems={["start", "center"]}
               mb={4}
+              flexDirection={["column-reverse", "row"]}
             >
               <LeaderboardFilters filters={filters} setFilters={setFilters} />
-              <Box ml="auto" mr={4} fontSize="sm">
-                {Object.keys(dateRange).length == 2 && (
-                  <>
-                    <Text as="span">
-                      {moment(dateRange.from).format("ddd, D MMM")}
-                    </Text>
-                    {" - "}
-                    <Text as="span">
-                      {moment(dateRange.to).format("ddd, D MMM")}
-                    </Text>
-                  </>
-                )}
-              </Box>
-              <Select
-                size="sm"
-                maxW="140"
-                placeholder="Select option"
-                defaultValue="full"
-                rounded="lg"
-                onChange={(e: any) => {
-                  setLeaderboardType(e.target.value)
-                }}
+              <Flex
+                direction={["row-reverse", "row"]}
+                w={["full", "auto"]}
+                justify="start"
+                alignItems="center"
+                gap={4}
+                mb={4}
               >
-                <option value="full">All Time</option>
-                <option value="currentWeek">This Week</option>
-                <option value="lastWeek">Last Week</option>
-                <option value="currentMonth">This Month</option>
-                <option value="lastMonth">Last Month</option>
-              </Select>
+                <Box fontSize="sm" minW="180">
+                  {Object.keys(dateRange).length == 2 && (
+                    <>
+                      <Text as="span">
+                        {moment(dateRange.from).format("ddd, D MMM")}
+                      </Text>
+                      {" - "}
+                      <Text as="span">
+                        {moment(dateRange.to).format("ddd, D MMM")}
+                      </Text>
+                    </>
+                  )}
+                </Box>
+                <Select
+                  size="sm"
+                  maxW="140"
+                  placeholder="Select option"
+                  defaultValue="full"
+                  rounded="lg"
+                  onChange={(e: any) => {
+                    setLeaderboardType(e.target.value)
+                  }}
+                >
+                  <option value="full">All Time</option>
+                  <option value="currentWeek">This Week</option>
+                  <option value="lastWeek">Last Week</option>
+                  <option value="currentMonth">This Month</option>
+                  <option value="lastMonth">Last Month</option>
+                </Select>
+              </Flex>
             </Box>
             <LeaderboardTable ranklist={filteredData} />
           </>
