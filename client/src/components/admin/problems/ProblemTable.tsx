@@ -11,13 +11,13 @@ import {
   useColorModeValue as mode,
   Text,
 } from "@chakra-ui/react"
-import { Column, useSortBy, useTable } from "react-table"
+import { Column, useSortBy, useTable, usePagination } from "react-table"
 import { ArrowSmDownIcon, ArrowSmUpIcon } from "@heroicons/react/outline"
 
 import { Link } from "react-router-dom"
 import { CELL_STYLES } from "./cellStyles"
 import { Problem } from "@/types/Problem"
-
+import { Pagination } from "@/components/submissions-table/Pagination"
 export default function ProblemManagementTable({
   problems,
 }: {
@@ -57,15 +57,34 @@ export default function ProblemManagementTable({
     ] as Column<Problem>[]
   }, [])
 
-  const { getTableProps, rows, prepareRow, headerGroups, getTableBodyProps } =
-    useTable(
-      {
-        /* @ts-ignore */
-        data: problems,
-        columns: tableColumns,
+  const {
+    getTableProps,
+    getTableBodyProps,
+    rows,
+    prepareRow,
+    headerGroups,
+    page,
+    canPreviousPage,
+    canNextPage,
+    pageOptions,
+    pageCount,
+    gotoPage,
+    nextPage,
+    previousPage,
+    setPageSize,
+    state: { pageIndex, pageSize },
+  } = useTable(
+    {
+      /* @ts-ignore */
+      data: problems,
+      columns: tableColumns,
+      initialState: {
+        pageSize: 50,
       },
-      useSortBy
-    )
+    },
+    useSortBy,
+    usePagination
+  )
 
   return (
     <Box mx={-4} overflowX="auto">
@@ -137,6 +156,19 @@ export default function ProblemManagementTable({
           })}
         </Tbody>
       </Table>
+      <Pagination
+        noMobileNavbar
+        pageIndex={pageIndex}
+        pageOptions={pageOptions}
+        pageSize={pageSize}
+        setPageSize={setPageSize}
+        canPreviousPage={canPreviousPage}
+        canNextPage={canNextPage}
+        gotoPage={gotoPage}
+        pageCount={pageCount}
+        previousPage={previousPage}
+        nextPage={nextPage}
+      />
     </Box>
   )
 }

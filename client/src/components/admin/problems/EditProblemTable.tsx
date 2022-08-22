@@ -11,12 +11,12 @@ import { DEFAULT_TOAST_OPTIONS } from "@/configs/toast-config"
 import { getProblemByPid, updateProblemInfo } from "@/api/problems"
 import { Problem } from "@/types/Problem"
 
+
 export default function EditProblemTable() {
   const [problem, setProblem] = useState<Problem>()
   const toast = useToast(DEFAULT_TOAST_OPTIONS)
   const { pid } = useParams()
-
-  useQuery("problem", getProblemByPid, {
+  useQuery("problem", () => getProblemByPid(pid), {
     onSuccess: (res) => {
       setProblem(res.body.problem)
     },
