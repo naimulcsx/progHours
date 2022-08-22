@@ -5,16 +5,18 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [0.2.2] - 2022-08-22
+## [0.2.2] - 2022-08-23
 
 ### Added
 
-- Fallback to webcrawling if Codeforces API is down
+- Codeforces Parser: We now have a crawler in place as a fallback to API failures.
 - **User Management**: Admin can manage users, assign roles, and perform administrative tasks.
+- Leaderboard Views: Added leaderboards only for current/last week or month.
 
 ### Fixed
 
 - Pagination component spacing for various tables.
+- Codechef Parser: Difficulty coming from the API for some problems was set to -1.
 
 ## [0.2.1] - 2022-08-14
 

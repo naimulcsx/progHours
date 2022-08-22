@@ -127,7 +127,16 @@ export class StatsService {
    */
   async getRankList() {
     return this.prisma.userStat.findMany({
-      include: { user: true },
+      include: {
+        user: {
+          select: {
+            id: true,
+            name: true,
+            username: true,
+            batch: true,
+          },
+        },
+      },
     })
   }
 

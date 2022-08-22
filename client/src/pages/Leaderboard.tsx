@@ -16,7 +16,7 @@ import { AnimateLoading } from "@/components/AnimateLoading"
 import processRanklist from "@/utils/processRanklist"
 import { filterData } from "@/components/leaderboard/filters/filterData"
 import { LeaderboardFilters } from "@/components/leaderboard/filters/Filters"
-import { Box, Flex, HStack, Select, Text, VStack } from "@chakra-ui/react"
+import { Box, Select, Text } from "@chakra-ui/react"
 import moment from "moment"
 
 const LeaderboardPage = () => {
@@ -95,7 +95,7 @@ const LeaderboardPage = () => {
                 <option value="full">All Time</option>
                 <option value="currentWeek">This Week</option>
                 <option value="lastWeek">Last Week</option>
-                <option value="currentMonth">Current Month</option>
+                <option value="currentMonth">This Month</option>
                 <option value="lastMonth">Last Month</option>
               </Select>
             </Box>
