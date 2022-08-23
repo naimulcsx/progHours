@@ -1,3 +1,5 @@
+![progHours](./client/public/cover.png)
+
 # progHours
 
 Competitive programmers are always on the lookout for ways to improve their skills. For a participant, sometimes it gets difficult to stay motivated at times. This is where our appcation comes into play. We've tried to gamify the whole experience of Competitive Programming. We have a few primary goals in mind.
@@ -21,7 +23,8 @@ Competitive programmers are always on the lookout for ways to improve their skil
   - [ ] Problem Lists integration for Groups
 - [ ] Gamified Elements
   - [x] Medals based on solve count
-- [ ] Code execution engine
+- [ ] Contest Platform
+  - [ ] Host contests with custom problemset.
 
 ## Online Judge Support
 
