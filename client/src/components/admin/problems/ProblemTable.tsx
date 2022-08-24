@@ -11,13 +11,20 @@ import {
   useColorModeValue as mode,
   Text,
 } from "@chakra-ui/react"
-import { Column, useSortBy, useTable, usePagination } from "react-table"
+import {
+  Column,
+  useSortBy,
+  useTable,
+  usePagination,
+  useGlobalFilter,
+} from "react-table"
 import { ArrowSmDownIcon, ArrowSmUpIcon } from "@heroicons/react/outline"
 
 import { Link } from "react-router-dom"
 import { CELL_STYLES } from "./cellStyles"
 import { Problem } from "@/types/Problem"
 import { Pagination } from "@/components/submissions-table/Pagination"
+import GlobalFilter from "./GlobalFilter"
 export default function ProblemManagementTable({
   problems,
 }: {
@@ -72,7 +79,8 @@ export default function ProblemManagementTable({
     nextPage,
     previousPage,
     setPageSize,
-    state: { pageIndex, pageSize },
+    setGlobalFilter,
+    state: { pageIndex, pageSize, globalFilter },
   } = useTable(
     {
       /* @ts-ignore */
@@ -82,12 +90,17 @@ export default function ProblemManagementTable({
         pageSize: 50,
       },
     },
+    useGlobalFilter,
     useSortBy,
     usePagination
   )
 
   return (
     <Box mx={-4} overflowX="auto">
+      <GlobalFilter
+        filter={globalFilter}
+        setFilter={setGlobalFilter}
+      ></GlobalFilter>
       <Table w="full" {...getTableProps()}>
         <Thead>
           {headerGroups.map((headerGroup) => {

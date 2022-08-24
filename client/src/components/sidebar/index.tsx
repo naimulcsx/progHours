@@ -121,12 +121,12 @@ export const Sidebar: React.FC = () => {
                 onClick={() => navigate("/admin/users")}
                 isActive={location.pathname === "/admin/users"}
               />
-              {/* <NavLink
+              <NavLink
                 label="Problems"
                 icon={<ViewGridAddIcon width={SIDEBAR_ICON_SIZE} />}
                 onClick={() => navigate("/admin/problems")}
                 isActive={location.pathname === "/admin/problems"}
-              />  */}
+              />
             </Stack>
             <Divider />
           </>
