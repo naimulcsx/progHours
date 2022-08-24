@@ -24,7 +24,7 @@ import { Link } from "react-router-dom"
 import { CELL_STYLES } from "./cellStyles"
 import { Problem } from "@/types/Problem"
 import { Pagination } from "@/components/submissions-table/Pagination"
-import GlobalFilter from "./GlobalFilter"
+import InputFilter from "./InputFilter"
 export default function ProblemManagementTable({
   problems,
 }: {
@@ -97,10 +97,10 @@ export default function ProblemManagementTable({
 
   return (
     <Box mx={-4} overflowX="auto">
-      <GlobalFilter
+      <InputFilter
         filter={globalFilter}
         setFilter={setGlobalFilter}
-      ></GlobalFilter>
+      ></InputFilter>
       <Table w="full" {...getTableProps()}>
         <Thead>
           {headerGroups.map((headerGroup) => {
