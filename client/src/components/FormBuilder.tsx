@@ -130,6 +130,7 @@ const FormBuilder = ({
                       )}
                       <Input
                         type={fields[key].type}
+                        placeholder={fields[key].placeholder}
                         {...getFieldProps(key)}
                         disabled={!!fields[key].disabled}
                       />
@@ -183,7 +184,7 @@ interface FormBuilderProps extends BoxProps {
       initialValue?: string | boolean | number
       validate: Yup.AnySchema
       value?: string
-      options?: Array<string> | [string, string][]
+      options?: Array<string> | [string, string][] | [string, number][]
       helperText?: string
       disabled?: boolean
       placeholder?: string

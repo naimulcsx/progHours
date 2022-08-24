@@ -10,6 +10,7 @@ import {
  */
 import { PrismaService } from "../prisma/prisma.service"
 import { ParsersService } from "../parsers/parsers.service"
+import { ProblemDto } from "@/validators/problem-dto"
 
 @Injectable()
 export class ProblemsService {
@@ -57,6 +58,23 @@ export class ProblemsService {
     try {
       const problem = await this.prisma.problem.findFirst({
         where: { pid },
+        include: {
+          tags: {
+            select: {
+              tag: {
+                select: {
+                  name: true,
+                },
+              },
+            },
+          },
+          onlineJudge: {
+            select: {
+              id: true,
+              name: true,
+            },
+          },
+        },
       })
 
       if (!problem) throw new NotFoundException("Problem not found!")
@@ -68,7 +86,7 @@ export class ProblemsService {
   }
 
   async updateProblem(
-    { name, pid: problemId, link, difficulty, onlineJudgeId },
+    { name, pid: problemId, link, difficulty, onlineJudgeId }: any,
     pid: string
   ) {
     try {
@@ -82,8 +100,8 @@ export class ProblemsService {
           pid: problemId.toUpperCase(),
           name,
           link,
-          difficulty: Number(difficulty),
-          onlineJudgeId: Number(onlineJudgeId),
+          difficulty: difficulty,
+          onlineJudgeId: onlineJudgeId,
         },
       })
     } catch (err) {
@@ -107,6 +125,18 @@ export class ProblemsService {
   }
 
   async getAllProblems() {
-    return this.prisma.problem.findMany()
+    return this.prisma.problem.findMany({
+      include: {
+        tags: {
+          select: {
+            tag: {
+              select: {
+                name: true,
+              },
+            },
+          },
+        },
+      },
+    })
   }
 }

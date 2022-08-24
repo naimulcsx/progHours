@@ -68,10 +68,8 @@ export class ProblemsController {
   @ApiOperation({ summary: "Update a problem" })
   @ApiForbiddenResponse({ description: "Forbidden." })
   @UseGuards(IsAuthenticatedGuard, IsAdmin)
-  async updateProblemByProblemId(
-    @Body() body: ProblemDto,
-    @Param("pid") pid: string
-  ) {
+  async updateProblemByProblemId(@Body() body, @Param("pid") pid: string) {
+    console.log(body)
     await this.problemService.updateProblem(body, pid)
 
     return { statusCode: HttpStatus.OK, message: "Problem Updated" }
