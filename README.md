@@ -2,7 +2,7 @@
 
 # progHours
 
-Competitive programmers are always on the lookout for ways to improve their skills. For a participant, sometimes it gets difficult to stay motivated at times. This is where our appcation comes into play. We've tried to gamify the whole experience of Competitive Programming. We have a few primary goals in mind.
+Competitive programmers are always on the lookout for ways to improve their skills. For a participant, sometimes it gets difficult to stay motivated at times. This is where our application comes into play. We've tried to gamify the whole experience of Competitive Programming. We have a few primary goals in mind.
 
 - Provide a competitive environment for competitive programmers to keep going without slowing down.
 - Help competitive programmers in keeping track of what they are doing throughout their journey.
@@ -16,7 +16,7 @@ Competitive programmers are always on the lookout for ways to improve their skil
   - [ ] Automated tracking from online judges
 - [x] User profile and statistics
 - [ ] Role Based Access Control (RBAC)
-  - [ ] User Management
+  - [x] User Management
   - [ ] Problem Management
 - [ ] Problem Lists
 - [x] User Groups
