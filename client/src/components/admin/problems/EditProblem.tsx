@@ -129,7 +129,7 @@ export default function EditProblemTable() {
                     value={formik.values.link}
                   />
                 </FormControl>
-                <Tags tags={tags} />
+                {tags.length === 0 ? null : <Tags tags={tags} />}
                 <Button type="submit" colorScheme="gray" width="full">
                   Update
                 </Button>
