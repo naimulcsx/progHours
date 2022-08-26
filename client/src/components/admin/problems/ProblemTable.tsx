@@ -42,11 +42,9 @@ export default function ProblemManagementTable({
         accessor: "name",
         Cell: ({ cell }) => {
           return (
-            <Link to={`/admin/problems/${cell.row.original.pid}`}>
-              <Box>
-                <Text color={mode("gray.700", "white")}>{cell.value}</Text>
-              </Box>
-            </Link>
+            <Box>
+              <Text color={mode("gray.700", "white")}>{cell.value}</Text>
+            </Box>
           )
         },
       },
@@ -61,6 +59,23 @@ export default function ProblemManagementTable({
       {
         Header: "onlineJudge",
         accessor: (row) => row.onlineJudgeId,
+      },
+      {
+        Header: "action",
+        Cell: ({ cell }: any) => {
+          return (
+            <Link to={`/admin/problems/${cell.row.original.pid}`}>
+              <Button
+                variant="filled"
+                size="md"
+                aria-label="Edit Problem Button"
+                bgColor="purple.600"
+              >
+                Edit
+              </Button>
+            </Link>
+          )
+        },
       },
     ] as Column<Problem>[]
   }, [])

@@ -30,7 +30,7 @@ import GroupPage from "./pages/groups/Single"
 import ActivitiesPage from "./pages/Activities"
 import UserManagement from "./pages/admin/userManagement"
 import ProblemManagement from "./pages/admin/problemManagement"
-import EditProblemTable from "./components/admin/problems/EditProblemTable"
+import EditProblem from "./components/admin/problems/EditProblem"
 
 const routes = (isLoggedIn: boolean, role: string): RouteObject[] => [
   {
@@ -87,7 +87,7 @@ const routes = (isLoggedIn: boolean, role: string): RouteObject[] => [
     path: "/admin/problems/:pid",
     element:
       isLoggedIn && role === "ADMIN" ? (
-        <EditProblemTable />
+        <EditProblem />
       ) : (
         <Navigate to="/login" />
       ),
