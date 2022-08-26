@@ -23,24 +23,6 @@ import { Select } from "chakra-react-select"
 import Tags from "./Tags"
 
 export default function EditProblemTable() {
-  const options = [
-    {
-      label: "Apple",
-      value: "apple",
-    },
-    {
-      label: "Mango",
-      value: "mango",
-    },
-    {
-      label: "Banana",
-      value: "banana",
-    },
-    {
-      label: "Pineapple",
-      value: "pineapple",
-    },
-  ]
   const [problem, setProblem] = useState<Problem>()
   const [tags, setTags] = useState([])
   const toast = useToast(DEFAULT_TOAST_OPTIONS)

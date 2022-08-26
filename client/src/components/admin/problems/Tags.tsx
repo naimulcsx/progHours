@@ -1,7 +1,25 @@
 import { FormControl, FormLabel } from "@chakra-ui/react"
 import { Select } from "chakra-react-select"
 export default function Tags({ tags }) {
-    console.log(tags)
+  const options = [
+    {
+      label: "Apple",
+      value: "apple",
+    },
+    {
+      label: "Mango",
+      value: "mango",
+    },
+    {
+      label: "Banana",
+      value: "banana",
+    },
+    {
+      label: "Pineapple",
+      value: "pineapple",
+    },
+  ]
+  console.log(tags)
   return (
     <FormControl>
       <FormLabel>Tags</FormLabel>
@@ -12,7 +30,7 @@ export default function Tags({ tags }) {
         placeholder="Select some colors..."
         closeMenuOnSelect={true}
         size="md"
-        defaultInputValue={tags}
+        defaultValue={tags.length === 0 ? undefined : options}
       />
     </FormControl>
   )
