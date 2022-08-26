@@ -2,11 +2,9 @@ import { DashboardLayout } from "@/components/layouts/Dashboard"
 import { Helmet } from "react-helmet-async"
 import { useParams } from "react-router-dom"
 import { useQuery } from "react-query"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 
-import FormBuilder from "@/components/FormBuilder"
-import * as Yup from "yup"
-import { Show, Spinner, useToast } from "@chakra-ui/react"
+import { Spinner, Tag, useToast } from "@chakra-ui/react"
 import { DEFAULT_TOAST_OPTIONS } from "@/configs/toast-config"
 import { getProblemByPid, updateProblemInfo } from "@/api/problems"
 import { Problem } from "@/types/Problem"
@@ -22,9 +20,29 @@ import {
   VStack,
 } from "@chakra-ui/react"
 import { Select } from "chakra-react-select"
+import Tags from "./Tags"
 
 export default function EditProblemTable() {
-  const [problem, setProblem] = useState<Problem>(null)
+  const options = [
+    {
+      label: "Apple",
+      value: "apple",
+    },
+    {
+      label: "Mango",
+      value: "mango",
+    },
+    {
+      label: "Banana",
+      value: "banana",
+    },
+    {
+      label: "Pineapple",
+      value: "pineapple",
+    },
+  ]
+  const [problem, setProblem] = useState<Problem>()
+  const [tags, setTags] = useState([])
   const toast = useToast(DEFAULT_TOAST_OPTIONS)
   const { pid } = useParams()
   useQuery("problem", () => getProblemByPid(pid), {
@@ -32,6 +50,21 @@ export default function EditProblemTable() {
       setProblem(res.body.problem)
     },
   })
+  useEffect(() => {
+    if (problem) {
+      console.log(problem)
+      setTags(() => {
+        let temp = []
+        for (let key in problem.tags) {
+          temp.push({
+            label: problem.tags[key].tag.name,
+            value: problem.tags[key].tag.name,
+          })
+        }
+        return temp
+      })
+    }
+  }, [problem])
   const formik = useFormik({
     enableReinitialize: true,
     initialValues: {
@@ -114,18 +147,7 @@ export default function EditProblemTable() {
                     value={formik.values.link}
                   />
                 </FormControl>
-                <FormControl>
-                  <FormLabel>Tags</FormLabel>
-                  <Select
-                    id="color-select"
-                    name="colors"
-                    options={problem.tags}
-                    placeholder="Select some colors..."
-                    closeMenuOnSelect={true}
-                    size="md"
-                  />
-                </FormControl>
-
+                <Tags tags={tags} />
                 <Button type="submit" colorScheme="gray" width="full">
                   Update
                 </Button>

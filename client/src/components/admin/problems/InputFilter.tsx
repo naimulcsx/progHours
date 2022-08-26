@@ -5,9 +5,7 @@ export default function InputFilter({ setFilter }) {
     initialValues: {
       search: "",
     },
-    onSubmit: (values) => {
-      alert(JSON.stringify(values, null, 2))
-    },
+    onSubmit: (values) => {},
   })
   return (
     <form onSubmit={formik.handleSubmit}>
