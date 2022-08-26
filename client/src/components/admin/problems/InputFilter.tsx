@@ -1,6 +1,6 @@
 import { Input } from "@chakra-ui/react"
 import { useFormik } from "formik"
-export default function InputFilter({ filter, setFilter }) {
+export default function InputFilter({ setFilter }) {
   const formik = useFormik({
     initialValues: {
       search: "",
@@ -12,7 +12,7 @@ export default function InputFilter({ filter, setFilter }) {
   return (
     <form onSubmit={formik.handleSubmit}>
       <Input
-        w={24}
+        w={32}
         ml={4}
         id="search"
         name="search"

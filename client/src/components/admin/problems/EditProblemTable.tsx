@@ -55,6 +55,7 @@ export default function EditProblemTable() {
               label: "Link",
               validate: Yup.string().trim(),
               initialValue: problem.link || "",
+              isReadOnly:true
             },
             onlineJudgeId: {
               type: "select",

@@ -10,6 +10,7 @@ import {
   Flex,
   useColorModeValue as mode,
   Text,
+  Button,
 } from "@chakra-ui/react"
 import {
   Column,
