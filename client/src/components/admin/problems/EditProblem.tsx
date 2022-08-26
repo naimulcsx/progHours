@@ -15,13 +15,13 @@ import showErrorToasts from "@/utils/showErrorToasts"
 import {
   Box,
   Button,
-  Checkbox,
   Flex,
   FormControl,
   FormLabel,
   Input,
   VStack,
 } from "@chakra-ui/react"
+import { Select } from "chakra-react-select"
 
 export default function EditProblemTable() {
   const [problem, setProblem] = useState<Problem>(null)
@@ -40,6 +40,7 @@ export default function EditProblemTable() {
       difficulty: problem?.difficulty || "",
       link: problem?.link || "",
       onlineJudgeId: problem?.onlineJudgeId || "",
+      tags: problem?.tags || "",
     },
     onSubmit: (values) => {
       const body = {
@@ -111,6 +112,17 @@ export default function EditProblemTable() {
                     isDisabled={true}
                     onChange={formik.handleChange}
                     value={formik.values.link}
+                  />
+                </FormControl>
+                <FormControl>
+                  <FormLabel>Tags</FormLabel>
+                  <Select
+                    id="color-select"
+                    name="colors"
+                    options={problem.tags}
+                    placeholder="Select some colors..."
+                    closeMenuOnSelect={true}
+                    size="md"
                   />
                 </FormControl>
 
