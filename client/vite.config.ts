@@ -10,6 +10,7 @@ export default defineConfig({
   },
   plugins: [
     VitePWA({
+      injectRegister: "auto",
       registerType: "autoUpdate",
       manifest: {
         theme_color: "#171923",
