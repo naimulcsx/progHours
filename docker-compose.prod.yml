@@ -8,12 +8,15 @@ services:
       dockerfile: Dockerfile.prod
     ports:
       - 80:80
+      - 443:443
     environment:
       PORT: 80
     depends_on:
       - api_server
     networks:
       - progHours
+    volumes:
+      - /etc/letsencrypt/live:/etc/ssl
   # NestJS API server
   api_server:
     container_name: api_server
