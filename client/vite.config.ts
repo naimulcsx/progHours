@@ -13,6 +13,7 @@ export default defineConfig({
       injectRegister: "auto",
       registerType: "autoUpdate",
       manifest: {
+        id: "0.2.3",
         theme_color: "#171923",
         background_color: "#171923",
         display: "standalone",

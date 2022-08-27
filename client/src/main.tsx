@@ -34,6 +34,7 @@ const updateSW = registerSW({
   onRegistered(r) {
     r &&
       setInterval(() => {
+        console.log("Updating!")
         r.update()
       }, intervalMS)
   },
