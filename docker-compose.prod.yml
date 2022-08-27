@@ -16,7 +16,7 @@ services:
     networks:
       - progHours
     volumes:
-      - /etc/letsencrypt/live:/etc/ssl
+      - ./ssl:/etc/ssl
   # NestJS API server
   api_server:
     container_name: api_server

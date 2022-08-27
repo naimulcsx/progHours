@@ -9,3 +9,6 @@
 
 # Ignore environment file
 .env
+
+# Ignore ssl files
+ssl
