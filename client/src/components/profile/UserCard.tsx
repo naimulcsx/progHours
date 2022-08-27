@@ -9,6 +9,7 @@ import {
   Container,
   useColorMode,
   useColorModeValue as mode,
+  Badge,
 } from "@chakra-ui/react"
 import { useState } from "react"
 import { getAvatarColors } from "@/utils/getAvatarColors"
@@ -18,7 +19,7 @@ import { CCIcon, CFIcon, LightOJIcon, TophIcon } from "../Icons"
 import getOJProfileURL from "@/utils/getOJProfileUrl"
 import { useBreakpointValue } from "@chakra-ui/media-query"
 
-export const UserCard: React.FC<UserCardProps> = ({ name, username }) => {
+export const UserCard: React.FC<UserCardProps> = ({ name, username, role }) => {
   const [handles, setHandles] = useState([])
   const { colorMode } = useColorMode()
 
@@ -65,7 +66,19 @@ export const UserCard: React.FC<UserCardProps> = ({ name, username }) => {
             />
             <Box>
               <Heading size="lg" fontWeight={600} letterSpacing="tight">
-                {name}
+                {name}{" "}
+                <Badge
+                  fontSize="15px"
+                  colorScheme={
+                    role === "ADMIN"
+                      ? "green"
+                      : role === "USER"
+                      ? "purple"
+                      : "gray"
+                  }
+                >
+                  {role}
+                </Badge>
               </Heading>
               <Text color={useColorModeValue("gray.600", "gray.400")}>
                 {username.toUpperCase()}
@@ -118,4 +131,5 @@ interface UserCardProps {
   name: string
   username: string
   member_since: string
+  role: string
 }

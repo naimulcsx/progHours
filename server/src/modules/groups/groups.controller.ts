@@ -31,15 +31,18 @@ import {
 } from "@nestjs/common"
 import { GroupRole } from "@prisma/client"
 import { GroupsService } from "./groups.service"
+import { UsersService } from "../users/users.service"
 
 @ApiTags("Groups")
 @Controller("groups")
 @UseGuards(IsAuthenticatedGuard)
 export class GroupsController {
-  constructor(private groupsService: GroupsService) {}
+  constructor(
+    private groupsService: GroupsService,
+    private readonly userService: UsersService
+  ) {}
 
   @Post("/")
-  @UseGuards(IsAdmin)
   @ApiOperation({ summary: "Create new group." })
   @ApiCreatedResponse({ description: "Login successful." })
   @ApiBadRequestResponse({
@@ -47,21 +50,27 @@ export class GroupsController {
   })
   async createGroup(@Body() body: CreateGroupDto, @Req() req) {
     const { name, hashtag } = body
+    const user = await this.userService.getUserById(req.user.id)
 
-    // check if the hashtag has spaces in it
-    if (hashtag.includes(" ")) {
-      throw new BadRequestException("Spaces in hashtag is not allowed!")
+    let group: any
+    if (user.role === "ADMIN" || user.role === "MODERATOR") {
+      // check if the hashtag has spaces in it
+      if (hashtag.includes(" ")) {
+        throw new BadRequestException("Spaces in hashtag is not allowed!")
+      }
+
+      // create the group
+      group = await this.groupsService.createGroup(name, hashtag)
+
+      // make the user as the OWNER of the group
+      await this.groupsService.joinOnGroup({
+        userId: req.user.id as number,
+        groupId: group.id,
+        role: GroupRole.ADMIN,
+      })
+    } else {
+      throw new BadRequestException("Something went very wrong!")
     }
-
-    // create the group
-    const group = await this.groupsService.createGroup(name, hashtag)
-
-    // make the user as the OWNER of the group
-    await this.groupsService.joinOnGroup({
-      userId: req.user.id as number,
-      groupId: group.id,
-      role: GroupRole.ADMIN,
-    })
 
     // return the response
     return {
