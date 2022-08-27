@@ -14,7 +14,7 @@ export default defineConfig({
       manifest: {
         theme_color: "#171923",
         background_color: "#171923",
-        display: "browser",
+        display: "standalone",
         scope: "/",
         start_url: "/",
         short_name: "progHours",
