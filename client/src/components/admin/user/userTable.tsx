@@ -1,3 +1,4 @@
+import "regenerator-runtime/runtime"
 import { useMemo, useState } from "react"
 import {
   Box,
@@ -13,8 +14,19 @@ import {
   Text,
   Badge,
   Button,
+  Input,
+  InputGroup,
+  InputLeftElement,
 } from "@chakra-ui/react"
-import { Column, usePagination, useSortBy, useTable } from "react-table"
+import {
+  Column,
+  usePagination,
+  useSortBy,
+  useTable,
+  useFilters,
+  useGlobalFilter,
+  useAsyncDebounce,
+} from "react-table"
 import {
   ArrowSmDownIcon,
   ArrowSmUpIcon,
@@ -26,6 +38,39 @@ import { Link } from "react-router-dom"
 import { getAvatarColors } from "@/utils/getAvatarColors"
 import { CELL_STYLES } from "./cellStyles"
 import { Pagination } from "@/components/submissions-table/Pagination"
+import { SearchIcon } from "@heroicons/react/solid"
+
+function GlobalFilter({
+  preGlobalFilteredRows,
+  globalFilter,
+  setGlobalFilter,
+}: any) {
+  const count = preGlobalFilteredRows.length
+  const [value, setValue] = useState(globalFilter)
+
+  const handleChange = useAsyncDebounce((value) => {
+    setGlobalFilter(value || undefined)
+  }, 250)
+
+  return (
+    <InputGroup>
+      <InputLeftElement
+        pointerEvents="none"
+        children={<SearchIcon height={20} color="gray.300" />}
+      />
+      <Input
+        value={value || ""}
+        type="text"
+        mb="4"
+        placeholder="Search users"
+        onChange={(e) => {
+          setValue(e.target.value)
+          handleChange(e.target.value)
+        }}
+      />
+    </InputGroup>
+  )
+}
 
 export default function UserManagementTable({ users }: { users: User[] }) {
   const [isOpen, setIsOpen] = useState(false)
@@ -137,7 +182,9 @@ export default function UserManagementTable({ users }: { users: User[] }) {
     nextPage,
     previousPage,
     setPageSize,
-    state: { pageIndex, pageSize },
+    setGlobalFilter,
+    preGlobalFilteredRows,
+    state: { pageIndex, pageSize, globalFilter },
   } = useTable(
     {
       data: users,
@@ -146,6 +193,7 @@ export default function UserManagementTable({ users }: { users: User[] }) {
         pageSize: 20,
       },
     },
+    useGlobalFilter,
     useSortBy,
     usePagination
   )
@@ -153,6 +201,13 @@ export default function UserManagementTable({ users }: { users: User[] }) {
   return (
     <>
       <EditUserTable data={data} isOpen={isOpen} setIsOpen={setIsOpen} />
+
+      <GlobalFilter
+        preGlobalFilteredRows={preGlobalFilteredRows}
+        globalFilter={globalFilter}
+        setGlobalFilter={setGlobalFilter}
+      />
+
       <Box mx={-4} overflowX="auto" mb={["104px", 14]}>
         <Table w="full" {...getTableProps()}>
           <Thead>
