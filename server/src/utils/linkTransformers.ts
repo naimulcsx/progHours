@@ -50,7 +50,7 @@ export const ccLinkTransformer = (link: string) => {
   if (patternResult2) {
     link = `${linkURL.origin}/problems/${patternResult2.problemId}`
   }
-  console.log(link)
+
   return link
 }
 

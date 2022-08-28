@@ -65,7 +65,6 @@ const FormBuilder = ({
           newValues[key] = values[key]
         }
       })
-      console.log(newValues)
 
       await mutateAsync(newValues)
     },

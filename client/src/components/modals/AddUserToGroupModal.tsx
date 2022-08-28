@@ -22,7 +22,6 @@ export const AddUserToGroupModal = ({
   const downloadFailed = () => {
     let fileContent = ""
     failed.forEach((el: any) => (fileContent += `${el.username}\n`))
-    console.log(fileContent)
     const tempLink = document.createElement("a")
     var blob = new Blob([fileContent], { type: "text/plain" })
     tempLink.setAttribute("href", URL.createObjectURL(blob))
@@ -60,7 +59,7 @@ export const AddUserToGroupModal = ({
           username: {
             type: "textarea",
             label: "University IDs",
-            placeholder: "C181065\nC181066\nC181067\n...",
+            placeholder: "C181065\nC181059\nC181083\n...",
             validate: yup.string().trim().required("University ID is required"),
           },
         }}

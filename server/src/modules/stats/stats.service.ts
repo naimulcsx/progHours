@@ -169,8 +169,6 @@ export class StatsService {
   }
 
   async getWeeklyLeaderboard(fromDate: string, toDate: string) {
-    console.log(fromDate, toDate)
-
     const result: any = await this.prisma.$queryRaw`
       SELECT 
         "User"."id", 

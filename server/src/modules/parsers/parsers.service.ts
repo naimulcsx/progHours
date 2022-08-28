@@ -610,8 +610,6 @@ export class ParsersService {
       const originalUrl =
         response?.request?.socket?._httpMessage?.res?.responseUrl
 
-      console.log(originalUrl)
-
       const $ = cheerio.load(response.data)
       /**
        * Extract informations
@@ -749,8 +747,6 @@ export class ParsersService {
     )
     const $ = cheerio.load(data)
     const name = $("title").text().trim().split(" - ")[1]
-
-    console.log("hellow world")
 
     return {
       name,

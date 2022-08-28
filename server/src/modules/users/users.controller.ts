@@ -204,7 +204,6 @@ export class UsersController {
     @Param("id") id,
     @Req() req
   ) {
-    console.log(body)
     const user = await this.usersService.updateUserData(
       body,
       Number(id),
