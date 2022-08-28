@@ -162,7 +162,6 @@ export class UsersService {
         },
       })
     } catch (err) {
-      console.log(err.message)
       throw err
     }
   }

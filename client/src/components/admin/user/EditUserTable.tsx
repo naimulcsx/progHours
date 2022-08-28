@@ -105,7 +105,6 @@ export default function EditUserTable({ data, isOpen, setIsOpen }: any) {
           return udpateUserData(Number(id), values)
         }}
         onSuccess={({ body }) => {
-          console.log(data)
           client.invalidateQueries("users")
           if (username !== body.username || name !== body.name)
             client.invalidateQueries("user")

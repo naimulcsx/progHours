@@ -17,7 +17,6 @@ export const GeneralInformationForm = () => {
   const toast = useToast(DEFAULT_TOAST_OPTIONS)
   const queryClient = useQueryClient()
 
-  console.log(user)
   return (
     <Box
       p={[4, 4, 4, 8]}
@@ -78,7 +77,7 @@ export const GeneralInformationForm = () => {
             batch: {
               type: "number",
               label: "Batch",
-              validate: Yup.number(),
+              validate: Yup.number().positive("Invalid Batch"),
               initialValue: user.batch ? user.batch.toString() : "",
               optional: true,
             },

@@ -229,16 +229,18 @@ const SubmissionForm = ({ id }: { id: number }) => {
         <Td {...CELL_STYLES["Solved On"]} border={0}>
           <ReactDatePicker
             dateFormat="EEE, dd MMM yyyy"
+            showTimeSelect
             selected={formik.values.solvedAt}
             customInput={<Input fontSize="sm" />}
             onChange={(date) => {
-              const currentDate = new Date()
-              const dateToSend = moment(date)
-                .set("hour", currentDate.getHours())
-                .set("minute", currentDate.getMinutes())
-                .set("second", currentDate.getSeconds())
-                .set("millisecond", currentDate.getMilliseconds())
-              formik.setFieldValue("solvedAt", dateToSend.toDate())
+              //
+              // const currentDate = new Date()
+              // const dateToSend = moment(date)
+              //   .set("hour", currentDate.getHours())
+              //   .set("minute", currentDate.getMinutes())
+              //   .set("second", currentDate.getSeconds())
+              //   .set("millisecond", currentDate.getMilliseconds())
+              formik.setFieldValue("solvedAt", date)
             }}
           />
         </Td>

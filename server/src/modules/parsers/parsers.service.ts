@@ -230,7 +230,7 @@ export class ParsersService {
             ? `CF-${matchedResult.contestId}${problem.index}`
             : `Gym-${matchedResult.gymId}${problem.index}`
           name = problem.name
-          difficulty = problem.rating
+          difficulty = problem.rating || 0
           tags = problem.tags
           break
         }
@@ -263,7 +263,7 @@ export class ParsersService {
         : `Gym-${matchedResult.gymId}${matchedResult.problemId}`
       $(".tag-box").each(function () {
         let tag = $(this).text().trim()
-        if (tag.indexOf("*") === 0) difficulty = Number(tag.slice(1))
+        if (tag.indexOf("*") === 0) difficulty = Number(tag.slice(1)) || 0
         else tags.push(tag)
       })
     }
@@ -610,8 +610,6 @@ export class ParsersService {
       const originalUrl =
         response?.request?.socket?._httpMessage?.res?.responseUrl
 
-      console.log(originalUrl)
-
       const $ = cheerio.load(response.data)
       /**
        * Extract informations
@@ -749,8 +747,6 @@ export class ParsersService {
     )
     const $ = cheerio.load(data)
     const name = $("title").text().trim().split(" - ")[1]
-
-    console.log("hellow world")
 
     return {
       name,

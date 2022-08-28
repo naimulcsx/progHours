@@ -35,7 +35,7 @@ const GroupsPage = () => {
       title="Groups"
       rightButton={
         <>
-          {user?.role === "ADMIN" ? (
+          {user?.role === "ADMIN" || user?.role === "MODERATOR" ? (
             <Button
               size="sm"
               onClick={() => setIsOpen(true)}

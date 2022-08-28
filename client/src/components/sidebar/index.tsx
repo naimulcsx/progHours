@@ -142,7 +142,9 @@ export const Sidebar: React.FC = () => {
         </Stack>
       </Stack>
       <Spacer />
-      {user && <UserProfile name={user.name} email={user.email} />}
+      {user && (
+        <UserProfile name={user.name} email={user.email} role={user?.role} />
+      )}
     </Flex>
   )
 }

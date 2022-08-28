@@ -153,6 +153,7 @@ export default function Profile() {
               name={user.name}
               username={user.username}
               member_since={user.memberSince}
+              role={user.role}
             />
             <Container>
               <Tabs>
