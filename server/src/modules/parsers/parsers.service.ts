@@ -230,7 +230,7 @@ export class ParsersService {
             ? `CF-${matchedResult.contestId}${problem.index}`
             : `Gym-${matchedResult.gymId}${problem.index}`
           name = problem.name
-          difficulty = problem.rating
+          difficulty = problem.rating || 0
           tags = problem.tags
           break
         }
@@ -263,7 +263,7 @@ export class ParsersService {
         : `Gym-${matchedResult.gymId}${matchedResult.problemId}`
       $(".tag-box").each(function () {
         let tag = $(this).text().trim()
-        if (tag.indexOf("*") === 0) difficulty = Number(tag.slice(1))
+        if (tag.indexOf("*") === 0) difficulty = Number(tag.slice(1)) || 0
         else tags.push(tag)
       })
     }
