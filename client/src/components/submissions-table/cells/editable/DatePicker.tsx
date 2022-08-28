@@ -19,6 +19,7 @@ const DatePicker = (cell: Cell<Submission>) => {
   const toast = useToast(DEFAULT_TOAST_OPTIONS)
   const queryClient = useQueryClient()
   const [date, setDate] = useState(new Date(cell.value))
+
   const { mutate } = useMutation(updateSubmission, {
     onSuccess: () => {
       queryClient.invalidateQueries("submissions")
@@ -37,16 +38,17 @@ const DatePicker = (cell: Cell<Submission>) => {
   return (
     <ReactDatePicker
       selected={date}
+      showTimeSelect
       dateFormat="EEE, dd MMM yyyy"
       customInput={<Input fontSize="sm" />}
       onCalendarClose={handleBlur}
-      onChange={(date) => {
-        const currentDate = new Date()
-        const dateToSend = moment(date)
-          .set("hour", currentDate.getHours())
-          .set("minute", currentDate.getMinutes())
-          .set("second", currentDate.getSeconds())
-        setDate(dateToSend.toDate())
+      onChange={(date: Date) => {
+        // const currentDate = new Date()
+        // const dateToSend = moment(date)
+        //   .set("hour", currentDate.getHours())
+        //   .set("minute", currentDate.getMinutes())
+        //   .set("second", currentDate.getSeconds())
+        setDate(date)
       }}
     />
   )

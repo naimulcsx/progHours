@@ -4,7 +4,8 @@ import { Text } from "@chakra-ui/react"
 import moment from "moment"
 
 const NonEditableDate = (cell: Cell<Submission>) => {
-  return <Text>{moment(cell.value).format("ddd, D MMM YYYY")}</Text>
+  console.log(cell)
+  return <Text>{moment(cell.value).format("lll")}</Text>
 }
 
 export default NonEditableDate
