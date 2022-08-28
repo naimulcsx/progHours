@@ -101,7 +101,7 @@ const DashboardHome = () => {
               <GridItem
                 p={[4, 4, 4, 8]}
                 pb={[0, 0, 0, 2]}
-                mb={4}
+                mb={[4, 0]}
                 bg={bg}
                 rounded="lg"
                 shadow="base"

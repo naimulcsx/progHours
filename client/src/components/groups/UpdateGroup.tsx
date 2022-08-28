@@ -50,12 +50,6 @@ const UpdateGroup = ({ group }: any) => {
             validate: Yup.string().trim().required("Group tag is required"),
             initialValue: group?.hashtag,
           },
-          private: {
-            type: "switch",
-            label: "Private Group",
-            validate: Yup.boolean(),
-            initialValue: group?.private || false,
-          },
         }}
         mutation={(values: any) => {
           return editGroup(group.id, values)
