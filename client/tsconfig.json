@@ -21,7 +21,7 @@
     },
     "typeRoots": ["./node_modules/@types", "./src/types"]
   },
-  "include": ["src", "node_modules/vite-plugin-pwa/client.d.ts"],
+  "include": ["src"],
 
   "references": [{ "path": "./tsconfig.node.json" }]
 }
