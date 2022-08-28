@@ -19,7 +19,7 @@ import {
   Input,
   VStack,
 } from "@chakra-ui/react"
-import { Select } from "chakra-react-select"
+//import { Select } from "chakra-react-select"
 import Tags from "./Tags"
 
 export default function EditProblemTable() {
@@ -129,7 +129,7 @@ export default function EditProblemTable() {
                     value={formik.values.link}
                   />
                 </FormControl>
-                {tags.length === 0 ? null : <Tags tags={tags} />}
+                {/* {tags.length === 0 ? null : <Tags tags={tags} />} */}
                 <Button type="submit" colorScheme="gray" width="full">
                   Update
                 </Button>
