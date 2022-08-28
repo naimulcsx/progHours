@@ -28,14 +28,14 @@ export const UserProfile = (props: UserProfileProps) => {
           <Avatar name={name} bg={bg} color={color} size="sm" />
           <Flex direction="column" align="start">
             <Text fontWeight="medium">{name}</Text>
-            <Badge
-              fontSize="12px"
-              colorScheme={
-                role === "ADMIN" ? "green" : role === "USER" ? "purple" : "gray"
-              }
-            >
-              {role}
-            </Badge>
+            {(role === "ADMIN" || role === "MODERATOR") && (
+              <Badge
+                fontSize="12px"
+                colorScheme={role === "ADMIN" ? "green" : "gray"}
+              >
+                {role}
+              </Badge>
+            )}
           </Flex>
         </HStack>
       </VStack>

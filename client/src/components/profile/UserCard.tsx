@@ -67,18 +67,14 @@ export const UserCard: React.FC<UserCardProps> = ({ name, username, role }) => {
             <Box>
               <Heading size="lg" fontWeight={600} letterSpacing="tight">
                 {name}{" "}
-                <Badge
-                  fontSize="15px"
-                  colorScheme={
-                    role === "ADMIN"
-                      ? "green"
-                      : role === "USER"
-                      ? "purple"
-                      : "gray"
-                  }
-                >
-                  {role}
-                </Badge>
+                {(role === "ADMIN" || role === "MODERATOR") && (
+                  <Badge
+                    fontSize="15px"
+                    colorScheme={role === "ADMIN" ? "green" : "gray"}
+                  >
+                    {role}
+                  </Badge>
+                )}
               </Heading>
               <Text color={useColorModeValue("gray.600", "gray.400")}>
                 {username.toUpperCase()}
