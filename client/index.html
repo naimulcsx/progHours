@@ -12,9 +12,7 @@
     <script>
       if ("serviceWorker" in navigator) {
         window.addEventListener("load", async () => {
-          await navigator.serviceWorker.register(
-            "/assets/js/service-worker.js?v=0.2.3"
-          )
+          await navigator.serviceWorker.register("./service-worker.js?v=0.2.3")
         })
       }
     </script>
