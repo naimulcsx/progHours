@@ -4,7 +4,6 @@ import { BrowserRouter as Router } from "react-router-dom"
 import { ChakraProvider } from "@chakra-ui/react"
 import { theme } from "@/styles/theme"
 import { ColorModeScript } from "@chakra-ui/react"
-import { registerSW } from "virtual:pwa-register"
 
 /**
  * Import App
@@ -27,15 +26,3 @@ ReactDOM.render(
   </>,
   document.getElementById("root")
 )
-
-const intervalMS = 10 * 60 * 1000
-
-const updateSW = registerSW({
-  onRegistered(r) {
-    r &&
-      setInterval(() => {
-        console.log("Updating!")
-        r.update()
-      }, intervalMS)
-  },
-})
