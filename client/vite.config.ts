@@ -13,12 +13,12 @@ export default defineConfig({
       input: {
         // the default entry point
         app: "./index.html",
-        "service-worker": "./service-worker.js",
+        "service-worker": "./src/service-worker.js",
       },
       output: {
         entryFileNames: (assetInfo) => {
           return assetInfo.name === "service-worker"
-            ? "[name].js" // put service worker in root
+            ? "assets/js/[name].js" // put service worker in root
             : "assets/js/[name]-[hash].js" // others in `assets/js/`
         },
       },
