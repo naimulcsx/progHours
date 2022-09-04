@@ -32,6 +32,7 @@ import {
 import { GroupRole } from "@prisma/client"
 import { GroupsService } from "./groups.service"
 import { UsersService } from "../users/users.service"
+import { IsAdminOrModerator } from "@/guards/is-admin-or-moderator"
 
 @ApiTags("Groups")
 @Controller("groups")
@@ -48,29 +49,26 @@ export class GroupsController {
   @ApiBadRequestResponse({
     description: "Hashtag taken or there are spaces in hashtag.",
   })
+  @UseGuards(IsAdminOrModerator)
   async createGroup(@Body() body: CreateGroupDto, @Req() req) {
     const { name, hashtag } = body
-    const user = await this.userService.getUserById(req.user.id)
 
     let group: any
-    if (user.role === "ADMIN" || user.role === "MODERATOR") {
-      // check if the hashtag has spaces in it
-      if (hashtag.includes(" ")) {
-        throw new BadRequestException("Spaces in hashtag is not allowed!")
-      }
 
-      // create the group
-      group = await this.groupsService.createGroup(name, hashtag)
-
-      // make the user as the OWNER of the group
-      await this.groupsService.joinOnGroup({
-        userId: req.user.id as number,
-        groupId: group.id,
-        role: GroupRole.ADMIN,
-      })
-    } else {
-      throw new BadRequestException("Something went very wrong!")
+    // check if the hashtag has spaces in it
+    if (hashtag.includes(" ")) {
+      throw new BadRequestException("Spaces in hashtag is not allowed!")
     }
+
+    // create the group
+    group = await this.groupsService.createGroup(name, hashtag)
+
+    // make the user as the OWNER of the group
+    await this.groupsService.joinOnGroup({
+      userId: req.user.id as number,
+      groupId: group.id,
+      role: GroupRole.ADMIN,
+    })
 
     // return the response
     return {
@@ -104,6 +102,7 @@ export class GroupsController {
   }
 
   @Patch("/:id")
+  @UseGuards(IsAdminOrModerator)
   async editGroup(@Param() params, @Body() body) {
     const { name, hashtag, private: isPrivate } = body
 
@@ -130,6 +129,7 @@ export class GroupsController {
   }
 
   @Delete("/:id")
+  @UseGuards(IsAdminOrModerator)
   async deleteGroup(@Param() params) {
     // delete the group
     await this.groupsService.deleteGroup(Number(params.id))

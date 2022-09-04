@@ -3,13 +3,13 @@ import { Observable } from "rxjs"
 import { Role } from "@prisma/client"
 
 @Injectable()
-export class IsAdmin implements CanActivate {
+export class IsModerator implements CanActivate {
   canActivate(
     context: ExecutionContext
   ): boolean | Promise<boolean> | Observable<boolean> {
     const req = context.switchToHttp().getRequest()
     const { user } = req
-    if (user.role === Role.ADMIN) return true
+    if (user.role === Role.MODERATOR) return true
     return false
   }
 }
