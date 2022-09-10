@@ -5,7 +5,7 @@ import axios, { AxiosError } from "axios"
 import { useQueryClient, useMutation } from "react-query"
 // import { FormControl, Select, option, Input } from "@/components/Form"
 import moment from "moment"
-import { PlusIcon } from "@heroicons/react/solid"
+import { PlusIcon } from "@heroicons/react/outline"
 import { useColorModeValue as mode } from "@chakra-ui/react"
 
 /**

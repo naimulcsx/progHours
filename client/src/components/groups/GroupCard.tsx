@@ -10,7 +10,7 @@ import {
   MenuList,
   MenuItem,
 } from "@chakra-ui/react"
-import { DotsVerticalIcon, TrashIcon } from "@heroicons/react/solid"
+import { DotsVerticalIcon, TrashIcon } from "@heroicons/react/outline"
 import { useState } from "react"
 import { Link, useNavigate } from "react-router-dom"
 import { DeleteGroupModal } from "../modals/DeleteGroupModal"

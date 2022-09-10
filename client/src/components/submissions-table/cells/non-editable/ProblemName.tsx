@@ -28,7 +28,7 @@ import {
   useColorModeValue as mode,
 } from "@chakra-ui/react"
 import { ExternalLinkIcon } from "@heroicons/react/outline"
-import { QuestionMarkCircleIcon } from "@heroicons/react/solid"
+import { QuestionMarkCircleIcon } from "@heroicons/react/outline"
 
 const iconMap = [
   { prefix: "Gym-", icon: CFIcon },

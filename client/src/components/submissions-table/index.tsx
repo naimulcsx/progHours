@@ -11,7 +11,7 @@ import SubmissionForm from "./SubmissionForm"
 /**
  * Import Icons
  */
-import { ArrowSmDownIcon, ArrowSmUpIcon } from "@heroicons/react/solid"
+import { ArrowSmDownIcon, ArrowSmUpIcon } from "@heroicons/react/outline"
 import { Box, Table, Tbody, Td, Th, Thead, Tr } from "@chakra-ui/react"
 import { Pagination } from "./Pagination"
 import { getTableColumns } from "./getTableColumns"

@@ -12,7 +12,7 @@ import {
   PlusIcon,
   FilterIcon,
   XIcon,
-} from "@heroicons/react/solid"
+} from "@heroicons/react/outline"
 
 import {
   Box,

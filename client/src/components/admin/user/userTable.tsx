@@ -38,7 +38,7 @@ import { Link } from "react-router-dom"
 import { getAvatarColors } from "@/utils/getAvatarColors"
 import { CELL_STYLES } from "./cellStyles"
 import { Pagination } from "@/components/submissions-table/Pagination"
-import { SearchIcon } from "@heroicons/react/solid"
+import { SearchIcon } from "@heroicons/react/outline"
 
 function GlobalFilter({
   preGlobalFilteredRows,
@@ -89,13 +89,11 @@ export default function UserManagementTable({ users }: { users: User[] }) {
           return (
             <Link to={`/users/${cell.row.original.username}`}>
               <Flex alignItems="center" gap={4}>
-                <Avatar
-                  name={cell.row.original.name}
-                  size="sm"
-                  {...getAvatarColors(cell.row.original.name)}
-                />
+                <Avatar name={cell.row.original.name} size="sm" />
                 <Box>
-                  <Text color={mode("gray.700", "white")}>{cell.value}</Text>
+                  <Text color={mode("gray.700", "white")} fontWeight="medium">
+                    {cell.value}
+                  </Text>
                 </Box>
               </Flex>
             </Link>
@@ -150,16 +148,17 @@ export default function UserManagementTable({ users }: { users: User[] }) {
         Cell: ({ cell }: any) => {
           return (
             <Button
-              variant="outline"
-              size="xs"
-              colorScheme="green"
+              variant="link"
+              size="sm"
+              colorScheme="blue"
               aria-label="Edit User Button"
               onClick={() => {
                 setData(cell.row.original)
                 setIsOpen(true)
               }}
             >
-              <PencilAltIcon width={16} height={16} />
+              {/* <PencilAltIcon width={16} height={16} /> */}
+              Edit
             </Button>
           )
         },

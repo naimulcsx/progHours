@@ -9,7 +9,7 @@ import {
   VStack,
   Badge,
 } from "@chakra-ui/react"
-import { LogoutIcon } from "@heroicons/react/solid"
+import { LogoutIcon } from "@heroicons/react/outline"
 
 interface UserProfileProps {
   name: string
@@ -19,15 +19,14 @@ interface UserProfileProps {
 
 export const UserProfile = (props: UserProfileProps) => {
   const { name, email, role } = props
-  const { bg, color } = getAvatarColors(name)
   const handleLogout = useLogout()
   return (
     <>
       <VStack align="start">
         <HStack spacing="2" px="2">
-          <Avatar name={name} bg={bg} color={color} size="sm" />
+          <Avatar name={name} size="sm" />
           <Flex direction="column" align="start">
-            <Text fontWeight="medium">{name}</Text>
+            <Text fontWeight="600">{name}</Text>
             {(role === "ADMIN" || role === "MODERATOR") && (
               <Badge
                 fontSize="12px"

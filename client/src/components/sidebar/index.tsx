@@ -42,7 +42,7 @@ import {
   TrendingUpIcon,
   UsersIcon,
   ViewGridAddIcon,
-} from "@heroicons/react/solid"
+} from "@heroicons/react/outline"
 import { useColorModeValue as mode } from "@chakra-ui/react"
 import { AdminIcon } from "../Icons"
 
@@ -69,7 +69,7 @@ export const Sidebar: React.FC = () => {
       zIndex={100}
     >
       <Stack spacing={6} mt={16}>
-        <Stack spacing={2}>
+        <Stack spacing={1}>
           <NavLink
             label="Dashboard"
             icon={<ViewGridIcon width={SIDEBAR_ICON_SIZE} />}

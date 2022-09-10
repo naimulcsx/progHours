@@ -19,7 +19,7 @@ import {
   Text,
   useColorModeValue as mode,
 } from "@chakra-ui/react"
-import { PlusIcon, UserAddIcon } from "@heroicons/react/solid"
+import { PlusIcon, UserAddIcon } from "@heroicons/react/outline"
 import { CreateGroupModal } from "@/components/modals/CreateGroupModal"
 import GroupCard from "@/components/groups/GroupCard"
 import { JoinGroupModal } from "@/components/modals/JoinGroupModal"

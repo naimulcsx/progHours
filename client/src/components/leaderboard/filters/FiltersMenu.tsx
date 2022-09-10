@@ -12,7 +12,7 @@ import {
   Flex,
   useColorModeValue as mode,
 } from "@chakra-ui/react"
-import { ChevronUpIcon, ChevronDownIcon } from "@heroicons/react/solid"
+import { ChevronUpIcon, ChevronDownIcon } from "@heroicons/react/outline"
 
 import { FilterIcon } from "@heroicons/react/outline"
 import { useEffect, useState } from "react"

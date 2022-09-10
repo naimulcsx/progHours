@@ -12,10 +12,12 @@ import { useColorModeValue as mode } from "@chakra-ui/react"
 /**
  * Import Styles
  */
-import "@/styles/fonts.css"
-import "@/styles/spinner.css"
+// import "@/styles/fonts.css"
+// import "@/styles/spinner.css"
 import "@fontsource/inter/400.css"
+import "@fontsource/inter/500.css"
 import "@fontsource/inter/600.css"
+import "@fontsource/inter/700.css"
 
 /**
  * Import Routes

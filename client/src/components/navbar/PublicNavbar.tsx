@@ -8,7 +8,7 @@ import {
   useColorMode,
   useColorModeValue as mode,
 } from "@chakra-ui/react"
-import { MoonIcon, SunIcon } from "@heroicons/react/solid"
+import { MoonIcon, SunIcon } from "@heroicons/react/outline"
 import { Link as ReactRouterLink } from "react-router-dom"
 import Logo from "../Logo"
 

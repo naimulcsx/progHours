@@ -11,7 +11,8 @@ const breakpoints = {
 export const theme = extendTheme(
   {
     fonts: {
-      sans: `'Inter'`,
+      heading: `'Inter', sans-serif`,
+      body: `'Inter', sans-serif`,
     },
     initialColorMode: "light",
     useSystemColorMode: false,

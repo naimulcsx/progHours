@@ -1,4 +1,4 @@
-import { SelectorIcon } from "@heroicons/react/solid"
+import { SelectorIcon } from "@heroicons/react/outline"
 import { Menu, MenuButton, MenuList, MenuItem, Button } from "@chakra-ui/react"
 
 export default function WeekFilters({

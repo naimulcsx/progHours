@@ -1,5 +1,5 @@
 import { GlobalContext } from "@/GlobalStateProvider"
-import { MailIcon, UserIcon } from "@heroicons/react/solid"
+import { MailIcon, UserIcon } from "@heroicons/react/outline"
 import { useContext } from "react"
 import { Link } from "react-router-dom"
 import { Avatar, Spinner } from "@chakra-ui/react"

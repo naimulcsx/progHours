@@ -1,7 +1,7 @@
 import { createSubmission } from "@/api/submissions"
 import { Dialog, Transition } from "@headlessui/react"
 import { InformationCircleIcon } from "@heroicons/react/outline"
-import { CheckIcon } from "@heroicons/react/solid"
+import { CheckIcon } from "@heroicons/react/outline"
 import { Fragment, useState } from "react"
 import { useMutation, useQueryClient } from "react-query"
 import { AxiosError } from "axios"

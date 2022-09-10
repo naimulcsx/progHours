@@ -22,7 +22,7 @@ import {
   ChevronLeftIcon,
   ChevronRightIcon,
   ClockIcon,
-} from "@heroicons/react/solid"
+} from "@heroicons/react/outline"
 import { AnimateLoading } from "@/components/AnimateLoading"
 
 const fetchActivities = (page = 1) =>

@@ -32,7 +32,7 @@ import {
   DotsVerticalIcon,
   PlusIcon,
   UsersIcon,
-} from "@heroicons/react/solid"
+} from "@heroicons/react/outline"
 import { useContext } from "react"
 import { GlobalContext } from "@/GlobalStateProvider"
 

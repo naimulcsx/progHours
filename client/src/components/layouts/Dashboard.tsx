@@ -39,7 +39,7 @@ export const DashboardLayout: FC<DashboardLayoutProps> = ({
           {title && (
             <Flex justifyContent="space-between">
               <Box mb={4}>
-                <Heading fontSize={["xl", "xl", "2xl"]} fontWeight={700}>
+                <Heading fontSize={["xl", "xl", "2xl"]} fontWeight={600}>
                   {title}
                 </Heading>
               </Box>

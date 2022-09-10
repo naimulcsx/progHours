@@ -12,7 +12,7 @@ import WeekFilters from "@/components/filters/WeekFilter"
  * Import helpers
  */
 import { GlobalContext } from "@/GlobalStateProvider"
-import { UploadIcon } from "@heroicons/react/solid"
+import { UploadIcon } from "@heroicons/react/outline"
 import ImportCsvModal from "./ImportCsvModal"
 import csvToArray from "@/utils/csvToArray"
 import { Box, Button, Flex } from "@chakra-ui/react"

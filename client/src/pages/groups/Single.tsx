@@ -27,7 +27,7 @@ import {
   ClipboardCheckIcon,
   ClipboardCopyIcon,
   PlusIcon,
-} from "@heroicons/react/solid"
+} from "@heroicons/react/outline"
 import MemberCard from "@/components/groups/MemberCard"
 import { AddUserToGroupModal } from "@/components/modals/AddUserToGroupModal"
 import UpdateGroup from "@/components/groups/UpdateGroup"
