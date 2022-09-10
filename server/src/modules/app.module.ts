@@ -1,6 +1,5 @@
 import { CacheModule, Module } from "@nestjs/common"
 import { AuthModule } from "./auth/auth.module"
-import { Connection } from "typeorm"
 import { SubmissionsModule } from "./submissions/submissions.module"
 import { ProblemsModule } from "./problems/problems.module"
 import { ParsersModule } from "./parsers/parsers.module"
