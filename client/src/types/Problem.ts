@@ -8,6 +8,7 @@ export interface Problem {
   pid: string
   difficulty: number
   created_at: string
+  onlineJudgeId: number
   onlineJudge: {
     name: string
     id: number

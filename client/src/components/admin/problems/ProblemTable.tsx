@@ -66,11 +66,16 @@ export default function ProblemManagementTable({
           return (
             <Link to={`/admin/problems/${cell.row.original.pid}`}>
               <Button
-                variant="filled"
-                size="md"
-                aria-label="Edit Problem Button"
-                bgColor="purple.600"
+                variant="link"
+                size="sm"
+                colorScheme="blue"
+                aria-label="Edit User Button"
+                // onClick={() => {
+                //   setData(cell.row.original)
+                //   setIsOpen(true)
+                // }}
               >
+                {/* <PencilAltIcon width={16} height={16} /> */}
                 Edit
               </Button>
             </Link>
@@ -113,10 +118,10 @@ export default function ProblemManagementTable({
 
   return (
     <Box mx={-4} overflowX="auto">
-      <InputFilter
+      {/* <InputFilter
         filter={globalFilter}
         setFilter={setGlobalFilter}
-      ></InputFilter>
+      ></InputFilter> */}
       <Table w="full" {...getTableProps()}>
         <Thead>
           {headerGroups.map((headerGroup) => {
@@ -160,7 +165,7 @@ export default function ProblemManagementTable({
           })}
         </Thead>
         <Tbody {...getTableBodyProps()}>
-          {rows.map((row) => {
+          {page.map((row) => {
             prepareRow(row)
             return (
               <Tr
