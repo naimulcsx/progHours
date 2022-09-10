@@ -11,6 +11,7 @@ import {
   useColorModeValue as mode,
   Text,
   Button,
+  HStack,
 } from "@chakra-ui/react"
 import {
   Column,
@@ -18,6 +19,7 @@ import {
   useTable,
   usePagination,
   useGlobalFilter,
+  useFilters,
 } from "react-table"
 import { ArrowSmDownIcon, ArrowSmUpIcon } from "@heroicons/react/outline"
 
@@ -26,6 +28,45 @@ import { CELL_STYLES } from "./cellStyles"
 import { Problem } from "@/types/Problem"
 import { Pagination } from "@/components/submissions-table/Pagination"
 import InputFilter from "./InputFilter"
+
+import {
+  CFIcon,
+  SPOJIcon,
+  CCIcon,
+  LightOJIcon,
+  UVAIcon,
+  CSESIcon,
+  TophIcon,
+  AtCoder,
+  EOlympIcon,
+  BeeCrowd,
+  HackerRankIcon,
+  LeetCodeIcon,
+  TimusIcon,
+  CodeToWinIcon,
+  HackerEarthIcon,
+  KattisOJIcon,
+} from "@/components/Icons"
+
+const onlineJudges = {
+  All: { prefix: "", icon: null },
+  Gym: { prefix: "Gym-", icon: CFIcon },
+  CodeForces: { prefix: "CF-", icon: CFIcon },
+  SPOJ: { prefix: "SPOJ-", icon: SPOJIcon },
+  CodeChef: { prefix: "CC-", icon: CCIcon },
+  LOJ: { prefix: "LOJ-", icon: LightOJIcon },
+  UVA: { prefix: "UVA-", icon: UVAIcon, spacing: 1 },
+  CSES: { prefix: "CSES-", icon: CSESIcon, spacing: 1 },
+  Toph: { prefix: "Toph-", icon: TophIcon },
+  AtCoder: { prefix: "AC-", icon: AtCoder },
+  Eolymp: { prefix: "Eolymp-", icon: EOlympIcon },
+  HackerRank: { prefix: "HR-", icon: HackerRankIcon, spacing: 1 },
+  LeetCode: { prefix: "LC-", icon: LeetCodeIcon },
+  Timus: { prefix: "Tim-", icon: TimusIcon },
+  CodeToWin: { prefix: "CW-", icon: CodeToWinIcon, spacing: 1 },
+  Kattis: { prefix: "KT-", icon: KattisOJIcon },
+}
+
 export default function ProblemManagementTable({
   problems,
 }: {
@@ -88,7 +129,6 @@ export default function ProblemManagementTable({
   const {
     getTableProps,
     getTableBodyProps,
-    rows,
     prepareRow,
     headerGroups,
     page,
@@ -100,17 +140,19 @@ export default function ProblemManagementTable({
     nextPage,
     previousPage,
     setPageSize,
+    setFilter,
     setGlobalFilter,
-    state: { pageIndex, pageSize, globalFilter },
+    state: { pageIndex, pageSize, globalFilter, filters },
   } = useTable(
     {
       /* @ts-ignore */
       data: problems,
       columns: tableColumns,
       initialState: {
-        pageSize: 50,
+        pageSize: 20,
       },
     },
+    useFilters,
     useGlobalFilter,
     useSortBy,
     usePagination
@@ -118,10 +160,43 @@ export default function ProblemManagementTable({
 
   return (
     <Box mx={-4} overflowX="auto">
-      {/* <InputFilter
+      <HStack flexWrap="wrap" mx={4} mb={4}>
+        {Object.entries(onlineJudges).map(([key, value], idx) => {
+          let isActive = filters[0]?.value === value.prefix
+          if (idx == 0 && filters.length == 0) isActive = true
+          return (
+            <Button
+              key={key}
+              size="sm"
+              border="1px"
+              borderColor={isActive ? "blue.500" : "blue.200"}
+              borderStyle="solid"
+              bg={isActive ? "blue.500" : "blue.50"}
+              color={isActive ? "white" : "blue.600"}
+              _hover={{
+                color: "white",
+                bg: "blue.500",
+                borderColor: "blue.500",
+              }}
+              onClick={() => {
+                setFilter("Problem ID", value.prefix)
+              }}
+            >
+              {key}
+            </Button>
+          )
+        })}
+      </HStack>
+
+      <InputFilter
         filter={globalFilter}
         setFilter={setGlobalFilter}
-      ></InputFilter> */}
+      ></InputFilter>
+
+      {/* <pre>
+        <code>{JSON.stringify(filters, null, 2)}</code>
+      </pre> */}
+
       <Table w="full" {...getTableProps()}>
         <Thead>
           {headerGroups.map((headerGroup) => {

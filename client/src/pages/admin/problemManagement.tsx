@@ -12,6 +12,7 @@ export default function ProblemManagement() {
 
   useQuery("problems", getAllProblems, {
     onSuccess: (res) => {
+      console.log(res.body)
       setProblems(res.body.problems)
     },
   })
