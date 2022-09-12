@@ -19,7 +19,7 @@ import {
   Input,
   VStack,
 } from "@chakra-ui/react"
-//import { Select } from "chakra-react-select"
+
 import Tags from "./Tags"
 
 export default function EditProblemTable() {
@@ -32,6 +32,9 @@ export default function EditProblemTable() {
       setProblem(res.body.problem)
     },
   })
+  useEffect(() => {
+    console.log(tags)
+  }, [tags])
   useEffect(() => {
     if (problem) {
       console.log(problem)
@@ -117,6 +120,7 @@ export default function EditProblemTable() {
                     value={formik.values.difficulty}
                   />
                 </FormControl>
+                {tags.length != 0 ? <Tags data={tags}></Tags> : null}
                 <FormControl>
                   <FormLabel htmlFor="link">Problem Link</FormLabel>
                   <Input
