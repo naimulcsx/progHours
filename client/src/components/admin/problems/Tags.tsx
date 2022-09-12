@@ -8,19 +8,21 @@ import {
 } from "@chakra-ui/react"
 import { Select } from "chakra-react-select"
 
-export default function Tags({ data }) {
+export default function Tags({ data, setSelected }) {
   return (
     <FormControl>
-      <FormLabel>
-        Select Colors and Flavours <Code>size="md" (default)</Code>
-      </FormLabel>
+      <FormLabel>Tags</FormLabel>
       <Select
+        useBasicStyles
         isMulti
         name="colors"
         placeholder="Select some colors..."
         closeMenuOnSelect={false}
         defaultValue={data}
         variant="filled"
+        onChange={(e) => {
+          setSelected(e)
+        }}
       />
     </FormControl>
   )

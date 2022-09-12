@@ -25,6 +25,8 @@ import Tags from "./Tags"
 export default function EditProblemTable() {
   const [problem, setProblem] = useState<Problem>()
   const [tags, setTags] = useState([])
+  const [selected, setSelected] = useState([])
+
   const toast = useToast(DEFAULT_TOAST_OPTIONS)
   const { pid } = useParams()
   useQuery("problem", () => getProblemByPid(pid), {
@@ -32,9 +34,45 @@ export default function EditProblemTable() {
       setProblem(res.body.problem)
     },
   })
+  const formik = useFormik({
+    enableReinitialize: true,
+    initialValues: {
+      name: problem?.name || "",
+      pid: problem?.pid || "",
+      difficulty: problem?.difficulty || "",
+      link: problem?.link || "",
+      onlineJudgeId: problem?.onlineJudgeId || "",
+      tags: problem?.tags || "",
+    },
+    onSubmit: (values) => {
+      console.log(values)
+      const body = {
+        ...values,
+        difficulty: Number(values.difficulty),
+        onlineJudgeId: Number(values.onlineJudgeId),
+      }
+      updateProblemInfo(pid, body)
+        .then(() => {
+          toast({ status: "success", title: "Problem updated!" })
+        })
+        .catch((err) => {
+          showErrorToasts(toast, err.response.data.message)
+        })
+    },
+  })
   useEffect(() => {
-    console.log(tags)
-  }, [tags])
+    console.log(selected)
+    if (selected.length != 0) {
+      let temp = []
+      selected.map((value) => {
+        temp.push({ tag: { name: value.label } })
+        console.log(value, "value")
+      })
+      console.log(temp)
+      formik.setFieldValue("tags", temp)
+    }
+  }, [selected])
+
   useEffect(() => {
     if (problem) {
       console.log(problem)
@@ -50,31 +88,7 @@ export default function EditProblemTable() {
       })
     }
   }, [problem])
-  const formik = useFormik({
-    enableReinitialize: true,
-    initialValues: {
-      name: problem?.name || "",
-      pid: problem?.pid || "",
-      difficulty: problem?.difficulty || "",
-      link: problem?.link || "",
-      onlineJudgeId: problem?.onlineJudgeId || "",
-      tags: problem?.tags || "",
-    },
-    onSubmit: (values) => {
-      const body = {
-        ...values,
-        difficulty: Number(values.difficulty),
-        onlineJudgeId: Number(values.onlineJudgeId),
-      }
-      updateProblemInfo(pid, body)
-        .then(() => {
-          toast({ status: "success", title: "Problem updated!" })
-        })
-        .catch((err) => {
-          showErrorToasts(toast, err.response.data.message)
-        })
-    },
-  })
+
   return (
     <DashboardLayout>
       {/* @ts-ignore */}
@@ -120,7 +134,9 @@ export default function EditProblemTable() {
                     value={formik.values.difficulty}
                   />
                 </FormControl>
-                {tags.length != 0 ? <Tags data={tags}></Tags> : null}
+                {tags.length != 0 ? (
+                  <Tags data={tags} setSelected={setSelected}></Tags>
+                ) : null}
                 <FormControl>
                   <FormLabel htmlFor="link">Problem Link</FormLabel>
                   <Input
