@@ -45,7 +45,7 @@ export default function EditProblemTable() {
       tags: problem?.tags || "",
     },
     onSubmit: (values) => {
-      console.log(values)
+      console.log(values.tags)
       const body = {
         ...values,
         difficulty: Number(values.difficulty),
