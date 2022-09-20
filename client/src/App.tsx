@@ -1,93 +1,145 @@
-import { useEffect } from "react"
-import { HelmetProvider } from "react-helmet-async"
-import { QueryClient, QueryClientProvider } from "react-query"
-import { useLocation, useNavigate, useRoutes } from "react-router-dom"
-import clearAuthData from "@/utils/clearAuthData"
-import axios from "axios"
+import { FC } from "react"
+import { User } from "@/contexts/UserContext"
+import { Box, Loader, MantineProvider } from "@mantine/core"
+import { NotificationsProvider } from "@mantine/notifications"
 import { ReactQueryDevtools } from "react-query/devtools"
-import { useToast } from "@chakra-ui/react"
-import { Box } from "@chakra-ui/react"
-import { useColorModeValue as mode } from "@chakra-ui/react"
+import { SpotlightAction, SpotlightProvider } from "@mantine/spotlight"
 
-/**
- * Import Styles
- */
-// import "@/styles/fonts.css"
-// import "@/styles/spinner.css"
-import "@fontsource/inter/400.css"
-import "@fontsource/inter/500.css"
-import "@fontsource/inter/600.css"
-import "@fontsource/inter/700.css"
+// routes
+import routes from "@/routes"
 
-/**
- * Import Routes
- */
-import routes from "./routes"
+// hooks
+import {
+  Navigate,
+  NavigateFunction,
+  useNavigate,
+  useRoutes,
+} from "react-router-dom"
+import useUser from "@/hooks/useUser"
 
-/**
- * Import Components
- */
-import { GlobalStateProvider } from "./GlobalStateProvider"
-import { DEFAULT_TOAST_OPTIONS } from "./configs/toast-config"
+// styles
+import theme from "@/styles/theme"
+import "@/styles/custom.css"
+import {
+  IconChartBar,
+  IconDashboard,
+  IconHome,
+  IconLogout,
+  IconSearch,
+} from "@tabler/icons"
+import useLogout from "./hooks/useLogout"
 
-/**
- * Initialize query client
- */
-const queryClient = new QueryClient()
-
-const App = (): JSX.Element => {
-  const toast = useToast(DEFAULT_TOAST_OPTIONS)
-  const navigate = useNavigate()
-  const { pathname } = useLocation()
+const App = () => {
+  const { user } = useUser()
+  const isLoading = user === undefined
 
   /**
-   * Check if user has the appropiate cookie to access the private pages
+   * Show a loading animation until the request is finished
    */
-  useEffect(() => {
-    async function checkUser() {
-      try {
-        await axios.get("/api/users/me")
-      } catch (err) {
-        await clearAuthData()
-        navigate("/login")
-        toast({ status: "error", title: "Access denied!" })
-      }
-    }
-    /**
-     * Excluding from checking since these are public pages
-     */
-    function userOrOtherPath(pathname: string) {
-      return pathname.substring(0, 6) === "/users" ? "/users" : pathname
-    }
-    if (
-      !["/", "/leaderboard", "/login", "/register", "/users"].includes(
-        userOrOtherPath(pathname)
-      )
+  if (isLoading)
+    return (
+      <Box
+        sx={{
+          height: "100vh",
+          width: "100%",
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+        }}
+      >
+        <Loader></Loader>
+      </Box>
     )
-      checkUser()
-  }, [])
 
-  const isLoggedIn: boolean = !!localStorage.getItem("isLoggedIn")
-  const role: string = localStorage.getItem("role")!
+  /**
+   * user is null when no user is logged in
+   */
+  const isLoggedIn = user !== null
+  return <Entry isLoggedIn={isLoggedIn} user={user} />
+}
+
+const Entry: FC<{ isLoggedIn: boolean; user: User | null }> = ({
+  isLoggedIn,
+  user,
+}) => {
+  const handleLogout = useLogout()
+  const navigate = useNavigate()
+  const role: string = user ? user.role : "GUEST"
   const matchedPage = useRoutes(routes(isLoggedIn, role))
-
   return (
-    <QueryClientProvider client={queryClient}>
-      {/* @ts-ignore */}
-      <HelmetProvider>
-        <Box minH="100vh" bg={mode("gray.50", "gray.900")}>
-          {isLoggedIn ? (
-            <GlobalStateProvider>
-              <main>{matchedPage}</main>
-            </GlobalStateProvider>
-          ) : (
+    <MantineProvider withGlobalStyles withNormalizeCSS theme={theme}>
+      <NotificationsProvider position="top-right" transitionDuration={250}>
+        <SpotlightProvider
+          actions={getActions(navigate, handleLogout, user)}
+          searchIcon={<IconSearch size={18} />}
+          searchPlaceholder="Search..."
+          shortcut="mod + shift + p"
+          nothingFoundMessage="Nothing found..."
+        >
+          <Box
+            sx={(theme) => ({
+              background: theme.colors.gray[0],
+              minHeight: "100vh",
+            })}
+          >
             <main>{matchedPage}</main>
-          )}
-        </Box>
-        {/* <ReactQueryDevtools position="bottom-right" /> */}
-      </HelmetProvider>
-    </QueryClientProvider>
+          </Box>
+        </SpotlightProvider>
+        <ReactQueryDevtools position="bottom-right" />
+      </NotificationsProvider>
+    </MantineProvider>
   )
+}
+
+const getActions = (
+  navigate: NavigateFunction,
+  handleLogout: Function,
+  user: User | null
+): SpotlightAction[] => {
+  // user not logged in
+  if (!user) {
+    return [
+      {
+        title: "Register",
+        description: "Visit the dashboard page",
+        onTrigger: () => navigate("/dasboard"),
+        icon: <IconDashboard size={18} />,
+      },
+      {
+        title: "Login",
+        description: "Visit the dashboard page",
+        onTrigger: () => navigate("/login"),
+        icon: <IconDashboard size={18} />,
+      },
+    ]
+  }
+  // if user is logged in
+  return [
+    {
+      title: "Dashboard",
+      description: "Visit the dashboard page",
+      onTrigger: () => navigate("/dashboard"),
+      icon: <IconDashboard size={18} />,
+    },
+    {
+      title: "Your Profile",
+      description: "Visit your profile",
+      onTrigger: () => user && navigate(`/users/${user.username}`),
+      icon: <IconDashboard size={18} />,
+    },
+    {
+      title: "Leaderboard",
+      description: "Visit the leaderboard page",
+      onTrigger: () => navigate("/leaderboard"),
+      icon: <IconChartBar size={18} />,
+    },
+    {
+      title: "Logout",
+      description: "Logout from progHours",
+      onTrigger: () => handleLogout(),
+      icon: <IconLogout size={18} />,
+    },
+  ]
 }
 
 export default App

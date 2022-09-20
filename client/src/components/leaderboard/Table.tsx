@@ -1,223 +1,132 @@
-import { useEffect, useMemo } from "react"
-import { useTable, useSortBy, Cell, Column, usePagination } from "react-table"
-import { RanklistItem } from "@/types/RanklistItem"
-import { Link } from "react-router-dom"
-
-/**
- * Import Icons
- */
 import {
-  ArrowSmDownIcon,
-  ArrowSmUpIcon,
-  PlusIcon,
-  FilterIcon,
-  XIcon,
-} from "@heroicons/react/outline"
-
-import {
+  Anchor,
   Box,
-  Table,
-  Avatar,
-  Thead,
-  Tr,
-  Th,
-  Td,
-  Tbody,
-  Flex,
-  useColorModeValue as mode,
-  Text,
-  Badge,
   Button,
-  IconButton,
-} from "@chakra-ui/react"
+  Group,
+  HoverCard,
+  Stack,
+  Text,
+  Title,
+} from "@mantine/core"
 import { getAvatarColors } from "@/utils/getAvatarColors"
-import { CELL_STYLES } from "./cellStyles"
-import { Pagination } from "../submissions-table/Pagination"
+import { DataGrid, numberFilterFn } from "mantine-data-grid"
+import Avatar from "../Avatar"
+import { useNavigate } from "react-router-dom"
 
-const UserCell = (cell: Cell<RanklistItem>) => {
+const LeaderboardTable = ({ data, loading }: any) => {
+  const navigate = useNavigate()
   return (
-    <Link to={`/users/${cell.row.original.user.username}`}>
-      <Flex alignItems="center" gap={4}>
-        <Avatar
-          name={cell.row.original.user.name}
-          size="sm"
-          fontWeight="bold"
-        />
-        <Box>
-          <Text color={mode("gray.900", "white")}>{cell.value}</Text>
-          <Text color={mode("gray.500", "gray.400")} fontSize="sm">
-            {cell.row.original.user.username.toUpperCase()}
-          </Text>
-        </Box>
-      </Flex>
-    </Link>
-  )
-}
-
-const LeaderboardTable = ({
-  ranklist,
-  isPublic = false,
-}: {
-  ranklist: RanklistItem[]
-  isPublic?: boolean
-}) => {
-  /**
-   * Define table columns
-   */
-  const tableColumns = useMemo(
-    () =>
-      [
-        {
-          Header: "#",
-          accessor: (row: RanklistItem, i: number) => i + 1,
-        },
-        {
-          Header: "Name",
-          accessor: "user.name",
-          Cell: UserCell,
-        },
-        {
-          Header: "Solve Count",
-          accessor: "totalSolved",
-        },
-        {
-          Header: "Solve Time",
-          accessor: "totalSolveTime",
-        },
-        {
-          Header: "Average Difficulty",
-          accessor: (row: RanklistItem) => row.averageDifficulty.toFixed(2),
-        },
-        {
-          Header: "Points",
-          accessor: (row: RanklistItem) => row.points.toFixed(2),
-        },
-      ] as Column<RanklistItem>[],
-    []
-  )
-
-  const {
-    getTableProps,
-    prepareRow,
-    headerGroups,
-    page,
-    canPreviousPage,
-    canNextPage,
-    pageOptions,
-    pageCount,
-    gotoPage,
-    nextPage,
-    previousPage,
-    setPageSize,
-    state: { pageIndex, pageSize },
-  } = useTable(
-    {
-      data: ranklist,
-      columns: tableColumns,
-      initialState: {
-        pageSize: 50,
-      },
-    },
-    useSortBy,
-    usePagination
-  )
-
-  return (
-    <Box
-      mx={-4}
-      pb={isPublic ? [0, 0, 10] : ["104px", 14]}
-      overflowX="auto"
-      display="flex"
-      flexDirection="column"
-    >
-      <Table w="full" {...getTableProps()} id="leaderboard-table">
-        <Thead>
-          {headerGroups.map((headerGroup) => {
-            return (
-              <Tr
-                textColor="gray.500"
-                textTransform="uppercase"
-                bg={mode("gray.100", "gray.900")}
-                {...headerGroup.getHeaderGroupProps()}
-              >
-                {headerGroup.headers.map((header) => {
-                  return (
-                    <Th
-                      {...header.getHeaderProps(header.getSortByToggleProps())}
-                      py={3}
-                      borderBottom="1px solid"
-                      borderColor={mode("gray.200", "gray.700")}
-                      letterSpacing="-0.5px"
-                    >
-                      <Flex align="center" minH="5">
-                        <Box as="span" fontSize={["11px", "xs"]}>
-                          {header.render("Header")}
-                        </Box>
-                        <Box as="span" ml={1}>
-                          {header.isSorted ? (
-                            header.isSortedDesc ? (
-                              <ArrowSmDownIcon height={16} />
-                            ) : (
-                              <ArrowSmUpIcon height={16} />
-                            )
-                          ) : (
-                            ""
-                          )}
-                        </Box>
-                      </Flex>
-                    </Th>
-                  )
-                })}
-              </Tr>
-            )
-          })}
-        </Thead>
-        <Tbody>
-          {page.map((row) => {
-            prepareRow(row)
-            return <TableRow key={row.original.id} row={row} />
-          })}
-        </Tbody>
-      </Table>
-      <Pagination
-        isPublic={isPublic}
-        noMobileNavbar
-        pageIndex={pageIndex}
-        pageOptions={pageOptions}
-        pageSize={pageSize}
-        setPageSize={setPageSize}
-        canPreviousPage={canPreviousPage}
-        canNextPage={canNextPage}
-        gotoPage={gotoPage}
-        pageCount={pageCount}
-        previousPage={previousPage}
-        nextPage={nextPage}
-      />
-    </Box>
-  )
-}
-
-const TableRow = ({ row }: any) => {
-  return (
-    <Tr
-      {...row.getRowProps()}
-      _hover={{ bg: mode("gray.50", "gray.750") }}
-      bg={mode("white", "gray.800")}
-    >
-      {row.cells.map((cell: any) => {
-        const cellType: any = cell.column.Header
-        return (
-          <Td
-            {...cell.getCellProps()}
-            className="py-3 border-b"
-            borderColor={mode("gray.200", "gray.700")}
-            {...CELL_STYLES[cellType]}
-          >
-            {cell.render("Cell")}
-          </Td>
-        )
+    <DataGrid
+      sx={(theme) => ({
+        background: "white",
+        boxShadow: theme.shadows.sm,
+        borderRadius: theme.radius.sm,
       })}
-    </Tr>
+      loading={loading}
+      data={data ? data.body.stats : []}
+      withPagination
+      withColumnFilters
+      withSorting
+      horizontalSpacing="xl"
+      columns={[
+        {
+          accessorKey: "rank",
+          header: "Rank",
+          size: 55,
+        },
+        {
+          accessorKey: "user.name",
+          header: "Name",
+          size: 300,
+          cell: ({ cell }) => {
+            const { name, department, batch, username } = cell.row.original.user
+            return (
+              <Group position="center">
+                <HoverCard
+                  width={320}
+                  shadow="md"
+                  openDelay={200}
+                  closeDelay={400}
+                >
+                  <HoverCard.Target>
+                    <Box
+                      sx={(theme) => ({
+                        height: 32,
+                        display: "flex",
+                        alignItems: "center",
+                        gap: theme.spacing.sm,
+                      })}
+                    >
+                      <Avatar name={name} />
+                      <Text>{name}</Text>
+                    </Box>
+                  </HoverCard.Target>
+                  <HoverCard.Dropdown>
+                    <Group>
+                      <Avatar name={name} />
+                      <Stack spacing={5}>
+                        <Text size="sm" weight={700} sx={{ lineHeight: 1 }}>
+                          {name}
+                        </Text>
+                        <Anchor
+                          href="https://twitter.com/mantinedev"
+                          color="dimmed"
+                          size="xs"
+                          sx={{ lineHeight: 1 }}
+                        >
+                          @{username.toUpperCase()}
+                        </Anchor>
+                      </Stack>
+                    </Group>
+                    <Text
+                      sx={{
+                        whiteSpace: "pre-wrap",
+                      }}
+                      component="p"
+                    >
+                      Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                      Dicta, eos non! Expedita error, reiciendis, quia illum
+                      dolore dolorum quis molestias maiores omnis.
+                    </Text>
+
+                    <Group mt="md" spacing="xl">
+                      <Text size="sm">
+                        <b>CSE 46</b>
+                      </Text>
+                      <Text size="sm">
+                        <b>{cell.row.original.totalSolved}</b> Problems Solved
+                      </Text>
+                    </Group>
+                  </HoverCard.Dropdown>
+                </HoverCard>
+              </Group>
+            )
+          },
+        },
+        {
+          accessorKey: "totalSolved",
+          header: "Solved",
+          filterFn: numberFilterFn,
+        },
+        {
+          accessorKey: "totalSolveTime",
+          header: "Solve Time",
+          filterFn: numberFilterFn,
+        },
+        {
+          accessorKey: "averageDifficulty",
+          header: "Average Difficulty",
+          filterFn: numberFilterFn,
+          size: 200,
+        },
+        {
+          accessorKey: "score",
+          header: "Score",
+          cell: ({ row }) => row.original.score.toFixed(2),
+          filterFn: numberFilterFn,
+        },
+      ]}
+    />
   )
 }
 

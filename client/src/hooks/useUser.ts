@@ -1,15 +1,11 @@
-import { getUser } from "@/api/user"
-import { useState } from "react"
-import { useQuery } from "react-query"
-import { User } from "@/GlobalStateProvider"
+import { useContext } from "react"
+import { UserContext } from "@/contexts/UserContext"
 
 function useUser() {
-  const [user, setUser] = useState<User | null>(null)
-  useQuery("user", getUser, {
-    onSuccess: (data) => {
-      setUser(data.body.user)
-    },
-  })
+  const user = useContext(UserContext)
+  if (user === undefined) {
+    throw new Error("useUser must be used within a UserProvider")
+  }
   return user
 }
 

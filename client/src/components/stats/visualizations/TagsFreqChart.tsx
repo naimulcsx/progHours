@@ -1,5 +1,6 @@
 import ReactApexChart from "react-apexcharts"
 import { useColorModeValue as mode } from "@chakra-ui/react"
+import { Paper } from "@mantine/core"
 
 function stringToColour(str: string) {
   str = str + "_"
@@ -127,12 +128,14 @@ export default function TagsFreqChart({ data }) {
   }
   return (
     // @ts-ignore
-    <ReactApexChart
-      // @ts-ignore
-      options={state.options}
-      series={state.series}
-      type="bar"
-      height={350}
-    />
+    <Paper shadow="xs" p="xl">
+      <ReactApexChart
+        // @ts-ignore
+        options={state.options}
+        series={state.series}
+        type="bar"
+        height={350}
+      />
+    </Paper>
   )
 }

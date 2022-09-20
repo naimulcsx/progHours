@@ -1,5 +1,6 @@
 import ReactApexChart from "react-apexcharts"
 import { useColorModeValue as mode } from "@chakra-ui/react"
+import { Paper } from "@mantine/core"
 
 // @ts-ignore
 export default function WeeklySolvedChart({ data }) {
@@ -50,11 +51,13 @@ export default function WeeklySolvedChart({ data }) {
   }
   return (
     // @ts-ignore
-    <ReactApexChart
-      options={options as any}
-      series={series}
-      type="area"
-      height={320}
-    />
+    <Paper shadow="xs" p="md">
+      <ReactApexChart
+        options={options as any}
+        series={series}
+        type="area"
+        height={320}
+      />
+    </Paper>
   )
 }

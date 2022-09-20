@@ -54,7 +54,6 @@ export class AuthController {
       statusCode: HttpStatus.OK,
       message: "Logged in!",
       body: {
-        accessToken,
         user,
       },
     }

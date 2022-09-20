@@ -5,9 +5,6 @@ import {
   Box,
   Container,
   Skeleton,
-  SkeletonCircle,
-  SkeletonText,
-  Spinner,
   Stack,
   Tab,
   TabList,
@@ -17,7 +14,6 @@ import {
   useToast,
   useColorModeValue as mode,
 } from "@chakra-ui/react"
-import { motion } from "framer-motion"
 
 /**
  * Import Components
@@ -43,7 +39,6 @@ import TagsFreqChart from "@/components/stats/visualizations/TagsFreqChart"
 import { UserAbout } from "@/components/profile/UserAbout"
 import { getWeekRanges } from "@/utils/getWeekRanges"
 import WeeklySolvedChart from "@/components/stats/visualizations/WeeklySolvedChart"
-import { PublicNavbar } from "@/components/navbar/PublicNavbar"
 import { AnimateLoading } from "@/components/AnimateLoading"
 
 interface User {
@@ -131,7 +126,7 @@ export default function Profile() {
 
   return (
     <>
-      {isLoggedIn ? <Navbar /> : <PublicNavbar />}
+      <Navbar />
       <AnimateLoading
         isLoaded={user && userStats && frequency && submissionQuery.data}
         SkeletonComponent={() => (

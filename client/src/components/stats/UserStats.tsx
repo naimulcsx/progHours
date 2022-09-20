@@ -7,6 +7,7 @@ import {
 import calculatePoints from "@/utils/calculatePoints"
 import { SimpleGrid } from "@chakra-ui/react"
 import { StatCard } from "@/components/stats/StatCard"
+import { Grid } from "@mantine/core"
 
 type HeroIconProps = (props: React.ComponentProps<"svg">) => JSX.Element
 
@@ -25,36 +26,44 @@ const UserStats = ({ progress }: { progress: Progress }) => {
   } = progress
   progress.averageDifficulty = totalDifficulty / totalSolvedWithDifficulty || 0
   return (
-    <SimpleGrid columns={[1, 2, 2, 4]} gap={4}>
-      <StatCard
-        icon={<StarIcon width={24} height={24} />}
-        data={{
-          label: "Points",
-          value: calculatePoints(progress).toFixed(2),
-        }}
-      />
-      <StatCard
-        icon={<TrendingUpIcon width={24} height={24} />}
-        data={{
-          label: "Problems Solved",
-          value: totalSolved,
-        }}
-      />
-      <StatCard
-        icon={<ClockIcon width={24} height={24} />}
-        data={{
-          label: "Solve Time",
-          value: convertToHours(totalSolveTime),
-        }}
-      />
-      <StatCard
-        icon={<LightningBoltIcon width={24} height={24} />}
-        data={{
-          label: "Average Difficulty",
-          value: progress.averageDifficulty.toFixed(2),
-        }}
-      />
-    </SimpleGrid>
+    <Grid>
+      <Grid.Col span={3}>
+        <StatCard
+          icon={<StarIcon width={24} height={24} />}
+          data={{
+            label: "Points",
+            value: calculatePoints(progress).toFixed(2),
+          }}
+        />
+      </Grid.Col>
+      <Grid.Col span={3}>
+        <StatCard
+          icon={<TrendingUpIcon width={24} height={24} />}
+          data={{
+            label: "Problems Solved",
+            value: totalSolved,
+          }}
+        />
+      </Grid.Col>
+      <Grid.Col span={3}>
+        <StatCard
+          icon={<ClockIcon width={24} height={24} />}
+          data={{
+            label: "Solve Time",
+            value: convertToHours(totalSolveTime),
+          }}
+        />
+      </Grid.Col>
+      <Grid.Col span={3}>
+        <StatCard
+          icon={<LightningBoltIcon width={24} height={24} />}
+          data={{
+            label: "Average Difficulty",
+            value: progress.averageDifficulty.toFixed(2),
+          }}
+        />
+      </Grid.Col>
+    </Grid>
   )
 }
 

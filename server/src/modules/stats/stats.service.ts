@@ -1,11 +1,37 @@
 import { Injectable } from "@nestjs/common"
 import { PrismaService } from "../prisma/prisma.service"
 import * as moment from "moment"
+import { UserStat } from "@prisma/client"
 
 // fix prisma bigint issue: https://github.com/prisma/studio/issues/614
 const bigIntPrototype = BigInt.prototype as any
 bigIntPrototype.toJSON = function () {
   return Number(this)
+}
+
+interface UserStatWithComputedFields extends UserStat {
+  rank: number
+  averageDifficulty: number
+  score: number
+}
+
+function computeRankAndSort(stats: UserStat[]): UserStatWithComputedFields[] {
+  return stats
+    .map((item: UserStatWithComputedFields) => {
+      item.averageDifficulty =
+        item.totalDifficulty / item.totalSolvedWithDifficulty || 0
+      item.score =
+        (item.totalSolved * item.averageDifficulty) / 100 + item.totalSolveTime
+      if (!item.score) item.score = 0
+      item.score = Math.round(item.score * 1e2) / 1e2
+      item.averageDifficulty = Math.round(item.averageDifficulty * 1e2) / 1e2
+      return item
+    })
+    .sort((a, b) => b.score - a.score)
+    .map((item, idx) => {
+      item.rank = idx + 1
+      return item
+    })
 }
 
 @Injectable()
@@ -126,7 +152,7 @@ export class StatsService {
    * Get user ranklist
    */
   async getRankList() {
-    return this.prisma.userStat.findMany({
+    const ranklist = await this.prisma.userStat.findMany({
       include: {
         user: {
           select: {
@@ -134,10 +160,12 @@ export class StatsService {
             name: true,
             username: true,
             batch: true,
+            department: true,
           },
         },
       },
     })
+    return computeRankAndSort(ranklist)
   }
 
   /**
@@ -191,20 +219,22 @@ export class StatsService {
         "User"."id"
       `
 
-    return result.map((stat) => {
+    const data = result.map((stat: any) => {
       return {
-        id: stat.id,
-        totalSolveTime: stat.totalSolveTime,
-        totalDifficulty: stat.totalDifficulty,
-        totalSolved: stat.totalSolved,
-        totalSolvedWithDifficulty: stat.totalSolvedWithDifficulty,
+        id: Number(stat.id),
+        totalSolveTime: Number(stat.totalSolveTime),
+        totalDifficulty: Number(stat.totalDifficulty),
+        totalSolved: Number(stat.totalSolved),
+        totalSolvedWithDifficulty: Number(stat.totalSolvedWithDifficulty),
         user: {
-          id: stat.id,
+          id: Number(stat.id),
           name: stat.name,
           username: stat.username,
-          batch: stat.batch,
+          batch: Number(stat.batch),
         },
       }
     })
+
+    return computeRankAndSort(data)
   }
 }

@@ -3,7 +3,6 @@ import { useQuery } from "react-query"
 import { Helmet } from "react-helmet-async"
 import {
   Box,
-  Grid,
   GridItem,
   Spinner,
   useColorModeValue as mode,
@@ -25,6 +24,8 @@ import { getSubmissions } from "@/api/submissions"
 import { getWeekRanges } from "@/utils/getWeekRanges"
 import { GlobalContext } from "@/GlobalStateProvider"
 import { AnimateLoading } from "@/components/AnimateLoading"
+import { AppShell, Grid } from "@mantine/core"
+import NewSidebar from "@/components/sidebar/NewSidebar"
 
 const DashboardHome = () => {
   const { user } = useContext(GlobalContext)
@@ -67,7 +68,7 @@ const DashboardHome = () => {
   const bg = mode("white", "gray.700")
 
   return (
-    <DashboardLayout title={`Hi! ${user?.name || ""}`}>
+    <DashboardLayout>
       {/* @ts-ignore */}
       <Helmet>
         <title>Dashboard</title>
@@ -78,37 +79,13 @@ const DashboardHome = () => {
             <Box mb={4}>
               <UserStats progress={data} />
             </Box>
-            <Grid
-              templateColumns={[
-                "repeat(1, 1fr)",
-                "repeat(1, 1fr)",
-                "repeat(1, 1fr)",
-                "repeat(1, 1fr)",
-                "repeat(3, 1fr)",
-              ]}
-              gap={[0, 0, 0, 4]}
-              mb={[14]}
-            >
-              <GridItem
-                p={[4, 4, 4, 8]}
-                bg={bg}
-                rounded="lg"
-                shadow="base"
-                mb={[4, 4, 4, 0]}
-              >
+            <Grid>
+              <Grid.Col span={6}>
                 {<WeeklySolvedChart data={frequency} />}
-              </GridItem>
-              <GridItem
-                p={[4, 4, 4, 8]}
-                pb={[0, 0, 0, 2]}
-                mb={[4, 0]}
-                bg={bg}
-                rounded="lg"
-                shadow="base"
-                colSpan={2}
-              >
+              </Grid.Col>
+              <Grid.Col span={6}>
                 <TagsFreqChart data={data["tagsFrequency"]} />
-              </GridItem>
+              </Grid.Col>
             </Grid>
           </>
         )}

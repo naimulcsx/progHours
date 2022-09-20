@@ -1,44 +1,39 @@
-import {
-  Box,
-  Circle,
-  HStack,
-  Text,
-  Heading,
-  useColorModeValue as mode,
-} from "@chakra-ui/react"
+import { Box, Group, Paper, Stack, Text, Title } from "@mantine/core"
 
 export const StatCard = (props: any) => {
   const { data, icon } = props
   const { label, value } = data
   return (
-    <Box
-      bg={mode("white", "gray.700")}
-      p={[4, 4, 4, 4, 6]}
-      shadow="base"
-      rounded="lg"
-    >
-      <HStack align="start" spacing={[4, 4, 4, 4, 6]}>
-        <Circle
-          bg={mode("gray.50", "gray.800")}
-          color={mode("blue.500", "blue.500")}
-          rounded="full"
-          size={[10, 10, 10, 10, 12]}
+    <Paper p="xl" shadow="xs">
+      <Group>
+        <Box
+          sx={(theme) => ({
+            color: theme.colors[theme.primaryColor][5],
+            background: theme.colors[theme.primaryColor][0],
+            width: 40,
+            height: 40,
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            borderRadius: "50%",
+          })}
         >
           {icon}
-        </Circle>
+        </Box>
         <Box>
-          <Text fontWeight="600" color={mode("gray.700", "gray.400")}>
+          <Title order={4} sx={{ fontWeight: 500 }}>
             {label}
-          </Text>
-          <Heading
-            as="h4"
-            fontSize={["xl", "xl", "xl", "xl", "3xl"]}
-            mt={[2, 2, 2, 3]}
+          </Title>
+          <Text
+            sx={(theme) => ({
+              fontSize: theme.headings.sizes.h2.fontSize,
+              fontWeight: 700,
+            })}
           >
             {value}
-          </Heading>
+          </Text>
         </Box>
-      </HStack>
-    </Box>
+      </Group>
+    </Paper>
   )
 }

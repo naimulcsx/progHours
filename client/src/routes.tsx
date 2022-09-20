@@ -1,4 +1,3 @@
-import { useEffect } from "react"
 import { Navigate, RouteObject } from "react-router-dom"
 
 /**
@@ -30,6 +29,7 @@ import GroupPage from "./pages/groups/Single"
 import ActivitiesPage from "./pages/Activities"
 import UserManagement from "./pages/admin/userManagement"
 import ProblemManagement from "./pages/admin/problemManagement"
+import { NotFoundPage } from "./pages/404"
 
 const routes = (isLoggedIn: boolean, role: string): RouteObject[] => [
   {
@@ -106,6 +106,10 @@ const routes = (isLoggedIn: boolean, role: string): RouteObject[] => [
   {
     path: "/groups/:hashtag",
     element: isLoggedIn ? <GroupPage /> : <Navigate to="/login" />,
+  },
+  {
+    path: "*",
+    element: <NotFoundPage />,
   },
 ]
 
