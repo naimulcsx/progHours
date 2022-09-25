@@ -31,7 +31,7 @@ function PublicLeaderboard() {
 
   const [leaderboardType, setLeaderboardType] = useState<
     "full" | "currentWeek" | "lastWeek" | "currentMonth"
-  >("full")
+  >("currentWeek")
 
   const [dateRange, setDateRange] = useState<any>({})
 
@@ -111,7 +111,7 @@ function PublicLeaderboard() {
                       size="sm"
                       maxW="140"
                       placeholder="Select option"
-                      defaultValue="full"
+                      defaultValue="currentWeek"
                       rounded="lg"
                       onChange={(e: any) => {
                         setLeaderboardType(e.target.value)

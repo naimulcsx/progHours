@@ -18,14 +18,18 @@ import { filterData } from "@/components/leaderboard/filters/filterData"
 import { LeaderboardFilters } from "@/components/leaderboard/filters/Filters"
 import { Box, Flex, Select, Text } from "@chakra-ui/react"
 import moment from "moment"
+import { getGroupByHashtag, getUserGroups } from "@/api/groups"
 
 const LeaderboardPage = () => {
   const [ranklist, setRanklist] = useState<any>(null)
   const [filteredData, setFilteredData] = useState<any>(null)
 
+  const [groupTag, setGroupTag] = useState()
+  const [groups, setGroups] = useState([])
+
   const [leaderboardType, setLeaderboardType] = useState<
     "full" | "currentWeek" | "lastWeek" | "currentMonth"
-  >("full")
+  >("currentWeek")
 
   const [dateRange, setDateRange] = useState<any>({})
 
@@ -36,6 +40,19 @@ const LeaderboardPage = () => {
       setRanklist(result)
       if (fromDate && toDate) setDateRange({ from: fromDate, to: toDate })
       else setDateRange({})
+    },
+  })
+
+  // get all groups
+  useQuery("groups", getUserGroups, {
+    onSuccess: (data) => {
+      setGroups(data?.body.groups)
+    },
+  })
+
+  useQuery(["groups", groupTag], () => getGroupByHashtag(groupTag), {
+    onSuccess: (data) => {
+      setRanklist(processRanklist(data?.body.ranklist))
     },
   })
 
@@ -69,7 +86,29 @@ const LeaderboardPage = () => {
               mb={4}
               flexDirection={["column-reverse", "row"]}
             >
-              <LeaderboardFilters filters={filters} setFilters={setFilters} />
+              <Flex gap={6} align="center">
+                <LeaderboardFilters filters={filters} setFilters={setFilters} />
+
+                {groups.length > 0 && (
+                  <Select
+                    size="sm"
+                    maxW="160"
+                    placeholder="Select a group"
+                    rounded="lg"
+                    onChange={(e: any) => {
+                      setGroupTag(e.target.value)
+                    }}
+                  >
+                    {groups.map((item: any) => {
+                      return (
+                        <option key={item.id} value={item.group.hashtag}>
+                          {item.group.name}
+                        </option>
+                      )
+                    })}
+                  </Select>
+                )}
+              </Flex>
               <Flex
                 direction={["row-reverse", "row"]}
                 w={["full", "auto"]}
@@ -95,7 +134,7 @@ const LeaderboardPage = () => {
                   size="sm"
                   maxW="140"
                   placeholder="Select option"
-                  defaultValue="full"
+                  defaultValue="currentWeek"
                   rounded="lg"
                   onChange={(e: any) => {
                     setLeaderboardType(e.target.value)

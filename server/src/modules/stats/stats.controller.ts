@@ -135,7 +135,7 @@ export class StatsController {
         year: new Date().getFullYear(),
       }).subtract(1, "months")
 
-      const end = moment(start).endOf("month").subtract(1, 'day')
+      const end = moment(start).endOf("month").subtract(1, "day")
 
       // query the result
       result = await this.statsService.getWeeklyLeaderboard(
