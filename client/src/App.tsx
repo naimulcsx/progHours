@@ -1,6 +1,6 @@
 import { FC } from "react"
 import { User } from "@/contexts/UserContext"
-import { Box, Loader, MantineProvider } from "@mantine/core"
+import { Box, MantineProvider } from "@mantine/core"
 import { NotificationsProvider } from "@mantine/notifications"
 import { ReactQueryDevtools } from "react-query/devtools"
 import { SpotlightAction, SpotlightProvider } from "@mantine/spotlight"
@@ -23,7 +23,6 @@ import "@/styles/custom.css"
 import {
   IconChartBar,
   IconDashboard,
-  IconHome,
   IconLogout,
   IconSearch,
 } from "@tabler/icons"
@@ -31,29 +30,10 @@ import useLogout from "./hooks/useLogout"
 
 const App = () => {
   const { user } = useUser()
-  const isLoading = user === undefined
+  // request is loading
+  if (user === undefined) return <></>
 
-  /**
-   * Show a loading animation until the request is finished
-   */
-  if (isLoading)
-    return (
-      <Box
-        sx={{
-          height: "100vh",
-          width: "100%",
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-        }}
-      >
-        <Loader></Loader>
-      </Box>
-    )
-
-  /**
-   * user is null when no user is logged in
-   */
+  // user is null when no user is logged in
   const isLoggedIn = user !== null
   return <Entry isLoggedIn={isLoggedIn} user={user} />
 }
@@ -68,7 +48,7 @@ const Entry: FC<{ isLoggedIn: boolean; user: User | null }> = ({
   const matchedPage = useRoutes(routes(isLoggedIn, role))
   return (
     <MantineProvider withGlobalStyles withNormalizeCSS theme={theme}>
-      <NotificationsProvider position="top-right" transitionDuration={250}>
+      <NotificationsProvider position="top-center" transitionDuration={250}>
         <SpotlightProvider
           actions={getActions(navigate, handleLogout, user)}
           searchIcon={<IconSearch size={18} />}
@@ -82,7 +62,7 @@ const Entry: FC<{ isLoggedIn: boolean; user: User | null }> = ({
               minHeight: "100vh",
             })}
           >
-            <main>{matchedPage}</main>
+            <main style={{ overflowX: "hidden" }}>{matchedPage}</main>
           </Box>
         </SpotlightProvider>
         <ReactQueryDevtools position="bottom-right" />

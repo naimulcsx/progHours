@@ -28,18 +28,18 @@ const Avatar: FC<AvatarProps> = ({
       })}
     >
       <Box
-        sx={{
+        sx={(theme) => ({
           background: bg,
           color: color,
           height: height,
           width: width,
-          borderRadius: "100%",
+          borderRadius: "50%",
           display: "flex",
           justifyContent: "center",
           alignItems: "center",
           fontWeight: 700,
           fontSize: fontSize,
-        }}
+        })}
       >
         {initials}
       </Box>

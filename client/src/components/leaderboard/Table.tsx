@@ -1,32 +1,20 @@
-import {
-  Anchor,
-  Box,
-  Button,
-  Group,
-  HoverCard,
-  Stack,
-  Text,
-  Title,
-} from "@mantine/core"
-import { getAvatarColors } from "@/utils/getAvatarColors"
-import { DataGrid, numberFilterFn } from "mantine-data-grid"
-import Avatar from "../Avatar"
+import { Anchor, Box, Group, HoverCard, Stack, Text } from "@mantine/core"
+import { DataGrid, numberFilterFn } from "@/components/datagrid"
 import { useNavigate } from "react-router-dom"
+import Avatar from "@/components/Avatar"
 
-const LeaderboardTable = ({ data, loading }: any) => {
+const LeaderboardTable = ({ data }: any) => {
   const navigate = useNavigate()
   return (
     <DataGrid
       sx={(theme) => ({
         background: "white",
-        boxShadow: theme.shadows.sm,
-        borderRadius: theme.radius.sm,
+        boxShadow: theme.shadows.xs,
       })}
-      loading={loading}
       data={data ? data.body.stats : []}
+      withSorting
       withPagination
       withColumnFilters
-      withSorting
       horizontalSpacing="xl"
       columns={[
         {
@@ -41,7 +29,7 @@ const LeaderboardTable = ({ data, loading }: any) => {
           cell: ({ cell }) => {
             const { name, department, batch, username } = cell.row.original.user
             return (
-              <Group position="center">
+              <Group position="center" sx={{ overflow: "hidden" }}>
                 <HoverCard
                   width={320}
                   shadow="md"

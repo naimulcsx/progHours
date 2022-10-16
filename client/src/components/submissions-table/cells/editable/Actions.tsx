@@ -19,16 +19,11 @@ import { Cell } from "react-table"
 import { Submission } from "@/types/Submission"
 import { AxiosError } from "axios"
 import PopupBuilder from "@/components/PopupBuilder"
-import {
-  Box,
-  Button,
-  HStack,
-  ModalBody,
-  ModalFooter,
-  Text,
-  useToast,
-} from "@chakra-ui/react"
+import { useToast } from "@chakra-ui/react"
 import { DEFAULT_TOAST_OPTIONS } from "@/configs/toast-config"
+import { CellContext } from "@tanstack/react-table"
+import { Box, Button, Group } from "@mantine/core"
+import { IconPencil, IconTrash } from "@tabler/icons"
 
 interface Practice {
   body: {
@@ -36,7 +31,7 @@ interface Practice {
   }
 }
 
-const Actions = (cell: Cell<Submission>) => {
+const Actions = (cell: CellContext<Submission, unknown>) => {
   const toast = useToast(DEFAULT_TOAST_OPTIONS)
   const queryClient = useQueryClient()
   const [isOpen, setIsOpen] = useState(false)
@@ -77,51 +72,77 @@ const Actions = (cell: Cell<Submission>) => {
   })
 
   return (
-    <div className="flex space-x-4">
+    <Group>
       <Button
-        size="xs"
         variant="outline"
-        colorScheme="red"
-        onClick={() => setIsOpen(true)}
-        type="button"
+        color="purple"
+        size="xs"
+        sx={(theme) => ({
+          height: 24,
+          paddingLeft: 6,
+          paddingRight: 6,
+        })}
       >
-        <TrashIcon width={16} height={16} />
+        <IconPencil size={16} />
       </Button>
-      <PopupBuilder
-        size="lg"
-        isOpen={isOpen}
-        setIsOpen={setIsOpen}
-        title={`Delete ${cell.row.original.problem.pid}`}
+      <Button
+        variant="outline"
+        color="red"
+        size="xs"
+        sx={(theme) => ({
+          height: 24,
+          paddingLeft: 6,
+          paddingRight: 6,
+        })}
       >
-        <ModalBody>
-          <Text>
-            Are you sure you want to delete{" "}
-            <Box as="span" fontWeight={500}>
-              {cell.row.original.problem.name} ({cell.row.original.problem.pid})
-            </Box>
-            ?
-          </Text>
-        </ModalBody>
-        <ModalFooter>
-          <HStack>
-            <Button
-              colorScheme="gray"
-              type="button"
-              onClick={() => setIsOpen(false)}
-            >
-              Cancel
-            </Button>
-            <Button
-              colorScheme="red"
-              type="button"
-              onClick={() => mutate(cell.value)}
-            >
-              Delete
-            </Button>
-          </HStack>
-        </ModalFooter>
-      </PopupBuilder>
-    </div>
+        <IconTrash size={16} />
+      </Button>
+    </Group>
+    // <div className="flex space-x-4">
+    //   <Button
+    //     size="xs"
+    //     variant="outline"
+    //     colorScheme="red"
+    //     onClick={() => setIsOpen(true)}
+    //     type="button"
+    //   >
+    //     <TrashIcon width={16} height={16} />
+    //   </Button>
+    //   <PopupBuilder
+    //     size="lg"
+    //     isOpen={isOpen}
+    //     setIsOpen={setIsOpen}
+    //     title={`Delete ${cell.row.original.problem.pid}`}
+    //   >
+    //     <ModalBody>
+    //       <Text>
+    //         Are you sure you want to delete{" "}
+    //         <Box as="span" fontWeight={500}>
+    //           {cell.row.original.problem.name} ({cell.row.original.problem.pid})
+    //         </Box>
+    //         ?
+    //       </Text>
+    //     </ModalBody>
+    //     <ModalFooter>
+    //       <HStack>
+    //         <Button
+    //           colorScheme="gray"
+    //           type="button"
+    //           onClick={() => setIsOpen(false)}
+    //         >
+    //           Cancel
+    //         </Button>
+    //         <Button
+    //           colorScheme="red"
+    //           type="button"
+    //           onClick={() => mutate(cell.value)}
+    //         >
+    //           Delete
+    //         </Button>
+    //       </HStack>
+    //     </ModalFooter>
+    //   </PopupBuilder>
+    // </div>
   )
 }
 

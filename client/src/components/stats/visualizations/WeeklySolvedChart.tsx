@@ -51,7 +51,7 @@ export default function WeeklySolvedChart({ data }) {
   }
   return (
     // @ts-ignore
-    <Paper shadow="xs" p="md">
+    <Paper shadow="xs" p="md" sx={{ height: "100%" }}>
       <ReactApexChart
         options={options as any}
         series={series}

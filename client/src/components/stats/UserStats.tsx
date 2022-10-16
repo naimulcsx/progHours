@@ -3,11 +3,12 @@ import {
   LightningBoltIcon,
   TrendingUpIcon,
   ClockIcon,
+  ChartBarIcon,
 } from "@heroicons/react/outline"
 import calculatePoints from "@/utils/calculatePoints"
 import { SimpleGrid } from "@chakra-ui/react"
 import { StatCard } from "@/components/stats/StatCard"
-import { Grid } from "@mantine/core"
+import { Grid, ThemeIcon } from "@mantine/core"
 
 type HeroIconProps = (props: React.ComponentProps<"svg">) => JSX.Element
 
@@ -29,7 +30,16 @@ const UserStats = ({ progress }: { progress: Progress }) => {
     <Grid>
       <Grid.Col span={3}>
         <StatCard
-          icon={<StarIcon width={24} height={24} />}
+          icon={
+            <ThemeIcon
+              variant="gradient"
+              gradient={{ from: "orange", to: "red" }}
+              sx={{ padding: 8 }}
+              size="xl"
+            >
+              <ChartBarIcon width={24} height={24} />
+            </ThemeIcon>
+          }
           data={{
             label: "Points",
             value: calculatePoints(progress).toFixed(2),
@@ -38,7 +48,16 @@ const UserStats = ({ progress }: { progress: Progress }) => {
       </Grid.Col>
       <Grid.Col span={3}>
         <StatCard
-          icon={<TrendingUpIcon width={24} height={24} />}
+          icon={
+            <ThemeIcon
+              variant="gradient"
+              gradient={{ from: "green", to: "teal" }}
+              sx={{ padding: 8 }}
+              size="xl"
+            >
+              <TrendingUpIcon width={24} height={24} />
+            </ThemeIcon>
+          }
           data={{
             label: "Problems Solved",
             value: totalSolved,
@@ -47,7 +66,16 @@ const UserStats = ({ progress }: { progress: Progress }) => {
       </Grid.Col>
       <Grid.Col span={3}>
         <StatCard
-          icon={<ClockIcon width={24} height={24} />}
+          icon={
+            <ThemeIcon
+              variant="gradient"
+              gradient={{ from: "indigo", to: "cyan" }}
+              sx={{ padding: 8 }}
+              size="xl"
+            >
+              <ClockIcon width={24} height={24} />
+            </ThemeIcon>
+          }
           data={{
             label: "Solve Time",
             value: convertToHours(totalSolveTime),
@@ -56,7 +84,16 @@ const UserStats = ({ progress }: { progress: Progress }) => {
       </Grid.Col>
       <Grid.Col span={3}>
         <StatCard
-          icon={<LightningBoltIcon width={24} height={24} />}
+          icon={
+            <ThemeIcon
+              variant="gradient"
+              gradient={{ from: "pink", to: "violet" }}
+              sx={{ padding: 8 }}
+              size="xl"
+            >
+              <LightningBoltIcon width={24} height={24} />
+            </ThemeIcon>
+          }
           data={{
             label: "Average Difficulty",
             value: progress.averageDifficulty.toFixed(2),

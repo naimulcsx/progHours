@@ -23,3 +23,8 @@
 .mantine-DataGrid-pagination .mantine-Pagination-item {
   font-size: 14px;
 }
+
+.mantine-DatePicker-dropdown tbody tr td,
+.mantine-DatePicker-dropdown thead tr th {
+  padding: 0 !important;
+}

@@ -21,7 +21,7 @@ import { useForm, yupResolver } from "@mantine/form"
 import { loginMutation } from "@/api/auth"
 import { useMutation } from "react-query"
 import { showNotification } from "@mantine/notifications"
-import { IconCheck, IconCircleCheck } from "@tabler/icons"
+import { IconCheck, IconX } from "@tabler/icons"
 import Logo from "@/components/Logo"
 import { FC } from "react"
 
@@ -48,6 +48,15 @@ const Login: FC = () => {
         icon: <IconCheck />,
       })
       navigate("/dashboard")
+    },
+    onError: ({ response }) => {
+      const { error, message } = response.data
+      showNotification({
+        title: message,
+        message: error,
+        color: "red",
+        icon: <IconX />,
+      })
     },
   })
 

@@ -3,11 +3,12 @@ import { AxiosError } from "axios"
 import { Cell } from "react-table"
 import { useMutation, useQueryClient } from "react-query"
 import { useColorModeValue as mode } from "@chakra-ui/react"
+import { MantineTheme, Select } from "@mantine/core"
 
 /**
  * Import Components
  */
-import { Select, useToast } from "@chakra-ui/react"
+import { useToast } from "@chakra-ui/react"
 import { updateSubmission } from "@/api/submissions"
 
 /**
@@ -16,29 +17,21 @@ import { updateSubmission } from "@/api/submissions"
 import { Submission } from "@/types/Submission"
 import { Practice } from "@/types/Practice"
 import { DEFAULT_TOAST_OPTIONS } from "@/configs/toast-config"
+import { CellContext } from "@tanstack/react-table"
 
-const Verdict = (cell: Cell<Submission>) => {
+const Verdict = (cell: CellContext<Submission, unknown>) => {
   const toast = useToast(DEFAULT_TOAST_OPTIONS)
   const client = useQueryClient()
-  const [selected, setSelected] = useState(cell.value)
+  const [selected, setSelected] = useState<string>(cell.getValue() as string)
 
   const { mutate } = useMutation(updateSubmission, {
     onSuccess: (res) => {
-      /**
-       * Show toast message
-       */
       toast({ title: res.message, status: "success" })
     },
-    onError: (err: AxiosError) => {
-      /**
-       * Show toast message
-       */
-      // toast.error(err.response?.data.message, { className: "toast" })
-    },
+    onError: (err: AxiosError) => {},
   })
 
   const handleSelected = (value: any) => {
-    value = value.target.value
     const oldData: Practice | undefined = client.getQueryData("submissions")
     /**
      * If this submission is the one, we updated on, update it's verdict
@@ -64,37 +57,40 @@ const Verdict = (cell: Cell<Submission>) => {
     setSelected(value)
   }
 
-  const styles: any = {
+  const getStyles: any = (theme: MantineTheme) => ({
     AC: {
-      bg: mode("green.100", "green.400"),
-      color: mode("green.900", "green.900"),
-      borderColor: mode("green.200", "gray.700"),
+      borderColor: theme.colors.green[3],
+      background: theme.colors.green[2],
+      color: theme.colors.green[9],
+      fontWeight: 600,
     },
     WA: {
-      bg: "red.100",
-      color: "red.900",
-      borderColor: "red.200",
+      borderColor: theme.colors.red[3],
+      background: theme.colors.red[2],
+      color: theme.colors.red[9],
+      fontWeight: 600,
     },
     TLE: {
-      bg: "orange.100",
-      color: "orange.900",
-      borderColor: "orange.200",
+      borderColor: theme.colors.yellow[3],
+      background: theme.colors.yellow[2],
+      color: theme.colors.yellow[9],
+      fontWeight: 600,
     },
-  }
+  })
 
   return (
     <Select
       value={selected}
       onChange={handleSelected}
-      key={cell.value}
-      fontWeight="bold"
-      fontSize="sm"
-      {...styles[cell.value]}
-    >
-      <option value="AC">AC</option>
-      <option value="WA">WA</option>
-      <option value="TLE">TLE</option>
-    </Select>
+      sx={(theme) => ({
+        input: getStyles(theme)[selected],
+      })}
+      data={[
+        { value: "AC", label: "AC" },
+        { value: "WA", label: "WA" },
+        { value: "TLE", label: "TLE" },
+      ]}
+    />
   )
 }
 

@@ -4,15 +4,17 @@ import React, { useRef, useState } from "react"
 import { Cell } from "react-table"
 import { Submission } from "@/types/Submission"
 import { Practice } from "@/types/Practice"
-import { Input, useToast } from "@chakra-ui/react"
+import { useToast } from "@chakra-ui/react"
 import { DEFAULT_TOAST_OPTIONS } from "@/configs/toast-config"
 import { useColorModeValue as mode } from "@chakra-ui/react"
+import { CellContext } from "@tanstack/react-table"
+import { NumberInput, TextInput } from "@mantine/core"
 
-export default function SolveTime(cell: Cell<Submission>) {
+export default function SolveTime(cell: CellContext<Submission, unknown>) {
   const toast = useToast(DEFAULT_TOAST_OPTIONS)
   const client = useQueryClient()
-  const prevRef = useRef(cell.value)
-  const [time, setTime] = useState(cell.value)
+  const prevRef = useRef(cell.getValue())
+  const [time, setTime] = useState(cell.getValue() as string)
 
   const { mutate } = useMutation(updateSubmission, {
     onSuccess: (res) => {
@@ -56,14 +58,12 @@ export default function SolveTime(cell: Cell<Submission>) {
   }
 
   return (
-    <Input
+    <TextInput
       type="number"
       value={time}
-      fontSize="sm"
       onChange={(e) => setTime(e.target.value)}
       onBlur={(e) => handleBlur(e.target.value)}
       onKeyUp={(e) => handleEnter(e)}
-      borderColor={mode("gray.200", "gray.600")}
     />
   )
 }

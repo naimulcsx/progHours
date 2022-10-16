@@ -2,9 +2,18 @@ import { getRankList } from "@/api/leaderboard"
 import { useState } from "react"
 import { Helmet } from "react-helmet-async"
 import { useQuery } from "react-query"
-import { Box, Container, Group, Select, Title, Text } from "@mantine/core"
+import {
+  Box,
+  Container,
+  Group,
+  Select,
+  Title,
+  Text,
+  Loader,
+} from "@mantine/core"
 import LeaderboardTable from "@/components/leaderboard/Table"
 import Navbar from "@/components/navbar"
+import { AnimatePresence, motion } from "framer-motion"
 
 function PublicLeaderboard() {
   const [leaderboardType, setLeaderboardType] = useState<
@@ -13,12 +22,12 @@ function PublicLeaderboard() {
 
   const [dateRange, setDateRange] = useState<any>({})
 
-  const { data, isLoading } = useQuery(
+  const { data, isLoading, isFetching } = useQuery(
     ["ranklist", leaderboardType],
     () => getRankList(leaderboardType),
     {
       onSuccess: (res) => {
-        const { stats, fromDate, toDate } = res.body
+        const { fromDate, toDate } = res.body
         if (fromDate && toDate) setDateRange({ from: fromDate, to: toDate })
         else setDateRange({})
       },
@@ -34,9 +43,21 @@ function PublicLeaderboard() {
       <Navbar />
       <Container sx={{ maxWidth: "1536px", paddingTop: "80px" }}>
         <Group position="apart" align="start">
-          <Title order={3} mb="md">
-            Leaderboard
-          </Title>
+          <Group align="center" mb="md">
+            <Title order={3}>Leaderboard</Title>
+            <AnimatePresence>
+              {(isLoading || isFetching) && (
+                <motion.div
+                  initial={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                  transition={{ duration: 0.5 }}
+                  style={{ display: "flex", alignItems: "center" }}
+                >
+                  <Loader size="xs" />
+                </motion.div>
+              )}
+            </AnimatePresence>
+          </Group>
           <Box>
             <Select
               size="xs"
@@ -67,7 +88,19 @@ function PublicLeaderboard() {
             />
           </Box>
         </Group>
-        <LeaderboardTable data={data} loading={isLoading} />
+        <AnimatePresence>
+          {!isLoading && (
+            <motion.div
+              initial={{ opacity: 0, height: 0 }}
+              animate={{ opacity: 1, height: "auto" }}
+              transition={{ delay: 0.25, duration: 0.35 }}
+            >
+              <Box>
+                <LeaderboardTable data={data} loading={isLoading} />
+              </Box>
+            </motion.div>
+          )}
+        </AnimatePresence>
       </Container>
     </Box>
   )

@@ -16,11 +16,18 @@ import { UploadIcon } from "@heroicons/react/outline"
 import ImportCsvModal from "./ImportCsvModal"
 import csvToArray from "@/utils/csvToArray"
 import { Box, Button, Flex } from "@chakra-ui/react"
+import { Group, Title } from "@mantine/core"
+import axios from "axios"
+import { useQuery } from "react-query"
 
 export default function TrackingSheet() {
-  const context = useContext(GlobalContext)
-  const { query, filteredData, selectedWeek, setSelectedWeek, weekRanges } =
-    context?.useSubmissionsResult
+  // const context = useContext(GlobalContext)
+  // const { query, filteredData, selectedWeek, setSelectedWeek, weekRanges } =
+  //   context?.useSubmissionsResult
+
+  const { data } = useQuery("submissions", () =>
+    axios.get("/api/submissions").then((res) => res.data)
+  )
 
   /**
    * Import .csv states
@@ -48,42 +55,15 @@ export default function TrackingSheet() {
   }
 
   return (
-    <DashboardLayout title="Submissions">
-      {/* @ts-ignore */}
+    <DashboardLayout>
       <Helmet>
-        <title>Tracking Sheet</title>
+        <title>Submissions</title>
       </Helmet>
-      <Box>
-        <Flex justify="space-between">
-          {/* week filter button  */}
-          <Box>
-            <WeekFilters
-              numberOfWeeks={weekRanges.length}
-              selected={selectedWeek}
-              setSelected={setSelectedWeek}
-            />
-          </Box>
-
-          {/* csv input button */}
-          <Box id="import-button" display="none">
-            <label htmlFor="csv-input">
-              <input type="file" id="csv-input" onInput={handleImport} />
-              <Button as="div" leftIcon={<UploadIcon width={16} />} size="sm">
-                Import via .csv
-              </Button>
-            </label>
-            <ImportCsvModal
-              isOpen={isOpen}
-              setIsOpen={setIsOpen}
-              items={items}
-            />
-          </Box>
-        </Flex>
-      </Box>
+      <Group align="center" mb="md">
+        <Title order={3}>Submissions</Title>
+      </Group>
       {/* tracking table */}
-      {query.data && (
-        <SubmissionsTable submissions={filteredData} isEditable={true} />
-      )}
+      {data && <SubmissionsTable submissions={data.body.submissions} />}
     </DashboardLayout>
   )
 }

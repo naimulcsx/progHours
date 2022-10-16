@@ -4,26 +4,10 @@ export const StatCard = (props: any) => {
   const { data, icon } = props
   const { label, value } = data
   return (
-    <Paper p="xl" shadow="xs">
+    <Paper p="xl" shadow="xs" sx={{ height: "100%" }}>
       <Group>
-        <Box
-          sx={(theme) => ({
-            color: theme.colors[theme.primaryColor][5],
-            background: theme.colors[theme.primaryColor][0],
-            width: 40,
-            height: 40,
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-            borderRadius: "50%",
-          })}
-        >
-          {icon}
-        </Box>
+        <Box>{icon}</Box>
         <Box>
-          <Title order={4} sx={{ fontWeight: 500 }}>
-            {label}
-          </Title>
           <Text
             sx={(theme) => ({
               fontSize: theme.headings.sizes.h2.fontSize,
@@ -32,6 +16,12 @@ export const StatCard = (props: any) => {
           >
             {value}
           </Text>
+          <Title
+            order={4}
+            sx={(theme) => ({ fontWeight: 500, color: theme.colors.gray[7] })}
+          >
+            {label}
+          </Title>
         </Box>
       </Group>
     </Paper>

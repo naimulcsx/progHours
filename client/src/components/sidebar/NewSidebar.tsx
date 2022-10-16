@@ -31,6 +31,9 @@ const NewSidebar = () => {
           label="Dashboard"
           icon={<IconLayout2 size={24} stroke={1.5} />}
           active={pathname === "/dashboard"}
+          sx={(theme) => ({
+            color: theme.colors.gray[8],
+          })}
         />
         <NavLink
           component={Link}
@@ -38,6 +41,7 @@ const NewSidebar = () => {
           label="Submissions"
           icon={<IconClipboardList size={24} stroke={1.5} />}
           active={pathname === "/submissions"}
+          sx={(theme) => ({ color: theme.colors.gray[8] })}
         />
         <NavLink
           component={Link}
@@ -45,6 +49,7 @@ const NewSidebar = () => {
           label="Study List"
           icon={<IconNotes size={24} stroke={1.5} />}
           active={pathname === "/study"}
+          sx={(theme) => ({ color: theme.colors.gray[8] })}
         />
         <NavLink
           component={Link}
@@ -52,6 +57,7 @@ const NewSidebar = () => {
           label="Groups"
           icon={<IconUsers size={24} stroke={1.5} />}
           active={pathname === "/groups"}
+          sx={(theme) => ({ color: theme.colors.gray[8] })}
         />
         <NavLink
           component={Link}
@@ -59,6 +65,7 @@ const NewSidebar = () => {
           label="Leaderboard"
           icon={<IconChartBar size={24} stroke={1.5} />}
           active={pathname === "/leaderboard"}
+          sx={(theme) => ({ color: theme.colors.gray[8] })}
         />
         <NavLink
           component={Link}
@@ -66,6 +73,7 @@ const NewSidebar = () => {
           label="Activities"
           icon={<IconChartLine size={24} stroke={1.5} />}
           active={pathname === "/activities"}
+          sx={(theme) => ({ color: theme.colors.gray[8] })}
         />
       </Navbar.Section>
 

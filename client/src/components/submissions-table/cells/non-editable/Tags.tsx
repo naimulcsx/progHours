@@ -6,33 +6,35 @@ import { Cell } from "react-table"
 import { Tag } from "@/types/Tag"
 import { Submission } from "@/types/Submission"
 import { useColorModeValue as mode } from "@chakra-ui/react"
+import { CellContext } from "@tanstack/react-table"
+import { Badge, Group } from "@mantine/core"
 
 /**
  * Import components
  */
-import { Badge, Flex } from "@chakra-ui/react"
 
-const NonEditableTags = (cell: Cell<Submission>) => {
+const NonEditableTags = (cell: CellContext<Submission, unknown>) => {
   const { tags } = cell.row.original.problem
   if (tags.length === 0) return "—"
   return (
-    <Flex gap={2} flexWrap="wrap">
+    <Group spacing="xs">
       {tags.map((item: any, index) => {
         // TODO: Fix the type
         return (
           <Badge
-            bg={mode("blue.50", "gray.700")}
-            color={mode("blue.500", "gray.200")}
-            fontWeight={500}
-            py={1}
-            px={2}
+            sx={{
+              borderRadius: 4,
+              paddingLeft: 8,
+              paddingRight: 8,
+              fontWeight: 600,
+            }}
             key={index}
           >
             {item.tag.name}
           </Badge>
         )
       })}
-    </Flex>
+    </Group>
   )
 }
 export default NonEditableTags

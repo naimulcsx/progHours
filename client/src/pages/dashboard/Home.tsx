@@ -1,6 +1,7 @@
 import { useContext, useState } from "react"
 import { useQuery } from "react-query"
 import { Helmet } from "react-helmet-async"
+import { motion } from "framer-motion"
 import {
   Box,
   GridItem,
@@ -24,8 +25,9 @@ import { getSubmissions } from "@/api/submissions"
 import { getWeekRanges } from "@/utils/getWeekRanges"
 import { GlobalContext } from "@/GlobalStateProvider"
 import { AnimateLoading } from "@/components/AnimateLoading"
-import { AppShell, Grid } from "@mantine/core"
+import { AppShell, Grid, Group, Loader, Title } from "@mantine/core"
 import NewSidebar from "@/components/sidebar/NewSidebar"
+import { AnimatePresence } from "framer-motion"
 
 const DashboardHome = () => {
   const { user } = useContext(GlobalContext)
@@ -45,7 +47,7 @@ const DashboardHome = () => {
     [name: string]: number
   }
   let [frequency, setFrequency] = useState<Frequency | null>(null)
-  useQuery("submissions", getSubmissions, {
+  const { isLoading, isFetching } = useQuery("submissions", getSubmissions, {
     onSuccess: (res) => {
       const frequency: Frequency = {}
       const weekRanges = getWeekRanges(res.body.submissions)
@@ -73,23 +75,46 @@ const DashboardHome = () => {
       <Helmet>
         <title>Dashboard</title>
       </Helmet>
-      <AnimateLoading isLoaded={data && frequency && data["tagsFrequency"]}>
-        {data && frequency && data["tagsFrequency"] && (
-          <>
-            <Box mb={4}>
-              <UserStats progress={data} />
-            </Box>
-            <Grid>
-              <Grid.Col span={6}>
-                {<WeeklySolvedChart data={frequency} />}
-              </Grid.Col>
-              <Grid.Col span={6}>
-                <TagsFreqChart data={data["tagsFrequency"]} />
-              </Grid.Col>
-            </Grid>
-          </>
-        )}
-      </AnimateLoading>
+
+      <Group align="center" mb="md">
+        <Title order={3}>Dashboard</Title>
+        <AnimatePresence>
+          {(isLoading || isFetching) && (
+            <motion.div
+              initial={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.5 }}
+              style={{ display: "flex", alignItems: "center" }}
+            >
+              <Loader size="xs" />
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </Group>
+
+      <AnimatePresence>
+        <motion.div
+          initial={{ opacity: 0, height: 0 }}
+          animate={{ opacity: 1, height: "auto" }}
+          transition={{ delay: 0.25, duration: 0.35 }}
+        >
+          {data && frequency && data["tagsFrequency"] && (
+            <>
+              <Box mb={4}>
+                <UserStats progress={data} />
+              </Box>
+              <Grid sx={{ alignItems: "stretch" }}>
+                <Grid.Col span={6}>
+                  {<WeeklySolvedChart data={frequency} />}
+                </Grid.Col>
+                <Grid.Col span={6}>
+                  <TagsFreqChart data={data["tagsFrequency"]} />
+                </Grid.Col>
+              </Grid>
+            </>
+          )}
+        </motion.div>
+      </AnimatePresence>
     </DashboardLayout>
   )
 }

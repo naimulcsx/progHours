@@ -1,16 +1,11 @@
 import { useQuery } from "react-query"
 import { useState } from "react"
 import { useParams } from "react-router-dom"
+import { Grid, Stack, Tabs } from "@mantine/core"
+import { IconPhoto, IconMessageCircle, IconSettings } from "@tabler/icons"
 import {
   Box,
-  Container,
   Skeleton,
-  Stack,
-  Tab,
-  TabList,
-  TabPanel,
-  TabPanels,
-  Tabs,
   useToast,
   useColorModeValue as mode,
 } from "@chakra-ui/react"
@@ -40,6 +35,7 @@ import { UserAbout } from "@/components/profile/UserAbout"
 import { getWeekRanges } from "@/utils/getWeekRanges"
 import WeeklySolvedChart from "@/components/stats/visualizations/WeeklySolvedChart"
 import { AnimateLoading } from "@/components/AnimateLoading"
+import { Container } from "@mantine/core"
 
 interface User {
   name: string
@@ -129,71 +125,57 @@ export default function Profile() {
       <Navbar />
       <AnimateLoading
         isLoaded={user && userStats && frequency && submissionQuery.data}
-        SkeletonComponent={() => (
-          <Container pt={20}>
-            <Stack>
-              <Skeleton h="20px" />
-              <Skeleton h="20px" />
-              <Skeleton h="20px" />
-              <Skeleton h="20px" />
-            </Stack>
-          </Container>
-        )}
       >
         {user && userStats && frequency && submissionQuery.data && (
           <Box overflow="hidden">
-            {/* @ts-ignore */}
-            <Helmet>{/* @ts-ignore */}</Helmet>
+            <Helmet>
+              <title>{user?.name}</title>
+            </Helmet>
             <UserCard
               name={user.name}
               username={user.username}
               member_since={user.memberSince}
               role={user.role}
             />
-            <Container>
-              <Tabs>
-                <TabList>
-                  <Tab>About</Tab>
-                  <Tab>Statistics</Tab>
-                  <Tab>Submissions</Tab>
-                </TabList>
-                <TabPanels>
-                  <TabPanel mx={-4}>
-                    <Box mb={5} mt={2}>
-                      <UserStats progress={userStats} />
-                    </Box>
-                    <UserAbout user={user} userStats={userStats} />
-                  </TabPanel>
-                  <TabPanel>
-                    <Box
-                      p={8}
-                      pb={2}
-                      mb={4}
-                      mt={2}
-                      bg={bg}
-                      rounded="lg"
-                      shadow="base"
-                      mx={-4}
-                    >
-                      <WeeklySolvedChart data={frequency} />
-                    </Box>
-                    <Box
-                      p={8}
-                      pb={2}
-                      bg={bg}
-                      rounded="lg"
-                      shadow="base"
-                      mx={-4}
-                    >
-                      <TagsFreqChart data={userStats["tagsFrequency"]} />
-                    </Box>
-                  </TabPanel>
-                  <TabPanel mx={-8}>
-                    <Box overflowX="auto">
-                      <SubmissionsTable submissions={submissions} />
-                    </Box>
-                  </TabPanel>
-                </TabPanels>
+            <Container size="xl">
+              <Tabs defaultValue="stats">
+                <Tabs.List>
+                  <Tabs.Tab value="stats" icon={<IconPhoto size={16} />}>
+                    STATS
+                  </Tabs.Tab>
+                  <Tabs.Tab
+                    value="messages"
+                    icon={<IconMessageCircle size={16} />}
+                  >
+                    ACHIEVEMENTS
+                  </Tabs.Tab>
+                  <Tabs.Tab value="settings" icon={<IconSettings size={16} />}>
+                    ACTIVITY
+                  </Tabs.Tab>
+                  <Tabs.Tab value="settings" icon={<IconSettings size={16} />}>
+                    SETTINGS
+                  </Tabs.Tab>
+                </Tabs.List>
+                <Tabs.Panel value="stats" py="xs">
+                  <Stack>
+                    <UserStats progress={userStats} />
+                    <Grid>
+                      <Grid.Col span={6}>
+                        <WeeklySolvedChart data={frequency} />
+                      </Grid.Col>
+                      <Grid.Col span={6}>
+                        <TagsFreqChart data={userStats["tagsFrequency"]} />
+                      </Grid.Col>
+                    </Grid>
+                  </Stack>
+                </Tabs.Panel>
+                <Tabs.Panel value="messages" pt="xs">
+                  Messages tab content
+                </Tabs.Panel>
+
+                <Tabs.Panel value="settings" pt="xs">
+                  Settings tab content
+                </Tabs.Panel>
               </Tabs>
             </Container>
           </Box>
