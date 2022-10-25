@@ -41,7 +41,9 @@ function PublicLeaderboard() {
         <title>Leaderboard</title>
       </Helmet>
       <Navbar />
-      <Container sx={{ maxWidth: "1536px", paddingTop: "80px" }}>
+      <Container
+        sx={{ maxWidth: "1536px", paddingTop: "80px", minHeight: "100vh" }}
+      >
         <Group position="apart" align="start">
           <Group align="center" mb="md">
             <Title order={3}>Leaderboard</Title>

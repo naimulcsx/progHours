@@ -93,6 +93,8 @@ export function DataGrid<TData extends RowData>({
   iconColor,
   empty,
   locale,
+  // first row
+  firstRow,
   ...others
 }: DataGridProps<TData>) {
   const { classes, theme, cx } = useStyles(
@@ -321,6 +323,7 @@ export function DataGrid<TData extends RowData>({
             ))}
           </thead>
           <tbody className={classes.tbody} role="rowgroup">
+            {firstRow}
             {table.getRowModel().rows.length > 0 ? (
               table.getRowModel().rows.map((row) => {
                 const rowProps = onRow ? onRow(row) : {}

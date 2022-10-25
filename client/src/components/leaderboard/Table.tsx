@@ -16,6 +16,8 @@ const LeaderboardTable = ({ data }: any) => {
       withPagination
       withColumnFilters
       horizontalSpacing="xl"
+      pageSizes={["25", "50", "100"]}
+      initialState={{ pagination: { pageSize: 25 } }}
       columns={[
         {
           accessorKey: "rank",
@@ -57,7 +59,7 @@ const LeaderboardTable = ({ data }: any) => {
                           {name}
                         </Text>
                         <Anchor
-                          href="https://twitter.com/mantinedev"
+                          href={`/@${username}`}
                           color="dimmed"
                           size="xs"
                           sx={{ lineHeight: 1 }}
@@ -79,7 +81,9 @@ const LeaderboardTable = ({ data }: any) => {
 
                     <Group mt="md" spacing="xl">
                       <Text size="sm">
-                        <b>CSE 46</b>
+                        <b>
+                          {department} {batch}
+                        </b>
                       </Text>
                       <Text size="sm">
                         <b>{cell.row.original.totalSolved}</b> Problems Solved

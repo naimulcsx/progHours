@@ -5,31 +5,26 @@ import { FC, SVGProps } from "react"
 const LogoIcon: FC<SVGProps<SVGSVGElement>> = (props) => {
   return (
     <svg
-      xmlns="http://www.w3.org/2000/svg"
-      width="48"
-      height="48"
+      width={48}
+      height={48}
+      viewBox="0 0 64 64"
       fill="none"
-      viewBox="0 0 48 48"
+      xmlns="http://www.w3.org/2000/svg"
       {...props}
     >
       <path
+        fillRule="evenodd"
+        clipRule="evenodd"
+        d="M25.6924 1.97505C29.0954 0.141618 33.2047 0.141618 36.6077 1.97505L56.3361 12.6041C60.012 14.5845 62.3002 18.3973 62.3002 22.5419V42.658C62.3002 46.8026 60.012 50.6155 56.3361 52.5959L36.6077 63.2249C33.2047 65.0583 29.0954 65.0583 25.6924 63.2249L5.96405 52.5959C2.2882 50.6155 0 46.8026 0 42.658L0 22.5419C0 18.3973 2.2882 14.5845 5.96404 12.6041L25.6924 1.97505Z"
         fill="currentColor"
-        d="M21 1.732a6 6 0 016 0l14.785 8.536a6 6 0 013 5.196v17.071a6 6 0 01-3 5.197L27 46.267a6 6 0 01-6 0L6.215 37.733a6 6 0 01-3-5.197V15.464a6 6 0 013-5.197L21 1.732z"
-      ></path>
-      <path
-        stroke="#fff"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        strokeWidth="2.75"
-        d="M24 36c6.627 0 12-5.373 12-12s-5.373-12-12-12-12 5.373-12 12 5.373 12 12 12z"
-      ></path>
-      <path
-        stroke="#fff"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        strokeWidth="2.75"
-        d="M23 18v6.25L28 28"
-      ></path>
+      />
+      <ellipse
+        cx="31.1503"
+        cy="31.9381"
+        rx="11.8649"
+        ry="11.7519"
+        fill="#FBFAFC"
+      />
     </svg>
   )
 }
@@ -37,14 +32,14 @@ const LogoIcon: FC<SVGProps<SVGSVGElement>> = (props) => {
 const Logo = () => {
   return (
     <Group
-      align="center"
       spacing="sm"
-      sx={(theme) => ({ color: theme.colors[theme.primaryColor][5] })}
+      sx={(theme) => ({
+        alignItems: "center",
+        color: theme.colors[theme.primaryColor][5],
+      })}
     >
       {/* color of the logo is picked from its parents text-color */}
-      <Box sx={(theme) => ({ color: theme.colors[theme.primaryColor][5] })}>
-        <LogoIcon width={32} height={32} />
-      </Box>
+      <LogoIcon width={28} height={28} />
       <Box>
         <Title order={4} style={{ lineHeight: 1.15 }}>
           progHours

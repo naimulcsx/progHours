@@ -10,9 +10,10 @@ import { useContext } from "react"
 import { GlobalContext } from "@/GlobalStateProvider"
 import axios from "axios"
 import { DEFAULT_TOAST_OPTIONS } from "@/configs/toast-config"
+import useUser from "@/hooks/useUser"
 
 export const UpdatePasswordForm = () => {
-  const { user } = useContext(GlobalContext)
+  const { user } = useUser()
   const toast = useToast(DEFAULT_TOAST_OPTIONS)
   return (
     <Box

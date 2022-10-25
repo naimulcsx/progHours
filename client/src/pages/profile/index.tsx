@@ -36,6 +36,7 @@ import { getWeekRanges } from "@/utils/getWeekRanges"
 import WeeklySolvedChart from "@/components/stats/visualizations/WeeklySolvedChart"
 import { AnimateLoading } from "@/components/AnimateLoading"
 import { Container } from "@mantine/core"
+import { motion } from "framer-motion"
 
 interface User {
   name: string
@@ -117,27 +118,26 @@ export default function Profile() {
     },
   })
 
-  const isLoggedIn: boolean = !!localStorage.getItem("isLoggedIn")
-  const bg = mode("white", "gray.700")
-
   return (
     <>
       <Navbar />
-      <AnimateLoading
-        isLoaded={user && userStats && frequency && submissionQuery.data}
-      >
+      <Container size="xl" sx={{ minHeight: "100vh" }}>
         {user && userStats && frequency && submissionQuery.data && (
-          <Box overflow="hidden">
-            <Helmet>
-              <title>{user?.name}</title>
-            </Helmet>
-            <UserCard
-              name={user.name}
-              username={user.username}
-              member_since={user.memberSince}
-              role={user.role}
-            />
-            <Container size="xl">
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.25, duration: 0.35 }}
+          >
+            <Box overflow="hidden">
+              <Helmet>
+                <title>{user?.name}</title>
+              </Helmet>
+              <UserCard
+                name={user.name}
+                username={user.username}
+                member_since={user.memberSince}
+                role={user.role}
+              />
               <Tabs defaultValue="stats">
                 <Tabs.List>
                   <Tabs.Tab value="stats" icon={<IconPhoto size={16} />}>
@@ -149,7 +149,7 @@ export default function Profile() {
                   >
                     ACHIEVEMENTS
                   </Tabs.Tab>
-                  <Tabs.Tab value="settings" icon={<IconSettings size={16} />}>
+                  <Tabs.Tab value="activity" icon={<IconSettings size={16} />}>
                     ACTIVITY
                   </Tabs.Tab>
                   <Tabs.Tab value="settings" icon={<IconSettings size={16} />}>
@@ -177,10 +177,10 @@ export default function Profile() {
                   Settings tab content
                 </Tabs.Panel>
               </Tabs>
-            </Container>
-          </Box>
+            </Box>
+          </motion.div>
         )}
-      </AnimateLoading>
+      </Container>
     </>
   )
 }

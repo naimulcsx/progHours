@@ -24,9 +24,7 @@ import { getStats } from "@/api/dashboard"
 import { getSubmissions } from "@/api/submissions"
 import { getWeekRanges } from "@/utils/getWeekRanges"
 import { GlobalContext } from "@/GlobalStateProvider"
-import { AnimateLoading } from "@/components/AnimateLoading"
-import { AppShell, Grid, Group, Loader, Title } from "@mantine/core"
-import NewSidebar from "@/components/sidebar/NewSidebar"
+import { Grid, Group, Loader, Title } from "@mantine/core"
 import { AnimatePresence } from "framer-motion"
 
 const DashboardHome = () => {
@@ -40,6 +38,7 @@ const DashboardHome = () => {
       setData(data)
     },
   })
+
   /**
    * Get submissions and get statistics for each week
    */
@@ -47,6 +46,7 @@ const DashboardHome = () => {
     [name: string]: number
   }
   let [frequency, setFrequency] = useState<Frequency | null>(null)
+
   const { isLoading, isFetching } = useQuery("submissions", getSubmissions, {
     onSuccess: (res) => {
       const frequency: Frequency = {}
@@ -66,8 +66,6 @@ const DashboardHome = () => {
       setFrequency(frequency)
     },
   })
-
-  const bg = mode("white", "gray.700")
 
   return (
     <DashboardLayout>
@@ -94,8 +92,8 @@ const DashboardHome = () => {
 
       <AnimatePresence>
         <motion.div
-          initial={{ opacity: 0, height: 0 }}
-          animate={{ opacity: 1, height: "auto" }}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
           transition={{ delay: 0.25, duration: 0.35 }}
         >
           {data && frequency && data["tagsFrequency"] && (

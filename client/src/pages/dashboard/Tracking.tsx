@@ -19,15 +19,18 @@ import { Box, Button, Flex } from "@chakra-ui/react"
 import { Group, Title } from "@mantine/core"
 import axios from "axios"
 import { useQuery } from "react-query"
+import useSubmissions from "@/hooks/useSubmissions"
 
 export default function TrackingSheet() {
   // const context = useContext(GlobalContext)
   // const { query, filteredData, selectedWeek, setSelectedWeek, weekRanges } =
   //   context?.useSubmissionsResult
 
-  const { data } = useQuery("submissions", () =>
-    axios.get("/api/submissions").then((res) => res.data)
-  )
+  const { submissions } = useSubmissions()
+  console.log(submissions)
+  // const { data } = useQuery("submissions", () =>
+  //   axios.get("/api/submissions").then((res) => res.data)
+  // )
 
   /**
    * Import .csv states
@@ -63,7 +66,7 @@ export default function TrackingSheet() {
         <Title order={3}>Submissions</Title>
       </Group>
       {/* tracking table */}
-      {data && <SubmissionsTable submissions={data.body.submissions} />}
+      {submissions && <SubmissionsTable submissions={submissions} />}
     </DashboardLayout>
   )
 }

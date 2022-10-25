@@ -1,4 +1,8 @@
 export interface Tag {
-  id: number
-  name: string
+  tagId: number
+  problemId: number
+  tag: {
+    id: number
+    name: string
+  }
 }

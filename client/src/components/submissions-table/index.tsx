@@ -10,6 +10,7 @@ import Verdict from "./cells/editable/Verdict"
 import SolveTime from "./cells/editable/SolveTime"
 import Actions from "./cells/editable/Actions"
 import DatePicker from "./cells/editable/DatePicker"
+import SubmissionForm from "./SubmissionForm"
 
 export const SubmissionsTable = ({
   submissions,
@@ -28,22 +29,25 @@ export const SubmissionsTable = ({
         marginLeft: -16,
         marginRight: -16,
       })}
+      firstRow={<SubmissionForm serial={submissions.length + 1} />}
+      pageSizes={["25", "50", "100"]}
+      initialState={{ pagination: { pageSize: 25 } }}
       data={submissions ? submissions : []}
       withSorting
       withPagination
       withColumnFilters
-      horizontalSpacing="xl"
+      horizontalSpacing="lg"
       columns={[
         {
           header: "Id",
           accessorKey: "serial",
-          size: 50,
+          size: 40,
         },
         {
           header: "Problem Name",
           accessorKey: "problem.name",
           cell: ProblemName,
-          size: 300,
+          size: 260,
         },
         {
           header: "Verdict",
@@ -65,11 +69,13 @@ export const SubmissionsTable = ({
         {
           header: "Difficulty",
           accessorKey: "problem.difficulty",
+          size: 90,
           cell: (cell) => (cell.getValue() ? cell.getValue() : "—"),
         },
         {
           header: "Solved On",
           accessorKey: "solvedAt",
+          size: 170,
           cell: DatePicker,
         },
         {

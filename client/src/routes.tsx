@@ -88,7 +88,7 @@ const routes = (isLoggedIn: boolean, role: string): RouteObject[] => [
   //     isLoggedIn && role === "ADMIN" ? <Problem /> : <Navigate to="/login" />,
   // },
   {
-    path: "/users/:username",
+    path: "/@:username",
     element: <Profile />,
   },
   {

@@ -3,7 +3,7 @@ import { createContext, ReactNode } from "react"
 /**
  * Import hooks
  */
-import useSubmissions from "@/hooks/useSubmissions"
+import useSubmissions from "@/hooks/_useSubmissions"
 import useUser from "@/hooks/useUser"
 
 /**

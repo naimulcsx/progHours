@@ -6,9 +6,10 @@ import { GeneralInformationForm } from "@/components/settings/GeneralInformation
 import { Tabs, TabList, TabPanels, Tab, TabPanel } from "@chakra-ui/react"
 import { UpdatePasswordForm } from "@/components/settings/UpdatePasswordForm"
 import HandleSettings from "@/components/settings/handles/HandleSettings"
+import useUser from "@/hooks/useUser"
 
 const Settings = () => {
-  const { user } = useContext(GlobalContext)
+  const { user } = useUser()
 
   return (
     <DashboardLayout>

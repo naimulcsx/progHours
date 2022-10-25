@@ -9,13 +9,9 @@ import { SpotlightAction, SpotlightProvider } from "@mantine/spotlight"
 import routes from "@/routes"
 
 // hooks
-import {
-  Navigate,
-  NavigateFunction,
-  useNavigate,
-  useRoutes,
-} from "react-router-dom"
+import { NavigateFunction, useNavigate, useRoutes } from "react-router-dom"
 import useUser from "@/hooks/useUser"
+import useLogout from "@/hooks/useLogout"
 
 // styles
 import theme from "@/styles/theme"
@@ -26,7 +22,7 @@ import {
   IconLogout,
   IconSearch,
 } from "@tabler/icons"
-import useLogout from "./hooks/useLogout"
+import { SubmissionsProvider } from "./contexts/SubmissionsContext"
 
 const App = () => {
   const { user } = useUser()
@@ -60,9 +56,16 @@ const Entry: FC<{ isLoggedIn: boolean; user: User | null }> = ({
             sx={(theme) => ({
               background: theme.colors.gray[0],
               minHeight: "100vh",
+              overflow: "hidden",
             })}
           >
-            <main style={{ overflowX: "hidden" }}>{matchedPage}</main>
+            {isLoggedIn ? (
+              <SubmissionsProvider>
+                <main>{matchedPage}</main>
+              </SubmissionsProvider>
+            ) : (
+              <main>{matchedPage}</main>
+            )}
           </Box>
         </SpotlightProvider>
         <ReactQueryDevtools position="bottom-right" />
@@ -104,7 +107,7 @@ const getActions = (
     {
       title: "Your Profile",
       description: "Visit your profile",
-      onTrigger: () => user && navigate(`/users/${user.username}`),
+      onTrigger: () => user && navigate(`/@${user.username}`),
       icon: <IconDashboard size={18} />,
     },
     {

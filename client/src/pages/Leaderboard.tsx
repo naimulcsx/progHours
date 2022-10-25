@@ -97,11 +97,11 @@ const LeaderboardPage = () => {
       <AnimatePresence>
         {!isLoading && (
           <motion.div
-            initial={{ opacity: 0, height: 0 }}
-            animate={{ opacity: 1, height: "auto" }}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
             transition={{ delay: 0.25, duration: 0.35 }}
           >
-            <Box>
+            <Box sx={{ marginLeft: -16, marginRight: -16 }}>
               <LeaderboardTable data={data} />
             </Box>
           </motion.div>

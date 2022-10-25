@@ -11,9 +11,10 @@ import { GlobalContext } from "@/GlobalStateProvider"
 import axios from "axios"
 import { DEFAULT_TOAST_OPTIONS } from "@/configs/toast-config"
 import { useQueryClient } from "react-query"
+import useUser from "@/hooks/useUser"
 
 export const GeneralInformationForm = () => {
-  const { user } = useContext(GlobalContext)
+  const { user } = useUser()
   const toast = useToast(DEFAULT_TOAST_OPTIONS)
   const queryClient = useQueryClient()
 

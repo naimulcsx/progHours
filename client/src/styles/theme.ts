@@ -4,6 +4,7 @@ const theme: MantineThemeOverride = {
   defaultRadius: "md",
   primaryColor: "blue",
   primaryShade: 5,
+  colorScheme: "light",
   colors: {
     blue: [
       "#EDF1FD",
