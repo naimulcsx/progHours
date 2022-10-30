@@ -134,7 +134,11 @@ export const GeneralInformationForm = () => {
                 { value: "CF", label: "CF" },
               ]}
             />
-            <NumberInput label="CGPA" {...form.getInputProps("cgpa")} />
+            <TextInput
+              type="number"
+              label="CGPA"
+              {...form.getInputProps("cgpa")}
+            />
             <Box>
               <Button type="submit">Update</Button>
             </Box>

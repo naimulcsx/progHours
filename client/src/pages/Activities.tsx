@@ -49,30 +49,29 @@ const ActivitiesPage = () => {
 
   return (
     <DashboardLayout
-      title="Recent Activities"
-      rightButton={
-        <HStack>
-          <Text>
-            {page} / {lastPage}
-          </Text>
-          <Button
-            size="xs"
-            variant="outline"
-            onClick={() => setPage((prev) => prev - 1)}
-            disabled={page === 1}
-          >
-            <ChevronLeftIcon height={12} />
-          </Button>
-          <Button
-            size="xs"
-            variant="outline"
-            onClick={() => setPage((prev) => prev + 1)}
-            disabled={page === lastPage}
-          >
-            <ChevronRightIcon height={12} />
-          </Button>
-        </HStack>
-      }
+    // rightButton={
+    //   <HStack>
+    //     <Text>
+    //       {page} / {lastPage}
+    //     </Text>
+    //     <Button
+    //       size="xs"
+    //       variant="outline"
+    //       onClick={() => setPage((prev) => prev - 1)}
+    //       disabled={page === 1}
+    //     >
+    //       <ChevronLeftIcon height={12} />
+    //     </Button>
+    //     <Button
+    //       size="xs"
+    //       variant="outline"
+    //       onClick={() => setPage((prev) => prev + 1)}
+    //       disabled={page === lastPage}
+    //     >
+    //       <ChevronRightIcon height={12} />
+    //     </Button>
+    //   </HStack>
+    // }
     >
       {/* @ts-ignore */}
       <Helmet>
