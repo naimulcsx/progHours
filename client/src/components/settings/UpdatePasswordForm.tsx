@@ -1,61 +1,98 @@
-import FormBuilder from "@/components/FormBuilder"
 import * as Yup from "yup"
-import {
-  Box,
-  Spinner,
-  useColorModeValue as mode,
-  useToast,
-} from "@chakra-ui/react"
-import { useContext } from "react"
-import { GlobalContext } from "@/GlobalStateProvider"
-import axios from "axios"
-import { DEFAULT_TOAST_OPTIONS } from "@/configs/toast-config"
 import useUser from "@/hooks/useUser"
+import { useForm, yupResolver } from "@mantine/form"
+import { Box, Button, PasswordInput, Stack } from "@mantine/core"
+import { useMutation, useQueryClient } from "react-query"
+import axios from "axios"
+import { showNotification } from "@mantine/notifications"
+import { IconCheck, IconX } from "@tabler/icons"
+
+const updatePasswordSchema = Yup.object().shape({
+  currentPassword: Yup.string().trim().required("Name is required"),
+  newPassword: Yup.string().trim().required("Password is required"),
+})
+
+// mutation={(values: any) =>
+//   axios.patch(`/api/users/me?update=password`, values)
+// }
+// onSuccess={() => {
+//   toast({ status: "success", title: "Account updated!" })
+// }}
+// onError={(e) => {
+//   toast({ status: "error", title: e.response.data.message })
+// }}
 
 export const UpdatePasswordForm = () => {
   const { user } = useUser()
-  const toast = useToast(DEFAULT_TOAST_OPTIONS)
+
+  const queryClient = useQueryClient()
+
+  const { mutateAsync } = useMutation(
+    (values: any) => {
+      return axios.patch(`/api/users/me?update=password`, values)
+    },
+    {
+      onSuccess: () => {
+        queryClient.invalidateQueries("user"),
+          showNotification({
+            title: "Account updated!",
+            message: `Account updated!`,
+            color: "green",
+            icon: <IconCheck />,
+          })
+      },
+      onError: ({ response }) => {
+        const { error, message } = response.data
+        showNotification({
+          title: message,
+          message: error,
+          color: "red",
+          icon: <IconX />,
+        })
+      },
+    }
+  )
+
+  const form = useForm({
+    initialValues: {
+      currentPassword: "",
+      newPassword: "",
+    },
+
+    validate: yupResolver(updatePasswordSchema),
+  })
+
+  const handleSubmit = form.onSubmit(async (values) => {
+    mutateAsync(values)
+  })
+
   return (
     <Box
-      p={[4, 4, 4, 8]}
-      bg={mode("white", "gray.700")}
-      shadow="base"
-      rounded="lg"
       mx={-4}
+      mb={10}
+      p={25}
+      sx={{
+        backgroundColor: "white",
+        boxShadow:
+          "0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1)",
+      }}
     >
-      {user ? (
-        <FormBuilder
-          fields={{
-            currentPassword: {
-              type: "password",
-              label: "Current Password",
-              validate: Yup.string().trim().required("Name is required"),
-            },
-            newPassword: {
-              type: "password",
-              label: "New Password",
-              validate: Yup.string().trim().required("Password is required"),
-              helperText: "Must contain at least 8 charecters.",
-            },
-          }}
-          button={{
-            label: "Update",
-            className: "mt-6",
-            loadingLabel: "Updating",
-            colorScheme: "gray",
-          }}
-          mutation={(values: any) =>
-            axios.patch(`/api/users/me?update=password`, values)
-          }
-          onSuccess={() => {
-            toast({ status: "success", title: "Account updated!" })
-          }}
-          onError={(e) => {
-            toast({ status: "error", title: e.response.data.message })
-          }}
-        />
-      ) : (
-        <Spinner />
+      {user && (
+        <form onSubmit={handleSubmit}>
+          <Stack>
+            <PasswordInput
+              label="Current Password"
+              {...form.getInputProps("currentPassword")}
+            />
+            <PasswordInput
+              label="New Password"
+              {...form.getInputProps("newPassword")}
+            />
+            <Box>
+              <Button type="submit">Update</Button>
+            </Box>
+          </Stack>
+        </form>
       )}
     </Box>
   )

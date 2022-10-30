@@ -4,10 +4,9 @@ import { useContext } from "react"
 import { Link } from "react-router-dom"
 import { Avatar, Spinner } from "@chakra-ui/react"
 import { getAvatarColors } from "@/utils/getAvatarColors"
-import useUser from "@/hooks/useUser"
 
 const UserInfoCard = () => {
-  const { user } = useUser()
+  const user = useContext(GlobalContext).user
 
   return (
     <div className="p-8 bg-white rounded-lg shadow">

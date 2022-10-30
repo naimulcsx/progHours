@@ -1,121 +1,145 @@
-import FormBuilder from "@/components/FormBuilder"
 import * as Yup from "yup"
+import axios from "axios"
+import { useMutation, useQueryClient } from "react-query"
+import { showNotification } from "@mantine/notifications"
+import { IconCheck, IconX } from "@tabler/icons"
+import { useForm, yupResolver } from "@mantine/form"
 import {
   Box,
-  Spinner,
-  useColorModeValue as mode,
-  useToast,
-} from "@chakra-ui/react"
-import { useContext } from "react"
-import { GlobalContext } from "@/GlobalStateProvider"
-import axios from "axios"
-import { DEFAULT_TOAST_OPTIONS } from "@/configs/toast-config"
-import { useQueryClient } from "react-query"
+  Button,
+  NumberInput,
+  Select,
+  Stack,
+  TextInput,
+} from "@mantine/core"
 import useUser from "@/hooks/useUser"
+
+const infoSchema = Yup.object().shape({
+  name: Yup.string().required("Name is required"),
+  email: Yup.string().email("Invalid email").required("Email is required"),
+  username: Yup.string()
+    .trim()
+    .required("University ID is required")
+    .matches(/^(c|C|e|E|et|ET|cce|CCE)[0-9]{6}$/, "Invalid University ID"),
+  mobile: Yup.string().trim(),
+  department: Yup.string().trim(),
+  batch: Yup.number().positive("Invalid Batch"),
+  section: Yup.string().trim(),
+  cgpa: Yup.number().min(0.0).max(4.0),
+})
 
 export const GeneralInformationForm = () => {
   const { user } = useUser()
-  const toast = useToast(DEFAULT_TOAST_OPTIONS)
   const queryClient = useQueryClient()
+
+  const mutation = useMutation(
+    (values: any) => {
+      return axios.patch(`/api/users/me?update=data`, values)
+    },
+    {
+      onSuccess: () => {
+        queryClient.invalidateQueries("user"),
+          showNotification({
+            title: "Account updated!",
+            message: `Account updated!`,
+            color: "green",
+            icon: <IconCheck />,
+          })
+      },
+      onError: ({ response }) => {
+        const { error, message } = response.data
+        showNotification({
+          title: message,
+          message: error,
+          color: "red",
+          icon: <IconX />,
+        })
+      },
+    }
+  )
+
+  const form = useForm({
+    initialValues: {
+      name: user?.name || "",
+      username: user?.username.toUpperCase() || "",
+      email: user?.email || "",
+      mobile: user?.mobile || "",
+      department: user?.department || "",
+      batch: user?.batch || 1,
+      section: user?.section || "",
+      cgpa: user?.cgpa || 0.0,
+    },
+    validate: yupResolver(infoSchema),
+  })
+
+  const handleSubmit = form.onSubmit(async (values) => {
+    console.log(values)
+    mutation.mutateAsync(values)
+  })
 
   return (
     <Box
-      p={[4, 4, 4, 8]}
-      bg={mode("white", "gray.700")}
-      shadow="base"
-      rounded="lg"
       mx={-4}
       mb={10}
+      p={25}
+      sx={{
+        backgroundColor: "white",
+        boxShadow:
+          "0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1)",
+      }}
     >
-      {user ? (
-        <FormBuilder
-          fields={{
-            name: {
-              type: "text",
-              label: "Full Name",
-              validate: Yup.string().trim().required("Name is required"),
-              initialValue: user.name || "",
-            },
-            email: {
-              type: "text",
-              label: "Email",
-              validate: Yup.string()
-                .trim()
-                .required("Email is required")
-                .email("Invalid email"),
-              initialValue: user.email || "",
-            },
-            mobile: {
-              type: "text",
-              label: "Mobile",
-              validate: Yup.string().trim(),
-              initialValue: user.mobile || "",
-              optional: true,
-            },
-            username: {
-              type: "text",
-              label: "University ID",
-              validate: Yup.string()
-                .trim()
-                .required("University ID is required")
-                .length(7, "Invalid University ID"),
-              initialValue: user.username.toUpperCase() || "",
-              disabled: true,
-            },
-            department: {
-              type: "select",
-              label: "Department",
-              placeholder: "Select",
-              options: [
-                ["Computer Science and Engineering (CSE)", "CSE"],
-                ["Computer and Communication Engineering (CCE)", "CCE"],
-                ["Electrical and Electronic Engineering (EEE)", "EEE"],
-              ],
-              validate: Yup.string().trim(),
-              initialValue: user.department || "",
-              optional: true,
-            },
-            batch: {
-              type: "number",
-              label: "Batch",
-              validate: Yup.number().positive("Invalid Batch"),
-              initialValue: user.batch ? user.batch.toString() : "",
-              optional: true,
-            },
-            section: {
-              type: "select",
-              label: "Section",
-              placeholder: "Select",
-              options: ["AM", "BM", "CM", "DM", "EM", "FM", "AF", "BF", "CF"],
-              validate: Yup.string().trim(),
-              initialValue: user.section || "",
-            },
-            cgpa: {
-              type: "number",
-              label: "CGPA",
-              validate: Yup.number().min(0.0).max(4.0),
-              initialValue: user.cgpa ? user.cgpa.toString() : "",
-              optional: true,
-            },
-          }}
-          button={{
-            label: "Update",
-            loadingLabel: "Updating",
-            colorScheme: "gray",
-          }}
-          mutation={(values: any) => {
-            return axios.patch(`/api/users/me?update=data`, values)
-          }}
-          onSuccess={() => {
-            queryClient.invalidateQueries("user")
-            toast({ status: "success", title: "Account updated!" })
-          }}
-          onError={() => {
-            toast({ status: "error", title: "Some error occurred!" })
-          }}
-        />
-      ) : (
-        <Spinner />
+      {user && (
+        <form onSubmit={handleSubmit}>
+          <Stack>
+            <TextInput label="Name" {...form.getInputProps("name")} />
+            <TextInput label="Email" {...form.getInputProps("email")} />
+            <TextInput label="Mobile" {...form.getInputProps("mobile")} />
+            <TextInput
+              label="University ID"
+              {...form.getInputProps("username")}
+            />
+            <Select
+              label="Department"
+              placeholder="Select"
+              {...form.getInputProps("department")}
+              data={[
+                {
+                  value: "CSE",
+                  label: "Computer Science and Engineering (CSE)",
+                },
+                {
+                  value: "CCE",
+                  label: "Computer and Communication Engineering (CCE)",
+                },
+                {
+                  value: "EEE",
+                  label: "Electrical and Electronic Engineering (EEE)",
+                },
+              ]}
+            />
+            <NumberInput label="Batch" {...form.getInputProps("batch")} />
+            <Select
+              label="Section"
+              {...form.getInputProps("section")}
+              placeholder="Select"
+              data={[
+                { value: "AM", label: "AM" },
+                { value: "BM", label: "BM" },
+                { value: "CM", label: "CM" },
+                { value: "DM", label: "DM" },
+                { value: "EM", label: "EM" },
+                { value: "FM", label: "FM" },
+                { value: "AF", label: "AF" },
+                { value: "BF", label: "BF" },
+                { value: "CF", label: "CF" },
+              ]}
+            />
+            <NumberInput label="CGPA" {...form.getInputProps("cgpa")} />
+            <Box>
+              <Button type="submit">Update</Button>
+            </Box>
+          </Stack>
+        </form>
       )}
     </Box>
   )

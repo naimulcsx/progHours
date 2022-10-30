@@ -1,5 +1,4 @@
 import { Link, useNavigate } from "react-router-dom"
-import { useColorModeValue as mode } from "@chakra-ui/react"
 import { Helmet } from "react-helmet-async"
 import * as Yup from "yup"
 
@@ -76,11 +75,12 @@ const Login: FC = () => {
     <>
       {/* page title */}
       <Helmet>
-        <title className={mode("text-black", "text-white")}>Login</title>
+        <title>Login</title>
       </Helmet>
 
       {/* page content */}
       <Box
+        px="md"
         sx={{
           display: "flex",
           alignItems: "center",
@@ -90,7 +90,7 @@ const Login: FC = () => {
       >
         <Paper
           shadow="xs"
-          p="xl"
+          p="32px"
           sx={{ maxWidth: "440px", flexGrow: 1, position: "relative" }}
         >
           <LoadingOverlay visible={mutation.isLoading} overlayBlur={2} />
@@ -107,12 +107,10 @@ const Login: FC = () => {
           <form onSubmit={handleSubmit}>
             <Stack>
               <TextInput
-                withAsterisk
                 label="University ID"
                 {...form.getInputProps("username")}
               />
               <PasswordInput
-                withAsterisk
                 label="Password"
                 {...form.getInputProps("password")}
               />
