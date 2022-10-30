@@ -26,6 +26,7 @@ import { CellContext } from "@tanstack/react-table"
 import { Box, Button, Group } from "@mantine/core"
 import { IconPencil, IconTrash } from "@tabler/icons"
 import { showNotification } from "@mantine/notifications"
+import showToast from "@/utils/showToast"
 
 interface Practice {
   body: {
@@ -61,14 +62,11 @@ const Actions = (cell: CellContext<Submission, unknown>) => {
       /**
        * Show toast message
        */
-      toast({
-        status: "success",
-        title: res.message,
-      })
+      showToast("success", res.message)
     },
     onError: () => {
       setOpened(false)
-      showNotification({ message: "Something went wrong!", color: "red" })
+      showToast("error", "Something went wrong!")
     },
   })
 

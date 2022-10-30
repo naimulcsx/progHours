@@ -22,6 +22,7 @@ import {
   Loader,
 } from "@mantine/core"
 import { AnimatePresence } from "framer-motion"
+import LeaderboardTableMobile from "@/components/leaderboard/TableMobile"
 
 const LeaderboardPage = () => {
   const [leaderboardType, setLeaderboardType] = useState<
@@ -102,7 +103,7 @@ const LeaderboardPage = () => {
             transition={{ delay: 0.25, duration: 0.35 }}
           >
             <Box sx={{ marginLeft: -16, marginRight: -16 }}>
-              <LeaderboardTable data={data} />
+              <LeaderboardTableMobile data={data} />
             </Box>
           </motion.div>
         )}

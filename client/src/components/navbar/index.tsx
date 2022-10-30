@@ -43,6 +43,9 @@ const Navbar = () => {
               onClick={() => openSpotlight()}
               sx={(theme) => ({
                 borderColor: theme.colors.gray[2],
+                [`@media (max-width: ${theme.breakpoints.lg}px)`]: {
+                  display: "none",
+                },
               })}
             >
               <Text mr="xl">Search...</Text>

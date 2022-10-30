@@ -102,10 +102,10 @@ const DashboardHome = () => {
                 <UserStats progress={data} />
               </Box>
               <Grid sx={{ alignItems: "stretch" }}>
-                <Grid.Col span={6}>
+                <Grid.Col md={6}>
                   {<WeeklySolvedChart data={frequency} />}
                 </Grid.Col>
-                <Grid.Col span={6}>
+                <Grid.Col md={6}>
                   <TagsFreqChart data={data["tagsFrequency"]} />
                 </Grid.Col>
               </Grid>

@@ -1,40 +1,15 @@
-import * as Yup from "yup"
 import React, { useState } from "react"
-import { useFormik } from "formik"
-import axios, { AxiosError } from "axios"
-import { useQueryClient, useMutation } from "react-query"
-// import { FormControl, Select, option, Input } from "@/components/Form"
-import { PlusIcon } from "@heroicons/react/outline"
-import { useColorModeValue as mode } from "@chakra-ui/react"
-
-/**
- * Import utils
- */
-import showErrorToasts from "@/utils/showErrorToasts"
-import { createSubmission } from "@/api/submissions"
-
-/**
- * Date picker component and styles
- */
-import PopupBuilder from "../PopupBuilder"
-import FormBuilder from "../FormBuilder"
-import {
-  FormControl,
-  Input,
-  Spinner,
-  Td,
-  useToast,
-  Text,
-  Tr,
-} from "@chakra-ui/react"
-import { Button, MantineTheme, NumberInput, Select } from "@mantine/core"
-import { DEFAULT_TOAST_OPTIONS } from "@/configs/toast-config"
-import { CELL_STYLES } from "./cells/cellStyles"
-import { TextInput } from "@mantine/core"
+import { TextInput, Button, Select } from "@mantine/core"
 import { useForm, yupResolver } from "@mantine/form"
-import { showNotification } from "@mantine/notifications"
+import { DatePicker as MantineDatePicker } from "@mantine/dates"
+import * as Yup from "yup"
+import { useQueryClient, useMutation } from "react-query"
+import type { AxiosError } from "axios"
 import { IconPlus } from "@tabler/icons"
+import { createSubmission } from "@/api/submissions"
+import showToast from "@/utils/showToast"
 
+// Yup validation schema
 const submissionSchema = Yup.object().shape({
   link: Yup.string().url().trim().required("Problem link is required"),
   solveTime: Yup.number().typeError("Solve time must be a number"),
@@ -43,36 +18,36 @@ const submissionSchema = Yup.object().shape({
 })
 
 const SubmissionForm = ({ serial }: { serial: number }) => {
-  const toast = useToast(DEFAULT_TOAST_OPTIONS)
   const queryClient = useQueryClient()
   const [contestId, setContestId] = useState(0)
   const [contestPasswordDialogue, setContestPasswordDialogue] = useState(false)
 
-  /**
-   * Create submission mutation
-   */
+  // mutation
   const createSubmissionMutation = useMutation(createSubmission, {
     onSuccess: (data) => {
-      queryClient.invalidateQueries("submissions")
+      // show success message
+      showToast("success", data.message)
 
-      showNotification({ message: data.message })
+      // invalidate the query after 250ms
+      setTimeout(() => {
+        queryClient.invalidateQueries("submissions")
+      }, 250)
     },
     onError: (err: AxiosError) => {
       if (err.response) {
         const { contest_id, error_code, message } = err.response.data
         setContestId(contest_id)
-        if (error_code === 1003) setContestPasswordDialogue(true)
         // show contest password dialouge
-        else showNotification({ message, color: "red" })
+        if (error_code === 1003) setContestPasswordDialogue(true)
+        else showToast("error", message)
       }
     },
   })
 
-  /**
-   * Default selected state
-   */
+  // default verdict state
   const [selected, setSelected] = useState("AC")
 
+  // form states
   const form = useForm({
     initialValues: {
       link: "",
@@ -99,9 +74,7 @@ const SubmissionForm = ({ serial }: { serial: number }) => {
     const result = form.validate()
     if (result.hasErrors) {
       Object.keys(result.errors).forEach((key) => {
-        showNotification({
-          message: result.errors[key],
-        })
+        showToast("error", result.errors[key] as string)
       })
       return
     }
@@ -110,6 +83,9 @@ const SubmissionForm = ({ serial }: { serial: number }) => {
       ...form.values,
       solveTime: parseInt(form.values.solveTime),
     })
+
+    // reset the form after submission
+    form.reset()
   }
 
   return (
@@ -152,7 +128,6 @@ const SubmissionForm = ({ serial }: { serial: number }) => {
       </PopupBuilder> */}
 
       {/* table row starts here */}
-
       <tr>
         {/* serial */}
         <td>{serial}</td>
@@ -161,6 +136,7 @@ const SubmissionForm = ({ serial }: { serial: number }) => {
         <td>
           <form id="add-submission" onSubmit={handleSubmit}></form>
           <TextInput
+            sx={{ width: 260 }}
             form="add-submission"
             placeholder="Problem Link"
             size="sm"
@@ -170,8 +146,9 @@ const SubmissionForm = ({ serial }: { serial: number }) => {
         </td>
 
         {/* verdict */}
-        <td>
+        <td role="cell">
           <Select
+            sx={{ width: 80 }}
             value={selected}
             onChange={handleSelected}
             size="sm"
@@ -185,41 +162,30 @@ const SubmissionForm = ({ serial }: { serial: number }) => {
 
         {/* solve time */}
         <td>
-          <FormControl className="form">
-            <TextInput
-              type="number"
-              placeholder="eg. 80"
-              form="add-submission"
-              size="sm"
-              {...form.getInputProps("solveTime")}
-              error={false}
-            />
-          </FormControl>
+          <TextInput
+            sx={{ width: 95 }}
+            type="number"
+            placeholder="eg. 80"
+            form="add-submission"
+            size="sm"
+            {...form.getInputProps("solveTime")}
+            error={false}
+          />
         </td>
 
         {/* tags  */}
-        <td>—</td>
+        <td> — </td>
+
         {/* difficulty  */}
-        <td>—</td>
+        <td> — </td>
 
         {/* solved at */}
         <td>
-          {/* <ReactDatePicker
-            dateFormat="EEE, dd MMM yyyy"
-            showTimeSelect
-            selected={formik.values.solvedAt}
-            customInput={<Input fontSize="sm" />}
-            onChange={(date) => {
-              //
-              // const currentDate = new Date()
-              // const dateToSend = moment(date)
-              //   .set("hour", currentDate.getHours())
-              //   .set("minute", currentDate.getMinutes())
-              //   .set("second", currentDate.getSeconds())
-              //   .set("millisecond", currentDate.getMilliseconds())
-              formik.setFieldValue("solvedAt", date)
-            }}
-          /> */}
+          <MantineDatePicker
+            sx={{ width: 170 }}
+            {...form.getInputProps("solvedAt")}
+            error={false}
+          />
         </td>
 
         {/* actions */}

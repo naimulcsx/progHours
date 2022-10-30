@@ -49,7 +49,7 @@ export default function SolveTime(cell: CellContext<Submission, unknown>) {
       prevRef.current = value
     }
   }
-
+  
   const handleEnter = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === "Enter" && prevRef.current !== time) {
       mutate({ id: cell.row.original.id, solveTime: parseInt(time) })

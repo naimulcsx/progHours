@@ -81,7 +81,6 @@ const Login: FC = () => {
 
       {/* page content */}
       <Box
-        px="md"
         sx={{
           display: "flex",
           alignItems: "center",
@@ -91,7 +90,7 @@ const Login: FC = () => {
       >
         <Paper
           shadow="xs"
-          p="32px"
+          p="xl"
           sx={{ maxWidth: "440px", flexGrow: 1, position: "relative" }}
         >
           <LoadingOverlay visible={mutation.isLoading} overlayBlur={2} />
@@ -108,10 +107,12 @@ const Login: FC = () => {
           <form onSubmit={handleSubmit}>
             <Stack>
               <TextInput
+                withAsterisk
                 label="University ID"
                 {...form.getInputProps("username")}
               />
               <PasswordInput
+                withAsterisk
                 label="Password"
                 {...form.getInputProps("password")}
               />

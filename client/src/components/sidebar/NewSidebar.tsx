@@ -22,7 +22,13 @@ import { Link, useLocation } from "react-router-dom"
 const NewSidebar = () => {
   const { pathname } = useLocation()
   return (
-    <Navbar width={{ base: 220 }} p="xs" sx={{ fontWeight: 500 }}>
+    <Navbar
+      width={{ base: 0, lg: 230 }}
+      p="xs"
+      sx={{ fontWeight: 500 }}
+      hidden
+      hiddenBreakpoint="lg"
+    >
       {/* Navlink */}
       <Navbar.Section grow mt="xs">
         <NavLink

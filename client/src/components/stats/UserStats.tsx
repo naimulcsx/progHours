@@ -28,7 +28,7 @@ const UserStats = ({ progress }: { progress: Progress }) => {
   progress.averageDifficulty = totalDifficulty / totalSolvedWithDifficulty || 0
   return (
     <Grid>
-      <Grid.Col span={3}>
+      <Grid.Col span={6} xl={3}>
         <StatCard
           icon={
             <ThemeIcon
@@ -46,7 +46,7 @@ const UserStats = ({ progress }: { progress: Progress }) => {
           }}
         />
       </Grid.Col>
-      <Grid.Col span={3}>
+      <Grid.Col span={6} xl={3}>
         <StatCard
           icon={
             <ThemeIcon
@@ -64,7 +64,7 @@ const UserStats = ({ progress }: { progress: Progress }) => {
           }}
         />
       </Grid.Col>
-      <Grid.Col span={3}>
+      <Grid.Col span={6} xl={3}>
         <StatCard
           icon={
             <ThemeIcon
@@ -82,7 +82,7 @@ const UserStats = ({ progress }: { progress: Progress }) => {
           }}
         />
       </Grid.Col>
-      <Grid.Col span={3}>
+      <Grid.Col span={6} xl={3}>
         <StatCard
           icon={
             <ThemeIcon

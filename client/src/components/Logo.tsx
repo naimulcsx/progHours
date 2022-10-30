@@ -44,7 +44,7 @@ const Logo = () => {
         <Title order={4} style={{ lineHeight: 1.15 }}>
           progHours
         </Title>
-        <Text sx={{ fontSize: "10px" }}>v0.2.3</Text>
+        <Text sx={{ fontSize: "10px" }}>v0.3.0</Text>
       </Box>
     </Group>
   )
