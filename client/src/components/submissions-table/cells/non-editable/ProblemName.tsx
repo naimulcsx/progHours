@@ -15,10 +15,10 @@ import {
   CodeToWinIcon,
   HackerEarthIcon,
   KattisOJIcon,
-} from "@/components/Icons"
+} from "~/components/Icons"
 import { CellContext } from "@tanstack/react-table"
 import { Cell } from "react-table"
-import { Submission } from "@/types/Submission"
+import { Submission } from "~/types/Submission"
 import { ExternalLinkIcon } from "@heroicons/react/outline"
 import { QuestionMarkCircleIcon } from "@heroicons/react/outline"
 import { Anchor, Box, Group, Text, Title } from "@mantine/core"

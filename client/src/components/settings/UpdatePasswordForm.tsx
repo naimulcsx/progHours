@@ -1,5 +1,5 @@
 import * as Yup from "yup"
-import useUser from "@/hooks/useUser"
+import useUser from "~/hooks/useUser"
 import { useForm, yupResolver } from "@mantine/form"
 import { Box, Button, PasswordInput, Stack } from "@mantine/core"
 import { useMutation, useQueryClient } from "react-query"

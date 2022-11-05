@@ -1,32 +1,16 @@
 import { Helmet } from "react-helmet-async"
-import { DashboardLayout } from "@/components/layouts/Dashboard"
+import { DashboardLayout } from "~/components/layouts/Dashboard"
 import { useContext, useState } from "react"
-import { GlobalContext } from "@/GlobalStateProvider"
 
 import axios from "axios"
 import { useQuery } from "react-query"
 import moment from "moment"
-import {
-  Avatar,
-  Badge,
-  Box,
-  Button,
-  Flex,
-  HStack,
-  Link,
-  Text,
-  useColorModeValue as mode,
-} from "@chakra-ui/react"
+import { Avatar, Badge, Box, Button, Flex, HStack, Link, Text, useColorModeValue as mode } from "@chakra-ui/react"
 import { Link as RouterLink } from "react-router-dom"
-import {
-  ChevronLeftIcon,
-  ChevronRightIcon,
-  ClockIcon,
-} from "@heroicons/react/outline"
-import { AnimateLoading } from "@/components/AnimateLoading"
+import { ChevronLeftIcon, ChevronRightIcon, ClockIcon } from "@heroicons/react/outline"
+import { AnimateLoading } from "~/components/AnimateLoading"
 
-const fetchActivities = (page = 1) =>
-  fetch("/api/submissions/activities?page=" + page).then((res) => res.json())
+const fetchActivities = (page = 1) => fetch("/api/submissions/activities?page=" + page).then((res) => res.json())
 
 const ActivitiesPage = () => {
   const [page, setPage] = useState(1)
@@ -80,13 +64,7 @@ const ActivitiesPage = () => {
 
       <AnimateLoading isLoaded={submissions}>
         {submissions && (
-          <Box
-            bg={bg}
-            mx={-4}
-            borderTop="1px solid"
-            borderColor={borderColor}
-            pb={["54px", "54px", 0]}
-          >
+          <Box bg={bg} mx={-4} borderTop="1px solid" borderColor={borderColor} pb={["54px", "54px", 0]}>
             {submissions.map((sub: any) => {
               return (
                 <Box
@@ -102,19 +80,11 @@ const ActivitiesPage = () => {
                   <Flex align="center" gap={4}>
                     <Avatar size="sm" name={sub.user.name} fontWeight="bold" />
                     <Box>
-                      <Link
-                        as={RouterLink}
-                        to={`/users/${sub.user.username}`}
-                        color={linkColor}
-                      >
+                      <Link as={RouterLink} to={`/users/${sub.user.username}`} color={linkColor}>
                         {sub.user.name}
                       </Link>{" "}
                       got <Text display="inline-block">{sub.verdict}</Text> in{" "}
-                      <Link
-                        href={sub.problem.link}
-                        target="_blank"
-                        color={linkColor}
-                      >
+                      <Link href={sub.problem.link} target="_blank" color={linkColor}>
                         {sub.problem.name} [{sub.problem.pid}]
                       </Link>
                     </Box>

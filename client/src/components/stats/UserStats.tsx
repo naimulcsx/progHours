@@ -5,9 +5,9 @@ import {
   ClockIcon,
   ChartBarIcon,
 } from "@heroicons/react/outline"
-import calculatePoints from "@/utils/calculatePoints"
+import calculatePoints from "~/utils/calculatePoints"
 import { SimpleGrid } from "@chakra-ui/react"
-import { StatCard } from "@/components/stats/StatCard"
+import { StatCard } from "~/components/stats/StatCard"
 import { Grid, ThemeIcon } from "@mantine/core"
 
 type HeroIconProps = (props: React.ComponentProps<"svg">) => JSX.Element

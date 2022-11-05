@@ -1,6 +1,6 @@
-import { removeMember } from "@/api/groups"
-import { DEFAULT_TOAST_OPTIONS } from "@/configs/toast-config"
-import { getAvatarColors } from "@/utils/getAvatarColors"
+import { removeMember } from "~/api/groups"
+import { DEFAULT_TOAST_OPTIONS } from "~/configs/toast-config"
+import { getAvatarColors } from "~/utils/getAvatarColors"
 import {
   Stack,
   Avatar,

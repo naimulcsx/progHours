@@ -27,7 +27,6 @@ import { useLocation, useNavigate } from "react-router-dom"
 /**
  * Global context
  */
-import { GlobalContext } from "@/GlobalStateProvider"
 
 /**
  * Import Icons
@@ -45,13 +44,14 @@ import {
 } from "@heroicons/react/outline"
 import { useColorModeValue as mode } from "@chakra-ui/react"
 import { AdminIcon } from "../Icons"
+import useUser from "~/hooks/useUser"
 
 export const SIDEBAR_ICON_SIZE = 24
 
 export const Sidebar: React.FC = () => {
   const location = useLocation()
   const navigate = useNavigate()
-  const { user } = useContext(GlobalContext)
+  const { user } = useUser()
 
   return (
     <Flex
@@ -142,9 +142,7 @@ export const Sidebar: React.FC = () => {
         </Stack>
       </Stack>
       <Spacer />
-      {user && (
-        <UserProfile name={user.name} email={user.email} role={user?.role} />
-      )}
+      {user && <UserProfile name={user.name} email={user.email} role={user?.role} />}
     </Flex>
   )
 }

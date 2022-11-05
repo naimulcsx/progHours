@@ -28,3 +28,12 @@
 .mantine-DatePicker-dropdown thead tr th {
   padding: 0 !important;
 }
+
+.mantine-Progress-bar {
+  background: transparent;
+  background: linear-gradient(
+    to right,
+    #fcca71,
+    #f47e11
+  ); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+}

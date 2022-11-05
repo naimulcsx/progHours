@@ -34,12 +34,12 @@ import {
   UsersIcon,
 } from "@heroicons/react/outline"
 import { useContext } from "react"
-import { GlobalContext } from "@/GlobalStateProvider"
+import useUser from "~/hooks/useUser"
 
 export default function MobileNav() {
   const location = useLocation()
   const navigate = useNavigate()
-  const { user } = useContext(GlobalContext)
+  const { user } = useUser()
   return (
     <Box
       position="fixed"
@@ -103,23 +103,14 @@ export default function MobileNav() {
           display="flex"
         />
         <MenuList>
-          <MenuItem
-            icon={<UserGroupIcon width={20} />}
-            onClick={() => navigate("/groups")}
-          >
+          <MenuItem icon={<UserGroupIcon width={20} />} onClick={() => navigate("/groups")}>
             Groups
           </MenuItem>
-          <MenuItem
-            icon={<TrendingUpIcon width={20} />}
-            onClick={() => navigate("/activities")}
-          >
+          <MenuItem icon={<TrendingUpIcon width={20} />} onClick={() => navigate("/activities")}>
             Activity
           </MenuItem>
           {user?.role === "ADMIN" && (
-            <MenuItem
-              icon={<UsersIcon width={20} />}
-              onClick={() => navigate("/admin/users")}
-            >
+            <MenuItem icon={<UsersIcon width={20} />} onClick={() => navigate("/admin/users")}>
               Users
             </MenuItem>
           )}

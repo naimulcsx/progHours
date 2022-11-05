@@ -1,7 +1,7 @@
 import * as Yup from "yup"
-import { createOJHandle, updateOJHandle } from "@/api/handle"
+import { createOJHandle, updateOJHandle } from "~/api/handle"
 import { useMutation, useQueryClient } from "react-query"
-import showToast from "@/utils/showToast"
+import showToast from "~/utils/showToast"
 import { useForm, yupResolver } from "@mantine/form"
 import { Button, Select, Stack, TextInput } from "@mantine/core"
 

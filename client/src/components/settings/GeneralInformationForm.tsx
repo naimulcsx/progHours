@@ -11,8 +11,9 @@ import {
   Select,
   Stack,
   TextInput,
+  Title,
 } from "@mantine/core"
-import useUser from "@/hooks/useUser"
+import useUser from "~/hooks/useUser"
 
 const infoSchema = Yup.object().shape({
   name: Yup.string().required("Name is required"),
@@ -72,8 +73,7 @@ export const GeneralInformationForm = () => {
     validate: yupResolver(infoSchema),
   })
 
-  const handleSubmit = form.onSubmit(async (values) => {
-    console.log(values)
+  const handleSubmit = form.onSubmit((values) => {
     mutation.mutateAsync(values)
   })
 
@@ -82,22 +82,26 @@ export const GeneralInformationForm = () => {
       mx={-4}
       mb={10}
       p={25}
-      sx={{
+      sx={(theme) => ({
         backgroundColor: "white",
-        boxShadow:
-          "0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1)",
-      }}
+        boxShadow: theme.shadows.xs,
+        // @ts-ignore
+        borderRadius: theme.radius[theme.defaultRadius],
+      })}
     >
+      <Title order={4}>General Information</Title>
       {user && (
         <form onSubmit={handleSubmit}>
           <Stack>
             <TextInput label="Name" {...form.getInputProps("name")} />
-            <TextInput label="Email" {...form.getInputProps("email")} />
-            <TextInput label="Mobile" {...form.getInputProps("mobile")} />
             <TextInput
               label="University ID"
+              disabled
               {...form.getInputProps("username")}
             />
+            <TextInput label="Email" {...form.getInputProps("email")} />
+            <TextInput label="Mobile" {...form.getInputProps("mobile")} />
+
             <Select
               label="Department"
               placeholder="Select"

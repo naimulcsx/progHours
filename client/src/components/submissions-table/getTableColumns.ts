@@ -1,6 +1,6 @@
 import { EditableCells, NonEditableCells } from "./cells"
 import { Column } from "react-table"
-import { Submission } from "@/types/Submission"
+import { Submission } from "~/types/Submission"
 
 export const getTableColumns = (isEditable: boolean = false) => {
   const columns = [

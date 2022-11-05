@@ -62,9 +62,9 @@
 //   )
 // }
 
-import { getAllHandles } from "@/api/handle"
-import { CCIcon, CFIcon, LightOJIcon, TophIcon } from "@/components/Icons"
-import PopupBuilder from "@/components/PopupBuilder"
+import { getAllHandles } from "~/api/handle"
+import { CCIcon, CFIcon, LightOJIcon, TophIcon } from "~/components/Icons"
+import PopupBuilder from "~/components/PopupBuilder"
 import { PlusIcon, PlusSmIcon } from "@heroicons/react/outline"
 import { Box, Button, Grid, Group } from "@mantine/core"
 import { useState } from "react"

@@ -9,14 +9,14 @@ import { MantineTheme, Select } from "@mantine/core"
  * Import Components
  */
 import { useToast } from "@chakra-ui/react"
-import { updateSubmission } from "@/api/submissions"
+import { updateSubmission } from "~/api/submissions"
 
 /**
  * Import types
  */
-import { Submission } from "@/types/Submission"
-import { Practice } from "@/types/Practice"
-import { DEFAULT_TOAST_OPTIONS } from "@/configs/toast-config"
+import { Submission } from "~/types/Submission"
+import { Practice } from "~/types/Practice"
+import { DEFAULT_TOAST_OPTIONS } from "~/configs/toast-config"
 import { CellContext } from "@tanstack/react-table"
 
 const Verdict = (cell: CellContext<Submission, unknown>) => {

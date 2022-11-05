@@ -5,28 +5,28 @@ import { Modal, Text, Title, useMantineTheme } from "@mantine/core"
 /**
  * Import Components
  */
-// import { TrashIcon } from "@/components/Icons"
+// import { TrashIcon } from "~/components/Icons"
 import { TrashIcon } from "@heroicons/react/outline"
 
 /**
  * Import helpers
  */
-import { deleteSubmission } from "@/api/submissions"
+import { deleteSubmission } from "~/api/submissions"
 
 /**
  * Import Types / Interfaces
  */
 import { Cell } from "react-table"
-import { Submission } from "@/types/Submission"
+import { Submission } from "~/types/Submission"
 import { AxiosError } from "axios"
-import PopupBuilder from "@/components/PopupBuilder"
+import PopupBuilder from "~/components/PopupBuilder"
 import { useToast } from "@chakra-ui/react"
-import { DEFAULT_TOAST_OPTIONS } from "@/configs/toast-config"
+import { DEFAULT_TOAST_OPTIONS } from "~/configs/toast-config"
 import { CellContext } from "@tanstack/react-table"
 import { Box, Button, Group } from "@mantine/core"
 import { IconPencil, IconTrash } from "@tabler/icons"
 import { showNotification } from "@mantine/notifications"
-import showToast from "@/utils/showToast"
+import showToast from "~/utils/showToast"
 
 interface Practice {
   body: {

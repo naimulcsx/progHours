@@ -4,24 +4,23 @@ import { Helmet } from "react-helmet-async"
 /**
  * Import Components and helpers
  */
-import { DashboardLayout } from "@/components/layouts/Dashboard"
-import { SubmissionsTable } from "@/components/submissions-table"
-import WeekFilters from "@/components/filters/WeekFilter"
+import { DashboardLayout } from "~/components/layouts/Dashboard"
+import { SubmissionsTable } from "~/components/submissions-table"
+import WeekFilters from "~/components/filters/WeekFilter"
 
 /**
  * Import helpers
  */
-import { GlobalContext } from "@/GlobalStateProvider"
 import { UploadIcon } from "@heroicons/react/outline"
-import ImportCsvModal from "./ImportCsvModal"
-import csvToArray from "@/utils/csvToArray"
+import ImportCsvModal from "../components/ImportCsvModal"
+import csvToArray from "~/utils/csvToArray"
 import { Box, Button, Flex } from "@chakra-ui/react"
 import { Group, Title } from "@mantine/core"
 import axios from "axios"
 import { useQuery } from "react-query"
-import useSubmissions from "@/hooks/useSubmissions"
+import useSubmissions from "~/hooks/useSubmissions"
 
-export default function TrackingSheet() {
+export default function SubmissionsPage() {
   // const context = useContext(GlobalContext)
   // const { query, filteredData, selectedWeek, setSelectedWeek, weekRanges } =
   //   context?.useSubmissionsResult

@@ -1,17 +1,16 @@
 import { Anchor, Box, Group, HoverCard, Stack, Text } from "@mantine/core"
-import { DataGrid, numberFilterFn } from "@/components/datagrid"
-import { useNavigate } from "react-router-dom"
-import Avatar from "@/components/Avatar"
+import { DataGrid, numberFilterFn } from "~/components/datagrid"
+import { Link } from "react-router-dom"
+import Avatar from "~/components/Avatar"
 
 const LeaderboardTable = ({ data }: any) => {
-  const navigate = useNavigate()
   return (
     <DataGrid
       sx={(theme) => ({
         background: "white",
         boxShadow: theme.shadows.xs,
       })}
-      data={data ? data.body.stats : []}
+      data={data || []}
       withSorting
       withPagination
       withColumnFilters
@@ -55,11 +54,22 @@ const LeaderboardTable = ({ data }: any) => {
                     <Group>
                       <Avatar name={name} />
                       <Stack spacing={5}>
-                        <Text size="sm" weight={700} sx={{ lineHeight: 1 }}>
+                        <Text
+                          size="sm"
+                          weight={700}
+                          sx={{
+                            whiteSpace: "nowrap",
+                            overflow: "hidden",
+                            textOverflow: "ellipsis",
+                            width: 180,
+                            lineHeight: 1,
+                          }}
+                        >
                           {name}
                         </Text>
                         <Anchor
-                          href={`/@${username}`}
+                          component={Link}
+                          to={`/@${username}`}
                           color="dimmed"
                           size="xs"
                           sx={{ lineHeight: 1 }}

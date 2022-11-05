@@ -1,4 +1,4 @@
-import { RanklistItem } from "@/types/RanklistItem"
+import { RanklistItem } from "~/types/RanklistItem"
 import calculatePoints from "./calculatePoints"
 
 export default function processRanklist(stats: any) {

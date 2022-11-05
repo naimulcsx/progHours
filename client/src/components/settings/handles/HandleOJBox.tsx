@@ -1,5 +1,5 @@
-import PopupBuilder from "@/components/PopupBuilder"
-import getOJProfileURL from "@/utils/getOJProfileUrl"
+import PopupBuilder from "~/components/PopupBuilder"
+import getOJProfileURL from "~/utils/getOJProfileUrl"
 import { ExternalLinkIcon, PencilAltIcon } from "@heroicons/react/outline"
 import {
   ActionIcon,

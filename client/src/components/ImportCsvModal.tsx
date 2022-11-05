@@ -1,4 +1,4 @@
-import { createSubmission } from "@/api/submissions"
+import { createSubmission } from "~/api/submissions"
 import { Dialog, Transition } from "@headlessui/react"
 import { InformationCircleIcon } from "@heroicons/react/outline"
 import { CheckIcon } from "@heroicons/react/outline"
@@ -6,7 +6,7 @@ import { Fragment, useState } from "react"
 import { useMutation, useQueryClient } from "react-query"
 import { AxiosError } from "axios"
 import moment from "moment"
-import PopupBuilder from "@/components/PopupBuilder"
+import PopupBuilder from "~/components/PopupBuilder"
 import {
   Box,
   Button,

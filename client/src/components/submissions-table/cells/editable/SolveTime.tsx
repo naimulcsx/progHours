@@ -1,11 +1,11 @@
 import { useMutation, useQueryClient } from "react-query"
-import { updateSubmission } from "@/api/submissions"
+import { updateSubmission } from "~/api/submissions"
 import React, { useRef, useState } from "react"
 import { Cell } from "react-table"
-import { Submission } from "@/types/Submission"
-import { Practice } from "@/types/Practice"
+import { Submission } from "~/types/Submission"
+import { Practice } from "~/types/Practice"
 import { useToast } from "@chakra-ui/react"
-import { DEFAULT_TOAST_OPTIONS } from "@/configs/toast-config"
+import { DEFAULT_TOAST_OPTIONS } from "~/configs/toast-config"
 import { useColorModeValue as mode } from "@chakra-ui/react"
 import { CellContext } from "@tanstack/react-table"
 import { NumberInput, TextInput } from "@mantine/core"
@@ -49,7 +49,7 @@ export default function SolveTime(cell: CellContext<Submission, unknown>) {
       prevRef.current = value
     }
   }
-  
+
   const handleEnter = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === "Enter" && prevRef.current !== time) {
       mutate({ id: cell.row.original.id, solveTime: parseInt(time) })

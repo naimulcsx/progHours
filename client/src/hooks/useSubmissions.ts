@@ -1,5 +1,5 @@
 import { useContext } from "react"
-import { SubmissionsContext } from "@/contexts/SubmissionsContext"
+import { SubmissionsContext } from "~/contexts/SubmissionsContext"
 
 function useSubmissions() {
   const submissions = useContext(SubmissionsContext)

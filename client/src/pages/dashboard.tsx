@@ -1,37 +1,20 @@
 import { useContext, useState } from "react"
+import { Box, Grid, Group, Loader, Title } from "@mantine/core"
+import { AnimatePresence } from "framer-motion"
 import { useQuery } from "react-query"
 import { Helmet } from "react-helmet-async"
 import { motion } from "framer-motion"
-import {
-  Box,
-  GridItem,
-  Spinner,
-  useColorModeValue as mode,
-} from "@chakra-ui/react"
 
-/**
- * Import Components
- */
-import { DashboardLayout } from "@/components/layouts/Dashboard"
-import UserStats from "@/components/stats/UserStats"
-import WeeklySolvedChart from "@/components/stats/visualizations/WeeklySolvedChart"
-import TagsFreqChart from "@/components/stats/visualizations/TagsFreqChart"
+import { DashboardLayout } from "~/components/layouts/Dashboard"
+import UserStats from "~/components/stats/UserStats"
+import WeeklySolvedChart from "~/components/stats/visualizations/WeeklySolvedChart"
+import TagsFreqChart from "~/components/stats/visualizations/TagsFreqChart"
+import { getStats } from "~/api/dashboard"
+import { getSubmissions } from "~/api/submissions"
+import { getWeekRanges } from "~/utils/getWeekRanges"
 
-/**
- * Import helpers
- */
-import { getStats } from "@/api/dashboard"
-import { getSubmissions } from "@/api/submissions"
-import { getWeekRanges } from "@/utils/getWeekRanges"
-import { GlobalContext } from "@/GlobalStateProvider"
-import { Grid, Group, Loader, Title } from "@mantine/core"
-import { AnimatePresence } from "framer-motion"
-
-const DashboardHome = () => {
-  const { user } = useContext(GlobalContext)
-  /**
-   * Get statistics: number of problem solved, total solve time and average_difficulty
-   */
+export default function DashboardPage() {
+  // get statistics: number of problem solved, total solve time and average_difficulty
   let [data, setData] = useState(null)
   useQuery("stats", getStats, {
     onSuccess: (data) => {
@@ -39,9 +22,7 @@ const DashboardHome = () => {
     },
   })
 
-  /**
-   * Get submissions and get statistics for each week
-   */
+  // get submissions and get statistics for each week
   interface Frequency {
     [name: string]: number
   }
@@ -69,11 +50,12 @@ const DashboardHome = () => {
 
   return (
     <DashboardLayout>
-      {/* @ts-ignore */}
+      {/* page meta data */}
       <Helmet>
         <title>Dashboard</title>
       </Helmet>
 
+      {/* page title */}
       <Group align="center" mb="md">
         <Title order={3}>Dashboard</Title>
         <AnimatePresence>
@@ -90,21 +72,16 @@ const DashboardHome = () => {
         </AnimatePresence>
       </Group>
 
+      {/* dashboard stats section */}
       <AnimatePresence>
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 0.25, duration: 0.35 }}
-        >
+        <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.25, duration: 0.35 }}>
           {data && frequency && data["tagsFrequency"] && (
             <>
-              <Box mb={4}>
+              <Box mb="sm">
                 <UserStats progress={data} />
               </Box>
               <Grid sx={{ alignItems: "stretch" }}>
-                <Grid.Col md={6}>
-                  {<WeeklySolvedChart data={frequency} />}
-                </Grid.Col>
+                <Grid.Col md={6}>{<WeeklySolvedChart data={frequency} />}</Grid.Col>
                 <Grid.Col md={6}>
                   <TagsFreqChart data={data["tagsFrequency"]} />
                 </Grid.Col>
@@ -116,5 +93,3 @@ const DashboardHome = () => {
     </DashboardLayout>
   )
 }
-
-export default DashboardHome

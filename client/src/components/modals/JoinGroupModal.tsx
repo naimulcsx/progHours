@@ -1,9 +1,9 @@
-import { createGroup, joinGroup } from "@/api/groups"
+import { createGroup, joinGroup } from "~/api/groups"
 import { toast, useToast } from "@chakra-ui/react"
 import FormBuilder from "../FormBuilder"
 import PopupBuilder from "../PopupBuilder"
 import * as yup from "yup"
-import { DEFAULT_TOAST_OPTIONS } from "@/configs/toast-config"
+import { DEFAULT_TOAST_OPTIONS } from "~/configs/toast-config"
 import { useQuery, useQueryClient } from "react-query"
 
 export const JoinGroupModal = ({ isOpen, setIsOpen }: any) => {

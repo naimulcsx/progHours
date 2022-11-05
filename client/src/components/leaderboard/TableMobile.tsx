@@ -7,9 +7,9 @@ import {
   Stack,
   Text,
 } from "@mantine/core"
-import { DataGrid, numberFilterFn } from "@/components/datagrid"
+import { DataGrid, numberFilterFn } from "~/components/datagrid"
 import { useNavigate } from "react-router-dom"
-import Avatar from "@/components/Avatar"
+import Avatar from "~/components/Avatar"
 
 const LeaderboardTableMobile = ({ data }: any) => {
   const navigate = useNavigate()
@@ -19,16 +19,16 @@ const LeaderboardTableMobile = ({ data }: any) => {
         background: "white",
         boxShadow: theme.shadows.xs,
       })}
-      data={data ? data.body.stats : []}
+      data={data || []}
       withPagination
-      horizontalSpacing="sm"
+      horizontalSpacing="md"
       pageSizes={["25", "50", "100"]}
       initialState={{ pagination: { pageSize: 25 } }}
       columns={[
         {
           accessorKey: "user.name",
           header: "Name",
-          size: 250,
+          size: 230,
           cell: ({ cell }) => {
             const { name, department, batch, username } = cell.row.original.user
             return (
@@ -54,7 +54,7 @@ const LeaderboardTableMobile = ({ data }: any) => {
                           whiteSpace: "nowrap",
                           overflow: "hidden",
                           textOverflow: "ellipsis",
-                          width: 200,
+                          width: 180,
                         }}
                       >
                         {name}

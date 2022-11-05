@@ -1,8 +1,8 @@
 import { FC } from "react"
-import NewSidebar from "@/components/sidebar/NewSidebar"
+import NewSidebar from "~/components/sidebar/NewSidebar"
 import { AppShell, AppShellProps } from "@mantine/core"
 import Navbar from "../navbar"
-import MobileNavigation from "@/components/sidebar/MobileNavigation"
+import MobileNavigation from "~/components/sidebar/MobileNavigation"
 
 export const DashboardLayout: FC<AppShellProps> = ({ children }) => {
   return (

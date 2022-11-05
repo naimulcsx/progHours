@@ -1,11 +1,5 @@
-import {
-  Solved50,
-  Solved100,
-  Solved250,
-  Solved500,
-  Solved1000,
-} from "@/assets/achievements/SolveCount"
-import { User } from "@/GlobalStateProvider"
+import { Solved50, Solved100, Solved250, Solved500, Solved1000 } from "~/assets/achievements/SolveCount"
+import type { User } from "~/contexts/UserContext"
 import { Box, Group, Table, Text, Title } from "@mantine/core"
 import { LockClosedIcon } from "@heroicons/react/outline"
 import moment from "moment"
@@ -33,13 +27,7 @@ const achievementsBySolveCount = [
   },
 ]
 
-export const UserAbout = ({
-  user,
-  userStats,
-}: {
-  user: User
-  userStats: any
-}) => {
+export const UserAbout = ({ user, userStats }: { user: User; userStats: any }) => {
   return (
     <>
       <Box>

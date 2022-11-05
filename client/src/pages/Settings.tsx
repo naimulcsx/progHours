@@ -1,12 +1,12 @@
+import { useEffect, useState } from "react"
 import { Helmet } from "react-helmet-async"
-import { DashboardLayout } from "@/components/layouts/Dashboard"
-import { GeneralInformationForm } from "@/components/settings/GeneralInformationForm"
-import { UpdatePasswordForm } from "@/components/settings/UpdatePasswordForm"
-import HandleSettings from "@/components/settings/handles/HandleSettings"
-import useUser from "@/hooks/useUser"
+import { DashboardLayout } from "~/components/layouts/Dashboard"
+import { GeneralInformationForm } from "~/components/settings/GeneralInformationForm"
+import { UpdatePasswordForm } from "~/components/settings/UpdatePasswordForm"
+import HandleSettings from "~/components/settings/handles/HandleSettings"
+import useUser from "~/hooks/useUser"
 import { Tabs } from "@mantine/core"
 import { IconAxe, IconFileInfo, IconKey } from "@tabler/icons"
-import { useEffect, useState } from "react"
 
 const Settings = () => {
   const { user } = useUser()
@@ -19,7 +19,6 @@ const Settings = () => {
   }, [currentTab])
   return (
     <DashboardLayout>
-      {/* @ts-ignore */}
       <Helmet>
         <title>Settings</title>
       </Helmet>

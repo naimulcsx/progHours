@@ -1,16 +1,11 @@
 import { Box, Button, Menu, Text } from "@mantine/core"
 import { useNavigate } from "react-router-dom"
-import {
-  IconChevronDown,
-  IconLogout,
-  IconSettings,
-  IconUser,
-} from "@tabler/icons"
-import { getAvatarColors } from "@/utils/getAvatarColors"
-import { User } from "@/contexts/UserContext"
+import { IconChevronDown, IconLogout, IconSettings, IconUser } from "@tabler/icons"
+import { getAvatarColors } from "~/utils/getAvatarColors"
+import { User } from "~/contexts/UserContext"
 import { FC } from "react"
-import useLogout from "@/hooks/useLogout"
-import Avatar from "../Avatar"
+import useLogout from "~/hooks/useLogout"
+import Avatar from "~/components/Avatar"
 
 const UserMenu: FC<{ user: User }> = ({ user }) => {
   const navigate = useNavigate()
@@ -31,16 +26,10 @@ const UserMenu: FC<{ user: User }> = ({ user }) => {
         </Button>
       </Menu.Target>
       <Menu.Dropdown>
-        <Menu.Item
-          icon={<IconUser size={14} />}
-          onClick={() => navigate(`/@${user.username}`)}
-        >
+        <Menu.Item icon={<IconUser size={14} />} onClick={() => navigate(`/@${user.username}`)}>
           Profile
         </Menu.Item>
-        <Menu.Item
-          icon={<IconSettings size={14} />}
-          onClick={() => navigate("/settings")}
-        >
+        <Menu.Item icon={<IconSettings size={14} />} onClick={() => navigate("/settings")}>
           Settings
         </Menu.Item>
         <Menu.Item icon={<IconLogout size={14} />} onClick={handleLogout}>

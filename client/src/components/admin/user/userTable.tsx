@@ -18,33 +18,17 @@ import {
   InputGroup,
   InputLeftElement,
 } from "@chakra-ui/react"
-import {
-  Column,
-  usePagination,
-  useSortBy,
-  useTable,
-  useFilters,
-  useGlobalFilter,
-  useAsyncDebounce,
-} from "react-table"
-import {
-  ArrowSmDownIcon,
-  ArrowSmUpIcon,
-  PencilAltIcon,
-} from "@heroicons/react/outline"
-import { User } from "@/GlobalStateProvider"
+import { Column, usePagination, useSortBy, useTable, useFilters, useGlobalFilter, useAsyncDebounce } from "react-table"
+import { ArrowSmDownIcon, ArrowSmUpIcon, PencilAltIcon } from "@heroicons/react/outline"
+import type { User } from "~/contexts/UserContext"
 import EditUserTable from "./EditUserTable"
 import { Link } from "react-router-dom"
-import { getAvatarColors } from "@/utils/getAvatarColors"
+import { getAvatarColors } from "~/utils/getAvatarColors"
 import { CELL_STYLES } from "./cellStyles"
-import { Pagination } from "@/components/submissions-table/Pagination"
+import { Pagination } from "~/components/submissions-table/Pagination"
 import { SearchIcon } from "@heroicons/react/outline"
 
-function GlobalFilter({
-  preGlobalFilteredRows,
-  globalFilter,
-  setGlobalFilter,
-}: any) {
+function GlobalFilter({ preGlobalFilteredRows, globalFilter, setGlobalFilter }: any) {
   const count = preGlobalFilteredRows.length
   const [value, setValue] = useState(globalFilter)
 
@@ -54,10 +38,7 @@ function GlobalFilter({
 
   return (
     <InputGroup>
-      <InputLeftElement
-        pointerEvents="none"
-        children={<SearchIcon height={20} color="gray.300" />}
-      />
+      <InputLeftElement pointerEvents="none" children={<SearchIcon height={20} color="gray.300" />} />
       <Input
         value={value || ""}
         type="text"
@@ -221,9 +202,7 @@ export default function UserManagementTable({ users }: { users: User[] }) {
                   {headerGroup.headers.map((header) => {
                     return (
                       <Th
-                        {...header.getHeaderProps(
-                          header.getSortByToggleProps()
-                        )}
+                        {...header.getHeaderProps(header.getSortByToggleProps())}
                         py={3}
                         borderBottom="1px solid"
                         borderColor={mode("gray.200", "gray.700")}
@@ -256,11 +235,7 @@ export default function UserManagementTable({ users }: { users: User[] }) {
             {page.map((row) => {
               prepareRow(row)
               return (
-                <Tr
-                  {...row.getRowProps()}
-                  _hover={{ bg: mode("gray.50", "gray.700") }}
-                  bg={mode("white", "gray.800")}
-                >
+                <Tr {...row.getRowProps()} _hover={{ bg: mode("gray.50", "gray.700") }} bg={mode("white", "gray.800")}>
                   {row.cells.map((cell) => {
                     return (
                       <Td

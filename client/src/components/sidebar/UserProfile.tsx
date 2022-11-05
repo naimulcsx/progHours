@@ -1,5 +1,5 @@
-import useLogout from "@/hooks/useLogout"
-import { getAvatarColors } from "@/utils/getAvatarColors"
+import useLogout from "~/hooks/useLogout"
+import { getAvatarColors } from "~/utils/getAvatarColors"
 import {
   Avatar,
   Flex,

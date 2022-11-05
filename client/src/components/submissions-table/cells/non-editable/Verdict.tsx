@@ -1,5 +1,5 @@
 import { Cell } from "react-table"
-import { Submission } from "@/types/Submission"
+import { Submission } from "~/types/Submission"
 import { Badge } from "@chakra-ui/react"
 
 const NonEditableVerdict = (cell: Cell<Submission>) => {

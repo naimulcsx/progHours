@@ -6,8 +6,8 @@ import * as Yup from "yup"
 import { useQueryClient, useMutation } from "react-query"
 import type { AxiosError } from "axios"
 import { IconPlus } from "@tabler/icons"
-import { createSubmission } from "@/api/submissions"
-import showToast from "@/utils/showToast"
+import { createSubmission } from "~/api/submissions"
+import showToast from "~/utils/showToast"
 
 // Yup validation schema
 const submissionSchema = Yup.object().shape({

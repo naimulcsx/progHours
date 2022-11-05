@@ -1,15 +1,15 @@
-import { DashboardLayout } from "@/components/layouts/Dashboard"
+import { DashboardLayout } from "~/components/layouts/Dashboard"
 import { Helmet } from "react-helmet-async"
 import { useParams } from "react-router-dom"
 import { useQuery } from "react-query"
 import { useState } from "react"
 
-import FormBuilder from "@/components/FormBuilder"
+import FormBuilder from "~/components/FormBuilder"
 import * as Yup from "yup"
 import { Spinner, useToast } from "@chakra-ui/react"
-import { DEFAULT_TOAST_OPTIONS } from "@/configs/toast-config"
-import { getProblemByPid, updateProblemInfo } from "@/api/problems"
-import { Problem } from "@/types/Problem"
+import { DEFAULT_TOAST_OPTIONS } from "~/configs/toast-config"
+import { getProblemByPid, updateProblemInfo } from "~/api/problems"
+import { Problem } from "~/types/Problem"
 
 export default function EditProblemTable() {
   const [problem, setProblem] = useState<Problem>()

@@ -1,12 +1,12 @@
-import { GlobalContext } from "@/GlobalStateProvider"
 import { MailIcon, UserIcon } from "@heroicons/react/outline"
 import { useContext } from "react"
 import { Link } from "react-router-dom"
 import { Avatar, Spinner } from "@chakra-ui/react"
-import { getAvatarColors } from "@/utils/getAvatarColors"
+import { getAvatarColors } from "~/utils/getAvatarColors"
+import useUser from "~/hooks/useUser"
 
 const UserInfoCard = () => {
-  const user = useContext(GlobalContext).user
+  const { user } = useUser()
 
   return (
     <div className="p-8 bg-white rounded-lg shadow">
@@ -30,9 +30,7 @@ const UserInfoCard = () => {
                 <span>{user.email}</span>
               </p>
               <Link to={`/users/${user.username}`}>
-                <span className="inline-block mt-4 btn-primary-sm">
-                  View Profile
-                </span>
+                <span className="inline-block mt-4 btn-primary-sm">View Profile</span>
               </Link>
             </div>
           </div>

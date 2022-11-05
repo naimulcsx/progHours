@@ -13,28 +13,28 @@ import {
 /**
  * Import Components
  */
-import Navbar from "@/components/navbar"
+import Navbar from "~/components/navbar"
 
 /**
  * Import API
  */
-import { getSubmissionsByUsername } from "@/api/submissions"
+import { getSubmissionsByUsername } from "~/api/submissions"
 
 /**
  * Import helpers
  */
-import { getUserByUsername } from "@/api/user"
-import { UserCard } from "@/components/profile/UserCard"
+import { getUserByUsername } from "~/api/user"
+import { UserCard } from "~/components/profile/UserCard"
 import { Helmet } from "react-helmet-async"
-import { SubmissionsTable } from "@/components/submissions-table"
-import { DEFAULT_TOAST_OPTIONS } from "@/configs/toast-config"
-import { getStatsByUsername } from "@/api/leaderboard"
-import UserStats from "@/components/stats/UserStats"
-import TagsFreqChart from "@/components/stats/visualizations/TagsFreqChart"
-import { UserAbout } from "@/components/profile/UserAbout"
-import { getWeekRanges } from "@/utils/getWeekRanges"
-import WeeklySolvedChart from "@/components/stats/visualizations/WeeklySolvedChart"
-import { AnimateLoading } from "@/components/AnimateLoading"
+import { SubmissionsTable } from "~/components/submissions-table"
+import { DEFAULT_TOAST_OPTIONS } from "~/configs/toast-config"
+import { getStatsByUsername } from "~/api/leaderboard"
+import UserStats from "~/components/stats/UserStats"
+import TagsFreqChart from "~/components/stats/visualizations/TagsFreqChart"
+import { UserAbout } from "~/components/profile/UserAbout"
+import { getWeekRanges } from "~/utils/getWeekRanges"
+import WeeklySolvedChart from "~/components/stats/visualizations/WeeklySolvedChart"
+import { AnimateLoading } from "~/components/AnimateLoading"
 import { Container } from "@mantine/core"
 import { motion } from "framer-motion"
 

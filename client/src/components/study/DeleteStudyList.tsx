@@ -1,5 +1,5 @@
-import { deleteUserStudy } from "@/api/userStudies"
-import { DEFAULT_TOAST_OPTIONS } from "@/configs/toast-config"
+import { deleteUserStudy } from "~/api/userStudies"
+import { DEFAULT_TOAST_OPTIONS } from "~/configs/toast-config"
 import {
   Button,
   HStack,

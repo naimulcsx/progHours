@@ -1,8 +1,8 @@
 import { useState } from "react"
-import { getHandlesByUsername } from "@/api/handle"
+import { getHandlesByUsername } from "~/api/handle"
 import { useQuery } from "react-query"
 import { CCIcon, CFIcon, LightOJIcon, TophIcon } from "../Icons"
-import getOJProfileURL from "@/utils/getOJProfileUrl"
+import getOJProfileURL from "~/utils/getOJProfileUrl"
 import Avatar from "../Avatar"
 import {
   Anchor,

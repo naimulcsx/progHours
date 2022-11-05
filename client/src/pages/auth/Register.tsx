@@ -6,8 +6,8 @@ import { Link, useNavigate } from "react-router-dom"
 /**
  * Import Components / Utilities
  */
-import { registerMutation } from "@/api/auth"
-import { DEFAULT_TOAST_OPTIONS } from "@/configs/toast-config"
+import { registerMutation } from "~/api/auth"
+import { DEFAULT_TOAST_OPTIONS } from "~/configs/toast-config"
 import {
   Anchor,
   Box,
@@ -20,7 +20,7 @@ import {
   TextInput,
   Title,
 } from "@mantine/core"
-import Logo from "@/components/Logo"
+import Logo from "~/components/Logo"
 import { useForm, yupResolver } from "@mantine/form"
 import { useMutation } from "react-query"
 import { showNotification } from "@mantine/notifications"

@@ -1,4 +1,4 @@
-import { getAvatarColors } from "@/utils/getAvatarColors"
+import { getAvatarColors } from "~/utils/getAvatarColors"
 import { Box, BoxProps } from "@mantine/core"
 import { FC } from "react"
 

@@ -1,9 +1,9 @@
 import FormBuilder from "../FormBuilder"
 import * as Yup from "yup"
 import { useQueryClient } from "react-query"
-import { DEFAULT_TOAST_OPTIONS } from "@/configs/toast-config"
+import { DEFAULT_TOAST_OPTIONS } from "~/configs/toast-config"
 import { useToast } from "@chakra-ui/react"
-import { createUserStudy, updateUserStudy } from "@/api/userStudies"
+import { createUserStudy, updateUserStudy } from "~/api/userStudies"
 import moment from "moment"
 
 export default function StudyForm({ setIsOpen, studies, isCreate }: any) {

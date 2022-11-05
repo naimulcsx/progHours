@@ -16,7 +16,7 @@ import { ArrowSmDownIcon, ArrowSmUpIcon } from "@heroicons/react/outline"
 
 import { Link } from "react-router-dom"
 import { CELL_STYLES } from "./cellStyles"
-import { Problem } from "@/types/Problem"
+import { Problem } from "~/types/Problem"
 
 export default function ProblemManagementTable({
   problems,

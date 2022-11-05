@@ -1,16 +1,15 @@
+import { DotsVerticalIcon, TrashIcon } from "@heroicons/react/outline"
 import {
-  Heading,
+  Anchor,
   Badge,
   Box,
-  Text,
-  useColorModeValue as mode,
+  Button,
   Menu,
-  MenuButton,
-  IconButton,
-  MenuList,
-  MenuItem,
-} from "@chakra-ui/react"
-import { DotsVerticalIcon, TrashIcon } from "@heroicons/react/outline"
+  Stack,
+  Text,
+  Title,
+} from "@mantine/core"
+import { IconDotsVertical, IconTrash } from "@tabler/icons"
 import { useState } from "react"
 import { Link, useNavigate } from "react-router-dom"
 import { DeleteGroupModal } from "../modals/DeleteGroupModal"
@@ -20,43 +19,62 @@ const GroupCard = ({ group, role }: any) => {
   const navigate = useNavigate()
   return (
     <Box
-      position="relative"
-      bg={mode("white", "gray.700")}
+      p="lg"
+      sx={(theme) => ({
+        background: "white",
+        position: "relative",
+        borderRadius: theme.radius.md,
+        boxShadow: theme.shadows.xs,
+      })}
       key={group.id}
-      shadow="base"
-      rounded="lg"
-      p={6}
     >
-      <Link to={`/groups/${group.hashtag}`}>
-        <Heading size="md">{group.name}</Heading>
-      </Link>
+      <Stack align="flex-start" spacing={"xs"}>
+        <Anchor
+          component={Link}
+          to={`/groups/${group.hashtag}`}
+          sx={{ "&:hover": { textDecoration: "none" } }}
+        >
+          <Title order={3} color="black">
+            {group.name}
+          </Title>
+        </Anchor>
 
-      <Link to={`/groups/${group.hashtag}`}>
-        <Text color={mode("blue.500", "blue.300")} fontWeight="500">
-          #{group.hashtag}
-        </Text>
-      </Link>
-      <Badge colorScheme="purple">{role}</Badge>
+        <Anchor
+          component={Link}
+          to={`/groups/${group.hashtag}`}
+          sx={{ "&:hover": { textDecoration: "none" } }}
+        >
+          <Text
+            sx={(theme) => ({ fontWeight: 600, color: theme.colors.blue[6] })}
+          >
+            #{group.hashtag}
+          </Text>
+        </Anchor>
+        <Badge color="pink">{role}</Badge>
+      </Stack>
+
       <Menu>
-        <MenuButton
-          position="absolute"
-          right={2}
-          top={2}
-          as={IconButton}
-          aria-label="Options"
-          icon={<DotsVerticalIcon height={20} />}
-          variant="ghost"
-          colorScheme="gray"
-          size="sm"
-        />
-        <MenuList>
-          <MenuItem
-            icon={<TrashIcon height={20} />}
+        <Menu.Target>
+          <Button
+            px="sm"
+            variant="white"
+            color="gray"
+            sx={{ position: "absolute", top: 4, right: 2 }}
+          >
+            <IconDotsVertical size={20} />
+          </Button>
+        </Menu.Target>
+
+        <Menu.Dropdown>
+          <Menu.Item
+            icon={<IconTrash size={14} />}
             onClick={() => setIsOpen(true)}
           >
             Delete Group
-          </MenuItem>
-        </MenuList>
+          </Menu.Item>
+
+          {/* Other items ... */}
+        </Menu.Dropdown>
       </Menu>
 
       {/* delete popup */}

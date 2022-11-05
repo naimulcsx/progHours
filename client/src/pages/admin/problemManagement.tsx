@@ -1,11 +1,11 @@
-import ProblemTable from "@/components/admin/problems/ProblemTable"
-import { AnimateLoading } from "@/components/AnimateLoading"
-import { DashboardLayout } from "@/components/layouts/Dashboard"
+import ProblemTable from "~/components/admin/problems/ProblemTable"
+import { AnimateLoading } from "~/components/AnimateLoading"
+import { DashboardLayout } from "~/components/layouts/Dashboard"
 import { useState } from "react"
 import { Helmet } from "react-helmet-async"
 import { useQuery } from "react-query"
 import axios from "axios"
-import { getAllProblems } from "@/api/problems"
+import { getAllProblems } from "~/api/problems"
 
 export default function ProblemManagement() {
   const [problems, setProblems] = useState(null)

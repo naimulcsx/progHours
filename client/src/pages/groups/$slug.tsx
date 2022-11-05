@@ -1,11 +1,10 @@
 import { Helmet } from "react-helmet-async"
-import { DashboardLayout } from "@/components/layouts/Dashboard"
+import { DashboardLayout } from "~/components/layouts/Dashboard"
 import { useContext, useState } from "react"
-import { GlobalContext } from "@/GlobalStateProvider"
 import { useNavigate, useParams } from "react-router-dom"
-import { getGroupByHashtag } from "@/api/groups"
+import { getGroupByHashtag } from "~/api/groups"
 import { useQuery } from "react-query"
-import { AnimateLoading } from "@/components/AnimateLoading"
+import { AnimateLoading } from "~/components/AnimateLoading"
 
 import {
   Tabs,
@@ -20,29 +19,22 @@ import {
   ButtonGroup,
   IconButton,
 } from "@chakra-ui/react"
-import LeaderboardTable from "@/components/leaderboard/Table"
-import processRanklist from "@/utils/processRanklist"
-import { getAvatarColors } from "@/utils/getAvatarColors"
-import {
-  ClipboardCheckIcon,
-  ClipboardCopyIcon,
-  PlusIcon,
-} from "@heroicons/react/outline"
-import MemberCard from "@/components/groups/MemberCard"
-import { AddUserToGroupModal } from "@/components/modals/AddUserToGroupModal"
-import UpdateGroup from "@/components/groups/UpdateGroup"
+import LeaderboardTable from "~/components/leaderboard/TableDesktop"
+import processRanklist from "~/utils/processRanklist"
+import { getAvatarColors } from "~/utils/getAvatarColors"
+import { ClipboardCheckIcon, ClipboardCopyIcon, PlusIcon } from "@heroicons/react/outline"
+import MemberCard from "~/components/groups/MemberCard"
+import { AddUserToGroupModal } from "~/components/modals/AddUserToGroupModal"
+import UpdateGroup from "~/components/groups/UpdateGroup"
+import useUser from "~/hooks/useUser"
 
 const GroupPage = () => {
   const navigate = useNavigate()
-  const { user } = useContext(GlobalContext)
+  const { user } = useUser()
   const { hashtag } = useParams()
   const [isOpen, setIsOpen] = useState(false)
-  const { data } = useQuery(`groups/${hashtag}`, () =>
-    getGroupByHashtag(hashtag)
-  )
-  const { hasCopied, onCopy } = useClipboard(
-    data?.body?.group?.accessCode || ""
-  )
+  const { data } = useQuery(`groups/${hashtag}`, () => getGroupByHashtag(hashtag))
+  const { hasCopied, onCopy } = useClipboard(data?.body?.group?.accessCode || "")
   return (
     <DashboardLayout
       title={data?.body?.group?.name}
@@ -81,17 +73,9 @@ const GroupPage = () => {
             onClick={onCopy}
             colorScheme="purple"
             variant="outline"
-            leftIcon={
-              hasCopied ? (
-                <ClipboardCheckIcon height={16} />
-              ) : (
-                <ClipboardCopyIcon height={16} />
-              )
-            }
+            leftIcon={hasCopied ? <ClipboardCheckIcon height={16} /> : <ClipboardCopyIcon height={16} />}
           >
-            <Text>
-              {hasCopied ? `Copied` : `${data?.body?.group?.accessCode}`}
-            </Text>
+            <Text>{hasCopied ? `Copied` : `${data?.body?.group?.accessCode}`}</Text>
           </Button>
         </ButtonGroup>
       }
@@ -109,9 +93,7 @@ const GroupPage = () => {
               <TabList>
                 <Tab fontSize={["14px", "16px"]}>Members</Tab>
                 <Tab fontSize={["14px", "16px"]}> Leaderboard</Tab>
-                {data?.body?.isOwner && (
-                  <Tab fontSize={["sm", "16px"]}>Settings</Tab>
-                )}
+                {data?.body?.isOwner && <Tab fontSize={["sm", "16px"]}>Settings</Tab>}
               </TabList>
               <TabPanels>
                 <TabPanel mx={-4} mb={14}>
@@ -129,16 +111,9 @@ const GroupPage = () => {
                   </SimpleGrid>
                 </TabPanel>
                 <TabPanel mx={-4} mb={8}>
-                  <LeaderboardTable
-                    ranklist={processRanklist(data.body.ranklist)}
-                    isPublic={false}
-                  ></LeaderboardTable>
+                  <LeaderboardTable ranklist={processRanklist(data.body.ranklist)} isPublic={false}></LeaderboardTable>
                 </TabPanel>
-                {data?.body?.isOwner && (
-                  <TabPanel mb={14}>
-                    {<UpdateGroup group={data.body.group} />}
-                  </TabPanel>
-                )}
+                {data?.body?.isOwner && <TabPanel mb={14}>{<UpdateGroup group={data.body.group} />}</TabPanel>}
               </TabPanels>
             </Tabs>
           </>

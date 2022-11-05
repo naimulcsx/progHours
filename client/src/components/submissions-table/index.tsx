@@ -1,7 +1,7 @@
-import { DataGrid } from "@/components/datagrid"
+import { DataGrid } from "~/components/datagrid"
 
 // ts types
-import { Submission } from "@/types/Submission"
+import { Submission } from "~/types/Submission"
 
 // table cells
 import ProblemName from "./cells/non-editable/ProblemName"

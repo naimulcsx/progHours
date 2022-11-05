@@ -11,12 +11,12 @@ import {
 } from "@chakra-ui/react"
 import FormBuilder from "../FormBuilder"
 import * as Yup from "yup"
-import { DEFAULT_TOAST_OPTIONS } from "@/configs/toast-config"
+import { DEFAULT_TOAST_OPTIONS } from "~/configs/toast-config"
 import { useQueryClient } from "react-query"
 import { TrashIcon } from "@heroicons/react/outline"
 import { DeleteGroupModal } from "../modals/DeleteGroupModal"
 import { useState } from "react"
-import { editGroup } from "@/api/groups"
+import { editGroup } from "~/api/groups"
 import { useNavigate } from "react-router-dom"
 
 const UpdateGroup = ({ group }: any) => {

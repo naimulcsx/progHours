@@ -1,5 +1,5 @@
-import { getSubmissions } from "@/api/submissions"
-import { filterByWeek, getWeekRanges, WeekRange } from "@/utils/getWeekRanges"
+import { getSubmissions } from "~/api/submissions"
+import { filterByWeek, getWeekRanges, WeekRange } from "~/utils/getWeekRanges"
 import { useState, useEffect } from "react"
 import { useQuery } from "react-query"
 

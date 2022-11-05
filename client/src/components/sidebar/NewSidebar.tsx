@@ -1,13 +1,5 @@
-import {
-  Navbar,
-  Box,
-  Text,
-  NavLink,
-  Avatar,
-  UnstyledButton,
-  Group,
-} from "@mantine/core"
-
+import { Navbar, Text, NavLink, SegmentedControl, Progress, Group, Stack } from "@mantine/core"
+import { Link, useLocation } from "react-router-dom"
 import {
   IconLayout2,
   IconUsers,
@@ -15,22 +7,41 @@ import {
   IconNotes,
   IconChartBar,
   IconChartLine,
+  IconSettings,
 } from "@tabler/icons"
 
-import { Link, useLocation } from "react-router-dom"
+import Avatar from "~/components/Avatar"
+import useUser from "~/hooks/useUser"
 
 const NewSidebar = () => {
+  const { user } = useUser()
   const { pathname } = useLocation()
   return (
-    <Navbar
-      width={{ base: 0, lg: 230 }}
-      p="xs"
-      sx={{ fontWeight: 500 }}
-      hidden
-      hiddenBreakpoint="lg"
-    >
+    <Navbar width={{ base: 0, lg: 230 }} p="xs" sx={{ fontWeight: 500 }} hidden hiddenBreakpoint="lg">
       {/* Navlink */}
+      <Navbar.Section>
+        <Stack
+          sx={(theme) => ({ background: "linear-gradient(to right, #2FA1DF, #1A6BB9)", borderRadius: theme.radius.md })}
+          p="sm"
+          mb="xl"
+          spacing="xs"
+        >
+          <Group>
+            <Avatar name={user?.name || ""} width={28} height={28} />
+            <Text sx={{ color: "white", fontWeight: 600 }}>{user?.name}</Text>
+          </Group>
+          <Progress value={58} label="29/50" size="xl" radius="xl" />
+        </Stack>
+      </Navbar.Section>
       <Navbar.Section grow mt="xs">
+        {/* <SegmentedControl
+          mb="sm"
+          fullWidth
+          data={[
+            { label: "User", value: "user" },
+            { label: "Admin", value: "admin" },
+          ]}
+        /> */}
         <NavLink
           component={Link}
           to="/dashboard"
@@ -60,7 +71,7 @@ const NewSidebar = () => {
         <NavLink
           component={Link}
           to="/groups"
-          label="Groups"
+          label="My Groups"
           icon={<IconUsers size={24} stroke={1.5} />}
           active={pathname === "/groups"}
           sx={(theme) => ({ color: theme.colors.gray[8] })}
@@ -81,46 +92,26 @@ const NewSidebar = () => {
           active={pathname === "/activities"}
           sx={(theme) => ({ color: theme.colors.gray[8] })}
         />
+        <NavLink
+          component={Link}
+          to="/settings"
+          label="Settings"
+          icon={<IconSettings size={24} stroke={1.5} />}
+          active={pathname === "/settings"}
+          sx={(theme) => ({ color: theme.colors.gray[8] })}
+        />
       </Navbar.Section>
 
-      <Navbar.Section sx={{ display: "flex", alignItems: "center", gap: 10 }}>
-        {/* user */}
-        <UnstyledButton
-          sx={(theme) => ({
-            display: "block",
-            width: "100%",
-            padding: theme.spacing.xs,
-            borderRadius: theme.radius.sm,
-            color:
-              theme.colorScheme === "dark" ? theme.colors.dark[0] : theme.black,
-
-            "&:hover": {
-              backgroundColor:
-                theme.colorScheme === "dark"
-                  ? theme.colors.dark[6]
-                  : theme.colors.gray[0],
-            },
-          })}
-        >
-          <Group>
-            <Avatar
-              variant="gradient"
-              gradient={{ from: "indigo", to: "cyan" }}
-              radius="xl"
-            >
-              NH
-            </Avatar>
-            <Box sx={{ flex: 1 }}>
-              <Text size="sm" weight={500}>
-                Naimul Haque
-              </Text>
-              <Text color="dimmed" size="xs">
-                naimulcsx@gmail.com
-              </Text>
-            </Box>
-          </Group>
-        </UnstyledButton>
-      </Navbar.Section>
+      {/* <Navbar.Section sx={{ display: "flex", alignItems: "center", gap: 10 }}>
+        <NavLink
+          component={Link}
+          to="/settings"
+          label="Settings"
+          icon={<IconSettings size={24} stroke={1.5} />}
+          active={pathname === "/settings"}
+          sx={(theme) => ({ color: theme.colors.gray[8] })}
+        />
+      </Navbar.Section> */}
     </Navbar>
   )
 }
