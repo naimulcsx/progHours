@@ -88,11 +88,7 @@ const Login: FC = () => {
           minHeight: "100vh",
         }}
       >
-        <Paper
-          shadow="xs"
-          p="32px"
-          sx={{ maxWidth: "440px", flexGrow: 1, position: "relative" }}
-        >
+        <Paper shadow="xs" p="32px" sx={{ maxWidth: "440px", flexGrow: 1, position: "relative" }}>
           <LoadingOverlay visible={mutation.isLoading} overlayBlur={2} />
           <Stack spacing={10} mb={20}>
             <Logo />
@@ -106,14 +102,8 @@ const Login: FC = () => {
           </Stack>
           <form onSubmit={handleSubmit}>
             <Stack>
-              <TextInput
-                label="University ID"
-                {...form.getInputProps("username")}
-              />
-              <PasswordInput
-                label="Password"
-                {...form.getInputProps("password")}
-              />
+              <TextInput withAsterisk label="University ID" {...form.getInputProps("username")} />
+              <PasswordInput withAsterisk label="Password" {...form.getInputProps("password")} />
               <Button type="submit">Login</Button>
             </Stack>
           </form>

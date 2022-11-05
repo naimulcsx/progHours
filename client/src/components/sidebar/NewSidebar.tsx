@@ -19,7 +19,7 @@ const NewSidebar = () => {
   return (
     <Navbar width={{ base: 0, lg: 230 }} p="xs" sx={{ fontWeight: 500 }} hidden hiddenBreakpoint="lg">
       {/* Navlink */}
-      <Navbar.Section>
+      {/* <Navbar.Section>
         <Stack
           sx={(theme) => ({ background: "linear-gradient(to right, #2FA1DF, #1A6BB9)", borderRadius: theme.radius.md })}
           p="sm"
@@ -32,7 +32,7 @@ const NewSidebar = () => {
           </Group>
           <Progress value={58} label="29/50" size="xl" radius="xl" />
         </Stack>
-      </Navbar.Section>
+      </Navbar.Section> */}
       <Navbar.Section grow mt="xs">
         {/* <SegmentedControl
           mb="sm"
