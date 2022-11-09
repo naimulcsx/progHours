@@ -5,10 +5,12 @@ import { useContext, useState } from "react"
 import axios from "axios"
 import { useQuery } from "react-query"
 import moment from "moment"
-import { Avatar, Badge, Box, Button, Flex, HStack, Link, Text, useColorModeValue as mode } from "@chakra-ui/react"
+// import { Avatar, Badge, Box, Button, Flex, HStack, Link, Text, useColorModeValue as mode } from "@chakra-ui/react"
 import { Link as RouterLink } from "react-router-dom"
 import { ChevronLeftIcon, ChevronRightIcon, ClockIcon } from "@heroicons/react/outline"
 import { AnimateLoading } from "~/components/AnimateLoading"
+import { Anchor, Box, Group, Paper, Stack, Text } from "@mantine/core"
+import Avatar from "~/components/Avatar"
 
 const fetchActivities = (page = 1) => fetch("/api/submissions/activities?page=" + page).then((res) => res.json())
 
@@ -25,10 +27,6 @@ const ActivitiesPage = () => {
     refetchInterval: 30000,
   })
 
-  const bg = mode("white", "gray.800")
-  const borderColor = mode("gray.200", "gray.700")
-  const color = mode("gray.700", "gray.200")
-  const linkColor = mode("blue.500", "blue.300")
   const lastPage = Math.ceil(totalSubmissions / 20)
 
   return (
@@ -64,39 +62,32 @@ const ActivitiesPage = () => {
 
       <AnimateLoading isLoaded={submissions}>
         {submissions && (
-          <Box bg={bg} mx={-4} borderTop="1px solid" borderColor={borderColor} pb={["54px", "54px", 0]}>
-            {submissions.map((sub: any) => {
-              return (
-                <Box
-                  key={sub.id}
-                  borderBottom="1px solid"
-                  borderColor={borderColor}
-                  py={3}
-                  px={8}
-                  display="flex"
-                  justifyContent="space-between"
-                  flexDirection={["column", "row"]}
-                >
-                  <Flex align="center" gap={4}>
-                    <Avatar size="sm" name={sub.user.name} fontWeight="bold" />
-                    <Box>
-                      <Link as={RouterLink} to={`/users/${sub.user.username}`} color={linkColor}>
-                        {sub.user.name}
-                      </Link>{" "}
-                      got <Text display="inline-block">{sub.verdict}</Text> in{" "}
-                      <Link href={sub.problem.link} target="_blank" color={linkColor}>
-                        {sub.problem.name} [{sub.problem.pid}]
-                      </Link>
-                    </Box>
-                  </Flex>
-                  <Flex align="center" gap={2} color={color} ml={[12, 0]}>
-                    <ClockIcon height={16} />
-                    <Text>{moment(sub.solvedAt).fromNow()}</Text>
-                  </Flex>
-                </Box>
-              )
-            })}
-          </Box>
+          <Paper sx={{ maxWidth: "1024px", margin: "0 auto" }} p="xl">
+            <Stack>
+              {submissions.map((sub: any) => {
+                return (
+                  <Group key={sub.id} sx={{ width: "100%", justifyContent: "space-between" }}>
+                    <Group>
+                      <Avatar name={sub.user.name} />
+                      <Text>
+                        <Anchor component={RouterLink} to={`/users/${sub.user.username}`}>
+                          {sub.user.name}
+                        </Anchor>{" "}
+                        got <Text component="span">{sub.verdict}</Text> in{" "}
+                        <Anchor href={sub.problem.link} target="_blank">
+                          {sub.problem.name} [{sub.problem.pid}]
+                        </Anchor>
+                      </Text>
+                    </Group>
+                    <Group>
+                      <ClockIcon height={16} />
+                      <Text>{moment(sub.solvedAt).fromNow()}</Text>
+                    </Group>
+                  </Group>
+                )
+              })}
+            </Stack>
+          </Paper>
         )}
       </AnimateLoading>
     </DashboardLayout>

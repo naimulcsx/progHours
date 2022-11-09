@@ -7,6 +7,7 @@ module.exports = {
   theme: {
     fontFamily: {
       sans: ["Inter", "sans-serif"],
+      game: ["'Sigmar One'", "sans-serif"],
     },
     screens: {
       sm: "640px",

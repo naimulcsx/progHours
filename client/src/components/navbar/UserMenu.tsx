@@ -18,7 +18,6 @@ const UserMenu: FC<{ user: User }> = ({ user }) => {
           variant="subtle"
           color="gray"
           leftIcon={<Avatar name={user.name} width={28} height={28} />}
-          sx={(theme) => ({ color: theme.colors.gray[8] })}
           px="sm"
         >
           <Text mr="xs">{user.name}</Text>

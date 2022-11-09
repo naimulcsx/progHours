@@ -1,17 +1,4 @@
-import {
-  Navbar,
-  Text,
-  NavLink,
-  SegmentedControl,
-  Progress,
-  Group,
-  Stack,
-  MantineTheme,
-  Anchor,
-  Box,
-  Paper,
-  Badge,
-} from "@mantine/core"
+import { Navbar, Text, NavLink, SegmentedControl, Progress, Group, Stack, MantineTheme } from "@mantine/core"
 import { Link, useLocation } from "react-router-dom"
 import { IconLayout2, IconUsers, IconClipboardList, IconNotes, IconChartBar, IconChartLine } from "@tabler/icons"
 
@@ -30,12 +17,12 @@ import {
 const navItemStyles = (theme: MantineTheme) => ({
   background: "transparent",
   borderRadius: theme.radius.md,
-
   "&[data-active='true']": {
     color: "white",
     background: `linear-gradient(180deg, ${theme.colors.blue[4]} 0%, ${theme.colors.blue[5]} 50%, ${theme.colors.blue[6]} 100%)`,
-    boxShadow:
-      "inset 0.125em -0.125em 0.3em rgb(68 68 68 / 40%), inset -0.3em 0 0.0625em -0.25em rgb(34 34 34 / 10%), inset 0.4em 0.5em 0.5em -0.25em rgb(255 255 255 / 20%), 0.04em 0.25em 0 -0.3em #333",
+  },
+  "&[data-active='false']": {
+    color: "red",
   },
   "& span": {
     fontWeight: 500,
@@ -52,7 +39,8 @@ const NewSidebar = () => {
       p="xs"
       sx={(theme) => ({
         fontWeight: 500,
-        background: `linear-gradient(to left, ${theme.colors.dark[7]}, ${theme.colors.dark[8]})`,
+        background: `linear-gradient(to right, ${theme.colors.dark[7]}, #1C212D)`,
+        borderRight: 0,
       })}
       hidden
       hiddenBreakpoint="lg"
@@ -142,25 +130,16 @@ const NewSidebar = () => {
         </Stack>
       </Navbar.Section>
 
-      <Navbar.Section sx={{ display: "flex", alignItems: "center", gap: 10 }}>
-        {user && (
-          <Box
-            sx={(theme) => ({
-              width: "100%",
-            })}
-          >
-            <Group sx={{ alignItems: "flex-start" }}>
-              <Avatar name={user.name} />
-              <Box>
-                <Text>{user.name}</Text>
-                <Badge color="cyan">{user.role}</Badge>
-              </Box>
-            </Group>
-          </Box>
-        )}
-        {/* <Anchor> About </Anchor>
-        <Anchor> Leave a star </Anchor> */}
-      </Navbar.Section>
+      {/* <Navbar.Section sx={{ display: "flex", alignItems: "center", gap: 10 }}>
+        <NavLink
+          component={Link}
+          to="/settings"
+          label="Settings"
+          icon={<IconSettings size={24} stroke={1.5} />}
+          active={pathname === "/settings"}
+          sx={(theme) => ({ color: theme.colors.gray[8] })}
+        />
+      </Navbar.Section> */}
     </Navbar>
   )
 }

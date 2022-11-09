@@ -23,6 +23,7 @@ import { showNotification } from "@mantine/notifications"
 import { IconCheck, IconX } from "@tabler/icons"
 import Logo from "~/components/Logo"
 import { FC } from "react"
+import showToast from "~/utils/showToast"
 
 // schema validation
 const loginSchema = Yup.object().shape({
@@ -40,22 +41,12 @@ const Login: FC = () => {
   const mutation = useMutation(loginMutation, {
     onSuccess: ({ message, body }) => {
       const user = body.user
-      showNotification({
-        title: message,
-        message: `Welcome, ${user.name}`,
-        color: "green",
-        icon: <IconCheck />,
-      })
       navigate("/dashboard")
+      showToast("success", message)
     },
     onError: ({ response }) => {
       const { error, message } = response.data
-      showNotification({
-        title: message,
-        message: error,
-        color: "red",
-        icon: <IconX />,
-      })
+      showToast("error", message)
     },
   })
 

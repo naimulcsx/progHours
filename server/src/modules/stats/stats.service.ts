@@ -15,13 +15,11 @@ interface UserStatWithComputedFields extends UserStat {
   score: number
 }
 
-function computeRankAndSort(stats: UserStat[]): UserStatWithComputedFields[] {
+export function computeRankAndSort(stats: UserStat[]): UserStatWithComputedFields[] {
   return stats
     .map((item: UserStatWithComputedFields) => {
-      item.averageDifficulty =
-        item.totalDifficulty / item.totalSolvedWithDifficulty || 0
-      item.score =
-        (item.totalSolved * item.averageDifficulty) / 100 + item.totalSolveTime
+      item.averageDifficulty = item.totalDifficulty / item.totalSolvedWithDifficulty || 0
+      item.score = (item.totalSolved * item.averageDifficulty) / 100 + item.totalSolveTime
       if (!item.score) item.score = 0
       item.score = Math.round(item.score * 1e2) / 1e2
       item.averageDifficulty = Math.round(item.averageDifficulty * 1e2) / 1e2

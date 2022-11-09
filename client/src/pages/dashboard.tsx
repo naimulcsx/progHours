@@ -57,7 +57,9 @@ export default function DashboardPage() {
 
       {/* page title */}
       <Group align="center" mb="md">
-        <Title order={3}>Dashboard</Title>
+        <Title order={3} sx={(theme) => ({ color: theme.white })}>
+          Dashboard
+        </Title>
         <AnimatePresence>
           {(isLoading || isFetching) && (
             <motion.div

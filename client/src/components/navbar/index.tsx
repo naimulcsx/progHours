@@ -20,6 +20,7 @@ const Navbar = () => {
         display: "flex",
         justifyContent: "space-between",
         alignItems: "center",
+        background: theme.colors.dark[7],
       })}
     >
       <Anchor
@@ -42,7 +43,7 @@ const Navbar = () => {
               color="gray"
               onClick={() => openSpotlight()}
               sx={(theme) => ({
-                borderColor: theme.colors.gray[2],
+                borderColor: theme.colors.dark[4],
                 [`@media (max-width: ${theme.breakpoints.lg}px)`]: {
                   display: "none",
                 },

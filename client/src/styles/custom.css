@@ -29,11 +29,8 @@
   padding: 0 !important;
 }
 
-.mantine-Progress-bar {
-  background: transparent;
-  background: linear-gradient(
-    to right,
-    #fcca71,
-    #f47e11
-  ); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+.mantine-Paper-root {
+  /* border: 1px solid rgba(250, 250, 250, 0.05); */
+  box-shadow: inset 1px 1px 4px 1px rgba(166, 182, 255, 0.075);
+  background: linear-gradient(to right bottom, #1e212e 1.34%, #191b27 98.64%);
 }

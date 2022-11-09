@@ -11,9 +11,7 @@ import { IconAxe, IconFileInfo, IconKey } from "@tabler/icons"
 const Settings = () => {
   const { user } = useUser()
   const params = new URLSearchParams(window.location.search)
-  const [currentTab, setCurrentTab] = useState<string>(
-    params.get("tab") || "user"
-  )
+  const [currentTab, setCurrentTab] = useState<string>(params.get("tab") || "user")
   useEffect(() => {
     window.history.pushState({}, "", `/settings?tab=${currentTab}`)
   }, [currentTab])
@@ -23,27 +21,15 @@ const Settings = () => {
         <title>Settings</title>
       </Helmet>
       {user && (
-        <Tabs defaultValue={currentTab}>
+        <Tabs defaultValue={currentTab} sx={{ maxWidth: "1024px", margin: "0 auto" }}>
           <Tabs.List>
-            <Tabs.Tab
-              value="user"
-              icon={<IconFileInfo size={14} />}
-              onClick={() => setCurrentTab("user")}
-            >
+            <Tabs.Tab value="user" icon={<IconFileInfo size={14} />} onClick={() => setCurrentTab("user")}>
               General Information
             </Tabs.Tab>
-            <Tabs.Tab
-              value="password"
-              icon={<IconKey size={14} />}
-              onClick={() => setCurrentTab("password")}
-            >
+            <Tabs.Tab value="password" icon={<IconKey size={14} />} onClick={() => setCurrentTab("password")}>
               Update Password
             </Tabs.Tab>
-            <Tabs.Tab
-              value="handle"
-              icon={<IconAxe size={14} />}
-              onClick={() => setCurrentTab("handle")}
-            >
+            <Tabs.Tab value="handle" icon={<IconAxe size={14} />} onClick={() => setCurrentTab("handle")}>
               Online Judge Handles
             </Tabs.Tab>
           </Tabs.List>

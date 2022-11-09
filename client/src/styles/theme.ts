@@ -4,7 +4,8 @@ const theme: MantineThemeOverride = {
   defaultRadius: "md",
   primaryColor: "blue",
   primaryShade: 5,
-  colorScheme: "light",
+  colorScheme: "dark",
+  fontFamily: "Inter, sans-serif",
   colors: {
     blue: [
       "#EDF1FD",
@@ -17,6 +18,18 @@ const theme: MantineThemeOverride = {
       "#18399A",
       "#112769",
       "#091539",
+    ],
+    dark: [
+      "#C1C7D6",
+      "#A8B1C6",
+      "#909BB6",
+      "#3C455D",
+      "#282E3E",
+      "#212634",
+      "#202531", // 6 -> navbar bg
+      "#191b27", // 7 -> paper bg
+      "#14171F", // 8 -> body bg
+      "#14171F",
     ],
   },
 }

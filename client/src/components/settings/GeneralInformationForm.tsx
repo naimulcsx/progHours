@@ -4,15 +4,7 @@ import { useMutation, useQueryClient } from "react-query"
 import { showNotification } from "@mantine/notifications"
 import { IconCheck, IconX } from "@tabler/icons"
 import { useForm, yupResolver } from "@mantine/form"
-import {
-  Box,
-  Button,
-  NumberInput,
-  Select,
-  Stack,
-  TextInput,
-  Title,
-} from "@mantine/core"
+import { Box, Button, NumberInput, Paper, Select, Stack, TextInput, Title } from "@mantine/core"
 import useUser from "~/hooks/useUser"
 
 const infoSchema = Yup.object().shape({
@@ -78,12 +70,10 @@ export const GeneralInformationForm = () => {
   })
 
   return (
-    <Box
-      mx={-4}
+    <Paper
       mb={10}
       p={25}
       sx={(theme) => ({
-        backgroundColor: "white",
         boxShadow: theme.shadows.xs,
         // @ts-ignore
         borderRadius: theme.radius[theme.defaultRadius],
@@ -94,11 +84,7 @@ export const GeneralInformationForm = () => {
         <form onSubmit={handleSubmit}>
           <Stack>
             <TextInput label="Name" {...form.getInputProps("name")} />
-            <TextInput
-              label="University ID"
-              disabled
-              {...form.getInputProps("username")}
-            />
+            <TextInput label="University ID" disabled {...form.getInputProps("username")} />
             <TextInput label="Email" {...form.getInputProps("email")} />
             <TextInput label="Mobile" {...form.getInputProps("mobile")} />
 
@@ -138,17 +124,13 @@ export const GeneralInformationForm = () => {
                 { value: "CF", label: "CF" },
               ]}
             />
-            <TextInput
-              type="number"
-              label="CGPA"
-              {...form.getInputProps("cgpa")}
-            />
+            <TextInput type="number" label="CGPA" {...form.getInputProps("cgpa")} />
             <Box>
               <Button type="submit">Update</Button>
             </Box>
           </Stack>
         </form>
       )}
-    </Box>
+    </Paper>
   )
 }

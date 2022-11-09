@@ -1,8 +1,6 @@
 import { useState } from "react"
 import { AxiosError } from "axios"
-import { Cell } from "react-table"
 import { useMutation, useQueryClient } from "react-query"
-import { useColorModeValue as mode } from "@chakra-ui/react"
 import { MantineTheme, Select } from "@mantine/core"
 
 /**
@@ -18,6 +16,9 @@ import { Submission } from "~/types/Submission"
 import { Practice } from "~/types/Practice"
 import { DEFAULT_TOAST_OPTIONS } from "~/configs/toast-config"
 import { CellContext } from "@tanstack/react-table"
+import { IconSelector } from "@tabler/icons"
+import { showNotification } from "@mantine/notifications"
+import showToast from "~/utils/showToast"
 
 const Verdict = (cell: CellContext<Submission, unknown>) => {
   const toast = useToast(DEFAULT_TOAST_OPTIONS)
@@ -26,7 +27,7 @@ const Verdict = (cell: CellContext<Submission, unknown>) => {
 
   const { mutate } = useMutation(updateSubmission, {
     onSuccess: (res) => {
-      toast({ title: res.message, status: "success" })
+      showToast("success", res.message)
     },
     onError: (err: AxiosError) => {},
   })
@@ -59,21 +60,21 @@ const Verdict = (cell: CellContext<Submission, unknown>) => {
 
   const getStyles: any = (theme: MantineTheme) => ({
     AC: {
-      borderColor: theme.colors.green[3],
-      background: theme.colors.green[2],
-      color: theme.colors.green[9],
+      borderColor: theme.colors.green[6],
+      background: theme.colors.green[8],
+      color: theme.colors.green[0],
       fontWeight: 600,
     },
     WA: {
-      borderColor: theme.colors.red[3],
-      background: theme.colors.red[2],
-      color: theme.colors.red[9],
+      borderColor: theme.colors.red[6],
+      background: theme.colors.red[8],
+      color: theme.colors.red[0],
       fontWeight: 600,
     },
     TLE: {
-      borderColor: theme.colors.yellow[3],
-      background: theme.colors.yellow[2],
-      color: theme.colors.yellow[9],
+      borderColor: theme.colors.yellow[6],
+      background: theme.colors.yellow[8],
+      color: theme.colors.yellow[0],
       fontWeight: 600,
     },
   })
@@ -85,6 +86,12 @@ const Verdict = (cell: CellContext<Submission, unknown>) => {
       sx={(theme) => ({
         input: getStyles(theme)[selected],
       })}
+      rightSection={<IconSelector size={16} color="white" />}
+      rightSectionProps={{
+        style: {
+          pointerEvents: "none",
+        },
+      }}
       data={[
         { value: "AC", label: "AC" },
         { value: "WA", label: "WA" },

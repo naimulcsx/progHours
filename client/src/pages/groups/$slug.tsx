@@ -6,19 +6,7 @@ import { getGroupByHashtag } from "~/api/groups"
 import { useQuery } from "react-query"
 import { AnimateLoading } from "~/components/AnimateLoading"
 
-import {
-  Tabs,
-  TabList,
-  TabPanels,
-  Tab,
-  TabPanel,
-  SimpleGrid,
-  Text,
-  Button,
-  useClipboard,
-  ButtonGroup,
-  IconButton,
-} from "@chakra-ui/react"
+import { TabList, TabPanels, Tab, TabPanel, useClipboard } from "@chakra-ui/react"
 import LeaderboardTable from "~/components/leaderboard/TableDesktop"
 import processRanklist from "~/utils/processRanklist"
 import { getAvatarColors } from "~/utils/getAvatarColors"
@@ -27,65 +15,66 @@ import MemberCard from "~/components/groups/MemberCard"
 import { AddUserToGroupModal } from "~/components/modals/AddUserToGroupModal"
 import UpdateGroup from "~/components/groups/UpdateGroup"
 import useUser from "~/hooks/useUser"
+import { Tabs, SimpleGrid, Title, Group, Loader, Box } from "@mantine/core"
+import { IconChartBar, IconSettings, IconUsers } from "@tabler/icons"
+import { AnimatePresence, motion } from "framer-motion"
+import Leaderboard from "~/components/leaderboard"
 
 const GroupPage = () => {
   const navigate = useNavigate()
   const { user } = useUser()
   const { hashtag } = useParams()
   const [isOpen, setIsOpen] = useState(false)
-  const { data } = useQuery(`groups/${hashtag}`, () => getGroupByHashtag(hashtag))
+  const { data, isLoading, isFetching } = useQuery(`groups/${hashtag}`, () => getGroupByHashtag(hashtag))
   const { hasCopied, onCopy } = useClipboard(data?.body?.group?.accessCode || "")
   return (
     <DashboardLayout
-      title={data?.body?.group?.name}
-      rightButton={
-        <ButtonGroup>
-          <AddUserToGroupModal
-            isOpen={isOpen}
-            setIsOpen={setIsOpen}
-            groupName={data?.body?.group?.name}
-            groupId={data?.body?.group?.id}
-            hashtag={data?.body?.group?.hashtag}
-          />
-          {data?.body?.isOwner && (
-            <>
-              <IconButton
-                aria-label="Add Member"
-                icon={<PlusIcon height={20} />}
-                size="sm"
-                display={{ lg: "none", base: "flex" }}
-                onClick={() => setIsOpen(true)}
-              />
+    // rightButton={
+    //   <ButtonGroup>
+    //     <AddUserToGroupModal
+    //       isOpen={isOpen}
+    //       setIsOpen={setIsOpen}
+    //       groupName={data?.body?.group?.name}
+    //       groupId={data?.body?.group?.id}
+    //       hashtag={data?.body?.group?.hashtag}
+    //     />
+    //     {data?.body?.isOwner && (
+    //       <>
+    //         <IconButton
+    //           aria-label="Add Member"
+    //           icon={<PlusIcon height={20} />}
+    //           size="sm"
+    //           display={{ lg: "none", base: "flex" }}
+    //           onClick={() => setIsOpen(true)}
+    //         />
 
-              <Button
-                aria-label="Add Member"
-                leftIcon={<PlusIcon height={20} />}
-                size="sm"
-                display={{ lg: "flex", base: "none" }}
-                onClick={() => setIsOpen(true)}
-              >
-                Add Member
-              </Button>
-            </>
-          )}
-          <Button
-            size="sm"
-            onClick={onCopy}
-            colorScheme="purple"
-            variant="outline"
-            leftIcon={hasCopied ? <ClipboardCheckIcon height={16} /> : <ClipboardCopyIcon height={16} />}
-          >
-            <Text>{hasCopied ? `Copied` : `${data?.body?.group?.accessCode}`}</Text>
-          </Button>
-        </ButtonGroup>
-      }
+    //         <Button
+    //           aria-label="Add Member"
+    //           leftIcon={<PlusIcon height={20} />}
+    //           size="sm"
+    //           display={{ lg: "flex", base: "none" }}
+    //           onClick={() => setIsOpen(true)}
+    //         >
+    //           Add Member
+    //         </Button>
+    //       </>
+    //     )}
+    //     <Button
+    //       size="sm"
+    //       onClick={onCopy}
+    //       colorScheme="purple"
+    //       variant="outline"
+    //       leftIcon={hasCopied ? <ClipboardCheckIcon height={16} /> : <ClipboardCopyIcon height={16} />}
+    //     >
+    //       <Text>{hasCopied ? `Copied` : `${data?.body?.group?.accessCode}`}</Text>
+    //     </Button>
+    //   </ButtonGroup>
+    // }
     >
       {/* @ts-ignore */}
 
-      <AnimateLoading isLoaded={data}>
-        {data && (
+      {/* {data && (
           <>
-            {/* @ts-ignore */}
             <Helmet>
               <title>Group: {data.body.group.name}</title>
             </Helmet>
@@ -117,8 +106,82 @@ const GroupPage = () => {
               </TabPanels>
             </Tabs>
           </>
+        )} */}
+
+      <Group position="apart" align="start">
+        <Group align="center" mb="md">
+          <Title order={3}>{data?.body?.group?.name}</Title>
+          <AnimatePresence>
+            {(isLoading || isFetching) && (
+              <motion.div
+                initial={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 0.5 }}
+                style={{ display: "flex", alignItems: "center" }}
+              >
+                <Loader size="xs" />
+              </motion.div>
+            )}
+          </AnimatePresence>
+        </Group>
+      </Group>
+
+      <AnimatePresence>
+        {!isLoading && (
+          <motion.div
+            initial={{ opacity: 0, height: 0 }}
+            animate={{ opacity: 1, height: "auto" }}
+            transition={{ delay: 0.25, duration: 0.35 }}
+          >
+            <Tabs defaultValue="members">
+              <Tabs.List>
+                <Tabs.Tab value="members" icon={<IconUsers size={14} />}>
+                  Members
+                </Tabs.Tab>
+                <Tabs.Tab value="leaderboard" icon={<IconChartBar size={14} />}>
+                  Leaderboard
+                </Tabs.Tab>
+                <Tabs.Tab value="settings" icon={<IconSettings size={14} />}>
+                  Settings
+                </Tabs.Tab>
+              </Tabs.List>
+
+              <Tabs.Panel value="members" pt="xs">
+                {data && (
+                  <SimpleGrid
+                    breakpoints={[
+                      { minWidth: "sm", cols: 2 },
+                      { minWidth: "md", cols: 3 },
+                      { minWidth: 1200, cols: 5 },
+                    ]}
+                  >
+                    {data.body.users.map((userGroup: any) => {
+                      return (
+                        <MemberCard
+                          key={userGroup.user.id}
+                          groupId={data.body.group.id}
+                          hashtag={data.body.group.hashtag}
+                          {...userGroup}
+                        />
+                      )
+                    })}
+                  </SimpleGrid>
+                )}
+              </Tabs.Panel>
+
+              <Tabs.Panel value="leaderboard" pt="xs">
+                <Box sx={{ marginLeft: -16, marginRight: -16 }}>
+                  <Leaderboard data={data?.body?.ranklist} isLoading={isLoading} />
+                </Box>
+              </Tabs.Panel>
+
+              <Tabs.Panel value="settings" pt="xs">
+                {data?.body?.group && <UpdateGroup group={data.body.group} />}
+              </Tabs.Panel>
+            </Tabs>
+          </motion.div>
         )}
-      </AnimateLoading>
+      </AnimatePresence>
     </DashboardLayout>
   )
 }

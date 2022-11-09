@@ -103,7 +103,7 @@ export default function LeaderboardPage() {
                     },
                   })}
                 >
-                  <Leaderboard data={data} loading={isLoading} />
+                  <Leaderboard data={data?.body?.stats} loading={isLoading} />
                 </Box>
               </motion.div>
             )}

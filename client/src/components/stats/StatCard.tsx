@@ -4,7 +4,15 @@ export const StatCard = (props: any) => {
   const { data, icon } = props
   const { label, value } = data
   return (
-    <Paper p="xl" shadow="xs" sx={{ height: "100%" }}>
+    <Paper
+      p="xl"
+      shadow="xs"
+      sx={(theme) => {
+        return {
+          height: "100%",
+        }
+      }}
+    >
       <Group
         sx={(theme) => ({
           [`@media (max-width: ${theme.breakpoints.sm}px)`]: {
@@ -19,6 +27,7 @@ export const StatCard = (props: any) => {
             sx={(theme) => ({
               fontSize: theme.headings.sizes.h2.fontSize,
               fontWeight: 700,
+              color: theme.white,
               [`@media (max-width: ${theme.breakpoints.lg}px)`]: {
                 fontSize: theme.headings.sizes.h3.fontSize,
               },
@@ -30,7 +39,7 @@ export const StatCard = (props: any) => {
             sx={(theme) => ({
               fontSize: theme.headings.sizes.h4.fontSize,
               fontWeight: 500,
-              color: theme.colors.gray[7],
+              color: theme.colors.gray[4],
               [`@media (max-width: ${theme.breakpoints.lg}px)`]: {
                 fontSize: theme.headings.sizes.h5.fontSize,
               },

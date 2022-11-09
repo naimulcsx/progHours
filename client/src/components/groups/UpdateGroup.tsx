@@ -1,14 +1,3 @@
-import {
-  Box,
-  Button,
-  Flex,
-  useToast,
-  useColorModeValue as mode,
-  Heading,
-  Alert,
-  AlertIcon,
-  Stack,
-} from "@chakra-ui/react"
 import FormBuilder from "../FormBuilder"
 import * as Yup from "yup"
 import { DEFAULT_TOAST_OPTIONS } from "~/configs/toast-config"
@@ -18,24 +7,40 @@ import { DeleteGroupModal } from "../modals/DeleteGroupModal"
 import { useState } from "react"
 import { editGroup } from "~/api/groups"
 import { useNavigate } from "react-router-dom"
+import { Alert, Box, Button, Paper, Stack, TextInput } from "@mantine/core"
+import { IconAlertCircle } from "@tabler/icons"
 
 const UpdateGroup = ({ group }: any) => {
   const [isOpen, setIsOpen] = useState(false)
-
-  const toast = useToast(DEFAULT_TOAST_OPTIONS)
   const queryClient = useQueryClient()
-
   const navigate = useNavigate()
 
   return (
-    <Box
-      p={[4, 4, 4, 8]}
-      bg={mode("white", "gray.700")}
-      shadow="base"
-      rounded="lg"
-      mx={-4}
+    <Paper
+      sx={(theme) => ({
+        background: theme.white,
+        padding: theme.spacing.xl,
+        boxShadow: theme.shadows.xs,
+        borderRadius: theme.radius.md,
+        overflow: "hiddeen",
+      })}
     >
-      <FormBuilder
+      <Stack>
+        <TextInput withAsterisk label="Group Name" type="text" defaultValue={group?.name} />
+        <TextInput
+          withAsterisk
+          description="Slug to be used in the URL of the groups. Space is not allowed."
+          label="Slug"
+          type="text"
+          defaultValue={group?.hashtag}
+        />
+        <Alert icon={<IconAlertCircle size={16} />} title="Warning!" color="red">
+          This will delete your group permanently.
+        </Alert>
+        <Button sx={{ alignSelf: "start" }}>Update</Button>
+      </Stack>
+
+      {/* <FormBuilder
         fields={{
           name: {
             type: "text",
@@ -69,9 +74,9 @@ const UpdateGroup = ({ group }: any) => {
           label: "Save",
           loadingLabel: "Saving...",
         }}
-      />
+      /> */}
 
-      <Stack mt={"8"} align="start" spacing={4}>
+      {/* <Stack mt={"8"} align="start" spacing={4}>
         <Alert status="warning">
           <AlertIcon />
           Warning! This will delete your group permanently.
@@ -84,17 +89,17 @@ const UpdateGroup = ({ group }: any) => {
         >
           Delete Group
         </Button>
-      </Stack>
+      </Stack> */}
 
       {/* delete popup */}
-      <DeleteGroupModal
+      {/* <DeleteGroupModal
         id={group.id}
         name={group.name}
         hashtag={group.hashtag}
         isOpen={isOpen}
         setIsOpen={setIsOpen}
-      />
-    </Box>
+      /> */}
+    </Paper>
   )
 }
 

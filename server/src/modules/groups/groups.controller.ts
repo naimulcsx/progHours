@@ -38,10 +38,7 @@ import { IsAdminOrModerator } from "@/guards/is-admin-or-moderator"
 @Controller("groups")
 @UseGuards(IsAuthenticatedGuard)
 export class GroupsController {
-  constructor(
-    private groupsService: GroupsService,
-    private readonly userService: UsersService
-  ) {}
+  constructor(private groupsService: GroupsService, private readonly userService: UsersService) {}
 
   @Post("/")
   @ApiOperation({ summary: "Create new group." })
@@ -73,6 +70,7 @@ export class GroupsController {
     // return the response
     return {
       statusCode: HttpStatus.CREATED,
+      message: "Group created",
       body: {
         group,
       },
@@ -112,16 +110,12 @@ export class GroupsController {
     }
 
     // edit the group
-    const group = await this.groupsService.editGroup(
-      Number(params.id),
-      name,
-      hashtag,
-      isPrivate
-    )
+    const group = await this.groupsService.editGroup(Number(params.id), name, hashtag, isPrivate)
 
     // return the response
     return {
       statusCode: HttpStatus.OK,
+      message: "Group deleted",
       body: {
         group,
       },
@@ -142,8 +136,7 @@ export class GroupsController {
 
   @Get("/:hashtag")
   async getGroup(@Param() params, @Req() req) {
-    const { group, groupUsers, ranklist } =
-      await this.groupsService.getGroupByHashtag(params.hashtag)
+    const { group, groupUsers, ranklist } = await this.groupsService.getGroupByHashtag(params.hashtag)
 
     // check if the user is the owner of the group
     let isOwner = false
@@ -171,19 +164,13 @@ export class GroupsController {
     const usernames = body.username.split("\n").filter((el) => el.length > 0)
 
     // check if user is allowed to add members
-    const groupOwner = await this.groupsService.isGroupOwner(
-      Number(params.id),
-      req.user.id
-    )
+    const groupOwner = await this.groupsService.isGroupOwner(Number(params.id), req.user.id)
     if (!groupOwner) {
       throw new ForbiddenException("You are not allowed!")
     }
 
     // add the user
-    const { failed } = await this.groupsService.addUsersToGroup(
-      Number(params.id),
-      usernames
-    )
+    const { failed } = await this.groupsService.addUsersToGroup(Number(params.id), usernames)
     return {
       statusCode: HttpStatus.CREATED,
       message: `${usernames.length - failed.length} Members added!`,
@@ -197,10 +184,7 @@ export class GroupsController {
   async removeUser(@Param() params) {
     const { id: groupId, userId } = params
     // remove the user
-    const result = await this.groupsService.removeUserFromGroup(
-      Number(groupId),
-      Number(userId)
-    )
+    const result = await this.groupsService.removeUserFromGroup(Number(groupId), Number(userId))
     return {
       statusCode: HttpStatus.OK,
       message: "Member removed!",

@@ -48,9 +48,7 @@ const iconMap = [
 const ProblemName = (cell: CellContext<Submission, unknown>) => {
   const { pid, name, link } = cell.cell.row.original.problem
   /** Select Icon based on the online judge */
-  let OnlineJudgeIcon: any = iconMap
-    .filter((item, i) => (pid.includes(item.prefix) ? true : false))
-    .at(0)
+  let OnlineJudgeIcon: any = iconMap.filter((item, i) => (pid.includes(item.prefix) ? true : false)).at(0)
   /** If there is no match, use the Unknown icon */
   if (!OnlineJudgeIcon) OnlineJudgeIcon.icon = QuestionMarkCircleIcon
   return (
@@ -69,18 +67,16 @@ const ProblemName = (cell: CellContext<Submission, unknown>) => {
       </Box>
       <Box>
         <Group spacing="xs" align="center">
-          <Title order={5}>{pid}</Title>
-          <Anchor
-            sx={(theme) => ({ color: theme.colors.gray[7] })}
-            href={link}
-            target="_blank"
-          >
+          <Title order={5} sx={(theme) => ({ color: theme.colors.dark[0] })}>
+            {pid}
+          </Title>
+          <Anchor sx={(theme) => ({ color: theme.colors.dark[0] })} href={link} target="_blank">
             <IconExternalLink size={16} />
           </Anchor>
         </Group>
         <Text
           sx={(theme) => ({
-            color: theme.colors.gray[7],
+            color: theme.colors.dark[2],
             maxWidth: 200,
             whiteSpace: "nowrap",
             overflow: "hidden",

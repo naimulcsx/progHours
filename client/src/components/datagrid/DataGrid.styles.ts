@@ -16,16 +16,7 @@ const ellipsis: CSSObject = {
 }
 
 export default createStyles(
-  (
-    theme,
-    {
-      height,
-      width,
-      noEllipsis,
-      withFixedHeader,
-      paginationMode = "default",
-    }: DataGridStylesParams
-  ) => ({
+  (theme, { height, width, noEllipsis, withFixedHeader, paginationMode = "default" }: DataGridStylesParams) => ({
     wrapper: {
       height: height ? height + "px" : undefined,
       width: width ? width + "px" : undefined,
@@ -42,11 +33,11 @@ export default createStyles(
     },
     thead: {
       position: "relative",
-      background: theme.white,
+      background: theme.colors.dark[6],
       textTransform: "uppercase",
       "::after": {
         content: "' '",
-        backgroundColor: theme.colors.gray[3],
+        backgroundColor: theme.colors.dark[6],
         position: "absolute",
         left: 0,
         right: 0,
@@ -56,13 +47,13 @@ export default createStyles(
       ...(withFixedHeader && {
         position: "sticky",
         top: 0,
-        backgroundColor:
-          theme.colorScheme === "dark" ? theme.colors.dark[7] : theme.white,
+        backgroundColor: theme.colorScheme === "dark" ? theme.colors.dark[7] : theme.white,
         transition: "box-shadow 150ms ease",
       }),
     },
     tbody: {
       minHeight: "160px",
+      background: theme.colors.dark[7],
     },
     tr: {},
     th: { position: "relative" },
@@ -109,10 +100,11 @@ export default createStyles(
       display: "flex",
       justifyContent: "center",
       alignItems: "center",
+      background: theme.colors.dark[7],
+      borderTop: `1px solid ${theme.colors.dark[4]} !important`,
 
       [`@media (min-width: ${theme.breakpoints.xl}px)`]: {
-        justifyContent:
-          paginationMode === "default" ? "space-between" : "flex-end",
+        justifyContent: paginationMode === "default" ? "space-between" : "flex-end",
       },
     },
 

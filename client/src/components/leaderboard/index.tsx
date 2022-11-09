@@ -13,7 +13,7 @@ export default function Leaderboard({ data }: any) {
           },
         })}
       >
-        <LeaderboardTable data={data.body.stats} />
+        <LeaderboardTable data={data} />
       </Box>
       <Box
         sx={(theme) => ({
@@ -23,7 +23,7 @@ export default function Leaderboard({ data }: any) {
           },
         })}
       >
-        <LeaderboardTableMobile data={data.body.stats} />
+        <LeaderboardTableMobile data={data} />
       </Box>
     </>
   )

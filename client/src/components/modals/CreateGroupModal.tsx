@@ -19,6 +19,7 @@ export default function CreateGroupModal({ isOpen, setIsOpen }: any) {
   const { mutate } = useMutation(createGroup, {
     onSuccess: (res) => {
       setIsOpen(false)
+      queryClient.invalidateQueries("groups")
       showToast("success", res.message)
     },
   })
@@ -43,20 +44,9 @@ export default function CreateGroupModal({ isOpen, setIsOpen }: any) {
           mutate(values)
         })}
       >
-        <TextInput
-          withAsterisk
-          label="Name"
-          {...form.getInputProps("name")}
-          placeholder="CSE 46 BM"
-        />
+        <TextInput withAsterisk label="Name" {...form.getInputProps("name")} placeholder="CSE 46 BM" />
 
-        <TextInput
-          withAsterisk
-          mt="md"
-          label="Slug"
-          placeholder="cse_46_bm"
-          {...form.getInputProps("hashtag")}
-        />
+        <TextInput withAsterisk mt="md" label="Slug" placeholder="cse_46_bm" {...form.getInputProps("hashtag")} />
 
         <Group position="right" mt="md">
           <Button type="submit">Submit</Button>
