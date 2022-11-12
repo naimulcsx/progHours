@@ -1,5 +1,13 @@
 import { useState } from "react"
-import { Box, Button, Group, Loader, SimpleGrid, Text, Title } from "@mantine/core"
+import {
+  Box,
+  Button,
+  Group,
+  Loader,
+  SimpleGrid,
+  Text,
+  Title,
+} from "@mantine/core"
 import { Helmet } from "react-helmet-async"
 import { useQuery } from "react-query"
 import { motion } from "framer-motion"
@@ -79,7 +87,9 @@ export default function GroupsPage() {
                 <GroupCard key={el.group.id} {...el} />
               ))}
             </SimpleGrid>
-            {data.body.groups.length === 0 && <Text>You don't belong to any group.</Text>}
+            {data.body.groups.length === 0 && (
+              <Text>You don't belong to any group.</Text>
+            )}
           </motion.div>
         )}
       </AnimatePresence>

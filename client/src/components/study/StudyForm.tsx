@@ -1,110 +1,129 @@
-import FormBuilder from "../FormBuilder"
 import * as Yup from "yup"
-import { useQueryClient } from "react-query"
-import { DEFAULT_TOAST_OPTIONS } from "~/configs/toast-config"
-import { useToast } from "@chakra-ui/react"
+import { useMutation, useQueryClient } from "react-query"
 import { createUserStudy, updateUserStudy } from "~/api/userStudies"
 import moment from "moment"
+import { Button, NumberInput, Select, Stack, TextInput } from "@mantine/core"
+import { useForm, yupResolver } from "@mantine/form"
+import showToast from "~/utils/showToast"
+import { DatePicker } from "@mantine/dates"
+
+const studyFormSchema = Yup.object().shape({
+  title: Yup.string().trim().required("Title is required"),
+  type: Yup.string().trim().required("Resource type is required"),
+  link: Yup.string().url().trim().required("Resource link is required"),
+  studyTime: Yup.string().trim().required("Study time is required"),
+  studyDate: Yup.string().trim().required("Date of study is required"),
+  difficulty: Yup.string().trim().required("Resource difficulty is required"),
+  language: Yup.string().trim().required("Resource language is required"),
+})
 
 export default function StudyForm({ setIsOpen, studies, isCreate }: any) {
   const client = useQueryClient()
-  const toast = useToast(DEFAULT_TOAST_OPTIONS)
 
-  return (
-    <FormBuilder
-      isModal
-      fields={{
-        title: {
-          type: "text",
-          label: "Title",
-          initialValue: studies?.title,
-          validate: Yup.string().trim().required("Title is required"),
-        },
-
-        type: {
-          type: "select",
-          label: "Type",
-          options: ["Article", "Video"],
-          initialValue: studies ? studies.type : "Article",
-          validate: Yup.string().trim().required("Resource type is required"),
-        },
-        link: {
-          type: "text",
-          label: "Link",
-          initialValue: studies?.link,
-          validate: Yup.string()
-            .url()
-            .trim()
-            .required("Resource link is required"),
-        },
-        studyTime: {
-          type: "number",
-          label: "Study Time",
-          initialValue: studies?.studyTime,
-          validate: Yup.string().trim().required("Study time is required"),
-        },
-        studyDate: {
-          type: "date",
-          label: "Study Date",
-          initialValue: studies
-            ? moment(studies.studyDate).format("YYYY-MM-DD")
-            : "",
-          validate: Yup.string().trim().required("Date of study is required"),
-        },
-        difficulty: {
-          type: "select",
-          label: "Difficulty",
-          options: ["Beginner", "Intermediate", "Advanced"],
-          initialValue: studies ? studies.difficulty : "Beginner",
-          validate: Yup.string()
-            .trim()
-            .required("Resource difficulty is required"),
-        },
-        language: {
-          type: "select",
-          label: "Language",
-          options: ["English", "Bengali"],
-          initialValue: studies ? studies.language : "English",
-          validate: Yup.string()
-            .trim()
-            .required("Resource language is required"),
-        },
-      }}
-      mutation={(values: any) => {
-        const value = {
-          ...values,
-          studyDate: moment(values.studyDate).format(),
-        }
-        return isCreate
-          ? createUserStudy(value)
-          : updateUserStudy(studies.id, value)
-      }}
-      onSuccess={() => {
+  const mutation = useMutation(
+    (data) =>
+      isCreate ? createUserStudy(data) : updateUserStudy(studies.id, data),
+    {
+      onSuccess: () => {
         client.invalidateQueries("studies")
         isCreate
-          ? toast({
-              status: "success",
-              title: "new study added",
-            })
-          : toast({
-              status: "success",
-              title: "study updated",
-            })
+          ? showToast("success", "new study added")
+          : showToast("success", "study updated")
 
         setIsOpen(false)
-      }}
-      onError={(err) => {
-        toast({
-          status: "error",
-          title: err.response.data.message,
-        })
+      },
+      onError: (err: any) => {
+        showToast("error", err.response.data.message)
         setIsOpen(false)
-      }}
-      button={{
-        label: "Save",
-        className: "mt-6",
-        loadingLabel: "Saving...",
-      }}
-    />
+      },
+    }
+  )
+
+  const form = useForm({
+    initialValues: {
+      title: studies?.title,
+      type: studies ? studies.type : "Article",
+      link: studies?.link,
+      studyTime: studies?.studyTime,
+      studyDate: studies ? moment(studies.studyDate).format("YYYY-MM-DD") : "",
+      difficulty: studies ? studies.difficulty : "Beginner",
+      language: studies ? studies.language : "English",
+    },
+    validate: yupResolver(studyFormSchema),
+  })
+
+  const handleSubmit = form.onSubmit(async (values: any) => {
+    const value: any = {
+      ...values,
+      studyTime: Number(values.studyTime),
+      studyDate: moment(values.studyDate).format(),
+    }
+
+    console.log(value)
+
+    mutation.mutateAsync(value)
+  })
+
+  return (
+    <form onSubmit={handleSubmit}>
+      <Stack>
+        <TextInput label="Title" {...form.getInputProps("title")} />
+        <Select
+          label="Type"
+          {...form.getInputProps("type")}
+          data={[
+            {
+              value: "Article",
+              label: "Article",
+            },
+            {
+              value: "Video",
+              label: "Video",
+            },
+          ]}
+        />
+
+        <TextInput label="Link" {...form.getInputProps("link")} />
+        <NumberInput label="Study Time" {...form.getInputProps("studyTime")} />
+        {/* <TextInput label="Study Date" {...form.getInputProps("studyDate")} /> */}
+        <DatePicker label="Study Date" {...form.getInputProps("studyDate")} />
+
+        <Select
+          label="Difficulty"
+          {...form.getInputProps("difficulty")}
+          data={[
+            {
+              value: "Beginner",
+              label: "Beginner",
+            },
+            {
+              value: "Intermediate",
+              label: "Intermediate",
+            },
+            {
+              value: "Advanced",
+              label: "Advanced",
+            },
+          ]}
+        />
+
+        <Select
+          label="Language"
+          {...form.getInputProps("language")}
+          data={[
+            {
+              value: "English",
+              label: "English",
+            },
+            {
+              value: "Bengali",
+              label: "Bengali",
+            },
+          ]}
+        />
+
+        <Button type="submit">Save</Button>
+      </Stack>
+    </form>
   )
 }

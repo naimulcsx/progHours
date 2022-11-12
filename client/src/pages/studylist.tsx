@@ -3,11 +3,11 @@ import { DashboardLayout } from "~/components/layouts/Dashboard"
 import PopupBuilder from "~/components/PopupBuilder"
 import StudyCard from "~/components/study/StudyCard"
 import StudyForm from "~/components/study/StudyForm"
-import { Box, Button, Flex, Grid, GridItem } from "@chakra-ui/react"
 import { PlusSmIcon } from "@heroicons/react/outline"
 import { useState } from "react"
 import { Helmet } from "react-helmet-async"
 import { useQuery } from "react-query"
+import { Box, Button, Grid, Group, Text, Title } from "@mantine/core"
 
 const StudyPage = () => {
   const [isOpen, setIsOpen] = useState(false)
@@ -20,9 +20,14 @@ const StudyPage = () => {
   })
 
   return (
-    <DashboardLayout
-      title="Study List"
-      rightButton={
+    <DashboardLayout>
+      {/* @ts-ignore */}
+      <Helmet>
+        <title>Study List</title>
+      </Helmet>
+
+      <Group position="apart">
+        <Title order={3}>Study List</Title>
         <Button
           size="sm"
           onClick={() => setIsOpen(true)}
@@ -31,13 +36,8 @@ const StudyPage = () => {
         >
           Add New
         </Button>
-      }
-    >
-      {/* @ts-ignore */}
-      <Helmet>
-        <title>Study List</title>
-      </Helmet>
-      <Box mb={50}>
+      </Group>
+      <Box mt={30}>
         {/* study form popup  */}
         <PopupBuilder
           isOpen={isOpen}
@@ -47,22 +47,16 @@ const StudyPage = () => {
           <StudyForm setIsOpen={setIsOpen} isCreate={true} />
         </PopupBuilder>
 
-        <Grid
-          gridTemplateColumns={[
-            "repeat(1, 1fr)",
-            "repeat(1, 1fr)",
-            "repeat(2, 1fr)",
-            "repeat(3, 1fr)",
-            "repeat(4, 1fr)",
-            "repeat(4, 1fr)",
-          ]}
-          gap={4}
-        >
-          {userStudies.map((item: any) => (
-            <GridItem key={item.id}>
-              <StudyCard {...item} />
-            </GridItem>
-          ))}
+        <Grid>
+          {userStudies.length === 0 ? (
+            <Text size="sm">Set your study goals</Text>
+          ) : (
+            userStudies.map((item: any) => (
+              <Grid.Col key={item.id} md={6} lg={3}>
+                <StudyCard {...item} />
+              </Grid.Col>
+            ))
+          )}
         </Grid>
       </Box>
     </DashboardLayout>

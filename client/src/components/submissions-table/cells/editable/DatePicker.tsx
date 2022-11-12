@@ -4,8 +4,6 @@ import { updateSubmission } from "~/api/submissions"
 import { useMutation, useQueryClient } from "react-query"
 import { AxiosError } from "axios"
 import { DatePicker as MantineDatePicker } from "@mantine/dates"
-
-import { DEFAULT_TOAST_OPTIONS } from "~/configs/toast-config"
 import { CellContext } from "@tanstack/react-table"
 import { showNotification } from "@mantine/notifications"
 import { IconCheck } from "@tabler/icons"

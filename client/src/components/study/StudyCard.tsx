@@ -1,17 +1,19 @@
 import {
+  ActionIcon,
   Box,
-  Heading,
-  Flex,
-  IconButton,
-  useColorModeValue as mode,
-} from "@chakra-ui/react"
+  Group,
+  Text,
+  Title,
+  useMantineTheme,
+} from "@mantine/core"
 import {
-  ExternalLinkIcon,
-  NewspaperIcon,
-  PencilAltIcon,
-  PlayIcon,
-  TranslateIcon,
-} from "@heroicons/react/outline"
+  IconCaretRight,
+  IconEdit,
+  IconExternalLink,
+  IconLanguage,
+  IconNews,
+  IconPencil,
+} from "@tabler/icons"
 import moment from "moment"
 import { useState } from "react"
 import PopupBuilder from "../PopupBuilder"
@@ -29,60 +31,51 @@ interface Study {
 }
 
 export default function StudyCard(studies: Study) {
+  const theme = useMantineTheme()
+
   const [isOpen, setIsOpen] = useState(false)
 
   const { title, type, language, link, difficulty, studyTime, studyDate } =
     studies
 
   return (
-    <Box
-      as="article"
-      p="5"
-      rounded="lg"
-      bg={mode("white", "gray.700")}
-      shadow="base"
-    >
-      <Heading size="md" my="1">
-        <Box
-          as={"a"}
-          display="flex"
-          columnGap={"5px"}
-          color={mode("blue.500", "blue.300")}
+    <Box p="lg" sx={{ background: "#272a3c", borderRadius: theme.radius.md }}>
+      <Group spacing={2}>
+        <Title order={4}>{title}</Title>
+        <ActionIcon
+          variant="transparent"
           href={link}
-          target={"_blank"}
+          target="_blank"
+          component="a"
+          color="blue"
         >
-          {title}
-          <ExternalLinkIcon width={20} height={20} />
-        </Box>
-      </Heading>
+          <IconExternalLink size={20} />
+        </ActionIcon>
+      </Group>
 
-      <Flex alignItems={"center"} my="2" justifyContent="space-between">
-        <Box fontWeight={"semibold"} color="gray.500" fontSize={"sm"}>
-          {studyTime} minutes
-        </Box>
-        <Box fontWeight={"semibold"} color="gray.500" fontSize={"sm"}>
-          {moment(studyDate).format("ll")}
-        </Box>
-      </Flex>
+      <Group position="apart" my="sm">
+        <Text size="sm">{studyTime} minutes</Text>
+        <Text size="sm"> {moment(studyDate).format("ll")} minutes</Text>
+      </Group>
 
-      <Flex alignItems={"center"} my="2" justifyContent="space-between">
-        <Flex alignItems={"center"} columnGap="4px">
+      <Group position="apart">
+        <Group spacing={2}>
           {type === "Video" ? (
-            <PlayIcon width={18} height={18} />
+            <IconCaretRight size={20} />
           ) : (
-            <NewspaperIcon width={18} height={18} />
+            <IconNews size={20} />
           )}
-          <Box fontSize={"sm"}>{type}</Box>
-        </Flex>
+          <Text size="sm">{type}</Text>
+        </Group>
 
-        <Flex alignItems={"center"} columnGap="4px">
-          <TranslateIcon width={18} height={18} />
-          <Box fontSize={"sm"}>{language}</Box>
-        </Flex>
-      </Flex>
+        <Group spacing={2}>
+          <IconLanguage size={20} />
+          <Text size="sm">{language}</Text>
+        </Group>
+      </Group>
 
-      <Flex alignItems={"center"} justifyContent="space-between">
-        <Flex alignItems={"center"} columnGap="6px">
+      <Group position="apart" mt="sm">
+        <Group align="center">
           {[1, 2, 3].map((circle) => {
             const map: any = {
               Beginner: 1,
@@ -94,38 +87,43 @@ export default function StudyCard(studies: Study) {
               return (
                 <Box
                   key={circle}
-                  rounded="full"
-                  bgColor={mode("blue.500", "blue.300")}
-                  width={"3"}
-                  height={"3"}
+                  sx={(theme) => ({
+                    borderRadius: "100%",
+                    width: 14,
+                    height: 14,
+                    border: "2px solid",
+                    backgroundColor: theme.colors.blue[5],
+                    borderColor: theme.colors.blue[5],
+                  })}
                 />
               )
             }
             return (
               <Box
                 key={circle}
-                rounded="full"
-                borderColor={mode("blue.500", "blue.300")}
-                width={"3"}
-                height={"3"}
-                border="2px"
+                sx={(theme) => ({
+                  borderRadius: "100%",
+                  width: 14,
+                  height: 14,
+                  border: "2px solid",
+                  borderColor: theme.colors.blue[5],
+                })}
               />
             )
           })}
 
-          <Box>{difficulty}</Box>
-        </Flex>
+          <Text size="sm">{difficulty}</Text>
+        </Group>
 
-        <Flex alignItems={"center"}>
+        <Group spacing={2}>
           <Box>
-            <IconButton
-              aria-label="edit study button"
-              variant={"outline"}
-              border="none"
-              color={"green.500"}
-              icon={<PencilAltIcon width={20} height={20} />}
+            <ActionIcon
+              variant="transparent"
+              color="green"
               onClick={() => setIsOpen(true)}
-            />
+            >
+              <IconEdit size={16} />
+            </ActionIcon>
             <PopupBuilder
               isOpen={isOpen}
               setIsOpen={setIsOpen}
@@ -134,10 +132,9 @@ export default function StudyCard(studies: Study) {
               <StudyForm setIsOpen={setIsOpen} studies={studies} />
             </PopupBuilder>
           </Box>
-
           <DeleteStudyList item={studies} />
-        </Flex>
-      </Flex>
+        </Group>
+      </Group>
     </Box>
   )
 }

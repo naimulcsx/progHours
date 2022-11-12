@@ -3,12 +3,6 @@ import { useMutation, useQueryClient } from "react-query"
 import { Modal, Text, Title, useMantineTheme } from "@mantine/core"
 
 /**
- * Import Components
- */
-// import { TrashIcon } from "~/components/Icons"
-import { TrashIcon } from "@heroicons/react/outline"
-
-/**
  * Import helpers
  */
 import { deleteSubmission } from "~/api/submissions"
@@ -16,16 +10,10 @@ import { deleteSubmission } from "~/api/submissions"
 /**
  * Import Types / Interfaces
  */
-import { Cell } from "react-table"
 import { Submission } from "~/types/Submission"
-import { AxiosError } from "axios"
-import PopupBuilder from "~/components/PopupBuilder"
-import { useToast } from "@chakra-ui/react"
-import { DEFAULT_TOAST_OPTIONS } from "~/configs/toast-config"
 import { CellContext } from "@tanstack/react-table"
 import { Box, Button, Group } from "@mantine/core"
 import { IconPencil, IconTrash } from "@tabler/icons"
-import { showNotification } from "@mantine/notifications"
 import showToast from "~/utils/showToast"
 
 interface Practice {
@@ -35,7 +23,6 @@ interface Practice {
 }
 
 const Actions = (cell: CellContext<Submission, unknown>) => {
-  const toast = useToast(DEFAULT_TOAST_OPTIONS)
   const theme = useMantineTheme()
 
   const queryClient = useQueryClient()

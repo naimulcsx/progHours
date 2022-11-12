@@ -17,7 +17,8 @@ const HandleForm = ({ setIsOpen, isCreate, handle, onlineJudge }: any) => {
   const mutation = useMutation(isCreate ? createOJHandle : updateOJHandle, {
     onSuccess: () => {
       client.invalidateQueries("handles")
-      isCreate ? showToast("success", "Handle added!") : showToast("success", "Handle updated!")
+      isCreate ? showToast("success", "new handle added") : showToast("success", "handle updated")
+
       setIsOpen(false)
     },
     onError: (err: any) => {

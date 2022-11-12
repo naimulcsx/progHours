@@ -15,7 +15,10 @@ import useLogout from "~/hooks/useLogout"
 import theme from "~/styles/theme"
 import "~/styles/custom.css"
 
-const Entry: FC<{ isLoggedIn: boolean; user: User | null }> = ({ isLoggedIn, user }) => {
+const Entry: FC<{ isLoggedIn: boolean; user: User | null }> = ({
+  isLoggedIn,
+  user,
+}) => {
   const handleLogout = useLogout()
   const navigate = useNavigate()
   const role: string = user ? user.role : "GUEST"

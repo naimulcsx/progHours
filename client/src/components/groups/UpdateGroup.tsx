@@ -1,20 +1,10 @@
-import FormBuilder from "../FormBuilder"
-import * as Yup from "yup"
-import { DEFAULT_TOAST_OPTIONS } from "~/configs/toast-config"
 import { useQueryClient } from "react-query"
-import { TrashIcon } from "@heroicons/react/outline"
-import { DeleteGroupModal } from "../modals/DeleteGroupModal"
 import { useState } from "react"
-import { editGroup } from "~/api/groups"
 import { useNavigate } from "react-router-dom"
-import { Alert, Box, Button, Paper, Stack, TextInput } from "@mantine/core"
+import { Alert, Button, Paper, Stack, TextInput } from "@mantine/core"
 import { IconAlertCircle } from "@tabler/icons"
 
 const UpdateGroup = ({ group }: any) => {
-  const [isOpen, setIsOpen] = useState(false)
-  const queryClient = useQueryClient()
-  const navigate = useNavigate()
-
   return (
     <Paper
       sx={(theme) => ({
@@ -26,7 +16,12 @@ const UpdateGroup = ({ group }: any) => {
       })}
     >
       <Stack>
-        <TextInput withAsterisk label="Group Name" type="text" defaultValue={group?.name} />
+        <TextInput
+          withAsterisk
+          label="Group Name"
+          type="text"
+          defaultValue={group?.name}
+        />
         <TextInput
           withAsterisk
           description="Slug to be used in the URL of the groups. Space is not allowed."
@@ -34,7 +29,11 @@ const UpdateGroup = ({ group }: any) => {
           type="text"
           defaultValue={group?.hashtag}
         />
-        <Alert icon={<IconAlertCircle size={16} />} title="Warning!" color="red">
+        <Alert
+          icon={<IconAlertCircle size={16} />}
+          title="Warning!"
+          color="red"
+        >
           This will delete your group permanently.
         </Alert>
         <Button sx={{ alignSelf: "start" }}>Update</Button>

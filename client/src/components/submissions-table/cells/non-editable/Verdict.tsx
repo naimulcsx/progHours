@@ -1,8 +1,9 @@
+import { Badge } from "@mantine/core"
 import { Cell } from "react-table"
 import { Submission } from "~/types/Submission"
-import { Badge } from "@chakra-ui/react"
+import { CellContext } from "@tanstack/react-table"
 
-const NonEditableVerdict = (cell: Cell<Submission>) => {
+const NonEditableVerdict = (cell: CellContext<Submission, unknown>) => {
   const styles: any = {
     AC: {
       colorScheme: "green",
@@ -14,7 +15,7 @@ const NonEditableVerdict = (cell: Cell<Submission>) => {
     // TLE: "bg-amber-200 text-amber-900 rounded w-full font-medium text-sm text-center p-2",
     // MLE: "bg-cyan-200 text-cyan-900 rounded w-full font-medium text-sm text-center p-2",
   }
-  let value = cell.value
+  let value = cell.getValue() as string
   return (
     <Badge
       variant="subtle"

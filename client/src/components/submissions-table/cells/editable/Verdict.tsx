@@ -17,7 +17,6 @@ import { Practice } from "~/types/Practice"
 import { DEFAULT_TOAST_OPTIONS } from "~/configs/toast-config"
 import { CellContext } from "@tanstack/react-table"
 import { IconSelector } from "@tabler/icons"
-import { showNotification } from "@mantine/notifications"
 import showToast from "~/utils/showToast"
 
 const Verdict = (cell: CellContext<Submission, unknown>) => {
