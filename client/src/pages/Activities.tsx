@@ -42,7 +42,9 @@ const ActivitiesPage = () => {
         {/* page title and buttons */}
         <Group position="apart" align="start">
           <Group align="center" mb="md">
-            <Title order={3}>Activities</Title>
+            <Title order={3} sx={{ color: "white" }}>
+              Activities
+            </Title>
             <AnimatePresence>
               {(isLoading || isFetching) && (
                 <motion.div

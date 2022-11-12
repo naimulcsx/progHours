@@ -46,7 +46,9 @@ export default function LeaderboardPage() {
         <>
           <Group position="apart" align="start">
             <Group align="center" mb="md">
-              <Title order={3}>Leaderboard</Title>
+              <Title order={3} sx={{ color: "white" }}>
+                Leaderboard
+              </Title>
               <AnimatePresence>
                 {(isLoading || isFetching) && (
                   <motion.div

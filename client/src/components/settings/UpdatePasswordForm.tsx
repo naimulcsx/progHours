@@ -1,7 +1,7 @@
 import * as Yup from "yup"
 import useUser from "~/hooks/useUser"
 import { useForm, yupResolver } from "@mantine/form"
-import { Box, Button, Paper, PasswordInput, Stack } from "@mantine/core"
+import { Box, Button, Paper, PasswordInput, Stack, Title } from "@mantine/core"
 import { useMutation, useQueryClient } from "react-query"
 import axios from "axios"
 import { showNotification } from "@mantine/notifications"
@@ -75,6 +75,9 @@ export const UpdatePasswordForm = () => {
         boxShadow: "0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1)",
       }}
     >
+      <Title order={4} mb="md">
+        Change Password
+      </Title>
       {user && (
         <form onSubmit={handleSubmit}>
           <Stack>

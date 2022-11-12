@@ -12,13 +12,7 @@ import {
   Req,
   UseGuards,
 } from "@nestjs/common"
-import {
-  ApiCreatedResponse,
-  ApiForbiddenResponse,
-  ApiOkResponse,
-  ApiOperation,
-  ApiTags,
-} from "@nestjs/swagger"
+import { ApiCreatedResponse, ApiForbiddenResponse, ApiOkResponse, ApiOperation, ApiTags } from "@nestjs/swagger"
 import { IsAuthenticatedGuard } from "src/guards/is-authenticated"
 import { CreateHandleDto } from "src/validators/create-handle-dto"
 import { HandlesService } from "./handles.service"
@@ -40,7 +34,7 @@ export class HandlesController {
       userId: req.user.id,
       onlineJudgeId,
     })
-    if (foundHandle) throw new BadRequestException("handle already exists")
+    if (foundHandle) throw new BadRequestException(`You already have a handle for ${foundHandle.onlineJudge.name}.`)
 
     const newHandle = await this.handleService.createHandles({
       handle,

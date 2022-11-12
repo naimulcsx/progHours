@@ -24,7 +24,7 @@ const HandleSettings = () => {
 
   return (
     <Paper p={24}>
-      <Group sx={{ justifyContent: "space-between" }}>
+      <Group sx={{ justifyContent: "space-between" }} mb="md">
         <Title order={4}>Handles</Title>
         <Button size="xs" onClick={() => setIsOpen(true)} leftIcon={<IconPlus size={16} />}>
           Add Handle

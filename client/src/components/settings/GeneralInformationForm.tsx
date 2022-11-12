@@ -79,13 +79,15 @@ export const GeneralInformationForm = () => {
         borderRadius: theme.radius[theme.defaultRadius],
       })}
     >
-      <Title order={4}>General Information</Title>
+      <Title order={4} mb="md">
+        Your Profile
+      </Title>
       {user && (
         <form onSubmit={handleSubmit}>
           <Stack>
-            <TextInput label="Name" {...form.getInputProps("name")} />
-            <TextInput label="University ID" disabled {...form.getInputProps("username")} />
-            <TextInput label="Email" {...form.getInputProps("email")} />
+            <TextInput label="Name" {...form.getInputProps("name")} withAsterisk />
+            <TextInput label="University ID" disabled {...form.getInputProps("username")} withAsterisk />
+            <TextInput label="Email" {...form.getInputProps("email")} withAsterisk />
             <TextInput label="Mobile" {...form.getInputProps("mobile")} />
 
             <Select

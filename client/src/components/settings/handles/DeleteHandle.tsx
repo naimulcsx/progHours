@@ -8,33 +8,32 @@ import { useMutation, useQueryClient } from "react-query"
 import { IconTrash } from "@tabler/icons"
 
 const DeleteHandle = ({ title, id }: any) => {
-  const [isOpen, setIsOpen] = useState(false)
+  const [deleteOpen, setDeleteOpen] = useState(false)
 
   const client = useQueryClient()
   const { mutate } = useMutation(deleteHandle, {
     onSuccess() {
       client.invalidateQueries("handles")
       showToast("success", "Handle deleted")
-
-      setIsOpen(false)
+      setDeleteOpen(false)
     },
     onError(err: any) {
       showToast("error", err.response.data.message)
-      setIsOpen(false)
+      setDeleteOpen(false)
     },
   })
 
   return (
     <Box>
-      <ActionIcon variant="transparent" color="red" onClick={() => setIsOpen(true)}>
+      <ActionIcon variant="transparent" color="red" onClick={() => setDeleteOpen(true)}>
         <IconTrash size={16} />
       </ActionIcon>
 
-      <PopupBuilder isOpen={isOpen} setIsOpen={setIsOpen} title={`Delete ${title}`}>
+      <PopupBuilder isOpen={deleteOpen} setIsOpen={setDeleteOpen} title={`Delete ${title}`}>
         <Text>Are you sure you want to delete ?</Text>
 
         <Group mt={20} sx={{ justifyContent: "flex-end" }}>
-          <Button variant="white" color="dark" onClick={() => setIsOpen(false)}>
+          <Button variant="white" color="dark" onClick={() => setDeleteOpen(false)}>
             Cancel
           </Button>
           <Button
@@ -42,7 +41,7 @@ const DeleteHandle = ({ title, id }: any) => {
             color="red"
             onClick={() => {
               mutate(id)
-              setIsOpen(false)
+              setDeleteOpen(false)
             }}
           >
             Delete
