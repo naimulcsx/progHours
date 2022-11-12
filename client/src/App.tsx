@@ -46,7 +46,7 @@ const Entry: FC<{ isLoggedIn: boolean; user: User | null }> = ({ isLoggedIn, use
             )}
           </Box>
         </SpotlightProvider>
-        <ReactQueryDevtools position="bottom-right" />
+        {/* <ReactQueryDevtools position="bottom-right" /> */}
       </NotificationsProvider>
     </MantineProvider>
   )

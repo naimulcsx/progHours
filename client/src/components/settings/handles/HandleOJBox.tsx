@@ -1,44 +1,37 @@
 import PopupBuilder from "~/components/PopupBuilder"
 import getOJProfileURL from "~/utils/getOJProfileUrl"
 import { ExternalLinkIcon, PencilAltIcon } from "@heroicons/react/outline"
-import {
-  ActionIcon,
-  Box,
-  Button,
-  Group,
-  Stack,
-  Text,
-  Title,
-} from "@mantine/core"
+import { ActionIcon, Box, Group, Paper, Stack, Text, Title, useMantineTheme } from "@mantine/core"
 import { useState } from "react"
 import DeleteHandle from "./DeleteHandle"
 import HandleForm from "./HandleForm"
+import { IconEdit, IconExternalLink, IconPencil, IconPencilOff } from "@tabler/icons"
 
 const HandleOJBox = ({ icon, handle, onlineJudge }: any) => {
+  const theme = useMantineTheme()
   const [isOpen, setIsOpen] = useState(false)
 
   return (
     <Box
+      p="lg"
       sx={{
         display: "flex",
-        backgroundColor: "white",
         justifyContent: "space-between",
-        padding: "18px",
-        borderRadius: "6px",
-        boxShadow:
-          "0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1)",
+        borderRadius: theme.radius.md,
+        background: "#272a3c",
       }}
     >
       <Group>
         <Box
           sx={{
-            width: "50px",
-            height: "50px",
+            width: 48,
+            height: 48,
             display: "flex",
             justifyContent: "center",
             alignItems: "center",
-            padding: "3px",
-            border: "1px solid #d1d5db",
+            padding: 8,
+            // border: "1px solid",
+            background: theme.colors.dark[3],
             borderRadius: "50%",
           }}
         >
@@ -55,30 +48,19 @@ const HandleOJBox = ({ icon, handle, onlineJudge }: any) => {
       <Stack spacing={1} align="end">
         <ActionIcon
           component="a"
+          target="_blank"
           href={getOJProfileURL(onlineJudge.name, handle)}
           variant="transparent"
           color="blue"
         >
-          <ExternalLinkIcon width={20} />
+          <IconExternalLink size={16} />
         </ActionIcon>
         <Group spacing={2}>
-          <ActionIcon
-            variant="transparent"
-            color="green"
-            onClick={() => setIsOpen(true)}
-          >
-            <PencilAltIcon width={20} />
+          <ActionIcon variant="transparent" color="green" onClick={() => setIsOpen(true)}>
+            <IconEdit size={16} />
           </ActionIcon>
-          <PopupBuilder
-            isOpen={isOpen}
-            setIsOpen={setIsOpen}
-            title={`Edit ${onlineJudge.name} handle`}
-          >
-            <HandleForm
-              setIsOpen={setIsOpen}
-              handle={handle}
-              onlineJudge={onlineJudge}
-            />
+          <PopupBuilder isOpen={isOpen} setIsOpen={setIsOpen} title={`Edit ${onlineJudge.name} handle`}>
+            <HandleForm setIsOpen={setIsOpen} handle={handle} onlineJudge={onlineJudge} />
           </PopupBuilder>
           <DeleteHandle title={onlineJudge.name} id={onlineJudge.id} />
         </Group>

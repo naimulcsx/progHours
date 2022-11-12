@@ -5,6 +5,7 @@ import { TrashIcon } from "@heroicons/react/outline"
 import { ActionIcon, Box, Button, Group, Text } from "@mantine/core"
 import { useState } from "react"
 import { useMutation, useQueryClient } from "react-query"
+import { IconTrash } from "@tabler/icons"
 
 const DeleteHandle = ({ title, id }: any) => {
   const [isOpen, setIsOpen] = useState(false)
@@ -25,19 +26,11 @@ const DeleteHandle = ({ title, id }: any) => {
 
   return (
     <Box>
-      <ActionIcon
-        variant="transparent"
-        color="red"
-        onClick={() => setIsOpen(true)}
-      >
-        <TrashIcon width={20} height={20} />
+      <ActionIcon variant="transparent" color="red" onClick={() => setIsOpen(true)}>
+        <IconTrash size={16} />
       </ActionIcon>
 
-      <PopupBuilder
-        isOpen={isOpen}
-        setIsOpen={setIsOpen}
-        title={`Delete ${title}`}
-      >
+      <PopupBuilder isOpen={isOpen} setIsOpen={setIsOpen} title={`Delete ${title}`}>
         <Text>Are you sure you want to delete ?</Text>
 
         <Group mt={20} sx={{ justifyContent: "flex-end" }}>

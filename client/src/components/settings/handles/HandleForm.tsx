@@ -3,7 +3,7 @@ import { createOJHandle, updateOJHandle } from "~/api/handle"
 import { useMutation, useQueryClient } from "react-query"
 import showToast from "~/utils/showToast"
 import { useForm, yupResolver } from "@mantine/form"
-import { Button, Select, Stack, TextInput } from "@mantine/core"
+import { Button, Paper, Select, Stack, TextInput } from "@mantine/core"
 
 // schema validation
 const handleSchema = Yup.object().shape({
@@ -17,9 +17,7 @@ const HandleForm = ({ setIsOpen, isCreate, handle, onlineJudge }: any) => {
   const mutation = useMutation(isCreate ? createOJHandle : updateOJHandle, {
     onSuccess: () => {
       client.invalidateQueries("handles")
-      isCreate
-        ? showToast("success", "new handle added")
-        : showToast("success", "handle updated")
+      isCreate ? showToast("success", "new handle added") : showToast("success", "handle updated")
 
       setIsOpen(false)
     },
@@ -54,38 +52,36 @@ const HandleForm = ({ setIsOpen, isCreate, handle, onlineJudge }: any) => {
   })
 
   return (
-    <>
-      <form onSubmit={handleSubmit}>
-        <Stack>
-          <TextInput label="Handle" {...form.getInputProps("handle")} />
+    <form onSubmit={handleSubmit}>
+      <Stack>
+        <TextInput label="Handle" {...form.getInputProps("handle")} />
 
-          <Select
-            label="Select Online Judge"
-            placeholder="Select"
-            {...form.getInputProps("onlineJudge")}
-            data={[
-              {
-                value: "Codeforces",
-                label: "Codeforces",
-              },
-              {
-                value: "CodeChef",
-                label: "CodeChef",
-              },
-              {
-                value: "Toph",
-                label: "Toph",
-              },
-              {
-                value: "LightOJ",
-                label: "LightOJ",
-              },
-            ]}
-          />
-          <Button type="submit">Save</Button>
-        </Stack>
-      </form>
-    </>
+        <Select
+          label="Select Online Judge"
+          placeholder="Select"
+          {...form.getInputProps("onlineJudge")}
+          data={[
+            {
+              value: "Codeforces",
+              label: "Codeforces",
+            },
+            {
+              value: "CodeChef",
+              label: "CodeChef",
+            },
+            {
+              value: "Toph",
+              label: "Toph",
+            },
+            {
+              value: "LightOJ",
+              label: "LightOJ",
+            },
+          ]}
+        />
+        <Button type="submit">Save</Button>
+      </Stack>
+    </form>
   )
 }
 

@@ -1,95 +1,110 @@
-import { Helmet } from "react-helmet-async"
-import { DashboardLayout } from "~/components/layouts/Dashboard"
-import { useContext, useState } from "react"
-
-import axios from "axios"
-import { useQuery } from "react-query"
 import moment from "moment"
-// import { Avatar, Badge, Box, Button, Flex, HStack, Link, Text, useColorModeValue as mode } from "@chakra-ui/react"
+import { useQuery } from "react-query"
+import { Helmet } from "react-helmet-async"
 import { Link as RouterLink } from "react-router-dom"
-import { ChevronLeftIcon, ChevronRightIcon, ClockIcon } from "@heroicons/react/outline"
-import { AnimateLoading } from "~/components/AnimateLoading"
-import { Anchor, Box, Group, Paper, Stack, Text } from "@mantine/core"
-import Avatar from "~/components/Avatar"
+import { IconChevronLeft, IconChevronRight, IconClock } from "@tabler/icons"
+import { useState } from "react"
+import { ActionIcon, Anchor, Box, Group, Loader, Paper, Text, Title, useMantineTheme } from "@mantine/core"
+import { AnimatePresence, motion } from "framer-motion"
 
-const fetchActivities = (page = 1) => fetch("/api/submissions/activities?page=" + page).then((res) => res.json())
+import { DashboardLayout } from "~/components/layouts/Dashboard"
+import { AnimateLoading } from "~/components/AnimateLoading"
+import Avatar from "~/components/Avatar"
+import { fetchActivities } from "~/api/submissions"
 
 const ActivitiesPage = () => {
-  const [page, setPage] = useState(1)
-  const [totalSubmissions, setTotalSubmissions] = useState(0)
-  const [submissions, setSubmissions] = useState<any>(null)
+  const theme = useMantineTheme()
 
-  useQuery(["activities", page], () => fetchActivities(page), {
-    onSuccess: (res) => {
+  // pagination state
+  const [page, setPage] = useState(1)
+  const [submissions, setSubmissions] = useState([])
+  const [totalSubmissions, setTotalSubmissions] = useState(0)
+
+  // fetch data
+  const { isLoading, isFetching, data } = useQuery(["activities", page], () => fetchActivities(page), {
+    onSuccess(res) {
       setSubmissions(res.body.submissions)
       setTotalSubmissions(res.body.totalSubmissions)
     },
     refetchInterval: 30000,
   })
 
+  // compute the last page
   const lastPage = Math.ceil(totalSubmissions / 20)
 
   return (
-    <DashboardLayout
-    // rightButton={
-    //   <HStack>
-    //     <Text>
-    //       {page} / {lastPage}
-    //     </Text>
-    //     <Button
-    //       size="xs"
-    //       variant="outline"
-    //       onClick={() => setPage((prev) => prev - 1)}
-    //       disabled={page === 1}
-    //     >
-    //       <ChevronLeftIcon height={12} />
-    //     </Button>
-    //     <Button
-    //       size="xs"
-    //       variant="outline"
-    //       onClick={() => setPage((prev) => prev + 1)}
-    //       disabled={page === lastPage}
-    //     >
-    //       <ChevronRightIcon height={12} />
-    //     </Button>
-    //   </HStack>
-    // }
-    >
-      {/* @ts-ignore */}
+    <DashboardLayout>
       <Helmet>
         <title>Recent Activities</title>
       </Helmet>
 
-      <AnimateLoading isLoaded={submissions}>
-        {submissions && (
-          <Paper sx={{ maxWidth: "1024px", margin: "0 auto" }} p="xl">
-            <Stack>
-              {submissions.map((sub: any) => {
-                return (
-                  <Group key={sub.id} sx={{ width: "100%", justifyContent: "space-between" }}>
-                    <Group>
-                      <Avatar name={sub.user.name} />
-                      <Text>
-                        <Anchor component={RouterLink} to={`/users/${sub.user.username}`}>
-                          {sub.user.name}
-                        </Anchor>{" "}
-                        got <Text component="span">{sub.verdict}</Text> in{" "}
-                        <Anchor href={sub.problem.link} target="_blank">
-                          {sub.problem.name} [{sub.problem.pid}]
-                        </Anchor>
-                      </Text>
-                    </Group>
-                    <Group>
-                      <ClockIcon height={16} />
-                      <Text>{moment(sub.solvedAt).fromNow()}</Text>
-                    </Group>
+      <Box sx={{ maxWidth: "1024px", margin: "0 auto" }}>
+        {/* page title and buttons */}
+        <Group position="apart" align="start">
+          <Group align="center" mb="md">
+            <Title order={3}>Activities</Title>
+            <AnimatePresence>
+              {(isLoading || isFetching) && (
+                <motion.div
+                  initial={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                  transition={{ duration: 0.5 }}
+                  style={{ display: "flex", alignItems: "center" }}
+                >
+                  <Loader size="xs" />
+                </motion.div>
+              )}
+            </AnimatePresence>
+          </Group>
+          <Group spacing="xs">
+            <Text>
+              {page} / {lastPage}
+            </Text>
+            <ActionIcon variant="outline" onClick={() => setPage((prev) => prev - 1)} disabled={page === 1}>
+              <IconChevronLeft size={16} />
+            </ActionIcon>
+            <ActionIcon variant="outline" onClick={() => setPage((prev) => prev + 1)} disabled={page === lastPage}>
+              <IconChevronRight size={16} />
+            </ActionIcon>
+          </Group>
+        </Group>
+        <Paper>
+          <Box>
+            {submissions.map((sub: any, idx: number) => {
+              return (
+                <Group
+                  key={sub.id}
+                  py="sm"
+                  px="xl"
+                  sx={{
+                    width: "100%",
+                    justifyContent: "space-between",
+                    borderTop: idx > 0 ? "1px solid" : 0,
+                    borderColor: theme.colors.dark[3],
+                  }}
+                >
+                  <Group>
+                    <Avatar name={sub.user.name} />
+                    <Text>
+                      <Anchor component={RouterLink} to={`/users/${sub.user.username}`}>
+                        {sub.user.name}
+                      </Anchor>{" "}
+                      got <Text component="span">{sub.verdict}</Text> in{" "}
+                      <Anchor href={sub.problem.link} target="_blank">
+                        {sub.problem.name} [{sub.problem.pid}]
+                      </Anchor>
+                    </Text>
                   </Group>
-                )
-              })}
-            </Stack>
-          </Paper>
-        )}
-      </AnimateLoading>
+                  <Group>
+                    <IconClock size={16} />
+                    <Text>{moment(sub.solvedAt).fromNow()}</Text>
+                  </Group>
+                </Group>
+              )
+            })}
+          </Box>
+        </Paper>
+      </Box>
     </DashboardLayout>
   )
 }

@@ -72,7 +72,7 @@ export const GeneralInformationForm = () => {
   return (
     <Paper
       mb={10}
-      p={25}
+      p={24}
       sx={(theme) => ({
         boxShadow: theme.shadows.xs,
         // @ts-ignore
