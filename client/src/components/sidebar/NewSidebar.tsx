@@ -1,19 +1,6 @@
-import {
-  Navbar,
-  Text,
-  NavLink,
-  SegmentedControl,
-  Progress,
-  Group,
-  Stack,
-  MantineTheme,
-  Anchor,
-  Box,
-  Paper,
-  Badge,
-} from "@mantine/core"
+import { Navbar, Text, NavLink, SegmentedControl, Group, Stack, MantineTheme, Box, Badge } from "@mantine/core"
+import { useEffect, useState } from "react"
 import { Link, useLocation } from "react-router-dom"
-import { IconLayout2, IconUsers, IconClipboardList, IconNotes, IconChartBar, IconChartLine } from "@tabler/icons"
 
 import Avatar from "~/components/Avatar"
 import useUser from "~/hooks/useUser"
@@ -25,6 +12,7 @@ import {
   IconSettings,
   IconStudy,
   IconSubmissions,
+  IconUsers,
 } from "../GamifiedIcons"
 
 const navItemStyles = (theme: MantineTheme) => ({
@@ -45,6 +33,11 @@ const navItemStyles = (theme: MantineTheme) => ({
 const NewSidebar = () => {
   const { user } = useUser()
   const { pathname } = useLocation()
+  const [value, setValue] = useState(() => localStorage.getItem("__sc") || "user")
+
+  useEffect(() => {
+    localStorage.setItem("__sc", value)
+  }, [value])
 
   return (
     <Navbar
@@ -73,73 +66,90 @@ const NewSidebar = () => {
         </Stack>
       </Navbar.Section> */}
       <Navbar.Section grow mt="xs">
-        {/* <SegmentedControl
-          mb="sm"
+        <SegmentedControl
+          sx={(theme) => ({ background: theme.colors.dark[9] })}
+          mb="xl"
           fullWidth
+          value={value}
+          onChange={setValue}
           data={[
             { label: "User", value: "user" },
             { label: "Admin", value: "admin" },
           ]}
-        /> */}
-        <Stack spacing="xs">
-          <NavLink
-            component={Link}
-            to="/dashboard"
-            label="Dashboard"
-            icon={<IconDashboard />}
-            active={pathname === "/dashboard"}
-            color="red"
-            sx={navItemStyles}
-          />
-          <NavLink
-            component={Link}
-            to="/submissions"
-            label="Submissions"
-            icon={<IconSubmissions />}
-            active={pathname === "/submissions"}
-            sx={navItemStyles}
-          />
-          <NavLink
-            component={Link}
-            to="/study"
-            label="Study List"
-            icon={<IconStudy />}
-            active={pathname === "/study"}
-            sx={navItemStyles}
-          />
-          <NavLink
-            component={Link}
-            to="/groups"
-            label="My Groups"
-            icon={<IconGroup />}
-            active={pathname === "/groups"}
-            sx={navItemStyles}
-          />
-          <NavLink
-            component={Link}
-            to="/leaderboard"
-            label="Leaderboard"
-            icon={<IconLeaderboard />}
-            active={pathname === "/leaderboard"}
-            sx={navItemStyles}
-          />
-          <NavLink
-            component={Link}
-            to="/activities"
-            label="Activities"
-            icon={<IconActivities />}
-            active={pathname === "/activities"}
-            sx={navItemStyles}
-          />
-          <NavLink
-            component={Link}
-            to="/settings"
-            label="Settings"
-            icon={<IconSettings />}
-            active={pathname === "/settings"}
-            sx={navItemStyles}
-          />
-        </Stack>
+        />
+        {value === "user" && (
+          <Stack spacing="xs">
+            <NavLink
+              component={Link}
+              to="/dashboard"
+              label="Dashboard"
+              icon={<IconDashboard />}
+              active={pathname === "/dashboard"}
+              color="red"
+              sx={navItemStyles}
+            />
+            <NavLink
+              component={Link}
+              to="/submissions"
+              label="Submissions"
+              icon={<IconSubmissions />}
+              active={pathname === "/submissions"}
+              sx={navItemStyles}
+            />
+            <NavLink
+              component={Link}
+              to="/study"
+              label="Study List"
+              icon={<IconStudy />}
+              active={pathname === "/study"}
+              sx={navItemStyles}
+            />
+            <NavLink
+              component={Link}
+              to="/groups"
+              label="My Groups"
+              icon={<IconGroup />}
+              active={pathname === "/groups"}
+              sx={navItemStyles}
+            />
+            <NavLink
+              component={Link}
+              to="/leaderboard"
+              label="Leaderboard"
+              icon={<IconLeaderboard />}
+              active={pathname === "/leaderboard"}
+              sx={navItemStyles}
+            />
+            <NavLink
+              component={Link}
+              to="/activities"
+              label="Activities"
+              icon={<IconActivities />}
+              active={pathname === "/activities"}
+              sx={navItemStyles}
+            />
+            <NavLink
+              component={Link}
+              to="/settings"
+              label="Settings"
+              icon={<IconSettings />}
+              active={pathname === "/settings"}
+              sx={navItemStyles}
+            />
+          </Stack>
+        )}
+        {value === "admin" && (
+          <Stack spacing="xs">
+            <NavLink
+              component={Link}
+              to="/users"
+              label="User Management"
+              icon={<IconUsers />}
+              active={pathname === "/users"}
+              sx={navItemStyles}
+            />
+          </Stack>
+        )}
       </Navbar.Section>
 
       <Navbar.Section sx={{ display: "flex", alignItems: "center", gap: 10 }}>

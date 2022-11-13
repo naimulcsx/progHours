@@ -2,7 +2,7 @@ import * as Yup from "yup"
 import { useMutation, useQueryClient } from "react-query"
 import { createUserStudy, updateUserStudy } from "~/api/userStudies"
 import moment from "moment"
-import { Button, NumberInput, Select, Stack, TextInput } from "@mantine/core"
+import { Button, Group, NumberInput, Select, Stack, TextInput } from "@mantine/core"
 import { useForm, yupResolver } from "@mantine/form"
 import showToast from "~/utils/showToast"
 import { DatePicker } from "@mantine/dates"
@@ -20,24 +20,18 @@ const studyFormSchema = Yup.object().shape({
 export default function StudyForm({ setIsOpen, studies, isCreate }: any) {
   const client = useQueryClient()
 
-  const mutation = useMutation(
-    (data) =>
-      isCreate ? createUserStudy(data) : updateUserStudy(studies.id, data),
-    {
-      onSuccess: () => {
-        client.invalidateQueries("studies")
-        isCreate
-          ? showToast("success", "new study added")
-          : showToast("success", "study updated")
+  const mutation = useMutation((data) => (isCreate ? createUserStudy(data) : updateUserStudy(studies.id, data)), {
+    onSuccess: () => {
+      client.invalidateQueries("studies")
+      isCreate ? showToast("success", "new study added") : showToast("success", "study updated")
 
-        setIsOpen(false)
-      },
-      onError: (err: any) => {
-        showToast("error", err.response.data.message)
-        setIsOpen(false)
-      },
-    }
-  )
+      setIsOpen(false)
+    },
+    onError: (err: any) => {
+      showToast("error", err.response.data.message)
+      setIsOpen(false)
+    },
+  })
 
   const form = useForm({
     initialValues: {
@@ -122,7 +116,9 @@ export default function StudyForm({ setIsOpen, studies, isCreate }: any) {
           ]}
         />
 
-        <Button type="submit">Save</Button>
+        <Group position="right">
+          <Button type="submit">Save</Button>
+        </Group>
       </Stack>
     </form>
   )

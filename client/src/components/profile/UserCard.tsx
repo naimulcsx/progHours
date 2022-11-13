@@ -60,18 +60,14 @@ export const UserCard: React.FC<UserCardProps> = ({ name, username, role }) => {
               }
               return (
                 <Badge
+                  py="sm"
                   sx={(theme) => ({
-                    background: "transparent",
+                    background: theme.colors.dark[6],
                     border: "1px solid",
                     borderColor: theme.colors.dark[4],
                   })}
                 >
-                  <Anchor
-                    underline={false}
-                    target="_blank"
-                    href={getOJProfileURL(item.onlineJudge.name, item.handle)}
-                    color="violet"
-                  >
+                  <Anchor underline={false} target="_blank" href={getOJProfileURL(item.onlineJudge.name, item.handle)}>
                     <Group spacing="xs">
                       <Box sx={{ width: 24, height: 24 }}>
                         {iconMap[item.onlineJudge.name]}

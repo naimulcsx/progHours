@@ -20,7 +20,7 @@ export default function UserManagement() {
   })
 
   return (
-    <DashboardLayout title="Users">
+    <DashboardLayout>
       {/* @ts-ignore */}
       <Helmet>
         <title>Users</title>

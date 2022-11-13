@@ -1,17 +1,5 @@
-import {
-  RefCallback,
-  useCallback,
-  useEffect,
-  useImperativeHandle,
-  useState,
-} from "react"
-import {
-  LoadingOverlay,
-  ScrollArea,
-  Stack,
-  Table as MantineTable,
-  Text,
-} from "@mantine/core"
+import { RefCallback, useCallback, useEffect, useImperativeHandle, useState } from "react"
+import { Group, LoadingOverlay, ScrollArea, Stack, Table as MantineTable, Text, Title } from "@mantine/core"
 import {
   ColumnFiltersState,
   flexRender,
@@ -39,10 +27,7 @@ import { DEFAULT_INITIAL_SIZE, Pagination } from "./Pagination"
 import { DataGridProps } from "./types"
 import { getRowSelectionColumn } from "./RowSelection"
 
-export function useDataGrid<TData extends RowData>(): [
-  Table<TData> | null,
-  RefCallback<Table<TData>>
-] {
+export function useDataGrid<TData extends RowData>(): [Table<TData> | null, RefCallback<Table<TData>>] {
   const [state, setState] = useState<Table<TData> | null>(null)
   return [state, setState]
 }
@@ -95,6 +80,7 @@ export function DataGrid<TData extends RowData>({
   locale,
   // first row
   firstRow,
+  tableTitle,
   ...others
 }: DataGridProps<TData>) {
   const { classes, theme, cx } = useStyles(
@@ -195,10 +181,7 @@ export function DataGrid<TData extends RowData>({
     (arg0) => {
       const pagination = table.getState().pagination
       const next = functionalUpdate(arg0, pagination)
-      if (
-        next.pageIndex !== pagination.pageIndex ||
-        next.pageSize !== pagination.pageSize
-      ) {
+      if (next.pageIndex !== pagination.pageIndex || next.pageSize !== pagination.pageSize) {
         onPageChange && onPageChange(next)
         table.setState((state) => ({
           ...state,
@@ -223,10 +206,7 @@ export function DataGrid<TData extends RowData>({
     [onRowSelectionChange]
   )
 
-  const pageCount =
-    withPagination && total
-      ? Math.ceil(total / table.getState().pagination.pageSize)
-      : undefined
+  const pageCount = withPagination && total ? Math.ceil(total / table.getState().pagination.pageSize) : undefined
 
   table.setOptions((prev) => ({
     ...prev,
@@ -240,23 +220,27 @@ export function DataGrid<TData extends RowData>({
 
   useEffect(() => {
     if (withPagination) {
-      table.setPageSize(
-        initialState?.pagination?.pageSize || DEFAULT_INITIAL_SIZE
-      )
+      table.setPageSize(initialState?.pagination?.pageSize || DEFAULT_INITIAL_SIZE)
     } else {
       table.setPageSize(data.length)
     }
   }, [withPagination])
 
   return (
-    <Stack {...others} spacing={verticalSpacing} className={classes.wrapper}>
-      {withGlobalFilter && (
-        <GlobalFilter
-          table={table}
-          className={classes.globalFilter}
-          locale={locale}
-        />
-      )}
+    <Stack
+      {...others}
+      spacing={verticalSpacing}
+      className={classes.wrapper}
+      sx={{ backgroundColor: theme.colors.dark[8], ...others.sx }}
+    >
+      <Group position="apart" px="md">
+        {tableTitle && (
+          <Title order={3} sx={{ color: "white" }} mb="md">
+            {tableTitle}
+          </Title>
+        )}
+        {withGlobalFilter && <GlobalFilter table={table} className={classes.globalFilter} locale={locale} />}
+      </Group>
       <ScrollArea className={classes.scrollArea}>
         <LoadingOverlay visible={loading || false} overlayOpacity={0.8} />
         <MantineTable
@@ -286,25 +270,14 @@ export function DataGrid<TData extends RowData>({
                     {!header.isPlaceholder && (
                       <div className={classes.headerCell}>
                         <div className={classes.headerCellContent}>
-                          {flexRender(
-                            header.column.columnDef.header,
-                            header.getContext()
-                          )}
+                          {flexRender(header.column.columnDef.header, header.getContext())}
                         </div>
                         <div className={classes.headerCellButtons}>
                           {header.column.getCanSort() && (
-                            <ColumnSorter
-                              className={classes.sorter}
-                              column={header.column}
-                              color={color}
-                            />
+                            <ColumnSorter className={classes.sorter} column={header.column} color={color} />
                           )}
                           {header.column.getCanFilter() && (
-                            <ColumnFilter
-                              className={classes.filter}
-                              column={header.column}
-                              color={color}
-                            />
+                            <ColumnFilter className={classes.filter} column={header.column} color={color} />
                           )}
                         </div>
                         {header.column.getCanResize() && (
@@ -329,12 +302,7 @@ export function DataGrid<TData extends RowData>({
                 const rowProps = onRow ? onRow(row) : {}
 
                 return (
-                  <tr
-                    {...rowProps}
-                    key={row.id}
-                    className={cx(classes.tr, rowProps.className)}
-                    role="row"
-                  >
+                  <tr {...rowProps} key={row.id} className={cx(classes.tr, rowProps.className)} role="row">
                     {row.getVisibleCells().map((cell) => {
                       const cellProps = onCell ? onCell(cell) : {}
                       const cellId = (cell.row.original as any).id
@@ -352,10 +320,7 @@ export function DataGrid<TData extends RowData>({
                         >
                           <div className={classes.dataCell}>
                             <div className={classes.dataCellContent}>
-                              {flexRender(
-                                cell.column.columnDef.cell,
-                                cell.getContext()
-                              )}
+                              {flexRender(cell.column.columnDef.cell, cell.getContext())}
                             </div>
                           </div>
                         </td>
@@ -389,12 +354,7 @@ export function DataGrid<TData extends RowData>({
           pageSizes={pageSizes}
           fontSize={fontSize}
           color={color}
-          classes={[
-            classes.pagination,
-            classes.pagination_info,
-            classes.pagination_size,
-            classes.pagination_page,
-          ]}
+          classes={[classes.pagination, classes.pagination_info, classes.pagination_size, classes.pagination_page]}
           locale={locale}
           mode={paginationMode}
         />

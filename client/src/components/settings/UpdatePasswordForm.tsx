@@ -81,8 +81,8 @@ export const UpdatePasswordForm = () => {
       {user && (
         <form onSubmit={handleSubmit}>
           <Stack>
-            <PasswordInput label="Current Password" {...form.getInputProps("currentPassword")} />
-            <PasswordInput label="New Password" {...form.getInputProps("newPassword")} />
+            <PasswordInput label="Current Password" {...form.getInputProps("currentPassword")} withAsterisk />
+            <PasswordInput label="New Password" {...form.getInputProps("newPassword")} withAsterisk />
             <Box>
               <Button type="submit">Update</Button>
             </Box>

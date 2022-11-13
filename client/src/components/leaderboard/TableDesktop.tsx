@@ -31,12 +31,7 @@ const LeaderboardTable = ({ data }: any) => {
             const { name, department, batch, username } = cell.row.original.user
             return (
               <Group position="center" sx={{ overflow: "hidden" }}>
-                <HoverCard
-                  width={320}
-                  shadow="md"
-                  openDelay={200}
-                  closeDelay={400}
-                >
+                <HoverCard width={320} shadow="md" openDelay={200} closeDelay={400}>
                   <HoverCard.Target>
                     <Box
                       sx={(theme) => ({
@@ -47,7 +42,9 @@ const LeaderboardTable = ({ data }: any) => {
                       })}
                     >
                       <Avatar name={name} />
-                      <Text>{name}</Text>
+                      <Text sx={{ maxWidth: 240, whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>
+                        {name}
+                      </Text>
                     </Box>
                   </HoverCard.Target>
                   <HoverCard.Dropdown>
@@ -67,13 +64,7 @@ const LeaderboardTable = ({ data }: any) => {
                         >
                           {name}
                         </Text>
-                        <Anchor
-                          component={Link}
-                          to={`/@${username}`}
-                          color="dimmed"
-                          size="xs"
-                          sx={{ lineHeight: 1 }}
-                        >
+                        <Anchor component={Link} to={`/@${username}`} color="dimmed" size="xs" sx={{ lineHeight: 1 }}>
                           @{username.toUpperCase()}
                         </Anchor>
                       </Stack>
@@ -84,9 +75,8 @@ const LeaderboardTable = ({ data }: any) => {
                       }}
                       component="p"
                     >
-                      Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                      Dicta, eos non! Expedita error, reiciendis, quia illum
-                      dolore dolorum quis molestias maiores omnis.
+                      Lorem ipsum dolor sit amet consectetur adipisicing elit. Dicta, eos non! Expedita error,
+                      reiciendis, quia illum dolore dolorum quis molestias maiores omnis.
                     </Text>
 
                     <Group mt="md" spacing="xl">

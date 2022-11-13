@@ -2,7 +2,7 @@ import { getAllHandles } from "~/api/handle"
 import { CCIcon, CFIcon, LightOJIcon, TophIcon } from "~/components/Icons"
 import PopupBuilder from "~/components/PopupBuilder"
 import { PlusIcon, PlusSmIcon } from "@heroicons/react/outline"
-import { Box, Button, Grid, Group, Paper, Title } from "@mantine/core"
+import { Box, Button, Grid, Group, Paper, Text, Title } from "@mantine/core"
 import { useState } from "react"
 import { useQuery } from "react-query"
 import HandleForm from "./HandleForm"
@@ -30,6 +30,9 @@ const HandleSettings = () => {
           Add Handle
         </Button>
       </Group>
+
+      {handles?.length === 0 && <Text>You haven't included any handles yet.</Text>}
+
       <PopupBuilder title="Add a new handle" setIsOpen={setIsOpen} isOpen={isOpen}>
         <HandleForm setIsOpen={setIsOpen} isCreate={true} />
       </PopupBuilder>

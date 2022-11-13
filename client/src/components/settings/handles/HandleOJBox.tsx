@@ -78,7 +78,7 @@ const HandleOJBox = ({ icon, handle, onlineJudge }: any) => {
             href={getOJProfileURL(onlineJudge.name, handle)}
             sx={{ height: 36 }}
           >
-            View
+            Visit Profile
           </Menu.Item>
           <Menu.Item icon={<IconEdit size={14} />} onClick={() => setEditOpen(true)}>
             Edit Handle

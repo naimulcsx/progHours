@@ -8,6 +8,7 @@ import { useState } from "react"
 import { Helmet } from "react-helmet-async"
 import { useQuery } from "react-query"
 import { Box, Button, Grid, Group, Text, Title } from "@mantine/core"
+import { IconPlus } from "@tabler/icons"
 
 const StudyPage = () => {
   const [isOpen, setIsOpen] = useState(false)
@@ -26,39 +27,31 @@ const StudyPage = () => {
         <title>Study List</title>
       </Helmet>
 
-      <Group position="apart">
+      <Group position="apart" mb="md">
         <Title order={3}>Study List</Title>
-        <Button
-          size="sm"
-          onClick={() => setIsOpen(true)}
-          type="button"
-          leftIcon={<PlusSmIcon height={24} width={24} />}
-        >
+        <Button size="xs" onClick={() => setIsOpen(true)} type="button" leftIcon={<IconPlus size={16} />}>
           Add New
         </Button>
       </Group>
-      <Box mt={30}>
-        {/* study form popup  */}
-        <PopupBuilder
-          isOpen={isOpen}
-          setIsOpen={setIsOpen}
-          title="Add a new resource on your study list"
-        >
-          <StudyForm setIsOpen={setIsOpen} isCreate={true} />
-        </PopupBuilder>
 
-        <Grid>
-          {userStudies.length === 0 ? (
-            <Text size="sm">Set your study goals</Text>
-          ) : (
-            userStudies.map((item: any) => (
+      <Box>
+        {userStudies.length === 0 ? (
+          <Text>No resources added.</Text>
+        ) : (
+          <Grid>
+            {userStudies.map((item: any) => (
               <Grid.Col key={item.id} md={6} lg={3}>
                 <StudyCard {...item} />
               </Grid.Col>
-            ))
-          )}
-        </Grid>
+            ))}
+          </Grid>
+        )}
       </Box>
+
+      {/* add study modal */}
+      <PopupBuilder isOpen={isOpen} setIsOpen={setIsOpen} title={<Title order={4}>Add new resource</Title>}>
+        <StudyForm setIsOpen={setIsOpen} isCreate={true} />
+      </PopupBuilder>
     </DashboardLayout>
   )
 }

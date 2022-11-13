@@ -1,19 +1,5 @@
-import {
-  ActionIcon,
-  Box,
-  Group,
-  Text,
-  Title,
-  useMantineTheme,
-} from "@mantine/core"
-import {
-  IconCaretRight,
-  IconEdit,
-  IconExternalLink,
-  IconLanguage,
-  IconNews,
-  IconPencil,
-} from "@tabler/icons"
+import { ActionIcon, Box, Group, Paper, Text, Title, useMantineTheme } from "@mantine/core"
+import { IconCaretRight, IconEdit, IconExternalLink, IconLanguage, IconNews } from "@tabler/icons"
 import moment from "moment"
 import { useState } from "react"
 import PopupBuilder from "../PopupBuilder"
@@ -35,36 +21,27 @@ export default function StudyCard(studies: Study) {
 
   const [isOpen, setIsOpen] = useState(false)
 
-  const { title, type, language, link, difficulty, studyTime, studyDate } =
-    studies
+  const { title, type, language, link, difficulty, studyTime, studyDate } = studies
 
   return (
-    <Box p="lg" sx={{ background: "#272a3c", borderRadius: theme.radius.md }}>
+    <Paper p="lg" sx={{ borderRadius: theme.radius.md }}>
       <Group spacing={2}>
-        <Title order={4}>{title}</Title>
-        <ActionIcon
-          variant="transparent"
-          href={link}
-          target="_blank"
-          component="a"
-          color="blue"
-        >
+        <Title order={4} sx={{ color: "white" }}>
+          {title}
+        </Title>
+        <ActionIcon variant="transparent" href={link} target="_blank" component="a" color="blue">
           <IconExternalLink size={20} />
         </ActionIcon>
       </Group>
 
       <Group position="apart" my="sm">
         <Text size="sm">{studyTime} minutes</Text>
-        <Text size="sm"> {moment(studyDate).format("ll")} minutes</Text>
+        <Text size="sm"> {moment(studyDate).format("ll")}</Text>
       </Group>
 
       <Group position="apart">
         <Group spacing={2}>
-          {type === "Video" ? (
-            <IconCaretRight size={20} />
-          ) : (
-            <IconNews size={20} />
-          )}
+          {type === "Video" ? <IconCaretRight size={20} /> : <IconNews size={20} />}
           <Text size="sm">{type}</Text>
         </Group>
 
@@ -75,7 +52,7 @@ export default function StudyCard(studies: Study) {
       </Group>
 
       <Group position="apart" mt="sm">
-        <Group align="center">
+        <Group align="center" spacing="xs">
           {[1, 2, 3].map((circle) => {
             const map: any = {
               Beginner: 1,
@@ -92,8 +69,8 @@ export default function StudyCard(studies: Study) {
                     width: 14,
                     height: 14,
                     border: "2px solid",
-                    backgroundColor: theme.colors.blue[5],
-                    borderColor: theme.colors.blue[5],
+                    backgroundColor: theme.colors.blue[4],
+                    borderColor: theme.colors.blue[4],
                   })}
                 />
               )
@@ -106,7 +83,7 @@ export default function StudyCard(studies: Study) {
                   width: 14,
                   height: 14,
                   border: "2px solid",
-                  borderColor: theme.colors.blue[5],
+                  borderColor: theme.colors.blue[4],
                 })}
               />
             )
@@ -117,24 +94,16 @@ export default function StudyCard(studies: Study) {
 
         <Group spacing={2}>
           <Box>
-            <ActionIcon
-              variant="transparent"
-              color="green"
-              onClick={() => setIsOpen(true)}
-            >
+            <ActionIcon variant="transparent" color="green" onClick={() => setIsOpen(true)}>
               <IconEdit size={16} />
             </ActionIcon>
-            <PopupBuilder
-              isOpen={isOpen}
-              setIsOpen={setIsOpen}
-              title={`Edit ${title}`}
-            >
+            <PopupBuilder isOpen={isOpen} setIsOpen={setIsOpen} title={`Edit ${title}`}>
               <StudyForm setIsOpen={setIsOpen} studies={studies} />
             </PopupBuilder>
           </Box>
           <DeleteStudyList item={studies} />
         </Group>
       </Group>
-    </Box>
+    </Paper>
   )
 }

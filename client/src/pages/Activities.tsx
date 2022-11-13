@@ -59,7 +59,7 @@ const ActivitiesPage = () => {
             </AnimatePresence>
           </Group>
           <Group spacing="xs">
-            <Text>
+            <Text size="sm">
               {page} / {lastPage}
             </Text>
             <ActionIcon variant="outline" onClick={() => setPage((prev) => prev - 1)} disabled={page === 1}>
@@ -87,7 +87,7 @@ const ActivitiesPage = () => {
                 >
                   <Group>
                     <Avatar name={sub.user.name} />
-                    <Text>
+                    <Text size="sm">
                       <Anchor component={RouterLink} to={`/users/${sub.user.username}`}>
                         {sub.user.name}
                       </Anchor>{" "}
@@ -99,7 +99,7 @@ const ActivitiesPage = () => {
                   </Group>
                   <Group>
                     <IconClock size={16} />
-                    <Text>{moment(sub.solvedAt).fromNow()}</Text>
+                    <Text size="sm">{moment(sub.solvedAt).fromNow()}</Text>
                   </Group>
                 </Group>
               )

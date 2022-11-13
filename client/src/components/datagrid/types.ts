@@ -1,17 +1,5 @@
-import {
-  ComponentPropsWithoutRef,
-  ComponentType,
-  HTMLAttributes,
-  ReactElement,
-  ReactNode,
-  Ref,
-} from "react"
-import {
-  DefaultProps,
-  MantineColor,
-  MantineNumberSize,
-  Selectors,
-} from "@mantine/core"
+import { ComponentPropsWithoutRef, ComponentType, HTMLAttributes, ReactElement, ReactNode, Ref } from "react"
+import { DefaultProps, MantineColor, MantineNumberSize, Selectors } from "@mantine/core"
 import {
   Cell,
   ColumnDef,
@@ -36,11 +24,7 @@ export type DataGridSortingState = SortingState
 export type DataGridPaginationState = PaginationState
 export type DataGridFiltersState = ColumnFiltersState
 export type DataGridLocale = {
-  pagination?: (
-    firstRowNum: number,
-    lastRowNum: number,
-    maxRows: number
-  ) => ReactNode
+  pagination?: (firstRowNum: number, lastRowNum: number, maxRows: number) => ReactNode
   pageSize?: ReactNode
   globalSearch?: string
 }
@@ -49,6 +33,8 @@ export type PaginationMode = "default" | "compact"
 export interface DataGridProps<TData extends RowData>
   extends DefaultProps<DataGridStylesNames, object>,
     ComponentPropsWithoutRef<"div"> {
+  tableTitle?: string
+
   /** Gird column definitions */
   columns: ColumnDef<TData, unknown>[]
   /** Grid Data */
@@ -183,17 +169,12 @@ export interface DataGridProps<TData extends RowData>
   firstRow?: ReactNode
 }
 
-export type DataGridFilterFn<
-  TData extends RowData,
-  TFilter = unknown
-> = FilterFn<TData> & {
+export type DataGridFilterFn<TData extends RowData, TFilter = unknown> = FilterFn<TData> & {
   element: ComponentType<DataGridFilterProps<TFilter>>
   init(): TFilter
 }
 
-export function isDataGridFilter(
-  val: unknown
-): val is DataGridFilterFn<unknown> {
+export function isDataGridFilter(val: unknown): val is DataGridFilterFn<unknown> {
   return typeof val === "function" && "element" in val && "init" in val
 }
 

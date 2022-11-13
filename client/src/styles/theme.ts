@@ -26,10 +26,10 @@ const theme: MantineThemeOverride = {
       "#3C455D",
       "#282E3E",
       "#212634",
-      "#202531", // 6 -> navbar bg
+      "#242936", // 6 -> navbar bg
       "#191b27", // 7 -> paper bg
       "#14171F", // 8 -> body bg
-      "#14171F",
+      "#0D0F15",
     ],
   },
 }

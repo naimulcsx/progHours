@@ -60,7 +60,7 @@ const ProblemName = (cell: CellContext<Submission, unknown>) => {
           border: "1px solid",
           padding: 2,
           borderRadius: "50%",
-          borderColor: theme.colors.gray[2],
+          borderColor: theme.colors.dark[4],
         })}
       >
         <OnlineJudgeIcon.icon />
