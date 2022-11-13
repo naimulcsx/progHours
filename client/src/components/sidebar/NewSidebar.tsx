@@ -66,17 +66,19 @@ const NewSidebar = () => {
         </Stack>
       </Navbar.Section> */}
       <Navbar.Section grow mt="xs">
-        <SegmentedControl
-          sx={(theme) => ({ background: theme.colors.dark[9] })}
-          mb="xl"
-          fullWidth
-          value={value}
-          onChange={setValue}
-          data={[
-            { label: "User", value: "user" },
-            { label: "Admin", value: "admin" },
-          ]}
-        />
+        {user?.role === "ADMIN" && (
+          <SegmentedControl
+            sx={(theme) => ({ background: theme.colors.dark[9] })}
+            mb="xl"
+            fullWidth
+            value={value}
+            onChange={setValue}
+            data={[
+              { label: "User", value: "user" },
+              { label: "Admin", value: "admin" },
+            ]}
+          />
+        )}
         {value === "user" && (
           <Stack spacing="xs">
             <NavLink

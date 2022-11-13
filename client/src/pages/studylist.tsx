@@ -40,7 +40,7 @@ const StudyPage = () => {
         ) : (
           <Grid>
             {userStudies.map((item: any) => (
-              <Grid.Col key={item.id} md={6} lg={3}>
+              <Grid.Col key={item.id} md={6} lg={4}>
                 <StudyCard {...item} />
               </Grid.Col>
             ))}

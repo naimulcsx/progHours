@@ -1,9 +1,4 @@
-import {
-  BadRequestException,
-  ForbiddenException,
-  Injectable,
-  NotFoundException,
-} from "@nestjs/common"
+import { BadRequestException, ForbiddenException, Injectable, NotFoundException } from "@nestjs/common"
 import { PrismaService } from "../prisma/prisma.service"
 
 @Injectable()
@@ -13,10 +8,7 @@ export class StudiesService {
   /**
    * Create a new study list
    */
-  async createUserStudy(
-    { title, studyDate, studyTime, type, difficulty, link, language },
-    userId
-  ) {
+  async createUserStudy({ title, studyDate, studyTime, type, difficulty, link, language }, userId) {
     try {
       const study = await this.prisma.userStudy.findUnique({
         where: {
@@ -49,6 +41,7 @@ export class StudiesService {
   getStudiesByUserId(userId: number) {
     return this.prisma.userStudy.findMany({
       where: { userId },
+      orderBy: { id: "asc" },
     })
   }
 

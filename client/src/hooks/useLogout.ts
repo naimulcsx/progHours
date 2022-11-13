@@ -1,8 +1,5 @@
 import { useNavigate } from "react-router-dom"
 import axios from "axios"
-import { showNotification } from "@mantine/notifications"
-import { IconCheck } from "@tabler/icons"
-import React from "react"
 import showToast from "~/utils/showToast"
 
 /**
@@ -16,6 +13,7 @@ const useLogout = () => {
       .then(() => {
         navigate("/login")
         showToast("success", "Logged out!")
+        localStorage.clear()
       })
       .catch(() => {})
   }

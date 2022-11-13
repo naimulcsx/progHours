@@ -12,7 +12,9 @@ import { DashboardLayout } from "~/components/layouts/Dashboard"
 export default function LeaderboardPage() {
   const { user } = useUser()
 
-  const [leaderboardType, setLeaderboardType] = useState<"full" | "currentWeek" | "lastWeek" | "currentMonth">("full")
+  const [leaderboardType, setLeaderboardType] = useState<"full" | "currentWeek" | "lastWeek" | "currentMonth">(
+    "currentWeek"
+  )
 
   const [dateRange, setDateRange] = useState<any>({})
 
@@ -65,7 +67,7 @@ export default function LeaderboardPage() {
             <Box>
               <Select
                 size="xs"
-                defaultValue="full"
+                defaultValue="currentWeek"
                 onChange={(value: "full" | "currentWeek" | "lastWeek" | "currentMonth") => {
                   setLeaderboardType(value)
                 }}

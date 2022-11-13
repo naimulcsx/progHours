@@ -35,12 +35,7 @@ export class UsersService {
     })
   }
 
-  async createUser(
-    name: string,
-    email: string,
-    username: string,
-    password: string
-  ) {
+  async createUser(name: string, email: string, username: string, password: string) {
     // Check if username or email is already taken
     username = username.toLowerCase()
     const usernameExists = await this.prisma.user.findUnique({
@@ -64,16 +59,7 @@ export class UsersService {
     return newUser
   }
 
-  async updateProfile({
-    id,
-    name,
-    email,
-    mobile,
-    department,
-    batch,
-    cgpa,
-    section,
-  }) {
+  async updateProfile({ id, name, email, mobile, department, batch, cgpa, section }) {
     const user = await this.prisma.user.findUnique({ where: { id } })
     // This condition will never be hit, unless you have access
     // token of an user which is not there in the database
@@ -107,13 +93,14 @@ export class UsersService {
     /**
      * Check if the currentPassword is correct
      */
-    const isValid = await this.authService.comparePassword(
-      currentPassword,
-      user.password
-    )
+    const isValid = await this.authService.comparePassword(currentPassword, user.password)
     if (!isValid) {
-      throw new ForbiddenException("Current password is invalid.")
+      throw new ForbiddenException("Current password is invalid!")
     }
+
+    const matchWithPrevPass = await this.authService.comparePassword(newPassword, user.password)
+    if (matchWithPrevPass) throw new BadRequestException("New password must be different from old.")
+
     /**
      * Update the password
      */

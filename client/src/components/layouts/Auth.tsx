@@ -5,14 +5,7 @@ import { Link } from "react-router-dom"
 const AuthLayout = ({ children }: { children: React.ReactNode }) => {
   return (
     <Flex justify="center" align="center" minH="100vh">
-      <Box
-        p={8}
-        bg={mode("white", "gray.700")}
-        maxW="md"
-        w="full"
-        shadow="base"
-        rounded="lg"
-      >
+      <Box p={8} bg={mode("white", "gray.700")} maxW="md" w="full" shadow="base" rounded="lg">
         {/* logo  */}
         <Link to="/leaderboard">
           <Logo />

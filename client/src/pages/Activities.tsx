@@ -65,7 +65,7 @@ const ActivitiesPage = () => {
             <ActionIcon variant="outline" onClick={() => setPage((prev) => prev - 1)} disabled={page === 1}>
               <IconChevronLeft size={16} />
             </ActionIcon>
-            <ActionIcon variant="outline" onClick={() => setPage((prev) => prev + 1)} disabled={page === lastPage}>
+            <ActionIcon variant="outline" onClick={() => setPage((prev) => prev + 1)} disabled={lastPage <= 1}>
               <IconChevronRight size={16} />
             </ActionIcon>
           </Group>

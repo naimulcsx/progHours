@@ -82,7 +82,9 @@ const Login: FC = () => {
         <Paper shadow="xs" p="32px" sx={{ maxWidth: "440px", flexGrow: 1, position: "relative" }}>
           <LoadingOverlay visible={mutation.isLoading} overlayBlur={2} />
           <Stack spacing={10} mb={20}>
-            <Logo />
+            <Link to="/leaderboard" style={{ textDecoration: "none" }}>
+              <Logo />
+            </Link>
             <Title order={3}>Login to Account</Title>
             <Group spacing={6}>
               Don't have an account?

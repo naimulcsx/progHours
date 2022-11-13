@@ -96,14 +96,12 @@ const Register = (): JSX.Element => {
           minHeight: "100vh",
         }}
       >
-        <Paper
-          shadow="xs"
-          p="32px"
-          sx={{ maxWidth: "440px", flexGrow: 1, position: "relative" }}
-        >
+        <Paper shadow="xs" p="32px" sx={{ maxWidth: "440px", flexGrow: 1, position: "relative" }}>
           <LoadingOverlay visible={mutation.isLoading} overlayBlur={2} />
           <Stack spacing={10} mb={20}>
-            <Logo />
+            <Link to="/leaderboard" style={{ textDecoration: "none" }}>
+              <Logo />
+            </Link>
             <Title order={3}>Create a new account</Title>
             <Group spacing={6}>
               Already have an account? Please
@@ -116,14 +114,8 @@ const Register = (): JSX.Element => {
             <Stack>
               <TextInput label="Name" {...form.getInputProps("name")} />
               <TextInput label="Email" {...form.getInputProps("email")} />
-              <TextInput
-                label="University ID"
-                {...form.getInputProps("username")}
-              />
-              <PasswordInput
-                label="Password"
-                {...form.getInputProps("password")}
-              />
+              <TextInput label="University ID" {...form.getInputProps("username")} />
+              <PasswordInput label="Password" {...form.getInputProps("password")} />
               <Button type="submit">Register</Button>
             </Stack>
           </form>

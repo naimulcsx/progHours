@@ -21,50 +21,19 @@ import StudyPage from "./pages/studylist"
 const defineRoute = (path: string, element: ReactNode) => ({ path, element })
 
 const getRoutes = (isLoggedIn: boolean, role: string): RouteObject[] => [
-  defineRoute(
-    "/",
-    isLoggedIn ? <Navigate to="/dashboard" /> : <Navigate to="/leaderboard" />
-  ),
+  defineRoute("/", isLoggedIn ? <Navigate to="/dashboard" /> : <Navigate to="/leaderboard" />),
   defineRoute("/login", isLoggedIn ? <Navigate to="/" /> : <Login />),
-  defineRoute(
-    "/register",
-    isLoggedIn ? <Navigate to="/dashboard" /> : <Register />
-  ),
-  defineRoute(
-    "/dashboard",
-    isLoggedIn ? <DashboardPage /> : <Navigate to="/login" />
-  ),
-  defineRoute(
-    "/submissions",
-    isLoggedIn ? <SubmissionsPage /> : <Navigate to="/login" />
-  ),
+  defineRoute("/register", isLoggedIn ? <Navigate to="/dashboard" /> : <Register />),
+  defineRoute("/dashboard", isLoggedIn ? <DashboardPage /> : <Navigate to="/login" />),
+  defineRoute("/submissions", isLoggedIn ? <SubmissionsPage /> : <Navigate to="/login" />),
   defineRoute("/study", isLoggedIn ? <StudyPage /> : <Navigate to="/login" />),
-  defineRoute(
-    "/settings",
-    isLoggedIn ? <Settings /> : <Navigate to="/login" />
-  ),
-  defineRoute(
-    "/users",
-    isLoggedIn && role === "ADMIN" ? (
-      <UserManagement />
-    ) : (
-      <Navigate to="/login" />
-    )
-  ),
+  defineRoute("/settings", isLoggedIn ? <Settings /> : <Navigate to="/login" />),
+  defineRoute("/users", isLoggedIn && role === "ADMIN" ? <UserManagement /> : <Navigate to="/login" />),
   defineRoute("/@:username", <Profile />),
   defineRoute("/leaderboard", <LeaderboardPage />),
-  defineRoute(
-    "/groups",
-    isLoggedIn ? <GroupsPage /> : <Navigate to="/login" />
-  ),
-  defineRoute(
-    "/activities",
-    isLoggedIn ? <ActivitiesPage /> : <Navigate to="/login" />
-  ),
-  defineRoute(
-    "/groups/:hashtag",
-    isLoggedIn ? <GroupPage /> : <Navigate to="/login" />
-  ),
+  defineRoute("/groups", isLoggedIn ? <GroupsPage /> : <Navigate to="/login" />),
+  defineRoute("/activities", isLoggedIn ? <ActivitiesPage /> : <Navigate to="/login" />),
+  defineRoute("/groups/:hashtag", isLoggedIn ? <GroupPage /> : <Navigate to="/login" />),
   defineRoute("*", <NotFoundPage />),
 ]
 
