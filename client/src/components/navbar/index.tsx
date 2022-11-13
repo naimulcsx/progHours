@@ -11,7 +11,7 @@ const Navbar = () => {
   return (
     <Header
       height={50}
-      px="lg"
+      px="sm"
       sx={(theme) => ({
         position: "fixed",
         top: 0,

@@ -46,8 +46,8 @@ export default function LeaderboardPage() {
               },
             },
         <>
-          <Group position="apart" align="start">
-            <Group align="center" mb="md">
+          <Group position="apart" align="start" mb="md">
+            <Group align="center">
               <Title order={3} sx={{ color: "white" }}>
                 Leaderboard
               </Title>

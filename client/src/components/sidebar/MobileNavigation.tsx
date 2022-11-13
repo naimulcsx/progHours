@@ -26,9 +26,7 @@ export default function MobileNavigation() {
         bottom: 0,
         left: 0,
         right: 0,
-        background: "#fff",
-        border: "1px solid",
-        borderColor: theme.colors.gray[3],
+        background: theme.colors.dark[7],
         [`@media (max-width: ${theme.breakpoints.lg}px)`]: {
           display: "flex",
         },
@@ -40,7 +38,7 @@ export default function MobileNavigation() {
         icon={<IconLayout2 style={{ marginLeft: 8 }} size={24} stroke={1.5} />}
         active={pathname === "/dashboard"}
         sx={(theme) => ({
-          color: theme.colors.gray[8],
+          color: theme.colors.gray[5],
           width: "auto",
           borderRadius: theme.radius.md,
         })}
@@ -48,12 +46,10 @@ export default function MobileNavigation() {
       <NavLink
         component={Link}
         to="/submissions"
-        icon={
-          <IconClipboardList style={{ marginLeft: 8 }} size={24} stroke={1.5} />
-        }
+        icon={<IconClipboardList style={{ marginLeft: 8 }} size={24} stroke={1.5} />}
         active={pathname === "/submissions"}
         sx={(theme) => ({
-          color: theme.colors.gray[8],
+          color: theme.colors.gray[5],
           width: "auto",
           borderRadius: theme.radius.md,
         })}
@@ -64,32 +60,19 @@ export default function MobileNavigation() {
         icon={<IconNotes style={{ marginLeft: 8 }} size={24} stroke={1.5} />}
         active={pathname === "/study"}
         sx={(theme) => ({
-          color: theme.colors.gray[8],
+          color: theme.colors.gray[5],
           width: "auto",
           borderRadius: theme.radius.md,
         })}
       />
-      {/* <NavLink
-        component={Link}
-        to="/groups"
-        icon={<IconUsers size={24} stroke={1.5} />}
-        active={pathname === "/groups"}
-        sx={(theme) => ({ color: theme.colors.gray[8], width: "auto" })}
-      /> */}
-      {/* <NavLink
-        component={Link}
-        to="/activities"
-        icon={<IconChartLine size={24} stroke={1.5} />}
-        active={pathname === "/activities"}
-        sx={(theme) => ({ color: theme.colors.gray[8], width: "auto" })}
-      /> */}
+
       <NavLink
         component={Link}
         to="/leaderboard"
         icon={<IconChartBar style={{ marginLeft: 8 }} size={24} stroke={1.5} />}
         active={pathname === "/leaderboard"}
         sx={(theme) => ({
-          color: theme.colors.gray[8],
+          color: theme.colors.gray[5],
           width: "auto",
           borderRadius: theme.radius.md,
         })}
@@ -98,37 +81,22 @@ export default function MobileNavigation() {
       <Menu shadow="md" width={200}>
         <Menu.Target>
           <NavLink
-            icon={
-              <IconDotsVertical
-                style={{ marginLeft: 8 }}
-                size={24}
-                stroke={1.5}
-              />
-            }
+            icon={<IconDotsVertical style={{ marginLeft: 8 }} size={24} stroke={1.5} />}
             sx={(theme) => ({
-              color: theme.colors.gray[8],
+              color: theme.colors.gray[5],
               width: "auto",
               borderRadius: theme.radius.md,
             })}
           />
         </Menu.Target>
         <Menu.Dropdown>
-          <Menu.Item
-            icon={<IconUsers size={14} />}
-            onClick={() => navigate("/groups")}
-          >
+          <Menu.Item icon={<IconUsers size={14} />} onClick={() => navigate("/groups")}>
             Groups
           </Menu.Item>
-          <Menu.Item
-            icon={<IconChartLine size={14} />}
-            onClick={() => navigate("/activities")}
-          >
+          <Menu.Item icon={<IconChartLine size={14} />} onClick={() => navigate("/activities")}>
             Activities
           </Menu.Item>
-          <Menu.Item
-            icon={<IconSettings size={14} />}
-            onClick={() => navigate("/settings")}
-          >
+          <Menu.Item icon={<IconSettings size={14} />} onClick={() => navigate("/settings")}>
             Settings
           </Menu.Item>
         </Menu.Dropdown>
