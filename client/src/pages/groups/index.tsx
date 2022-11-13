@@ -1,13 +1,5 @@
 import { useState } from "react"
-import {
-  Box,
-  Button,
-  Group,
-  Loader,
-  SimpleGrid,
-  Text,
-  Title,
-} from "@mantine/core"
+import { Box, Button, Group, Loader, SimpleGrid, Text, Title } from "@mantine/core"
 import { Helmet } from "react-helmet-async"
 import { useQuery } from "react-query"
 import { motion } from "framer-motion"
@@ -19,8 +11,11 @@ import { getUserGroups } from "~/api/groups"
 import CreateGroupModal from "~/components/modals/CreateGroupModal"
 import GroupCard from "~/components/groups/GroupCard"
 import { JoinGroupModal } from "~/components/modals/JoinGroupModal"
+import useUser from "~/hooks/useUser"
 
 export default function GroupsPage() {
+  const { user } = useUser()
+
   // fetch groups data
   const { data, isLoading, isFetching } = useQuery(["groups"], getUserGroups)
 
@@ -55,14 +50,25 @@ export default function GroupsPage() {
           </AnimatePresence>
         </Group>
         <Box>
-          <Button
-            size="xs"
-            sx={(theme) => ({ boxShadow: theme.shadows.sm })}
-            leftIcon={<IconPlus size={16} />}
-            onClick={() => setCreateIsOpen(true)}
-          >
-            Create group
-          </Button>
+          {user?.role === "ADMIN" ? (
+            <Button
+              size="xs"
+              sx={(theme) => ({ boxShadow: theme.shadows.sm })}
+              leftIcon={<IconPlus size={16} />}
+              onClick={() => setCreateIsOpen(true)}
+            >
+              Create group
+            </Button>
+          ) : (
+            <Button
+              size="xs"
+              sx={(theme) => ({ boxShadow: theme.shadows.sm })}
+              leftIcon={<IconPlus size={16} />}
+              onClick={() => setJoinIsOpen(true)}
+            >
+              Join group
+            </Button>
+          )}
         </Box>
       </Group>
 
@@ -87,9 +93,7 @@ export default function GroupsPage() {
                 <GroupCard key={el.group.id} {...el} />
               ))}
             </SimpleGrid>
-            {data.body.groups.length === 0 && (
-              <Text>You don't belong to any group.</Text>
-            )}
+            {data.body.groups.length === 0 && <Text>You don't belong to any group.</Text>}
           </motion.div>
         )}
       </AnimatePresence>

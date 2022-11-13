@@ -1,11 +1,10 @@
 import * as Yup from "yup"
 import axios from "axios"
 import { useMutation, useQueryClient } from "react-query"
-import { showNotification } from "@mantine/notifications"
-import { IconCheck, IconX } from "@tabler/icons"
 import { useForm, yupResolver } from "@mantine/form"
 import { Box, Button, NumberInput, Paper, Select, Stack, TextInput, Title } from "@mantine/core"
 import useUser from "~/hooks/useUser"
+import showToast from "~/utils/showToast"
 
 const infoSchema = Yup.object().shape({
   name: Yup.string().required("Name is required"),
@@ -31,22 +30,12 @@ export const GeneralInformationForm = () => {
     },
     {
       onSuccess: () => {
-        queryClient.invalidateQueries("user"),
-          showNotification({
-            title: "Account updated!",
-            message: `Account updated!`,
-            color: "green",
-            icon: <IconCheck />,
-          })
+        queryClient.invalidateQueries("user")
+        showToast("success", "Account updated!")
       },
       onError: ({ response }) => {
         const { error, message } = response.data
-        showNotification({
-          title: message,
-          message: error,
-          color: "red",
-          icon: <IconX />,
-        })
+        showToast("error", message)
       },
     }
   )

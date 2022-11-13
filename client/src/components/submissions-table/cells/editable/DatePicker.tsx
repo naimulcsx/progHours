@@ -5,8 +5,7 @@ import { useMutation, useQueryClient } from "react-query"
 import { AxiosError } from "axios"
 import { DatePicker as MantineDatePicker } from "@mantine/dates"
 import { CellContext } from "@tanstack/react-table"
-import { showNotification } from "@mantine/notifications"
-import { IconCheck } from "@tabler/icons"
+import showToast from "~/utils/showToast"
 
 const DatePicker = (cell: CellContext<Submission, unknown>) => {
   const queryClient = useQueryClient()
@@ -18,13 +17,11 @@ const DatePicker = (cell: CellContext<Submission, unknown>) => {
       /**
        * Show toast message
        */
-      showNotification({
-        message: "heello owrld",
-        color: "green",
-        icon: <IconCheck />,
-      })
+      showToast("success", "Update Submission")
     },
-    onError: (err: AxiosError) => {},
+    onError: (err: AxiosError) => {
+      showToast("error", err.response?.data.message)
+    },
   })
 
   return (

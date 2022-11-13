@@ -23,8 +23,8 @@ import {
 import Logo from "~/components/Logo"
 import { useForm, yupResolver } from "@mantine/form"
 import { useMutation } from "react-query"
-import { showNotification } from "@mantine/notifications"
 import { IconCheck, IconX } from "@tabler/icons"
+import showToast from "~/utils/showToast"
 
 // schema validation
 const registerSchema = Yup.object().shape({
@@ -46,22 +46,12 @@ const Register = (): JSX.Element => {
   const mutation = useMutation(registerMutation, {
     onSuccess: ({ message, body }) => {
       const user = body.user
-      showNotification({
-        title: message,
-        message: `Welcome, ${user.name}`,
-        color: "green",
-        icon: <IconCheck />,
-      })
+      showToast("success", `Welcome, ${user.name}`)
       navigate("/dashboard")
     },
     onError: ({ response }) => {
       const { error, message } = response.data
-      showNotification({
-        title: message,
-        message: error,
-        color: "red",
-        icon: <IconX />,
-      })
+      showToast("error", message)
     },
   })
 

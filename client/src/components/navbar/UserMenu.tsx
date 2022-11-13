@@ -20,7 +20,16 @@ const UserMenu: FC<{ user: User }> = ({ user }) => {
           leftIcon={<Avatar name={user.name} width={28} height={28} />}
           px="sm"
         >
-          <Text mr="xs">{user.name}</Text>
+          <Text
+            mr="xs"
+            sx={(theme) => ({
+              [`@media (max-width: ${theme.breakpoints.md}px)`]: {
+                display: "none",
+              },
+            })}
+          >
+            {user.name}
+          </Text>
           <IconChevronDown size={16} />
         </Button>
       </Menu.Target>
