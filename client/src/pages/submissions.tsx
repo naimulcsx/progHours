@@ -26,7 +26,6 @@ export default function SubmissionsPage() {
   //   context?.useSubmissionsResult
 
   const { submissions } = useSubmissions()
-  console.log(submissions)
   // const { data } = useQuery("submissions", () =>
   //   axios.get("/api/submissions").then((res) => res.data)
   // )

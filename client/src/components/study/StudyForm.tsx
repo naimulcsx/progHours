@@ -53,8 +53,6 @@ export default function StudyForm({ setIsOpen, studies, isCreate }: any) {
       studyDate: moment(values.studyDate).format(),
     }
 
-    console.log(value)
-
     mutation.mutateAsync(value)
   })
 
