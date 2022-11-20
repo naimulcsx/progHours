@@ -15,6 +15,7 @@ const LeaderboardTable = ({ data }: any) => {
       withPagination
       withColumnFilters
       horizontalSpacing="xl"
+      verticalSpacing="sm"
       pageSizes={["25", "50", "100"]}
       initialState={{ pagination: { pageSize: 25 } }}
       columns={[
@@ -28,70 +29,46 @@ const LeaderboardTable = ({ data }: any) => {
           header: "Name",
           size: 300,
           cell: ({ cell }) => {
-            const { name, department, batch, username } = cell.row.original.user
+            const { name, username } = cell.row.original.user
             return (
-              <Group position="center" sx={{ overflow: "hidden" }}>
-                <HoverCard width={320} shadow="md" openDelay={200} closeDelay={400}>
-                  <HoverCard.Target>
-                    <Box
+              <Box
+                component={Link}
+                to={`/@${username.toUpperCase()}`}
+                sx={{ textDecoration: "none" }}
+                title="Visit profile"
+              >
+                <Box
+                  sx={(theme) => ({
+                    height: 32,
+                    display: "flex",
+                    alignItems: "center",
+                    gap: theme.spacing.sm,
+                  })}
+                >
+                  <Avatar name={name} />
+                  <Box>
+                    <Text
                       sx={(theme) => ({
-                        height: 32,
-                        display: "flex",
-                        alignItems: "center",
-                        gap: theme.spacing.sm,
+                        maxWidth: 240,
+                        whiteSpace: "nowrap",
+                        overflow: "hidden",
+                        textOverflow: "ellipsis",
+                        fontWeight: 500,
+                        color: theme.colorScheme === "dark" ? theme.white : theme.colors.dark[6],
                       })}
                     >
-                      <Avatar name={name} />
-                      <Text sx={{ maxWidth: 240, whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>
-                        {name}
-                      </Text>
-                    </Box>
-                  </HoverCard.Target>
-                  <HoverCard.Dropdown>
-                    <Group>
-                      <Avatar name={name} />
-                      <Stack spacing={5}>
-                        <Text
-                          size="sm"
-                          weight={700}
-                          sx={{
-                            whiteSpace: "nowrap",
-                            overflow: "hidden",
-                            textOverflow: "ellipsis",
-                            width: 180,
-                            lineHeight: 1,
-                          }}
-                        >
-                          {name}
-                        </Text>
-                        <Anchor component={Link} to={`/@${username}`} color="dimmed" size="xs" sx={{ lineHeight: 1 }}>
-                          @{username.toUpperCase()}
-                        </Anchor>
-                      </Stack>
-                    </Group>
-                    <Text
-                      sx={{
-                        whiteSpace: "pre-wrap",
-                      }}
-                      component="p"
-                    >
-                      Lorem ipsum dolor sit amet consectetur adipisicing elit. Dicta, eos non! Expedita error,
-                      reiciendis, quia illum dolore dolorum quis molestias maiores omnis.
+                      {name}
                     </Text>
-
-                    <Group mt="md" spacing="xl">
-                      <Text size="sm">
-                        <b>
-                          {department} {batch}
-                        </b>
-                      </Text>
-                      <Text size="sm">
-                        <b>{cell.row.original.totalSolved}</b> Problems Solved
-                      </Text>
-                    </Group>
-                  </HoverCard.Dropdown>
-                </HoverCard>
-              </Group>
+                    <Text
+                      sx={(theme) => ({
+                        color: theme.colorScheme === "dark" ? theme.colors.dark[2] : theme.colors.gray[6],
+                      })}
+                    >
+                      {username.toUpperCase()}
+                    </Text>
+                  </Box>
+                </Box>
+              </Box>
             )
           },
         },

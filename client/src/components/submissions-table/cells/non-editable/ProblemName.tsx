@@ -21,7 +21,7 @@ import { Cell } from "react-table"
 import { Submission } from "~/types/Submission"
 import { ExternalLinkIcon } from "@heroicons/react/outline"
 import { QuestionMarkCircleIcon } from "@heroicons/react/outline"
-import { Anchor, Box, Group, Text, Title } from "@mantine/core"
+import { Anchor, Box, Group, Text, Title, useMantineTheme } from "@mantine/core"
 import { IconExternalLink } from "@tabler/icons"
 
 const iconMap = [
@@ -60,23 +60,30 @@ const ProblemName = (cell: CellContext<Submission, unknown>) => {
           border: "1px solid",
           padding: 2,
           borderRadius: "50%",
-          borderColor: theme.colors.dark[4],
+          borderColor: theme.colorScheme === "dark" ? theme.colors.dark[4] : theme.colors.gray[3],
         })}
       >
         <OnlineJudgeIcon.icon />
       </Box>
       <Box>
         <Group spacing="xs" align="center">
-          <Title order={5} sx={(theme) => ({ color: theme.colors.dark[0] })}>
+          <Title
+            order={5}
+            sx={(theme) => ({ color: theme.colorScheme === "dark" ? theme.colors.dark[0] : theme.colors.dark[9] })}
+          >
             {pid}
           </Title>
-          <Anchor sx={(theme) => ({ color: theme.colors.dark[0] })} href={link} target="_blank">
+          <Anchor
+            sx={(theme) => ({ color: theme.colorScheme === "dark" ? theme.colors.dark[0] : theme.colors.dark[9] })}
+            href={link}
+            target="_blank"
+          >
             <IconExternalLink size={16} />
           </Anchor>
         </Group>
         <Text
           sx={(theme) => ({
-            color: theme.colors.dark[2],
+            color: theme.colorScheme === "dark" ? theme.colors.dark[2] : theme.colors.dark[3],
             maxWidth: 200,
             whiteSpace: "nowrap",
             overflow: "hidden",

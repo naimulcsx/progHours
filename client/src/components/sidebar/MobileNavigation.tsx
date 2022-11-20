@@ -1,4 +1,4 @@
-import { Box, Button, Group, NavLink, Menu } from "@mantine/core"
+import { Box, Button, Group, NavLink, Menu, ThemeIcon, useMantineTheme } from "@mantine/core"
 import {
   IconLayout2,
   IconUsers,
@@ -13,6 +13,7 @@ import { Link, useLocation, useNavigate } from "react-router-dom"
 
 export default function MobileNavigation() {
   const navigate = useNavigate()
+  const theme = useMantineTheme()
   const { pathname } = useLocation()
   return (
     <Group
@@ -27,6 +28,8 @@ export default function MobileNavigation() {
         left: 0,
         right: 0,
         background: theme.colors.dark[7],
+        borderTop: "1px solid",
+        borderColor: theme.colors.dark[4],
         [`@media (max-width: ${theme.breakpoints.lg}px)`]: {
           display: "flex",
         },
@@ -35,53 +38,69 @@ export default function MobileNavigation() {
       <NavLink
         component={Link}
         to="/dashboard"
-        icon={<IconLayout2 style={{ marginLeft: 8 }} size={24} stroke={1.5} />}
+        icon={<IconLayout2 style={{ marginLeft: 8 }} size={20} stroke={1.5} />}
         active={pathname === "/dashboard"}
         sx={(theme) => ({
-          color: theme.colors.gray[5],
           width: "auto",
+          display: "flex",
           borderRadius: theme.radius.md,
+          "&[data-active='true']": {
+            color: "white",
+            background: theme.colors.dark[4],
+          },
         })}
       />
       <NavLink
         component={Link}
         to="/submissions"
-        icon={<IconClipboardList style={{ marginLeft: 8 }} size={24} stroke={1.5} />}
+        icon={<IconClipboardList style={{ marginLeft: 8 }} size={20} stroke={1.5} />}
         active={pathname === "/submissions"}
         sx={(theme) => ({
-          color: theme.colors.gray[5],
           width: "auto",
+          display: "flex",
           borderRadius: theme.radius.md,
+          "&[data-active='true']": {
+            color: "white",
+            background: theme.colors.dark[4],
+          },
         })}
       />
       <NavLink
         component={Link}
         to="/study"
-        icon={<IconNotes style={{ marginLeft: 8 }} size={24} stroke={1.5} />}
+        icon={<IconNotes style={{ marginLeft: 8 }} size={20} stroke={1.5} />}
         active={pathname === "/study"}
         sx={(theme) => ({
-          color: theme.colors.gray[5],
           width: "auto",
+          display: "flex",
           borderRadius: theme.radius.md,
+          "&[data-active='true']": {
+            color: "white",
+            background: theme.colors.dark[4],
+          },
         })}
       />
 
       <NavLink
         component={Link}
         to="/leaderboard"
-        icon={<IconChartBar style={{ marginLeft: 8 }} size={24} stroke={1.5} />}
+        icon={<IconChartBar style={{ marginLeft: 8 }} size={20} stroke={1.5} />}
         active={pathname === "/leaderboard"}
         sx={(theme) => ({
-          color: theme.colors.gray[5],
           width: "auto",
+          display: "flex",
           borderRadius: theme.radius.md,
+          "&[data-active='true']": {
+            color: "white",
+            background: theme.colors.dark[4],
+          },
         })}
       />
 
       <Menu shadow="md" width={200}>
         <Menu.Target>
           <NavLink
-            icon={<IconDotsVertical style={{ marginLeft: 8 }} size={24} stroke={1.5} />}
+            icon={<IconDotsVertical style={{ marginLeft: 8 }} size={20} stroke={1.5} />}
             sx={(theme) => ({
               color: theme.colors.gray[5],
               width: "auto",

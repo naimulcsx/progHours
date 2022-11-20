@@ -27,7 +27,6 @@ export const StatCard = (props: any) => {
             sx={(theme) => ({
               fontSize: theme.headings.sizes.h2.fontSize,
               fontWeight: 700,
-              color: theme.white,
               [`@media (max-width: ${theme.breakpoints.lg}px)`]: {
                 fontSize: theme.headings.sizes.h3.fontSize,
               },
@@ -39,7 +38,7 @@ export const StatCard = (props: any) => {
             sx={(theme) => ({
               fontSize: theme.headings.sizes.h4.fontSize,
               fontWeight: 500,
-              color: theme.colors.gray[4],
+              color: theme.colorScheme === "dark" ? theme.colors.gray[4] : theme.colors.gray[7],
               [`@media (max-width: ${theme.breakpoints.lg}px)`]: {
                 fontSize: theme.headings.sizes.h5.fontSize,
               },

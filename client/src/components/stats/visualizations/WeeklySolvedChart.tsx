@@ -22,7 +22,7 @@ export default function WeeklySolvedChart({ data }) {
       background: "transparent",
     },
     theme: {
-      mode: "dark",
+      mode: theme.colorScheme,
       palette: "palette1",
     },
     dataLabels: {
@@ -45,8 +45,7 @@ export default function WeeklySolvedChart({ data }) {
       offsetY: 0,
       align: "center",
       style: {
-        fontWeight: 600,
-        color: theme.colors.gray[3],
+        color: theme.colorScheme === "dark" ? theme.colors.gray[3] : theme.colors.dark[9],
       },
     },
   }

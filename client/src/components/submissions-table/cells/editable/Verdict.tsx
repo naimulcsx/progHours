@@ -78,12 +78,33 @@ const Verdict = (cell: CellContext<Submission, unknown>) => {
     },
   })
 
+  const getLightStyles: any = (theme: MantineTheme) => ({
+    AC: {
+      borderColor: theme.colors.green[6],
+      background: theme.colors.green[5],
+      color: theme.colors.green[0],
+      fontWeight: 600,
+    },
+    WA: {
+      borderColor: theme.colors.red[6],
+      background: theme.colors.red[5],
+      color: theme.colors.red[0],
+      fontWeight: 600,
+    },
+    TLE: {
+      borderColor: theme.colors.yellow[6],
+      background: theme.colors.yellow[5],
+      color: theme.colors.yellow[0],
+      fontWeight: 600,
+    },
+  })
+
   return (
     <Select
       value={selected}
       onChange={handleSelected}
       sx={(theme) => ({
-        input: getStyles(theme)[selected],
+        input: theme.colorScheme === "dark" ? getStyles(theme)[selected] : getLightStyles(theme)[selected],
       })}
       rightSection={<IconSelector size={16} color="white" />}
       rightSectionProps={{

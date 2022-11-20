@@ -1,17 +1,19 @@
-import { Anchor, Box, Button, Group, Header, Text } from "@mantine/core"
+import { ActionIcon, Anchor, Box, Button, Group, Header, Text, useMantineColorScheme } from "@mantine/core"
 import { Link } from "react-router-dom"
 import Logo from "~/components/Logo"
 import useUser from "~/hooks/useUser"
 import UserMenu from "./UserMenu"
-import { IconSearch } from "@tabler/icons"
+import { IconMoonStars, IconSearch, IconSun } from "@tabler/icons"
 import { openSpotlight } from "@mantine/spotlight"
 
 const Navbar = () => {
   const { user } = useUser()
+  const { colorScheme, toggleColorScheme } = useMantineColorScheme()
+  const dark = colorScheme === "dark"
   return (
     <Header
       height={50}
-      px="sm"
+      px="md"
       sx={(theme) => ({
         position: "fixed",
         top: 0,
@@ -20,7 +22,7 @@ const Navbar = () => {
         display: "flex",
         justifyContent: "space-between",
         alignItems: "center",
-        background: theme.colors.dark[7],
+        background: colorScheme === "dark" ? theme.colors.dark[7] : theme.white,
       })}
     >
       <Anchor
@@ -34,7 +36,15 @@ const Navbar = () => {
       >
         <Logo />
       </Anchor>
-      <Box>
+      <Group>
+        <ActionIcon
+          variant="outline"
+          color={dark ? "yellow" : "blue"}
+          onClick={() => toggleColorScheme()}
+          title="Toggle color scheme"
+        >
+          {dark ? <IconSun size={18} /> : <IconMoonStars size={18} />}
+        </ActionIcon>
         {user ? (
           <Group>
             <Button
@@ -43,7 +53,7 @@ const Navbar = () => {
               color="gray"
               onClick={() => openSpotlight()}
               sx={(theme) => ({
-                borderColor: theme.colors.dark[4],
+                borderColor: theme.colorScheme === "dark" ? theme.colors.dark[4] : theme.colors.gray[3],
                 [`@media (max-width: ${theme.breakpoints.lg}px)`]: {
                   display: "none",
                 },
@@ -64,7 +74,7 @@ const Navbar = () => {
             </Anchor>
           </Group>
         )}
-      </Box>
+      </Group>
     </Header>
   )
 }

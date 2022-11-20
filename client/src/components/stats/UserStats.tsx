@@ -2,7 +2,7 @@ import { StarIcon, LightningBoltIcon, TrendingUpIcon, ClockIcon, ChartBarIcon } 
 import calculatePoints from "~/utils/calculatePoints"
 import { SimpleGrid } from "@chakra-ui/react"
 import { StatCard } from "~/components/stats/StatCard"
-import { Grid, ThemeIcon } from "@mantine/core"
+import { Grid, Paper, Text, ThemeIcon } from "@mantine/core"
 import { IconEnergy, IconFlag, IconPoints, IconTime } from "../GamifiedIcons"
 
 type HeroIconProps = (props: React.ComponentProps<"svg">) => JSX.Element

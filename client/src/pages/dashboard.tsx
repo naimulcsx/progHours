@@ -57,9 +57,7 @@ export default function DashboardPage() {
 
       {/* page title */}
       <Group align="center" mb="md">
-        <Title order={3} sx={(theme) => ({ color: theme.white })}>
-          Dashboard
-        </Title>
+        <Title order={3}>Dashboard</Title>
         <AnimatePresence>
           {(isLoading || isFetching) && (
             <motion.div
@@ -79,7 +77,7 @@ export default function DashboardPage() {
         <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.25, duration: 0.35 }}>
           {data && frequency && data["tagsFrequency"] && (
             <>
-              <Box mb="sm">
+              <Box mb={8}>
                 <UserStats progress={data} />
               </Box>
               <Grid sx={{ alignItems: "stretch" }}>

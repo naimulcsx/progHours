@@ -1,4 +1,13 @@
-import { IconChartBar, IconDashboard, IconLogout, IconSearch } from "@tabler/icons"
+import {
+  IconChartBar,
+  IconDashboard,
+  IconLayout2,
+  IconLogin,
+  IconLogout,
+  IconSearch,
+  IconUser,
+  IconUserPlus,
+} from "@tabler/icons"
 import { SpotlightAction } from "@mantine/spotlight"
 import { NavigateFunction } from "react-router-dom"
 import type { User } from "~/contexts/UserContext"
@@ -14,14 +23,14 @@ export default function getSpotlightActions(
       {
         title: "Register",
         description: "Visit the dashboard page",
-        onTrigger: () => navigate("/dasboard"),
-        icon: <IconDashboard size={18} />,
+        onTrigger: () => navigate("/register"),
+        icon: <IconUserPlus size={18} />,
       },
       {
         title: "Login",
         description: "Visit the dashboard page",
         onTrigger: () => navigate("/login"),
-        icon: <IconDashboard size={18} />,
+        icon: <IconLogin size={18} />,
       },
     ]
   }
@@ -31,13 +40,13 @@ export default function getSpotlightActions(
       title: "Dashboard",
       description: "Visit the dashboard page",
       onTrigger: () => navigate("/dashboard"),
-      icon: <IconDashboard size={18} />,
+      icon: <IconLayout2 size={18} />,
     },
     {
       title: "Your Profile",
       description: "Visit your profile",
       onTrigger: () => user && navigate(`/@${user.username}`),
-      icon: <IconDashboard size={18} />,
+      icon: <IconUser size={18} />,
     },
     {
       title: "Leaderboard",

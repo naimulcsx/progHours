@@ -1,10 +1,9 @@
-import { MantineThemeOverride } from "@mantine/core"
+import { ButtonStylesParams, MantineTheme, MantineThemeOverride } from "@mantine/core"
 
 const theme: MantineThemeOverride = {
   defaultRadius: "md",
   primaryColor: "blue",
   primaryShade: 5,
-  colorScheme: "dark",
   fontFamily: "Inter, sans-serif",
   colors: {
     blue: [
@@ -31,6 +30,27 @@ const theme: MantineThemeOverride = {
       "#14171F", // 8 -> body bg
       "#0D0F15",
     ],
+  },
+  components: {
+    Title: {
+      styles: (theme: MantineTheme) => ({
+        root: {
+          color: theme.colorScheme === "dark" ? theme.white : theme.colors.dark[9],
+        },
+      }),
+    },
+    Paper: {
+      styles: (theme: MantineTheme, params: ButtonStylesParams) => ({
+        root: {
+          boxShadow:
+            theme.colorScheme === "dark" ? "inset 1px 2px 4px 0px rgba(166, 182, 255, 0.075)" : theme.shadows.xs,
+          background:
+            theme.colorScheme === "dark"
+              ? "linear-gradient(to right bottom, #1e212e 1.34%, #1c1e2b 98.64%)"
+              : theme.white,
+        },
+      }),
+    },
   },
 }
 

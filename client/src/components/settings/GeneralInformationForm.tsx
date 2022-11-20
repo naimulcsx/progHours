@@ -63,7 +63,6 @@ export const GeneralInformationForm = () => {
       mb={10}
       p={24}
       sx={(theme) => ({
-        boxShadow: theme.shadows.xs,
         // @ts-ignore
         borderRadius: theme.radius[theme.defaultRadius],
       })}

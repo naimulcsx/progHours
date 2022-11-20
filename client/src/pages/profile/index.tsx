@@ -1,9 +1,10 @@
 import { useQuery } from "react-query"
 import { useState } from "react"
 import { useParams } from "react-router-dom"
-import { Grid, Stack, Tabs, Box, SimpleGrid, Paper, Text, Title } from "@mantine/core"
-import { IconPhoto, IconMessageCircle, IconSettings } from "@tabler/icons"
+import { Grid, Stack, Tabs, Box, SimpleGrid, Paper, Text, Title, Table } from "@mantine/core"
+import { IconPhoto, IconMessageCircle, IconSettings, IconUser } from "@tabler/icons"
 import { Skeleton, useToast, useColorModeValue as mode } from "@chakra-ui/react"
+import moment from "moment"
 
 /**
  * Import Components
@@ -101,16 +102,13 @@ export default function Profile() {
     onSuccess: (res) => {
       setUser(res.body.user)
     },
-    onError: (err) => {
-      // showErrorToasts(toast, err.response?.data.message)
-    },
+    onError: () => {},
   })
 
   const [userStats, setUserStats] = useState<any>(null)
+
   useQuery(`stats/${username}`, () => getStatsByUsername(username || ""), {
-    onSuccess: (res) => {
-      setUserStats(res.body.stats)
-    },
+    onSuccess: (res) => setUserStats(res.body.stats),
   })
 
   return (
@@ -123,11 +121,14 @@ export default function Profile() {
               <Helmet>
                 <title>{user?.name}</title>
               </Helmet>
-              <UserCard name={user.name} username={user.username} member_since={user.memberSince} role={user.role} />
+              <UserCard user={user} />
               <Tabs defaultValue="stats">
                 <Tabs.List>
                   <Tabs.Tab value="stats" icon={<IconPhoto size={16} />}>
                     STATS
+                  </Tabs.Tab>
+                  <Tabs.Tab value="about" icon={<IconUser size={16} />}>
+                    ABOUT
                   </Tabs.Tab>
                   <Tabs.Tab value="medals" icon={<IconMessageCircle size={16} />}>
                     MEDALS
@@ -148,6 +149,57 @@ export default function Profile() {
                       </Grid.Col>
                     </Grid>
                   </Stack>
+                </Tabs.Panel>
+                <Tabs.Panel value="about">
+                  <Paper mt="xs">
+                    <Table
+                      verticalSpacing="sm"
+                      horizontalSpacing="lg"
+                      sx={(theme) => ({
+                        borderRadius: theme.radius.md,
+                        overflow: "clip",
+                      })}
+                    >
+                      <thead>
+                        <tr>
+                          <th style={{ width: 200 }}>Full Name</th>
+                          <th>
+                            <Text sx={{ fontWeight: 400 }}>{user.name}</Text>
+                          </th>
+                        </tr>
+                        <tr>
+                          <th style={{ width: 200 }}>University ID</th>
+                          <th>
+                            <Text sx={{ fontWeight: 400 }}>{user.username.toUpperCase()}</Text>
+                          </th>
+                        </tr>
+                        <tr>
+                          <th style={{ width: 200 }}>Department</th>
+                          <th>
+                            <Text sx={{ fontWeight: 400 }}>{user.department ?? "—"}</Text>
+                          </th>
+                        </tr>
+                        <tr>
+                          <th style={{ width: 200 }}>Batch</th>
+                          <th>
+                            <Text sx={{ fontWeight: 400 }}>{user.batch ?? "—"}</Text>
+                          </th>
+                        </tr>
+                        <tr>
+                          <th style={{ width: 200 }}>Email</th>
+                          <th>
+                            <Text sx={{ fontWeight: 400 }}>{user.email}</Text>
+                          </th>
+                        </tr>
+                        <tr>
+                          <th style={{ width: 200, borderBottom: 0 }}>Member Since</th>
+                          <th style={{ borderBottom: 0 }}>
+                            <Text sx={{ fontWeight: 400 }}>{moment(user.memberSince).fromNow()}</Text>
+                          </th>
+                        </tr>
+                      </thead>
+                    </Table>
+                  </Paper>
                 </Tabs.Panel>
                 <Tabs.Panel value="medals" pt="xs">
                   <MedalsTab userStats={userStats} />

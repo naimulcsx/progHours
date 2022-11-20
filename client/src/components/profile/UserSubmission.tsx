@@ -25,7 +25,6 @@ const UserSubmissionTable = ({ submissions }: { submissions: Submission[] }) => 
           marginLeft: -16,
           marginRight: -16,
         })}
-        //   firstRow={<SubmissionForm serial={submissions.length + 1} />}
         pageSizes={["25", "50", "100"]}
         initialState={{ pagination: { pageSize: 25 } }}
         data={submissions ? submissions : []}
@@ -43,7 +42,7 @@ const UserSubmissionTable = ({ submissions }: { submissions: Submission[] }) => 
             header: "Problem Name",
             accessorKey: "problem.name",
             cell: ProblemName,
-            size: 260,
+            size: 250,
           },
           {
             header: "Verdict",
@@ -54,7 +53,7 @@ const UserSubmissionTable = ({ submissions }: { submissions: Submission[] }) => 
           {
             header: "Solve Time",
             accessorKey: "solveTime",
-            size: 95,
+            size: 90,
           },
           {
             header: "Tags",

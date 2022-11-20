@@ -1,5 +1,5 @@
-import { Heading, HStack, useColorModeValue as mode } from "@chakra-ui/react"
-import { Box, Code, Group, Text, Title } from "@mantine/core"
+import { Heading, HStack, theme, useColorModeValue as mode } from "@chakra-ui/react"
+import { Box, Code, Group, Text, Title, useMantineColorScheme } from "@mantine/core"
 import { FC, SVGProps } from "react"
 
 const LogoIcon: FC<SVGProps<SVGSVGElement>> = (props) => {
@@ -73,8 +73,8 @@ const Logo = () => {
     >
       {/* color of the logo is picked from its parents text-color */}
       <LogoIcon width={28} height={28} />
-      <Box sx={{ color: "white" }}>
-        <Title order={4} style={{ lineHeight: 1.15 }}>
+      <Box sx={(theme) => ({ color: theme.colorScheme === "dark" ? theme.white : theme.colors.blue[5] })}>
+        <Title order={4} sx={(theme) => ({ color: theme.colorScheme === "dark" ? theme.white : theme.colors.blue[5] })}>
           progHours
         </Title>
         <Text sx={{ fontSize: "10px" }}>v0.3.0</Text>

@@ -31,27 +31,26 @@ const HandleOJBox = ({ icon, handle, onlineJudge }: any) => {
   return (
     <Box
       p="lg"
-      sx={{
+      sx={(theme) => ({
         position: "relative",
         display: "flex",
         justifyContent: "space-between",
         borderRadius: theme.radius.md,
-        background: "#272a3c",
-      }}
+        background: theme.colorScheme === "dark" ? "#272a3c" : theme.colors.gray[0],
+      })}
     >
       <Group>
         <Box
-          sx={{
+          sx={(theme) => ({
             width: 48,
             height: 48,
             display: "flex",
             justifyContent: "center",
             alignItems: "center",
             padding: 8,
-            // border: "1px solid",
-            background: theme.colors.dark[3],
+            background: theme.colorScheme === "dark" ? theme.colors.dark[3] : theme.white,
             borderRadius: "50%",
-          }}
+          })}
         >
           {icon}
         </Box>

@@ -46,14 +46,7 @@ export const UpdatePasswordForm = () => {
   })
 
   return (
-    <Paper
-      mb={10}
-      p={25}
-      sx={{
-        backgroundColor: "white",
-        boxShadow: "0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1)",
-      }}
-    >
+    <Paper mb={10} p={25}>
       <Title order={4} mb="md">
         Change Password
       </Title>

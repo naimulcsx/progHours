@@ -23,7 +23,7 @@ const Settings = () => {
 
       {user && (
         <Box sx={{ maxWidth: "1024px", margin: "0 auto" }}>
-          <Title order={3} mb="md" sx={{ color: "white" }}>
+          <Title order={3} mb="md">
             Settings
           </Title>
           <Tabs defaultValue={currentTab}>

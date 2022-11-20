@@ -34,8 +34,7 @@ export default function MemberCard({ user, role, groupId, hashtag }: any) {
       // toast({ status: "success", title: res.message })
     },
     onError: (err: any) => {
-      const errorMessage =
-        err?.response?.data?.message || "Something went wrong!"
+      const errorMessage = err?.response?.data?.message || "Something went wrong!"
       // toast({ status: "error", title: errorMessage })
     },
   })
@@ -49,7 +48,6 @@ export default function MemberCard({ user, role, groupId, hashtag }: any) {
         sx={(theme) => ({
           alignItems: "center",
           position: "relative",
-          boxShadow: theme.shadows.xs,
           borderRadius: theme.radius.md,
           padding: theme.spacing.lg,
           textAlign: "center",
@@ -61,26 +59,15 @@ export default function MemberCard({ user, role, groupId, hashtag }: any) {
         <Text size="sm">{user.username.toUpperCase()}</Text>
         <Menu shadow="md" width={200}>
           <Menu.Target>
-            <Button
-              color="gray"
-              variant="subtle"
-              size="xs"
-              sx={{ position: "absolute", top: 8, right: 8, padding: 4 }}
-            >
+            <Button color="gray" variant="subtle" size="xs" sx={{ position: "absolute", top: 8, right: 8, padding: 4 }}>
               <IconDotsVertical size={18} />
             </Button>
           </Menu.Target>
           <Menu.Dropdown>
-            <Menu.Item
-              icon={<IconUser size={14} />}
-              onClick={() => navigate(`/@${user.username}`)}
-            >
+            <Menu.Item icon={<IconUser size={14} />} onClick={() => navigate(`/@${user.username}`)}>
               View Profile
             </Menu.Item>
-            <Menu.Item
-              icon={<IconMinus size={14} />}
-              onClick={handleRemoveUser}
-            >
+            <Menu.Item icon={<IconMinus size={14} />} onClick={handleRemoveUser}>
               Remove
             </Menu.Item>
           </Menu.Dropdown>

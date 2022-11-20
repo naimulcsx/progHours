@@ -14,10 +14,7 @@ const DatePicker = (cell: CellContext<Submission, unknown>) => {
   const { mutate } = useMutation(updateSubmission, {
     onSuccess: (res) => {
       queryClient.invalidateQueries("submissions")
-      /**
-       * Show toast message
-       */
-      showToast("success", "Update Submission")
+      showToast("success", "Updated submission!")
     },
     onError: (err: AxiosError) => {
       showToast("error", err.response?.data.message)

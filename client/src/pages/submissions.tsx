@@ -61,9 +61,7 @@ export default function SubmissionsPage() {
         <title>Submissions</title>
       </Helmet>
       <Group align="center" mb="md">
-        <Title order={3} sx={{ color: "white" }}>
-          Submissions
-        </Title>
+        <Title order={3}>Submissions</Title>
       </Group>
       {/* tracking table */}
       {submissions && <SubmissionsTable submissions={submissions} />}

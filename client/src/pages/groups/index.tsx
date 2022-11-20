@@ -33,9 +33,7 @@ export default function GroupsPage() {
       {/* page title and buttons */}
       <Group position="apart" align="start">
         <Group align="center" mb="md">
-          <Title order={3} sx={{ color: "white" }}>
-            Groups
-          </Title>
+          <Title order={3}>Groups</Title>
           <AnimatePresence>
             {(isLoading || isFetching) && (
               <motion.div

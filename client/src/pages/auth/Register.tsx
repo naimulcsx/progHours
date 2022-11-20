@@ -1,5 +1,4 @@
 import * as Yup from "yup"
-import { useToast } from "@chakra-ui/react"
 import { Helmet } from "react-helmet-async"
 import { Link, useNavigate } from "react-router-dom"
 
@@ -7,19 +6,7 @@ import { Link, useNavigate } from "react-router-dom"
  * Import Components / Utilities
  */
 import { registerMutation } from "~/api/auth"
-import { DEFAULT_TOAST_OPTIONS } from "~/configs/toast-config"
-import {
-  Anchor,
-  Box,
-  Button,
-  Group,
-  LoadingOverlay,
-  Paper,
-  PasswordInput,
-  Stack,
-  TextInput,
-  Title,
-} from "@mantine/core"
+import { Anchor, Box, Button, Group, Paper, PasswordInput, Stack, TextInput, Title } from "@mantine/core"
 import Logo from "~/components/Logo"
 import { useForm, yupResolver } from "@mantine/form"
 import { useMutation } from "react-query"
@@ -86,8 +73,7 @@ const Register = (): JSX.Element => {
           minHeight: "100vh",
         }}
       >
-        <Paper shadow="xs" p="32px" sx={{ maxWidth: "440px", flexGrow: 1, position: "relative" }}>
-          <LoadingOverlay visible={mutation.isLoading} overlayBlur={2} />
+        <Paper shadow="xs" p="xl" sx={{ maxWidth: "440px", flexGrow: 1 }}>
           <Stack spacing={10} mb={20}>
             <Link to="/leaderboard" style={{ textDecoration: "none" }}>
               <Logo />
@@ -102,11 +88,13 @@ const Register = (): JSX.Element => {
           </Stack>
           <form onSubmit={handleSubmit}>
             <Stack>
-              <TextInput label="Name" {...form.getInputProps("name")} />
-              <TextInput label="Email" {...form.getInputProps("email")} />
-              <TextInput label="University ID" {...form.getInputProps("username")} />
-              <PasswordInput label="Password" {...form.getInputProps("password")} />
-              <Button type="submit">Register</Button>
+              <TextInput label="Name" {...form.getInputProps("name")} withAsterisk />
+              <TextInput label="Email" {...form.getInputProps("email")} withAsterisk />
+              <TextInput label="University ID" {...form.getInputProps("username")} withAsterisk />
+              <PasswordInput label="Password" {...form.getInputProps("password")} withAsterisk />
+              <Button type="submit" loading={mutation.isLoading}>
+                Register
+              </Button>
             </Stack>
           </form>
         </Paper>

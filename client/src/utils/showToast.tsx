@@ -7,13 +7,17 @@ export default function showToast(type: "success" | "error", message: string) {
   showNotification({
     icon: type === "success" ? <IconCheck color="white" size={18} /> : <IconX color="white" size={18} />,
     color: type === "success" ? "green" : "red",
-    message: <Text sx={{ fontWeight: 500, color: "white" }}>{message}</Text>,
-    sx: {
-      // borderBottom: "2px solid",
-      // borderBottomColor: type === "success" ? "#07b00c" : "#e74c3c",
-      background: theme?.colors?.dark?.[5],
-      boxShadow: "inset 1px 1px 4px 1px rgb(166 182 255 / 8%)",
-    },
+    message: (
+      <Text
+        sx={(theme) => ({ fontWeight: 500, color: theme.colorScheme === "dark" ? theme.white : theme.colors.dark[9] })}
+      >
+        {message}
+      </Text>
+    ),
+    sx: (theme) => ({
+      background: theme.colorScheme === "dark" ? theme.colors.dark[5] : theme.white,
+      boxShadow: theme.colorScheme === "dark" ? "inset 1px 1px 4px 1px rgb(166 182 255 / 8%)" : theme.shadows.xs,
+    }),
     closeButtonProps: {
       sx: {
         color: theme?.colors?.dark?.[2],

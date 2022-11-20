@@ -20,8 +20,7 @@ export default createStyles(
     wrapper: {
       height: height ? height + "px" : undefined,
       width: width ? width + "px" : undefined,
-      overflow: "hidden",
-      // borderRadius: theme.radius.md,
+      backgroundColor: "transparent !important",
     },
     scrollArea: {
       position: "relative",
@@ -33,11 +32,11 @@ export default createStyles(
     },
     thead: {
       position: "relative",
-      background: theme.colors.dark[6],
+      background: theme.colorScheme === "dark" ? theme.colors.dark[6] : theme.white,
       textTransform: "uppercase",
       "::after": {
         content: "' '",
-        backgroundColor: theme.colors.dark[6],
+        backgroundColor: theme.colorScheme === "dark" ? theme.colors.dark[6] : theme.colors.gray[3],
         position: "absolute",
         left: 0,
         right: 0,
@@ -53,7 +52,7 @@ export default createStyles(
     },
     tbody: {
       minHeight: "160px",
-      background: theme.colors.dark[7],
+      background: theme.colorScheme === "dark" ? theme.colors.dark[7] : theme.white,
     },
     tr: {},
     th: { position: "relative" },
@@ -100,8 +99,8 @@ export default createStyles(
       display: "flex",
       justifyContent: "center",
       alignItems: "center",
-      background: theme.colors.dark[7],
-      borderTop: `1px solid ${theme.colors.dark[4]} !important`,
+      background: theme.colorScheme === "dark" ? theme.colors.dark[7] : theme.white,
+      borderTop: `1px solid ${theme.colorScheme === "dark" ? theme.colors.dark[4] : theme.colors.gray[3]} !important`,
 
       [`@media (min-width: ${theme.breakpoints.xl}px)`]: {
         justifyContent: paginationMode === "default" ? "space-between" : "flex-end",

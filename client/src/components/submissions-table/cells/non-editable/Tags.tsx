@@ -22,12 +22,13 @@ const NonEditableTags = (cell: CellContext<Submission, unknown>) => {
         // TODO: Fix the type
         return (
           <Badge
-            sx={{
+            sx={(theme) => ({
               borderRadius: 4,
               paddingLeft: 8,
               paddingRight: 8,
               fontWeight: 600,
-            }}
+              background: theme.colorScheme === "dark" ? theme.colors.dark[4] : theme.colors.blue[0],
+            })}
             key={index}
           >
             {item.tag.name}

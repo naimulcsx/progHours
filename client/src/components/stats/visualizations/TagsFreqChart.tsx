@@ -17,12 +17,19 @@ function stringToColour(str: string) {
 }
 // @ts-ignore
 export default function TagsFreqChart({ data }) {
+  data.sort((a: any, b: any) => {
+    return b.count - a.count
+  })
+
+  const slicedData = data.slice(0, 12).reverse()
+  console.log(slicedData)
+
   const theme = useMantineTheme()
   const state = {
     series: [
       {
         name: "Solved problems",
-        data: data.length > 0 ? data.map(({ count }: { count: string }) => parseInt(count)) : [],
+        data: slicedData.length > 0 ? slicedData.map(({ count }: { count: string }) => parseInt(count)) : [],
       },
     ],
     options: {
@@ -34,9 +41,9 @@ export default function TagsFreqChart({ data }) {
         },
         background: "transparent",
       },
-      colors: data.length > 0 ? data.map(({ name }: { name: string }) => stringToColour(name)) : ["#fff"],
+      colors: slicedData.length > 0 ? slicedData.map(({ name }: { name: string }) => stringToColour(name)) : ["#fff"],
       theme: {
-        mode: "dark",
+        mode: theme.colorScheme,
         palette: "palette1",
       },
       plotOptions: {
@@ -59,12 +66,12 @@ export default function TagsFreqChart({ data }) {
         offsetY: -32,
         style: {
           fontSize: "12px",
-          colors: [theme.colors.gray[3]],
+          colors: [theme.colorScheme === "dark" ? theme.colors.gray[3] : theme.colors.gray[7]],
         },
       },
       xaxis: {
         type: "category",
-        categories: data.length > 0 ? data.map(({ name }: { name: string }) => name) : [""],
+        categories: slicedData.length > 0 ? slicedData.map(({ name }: { name: string }) => name) : [""],
         position: "bottom",
         axisBorder: {
           show: false,
@@ -89,7 +96,7 @@ export default function TagsFreqChart({ data }) {
         },
       },
       yaxis: {
-        max: Math.max(...data.map(({ count }: { count: string }) => parseInt(count))) + 3,
+        max: Math.max(...slicedData.map(({ count }: { count: string }) => parseInt(count))) + 3,
         axisBorder: {
           show: false,
         },
@@ -104,13 +111,13 @@ export default function TagsFreqChart({ data }) {
         },
       },
       title: {
-        text: "Solved categories",
+        text: "Most solved categories",
         floating: false,
         offsetY: 0,
         margin: 10,
         align: "center",
         style: {
-          color: theme.colors.white,
+          color: theme.colorScheme === "dark" ? theme.colors.gray[3] : theme.colors.dark[9],
         },
       },
     },

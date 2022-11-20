@@ -13,16 +13,11 @@ const UserMenu: FC<{ user: User }> = ({ user }) => {
   return (
     <Menu shadow="md" width={200}>
       <Menu.Target>
-        <Button
-          size="sm"
-          variant="subtle"
-          color="gray"
-          leftIcon={<Avatar name={user.name} width={28} height={28} />}
-          px="sm"
-        >
+        <Button size="sm" variant="subtle" leftIcon={<Avatar name={user.name} width={28} height={28} />} px="sm">
           <Text
             mr="xs"
             sx={(theme) => ({
+              color: theme.colorScheme === "dark" ? theme.white : theme.colors.dark[6],
               [`@media (max-width: ${theme.breakpoints.md}px)`]: {
                 display: "none",
               },

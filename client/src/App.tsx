@@ -1,5 +1,5 @@
-import { FC } from "react"
-import { Box, MantineProvider } from "@mantine/core"
+import { FC, useState } from "react"
+import { Box, ColorScheme, ColorSchemeProvider, MantineProvider } from "@mantine/core"
 import { SpotlightProvider } from "@mantine/spotlight"
 import { NotificationsProvider } from "@mantine/notifications"
 import { useNavigate, useRoutes } from "react-router-dom"
@@ -14,44 +14,54 @@ import useUser from "~/hooks/useUser"
 import useLogout from "~/hooks/useLogout"
 import theme from "~/styles/theme"
 import "~/styles/custom.css"
+import { useLocalStorage } from "@mantine/hooks"
 
-const Entry: FC<{ isLoggedIn: boolean; user: User | null }> = ({
-  isLoggedIn,
-  user,
-}) => {
+const Entry: FC<{ isLoggedIn: boolean; user: User | null }> = ({ isLoggedIn, user }) => {
   const handleLogout = useLogout()
   const navigate = useNavigate()
   const role: string = user ? user.role : "GUEST"
   const matchedPage = useRoutes(getRoutes(isLoggedIn, role))
+
+  const [colorScheme, setColorScheme] = useLocalStorage<ColorScheme>({
+    key: "mantine-color-scheme",
+    defaultValue: "light",
+    getInitialValueInEffect: true,
+  })
+
+  const toggleColorScheme = (value?: ColorScheme) =>
+    setColorScheme(value || (colorScheme === "dark" ? "light" : "dark"))
+
   return (
-    <MantineProvider withGlobalStyles withNormalizeCSS theme={theme}>
-      <NotificationsProvider position="top-center" transitionDuration={250}>
-        <SpotlightProvider
-          actions={getSpotlightActions(navigate, handleLogout, user)}
-          searchIcon={<IconSearch size={18} />}
-          searchPlaceholder="Search..."
-          shortcut="mod + shift + p"
-          nothingFoundMessage="Nothing found..."
-        >
-          <Box
-            sx={(theme) => ({
-              background: theme.colors.dark[8],
-              minHeight: "100vh",
-              overflow: "hidden",
-            })}
+    <ColorSchemeProvider colorScheme={colorScheme} toggleColorScheme={toggleColorScheme}>
+      <MantineProvider withGlobalStyles withNormalizeCSS theme={{ colorScheme, ...theme }}>
+        <NotificationsProvider position="top-center" transitionDuration={250}>
+          <SpotlightProvider
+            actions={getSpotlightActions(navigate, handleLogout, user)}
+            searchIcon={<IconSearch size={18} />}
+            searchPlaceholder="Search..."
+            shortcut="mod + shift + p"
+            nothingFoundMessage="Nothing found..."
           >
-            {isLoggedIn ? (
-              <SubmissionsProvider>
+            <Box
+              sx={(theme) => ({
+                background: colorScheme === "dark" ? theme.colors.dark[8] : theme.colors.gray[0],
+                minHeight: "100vh",
+                overflow: "hidden",
+              })}
+            >
+              {isLoggedIn ? (
+                <SubmissionsProvider>
+                  <main>{matchedPage}</main>
+                </SubmissionsProvider>
+              ) : (
                 <main>{matchedPage}</main>
-              </SubmissionsProvider>
-            ) : (
-              <main>{matchedPage}</main>
-            )}
-          </Box>
-        </SpotlightProvider>
-        {/* <ReactQueryDevtools position="bottom-right" /> */}
-      </NotificationsProvider>
-    </MantineProvider>
+              )}
+            </Box>
+          </SpotlightProvider>
+          {/* <ReactQueryDevtools position="bottom-right" /> */}
+        </NotificationsProvider>
+      </MantineProvider>
+    </ColorSchemeProvider>
   )
 }
 

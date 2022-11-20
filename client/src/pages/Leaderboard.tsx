@@ -40,7 +40,7 @@ export default function LeaderboardPage() {
           ? null
           : {
               sx: {
-                maxWidth: "1536px",
+                maxWidth: "1400px",
                 paddingTop: "80px",
                 minHeight: "100vh",
               },
@@ -48,9 +48,7 @@ export default function LeaderboardPage() {
         <>
           <Group position="apart" align="start" mb="md">
             <Group align="center">
-              <Title order={3} sx={{ color: "white" }}>
-                Leaderboard
-              </Title>
+              <Title order={3}>Leaderboard</Title>
               <AnimatePresence>
                 {(isLoading || isFetching) && (
                   <motion.div
@@ -102,6 +100,9 @@ export default function LeaderboardPage() {
                 <Box
                   sx={(theme) => ({
                     margin: user ? "0 -16px" : "auto",
+                    borderRadius: user ? 0 : theme.radius.md,
+                    overflow: "clip",
+                    boxShadow: theme.shadows.xs,
                     [`@media (max-width: ${theme.breakpoints.lg}px)`]: {
                       margin: "0 -16px",
                     },
