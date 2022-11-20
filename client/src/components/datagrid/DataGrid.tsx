@@ -235,7 +235,7 @@ export function DataGrid<TData extends RowData>({
     >
       <Group position="apart" px="md">
         {tableTitle && (
-          <Title order={3} sx={{ color: "white" }} mb="md">
+          <Title order={3} mb="md">
             {tableTitle}
           </Title>
         )}
