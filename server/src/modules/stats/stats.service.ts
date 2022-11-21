@@ -1,6 +1,5 @@
 import { Injectable } from "@nestjs/common"
 import { PrismaService } from "../prisma/prisma.service"
-import * as moment from "moment"
 import { UserStat } from "@prisma/client"
 
 // fix prisma bigint issue: https://github.com/prisma/studio/issues/614
@@ -45,6 +44,8 @@ export class StatsService {
       where: { userId },
     })
     const tagsFrequency = await this.getTagsFrequency(userId)
+    const tagsSolveTime = await this.getTagSolveTime(userId)
+    // const heatmapData = await this.getHeatmapData(userId)
     return {
       verdictCount,
       totalSolved: userStat.totalSolved,
@@ -52,7 +53,22 @@ export class StatsService {
       totalSolveTime: userStat.totalSolveTime,
       totalSolvedWithDifficulty: userStat.totalSolvedWithDifficulty,
       tagsFrequency,
+      tagsSolveTime,
     }
+  }
+
+  async getHeatmapData(userId) {
+    const rawData = await this.prisma.$queryRaw`
+      SELECT 
+        CAST("Submission"."solvedAt" AS DATE),  
+        COUNT("Submission"."solveTime")
+      FROM 
+        "Submission"
+      WHERE
+        "Submission"."userId" = 97
+      GROUP BY CAST("Submission"."solvedAt" AS DATE)
+    `
+    return rawData
   }
 
   /**
@@ -152,7 +168,7 @@ export class StatsService {
         "Tag"."name", 
         CAST(COUNT("Tag"."name") AS int)
       FROM 
-        "ProblemTag" 
+        "ProblemTag"
       LEFT JOIN "Tag" ON "ProblemTag"."tagId" = "Tag"."id"
       WHERE 
         "ProblemTag"."problemId" IN (
@@ -169,6 +185,28 @@ export class StatsService {
         "Tag"."name"
     `
     return rawData
+  }
+
+  async getTagSolveTime(userId) {
+    const rawData: any[] = await this.prisma.$queryRaw`
+      SELECT 
+        "Tag"."name",
+        CAST(SUM("Submission"."solveTime") as int)
+      FROM 
+        "Submission"
+      LEFT JOIN "Problem" ON "Submission"."problemId" = "Problem"."id"
+      LEFT JOIN "ProblemTag" ON "Problem"."id" = "ProblemTag"."problemId"
+      LEFT JOIN "Tag" ON "ProblemTag"."tagId" = "Tag"."id"
+      WHERE 
+        "Submission"."userId" = 97
+        AND "Submission"."verdict" = 'AC'
+      GROUP BY
+        "Tag"."name"
+    `
+    return rawData.map((item) => {
+      if (!item.name) return { name: "untagged", sum: item.sum }
+      return item
+    })
   }
 
   async getWeeklyLeaderboard(fromDate: string, toDate: string) {

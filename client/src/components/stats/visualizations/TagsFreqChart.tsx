@@ -1,8 +1,7 @@
 import ReactApexChart from "react-apexcharts"
-import { useColorModeValue as mode } from "@chakra-ui/react"
 import { Paper, useMantineTheme } from "@mantine/core"
 
-function stringToColour(str: string) {
+export function stringToColour(str: string) {
   str = str + "_"
   let hash = 0
   for (let i = 0; i < str.length; i++) {
@@ -15,15 +14,11 @@ function stringToColour(str: string) {
   }
   return colour
 }
-// @ts-ignore
-export default function TagsFreqChart({ data }) {
+export default function TagsFreqChart({ data }: any) {
   data.sort((a: any, b: any) => {
     return b.count - a.count
   })
-
   const slicedData = data.slice(0, 12).reverse()
-  console.log(slicedData)
-
   const theme = useMantineTheme()
   const state = {
     series: [
@@ -40,6 +35,15 @@ export default function TagsFreqChart({ data }) {
           show: true,
         },
         background: "transparent",
+      },
+      grid: {
+        show: true,
+        borderColor: theme.colorScheme === "dark" ? theme.colors.dark[3] : theme.colors.gray[3],
+        xaxis: {
+          lines: {
+            show: false,
+          },
+        },
       },
       colors: slicedData.length > 0 ? slicedData.map(({ name }: { name: string }) => stringToColour(name)) : ["#fff"],
       theme: {

@@ -1,25 +1,4 @@
-import {
-  Navbar,
-  Text,
-  NavLink,
-  SegmentedControl,
-  Group,
-  Stack,
-  MantineTheme,
-  Box,
-  Badge,
-  ThemeIcon,
-  useMantineTheme,
-} from "@mantine/core"
-import {
-  IconChartBar,
-  IconClipboardList,
-  IconLayout2,
-  IconNote,
-  IconNotes,
-  IconSettings,
-  IconUsers,
-} from "@tabler/icons"
+import { Navbar, Text, NavLink, SegmentedControl, Group, Stack, MantineTheme, Box, Badge } from "@mantine/core"
 import { useEffect, useState } from "react"
 import { Link, useLocation } from "react-router-dom"
 
@@ -30,11 +9,10 @@ import {
   IconDashboard,
   IconGroup,
   IconLeaderboard,
-  // IconSettings,
+  IconSettings,
   IconStudy,
   IconSubmissions,
-  // IconUsers,
-  // IconUsers,
+  IconUsers,
 } from "../GamifiedIcons"
 
 const navItemStyles = (theme: MantineTheme) => ({
@@ -56,7 +34,6 @@ const NewSidebar = () => {
   const { user } = useUser()
   const { pathname } = useLocation()
   const [value, setValue] = useState(() => localStorage.getItem("__sc") || "user")
-  const theme = useMantineTheme()
 
   useEffect(() => {
     localStorage.setItem("__sc", value)
@@ -94,18 +71,8 @@ const NewSidebar = () => {
               component={Link}
               to="/dashboard"
               label="Dashboard"
+              icon={<IconDashboard />}
               active={pathname === "/dashboard"}
-              icon={
-                <ThemeIcon
-                  size="md"
-                  variant="gradient"
-                  gradient={{ from: "yellow", to: "red" }}
-                  style={{ marginLeft: 8 }}
-                  sx={{ boxShadow: `inset 1px 2px 2px 1px ${theme.colors.yellow[3]}` }}
-                >
-                  <IconLayout2 size={16} stroke={2} />
-                </ThemeIcon>
-              }
               color="red"
               sx={navItemStyles}
             />
@@ -113,17 +80,7 @@ const NewSidebar = () => {
               component={Link}
               to="/submissions"
               label="Submissions"
-              icon={
-                <ThemeIcon
-                  size="md"
-                  variant="gradient"
-                  gradient={{ from: "teal", to: "lime" }}
-                  style={{ marginLeft: 8 }}
-                  sx={{ boxShadow: "inset 1px 2px 2px 1px lime" }}
-                >
-                  <IconClipboardList size={16} stroke={2} />
-                </ThemeIcon>
-              }
+              icon={<IconSubmissions />}
               active={pathname === "/submissions"}
               sx={navItemStyles}
             />
@@ -131,17 +88,7 @@ const NewSidebar = () => {
               component={Link}
               to="/study"
               label="Study List"
-              icon={
-                <ThemeIcon
-                  size="md"
-                  variant="gradient"
-                  gradient={{ from: "purple", to: "pink" }}
-                  style={{ marginLeft: 8 }}
-                  sx={{ boxShadow: `inset 1px 2px 2px 1px ${theme.colors.pink[4]}` }}
-                >
-                  <IconNotes size={16} stroke={2} />
-                </ThemeIcon>
-              }
+              icon={<IconStudy />}
               active={pathname === "/study"}
               sx={navItemStyles}
             />
@@ -149,17 +96,7 @@ const NewSidebar = () => {
               component={Link}
               to="/groups"
               label="My Groups"
-              icon={
-                <ThemeIcon
-                  size="md"
-                  variant="gradient"
-                  gradient={{ from: "pink", to: "blue" }}
-                  style={{ marginLeft: 8 }}
-                  sx={{ boxShadow: `inset 1px 2px 2px 1px ${theme.colors.blue[3]}` }}
-                >
-                  <IconUsers size={16} stroke={2} />
-                </ThemeIcon>
-              }
+              icon={<IconGroup />}
               active={pathname === "/groups"}
               sx={navItemStyles}
             />
@@ -167,17 +104,7 @@ const NewSidebar = () => {
               component={Link}
               to="/leaderboard"
               label="Leaderboard"
-              icon={
-                <ThemeIcon
-                  size="md"
-                  variant="gradient"
-                  gradient={{ from: "red", to: "orange" }}
-                  style={{ marginLeft: 8 }}
-                  sx={{ boxShadow: `inset 1px 2px 2px 1px ${theme.colors.pink[3]}` }}
-                >
-                  <IconChartBar size={16} stroke={2} />
-                </ThemeIcon>
-              }
+              icon={<IconLeaderboard />}
               active={pathname === "/leaderboard"}
               sx={navItemStyles}
             />
@@ -185,17 +112,7 @@ const NewSidebar = () => {
               component={Link}
               to="/activities"
               label="Activities"
-              icon={
-                <ThemeIcon
-                  size="md"
-                  variant="gradient"
-                  gradient={{ from: theme.colors.pink[8], to: theme.colors.red[8] }}
-                  style={{ marginLeft: 8 }}
-                  sx={{ boxShadow: `inset 1px 2px 2px 1px ${theme.colors.red[4]}` }}
-                >
-                  <IconNotes size={16} stroke={2} />
-                </ThemeIcon>
-              }
+              icon={<IconActivities />}
               active={pathname === "/activities"}
               sx={navItemStyles}
             />
@@ -203,17 +120,7 @@ const NewSidebar = () => {
               component={Link}
               to="/settings"
               label="Settings"
-              icon={
-                <ThemeIcon
-                  size="md"
-                  variant="gradient"
-                  gradient={{ from: theme.colors.yellow[8], to: theme.colors.orange[8] }}
-                  style={{ marginLeft: 8 }}
-                  sx={{ boxShadow: `inset 1px 2px 2px 1px ${theme.colors.yellow[6]}` }}
-                >
-                  <IconSettings size={16} stroke={2} />
-                </ThemeIcon>
-              }
+              icon={<IconSettings />}
               active={pathname === "/settings"}
               sx={navItemStyles}
             />
@@ -225,17 +132,7 @@ const NewSidebar = () => {
               component={Link}
               to="/users"
               label="User Management"
-              icon={
-                <ThemeIcon
-                  size="md"
-                  variant="gradient"
-                  gradient={{ from: "pink", to: "blue" }}
-                  style={{ marginLeft: 8 }}
-                  sx={{ boxShadow: `inset 1px 2px 2px 1px ${theme.colors.blue[3]}` }}
-                >
-                  <IconUsers size={16} stroke={2} />
-                </ThemeIcon>
-              }
+              icon={<IconUsers />}
               active={pathname === "/users"}
               sx={navItemStyles}
             />
