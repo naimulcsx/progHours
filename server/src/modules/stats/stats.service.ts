@@ -9,7 +9,7 @@ bigIntPrototype.toJSON = function () {
   return Number(this)
 }
 
-interface UserStatWithComputedFields extends UserStat {
+export interface UserStatWithComputedFields extends UserStat {
   rank: number
   averageDifficulty: number
   score: number
@@ -122,29 +122,6 @@ export class StatsService {
     */
     return 0
   }
-
-  /**
-   * Get user live ranklist
-   */
-  // async getLiveRanklist() {
-  //   const users = await this.usersService
-  //     .createQueryBuilder("user")
-  //     .select(["user.username", "user.name", "user.id"])
-  //     .getMany()
-  //   const result = []
-  //   for (let user of users) {
-  //     const average_difficulty = await this.getAverageDifficulty(user.id)
-  //     const total_solve_time = await this.getSolveTime(user.id)
-  //     const total_solved = await this.getTotalSolvedCount(user.id)
-  //     result.push({
-  //       ...user,
-  //       average_difficulty,
-  //       total_solve_time,
-  //       total_solved,
-  //     })
-  //   }
-  //   return result
-  // }
 
   /**
    * Get user ranklist

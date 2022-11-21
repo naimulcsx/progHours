@@ -100,7 +100,7 @@ export class GroupsService {
       return groupUser
     })
 
-    const computedRanklist = computeRankAndSort(ranklist)
+    const computedRanklist: any = computeRankAndSort(ranklist)
 
     return {
       group,

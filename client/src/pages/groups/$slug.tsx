@@ -6,21 +6,11 @@ import { getGroupByHashtag } from "~/api/groups"
 import { useQuery } from "react-query"
 import { AnimateLoading } from "~/components/AnimateLoading"
 
-import {
-  TabList,
-  TabPanels,
-  Tab,
-  TabPanel,
-  useClipboard,
-} from "@chakra-ui/react"
+import { TabList, TabPanels, Tab, TabPanel, useClipboard } from "@chakra-ui/react"
 import LeaderboardTable from "~/components/leaderboard/TableDesktop"
 import processRanklist from "~/utils/processRanklist"
 import { getAvatarColors } from "~/utils/getAvatarColors"
-import {
-  ClipboardCheckIcon,
-  ClipboardCopyIcon,
-  PlusIcon,
-} from "@heroicons/react/outline"
+import { ClipboardCheckIcon, ClipboardCopyIcon, PlusIcon } from "@heroicons/react/outline"
 import MemberCard from "~/components/groups/MemberCard"
 import { AddUserToGroupModal } from "~/components/modals/AddUserToGroupModal"
 import UpdateGroup from "~/components/groups/UpdateGroup"
@@ -35,12 +25,8 @@ const GroupPage = () => {
   const { user } = useUser()
   const { hashtag } = useParams()
   const [isOpen, setIsOpen] = useState(false)
-  const { data, isLoading, isFetching } = useQuery(`groups/${hashtag}`, () =>
-    getGroupByHashtag(hashtag)
-  )
-  const { hasCopied, onCopy } = useClipboard(
-    data?.body?.group?.accessCode || ""
-  )
+  const { data, isLoading, isFetching } = useQuery(`groups/${hashtag}`, () => getGroupByHashtag(hashtag))
+  const { hasCopied, onCopy } = useClipboard(data?.body?.group?.accessCode || "")
   return (
     <DashboardLayout
     // rightButton={
@@ -185,10 +171,7 @@ const GroupPage = () => {
 
               <Tabs.Panel value="leaderboard" pt="xs">
                 <Box sx={{ marginLeft: -16, marginRight: -16 }}>
-                  <Leaderboard
-                    data={data?.body?.ranklist}
-                    isLoading={isLoading}
-                  />
+                  <Leaderboard data={data?.body?.ranklist} isLoading={isLoading} />
                 </Box>
               </Tabs.Panel>
 

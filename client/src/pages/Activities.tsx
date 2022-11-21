@@ -80,7 +80,7 @@ const ActivitiesPage = () => {
                     width: "100%",
                     justifyContent: "space-between",
                     borderTop: idx > 0 ? "1px solid" : 0,
-                    borderColor: theme.colors.dark[3],
+                    borderColor: theme.colorScheme === "dark" ? theme.colors.dark[3] : theme.colors.gray[3],
                   }}
                 >
                   <Group>
