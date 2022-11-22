@@ -1,13 +1,5 @@
 import { Role } from "@prisma/client"
-import {
-  IsEmail,
-  IsString,
-  IsNumber,
-  IsOptional,
-  IsPositive,
-  Min,
-  Max,
-} from "class-validator"
+import { IsEmail, IsString, IsNumber, IsOptional, IsPositive, Min, Max } from "class-validator"
 
 export class UpdateUserDto {
   @IsString()

@@ -1,19 +1,16 @@
 import "regenerator-runtime/runtime"
 import { useState } from "react"
 import type { User } from "~/contexts/UserContext"
-import EditUserTable from "./EditUserTable"
 import { DataGrid } from "~/components/datagrid"
-import { Group, Box, Text } from "@mantine/core"
+import { Group, Box, Text, Button, Anchor } from "@mantine/core"
 import Avatar from "~/components/Avatar"
+import Action from "./Actions"
 
 export default function UserManagementTable({ users }: { users: User[] }) {
   const [isOpen, setIsOpen] = useState(false)
-  const [data, setData] = useState({})
 
   return (
     <>
-      <EditUserTable data={data} isOpen={isOpen} setIsOpen={setIsOpen} />
-
       <Box sx={{ marginLeft: -16, marginRight: -16 }}>
         <DataGrid
           tableTitle="Users"
@@ -74,6 +71,10 @@ export default function UserManagementTable({ users }: { users: User[] }) {
             {
               accessorKey: "role",
               header: "Role",
+            },
+            {
+              header: "Action",
+              cell: Action,
             },
           ]}
         />
