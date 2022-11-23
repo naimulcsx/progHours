@@ -3,13 +3,11 @@ import { updateSubmission } from "~/api/submissions"
 import React, { useRef, useState } from "react"
 import { Submission } from "~/types/Submission"
 import { Practice } from "~/types/Practice"
-import { useToast } from "@chakra-ui/react"
-import { DEFAULT_TOAST_OPTIONS } from "~/configs/toast-config"
 import { CellContext } from "@tanstack/react-table"
-import { NumberInput, TextInput } from "@mantine/core"
+import { TextInput } from "@mantine/core"
+import showToast from "~/utils/showToast"
 
 export default function SolveTime(cell: CellContext<Submission, unknown>) {
-  const toast = useToast(DEFAULT_TOAST_OPTIONS)
   const client = useQueryClient()
   const prevRef = useRef(cell.getValue())
   const [time, setTime] = useState(cell.getValue() as string)
@@ -19,7 +17,7 @@ export default function SolveTime(cell: CellContext<Submission, unknown>) {
       /**
        * After data is updated in the server, we need to update it the client state
        */
-      toast({ status: "success", title: res.message })
+      showToast("success", res.message)
       const oldData: Practice | undefined = client.getQueryData("submissions")
       const newData = oldData?.body.submissions.map((el: Submission) => {
         /**
@@ -37,7 +35,7 @@ export default function SolveTime(cell: CellContext<Submission, unknown>) {
       })
     },
     onError: (err: any) => {
-      toast({ title: err?.response?.data.message, status: "error" })
+      showToast("error", err?.response?.data.message)
     },
   })
 

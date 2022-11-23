@@ -9,7 +9,11 @@ export const DashboardLayout: FC<AppShellProps> = ({ children }) => {
     <>
       <AppShell
         header={<Navbar />}
-        sx={{ paddingBottom: 45 }}
+        sx={(theme) => ({
+          "@media (max-width: 755px)": {
+            paddingBottom: 48,
+          },
+        })}
         navbar={<NewSidebar />}
         styles={(theme) => ({
           main: {

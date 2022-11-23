@@ -26,18 +26,21 @@ export const SubmissionsTable = ({ submissions }: { submissions: Submission[] })
           boxShadow: theme.shadows.xs,
         })}
         firstRow={<SubmissionForm serial={submissions.length + 1} />}
-        pageSizes={["25", "50", "100"]}
-        initialState={{ pagination: { pageSize: 25 } }}
+        pageSizes={["10", "25", "50", "100"]}
+        initialState={{ pagination: { pageSize: 10 } }}
         data={submissions ? submissions : []}
         withSorting
         withPagination
         withColumnFilters
         horizontalSpacing="lg"
+        withGlobalFilter
+        tableTitle="Submissions"
         columns={[
           {
             header: "Id",
-            accessorKey: "serial",
+            accessorKey: "problem.pid",
             size: 40,
+            cell: ({ cell }) => cell.row.original.serial,
           },
           {
             header: "Problem Name",
@@ -60,7 +63,7 @@ export const SubmissionsTable = ({ submissions }: { submissions: Submission[] })
           {
             header: "Tags",
             cell: NonEditableTags,
-            size: 300,
+            size: 480,
           },
           {
             header: "Difficulty",

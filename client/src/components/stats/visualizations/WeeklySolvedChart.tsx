@@ -12,7 +12,7 @@ export default function WeeklySolvedChart({ data }: any) {
   const options = {
     chart: {
       toolbar: {
-        show: false,
+        show: true,
       },
       height: 350,
       type: "area",

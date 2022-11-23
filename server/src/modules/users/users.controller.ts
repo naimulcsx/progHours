@@ -23,17 +23,14 @@ import {
 
 import { UsersService } from "@/modules/users/users.service"
 import { IsAuthenticatedGuard } from "@/guards/is-authenticated"
-import { SubmissionsService } from "../submissions/submissions.service"
+import { SubmissionsService } from "@/modules/submissions/submissions.service"
 import { IsAdmin } from "@/guards/is-admin"
 import { UpdateUserDto } from "@/validators/update-user-dto"
 
 @Controller("/users")
 @ApiTags("Users")
 export class UsersController {
-  constructor(
-    private readonly usersService: UsersService,
-    private readonly submissionsService: SubmissionsService
-  ) {}
+  constructor(private readonly usersService: UsersService, private readonly submissionsService: SubmissionsService) {}
 
   /**
    * @GET /users/me
@@ -79,17 +76,7 @@ export class UsersController {
   @UseGuards(IsAuthenticatedGuard)
   async updateUser(@Body() body: any, @Req() req, @Query() query) {
     // request body
-    const {
-      name,
-      email,
-      mobile,
-      department,
-      batch,
-      cgpa,
-      currentPassword,
-      newPassword,
-      section,
-    } = body
+    const { name, email, mobile, department, batch, cgpa, currentPassword, newPassword, section } = body
 
     // handle user data update
     if (query.update === "data") {
@@ -114,10 +101,7 @@ export class UsersController {
     // handle password update
     else if (query.update === "password") {
       // update the password
-      await this.usersService.updatePassword(
-        { currentPassword, newPassword },
-        req.user.id
-      )
+      await this.usersService.updatePassword({ currentPassword, newPassword }, req.user.id)
 
       // return response
       return {
@@ -164,9 +148,7 @@ export class UsersController {
   async getSubmissions(@Param() params) {
     const { username } = params
     // get submissions
-    const submissions = await this.submissionsService.getSubmissionsByUsername(
-      username
-    )
+    const submissions = await this.submissionsService.getSubmissionsByUsername(username)
     // return the submissions
     return {
       statusCode: HttpStatus.OK,
@@ -185,7 +167,6 @@ export class UsersController {
   @UseGuards(IsAuthenticatedGuard, IsAdmin)
   async getAllUsers() {
     const users = await this.usersService.getAllUsers()
-
     return {
       statusCode: HttpStatus.OK,
       body: users,
@@ -199,17 +180,8 @@ export class UsersController {
   @Patch("/:id")
   @ApiOperation({ summary: "Update user data" })
   @UseGuards(IsAuthenticatedGuard, IsAdmin)
-  async updateUserData(
-    @Body() body: UpdateUserDto,
-    @Param("id") id,
-    @Req() req
-  ) {
-    const user = await this.usersService.updateUserData(
-      body,
-      Number(id),
-      req.user.id
-    )
-
+  async updateUserData(@Body() body: UpdateUserDto, @Param("id") id, @Req() req) {
+    const user = await this.usersService.updateUserData(body, Number(id), req.user.id)
     return { statusCode: HttpStatus.OK, message: "User Updated", body: user }
   }
 }

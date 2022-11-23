@@ -7,6 +7,7 @@ import {
   IconLanguage,
   IconNews,
   IconTrash,
+  IconVideo,
 } from "@tabler/icons"
 import moment from "moment"
 import { useState } from "react"
@@ -24,21 +25,18 @@ interface Study {
   studyTime: number
 }
 
-export default function StudyCard(studies: Study) {
+export default function StudyCard(props: Study) {
   const theme = useMantineTheme()
 
   const [editOpen, setEditOpen] = useState(false)
   const [deleteOpen, setDeleteOpen] = useState(false)
 
-  const { title, type, language, link, difficulty, studyTime, studyDate } = studies
+  const { title, type, language, link, difficulty, studyTime, studyDate } = props
 
   return (
     <Paper p="lg" sx={{ borderRadius: theme.radius.md, position: "relative" }}>
       <Group position="apart">
-        <Title order={4} sx={{ color: "white" }}>
-          {title}
-        </Title>
-
+        <Title order={4}>{title}</Title>
         <Menu>
           <Menu.Target>
             <Button color="gray" variant="subtle" size="xs" sx={{ position: "absolute", top: 8, right: 8, padding: 4 }}>
@@ -74,33 +72,31 @@ export default function StudyCard(studies: Study) {
       </Group>
 
       <Group position="apart">
-        <Group spacing={2}>
-          {type === "Video" ? <IconCaretRight size={20} /> : <IconNews size={20} />}
+        <Group spacing={4}>
+          {type === "Video" ? <IconVideo size={16} /> : <IconNews size={16} />}
           <Text size="sm">{type}</Text>
         </Group>
-
-        <Group spacing={2}>
-          <IconLanguage size={20} />
+        <Group spacing={4}>
+          <IconLanguage size={16} />
           <Text size="sm">{language}</Text>
         </Group>
       </Group>
 
-      <Group align="center" spacing="xs" mt="sm">
+      <Group align="center" spacing={6} mt="sm">
         {[1, 2, 3].map((circle) => {
           const map: any = {
             Beginner: 1,
             Intermediate: 2,
             Advanced: 3,
           }
-
           while (circle <= map[difficulty]) {
             return (
               <Box
                 key={circle}
                 sx={(theme) => ({
                   borderRadius: "100%",
-                  width: 14,
-                  height: 14,
+                  width: 10,
+                  height: 10,
                   border: "2px solid",
                   backgroundColor: theme.colors.blue[4],
                   borderColor: theme.colors.blue[4],
@@ -113,8 +109,8 @@ export default function StudyCard(studies: Study) {
               key={circle}
               sx={(theme) => ({
                 borderRadius: "100%",
-                width: 14,
-                height: 14,
+                width: 10,
+                height: 10,
                 border: "2px solid",
                 borderColor: theme.colors.blue[4],
               })}
@@ -126,10 +122,10 @@ export default function StudyCard(studies: Study) {
       </Group>
 
       <PopupBuilder isOpen={editOpen} setIsOpen={setEditOpen} title={`Edit ${title}`}>
-        <StudyForm setIsOpen={setEditOpen} studies={studies} />
+        <StudyForm setIsOpen={setEditOpen} study={props} />
       </PopupBuilder>
 
-      <DeleteStudyList item={studies} setDeleteOpen={setDeleteOpen} deleteOpen={deleteOpen} />
+      <DeleteStudyList item={props} setDeleteOpen={setDeleteOpen} deleteOpen={deleteOpen} />
     </Paper>
   )
 }

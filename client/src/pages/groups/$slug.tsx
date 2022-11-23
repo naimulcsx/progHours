@@ -1,115 +1,45 @@
 import { Helmet } from "react-helmet-async"
 import { DashboardLayout } from "~/components/layouts/Dashboard"
-import { useContext, useState } from "react"
+import { useState } from "react"
 import { useNavigate, useParams } from "react-router-dom"
 import { getGroupByHashtag } from "~/api/groups"
 import { useQuery } from "react-query"
-import { AnimateLoading } from "~/components/AnimateLoading"
 
-import { TabList, TabPanels, Tab, TabPanel, useClipboard } from "@chakra-ui/react"
-import LeaderboardTable from "~/components/leaderboard/TableDesktop"
-import processRanklist from "~/utils/processRanklist"
-import { getAvatarColors } from "~/utils/getAvatarColors"
-import { ClipboardCheckIcon, ClipboardCopyIcon, PlusIcon } from "@heroicons/react/outline"
 import MemberCard from "~/components/groups/MemberCard"
-import { AddUserToGroupModal } from "~/components/modals/AddUserToGroupModal"
 import UpdateGroup from "~/components/groups/UpdateGroup"
 import useUser from "~/hooks/useUser"
-import { Tabs, SimpleGrid, Title, Group, Loader, Box } from "@mantine/core"
-import { IconChartBar, IconSettings, IconUsers } from "@tabler/icons"
+import { Tabs, SimpleGrid, Title, Group, Loader, Box, CopyButton, Button } from "@mantine/core"
+import { IconChartBar, IconCopy, IconSettings, IconUserPlus, IconUsers } from "@tabler/icons"
 import { AnimatePresence, motion } from "framer-motion"
 import Leaderboard from "~/components/leaderboard"
+import AddMembersModal from "~/components/modals/AddMembersModal"
 
 const GroupPage = () => {
   const navigate = useNavigate()
   const { user } = useUser()
   const { hashtag } = useParams()
-  const [isOpen, setIsOpen] = useState(false)
+  const [open, setOpen] = useState(false)
   const { data, isLoading, isFetching } = useQuery(`groups/${hashtag}`, () => getGroupByHashtag(hashtag))
-  const { hasCopied, onCopy } = useClipboard(data?.body?.group?.accessCode || "")
+
   return (
-    <DashboardLayout
-    // rightButton={
-    //   <ButtonGroup>
-    //     <AddUserToGroupModal
-    //       isOpen={isOpen}
-    //       setIsOpen={setIsOpen}
-    //       groupName={data?.body?.group?.name}
-    //       groupId={data?.body?.group?.id}
-    //       hashtag={data?.body?.group?.hashtag}
-    //     />
-    //     {data?.body?.isOwner && (
-    //       <>
-    //         <IconButton
-    //           aria-label="Add Member"
-    //           icon={<PlusIcon height={20} />}
-    //           size="sm"
-    //           display={{ lg: "none", base: "flex" }}
-    //           onClick={() => setIsOpen(true)}
-    //         />
+    <DashboardLayout>
+      {/* page title */}
+      <Helmet>
+        <title>{data?.body?.group?.name || "Group"}</title>
+      </Helmet>
 
-    //         <Button
-    //           aria-label="Add Member"
-    //           leftIcon={<PlusIcon height={20} />}
-    //           size="sm"
-    //           display={{ lg: "flex", base: "none" }}
-    //           onClick={() => setIsOpen(true)}
-    //         >
-    //           Add Member
-    //         </Button>
-    //       </>
-    //     )}
-    //     <Button
-    //       size="sm"
-    //       onClick={onCopy}
-    //       colorScheme="purple"
-    //       variant="outline"
-    //       leftIcon={hasCopied ? <ClipboardCheckIcon height={16} /> : <ClipboardCopyIcon height={16} />}
-    //     >
-    //       <Text>{hasCopied ? `Copied` : `${data?.body?.group?.accessCode}`}</Text>
-    //     </Button>
-    //   </ButtonGroup>
-    // }
-    >
-      {/* @ts-ignore */}
+      {/* add members modal */}
+      <AddMembersModal
+        isOpen={open}
+        setIsOpen={setOpen}
+        groupName={data?.body?.group?.name}
+        groupId={data?.body?.group?.id}
+        hashtag={data?.body?.group?.hashtag}
+      />
 
-      {/* {data && (
-          <>
-            <Helmet>
-              <title>Group: {data.body.group.name}</title>
-            </Helmet>
-            <Tabs>
-              <TabList>
-                <Tab fontSize={["14px", "16px"]}>Members</Tab>
-                <Tab fontSize={["14px", "16px"]}> Leaderboard</Tab>
-                {data?.body?.isOwner && <Tab fontSize={["sm", "16px"]}>Settings</Tab>}
-              </TabList>
-              <TabPanels>
-                <TabPanel mx={-4} mb={14}>
-                  <SimpleGrid columns={[1, 2, 3, 4, 5, 5]} gap={4}>
-                    {data.body.users.map((userGroup: any) => {
-                      return (
-                        <MemberCard
-                          key={userGroup.user.id}
-                          groupId={data.body.group.id}
-                          hashtag={data.body.group.hashtag}
-                          {...userGroup}
-                        />
-                      )
-                    })}
-                  </SimpleGrid>
-                </TabPanel>
-                <TabPanel mx={-4} mb={8}>
-                  <LeaderboardTable ranklist={processRanklist(data.body.ranklist)} isPublic={false}></LeaderboardTable>
-                </TabPanel>
-                {data?.body?.isOwner && <TabPanel mb={14}>{<UpdateGroup group={data.body.group} />}</TabPanel>}
-              </TabPanels>
-            </Tabs>
-          </>
-        )} */}
-
-      <Group position="apart" align="start">
-        <Group align="center" mb="md">
+      {/* page title and buttons */}
+      <Group position="apart" align="start" spacing={4} mb="md">
+        <Group align="center">
           <Title order={3}>{data?.body?.group?.name}</Title>
           <AnimatePresence>
             {(isLoading || isFetching) && (
@@ -123,6 +53,28 @@ const GroupPage = () => {
               </motion.div>
             )}
           </AnimatePresence>
+        </Group>
+        <Group>
+          {data?.body?.isOwner && (
+            <Button size="xs" leftIcon={<IconUserPlus size={14} />} onClick={() => setOpen(true)}>
+              Add Members
+            </Button>
+          )}
+          {data?.body?.isMember && (
+            <CopyButton value={data?.body?.group?.accessCode}>
+              {({ copied, copy }) => (
+                <Button
+                  variant="outline"
+                  size="xs"
+                  color={copied ? "blue" : "violet"}
+                  onClick={copy}
+                  leftIcon={<IconCopy size={16} />}
+                >
+                  {!copied ? data?.body?.group?.accessCode : "Copied"}
+                </Button>
+              )}
+            </CopyButton>
+          )}
         </Group>
       </Group>
 
@@ -141,9 +93,11 @@ const GroupPage = () => {
                 <Tabs.Tab value="leaderboard" icon={<IconChartBar size={14} />}>
                   Leaderboard
                 </Tabs.Tab>
-                <Tabs.Tab value="settings" icon={<IconSettings size={14} />}>
-                  Settings
-                </Tabs.Tab>
+                {data?.body?.isOwner && (
+                  <Tabs.Tab value="settings" icon={<IconSettings size={14} />}>
+                    Settings
+                  </Tabs.Tab>
+                )}
               </Tabs.List>
 
               <Tabs.Panel value="members" pt="xs">
@@ -161,6 +115,7 @@ const GroupPage = () => {
                           key={userGroup.user.id}
                           groupId={data.body.group.id}
                           hashtag={data.body.group.hashtag}
+                          isOwner={data.body.isOwner}
                           {...userGroup}
                         />
                       )
@@ -175,9 +130,11 @@ const GroupPage = () => {
                 </Box>
               </Tabs.Panel>
 
-              <Tabs.Panel value="settings" pt="xs">
-                {data?.body?.group && <UpdateGroup group={data.body.group} />}
-              </Tabs.Panel>
+              {data?.body?.isOwner && (
+                <Tabs.Panel value="settings" pt="xs">
+                  {data?.body?.group && <UpdateGroup group={data.body.group} />}
+                </Tabs.Panel>
+              )}
             </Tabs>
           </motion.div>
         )}

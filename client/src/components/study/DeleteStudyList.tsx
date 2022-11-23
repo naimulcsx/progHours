@@ -12,8 +12,8 @@ const DeleteStudyList = ({ item, deleteOpen, setDeleteOpen }: any) => {
   const client = useQueryClient()
   const { mutate } = useMutation(deleteUserStudy, {
     onSuccess() {
-      client.invalidateQueries("studies")
-      showToast("success", "study deleted")
+      client.invalidateQueries("userStudies")
+      showToast("success", "Resource deleted!")
       setDeleteOpen(false)
     },
     onError(err: any) {

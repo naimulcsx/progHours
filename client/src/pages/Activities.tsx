@@ -8,7 +8,6 @@ import { ActionIcon, Anchor, Box, Group, Loader, Paper, Text, Title, useMantineT
 import { AnimatePresence, motion } from "framer-motion"
 
 import { DashboardLayout } from "~/components/layouts/Dashboard"
-import { AnimateLoading } from "~/components/AnimateLoading"
 import Avatar from "~/components/Avatar"
 import { fetchActivities } from "~/api/submissions"
 
@@ -82,11 +81,12 @@ const ActivitiesPage = () => {
                     borderTop: idx > 0 ? "1px solid" : 0,
                     borderColor: theme.colorScheme === "dark" ? theme.colors.dark[3] : theme.colors.gray[3],
                   }}
+                  spacing={4}
                 >
-                  <Group>
+                  <Group spacing={4}>
                     <Avatar name={sub.user.name} />
                     <Text size="sm">
-                      <Anchor component={RouterLink} to={`/users/${sub.user.username}`}>
+                      <Anchor component={RouterLink} to={`/@${sub.user.username}`}>
                         {sub.user.name}
                       </Anchor>{" "}
                       got <Text component="span">{sub.verdict}</Text> in{" "}
@@ -95,7 +95,8 @@ const ActivitiesPage = () => {
                       </Anchor>
                     </Text>
                   </Group>
-                  <Group>
+
+                  <Group spacing={6}>
                     <IconClock size={16} />
                     <Text size="sm">{moment(sub.solvedAt).fromNow()}</Text>
                   </Group>

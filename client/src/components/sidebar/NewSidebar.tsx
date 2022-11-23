@@ -10,16 +10,9 @@ import {
   Badge,
   ThemeIcon,
   useMantineTheme,
+  Title,
 } from "@mantine/core"
-import {
-  IconChartBar,
-  IconClipboardList,
-  IconLayout2,
-  IconNote,
-  IconNotes,
-  IconSettings,
-  IconUsers,
-} from "@tabler/icons"
+import { IconChartBar, IconClipboardList, IconLayout2, IconNotes, IconSettings, IconUsers } from "@tabler/icons"
 import { useEffect, useState } from "react"
 import { Link, useLocation } from "react-router-dom"
 
@@ -33,11 +26,11 @@ const navItemStyles = (theme: MantineTheme) => ({
   paddingRight: 4,
   "&[data-active='true']": {
     "&:hover": {
-      background: theme.colorScheme === "dark" ? theme.colors.dark[3] : "#edf1fd",
+      background: theme.colorScheme === "dark" ? theme.colors.dark[3] : theme.colors.gray[2],
     },
     color: theme.colorScheme === "dark" ? theme.white : theme.colors.dark[8],
     // background: `linear-gradient(180deg, ${theme.colors.blue[4]} 0%, ${theme.colors.blue[5]} 50%, ${theme.colors.blue[6]} 100%)`,
-    background: theme.colorScheme === "dark" ? theme.colors.dark[4] : theme.colors.blue[0],
+    background: theme.colorScheme === "dark" ? theme.colors.dark[4] : theme.colors.gray[1],
     boxShadow:
       theme.colorScheme === "dark"
         ? "inset 0.125em -0.125em 0.3em rgb(68 68 68 / 40%), inset -0.3em 0 0.0625em -0.25em rgb(34 34 34 / 10%), inset 0.4em 0.5em 0.5em -0.25em rgb(255 255 255 / 5%), 0.04em 0.25em 0 -0.3em #333"
@@ -97,10 +90,11 @@ const NewSidebar = () => {
               icon={
                 <ThemeIcon
                   size="md"
-                  variant="gradient"
-                  gradient={{ from: "yellow", to: "red" }}
+                  color="orange"
                   style={{ marginLeft: 8 }}
-                  sx={{ boxShadow: `inset 1px 2px 2px 1px ${theme.colors.yellow[3]}` }}
+                  // variant="gradient"
+                  // gradient={{ from: "yellow", to: "red" }}
+                  // sx={{ boxShadow: `inset 1px 2px 2px 1px ${theme.colors.yellow[3]}` }}
                 >
                   <IconLayout2 size={16} stroke={2} />
                 </ThemeIcon>
@@ -115,10 +109,11 @@ const NewSidebar = () => {
               icon={
                 <ThemeIcon
                   size="md"
-                  variant="gradient"
-                  gradient={{ from: "teal", to: "lime" }}
                   style={{ marginLeft: 8 }}
-                  sx={{ boxShadow: "inset 1px 2px 2px 1px lime" }}
+                  color="green"
+                  // variant="gradient"
+                  // gradient={{ from: "teal", to: "lime" }}
+                  // sx={{ boxShadow: "inset 1px 2px 2px 1px lime" }}
                 >
                   <IconClipboardList size={16} stroke={2} />
                 </ThemeIcon>
@@ -133,10 +128,11 @@ const NewSidebar = () => {
               icon={
                 <ThemeIcon
                   size="md"
-                  variant="gradient"
-                  gradient={{ from: "purple", to: "pink" }}
                   style={{ marginLeft: 8 }}
-                  sx={{ boxShadow: `inset 1px 2px 2px 1px ${theme.colors.pink[4]}` }}
+                  color="lime"
+                  // variant="gradient"
+                  // gradient={{ from: "purple", to: "pink" }}
+                  // sx={{ boxShadow: `inset 1px 2px 2px 1px ${theme.colors.pink[4]}` }}
                 >
                   <IconNotes size={16} stroke={2} />
                 </ThemeIcon>
@@ -151,10 +147,11 @@ const NewSidebar = () => {
               icon={
                 <ThemeIcon
                   size="md"
-                  variant="gradient"
-                  gradient={{ from: "pink", to: "blue" }}
                   style={{ marginLeft: 8 }}
-                  sx={{ boxShadow: `inset 1px 2px 2px 1px ${theme.colors.blue[3]}` }}
+                  color="indigo"
+                  // variant="gradient"
+                  // gradient={{ from: "pink", to: "blue" }}
+                  // sx={{ boxShadow: `inset 1px 2px 2px 1px ${theme.colors.blue[3]}` }}
                 >
                   <IconUsers size={16} stroke={2} />
                 </ThemeIcon>
@@ -169,10 +166,11 @@ const NewSidebar = () => {
               icon={
                 <ThemeIcon
                   size="md"
-                  variant="gradient"
-                  gradient={{ from: "red", to: "orange" }}
                   style={{ marginLeft: 8 }}
-                  sx={{ boxShadow: `inset 1px 2px 2px 1px ${theme.colors.pink[3]}` }}
+                  color="cyan"
+                  // variant="gradient"
+                  // gradient={{ from: "red", to: "orange" }}
+                  // sx={{ boxShadow: `inset 1px 2px 2px 1px ${theme.colors.pink[3]}` }}
                 >
                   <IconChartBar size={16} stroke={2} />
                 </ThemeIcon>
@@ -187,10 +185,11 @@ const NewSidebar = () => {
               icon={
                 <ThemeIcon
                   size="md"
-                  variant="gradient"
-                  gradient={{ from: theme.colors.pink[8], to: theme.colors.red[8] }}
                   style={{ marginLeft: 8 }}
-                  sx={{ boxShadow: `inset 1px 2px 2px 1px ${theme.colors.red[4]}` }}
+                  color="pink"
+                  // variant="gradient"
+                  // gradient={{ from: theme.colors.pink[8], to: theme.colors.red[8] }}
+                  // sx={{ boxShadow: `inset 1px 2px 2px 1px ${theme.colors.red[4]}` }}
                 >
                   <IconNotes size={16} stroke={2} />
                 </ThemeIcon>
@@ -205,10 +204,11 @@ const NewSidebar = () => {
               icon={
                 <ThemeIcon
                   size="md"
-                  variant="gradient"
-                  gradient={{ from: theme.colors.yellow[8], to: theme.colors.orange[8] }}
                   style={{ marginLeft: 8 }}
-                  sx={{ boxShadow: `inset 1px 2px 2px 1px ${theme.colors.yellow[6]}` }}
+                  color="red"
+                  // variant="gradient"
+                  // gradient={{ from: theme.colors.yellow[8], to: theme.colors.orange[8] }}
+                  // sx={{ boxShadow: `inset 1px 2px 2px 1px ${theme.colors.yellow[6]}` }}
                 >
                   <IconSettings size={16} stroke={2} />
                 </ThemeIcon>
@@ -242,24 +242,34 @@ const NewSidebar = () => {
         )}
       </Navbar.Section>
 
-      <Navbar.Section sx={{ display: "flex", alignItems: "center", gap: 10 }}>
+      <Navbar.Section sx={{ display: "flex", alignItems: "center", gap: 16 }}>
         {user && (
           <Box
             sx={(theme) => ({
               width: "100%",
             })}
           >
-            <Group sx={{ alignItems: "flex-start" }}>
+            <Group sx={{ alignItems: "flex-start" }} spacing={10}>
               <Avatar name={user.name} />
               <Box>
-                <Text>{user.name}</Text>
-                <Badge color="cyan">{user.role}</Badge>
+                <Title
+                  order={5}
+                  sx={(theme) => ({
+                    maxWidth: 160,
+                    whiteSpace: "nowrap",
+                    overflow: "hidden",
+                    textOverflow: "ellipsis",
+                    fontWeight: 500,
+                    color: theme.colorScheme === "dark" ? theme.white : theme.colors.dark[6],
+                  })}
+                >
+                  {user.name}
+                </Title>
+                <Badge color="violet">{user.role}</Badge>
               </Box>
             </Group>
           </Box>
         )}
-        {/* <Anchor> About </Anchor>
-        <Anchor> Leave a star </Anchor> */}
       </Navbar.Section>
     </Navbar>
   )

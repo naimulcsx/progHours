@@ -16,7 +16,7 @@ import {
   RowSelectionState,
   Table,
 } from "@tanstack/react-table"
-import { BoxOff } from "tabler-icons-react"
+import { IconBoxOff } from "@tabler/icons"
 
 import useStyles from "./DataGrid.styles"
 
@@ -233,7 +233,7 @@ export function DataGrid<TData extends RowData>({
       className={classes.wrapper}
       sx={{ backgroundColor: theme.colors.dark[8], ...others.sx }}
     >
-      <Group position="apart" px="md">
+      <Group position="apart" px="md" spacing={8}>
         {tableTitle && (
           <Title order={3} mb="md">
             {tableTitle}
@@ -335,7 +335,7 @@ export function DataGrid<TData extends RowData>({
                   <Stack align="center" spacing="xs">
                     {empty || (
                       <>
-                        <BoxOff size={64} />
+                        <IconBoxOff size={64} />
                         <Text weight="bold">No Data</Text>
                       </>
                     )}

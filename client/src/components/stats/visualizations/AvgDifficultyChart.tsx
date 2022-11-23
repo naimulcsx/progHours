@@ -72,7 +72,7 @@ export default function AvgDifficultyChart({ avgDifficulty }: any) {
   return (
     <Paper p="xl">
       {/* @ts-ignore */}
-      <ReactApexChart options={options} series={series} type="line" height={320} />
+      <ReactApexChart options={options} series={series} type="line" height={350} />
     </Paper>
   )
 }

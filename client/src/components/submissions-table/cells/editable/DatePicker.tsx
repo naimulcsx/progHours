@@ -6,6 +6,7 @@ import { AxiosError } from "axios"
 import { DatePicker as MantineDatePicker } from "@mantine/dates"
 import { CellContext } from "@tanstack/react-table"
 import showToast from "~/utils/showToast"
+import { Box } from "@mantine/core"
 
 const DatePicker = (cell: CellContext<Submission, unknown>) => {
   const queryClient = useQueryClient()
@@ -22,13 +23,15 @@ const DatePicker = (cell: CellContext<Submission, unknown>) => {
   })
 
   return (
-    <MantineDatePicker
-      value={date}
-      onChange={(date) => {
-        setDate(date || new Date())
-        mutate({ id: cell.row.original.id, solvedAt: date })
-      }}
-    />
+    <Box>
+      <MantineDatePicker
+        value={date}
+        onChange={(date) => {
+          setDate(date || new Date())
+          mutate({ id: cell.row.original.id, solvedAt: date })
+        }}
+      />
+    </Box>
   )
 }
 

@@ -40,6 +40,7 @@ export default function LeaderboardPage() {
           ? null
           : {
               sx: {
+                paddingBottom: "32px",
                 maxWidth: "1400px",
                 paddingTop: "80px",
                 minHeight: "100vh",
@@ -84,6 +85,10 @@ export default function LeaderboardPage() {
                   },
                   {
                     value: "currentMonth",
+                    label: "Current Month",
+                  },
+                  {
+                    value: "lastMonth",
                     label: "Last Month",
                   },
                 ]}

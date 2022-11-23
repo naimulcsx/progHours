@@ -16,13 +16,11 @@ import {
   HackerEarthIcon,
   KattisOJIcon,
 } from "~/components/Icons"
+
 import { CellContext } from "@tanstack/react-table"
-import { Cell } from "react-table"
 import { Submission } from "~/types/Submission"
-import { ExternalLinkIcon } from "@heroicons/react/outline"
-import { QuestionMarkCircleIcon } from "@heroicons/react/outline"
-import { Anchor, Box, Group, Text, Title, useMantineTheme } from "@mantine/core"
-import { IconExternalLink } from "@tabler/icons"
+import { Anchor, Box, Group, Text, Title } from "@mantine/core"
+import { IconExternalLink, IconQuestionMark } from "@tabler/icons"
 
 const iconMap = [
   { prefix: "Gym-", icon: CFIcon },
@@ -47,10 +45,11 @@ const iconMap = [
 
 const ProblemName = (cell: CellContext<Submission, unknown>) => {
   const { pid, name, link } = cell.cell.row.original.problem
-  /** Select Icon based on the online judge */
+  // select icon based on the online judge
   let OnlineJudgeIcon: any = iconMap.filter((item, i) => (pid.includes(item.prefix) ? true : false)).at(0)
-  /** If there is no match, use the Unknown icon */
-  if (!OnlineJudgeIcon) OnlineJudgeIcon.icon = QuestionMarkCircleIcon
+
+  // If there is no match, use the Unknown icon
+  if (!OnlineJudgeIcon) OnlineJudgeIcon.icon = IconQuestionMark
   return (
     <Group spacing="md">
       <Box

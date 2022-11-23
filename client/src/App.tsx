@@ -1,10 +1,9 @@
-import { FC, useState } from "react"
+import { FC, useEffect } from "react"
 import { Box, ColorScheme, ColorSchemeProvider, MantineProvider } from "@mantine/core"
 import { SpotlightProvider } from "@mantine/spotlight"
 import { NotificationsProvider } from "@mantine/notifications"
-import { useNavigate, useRoutes } from "react-router-dom"
+import { useLocation, useNavigate, useRoutes } from "react-router-dom"
 import { IconSearch } from "@tabler/icons"
-import { ReactQueryDevtools } from "react-query/devtools"
 
 import type { User } from "~/contexts/UserContext"
 import SubmissionsProvider from "~/contexts/SubmissionsContext"
@@ -21,6 +20,11 @@ const Entry: FC<{ isLoggedIn: boolean; user: User | null }> = ({ isLoggedIn, use
   const navigate = useNavigate()
   const role: string = user ? user.role : "GUEST"
   const matchedPage = useRoutes(getRoutes(isLoggedIn, role))
+
+  const { pathname } = useLocation()
+  useEffect(() => {
+    window.scrollTo(0, 0)
+  }, [pathname])
 
   const [colorScheme, setColorScheme] = useLocalStorage<ColorScheme>({
     key: "mantine-color-scheme",

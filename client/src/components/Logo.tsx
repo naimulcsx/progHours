@@ -1,5 +1,4 @@
-import { Heading, HStack, theme, useColorModeValue as mode } from "@chakra-ui/react"
-import { Box, Code, Group, Text, Title, useMantineColorScheme } from "@mantine/core"
+import { Box, Group, Text, Title } from "@mantine/core"
 import { FC, SVGProps } from "react"
 
 const LogoIcon: FC<SVGProps<SVGSVGElement>> = (props) => {

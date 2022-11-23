@@ -1,41 +1,22 @@
 import { removeMember } from "~/api/groups"
-import { DEFAULT_TOAST_OPTIONS } from "~/configs/toast-config"
-import { getAvatarColors } from "~/utils/getAvatarColors"
-// import {
-//   Stack,
-//   Avatar,
-//   Heading,
-//   Badge,
-//   Menu,
-//   MenuButton,
-//   IconButton,
-//   MenuList,
-//   MenuItem,
-//   Text,
-//   useToast,
-//   useColorModeValue as mode,
-// } from "@chakra-ui/react"
-
-import { DotsVerticalIcon, EyeIcon } from "@heroicons/react/outline"
 import { useMutation, useQueryClient } from "react-query"
 import { useNavigate } from "react-router-dom"
-import { TrashIcon } from "../Icons"
 import { Badge, Button, Menu, Paper, Stack, Text, Title } from "@mantine/core"
-import Avatar from "../Avatar"
 import { IconDotsVertical, IconMinus, IconUser } from "@tabler/icons"
+import showToast from "~/utils/showToast"
+import Avatar from "../Avatar"
 
-export default function MemberCard({ user, role, groupId, hashtag }: any) {
+export default function MemberCard({ user, role, groupId, isOwner, hashtag }: any) {
   const queryClient = useQueryClient()
   const navigate = useNavigate()
-  const { bg, color } = getAvatarColors(user.name)
   const { mutate } = useMutation(removeMember, {
     onSuccess: (res: any) => {
       queryClient.invalidateQueries(`groups/${hashtag}`)
-      // toast({ status: "success", title: res.message })
+      showToast("success", "Member removed!")
     },
     onError: (err: any) => {
       const errorMessage = err?.response?.data?.message || "Something went wrong!"
-      // toast({ status: "error", title: errorMessage })
+      showToast("error", errorMessage)
     },
   })
   const handleRemoveUser = () => {
@@ -67,9 +48,11 @@ export default function MemberCard({ user, role, groupId, hashtag }: any) {
             <Menu.Item icon={<IconUser size={14} />} onClick={() => navigate(`/@${user.username}`)}>
               View Profile
             </Menu.Item>
-            <Menu.Item icon={<IconMinus size={14} />} onClick={handleRemoveUser}>
-              Remove
-            </Menu.Item>
+            {isOwner && (
+              <Menu.Item icon={<IconMinus size={14} />} onClick={handleRemoveUser}>
+                Remove
+              </Menu.Item>
+            )}
           </Menu.Dropdown>
         </Menu>
       </Stack>

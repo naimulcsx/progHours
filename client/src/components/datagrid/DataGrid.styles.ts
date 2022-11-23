@@ -21,10 +21,12 @@ export default createStyles(
       height: height ? height + "px" : undefined,
       width: width ? width + "px" : undefined,
       backgroundColor: "transparent !important",
+      boxShadow: theme.shadows.xs,
     },
     scrollArea: {
       position: "relative",
       paddingBottom: theme.spacing.lg,
+      overflow: "visible",
     },
     table: {
       borderCollapse: "separate",
@@ -52,6 +54,7 @@ export default createStyles(
     },
     tbody: {
       minHeight: "160px",
+      height: "100%",
       background: theme.colorScheme === "dark" ? theme.colors.dark[7] : theme.white,
     },
     tr: {},
@@ -101,7 +104,6 @@ export default createStyles(
       alignItems: "center",
       background: theme.colorScheme === "dark" ? theme.colors.dark[7] : theme.white,
       borderTop: `1px solid ${theme.colorScheme === "dark" ? theme.colors.dark[4] : theme.colors.gray[3]} !important`,
-
       [`@media (min-width: ${theme.breakpoints.xl}px)`]: {
         justifyContent: paginationMode === "default" ? "space-between" : "flex-end",
       },

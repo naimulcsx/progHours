@@ -1,5 +1,6 @@
 import ReactApexChart from "react-apexcharts"
-import { Paper, useMantineTheme } from "@mantine/core"
+import { Anchor, Box, Modal, Paper, ScrollArea, Table, Text, Title, useMantineTheme } from "@mantine/core"
+import { useState } from "react"
 
 export function stringToColour(str: string) {
   str = str + "_"
@@ -15,10 +16,11 @@ export function stringToColour(str: string) {
   return colour
 }
 export default function TagsFreqChart({ data }: any) {
+  const [open, setOpen] = useState(false)
   data.sort((a: any, b: any) => {
     return b.count - a.count
   })
-  const slicedData = data.slice(0, 12).reverse()
+  const slicedData = data.slice(0, 15).reverse()
   const theme = useMantineTheme()
   const state = {
     series: [
@@ -38,6 +40,9 @@ export default function TagsFreqChart({ data }: any) {
       },
       grid: {
         show: true,
+        padding: {
+          left: 30,
+        },
         borderColor: theme.colorScheme === "dark" ? theme.colors.dark[3] : theme.colors.gray[3],
         xaxis: {
           lines: {
@@ -114,28 +119,51 @@ export default function TagsFreqChart({ data }: any) {
           },
         },
       },
-      title: {
-        text: "Most solved categories",
-        floating: false,
-        offsetY: 0,
-        margin: 10,
-        align: "center",
-        style: {
-          color: theme.colorScheme === "dark" ? theme.colors.gray[3] : theme.colors.dark[9],
-        },
-      },
     },
   }
   return (
     // @ts-ignore
     <Paper shadow="xs" p="xl">
+      <Title order={6} sx={{ textAlign: "center" }}>
+        Most solved categories{" "}
+        <Anchor size="sm" sx={{ fontWeight: 400 }} onClick={() => setOpen(true)}>
+          [View full data]
+        </Anchor>
+      </Title>
       <ReactApexChart
         // @ts-ignore
         options={state.options}
         series={state.series}
         type="bar"
-        height={350}
+        height={320}
       />
+      <Modal opened={open} onClose={() => setOpen(false)} title={<Title order={4}>Solved problems by category</Title>}>
+        {/* Modal content */}
+        <ScrollArea sx={{ height: 400 }}>
+          {data.length > 0 ? (
+            <Table>
+              <thead>
+                <tr>
+                  <th>Category</th>
+                  <th>Solved</th>
+                </tr>
+              </thead>
+              <tbody>
+                {data.map((item: any) => {
+                  return (
+                    <tr key={item.name}>
+                      <td>{item.name}</td>
+                      <td>{item.count}</td>
+                    </tr>
+                  )
+                })}
+              </tbody>
+            </Table>
+          ) : (
+            <Text size="sm">Not enough data!</Text>
+          )}
+        </ScrollArea>
+      </Modal>
     </Paper>
   )
 }

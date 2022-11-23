@@ -7,8 +7,8 @@ import axios from "axios"
 import showToast from "~/utils/showToast"
 
 const updatePasswordSchema = Yup.object().shape({
-  currentPassword: Yup.string().trim().required("Name is required"),
-  newPassword: Yup.string().trim().required("Password is required"),
+  currentPassword: Yup.string().trim().required("Current password is required"),
+  newPassword: Yup.string().trim().required("New password is required"),
 })
 
 export const UpdatePasswordForm = () => {

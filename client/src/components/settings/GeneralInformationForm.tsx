@@ -15,7 +15,10 @@ const infoSchema = Yup.object().shape({
     .matches(/^(c|C|e|E|et|ET|cce|CCE)[0-9]{6}$/, "Invalid University ID"),
   mobile: Yup.string().trim(),
   department: Yup.string().trim(),
-  batch: Yup.number().positive("Invalid Batch"),
+  batch: Yup.number()
+    .positive("Invalid Batch")
+    .nullable(true)
+    .transform((_, val) => (val === Number(val) ? val : null)),
   section: Yup.string().trim(),
   cgpa: Yup.number().min(0.0).max(4.0),
 })
@@ -47,7 +50,7 @@ export const GeneralInformationForm = () => {
       email: user?.email || "",
       mobile: user?.mobile || "",
       department: user?.department || "",
-      batch: user?.batch || 1,
+      batch: user?.batch || "",
       section: user?.section || "",
       cgpa: user?.cgpa || 0.0,
     },
@@ -63,8 +66,7 @@ export const GeneralInformationForm = () => {
       mb={10}
       p={24}
       sx={(theme) => ({
-        // @ts-ignore
-        borderRadius: theme.radius[theme.defaultRadius],
+        borderRadius: theme.radius.md,
       })}
     >
       <Title order={4} mb="md">

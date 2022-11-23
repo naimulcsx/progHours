@@ -1,11 +1,10 @@
-import { Cell } from "react-table"
+import { Column } from "@tanstack/react-table"
 
 /**
  * Import types
  */
 import { Tag } from "~/types/Tag"
 import { Submission } from "~/types/Submission"
-import { useColorModeValue as mode } from "@chakra-ui/react"
 import { CellContext } from "@tanstack/react-table"
 import { Badge, Group } from "@mantine/core"
 

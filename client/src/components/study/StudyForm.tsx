@@ -17,14 +17,13 @@ const studyFormSchema = Yup.object().shape({
   language: Yup.string().trim().required("Resource language is required"),
 })
 
-export default function StudyForm({ setIsOpen, studies, isCreate }: any) {
+export default function StudyForm({ setIsOpen, study, isCreate }: any) {
   const client = useQueryClient()
 
-  const mutation = useMutation((data) => (isCreate ? createUserStudy(data) : updateUserStudy(studies.id, data)), {
+  const mutation = useMutation((data) => (isCreate ? createUserStudy(data) : updateUserStudy(study.id, data)), {
     onSuccess: () => {
-      client.invalidateQueries("studies")
-      isCreate ? showToast("success", "new study added") : showToast("success", "study updated")
-
+      client.invalidateQueries("userStudies")
+      isCreate ? showToast("success", "Resource added!") : showToast("success", "Resource updated!")
       setIsOpen(false)
     },
     onError: (err: any) => {
@@ -35,13 +34,13 @@ export default function StudyForm({ setIsOpen, studies, isCreate }: any) {
 
   const form = useForm({
     initialValues: {
-      title: studies?.title,
-      type: studies ? studies.type : "Article",
-      link: studies?.link,
-      studyTime: studies?.studyTime,
-      studyDate: studies ? moment(studies.studyDate).format("YYYY-MM-DD") : "",
-      difficulty: studies ? studies.difficulty : "Beginner",
-      language: studies ? studies.language : "English",
+      title: study?.title,
+      type: study ? study.type : "Article",
+      link: study?.link,
+      studyTime: study?.studyTime,
+      studyDate: study ? moment(study.studyDate).toDate() : "",
+      difficulty: study ? study.difficulty : "Beginner",
+      language: study ? study.language : "English",
     },
     validate: yupResolver(studyFormSchema),
   })
@@ -52,7 +51,6 @@ export default function StudyForm({ setIsOpen, studies, isCreate }: any) {
       studyTime: Number(values.studyTime),
       studyDate: moment(values.studyDate).format(),
     }
-
     mutation.mutateAsync(value)
   })
 
@@ -77,7 +75,6 @@ export default function StudyForm({ setIsOpen, studies, isCreate }: any) {
 
         <TextInput label="Link" {...form.getInputProps("link")} />
         <NumberInput label="Study Time" {...form.getInputProps("studyTime")} />
-        {/* <TextInput label="Study Date" {...form.getInputProps("studyDate")} /> */}
         <DatePicker label="Study Date" {...form.getInputProps("studyDate")} />
 
         <Select

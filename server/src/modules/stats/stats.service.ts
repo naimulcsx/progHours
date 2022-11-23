@@ -191,20 +191,23 @@ export class StatsService {
     const rawData: any[] = await this.prisma.$queryRaw`
       SELECT 
         "Tag"."name",
-        CAST(SUM("Submission"."solveTime") as int)
+        CAST(SUM("Submission"."solveTime") as int),
+        COUNT("Submission"."id")
       FROM 
         "Submission"
       LEFT JOIN "Problem" ON "Submission"."problemId" = "Problem"."id"
       LEFT JOIN "ProblemTag" ON "Problem"."id" = "ProblemTag"."problemId"
       LEFT JOIN "Tag" ON "ProblemTag"."tagId" = "Tag"."id"
       WHERE 
-        "Submission"."userId" = 97
+        "Submission"."userId" = ${userId}
         AND "Submission"."verdict" = 'AC'
       GROUP BY
         "Tag"."name"
     `
+
+    console.log(rawData)
     return rawData.map((item) => {
-      if (!item.name) return { name: "untagged", sum: item.sum }
+      if (!item.name) return { name: "untagged", sum: item.sum, count: item.count }
       return item
     })
   }

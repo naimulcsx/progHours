@@ -1,5 +1,5 @@
 import React, { useState } from "react"
-import { TextInput, Button, Select } from "@mantine/core"
+import { TextInput, Button, Select, LoadingOverlay, Box } from "@mantine/core"
 import { useForm, yupResolver } from "@mantine/form"
 import { DatePicker as MantineDatePicker } from "@mantine/dates"
 import * as Yup from "yup"
@@ -90,47 +90,13 @@ const SubmissionForm = ({ serial }: { serial: number }) => {
 
   return (
     <>
-      {/* <PopupBuilder
-        title="Password Protected Contest"
-        description="Please enter the contest password below"
-        isOpen={contestPasswordDialogue}
-        setIsOpen={setContestPasswordDialogue}
-      >
-        <FormBuilder
-          isModal
-          fields={{
-            password: {
-              type: "password",
-              label: "Password",
-              validate: Yup.string().trim().required("Password is required"),
-            },
-          }}
-          mutation={(values: any) =>
-            axios
-              .post(
-                `/api/submissions/vjudge-contest-login/${contestId}`,
-                values
-              )
-              .then((res) => res.data)
-          }
-          onSuccess={(data) => {
-            setContestPasswordDialogue(false)
-            formik.submitForm()
-          }}
-          onError={(err) => {
-            showErrorToasts(toast, err.response.data.message!)
-          }}
-          button={{
-            label: "Submit",
-            loadingLabel: "Submitting",
-          }}
-        />
-      </PopupBuilder> */}
-
       {/* table row starts here */}
-      <tr>
+
+      <tr style={{ position: "relative" }}>
         {/* serial */}
-        <td>{serial}</td>
+        <td>
+          {serial} <LoadingOverlay visible={createSubmissionMutation.isLoading} overlayBlur={1.0} />
+        </td>
 
         {/* problem link */}
         <td>
@@ -181,11 +147,7 @@ const SubmissionForm = ({ serial }: { serial: number }) => {
 
         {/* solved at */}
         <td>
-          <MantineDatePicker
-            sx={{ width: 170 }}
-            {...form.getInputProps("solvedAt")}
-            error={false}
-          />
+          <MantineDatePicker sx={{ width: 170 }} {...form.getInputProps("solvedAt")} error={false} />
         </td>
 
         {/* actions */}

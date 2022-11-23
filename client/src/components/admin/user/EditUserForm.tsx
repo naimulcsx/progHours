@@ -1,11 +1,6 @@
-import FormBuilder from "~/components/FormBuilder"
-import PopupBuilder from "~/components/PopupBuilder"
 import * as Yup from "yup"
 import { useMutation, useQueryClient } from "react-query"
-import { DEFAULT_TOAST_OPTIONS } from "~/configs/toast-config"
-import { useToast } from "@chakra-ui/react"
 import { udpateUserData } from "~/api/user"
-import { User } from "~/contexts/UserContext"
 import { useForm, yupResolver } from "@mantine/form"
 import showToast from "~/utils/showToast"
 import { Button, NumberInput, Select, Stack, TextInput } from "@mantine/core"
@@ -15,7 +10,10 @@ const userSchema = Yup.object().shape({
   username: Yup.string().trim(),
   name: Yup.string().trim(),
   email: Yup.string().email("Invalid email").trim(),
-  batch: Yup.number().positive("Invalid Batch"),
+  batch: Yup.number()
+    .min(0)
+    .nullable(true)
+    .transform((_, val) => (val === Number(val) ? val : null)),
   section: Yup.string().trim(),
   department: Yup.string().trim(),
   mobile: Yup.string().trim(),
@@ -36,7 +34,6 @@ export default function EditUserForm({ data: user, setIsOpen }: any) {
     },
     onError: (err: any) => {
       showToast("error", err.response.data.message)
-
       setIsOpen(false)
     },
   })
@@ -46,7 +43,7 @@ export default function EditUserForm({ data: user, setIsOpen }: any) {
       username: user?.username || "",
       name: user?.name || "",
       email: user?.email || "",
-      batch: user?.batch || 1,
+      batch: user?.batch || "",
       section: user?.section || "",
       department: user?.department || "",
       mobile: user?.mobile || "",
@@ -58,17 +55,17 @@ export default function EditUserForm({ data: user, setIsOpen }: any) {
   })
 
   const handleSubmit = form.onSubmit(async (values: any) => {
+    values.batch = Number(values.batch)
     mutation.mutateAsync(values)
   })
 
   return (
     <form onSubmit={handleSubmit}>
       <Stack>
-        <TextInput label="University ID" {...form.getInputProps("username")} />
-        <TextInput label="Name" {...form.getInputProps("name")} />
-        <TextInput label="Email" {...form.getInputProps("email")} />
-        <NumberInput label="Batch" {...form.getInputProps("batch")} />
-
+        <TextInput label="University ID" {...form.getInputProps("username")} withAsterisk />
+        <TextInput label="Name" {...form.getInputProps("name")} withAsterisk />
+        <TextInput label="Email" {...form.getInputProps("email")} withAsterisk />
+        <TextInput type="number" label="Batch" {...form.getInputProps("batch")} withAsterisk />
         <Select
           label="Sections"
           placeholder="Select"
@@ -106,6 +103,7 @@ export default function EditUserForm({ data: user, setIsOpen }: any) {
             { label: "MODERATOR", value: "MODERATOR" },
             { label: "USER", value: "USER" },
           ]}
+          withAsterisk
         />
 
         <Button type="submit">Save</Button>

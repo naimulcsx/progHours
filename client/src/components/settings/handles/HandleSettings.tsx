@@ -1,7 +1,6 @@
 import { getAllHandles } from "~/api/handle"
 import { CCIcon, CFIcon, LightOJIcon, TophIcon } from "~/components/Icons"
 import PopupBuilder from "~/components/PopupBuilder"
-import { PlusIcon, PlusSmIcon } from "@heroicons/react/outline"
 import { Box, Button, Grid, Group, Paper, Text, Title } from "@mantine/core"
 import { useState } from "react"
 import { useQuery } from "react-query"
@@ -13,9 +12,7 @@ const HandleSettings = () => {
   const [handles, setHandles] = useState([])
   const [isOpen, setIsOpen] = useState(false)
 
-  /**
-   * find handle
-   */
+  // find handle
   useQuery("handles", getAllHandles, {
     onSuccess: (data) => {
       setHandles(data?.body.handles)

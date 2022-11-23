@@ -1,7 +1,7 @@
 import { TextInput } from "@mantine/core"
 import { FilterFn, Table } from "@tanstack/react-table"
 import { useEffect, useState } from "react"
-import { Search } from "tabler-icons-react"
+import { IconSearch } from "@tabler/icons"
 import { DataGridLocale } from "./types"
 
 type GlobalFilterProps<TData> = {
@@ -29,11 +29,16 @@ export function GlobalFilter<TData>({ table, className, locale }: GlobalFilterPr
   return (
     <TextInput
       mb="md"
-      sx={{ maxWidth: 340 }}
+      sx={{
+        maxWidth: 400,
+        "@media (max-width: 755px)": {
+          maxWidth: 160,
+        },
+      }}
       value={value}
       onChange={(e) => setValue(e.target.value)}
       placeholder={locale?.globalSearch || "Search..."}
-      rightSection={<Search size={16} />}
+      rightSection={<IconSearch size={16} />}
       className={className}
     />
   )

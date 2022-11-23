@@ -27,9 +27,9 @@ export default function MobileNavigation() {
         bottom: 0,
         left: 0,
         right: 0,
-        background: theme.colors.dark[7],
+        background: theme.colorScheme === "dark" ? theme.colors.dark[7] : theme.white,
         borderTop: "1px solid",
-        borderColor: theme.colors.dark[4],
+        borderColor: theme.colorScheme === "dark" ? theme.colors.dark[4] : theme.colors.gray[3],
         [`@media (max-width: ${theme.breakpoints.lg}px)`]: {
           display: "flex",
         },
@@ -38,45 +38,42 @@ export default function MobileNavigation() {
       <NavLink
         component={Link}
         to="/dashboard"
-        icon={<IconLayout2 style={{ marginLeft: 8 }} size={20} stroke={1.5} />}
+        icon={<IconLayout2 style={{ marginLeft: 12 }} size={20} stroke={1.5} />}
         active={pathname === "/dashboard"}
         sx={(theme) => ({
           width: "auto",
           display: "flex",
           borderRadius: theme.radius.md,
           "&[data-active='true']": {
-            color: "white",
-            background: theme.colors.dark[4],
+            background: theme.colorScheme === "dark" ? theme.colors.dark[4] : theme.colors.blue[0],
           },
         })}
       />
       <NavLink
         component={Link}
         to="/submissions"
-        icon={<IconClipboardList style={{ marginLeft: 8 }} size={20} stroke={1.5} />}
+        icon={<IconClipboardList style={{ marginLeft: 12 }} size={20} stroke={1.5} />}
         active={pathname === "/submissions"}
         sx={(theme) => ({
           width: "auto",
           display: "flex",
           borderRadius: theme.radius.md,
           "&[data-active='true']": {
-            color: "white",
-            background: theme.colors.dark[4],
+            background: theme.colorScheme === "dark" ? theme.colors.dark[4] : theme.colors.blue[0],
           },
         })}
       />
       <NavLink
         component={Link}
         to="/study"
-        icon={<IconNotes style={{ marginLeft: 8 }} size={20} stroke={1.5} />}
+        icon={<IconNotes style={{ marginLeft: 12 }} size={20} stroke={1.5} />}
         active={pathname === "/study"}
         sx={(theme) => ({
           width: "auto",
           display: "flex",
           borderRadius: theme.radius.md,
           "&[data-active='true']": {
-            color: "white",
-            background: theme.colors.dark[4],
+            background: theme.colorScheme === "dark" ? theme.colors.dark[4] : theme.colors.blue[0],
           },
         })}
       />
@@ -84,15 +81,14 @@ export default function MobileNavigation() {
       <NavLink
         component={Link}
         to="/leaderboard"
-        icon={<IconChartBar style={{ marginLeft: 8 }} size={20} stroke={1.5} />}
+        icon={<IconChartBar style={{ marginLeft: 12 }} size={20} stroke={1.5} />}
         active={pathname === "/leaderboard"}
         sx={(theme) => ({
           width: "auto",
           display: "flex",
           borderRadius: theme.radius.md,
           "&[data-active='true']": {
-            color: "white",
-            background: theme.colors.dark[4],
+            background: theme.colorScheme === "dark" ? theme.colors.dark[4] : theme.colors.blue[0],
           },
         })}
       />
@@ -100,7 +96,7 @@ export default function MobileNavigation() {
       <Menu shadow="md" width={200}>
         <Menu.Target>
           <NavLink
-            icon={<IconDotsVertical style={{ marginLeft: 8 }} size={20} stroke={1.5} />}
+            icon={<IconDotsVertical style={{ marginLeft: 12 }} size={20} stroke={1.5} />}
             sx={(theme) => ({
               color: theme.colors.gray[5],
               width: "auto",

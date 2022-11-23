@@ -1,14 +1,11 @@
-import { createGroup, joinGroup } from "~/api/groups"
-import { toast, useToast } from "@chakra-ui/react"
-import FormBuilder from "../FormBuilder"
+import { joinGroup } from "~/api/groups"
 import PopupBuilder from "../PopupBuilder"
 import * as yup from "yup"
-import { DEFAULT_TOAST_OPTIONS } from "~/configs/toast-config"
-import { useMutation, useQuery, useQueryClient } from "react-query"
+import { useMutation, useQueryClient } from "react-query"
 import showToast from "~/utils/showToast"
 import { useForm, yupResolver } from "@mantine/form"
 import * as Yup from "yup"
-import { Button, Group, TextInput } from "@mantine/core"
+import { Button, Group, TextInput, Title } from "@mantine/core"
 
 // schema validation
 const groupSchema = Yup.object().shape({
@@ -38,7 +35,7 @@ export const JoinGroupModal = ({ isOpen, setIsOpen }: any) => {
   })
 
   return (
-    <PopupBuilder isOpen={isOpen} setIsOpen={setIsOpen} title="Join a Group">
+    <PopupBuilder isOpen={isOpen} setIsOpen={setIsOpen} title={<Title order={4}>Join a Group</Title>}>
       <form
         onSubmit={form.onSubmit((values) => {
           mutate(values)

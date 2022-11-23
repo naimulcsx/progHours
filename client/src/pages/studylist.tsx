@@ -1,20 +1,18 @@
 import { getAllUserStudy } from "~/api/userStudies"
 import { DashboardLayout } from "~/components/layouts/Dashboard"
-import PopupBuilder from "~/components/PopupBuilder"
 import StudyCard from "~/components/study/StudyCard"
 import StudyForm from "~/components/study/StudyForm"
-import { PlusSmIcon } from "@heroicons/react/outline"
 import { useState } from "react"
 import { Helmet } from "react-helmet-async"
 import { useQuery } from "react-query"
-import { Box, Button, Grid, Group, Text, Title } from "@mantine/core"
+import { Box, Button, Grid, Group, Modal, Text, Title } from "@mantine/core"
 import { IconPlus } from "@tabler/icons"
 
 const StudyPage = () => {
   const [isOpen, setIsOpen] = useState(false)
   const [userStudies, setUserStudies] = useState([])
 
-  useQuery("studies", getAllUserStudy, {
+  useQuery("userStudies", getAllUserStudy, {
     onSuccess(data: any) {
       setUserStudies(data?.body.studies)
     },
@@ -22,7 +20,6 @@ const StudyPage = () => {
 
   return (
     <DashboardLayout>
-      {/* @ts-ignore */}
       <Helmet>
         <title>Study List</title>
       </Helmet>
@@ -40,7 +37,7 @@ const StudyPage = () => {
         ) : (
           <Grid>
             {userStudies.map((item: any) => (
-              <Grid.Col key={item.id} md={6} lg={4}>
+              <Grid.Col key={item.id} md={6} lg={3}>
                 <StudyCard {...item} />
               </Grid.Col>
             ))}
@@ -49,9 +46,9 @@ const StudyPage = () => {
       </Box>
 
       {/* add study modal */}
-      <PopupBuilder isOpen={isOpen} setIsOpen={setIsOpen} title={<Title order={4}>Add new resource</Title>}>
+      <Modal opened={isOpen} onClose={() => setIsOpen(false)} title={<Title order={4}>Add new resource</Title>}>
         <StudyForm setIsOpen={setIsOpen} isCreate={true} />
-      </PopupBuilder>
+      </Modal>
     </DashboardLayout>
   )
 }

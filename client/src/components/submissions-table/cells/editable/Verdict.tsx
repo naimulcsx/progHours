@@ -2,25 +2,15 @@ import { useState } from "react"
 import { AxiosError } from "axios"
 import { useMutation, useQueryClient } from "react-query"
 import { MantineTheme, Select } from "@mantine/core"
-
-/**
- * Import Components
- */
-import { useToast } from "@chakra-ui/react"
-import { updateSubmission } from "~/api/submissions"
-
-/**
- * Import types
- */
-import { Submission } from "~/types/Submission"
-import { Practice } from "~/types/Practice"
-import { DEFAULT_TOAST_OPTIONS } from "~/configs/toast-config"
 import { CellContext } from "@tanstack/react-table"
 import { IconSelector } from "@tabler/icons"
+
+import { updateSubmission } from "~/api/submissions"
+import { Submission } from "~/types/Submission"
+import { Practice } from "~/types/Practice"
 import showToast from "~/utils/showToast"
 
 const Verdict = (cell: CellContext<Submission, unknown>) => {
-  const toast = useToast(DEFAULT_TOAST_OPTIONS)
   const client = useQueryClient()
   const [selected, setSelected] = useState<string>(cell.getValue() as string)
 

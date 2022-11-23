@@ -139,20 +139,26 @@ export class GroupsController {
     const { group, groupUsers, ranklist } = await this.groupsService.getGroupByHashtag(params.hashtag)
 
     // check if the user is the owner of the group
-    let isOwner = false
+    let isOwner = false,
+      isMember = false
     for (let i = 0; i < groupUsers.length; ++i) {
       const user = groupUsers[i]
-      if (user.userId === req.user.id && user.role === GroupRole.ADMIN) {
-        isOwner = true
-        break
+      if (user.userId === req.user.id) {
+        isMember = true
+        if (user.role === GroupRole.ADMIN) {
+          isOwner = true
+        }
       }
     }
+
+    if (!isMember) delete group.accessCode
 
     // return response
     return {
       body: {
         group,
         isOwner,
+        isMember,
         users: groupUsers,
         ranklist,
       },

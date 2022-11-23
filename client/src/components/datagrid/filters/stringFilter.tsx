@@ -1,60 +1,60 @@
-import { Highlight, Select, Text, TextInput } from '@mantine/core';
-import { CellContext, RowData } from '@tanstack/react-table';
-import { Filter } from 'tabler-icons-react';
-import { DataGridFilterFn, DataGridFilterProps } from '../types';
+import { Highlight, Select, Text, TextInput } from "@mantine/core"
+import { CellContext, RowData } from "@tanstack/react-table"
+import { IconFilter } from "@tabler/icons"
+import { DataGridFilterFn, DataGridFilterProps } from "../types"
 
 type FilterState = {
-  op: StringFilterOperator;
-  value: string;
-};
+  op: StringFilterOperator
+  value: string
+}
 
 export enum StringFilterOperator {
-  Includes = 'in',
-  NotIncludes = 'nin',
-  Equals = 'eq',
-  NotEquals = 'neq',
-  StartsWith = 'start',
-  EndsWith = 'end',
+  Includes = "in",
+  NotIncludes = "nin",
+  Equals = "eq",
+  NotEquals = "neq",
+  StartsWith = "start",
+  EndsWith = "end",
 }
 
 export type StringFilterOptions = {
-  title?: string;
-  fixedOperator?: StringFilterOperator;
-  labels?: Partial<Record<StringFilterOperator, string>>;
-  placeholder?: string;
-};
+  title?: string
+  fixedOperator?: StringFilterOperator
+  labels?: Partial<Record<StringFilterOperator, string>>
+  placeholder?: string
+}
 export const createStringFilter = ({
   title,
   fixedOperator,
   labels,
-  placeholder = 'Filter value',
+  placeholder = "Filter value",
 }: StringFilterOptions) => {
   const filterFn: DataGridFilterFn<any, FilterState> = (row, columnId, filter) => {
-    const rowValue = String(row.getValue(columnId)).toLowerCase();
-    const op = filter.op || StringFilterOperator.Includes;
-    const filterValue = String(filter.value).toLowerCase();
+    const rowValue = String(row.getValue(columnId)).toLowerCase()
+    const op = filter.op || StringFilterOperator.Includes
+    const filterValue = String(filter.value).toLowerCase()
     switch (op) {
       case StringFilterOperator.Includes:
-        return rowValue.includes(filterValue);
+        return rowValue.includes(filterValue)
       case StringFilterOperator.NotIncludes:
-        return !rowValue.includes(filterValue);
+        return !rowValue.includes(filterValue)
       case StringFilterOperator.Equals:
-        return rowValue === filterValue;
+        return rowValue === filterValue
       case StringFilterOperator.NotEquals:
-        return rowValue !== filterValue;
+        return rowValue !== filterValue
       case StringFilterOperator.StartsWith:
-        return rowValue.startsWith(filterValue);
+        return rowValue.startsWith(filterValue)
       case StringFilterOperator.EndsWith:
-        return rowValue.endsWith(filterValue);
+        return rowValue.endsWith(filterValue)
       default:
-        return true;
+        return true
     }
-  };
-  filterFn.autoRemove = (val) => !val;
+  }
+  filterFn.autoRemove = (val) => !val
   filterFn.init = () => ({
     op: fixedOperator || StringFilterOperator.Includes,
-    value: '',
-  });
+    value: "",
+  })
   filterFn.element = function ({ filter, onFilterChange }: DataGridFilterProps<FilterState>) {
     return (
       <>
@@ -76,33 +76,31 @@ export const createStringFilter = ({
           value={filter.value}
           onChange={(e) => onFilterChange({ ...filter, value: e.target.value })}
           placeholder={placeholder}
-          rightSection={<Filter size={20} />}
+          rightSection={<IconFilter size={20} />}
         />
       </>
-    );
-  };
-  return filterFn;
-};
+    )
+  }
+  return filterFn
+}
 
-export const stringFilterFn = createStringFilter({});
+export const stringFilterFn = createStringFilter({})
 
 export const highlightFilterValue = <TData extends RowData>({
   renderValue,
   column,
   table,
 }: CellContext<TData, any>) => {
-  const highlight = [];
-  const filter = column.getFilterValue() as FilterState;
+  const highlight = []
+  const filter = column.getFilterValue() as FilterState
   if (filter && filter.value) {
-    highlight.push(filter.value);
+    highlight.push(filter.value)
   }
 
-  const globalFilter = table.getState().globalFilter;
+  const globalFilter = table.getState().globalFilter
   if (globalFilter) {
-    highlight.push(globalFilter);
+    highlight.push(globalFilter)
   }
 
-  return (
-    <Highlight highlight={highlight} children={renderValue()} style={{ display: 'inline', fontSize: 'inherit' }} />
-  );
-};
+  return <Highlight highlight={highlight} children={renderValue()} style={{ display: "inline", fontSize: "inherit" }} />
+}

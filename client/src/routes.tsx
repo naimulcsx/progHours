@@ -13,7 +13,6 @@ import GroupsPage from "~/pages/groups"
 import GroupPage from "~/pages/groups/$slug"
 import ActivitiesPage from "~/pages/Activities"
 import UserManagement from "~/pages/admin/userManagement"
-import ProblemManagement from "~/pages/admin/problemManagement"
 import NotFoundPage from "~/pages/404"
 import StudyPage from "./pages/studylist"
 

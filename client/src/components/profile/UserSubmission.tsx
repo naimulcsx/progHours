@@ -17,7 +17,7 @@ const UserSubmissionTable = ({ submissions }: { submissions: Submission[] }) => 
   submissions.forEach((el) => (el.serial = k--))
 
   return (
-    <Paper sx={{ overflow: "clip" }}>
+    <Paper sx={{ overflow: "clip" }} mb="xl">
       <DataGrid<Submission>
         sx={(theme) => ({
           background: "white",

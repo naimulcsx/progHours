@@ -91,14 +91,21 @@ const HandleOJBox = ({ icon, handle, onlineJudge }: any) => {
       </Menu>
 
       {/* edit handle modal */}
-      <PopupBuilder isOpen={editOpen} setIsOpen={setEditOpen} title={`Edit ${onlineJudge.name} handle`}>
+      <PopupBuilder
+        isOpen={editOpen}
+        setIsOpen={setEditOpen}
+        title={<Title order={4}>Edit {onlineJudge.name} handle</Title>}
+      >
         <HandleForm setIsOpen={setEditOpen} handle={handle} onlineJudge={onlineJudge} />
       </PopupBuilder>
 
       {/* delete modal */}
-      <PopupBuilder isOpen={deleteOpen} setIsOpen={setDeleteOpen} title={`Delete ${onlineJudge.name}`}>
+      <PopupBuilder
+        isOpen={deleteOpen}
+        setIsOpen={setDeleteOpen}
+        title={<Title order={4}>Delete {onlineJudge.name}</Title>}
+      >
         <Text>Are you sure you want to delete ?</Text>
-
         <Group mt={20} sx={{ justifyContent: "flex-end" }}>
           <Button variant="white" color="dark" onClick={() => setDeleteOpen(false)}>
             Cancel
