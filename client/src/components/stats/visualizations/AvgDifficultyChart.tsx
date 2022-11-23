@@ -1,4 +1,4 @@
-import { Paper, useMantineTheme } from "@mantine/core"
+import { Paper, Title, useMantineTheme } from "@mantine/core"
 import { ApexOptions } from "apexcharts"
 import ReactApexChart from "react-apexcharts"
 
@@ -29,10 +29,6 @@ export default function AvgDifficultyChart({ avgDifficulty }: any) {
     },
     stroke: {
       curve: "smooth",
-    },
-    title: {
-      text: "Average difficulty by week",
-      align: "center",
     },
     grid: {
       borderColor: theme.colorScheme === "dark" ? theme.colors.dark[3] : theme.colors.gray[3],
@@ -71,8 +67,11 @@ export default function AvgDifficultyChart({ avgDifficulty }: any) {
   }
   return (
     <Paper p="xl">
+      <Title order={6} sx={{ textAlign: "center" }}>
+        Average difficulty by week
+      </Title>
       {/* @ts-ignore */}
-      <ReactApexChart options={options} series={series} type="line" height={350} />
+      <ReactApexChart options={options} series={series} type="line" height={325} />
     </Paper>
   )
 }

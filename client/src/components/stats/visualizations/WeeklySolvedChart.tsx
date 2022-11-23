@@ -1,5 +1,5 @@
 import ReactApexChart from "react-apexcharts"
-import { Paper, useMantineTheme } from "@mantine/core"
+import { Paper, Title, useMantineTheme } from "@mantine/core"
 
 export default function WeeklySolvedChart({ data }: any) {
   const theme = useMantineTheme()
@@ -43,19 +43,33 @@ export default function WeeklySolvedChart({ data }: any) {
         enabled: false,
       },
     },
-    title: {
-      text: "Number of problems solved by week",
-      floating: false,
-      margin: 10,
+    markers: {
+      size: 4,
+      colors: undefined,
+      strokeColors: "#fff",
+      strokeWidth: 2,
+      strokeOpacity: 0.9,
+      strokeDashArray: 0,
+      fillOpacity: 1,
+      discrete: [],
+      shape: "circle",
+      radius: 2,
+      offsetX: 0,
       offsetY: 0,
-      align: "center",
-      style: {
-        color: theme.colorScheme === "dark" ? theme.colors.gray[3] : theme.colors.dark[9],
+      onClick: undefined,
+      onDblClick: undefined,
+      showNullDataPoints: true,
+      hover: {
+        size: undefined,
+        sizeOffset: 3,
       },
     },
   }
   return (
     <Paper shadow="xs" p="md" sx={{ height: "100%" }}>
+      <Title order={6} sx={{ textAlign: "center" }} mb="sm">
+        Number of problem solved by week
+      </Title>
       <ReactApexChart options={options as any} series={series} type="area" height={320} />
     </Paper>
   )

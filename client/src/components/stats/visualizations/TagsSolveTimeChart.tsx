@@ -38,11 +38,6 @@ export default function TagsSolveTimeChart({ data }: any) {
       mode: theme.colorScheme,
       palette: "palette2",
     },
-    grid: {
-      padding: {
-        top: 16,
-      },
-    },
     plotOptions: {
       pie: {
         donut: {
@@ -89,7 +84,7 @@ export default function TagsSolveTimeChart({ data }: any) {
   return (
     // @ts-ignore
     <Paper shadow="xs" p="xl">
-      <Title order={6} sx={{ textAlign: "center" }}>
+      <Title order={6} sx={{ textAlign: "center" }} mb="sm">
         Time spent by category{" "}
         <Anchor size="sm" sx={{ fontWeight: 400 }} onClick={() => setOpen(true)}>
           [View full data]
@@ -100,7 +95,7 @@ export default function TagsSolveTimeChart({ data }: any) {
         options={options}
         series={series}
         type="donut"
-        height={335}
+        height={320}
       />
       <Modal opened={open} onClose={() => setOpen(false)} title={<Title order={4}>Time spent by category</Title>}>
         {/* Modal content */}
