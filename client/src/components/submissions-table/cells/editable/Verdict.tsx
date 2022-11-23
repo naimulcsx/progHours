@@ -1,44 +1,27 @@
 import { useState } from "react"
 import { AxiosError } from "axios"
-import { Cell } from "react-table"
 import { useMutation, useQueryClient } from "react-query"
-import { useColorModeValue as mode } from "@chakra-ui/react"
+import { MantineTheme, Select } from "@mantine/core"
+import { CellContext } from "@tanstack/react-table"
+import { IconSelector } from "@tabler/icons"
 
-/**
- * Import Components
- */
-import { Select, useToast } from "@chakra-ui/react"
-import { updateSubmission } from "@/api/submissions"
+import { updateSubmission } from "~/api/submissions"
+import { Submission } from "~/types/Submission"
+import { Practice } from "~/types/Practice"
+import showToast from "~/utils/showToast"
 
-/**
- * Import types
- */
-import { Submission } from "@/types/Submission"
-import { Practice } from "@/types/Practice"
-import { DEFAULT_TOAST_OPTIONS } from "@/configs/toast-config"
-
-const Verdict = (cell: Cell<Submission>) => {
-  const toast = useToast(DEFAULT_TOAST_OPTIONS)
+const Verdict = (cell: CellContext<Submission, unknown>) => {
   const client = useQueryClient()
-  const [selected, setSelected] = useState(cell.value)
+  const [selected, setSelected] = useState<string>(cell.getValue() as string)
 
   const { mutate } = useMutation(updateSubmission, {
     onSuccess: (res) => {
-      /**
-       * Show toast message
-       */
-      toast({ title: res.message, status: "success" })
+      showToast("success", res.message)
     },
-    onError: (err: AxiosError) => {
-      /**
-       * Show toast message
-       */
-      // toast.error(err.response?.data.message, { className: "toast" })
-    },
+    onError: (err: AxiosError) => {},
   })
 
   const handleSelected = (value: any) => {
-    value = value.target.value
     const oldData: Practice | undefined = client.getQueryData("submissions")
     /**
      * If this submission is the one, we updated on, update it's verdict
@@ -64,37 +47,67 @@ const Verdict = (cell: Cell<Submission>) => {
     setSelected(value)
   }
 
-  const styles: any = {
+  const getStyles: any = (theme: MantineTheme) => ({
     AC: {
-      bg: mode("green.100", "green.400"),
-      color: mode("green.900", "green.900"),
-      borderColor: mode("green.200", "gray.700"),
+      borderColor: theme.colors.green[6],
+      background: theme.colors.green[8],
+      color: theme.colors.green[0],
+      fontWeight: 600,
     },
     WA: {
-      bg: "red.100",
-      color: "red.900",
-      borderColor: "red.200",
+      borderColor: theme.colors.red[6],
+      background: theme.colors.red[8],
+      color: theme.colors.red[0],
+      fontWeight: 600,
     },
     TLE: {
-      bg: "orange.100",
-      color: "orange.900",
-      borderColor: "orange.200",
+      borderColor: theme.colors.yellow[6],
+      background: theme.colors.yellow[8],
+      color: theme.colors.yellow[0],
+      fontWeight: 600,
     },
-  }
+  })
+
+  const getLightStyles: any = (theme: MantineTheme) => ({
+    AC: {
+      borderColor: theme.colors.green[6],
+      background: theme.colors.green[5],
+      color: theme.colors.green[0],
+      fontWeight: 600,
+    },
+    WA: {
+      borderColor: theme.colors.red[6],
+      background: theme.colors.red[5],
+      color: theme.colors.red[0],
+      fontWeight: 600,
+    },
+    TLE: {
+      borderColor: theme.colors.yellow[6],
+      background: theme.colors.yellow[5],
+      color: theme.colors.yellow[0],
+      fontWeight: 600,
+    },
+  })
 
   return (
     <Select
       value={selected}
       onChange={handleSelected}
-      key={cell.value}
-      fontWeight="bold"
-      fontSize="sm"
-      {...styles[cell.value]}
-    >
-      <option value="AC">AC</option>
-      <option value="WA">WA</option>
-      <option value="TLE">TLE</option>
-    </Select>
+      sx={(theme) => ({
+        input: theme.colorScheme === "dark" ? getStyles(theme)[selected] : getLightStyles(theme)[selected],
+      })}
+      rightSection={<IconSelector size={16} color="white" />}
+      rightSectionProps={{
+        style: {
+          pointerEvents: "none",
+        },
+      }}
+      data={[
+        { value: "AC", label: "AC" },
+        { value: "WA", label: "WA" },
+        { value: "TLE", label: "TLE" },
+      ]}
+    />
   )
 }
 

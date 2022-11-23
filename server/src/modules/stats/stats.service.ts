@@ -1,11 +1,34 @@
 import { Injectable } from "@nestjs/common"
 import { PrismaService } from "../prisma/prisma.service"
-import * as moment from "moment"
+import { UserStat } from "@prisma/client"
 
 // fix prisma bigint issue: https://github.com/prisma/studio/issues/614
 const bigIntPrototype = BigInt.prototype as any
 bigIntPrototype.toJSON = function () {
   return Number(this)
+}
+
+export interface UserStatWithComputedFields extends UserStat {
+  rank: number
+  averageDifficulty: number
+  score: number
+}
+
+export function computeRankAndSort(stats: UserStat[]): UserStatWithComputedFields[] {
+  return stats
+    .map((item: UserStatWithComputedFields) => {
+      item.averageDifficulty = item.totalDifficulty / item.totalSolvedWithDifficulty || 0
+      item.score = (item.totalSolved * item.averageDifficulty) / 100 + item.totalSolveTime
+      if (!item.score) item.score = 0
+      item.score = Math.round(item.score * 1e2) / 1e2
+      item.averageDifficulty = Math.round(item.averageDifficulty * 1e2) / 1e2
+      return item
+    })
+    .sort((a, b) => b.score - a.score)
+    .map((item, idx) => {
+      item.rank = idx + 1
+      return item
+    })
 }
 
 @Injectable()
@@ -21,6 +44,8 @@ export class StatsService {
       where: { userId },
     })
     const tagsFrequency = await this.getTagsFrequency(userId)
+    const tagsSolveTime = await this.getTagSolveTime(userId)
+    // const heatmapData = await this.getHeatmapData(userId)
     return {
       verdictCount,
       totalSolved: userStat.totalSolved,
@@ -28,7 +53,22 @@ export class StatsService {
       totalSolveTime: userStat.totalSolveTime,
       totalSolvedWithDifficulty: userStat.totalSolvedWithDifficulty,
       tagsFrequency,
+      tagsSolveTime,
     }
+  }
+
+  async getHeatmapData(userId) {
+    const rawData = await this.prisma.$queryRaw`
+      SELECT 
+        CAST("Submission"."solvedAt" AS DATE),  
+        COUNT("Submission"."solveTime")
+      FROM 
+        "Submission"
+      WHERE
+        "Submission"."userId" = 97
+      GROUP BY CAST("Submission"."solvedAt" AS DATE)
+    `
+    return rawData
   }
 
   /**
@@ -100,33 +140,10 @@ export class StatsService {
   }
 
   /**
-   * Get user live ranklist
-   */
-  // async getLiveRanklist() {
-  //   const users = await this.usersService
-  //     .createQueryBuilder("user")
-  //     .select(["user.username", "user.name", "user.id"])
-  //     .getMany()
-  //   const result = []
-  //   for (let user of users) {
-  //     const average_difficulty = await this.getAverageDifficulty(user.id)
-  //     const total_solve_time = await this.getSolveTime(user.id)
-  //     const total_solved = await this.getTotalSolvedCount(user.id)
-  //     result.push({
-  //       ...user,
-  //       average_difficulty,
-  //       total_solve_time,
-  //       total_solved,
-  //     })
-  //   }
-  //   return result
-  // }
-
-  /**
    * Get user ranklist
    */
   async getRankList() {
-    return this.prisma.userStat.findMany({
+    const ranklist = await this.prisma.userStat.findMany({
       include: {
         user: {
           select: {
@@ -134,10 +151,12 @@ export class StatsService {
             name: true,
             username: true,
             batch: true,
+            department: true,
           },
         },
       },
     })
+    return computeRankAndSort(ranklist)
   }
 
   /**
@@ -149,7 +168,7 @@ export class StatsService {
         "Tag"."name", 
         CAST(COUNT("Tag"."name") AS int)
       FROM 
-        "ProblemTag" 
+        "ProblemTag"
       LEFT JOIN "Tag" ON "ProblemTag"."tagId" = "Tag"."id"
       WHERE 
         "ProblemTag"."problemId" IN (
@@ -166,6 +185,31 @@ export class StatsService {
         "Tag"."name"
     `
     return rawData
+  }
+
+  async getTagSolveTime(userId) {
+    const rawData: any[] = await this.prisma.$queryRaw`
+      SELECT 
+        "Tag"."name",
+        CAST(SUM("Submission"."solveTime") as int),
+        COUNT("Submission"."id")
+      FROM 
+        "Submission"
+      LEFT JOIN "Problem" ON "Submission"."problemId" = "Problem"."id"
+      LEFT JOIN "ProblemTag" ON "Problem"."id" = "ProblemTag"."problemId"
+      LEFT JOIN "Tag" ON "ProblemTag"."tagId" = "Tag"."id"
+      WHERE 
+        "Submission"."userId" = ${userId}
+        AND "Submission"."verdict" = 'AC'
+      GROUP BY
+        "Tag"."name"
+    `
+
+    console.log(rawData)
+    return rawData.map((item) => {
+      if (!item.name) return { name: "untagged", sum: item.sum, count: item.count }
+      return item
+    })
   }
 
   async getWeeklyLeaderboard(fromDate: string, toDate: string) {
@@ -191,20 +235,22 @@ export class StatsService {
         "User"."id"
       `
 
-    return result.map((stat) => {
+    const data = result.map((stat: any) => {
       return {
-        id: stat.id,
-        totalSolveTime: stat.totalSolveTime,
-        totalDifficulty: stat.totalDifficulty,
-        totalSolved: stat.totalSolved,
-        totalSolvedWithDifficulty: stat.totalSolvedWithDifficulty,
+        id: Number(stat.id),
+        totalSolveTime: Number(stat.totalSolveTime),
+        totalDifficulty: Number(stat.totalDifficulty),
+        totalSolved: Number(stat.totalSolved),
+        totalSolvedWithDifficulty: Number(stat.totalSolvedWithDifficulty),
         user: {
-          id: stat.id,
+          id: Number(stat.id),
           name: stat.name,
           username: stat.username,
-          batch: stat.batch,
+          batch: Number(stat.batch),
         },
       }
     })
+
+    return computeRankAndSort(data)
   }
 }

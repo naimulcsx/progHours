@@ -1,50 +1,26 @@
 import { useQuery } from "react-query"
 import { useState } from "react"
 import { useParams } from "react-router-dom"
-import {
-  Box,
-  Container,
-  Skeleton,
-  SkeletonCircle,
-  SkeletonText,
-  Spinner,
-  Stack,
-  Tab,
-  TabList,
-  TabPanel,
-  TabPanels,
-  Tabs,
-  useToast,
-  useColorModeValue as mode,
-} from "@chakra-ui/react"
+import { Grid, Stack, Tabs, Box, Paper, Text, Table, Container } from "@mantine/core"
+import { IconPhoto, IconMessageCircle, IconSettings, IconUser } from "@tabler/icons"
 import { motion } from "framer-motion"
-
-/**
- * Import Components
- */
-import Navbar from "@/components/navbar"
-
-/**
- * Import API
- */
-import { getSubmissionsByUsername } from "@/api/submissions"
-
-/**
- * Import helpers
- */
-import { getUserByUsername } from "@/api/user"
-import { UserCard } from "@/components/profile/UserCard"
 import { Helmet } from "react-helmet-async"
-import { SubmissionsTable } from "@/components/submissions-table"
-import { DEFAULT_TOAST_OPTIONS } from "@/configs/toast-config"
-import { getStatsByUsername } from "@/api/leaderboard"
-import UserStats from "@/components/stats/UserStats"
-import TagsFreqChart from "@/components/stats/visualizations/TagsFreqChart"
-import { UserAbout } from "@/components/profile/UserAbout"
-import { getWeekRanges } from "@/utils/getWeekRanges"
-import WeeklySolvedChart from "@/components/stats/visualizations/WeeklySolvedChart"
-import { PublicNavbar } from "@/components/navbar/PublicNavbar"
-import { AnimateLoading } from "@/components/AnimateLoading"
+import moment from "moment"
+
+import { getSubmissionsByUsername } from "~/api/submissions"
+import { getUserByUsername } from "~/api/user"
+import { getStatsByUsername } from "~/api/leaderboard"
+import { Frequency, getSubmissionStats } from "~/utils/getSubmissionsStats"
+import UserCard from "~/components/profile/UserCard"
+import Navbar from "~/components/navbar"
+import UserStats from "~/components/stats/UserStats"
+import TagsFreqChart from "~/components/stats/visualizations/TagsFreqChart"
+import WeeklySolvedChart from "~/components/stats/visualizations/WeeklySolvedChart"
+import MedalsTab from "~/components/profile/MedalsTab"
+import UserSubmissionTable from "~/components/profile/UserSubmission"
+import TagsSolveTimeChart from "~/components/stats/visualizations/TagsSolveTimeChart"
+import AvgDifficultyChart from "~/components/stats/visualizations/AvgDifficultyChart"
+import NotFoundPage from "../404"
 
 interface User {
   name: string
@@ -58,12 +34,7 @@ interface User {
   role: string
 }
 
-interface Frequency {
-  [name: string]: number
-}
-
 export default function Profile() {
-  const toast = useToast(DEFAULT_TOAST_OPTIONS)
   const { username } = useParams()
 
   /**
@@ -76,134 +47,153 @@ export default function Profile() {
    * Get submissions
    */
   let [frequency, setFrequency] = useState<Frequency | null>(null)
+  let [avgDifficulty, setAvgDifficulty] = useState<any>(null)
 
-  const submissionQuery = useQuery(
+  const { data, isLoading } = useQuery(
     `submissions/${username}`,
     () => getSubmissionsByUsername(username ? username : "-1"),
     {
       onSuccess: (res) => {
-        const frequency: Frequency = {}
-        const weekRanges = getWeekRanges(res.body.submissions)
-        /**
-         * For each week k, calculate how many problems are solved in the k'th week
-         */
-        for (let i = 0; i < res.body.submissions.length; ++i) {
-          for (let j = 0; j < weekRanges.length; ++j) {
-            const solvedAt = new Date(res.body.submissions[i].solvedAt)
-            if (
-              solvedAt >= weekRanges[j].from &&
-              solvedAt <= weekRanges[j].to
-            ) {
-              if (!frequency[j + 1]) frequency[j + 1] = 0
-              frequency[j + 1]++
-            }
-          }
-        }
+        const { frequency, avgDifficulty } = getSubmissionStats(res.body.submissions)
+        setAvgDifficulty(avgDifficulty)
         setFrequency(frequency)
         setSubmissions(res.body.submissions)
       },
     }
   )
 
-  useQuery(
-    `users/${username}`,
-    () => getUserByUsername(username ? username : "-1"),
-    {
-      retry: 1,
-      onSuccess: (res) => {
-        setUser(res.body.user)
-      },
-      onError: (err) => {
-        // showErrorToasts(toast, err.response?.data.message)
-      },
-    }
-  )
-
-  const [userStats, setUserStats] = useState<any>(null)
-  useQuery(`stats/${username}`, () => getStatsByUsername(username || ""), {
+  const [notFound, setNotFound] = useState(false)
+  useQuery(`users/${username}`, () => getUserByUsername(username ? username : "-1"), {
+    retry: 1,
     onSuccess: (res) => {
-      setUserStats(res.body.stats)
+      setUser(res.body.user)
+    },
+    onError: () => {
+      setNotFound(true)
     },
   })
 
-  const isLoggedIn: boolean = !!localStorage.getItem("isLoggedIn")
-  const bg = mode("white", "gray.700")
+  const [userStats, setUserStats] = useState<any>(null)
+
+  useQuery(`stats/${username}`, () => getStatsByUsername(username || ""), {
+    onSuccess: (res) => setUserStats(res.body.stats),
+  })
 
   return (
-    <>
-      {isLoggedIn ? <Navbar /> : <PublicNavbar />}
-      <AnimateLoading
-        isLoaded={user && userStats && frequency && submissionQuery.data}
-        SkeletonComponent={() => (
-          <Container pt={20}>
-            <Stack>
-              <Skeleton h="20px" />
-              <Skeleton h="20px" />
-              <Skeleton h="20px" />
-              <Skeleton h="20px" />
-            </Stack>
-          </Container>
-        )}
-      >
-        {user && userStats && frequency && submissionQuery.data && (
-          <Box overflow="hidden">
-            {/* @ts-ignore */}
-            <Helmet>{/* @ts-ignore */}</Helmet>
-            <UserCard
-              name={user.name}
-              username={user.username}
-              member_since={user.memberSince}
-              role={user.role}
-            />
-            <Container>
-              <Tabs>
-                <TabList>
-                  <Tab>About</Tab>
-                  <Tab>Statistics</Tab>
-                  <Tab>Submissions</Tab>
-                </TabList>
-                <TabPanels>
-                  <TabPanel mx={-4}>
-                    <Box mb={5} mt={2}>
+    <Box>
+      <Navbar />
+      {notFound ? (
+        <Box pt="xl">
+          <NotFoundPage />
+        </Box>
+      ) : (
+        <Container size="xl">
+          {user && userStats && frequency && data && (
+            <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.25, duration: 0.35 }}>
+              <Box>
+                <Helmet>
+                  <title>{user?.name}</title>
+                </Helmet>
+                <UserCard user={user} />
+                <Tabs defaultValue="about">
+                  <Tabs.List>
+                    <Tabs.Tab value="about" icon={<IconUser size={16} />}>
+                      ABOUT
+                    </Tabs.Tab>
+                    <Tabs.Tab value="stats" icon={<IconPhoto size={16} />}>
+                      STATS
+                    </Tabs.Tab>
+                    <Tabs.Tab value="medals" icon={<IconMessageCircle size={16} />}>
+                      MEDALS
+                    </Tabs.Tab>
+                    <Tabs.Tab value="activity" icon={<IconSettings size={16} />}>
+                      ACTIVITY
+                    </Tabs.Tab>
+                  </Tabs.List>
+                  <Tabs.Panel value="stats" py="sm">
+                    <Stack>
+                      <Grid>
+                        <Grid.Col md={6}>
+                          <WeeklySolvedChart data={frequency} />
+                        </Grid.Col>
+                        <Grid.Col md={6}>
+                          <TagsFreqChart data={userStats["tagsFrequency"]} />
+                        </Grid.Col>
+                        <Grid.Col md={6}>
+                          <TagsSolveTimeChart data={userStats["tagsSolveTime"]} />
+                        </Grid.Col>
+                        <Grid.Col md={6}>
+                          <AvgDifficultyChart avgDifficulty={avgDifficulty} />
+                        </Grid.Col>
+                      </Grid>
+                    </Stack>
+                  </Tabs.Panel>
+                  <Tabs.Panel value="about" py="sm">
+                    <Box>
                       <UserStats progress={userStats} />
                     </Box>
-                    <UserAbout user={user} userStats={userStats} />
-                  </TabPanel>
-                  <TabPanel>
-                    <Box
-                      p={8}
-                      pb={2}
-                      mb={4}
-                      mt={2}
-                      bg={bg}
-                      rounded="lg"
-                      shadow="base"
-                      mx={-4}
-                    >
-                      <WeeklySolvedChart data={frequency} />
-                    </Box>
-                    <Box
-                      p={8}
-                      pb={2}
-                      bg={bg}
-                      rounded="lg"
-                      shadow="base"
-                      mx={-4}
-                    >
-                      <TagsFreqChart data={userStats["tagsFrequency"]} />
-                    </Box>
-                  </TabPanel>
-                  <TabPanel mx={-8}>
-                    <Box overflowX="auto">
-                      <SubmissionsTable submissions={submissions} />
-                    </Box>
-                  </TabPanel>
-                </TabPanels>
-              </Tabs>
-            </Container>
-          </Box>
-        )}
-      </AnimateLoading>
-    </>
+                    <Paper mt="md">
+                      <Table
+                        verticalSpacing="sm"
+                        horizontalSpacing="lg"
+                        sx={(theme) => ({
+                          borderRadius: theme.radius.md,
+                          overflow: "clip",
+                        })}
+                      >
+                        <thead>
+                          <tr>
+                            <th style={{ width: 200 }}>Full Name</th>
+                            <th>
+                              <Text sx={{ fontWeight: 400 }}>{user.name}</Text>
+                            </th>
+                          </tr>
+                          <tr>
+                            <th style={{ width: 200 }}>University ID</th>
+                            <th>
+                              <Text sx={{ fontWeight: 400 }}>{user.username.toUpperCase()}</Text>
+                            </th>
+                          </tr>
+                          <tr>
+                            <th style={{ width: 200 }}>Department</th>
+                            <th>
+                              <Text sx={{ fontWeight: 400 }}>{user.department ?? "—"}</Text>
+                            </th>
+                          </tr>
+                          <tr>
+                            <th style={{ width: 200 }}>Batch</th>
+                            <th>
+                              <Text sx={{ fontWeight: 400 }}>{user.batch ?? "—"}</Text>
+                            </th>
+                          </tr>
+                          <tr>
+                            <th style={{ width: 200 }}>Email</th>
+                            <th>
+                              <Text sx={{ fontWeight: 400 }}>{user.email}</Text>
+                            </th>
+                          </tr>
+                          <tr>
+                            <th style={{ width: 200, borderBottom: 0 }}>Member Since</th>
+                            <th style={{ borderBottom: 0 }}>
+                              <Text sx={{ fontWeight: 400 }}>{moment(user.memberSince).fromNow()}</Text>
+                            </th>
+                          </tr>
+                        </thead>
+                      </Table>
+                    </Paper>
+                  </Tabs.Panel>
+                  <Tabs.Panel value="medals" pt="sm">
+                    <MedalsTab userStats={userStats} />
+                  </Tabs.Panel>
+                  <Tabs.Panel value="activity" pt="sm">
+                    <UserSubmissionTable submissions={submissions} />
+                  </Tabs.Panel>
+                </Tabs>
+              </Box>
+            </motion.div>
+          )}
+        </Container>
+      )}
+    </Box>
   )
 }

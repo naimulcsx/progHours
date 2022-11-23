@@ -1,120 +1,125 @@
+import { getRankList } from "~/api/leaderboard"
+import React, { useState } from "react"
 import { Helmet } from "react-helmet-async"
-import { useEffect, useState } from "react"
 import { useQuery } from "react-query"
+import { Box, Container, Group, Select, Title, Loader } from "@mantine/core"
+import Navbar from "~/components/navbar"
+import { AnimatePresence, motion } from "framer-motion"
+import useUser from "~/hooks/useUser"
+import Leaderboard from "~/components/leaderboard"
+import { DashboardLayout } from "~/components/layouts/Dashboard"
 
-/**
- * Import Components
- */
-import { DashboardLayout } from "@/components/layouts/Dashboard"
-import LeaderboardTable from "@/components/leaderboard/Table"
+export default function LeaderboardPage() {
+  const { user } = useUser()
 
-/**
- * Import helpers
- */
-import { getRankList } from "@/api/leaderboard"
-import { AnimateLoading } from "@/components/AnimateLoading"
-import processRanklist from "@/utils/processRanklist"
-import { filterData } from "@/components/leaderboard/filters/filterData"
-import { LeaderboardFilters } from "@/components/leaderboard/filters/Filters"
-import { Box, Flex, Select, Text } from "@chakra-ui/react"
-import moment from "moment"
-
-const LeaderboardPage = () => {
-  const [ranklist, setRanklist] = useState<any>(null)
-  const [filteredData, setFilteredData] = useState<any>(null)
-
-  const [leaderboardType, setLeaderboardType] = useState<
-    "full" | "currentWeek" | "lastWeek" | "currentMonth"
-  >("full")
+  const [leaderboardType, setLeaderboardType] = useState<"full" | "currentWeek" | "lastWeek" | "currentMonth">(
+    "currentWeek"
+  )
 
   const [dateRange, setDateRange] = useState<any>({})
 
-  useQuery(["ranklist", leaderboardType], () => getRankList(leaderboardType), {
+  const { data, isLoading, isFetching } = useQuery(["ranklist", leaderboardType], () => getRankList(leaderboardType), {
     onSuccess: (res) => {
-      const { stats, fromDate, toDate } = res.body
-      const result = processRanklist(stats)
-      setRanklist(result)
+      const { fromDate, toDate } = res.body
       if (fromDate && toDate) setDateRange({ from: fromDate, to: toDate })
       else setDateRange({})
     },
   })
 
-  const [filters, setFilters] = useState<any>({})
-
-  useEffect(() => {
-    if (Object.keys(filters).length > 0)
-      setFilteredData(filterData(ranklist, filters))
-    else setFilteredData(ranklist)
-  }, [ranklist])
-
-  useEffect(() => {
-    if (Object.keys(filters).length > 0)
-      setFilteredData(filterData(ranklist, filters))
-    else setFilteredData(ranklist)
-  }, [filters])
-
-  return (
-    <DashboardLayout title="Leaderboard">
-      {/* @ts-ignore */}
+  return React.createElement(
+    user ? DashboardLayout : Box,
+    null,
+    <>
       <Helmet>
         <title>Leaderboard</title>
       </Helmet>
-      <AnimateLoading isLoaded={filteredData}>
-        {filteredData && (
-          <>
-            <Box
-              display="flex"
-              justifyContent="space-between"
-              alignItems={["start", "center"]}
-              mb={4}
-              flexDirection={["column-reverse", "row"]}
-            >
-              <LeaderboardFilters filters={filters} setFilters={setFilters} />
-              <Flex
-                direction={["row-reverse", "row"]}
-                w={["full", "auto"]}
-                justify="start"
-                alignItems="center"
-                gap={4}
-                mb={4}
-              >
-                <Box fontSize="sm" minW="180" textAlign="right">
-                  {Object.keys(dateRange).length == 2 && (
-                    <>
-                      <Text as="span">
-                        {moment(dateRange.from).format("ddd, D MMM")}
-                      </Text>
-                      {" - "}
-                      <Text as="span">
-                        {moment(dateRange.to).format("ddd, D MMM")}
-                      </Text>
-                    </>
-                  )}
-                </Box>
-                <Select
-                  size="sm"
-                  maxW="140"
-                  placeholder="Select option"
-                  defaultValue="full"
-                  rounded="lg"
-                  onChange={(e: any) => {
-                    setLeaderboardType(e.target.value)
-                  }}
-                >
-                  <option value="full">All Time</option>
-                  <option value="currentWeek">This Week</option>
-                  <option value="lastWeek">Last Week</option>
-                  <option value="currentMonth">This Month</option>
-                  <option value="lastMonth">Last Month</option>
-                </Select>
-              </Flex>
+      <Navbar />
+      {React.createElement(
+        user ? "div" : Container,
+        user
+          ? null
+          : {
+              sx: {
+                paddingBottom: "32px",
+                maxWidth: "1400px",
+                paddingTop: "80px",
+                minHeight: "100vh",
+              },
+            },
+        <>
+          <Group position="apart" align="start" mb="md">
+            <Group align="center">
+              <Title order={3}>Leaderboard</Title>
+              <AnimatePresence>
+                {(isLoading || isFetching) && (
+                  <motion.div
+                    initial={{ opacity: 1 }}
+                    exit={{ opacity: 0 }}
+                    transition={{ duration: 0.5 }}
+                    style={{ display: "flex", alignItems: "center" }}
+                  >
+                    <Loader size="xs" />
+                  </motion.div>
+                )}
+              </AnimatePresence>
+            </Group>
+            <Box>
+              <Select
+                size="xs"
+                defaultValue="currentWeek"
+                onChange={(value: "full" | "currentWeek" | "lastWeek" | "currentMonth") => {
+                  setLeaderboardType(value)
+                }}
+                data={[
+                  {
+                    value: "full",
+                    label: "All Time",
+                  },
+                  {
+                    value: "currentWeek",
+                    label: "Current Week",
+                  },
+                  {
+                    value: "lastWeek",
+                    label: "Last Week",
+                  },
+                  {
+                    value: "currentMonth",
+                    label: "Current Month",
+                  },
+                  {
+                    value: "lastMonth",
+                    label: "Last Month",
+                  },
+                ]}
+              />
             </Box>
-            <LeaderboardTable ranklist={filteredData} />
-          </>
-        )}
-      </AnimateLoading>
-    </DashboardLayout>
+          </Group>
+          <AnimatePresence>
+            {!isLoading && (
+              <motion.div
+                initial={{ opacity: 0, height: 0 }}
+                animate={{ opacity: 1, height: "auto" }}
+                transition={{ delay: 0.25, duration: 0.35 }}
+              >
+                <Box
+                  sx={(theme) => ({
+                    margin: user ? "0 -16px" : "auto",
+                    borderRadius: user ? 0 : theme.radius.md,
+                    overflow: "clip",
+                    boxShadow: theme.shadows.xs,
+                    [`@media (max-width: ${theme.breakpoints.lg}px)`]: {
+                      margin: "0 -16px",
+                    },
+                  })}
+                >
+                  <Leaderboard data={data?.body?.stats} loading={isLoading} />
+                </Box>
+              </motion.div>
+            )}
+          </AnimatePresence>
+        </>
+      )}
+    </>
   )
 }
-
-export default LeaderboardPage

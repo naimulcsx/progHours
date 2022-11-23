@@ -1,55 +1,41 @@
-import { Button, Box, Flex, Grid } from "@chakra-ui/react"
-import { CCIcon, CFIcon, LightOJIcon, TophIcon } from "../../Icons"
-import { getAllHandles } from "@/api/handle"
-import { useQuery } from "react-query"
+import { getAllHandles } from "~/api/handle"
+import { CCIcon, CFIcon, LightOJIcon, TophIcon } from "~/components/Icons"
+import PopupBuilder from "~/components/PopupBuilder"
+import { Box, Button, Grid, Group, Paper, Text, Title } from "@mantine/core"
 import { useState } from "react"
+import { useQuery } from "react-query"
 import HandleForm from "./HandleForm"
-import PopupBuilder from "@/components/PopupBuilder"
 import HandleOJBox from "./HandleOJBox"
-import { PlusIcon, PlusSmIcon } from "@heroicons/react/outline"
+import { IconPlus } from "@tabler/icons"
 
 const HandleSettings = () => {
   const [handles, setHandles] = useState([])
   const [isOpen, setIsOpen] = useState(false)
 
-  /**
-   * find handle
-   */
+  // find handle
   useQuery("handles", getAllHandles, {
     onSuccess: (data) => {
       setHandles(data?.body.handles)
     },
   })
+
   return (
-    <Box>
-      <Flex justifyContent="flex-end" mb={4}>
-        <Button
-          size="sm"
-          onClick={() => setIsOpen(true)}
-          leftIcon={<PlusSmIcon height={24} width={24} />}
-        >
+    <Paper p={24}>
+      <Group sx={{ justifyContent: "space-between" }} mb="md">
+        <Title order={4}>Handles</Title>
+        <Button size="xs" onClick={() => setIsOpen(true)} leftIcon={<IconPlus size={16} />}>
           Add Handle
         </Button>
-      </Flex>
-      <PopupBuilder
-        isOpen={isOpen}
-        setIsOpen={setIsOpen}
-        title="Add a new handle"
-      >
+      </Group>
+
+      {handles?.length === 0 && <Text>You haven't included any handles yet.</Text>}
+
+      <PopupBuilder title="Add a new handle" setIsOpen={setIsOpen} isOpen={isOpen}>
         <HandleForm setIsOpen={setIsOpen} isCreate={true} />
       </PopupBuilder>
-      <Box flex={1} mx={-4}>
-        <Grid
-          gridTemplateColumns={[
-            "repeat(1, 1fr)",
-            "repeat(1, 1fr)",
-            "repeat(2, 1fr)",
-            "repeat(3, 1fr)",
-            "repeat(4, 1fr)",
-            "repeat(5, 1fr)",
-          ]}
-          gap={4}
-        >
+
+      <Box mt={10}>
+        <Grid>
           {handles.map((item: any) => {
             const iconMap: any = {
               Codeforces: <CFIcon />,
@@ -58,17 +44,18 @@ const HandleSettings = () => {
               LightOJ: <LightOJIcon />,
             }
             return (
-              <HandleOJBox
-                key={item.id}
-                icon={iconMap[item.onlineJudge.name]}
-                handle={item.handle}
-                onlineJudge={item.onlineJudge}
-              />
+              <Grid.Col md={6} lg={4} key={item.id}>
+                <HandleOJBox
+                  icon={iconMap[item.onlineJudge.name]}
+                  handle={item.handle}
+                  onlineJudge={item.onlineJudge}
+                />
+              </Grid.Col>
             )
           })}
         </Grid>
       </Box>
-    </Box>
+    </Paper>
   )
 }
 

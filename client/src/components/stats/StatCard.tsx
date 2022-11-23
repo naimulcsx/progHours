@@ -1,44 +1,56 @@
-import {
-  Box,
-  Circle,
-  HStack,
-  Text,
-  Heading,
-  useColorModeValue as mode,
-} from "@chakra-ui/react"
+import { Box, Group, Paper, Stack, Text, Title } from "@mantine/core"
 
 export const StatCard = (props: any) => {
   const { data, icon } = props
   const { label, value } = data
   return (
-    <Box
-      bg={mode("white", "gray.700")}
-      p={[4, 4, 4, 4, 6]}
-      shadow="base"
-      rounded="lg"
+    <Paper
+      p="xl"
+      shadow="xs"
+      sx={(theme) => {
+        return {
+          height: "100%",
+        }
+      }}
     >
-      <HStack align="start" spacing={[4, 4, 4, 4, 6]}>
-        <Circle
-          bg={mode("gray.50", "gray.800")}
-          color={mode("blue.500", "blue.500")}
-          rounded="full"
-          size={[10, 10, 10, 10, 12]}
-        >
-          {icon}
-        </Circle>
+      <Group
+        sx={(theme) => ({
+          [`@media (max-width: ${theme.breakpoints.sm}px)`]: {
+            flexDirection: "column",
+            alignItems: "start",
+          },
+        })}
+      >
+        <Box>{icon}</Box>
         <Box>
-          <Text fontWeight="600" color={mode("gray.700", "gray.400")}>
-            {label}
-          </Text>
-          <Heading
-            as="h4"
-            fontSize={["xl", "xl", "xl", "xl", "3xl"]}
-            mt={[2, 2, 2, 3]}
+          <Text
+            sx={(theme) => ({
+              fontSize: theme.headings.sizes.h2.fontSize,
+              fontWeight: 700,
+              [`@media (max-width: ${theme.breakpoints.lg}px)`]: {
+                fontSize: theme.headings.sizes.h3.fontSize,
+              },
+            })}
           >
             {value}
-          </Heading>
+          </Text>
+          <Title
+            sx={(theme) => ({
+              fontSize: theme.headings.sizes.h4.fontSize,
+              fontWeight: 500,
+              color: theme.colorScheme === "dark" ? theme.colors.gray[4] : theme.colors.gray[7],
+              [`@media (max-width: ${theme.breakpoints.lg}px)`]: {
+                fontSize: theme.headings.sizes.h5.fontSize,
+              },
+              [`@media (max-width: ${theme.breakpoints.sm}px)`]: {
+                fontSize: theme.headings.sizes.h6.fontSize,
+              },
+            })}
+          >
+            {label}
+          </Title>
         </Box>
-      </HStack>
-    </Box>
+      </Group>
+    </Paper>
   )
 }

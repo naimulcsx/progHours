@@ -1,101 +1,108 @@
-import * as Yup from "yup"
+import { Link, useNavigate } from "react-router-dom"
 import { Helmet } from "react-helmet-async"
-import { Link as ReactRouterLink, useNavigate } from "react-router-dom"
+import * as Yup from "yup"
+
 import {
-  Text,
-  useToast,
-  Link,
-  HStack,
-  VStack,
-  Flex,
-  useColorModeValue as mode,
-} from "@chakra-ui/react"
+  Title,
+  PasswordInput,
+  TextInput,
+  Button,
+  Stack,
+  Box,
+  Group,
+  Paper,
+  Anchor,
+  LoadingOverlay,
+} from "@mantine/core"
+import { useForm, yupResolver } from "@mantine/form"
 
-/**
- * Import Components / Utilities
- */
-import showErrorToasts from "@/utils/showErrorToasts"
-import AuthLayout from "@/components/layouts/Auth"
-import FormBuilder from "@/components/FormBuilder"
-import { loginMutation } from "@/api/auth"
-import { Heading } from "@chakra-ui/react"
-import { DEFAULT_TOAST_OPTIONS } from "@/configs/toast-config"
+// Import Components / Utilities
+import { loginMutation } from "~/api/auth"
+import { useMutation } from "react-query"
+import { IconCheck, IconX } from "@tabler/icons"
+import Logo from "~/components/Logo"
+import { FC } from "react"
+import showToast from "~/utils/showToast"
 
-/**
- * Component for login page
- */
-const Login = (): JSX.Element => {
-  const toast = useToast(DEFAULT_TOAST_OPTIONS)
+// schema validation
+const loginSchema = Yup.object().shape({
+  username: Yup.string()
+    .trim()
+    .required("University ID is required")
+    .matches(/^(c|C|e|E|et|ET|cce|CCE)[0-9]{6}$/, "Invalid University ID"),
+  password: Yup.string().trim().required("Password is required"),
+})
+
+// login page
+const Login: FC = () => {
   const navigate = useNavigate()
+
+  const mutation = useMutation(loginMutation, {
+    onSuccess: ({ message, body }) => {
+      const user = body.user
+      navigate("/dashboard")
+      showToast("success", message)
+    },
+    onError: ({ response }) => {
+      const { error, message } = response.data
+      showToast("error", message)
+    },
+  })
+
+  const form = useForm({
+    initialValues: {
+      username: "",
+      password: "",
+    },
+    validate: yupResolver(loginSchema),
+  })
+
+  const handleSubmit = form.onSubmit(async (values) => {
+    mutation.mutateAsync(values)
+  })
+
   return (
-    <AuthLayout>
-      {/* @ts-ignore */}
+    <>
+      {/* page title */}
       <Helmet>
-        <title className={mode("text-black", "text-white")}>Login</title>
+        <title>Login</title>
       </Helmet>
-      <VStack align="start" spacing={2}>
-        <Heading color={mode("black", "white")} size="lg">
-          Login to Account
-        </Heading>
-        <Flex as="p" gap={2}>
-          Don't have an account?
-          <Link
-            as={ReactRouterLink}
-            to="/register"
-            color={mode("blue.500", "blue.300")}
-          >
-            Register
-          </Link>
-        </Flex>
-      </VStack>
-      <FormBuilder
-        mt={6}
-        fields={{
-          username: {
-            type: "text",
-            label: "University ID",
-            validate: Yup.string()
-              .trim()
-              .required("University ID is required")
-              .matches(
-                /^(c|C|e|E|et|ET|cce|CCE)[0-9]{6}$/,
-                "Invalid University ID"
-              ),
-          },
-          password: {
-            type: "password",
-            label: "Password",
-            validate: Yup.string().trim().required("Password is required"),
-          },
+
+      {/* page content */}
+      <Box
+        px="md"
+        sx={{
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          minHeight: "100vh",
         }}
-        mutation={loginMutation}
-        onSuccess={(res) => {
-          const { user } = res.body
-          localStorage.setItem("isLoggedIn", "1")
-          localStorage.setItem("userId", user.id)
-          localStorage.setItem("name", user.name)
-          localStorage.setItem("username", user.username)
-          localStorage.setItem("role", user.role)
-          navigate("/dashboard") // redirect to dashboard
-          // create a toast
-          toast({
-            status: "success",
-            title: res.message,
-          })
-        }}
-        onError={(err) => {
-          const { data, status, statusText } = err.response
-          // handle bad gateway errors
-          if (status === 502) toast({ status: "error", title: statusText })
-          showErrorToasts(toast, data.message)
-        }}
-        button={{
-          label: "Login",
-          className: "mt-6",
-          loadingLabel: "Logging in",
-        }}
-      />
-    </AuthLayout>
+      >
+        <Paper shadow="xs" p="xl" sx={{ maxWidth: "440px", flexGrow: 1 }}>
+          <Stack spacing={10} mb={20}>
+            <Link to="/leaderboard" style={{ textDecoration: "none" }}>
+              <Logo />
+            </Link>
+            <Title order={3}>Login to Account</Title>
+            <Group spacing={6}>
+              Don't have an account?
+              <Anchor component={Link} to="/register">
+                Register
+              </Anchor>
+            </Group>
+          </Stack>
+          <form onSubmit={handleSubmit}>
+            <Stack>
+              <TextInput withAsterisk label="University ID" {...form.getInputProps("username")} />
+              <PasswordInput withAsterisk label="Password" {...form.getInputProps("password")} />
+              <Button type="submit" loading={mutation.isLoading}>
+                Login
+              </Button>
+            </Stack>
+          </form>
+        </Paper>
+      </Box>
+    </>
   )
 }
 

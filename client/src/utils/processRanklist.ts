@@ -1,22 +1,11 @@
-import { RanklistItem } from "@/types/RanklistItem"
+import { RanklistItem } from "~/types/RanklistItem"
 import calculatePoints from "./calculatePoints"
 
 export default function processRanklist(stats: any) {
-  /**
-   * Data is sent unsorted by the server
-   * We need to caluclate the points
-   */
+  /** Attach a serial number */
+  let serial = 1
   stats.forEach((el: RanklistItem) => {
-    el.averageDifficulty =
-      el.totalDifficulty / el.totalSolvedWithDifficulty || 0
-    el.points = calculatePoints(el)
-  })
-  /**
-   * Sort the array according to the points calculated
-   * in the previous step and update the ranklist state
-   */
-  stats.sort((a: RanklistItem, b: RanklistItem) => {
-    return b.points - a.points
+    el.serial = serial++
   })
   return stats
 }

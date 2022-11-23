@@ -1,131 +1,89 @@
-import {
-  Avatar,
-  Box,
-  Flex,
-  Heading,
-  Text,
-  Tooltip,
-  useColorModeValue,
-  Container,
-  useColorMode,
-  useColorModeValue as mode,
-  Badge,
-} from "@chakra-ui/react"
 import { useState } from "react"
-import { getAvatarColors } from "@/utils/getAvatarColors"
-import { getHandlesByUsername } from "@/api/handle"
+import { Anchor, Badge, Box, Container, Flex, Group, Text, Title, Image } from "@mantine/core"
 import { useQuery } from "react-query"
-import { CCIcon, CFIcon, LightOJIcon, TophIcon } from "../Icons"
-import getOJProfileURL from "@/utils/getOJProfileUrl"
-import { useBreakpointValue } from "@chakra-ui/media-query"
+import { IconPoint } from "@tabler/icons"
 
-export const UserCard: React.FC<UserCardProps> = ({ name, username, role }) => {
+import Avatar from "~/components/Avatar"
+import { CCIcon, CFIcon, LightOJIcon, TophIcon } from "~/components/Icons"
+import { User } from "~/contexts/UserContext"
+import getOJProfileURL from "~/utils/getOJProfileUrl"
+import { getHandlesByUsername } from "~/api/handle"
+
+export default function UserCard({ user }: UserCardProps) {
   const [handles, setHandles] = useState([])
-  const { colorMode } = useColorMode()
+  const { username, name, role, memberSince } = user
 
-  /**
-   * Get all handles
-   */
   useQuery(`handles/${username}`, () => getHandlesByUsername(username), {
     onSuccess(data) {
       setHandles(data?.body.handles)
     },
   })
 
-  const bg = mode("white", "gray.700")
-  const borderColor = mode("gray.200", "gray.600")
-
   return (
-    <Box as="section" pt="24" pb="8" position="relative">
-      <Box
-        position="absolute"
-        inset="0"
-        height="48"
-        bg={mode("white", "gray.700")}
-        backgroundImage={
-          colorMode == "light"
-            ? "url(/bg-profile.png)"
-            : "url(/bg-profile-dark.png)"
-        }
-        shadow="base"
-      />
-      <Container position="relative" zIndex={100}>
-        <Flex
-          pt="28"
-          gap={6}
-          justifyContent="space-between"
-          flexDirection={{ base: "column", md: "row", lg: "row" }}
-        >
-          <Flex columnGap={4}>
-            <Avatar
-              mt={[-10, -12]}
-              borderWidth="6px"
-              borderColor={useColorModeValue("white", "gray.700")}
-              size={useBreakpointValue({ base: "xl", md: "2xl" })}
-              name={name}
-            />
-            <Box>
-              <Heading size="lg" fontWeight={600} letterSpacing="tight">
-                {name}{" "}
-                {(role === "ADMIN" || role === "MODERATOR") && (
-                  <Badge
-                    fontSize="15px"
-                    colorScheme={role === "ADMIN" ? "green" : "gray"}
-                  >
-                    {role}
-                  </Badge>
-                )}
-              </Heading>
-              <Text color={useColorModeValue("gray.600", "gray.400")}>
-                {username.toUpperCase()}
-              </Text>
-            </Box>
-          </Flex>
-
+    <Box sx={{ marginBottom: 40, marginTop: 80 }}>
+      <Container size="xl">
+        <Group sx={{ position: "relative" }}>
+          <Avatar name={name} width={96} height={96} fontSize={32} />
           <Box>
-            <Flex columnGap={4}>
-              {handles.map((item: any, idx: any) => {
-                const iconMap: any = {
-                  Codeforces: <CFIcon />,
-                  CodeChef: <CCIcon />,
-                  Toph: <TophIcon />,
-                  LightOJ: <LightOJIcon />,
-                }
-                return (
-                  <Tooltip hasArrow label={item.handle} key={idx}>
-                    <a
-                      target={"_blank"}
-                      href={getOJProfileURL(item.onlineJudge.name, item.handle)}
-                    >
-                      <Box
-                        h={12}
-                        w={12}
-                        p={2}
-                        bg={bg}
-                        rounded="full"
-                        border="1px"
-                        borderColor={borderColor}
-                        display="flex"
-                        justifyContent="center"
-                        alignItems="center"
-                      >
-                        {iconMap[item.onlineJudge.name]}
-                      </Box>
-                    </a>
-                  </Tooltip>
-                )
+            <Group>
+              <Title order={2}>{name}</Title>
+              <Text>{(role === "ADMIN" || role === "MODERATOR") && <Badge color="violet">{role}</Badge>}</Text>
+            </Group>
+            <Flex
+              align="center"
+              sx={(theme) => ({
+                gap: 8,
+                color: theme.colorScheme === "dark" ? theme.colors.gray[2] : theme.colors.dark[3],
               })}
+            >
+              <Text>{username.toUpperCase()}</Text>
+              {/* {user.department && user.batch && (
+                <>
+                  •
+                  <Text>
+                    {user.department} {user.batch}
+                  </Text>
+                </>
+              )} */}
             </Flex>
           </Box>
-        </Flex>
+        </Group>
+
+        <Box mt="lg">
+          <Group>
+            {handles.map((item: any, idx: any) => {
+              const iconMap: any = {
+                Codeforces: <CFIcon />,
+                CodeChef: <CCIcon />,
+                Toph: <TophIcon />,
+                LightOJ: <LightOJIcon />,
+              }
+              return (
+                <Badge
+                  key={idx}
+                  py="sm"
+                  sx={(theme) => ({
+                    background: theme.colorScheme === "dark" ? theme.colors.dark[6] : theme.colors.blue[0],
+                    border: "1px solid",
+                    borderColor: theme.colorScheme === "dark" ? theme.colors.dark[4] : theme.colors.blue[1],
+                  })}
+                >
+                  <Anchor underline={false} target="_blank" href={getOJProfileURL(item.onlineJudge.name, item.handle)}>
+                    <Group spacing="xs">
+                      <Box sx={{ width: 24, height: 24 }}>{iconMap[item.onlineJudge.name]}</Box>
+                      <Text sx={{ textDecoration: "none" }}>@{item.handle}</Text>
+                    </Group>
+                  </Anchor>
+                </Badge>
+              )
+            })}
+          </Group>
+        </Box>
       </Container>
     </Box>
   )
 }
 
 interface UserCardProps {
-  name: string
-  username: string
-  member_since: string
-  role: string
+  user: User
 }

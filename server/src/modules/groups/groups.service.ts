@@ -1,11 +1,8 @@
-import {
-  BadRequestException,
-  Injectable,
-  NotFoundException,
-} from "@nestjs/common"
+import { BadRequestException, Injectable, NotFoundException } from "@nestjs/common"
 import { PrismaService } from "../prisma/prisma.service"
 import * as crypto from "crypto"
 import { GroupRole, User } from "@prisma/client"
+import { computeRankAndSort } from "../stats/stats.service"
 
 @Injectable()
 export class GroupsService {
@@ -52,15 +49,7 @@ export class GroupsService {
     })
   }
 
-  async joinOnGroup({
-    userId,
-    groupId,
-    role,
-  }: {
-    userId: number
-    groupId: number
-    role: GroupRole
-  }) {
+  async joinOnGroup({ userId, groupId, role }: { userId: number; groupId: number; role: GroupRole }) {
     return this.prisma.userGroup.create({
       data: {
         userId,
@@ -111,10 +100,12 @@ export class GroupsService {
       return groupUser
     })
 
+    const computedRanklist = computeRankAndSort(ranklist)
+
     return {
       group,
       groupUsers,
-      ranklist,
+      ranklist: computedRanklist,
     }
   }
 
@@ -176,12 +167,7 @@ export class GroupsService {
     })
   }
 
-  async editGroup(
-    id: number,
-    name: string,
-    hashtag: string,
-    isPrivate: boolean
-  ) {
+  async editGroup(id: number, name: string, hashtag: string, isPrivate: boolean) {
     const group = await this.prisma.group.findFirst({ where: { id } })
     if (!group) {
       throw new NotFoundException("Group is not found!")

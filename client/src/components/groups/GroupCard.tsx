@@ -1,16 +1,5 @@
-import {
-  Heading,
-  Badge,
-  Box,
-  Text,
-  useColorModeValue as mode,
-  Menu,
-  MenuButton,
-  IconButton,
-  MenuList,
-  MenuItem,
-} from "@chakra-ui/react"
-import { DotsVerticalIcon, TrashIcon } from "@heroicons/react/outline"
+import { Anchor, Badge, Button, Menu, Paper, Stack, Text, Title } from "@mantine/core"
+import { IconDotsVertical, IconTrash } from "@tabler/icons"
 import { useState } from "react"
 import { Link, useNavigate } from "react-router-dom"
 import { DeleteGroupModal } from "../modals/DeleteGroupModal"
@@ -19,55 +8,44 @@ const GroupCard = ({ group, role }: any) => {
   const [isOpen, setIsOpen] = useState(false)
   const navigate = useNavigate()
   return (
-    <Box
-      position="relative"
-      bg={mode("white", "gray.700")}
+    <Paper
+      p="lg"
+      sx={(theme) => ({
+        position: "relative",
+        borderRadius: theme.radius.md,
+      })}
       key={group.id}
-      shadow="base"
-      rounded="lg"
-      p={6}
     >
-      <Link to={`/groups/${group.hashtag}`}>
-        <Heading size="md">{group.name}</Heading>
-      </Link>
+      <Stack align="flex-start" spacing={"xs"}>
+        <Anchor component={Link} to={`/groups/${group.hashtag}`} sx={{ "&:hover": { textDecoration: "none" } }}>
+          <Title order={4}>{group.name}</Title>
+        </Anchor>
 
-      <Link to={`/groups/${group.hashtag}`}>
-        <Text color={mode("blue.500", "blue.300")} fontWeight="500">
-          #{group.hashtag}
-        </Text>
-      </Link>
-      <Badge colorScheme="purple">{role}</Badge>
+        <Anchor component={Link} to={`/groups/${group.hashtag}`} sx={{ "&:hover": { textDecoration: "none" } }}>
+          <Text sx={(theme) => ({ fontWeight: 600 })}>#{group.hashtag}</Text>
+        </Anchor>
+        <Badge color="pink">{role}</Badge>
+      </Stack>
+
       <Menu>
-        <MenuButton
-          position="absolute"
-          right={2}
-          top={2}
-          as={IconButton}
-          aria-label="Options"
-          icon={<DotsVerticalIcon height={20} />}
-          variant="ghost"
-          colorScheme="gray"
-          size="sm"
-        />
-        <MenuList>
-          <MenuItem
-            icon={<TrashIcon height={20} />}
-            onClick={() => setIsOpen(true)}
-          >
+        <Menu.Target>
+          <Button color="gray" variant="subtle" size="xs" sx={{ position: "absolute", top: 8, right: 8, padding: 4 }}>
+            <IconDotsVertical size={18} />
+          </Button>
+        </Menu.Target>
+
+        <Menu.Dropdown>
+          <Menu.Item icon={<IconTrash size={14} />} onClick={() => setIsOpen(true)}>
             Delete Group
-          </MenuItem>
-        </MenuList>
+          </Menu.Item>
+
+          {/* Other items ... */}
+        </Menu.Dropdown>
       </Menu>
 
       {/* delete popup */}
-      <DeleteGroupModal
-        id={group.id}
-        name={group.name}
-        hashtag={group.hashtag}
-        isOpen={isOpen}
-        setIsOpen={setIsOpen}
-      />
-    </Box>
+      <DeleteGroupModal id={group.id} name={group.name} hashtag={group.hashtag} isOpen={isOpen} setIsOpen={setIsOpen} />
+    </Paper>
   )
 }
 

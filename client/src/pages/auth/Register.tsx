@@ -1,107 +1,105 @@
 import * as Yup from "yup"
-import { useToast } from "@chakra-ui/react"
 import { Helmet } from "react-helmet-async"
-import { Link as ReactRouterLink, useNavigate } from "react-router-dom"
+import { Link, useNavigate } from "react-router-dom"
 
 /**
  * Import Components / Utilities
  */
-import showErrorToasts from "@/utils/showErrorToasts"
-import AuthLayout from "@/components/layouts/Auth"
-import FormBuilder from "@/components/FormBuilder"
-import { registerMutation } from "@/api/auth"
-import {
-  Flex,
-  Heading,
-  VStack,
-  Link,
-  useColorModeValue as mode,
-} from "@chakra-ui/react"
-import { DEFAULT_TOAST_OPTIONS } from "@/configs/toast-config"
+import { registerMutation } from "~/api/auth"
+import { Anchor, Box, Button, Group, Paper, PasswordInput, Stack, TextInput, Title } from "@mantine/core"
+import Logo from "~/components/Logo"
+import { useForm, yupResolver } from "@mantine/form"
+import { useMutation } from "react-query"
+import { IconCheck, IconX } from "@tabler/icons"
+import showToast from "~/utils/showToast"
+
+// schema validation
+const registerSchema = Yup.object().shape({
+  name: Yup.string().required("Name is required"),
+  email: Yup.string().email("Invalid email").required("Email is required"),
+  username: Yup.string()
+    .trim()
+    .required("University ID is required")
+    .matches(/^(c|C|e|E|et|ET|cce|CCE)[0-9]{6}$/, "Invalid University ID"),
+  password: Yup.string().trim().required("Password is required"),
+})
 
 /**
  * Component for registration page
  */
 const Register = (): JSX.Element => {
-  const toast = useToast(DEFAULT_TOAST_OPTIONS)
   const navigate = useNavigate()
+
+  const mutation = useMutation(registerMutation, {
+    onSuccess: ({ message, body }) => {
+      const user = body.user
+      showToast("success", `Welcome, ${user.name}`)
+      navigate("/dashboard")
+    },
+    onError: ({ response }) => {
+      const { error, message } = response.data
+      showToast("error", message)
+    },
+  })
+
+  const form = useForm({
+    initialValues: {
+      name: "",
+      email: "",
+      username: "",
+      password: "",
+    },
+    validate: yupResolver(registerSchema),
+  })
+
+  const handleSubmit = form.onSubmit(async (values) => {
+    mutation.mutateAsync(values)
+  })
+
   return (
-    <AuthLayout>
-      {/* @ts-ignore */}
+    <>
+      {/* page title */}
       <Helmet>
-        <title>Register</title>
+        <title>Create a new account</title>
       </Helmet>
-      <VStack align="start" spacing={2}>
-        <Heading size="lg">Login to Account</Heading>
-        <Flex as="p" gap={2}>
-          Already an account?
-          <Link
-            as={ReactRouterLink}
-            to="/login"
-            color={mode("blue.500", "blue.300")}
-          >
-            Login
-          </Link>
-        </Flex>
-      </VStack>
-      {/* regitstration form */}
-      <FormBuilder
-        mt={6}
-        fields={{
-          name: {
-            type: "text",
-            label: "Full Name",
-            validate: Yup.string().trim().required("Name is required"),
-          },
-          email: {
-            type: "text",
-            label: "Email",
-            validate: Yup.string()
-              .trim()
-              .required("Email is required")
-              .email("Invalid email"),
-          },
-          username: {
-            type: "text",
-            label: "University ID",
-            validate: Yup.string()
-              .trim()
-              .required("University ID is required")
-              .matches(
-                /^(c|C|e|E|et|ET|cce|CCE)[0-9]{6}$/,
-                "Invalid University ID"
-              ),
-          },
-          password: {
-            type: "password",
-            label: "Password",
-            validate: Yup.string().trim().required("Password is required"),
-            helperText: "Must contain at least 8 charecters.",
-          },
+
+      {/* page content */}
+      <Box
+        px="md"
+        sx={{
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          minHeight: "100vh",
         }}
-        button={{
-          label: "Register",
-          className: "mt-6",
-          loadingLabel: "Registering",
-        }}
-        mutation={registerMutation}
-        onSuccess={(res) => {
-          // redirect to the login page
-          navigate("/login")
-          // show the toast message
-          toast({
-            status: "success",
-            title: res.message,
-          })
-        }}
-        onError={(err) => {
-          const { data, status, statusText } = err.response
-          // handle bad gateway errors
-          if (status === 502) toast({ status: "error", title: statusText })
-          showErrorToasts(toast, data.message)
-        }}
-      />
-    </AuthLayout>
+      >
+        <Paper shadow="xs" p="xl" sx={{ maxWidth: "440px", flexGrow: 1 }}>
+          <Stack spacing={10} mb={20}>
+            <Link to="/leaderboard" style={{ textDecoration: "none" }}>
+              <Logo />
+            </Link>
+            <Title order={3}>Create a new account</Title>
+            <Group spacing={6}>
+              Already have an account? Please
+              <Anchor component={Link} to="/login">
+                Login
+              </Anchor>
+            </Group>
+          </Stack>
+          <form onSubmit={handleSubmit}>
+            <Stack>
+              <TextInput label="Name" {...form.getInputProps("name")} withAsterisk />
+              <TextInput label="Email" {...form.getInputProps("email")} withAsterisk />
+              <TextInput label="University ID" {...form.getInputProps("username")} withAsterisk />
+              <PasswordInput label="Password" {...form.getInputProps("password")} withAsterisk />
+              <Button type="submit" loading={mutation.isLoading}>
+                Register
+              </Button>
+            </Stack>
+          </form>
+        </Paper>
+      </Box>
+    </>
   )
 }
 

@@ -7,6 +7,7 @@ export interface RanklistItem {
   averageDifficulty: number
   totalSolvedWithDifficulty: number
   points: number
+  serial: number
   user: {
     id: number
     username: string

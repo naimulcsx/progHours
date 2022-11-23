@@ -1,14 +1,12 @@
 import { Tag } from "./Tag"
-import { UserProblemTag } from "./UserProblemTag"
 
 export interface Problem {
   id: number
+  pid: string
   name: string
   link: string
-  pid: string
   difficulty: number
-  created_at: string
+  createdAt: string
   onlineJudgeId: number
   tags: Tag[]
-  user_problem_tags: UserProblemTag[]
 }

@@ -1,52 +1,57 @@
-import { createGroup } from "@/api/groups"
-import { toast, useToast } from "@chakra-ui/react"
-import FormBuilder from "../FormBuilder"
-import PopupBuilder from "../PopupBuilder"
-import * as yup from "yup"
-import { DEFAULT_TOAST_OPTIONS } from "@/configs/toast-config"
-import { useQueryClient } from "react-query"
+import { Button, Group, Modal, TextInput, Title } from "@mantine/core"
+import { useForm, yupResolver } from "@mantine/form"
+import { useMutation, useQueryClient } from "react-query"
+import * as Yup from "yup"
 
-export const CreateGroupModal = ({ isOpen, setIsOpen }: any) => {
-  const toast = useToast(DEFAULT_TOAST_OPTIONS)
+import showToast from "~/utils/showToast"
+import { createGroup } from "~/api/groups"
+
+// schema validation
+const groupSchema = Yup.object().shape({
+  name: Yup.string().trim().required("Group Name is required"),
+  hashtag: Yup.string().trim().required("Group tag is required"),
+})
+
+// modal for creating groups
+export default function CreateGroupModal({ isOpen, setIsOpen }: any) {
   const queryClient = useQueryClient()
+
+  const { mutate } = useMutation(createGroup, {
+    onSuccess: (res) => {
+      setIsOpen(false)
+      queryClient.invalidateQueries("groups")
+      showToast("success", res.message)
+    },
+  })
+
+  const form = useForm({
+    initialValues: {
+      name: "",
+      hashtag: "",
+    },
+    validate: yupResolver(groupSchema),
+  })
+
   return (
-    <PopupBuilder
-      isOpen={isOpen}
-      setIsOpen={setIsOpen}
-      title="Create new group"
+    <Modal
+      lockScroll={false}
+      opened={isOpen}
+      onClose={() => setIsOpen(false)}
+      title={<Title order={4}>Create group</Title>}
     >
-      <FormBuilder
-        isModal
-        fields={{
-          name: {
-            type: "text",
-            label: "Group Name",
-            validate: yup.string().trim().required("Group Name is required"),
-          },
-          hashtag: {
-            type: "text",
-            label: "Hashtag",
-            leftAddon: "#",
-            validate: yup.string().trim().required("Group tag is required"),
-          },
-        }}
-        mutation={(values: any) => createGroup(values)}
-        onSuccess={() => {
-          toast({ status: "success", title: "Group created!" })
-          queryClient.invalidateQueries("groups")
-          setIsOpen(false)
-        }}
-        onError={(err) => {
-          const errorMessage =
-            err?.response?.data?.message || "Something bad happened!"
-          toast({ status: "error", title: errorMessage })
-        }}
-        button={{
-          label: "Save",
-          className: "mt-6",
-          loadingLabel: "Saving...",
-        }}
-      />
-    </PopupBuilder>
+      <form
+        onSubmit={form.onSubmit((values) => {
+          mutate(values)
+        })}
+      >
+        <TextInput withAsterisk label="Name" {...form.getInputProps("name")} placeholder="CSE 46 BM" />
+
+        <TextInput withAsterisk mt="md" label="Slug" placeholder="cse_46_bm" {...form.getInputProps("hashtag")} />
+
+        <Group position="right" mt="md">
+          <Button type="submit">Submit</Button>
+        </Group>
+      </form>
+    </Modal>
   )
 }

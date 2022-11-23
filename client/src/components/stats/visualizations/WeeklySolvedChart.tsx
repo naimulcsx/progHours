@@ -1,9 +1,8 @@
 import ReactApexChart from "react-apexcharts"
-import { useColorModeValue as mode } from "@chakra-ui/react"
+import { Paper, useMantineTheme } from "@mantine/core"
 
-// @ts-ignore
-export default function WeeklySolvedChart({ data }) {
-  //const color = useColorModeValue("white", "gray.800")
+export default function WeeklySolvedChart({ data }: any) {
+  const theme = useMantineTheme()
   const series = [
     {
       name: "Solved",
@@ -13,18 +12,26 @@ export default function WeeklySolvedChart({ data }) {
   const options = {
     chart: {
       toolbar: {
-        show: false,
+        show: true,
       },
       height: 350,
       type: "area",
-      background: `${mode("white", "gray.700")}`,
+      background: "transparent",
+    },
+    grid: {
+      borderColor: theme.colorScheme === "dark" ? theme.colors.dark[3] : theme.colors.gray[3],
+      yaxis: {
+        lines: {
+          show: true,
+        },
+      },
     },
     theme: {
-      mode: `${mode("light", "dark")}`,
+      mode: theme.colorScheme,
       palette: "palette1",
     },
     dataLabels: {
-      enabled: false,
+      enabled: true,
     },
     stroke: {
       curve: "smooth",
@@ -43,18 +50,13 @@ export default function WeeklySolvedChart({ data }) {
       offsetY: 0,
       align: "center",
       style: {
-        fontWeight: 600,
-        color: `${mode("black", "white")}`,
+        color: theme.colorScheme === "dark" ? theme.colors.gray[3] : theme.colors.dark[9],
       },
     },
   }
   return (
-    // @ts-ignore
-    <ReactApexChart
-      options={options as any}
-      series={series}
-      type="area"
-      height={320}
-    />
+    <Paper shadow="xs" p="md" sx={{ height: "100%" }}>
+      <ReactApexChart options={options as any} series={series} type="area" height={320} />
+    </Paper>
   )
 }

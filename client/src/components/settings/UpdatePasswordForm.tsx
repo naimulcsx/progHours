@@ -1,61 +1,66 @@
-import FormBuilder from "@/components/FormBuilder"
 import * as Yup from "yup"
-import {
-  Box,
-  Spinner,
-  useColorModeValue as mode,
-  useToast,
-} from "@chakra-ui/react"
-import { useContext } from "react"
-import { GlobalContext } from "@/GlobalStateProvider"
+import useUser from "~/hooks/useUser"
+import { useForm, yupResolver } from "@mantine/form"
+import { Box, Button, Paper, PasswordInput, Stack, Title } from "@mantine/core"
+import { useMutation, useQueryClient } from "react-query"
 import axios from "axios"
-import { DEFAULT_TOAST_OPTIONS } from "@/configs/toast-config"
+import showToast from "~/utils/showToast"
+
+const updatePasswordSchema = Yup.object().shape({
+  currentPassword: Yup.string().trim().required("Current password is required"),
+  newPassword: Yup.string().trim().required("New password is required"),
+})
 
 export const UpdatePasswordForm = () => {
-  const { user } = useContext(GlobalContext)
-  const toast = useToast(DEFAULT_TOAST_OPTIONS)
+  const { user } = useUser()
+
+  const queryClient = useQueryClient()
+
+  const { mutateAsync } = useMutation(
+    (values: any) => {
+      return axios.patch(`/api/users/me?update=password`, values)
+    },
+    {
+      onSuccess: () => {
+        queryClient.invalidateQueries("user")
+        showToast("success", "Account updated!")
+      },
+      onError: ({ response }) => {
+        const { error, message } = response.data
+        showToast("error", message)
+      },
+    }
+  )
+
+  const form = useForm({
+    initialValues: {
+      currentPassword: "",
+      newPassword: "",
+    },
+
+    validate: yupResolver(updatePasswordSchema),
+  })
+
+  const handleSubmit = form.onSubmit(async (values) => {
+    mutateAsync(values)
+  })
+
   return (
-    <Box
-      p={[4, 4, 4, 8]}
-      bg={mode("white", "gray.700")}
-      shadow="base"
-      rounded="lg"
-      mx={-4}
-    >
-      {user ? (
-        <FormBuilder
-          fields={{
-            currentPassword: {
-              type: "password",
-              label: "Current Password",
-              validate: Yup.string().trim().required("Name is required"),
-            },
-            newPassword: {
-              type: "password",
-              label: "New Password",
-              validate: Yup.string().trim().required("Password is required"),
-              helperText: "Must contain at least 8 charecters.",
-            },
-          }}
-          button={{
-            label: "Update",
-            className: "mt-6",
-            loadingLabel: "Updating",
-            colorScheme: "gray",
-          }}
-          mutation={(values: any) =>
-            axios.patch(`/api/users/me?update=password`, values)
-          }
-          onSuccess={() => {
-            toast({ status: "success", title: "Account updated!" })
-          }}
-          onError={(e) => {
-            toast({ status: "error", title: e.response.data.message })
-          }}
-        />
-      ) : (
-        <Spinner />
+    <Paper mb={10} p={25}>
+      <Title order={4} mb="md">
+        Change Password
+      </Title>
+      {user && (
+        <form onSubmit={handleSubmit}>
+          <Stack>
+            <PasswordInput label="Current Password" {...form.getInputProps("currentPassword")} withAsterisk />
+            <PasswordInput label="New Password" {...form.getInputProps("newPassword")} withAsterisk />
+            <Box>
+              <Button type="submit">Update</Button>
+            </Box>
+          </Stack>
+        </form>
       )}
-    </Box>
+    </Paper>
   )
 }

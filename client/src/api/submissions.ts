@@ -27,9 +27,9 @@ const addTag = ({ id, ...values }) => {
   return axios.post(`/api/problems/${id}/tags`, values).then((res) => res.data)
 }
 
-// const contestLogin = ({ contestId, password }) => {
-
-// }
+const fetchActivities = (page = 1) => {
+  return axios.get("/api/submissions/activities?page=" + page).then((res) => res.data)
+}
 
 export {
   addTag,
@@ -38,4 +38,5 @@ export {
   createSubmission,
   deleteSubmission,
   updateSubmission,
+  fetchActivities,
 }

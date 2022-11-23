@@ -1,135 +1,111 @@
-import { Helmet } from "react-helmet-async"
-import { DashboardLayout } from "@/components/layouts/Dashboard"
-import { useContext, useState } from "react"
-import { GlobalContext } from "@/GlobalStateProvider"
-
-import axios from "axios"
-import { useQuery } from "react-query"
 import moment from "moment"
-import {
-  Avatar,
-  Badge,
-  Box,
-  Button,
-  Flex,
-  HStack,
-  Link,
-  Text,
-  useColorModeValue as mode,
-} from "@chakra-ui/react"
+import { useQuery } from "react-query"
+import { Helmet } from "react-helmet-async"
 import { Link as RouterLink } from "react-router-dom"
-import {
-  ChevronLeftIcon,
-  ChevronRightIcon,
-  ClockIcon,
-} from "@heroicons/react/outline"
-import { AnimateLoading } from "@/components/AnimateLoading"
+import { IconChevronLeft, IconChevronRight, IconClock } from "@tabler/icons"
+import { useState } from "react"
+import { ActionIcon, Anchor, Box, Group, Loader, Paper, Text, Title, useMantineTheme } from "@mantine/core"
+import { AnimatePresence, motion } from "framer-motion"
 
-const fetchActivities = (page = 1) =>
-  fetch("/api/submissions/activities?page=" + page).then((res) => res.json())
+import { DashboardLayout } from "~/components/layouts/Dashboard"
+import Avatar from "~/components/Avatar"
+import { fetchActivities } from "~/api/submissions"
 
 const ActivitiesPage = () => {
-  const [page, setPage] = useState(1)
-  const [totalSubmissions, setTotalSubmissions] = useState(0)
-  const [submissions, setSubmissions] = useState<any>(null)
+  const theme = useMantineTheme()
 
-  useQuery(["activities", page], () => fetchActivities(page), {
-    onSuccess: (res) => {
+  // pagination state
+  const [page, setPage] = useState(1)
+  const [submissions, setSubmissions] = useState([])
+  const [totalSubmissions, setTotalSubmissions] = useState(0)
+
+  // fetch data
+  const { isLoading, isFetching, data } = useQuery(["activities", page], () => fetchActivities(page), {
+    onSuccess(res) {
       setSubmissions(res.body.submissions)
       setTotalSubmissions(res.body.totalSubmissions)
     },
     refetchInterval: 30000,
   })
 
-  const bg = mode("white", "gray.800")
-  const borderColor = mode("gray.200", "gray.700")
-  const color = mode("gray.700", "gray.200")
-  const linkColor = mode("blue.500", "blue.300")
+  // compute the last page
   const lastPage = Math.ceil(totalSubmissions / 20)
 
   return (
-    <DashboardLayout
-      title="Recent Activities"
-      rightButton={
-        <HStack>
-          <Text>
-            {page} / {lastPage}
-          </Text>
-          <Button
-            size="xs"
-            variant="outline"
-            onClick={() => setPage((prev) => prev - 1)}
-            disabled={page === 1}
-          >
-            <ChevronLeftIcon height={12} />
-          </Button>
-          <Button
-            size="xs"
-            variant="outline"
-            onClick={() => setPage((prev) => prev + 1)}
-            disabled={page === lastPage}
-          >
-            <ChevronRightIcon height={12} />
-          </Button>
-        </HStack>
-      }
-    >
-      {/* @ts-ignore */}
+    <DashboardLayout>
       <Helmet>
         <title>Recent Activities</title>
       </Helmet>
 
-      <AnimateLoading isLoaded={submissions}>
-        {submissions && (
-          <Box
-            bg={bg}
-            mx={-4}
-            borderTop="1px solid"
-            borderColor={borderColor}
-            pb={["54px", "54px", 0]}
-          >
-            {submissions.map((sub: any) => {
-              return (
-                <Box
-                  key={sub.id}
-                  borderBottom="1px solid"
-                  borderColor={borderColor}
-                  py={3}
-                  px={8}
-                  display="flex"
-                  justifyContent="space-between"
-                  flexDirection={["column", "row"]}
+      <Box sx={{ maxWidth: "1024px", margin: "0 auto" }}>
+        {/* page title and buttons */}
+        <Group position="apart" align="start">
+          <Group align="center" mb="md">
+            <Title order={3}>Activities</Title>
+            <AnimatePresence>
+              {(isLoading || isFetching) && (
+                <motion.div
+                  initial={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                  transition={{ duration: 0.5 }}
+                  style={{ display: "flex", alignItems: "center" }}
                 >
-                  <Flex align="center" gap={4}>
-                    <Avatar size="sm" name={sub.user.name} fontWeight="bold" />
-                    <Box>
-                      <Link
-                        as={RouterLink}
-                        to={`/users/${sub.user.username}`}
-                        color={linkColor}
-                      >
+                  <Loader size="xs" />
+                </motion.div>
+              )}
+            </AnimatePresence>
+          </Group>
+          <Group spacing="xs">
+            <Text size="sm">
+              {page} / {lastPage}
+            </Text>
+            <ActionIcon variant="outline" onClick={() => setPage((prev) => prev - 1)} disabled={page === 1}>
+              <IconChevronLeft size={16} />
+            </ActionIcon>
+            <ActionIcon variant="outline" onClick={() => setPage((prev) => prev + 1)} disabled={lastPage <= 1}>
+              <IconChevronRight size={16} />
+            </ActionIcon>
+          </Group>
+        </Group>
+        <Paper>
+          <Box>
+            {submissions.map((sub: any, idx: number) => {
+              return (
+                <Group
+                  key={sub.id}
+                  py="sm"
+                  px="xl"
+                  sx={{
+                    width: "100%",
+                    justifyContent: "space-between",
+                    borderTop: idx > 0 ? "1px solid" : 0,
+                    borderColor: theme.colorScheme === "dark" ? theme.colors.dark[3] : theme.colors.gray[3],
+                  }}
+                  spacing={4}
+                >
+                  <Group spacing={4}>
+                    <Avatar name={sub.user.name} />
+                    <Text size="sm">
+                      <Anchor component={RouterLink} to={`/@${sub.user.username}`}>
                         {sub.user.name}
-                      </Link>{" "}
-                      got <Text display="inline-block">{sub.verdict}</Text> in{" "}
-                      <Link
-                        href={sub.problem.link}
-                        target="_blank"
-                        color={linkColor}
-                      >
+                      </Anchor>{" "}
+                      got <Text component="span">{sub.verdict}</Text> in{" "}
+                      <Anchor href={sub.problem.link} target="_blank">
                         {sub.problem.name} [{sub.problem.pid}]
-                      </Link>
-                    </Box>
-                  </Flex>
-                  <Flex align="center" gap={2} color={color} ml={[12, 0]}>
-                    <ClockIcon height={16} />
-                    <Text>{moment(sub.solvedAt).fromNow()}</Text>
-                  </Flex>
-                </Box>
+                      </Anchor>
+                    </Text>
+                  </Group>
+
+                  <Group spacing={6}>
+                    <IconClock size={16} />
+                    <Text size="sm">{moment(sub.solvedAt).fromNow()}</Text>
+                  </Group>
+                </Group>
               )
             })}
           </Box>
-        )}
-      </AnimateLoading>
+        </Paper>
+      </Box>
     </DashboardLayout>
   )
 }

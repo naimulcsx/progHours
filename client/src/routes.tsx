@@ -1,112 +1,39 @@
-import { useEffect } from "react"
+import type { ReactNode } from "react"
 import { Navigate, RouteObject } from "react-router-dom"
 
-/**
- * Auth pages
- */
-import Login from "@/pages/auth/Login"
-import Register from "@/pages/auth/Register"
+// page components
+import Login from "~/pages/auth/Login"
+import Register from "~/pages/auth/Register"
+import DashboardPage from "~/pages/dashboard"
+import SubmissionsPage from "~/pages/submissions"
+import LeaderboardPage from "~/pages/Leaderboard"
+import Profile from "~/pages/profile"
+import Settings from "~/pages/Settings"
+import GroupsPage from "~/pages/groups"
+import GroupPage from "~/pages/groups/$slug"
+import ActivitiesPage from "~/pages/Activities"
+import UserManagement from "~/pages/admin/userManagement"
+import NotFoundPage from "~/pages/404"
+import StudyPage from "./pages/studylist"
 
-/**
- * Dashboard pages
- */
-import DashboardHome from "@/pages/dashboard/Home"
-import TrackingSheet from "@/pages/dashboard/Tracking"
-import LeaderboardPage from "@/pages/Leaderboard"
+// utility for defining routes
+const defineRoute = (path: string, element: ReactNode) => ({ path, element })
 
-/**
- * Profile page
- */
-import Profile from "@/pages/profile"
-
-/**
- * Settings page
- */
-import Settings from "@/pages/Settings"
-import StudyPage from "@/pages/Study"
-import PublicLeaderboard from "@/pages/PublicLeaderboard"
-import GroupsPage from "./pages/groups/Groups"
-import GroupPage from "./pages/groups/Single"
-import ActivitiesPage from "./pages/Activities"
-import UserManagement from "./pages/admin/userManagement"
-import ProblemManagement from "./pages/admin/problemManagement"
-
-const routes = (isLoggedIn: boolean, role: string): RouteObject[] => [
-  {
-    path: "/",
-    element: isLoggedIn ? (
-      <Navigate to="/dashboard" />
-    ) : (
-      <Navigate to="/leaderboard" />
-    ),
-  },
-  {
-    path: "/login",
-    element: isLoggedIn ? <Navigate to="/dashboard" /> : <Login />,
-  },
-  {
-    path: "/register",
-    element: isLoggedIn ? <Navigate to="/dashboard" /> : <Register />,
-  },
-  {
-    path: "/dashboard",
-    element: isLoggedIn ? <DashboardHome /> : <Navigate to="/login" />,
-  },
-  {
-    path: "/submissions",
-    element: isLoggedIn ? <TrackingSheet /> : <Navigate to="/login" />,
-  },
-  {
-    path: "/study",
-    element: isLoggedIn ? <StudyPage /> : <Navigate to="/login" />,
-  },
-  {
-    path: "/settings",
-    element: isLoggedIn ? <Settings /> : <Navigate to="/login" />,
-  },
-  {
-    path: "/admin/users",
-    element:
-      isLoggedIn && role === "ADMIN" ? (
-        <UserManagement />
-      ) : (
-        <Navigate to="/login" />
-      ),
-  },
-  // {
-  //   path: "/admin/problems",
-  //   element:
-  //     isLoggedIn && role === "ADMIN" ? (
-  //       <ProblemManagement />
-  //     ) : (
-  //       <Navigate to="/login" />
-  //     ),
-  // },
-  // {
-  //   path: "/admin/problems/:pid",
-  //   element:
-  //     isLoggedIn && role === "ADMIN" ? <Problem /> : <Navigate to="/login" />,
-  // },
-  {
-    path: "/users/:username",
-    element: <Profile />,
-  },
-  {
-    path: "/leaderboard",
-    element: isLoggedIn ? <LeaderboardPage /> : <PublicLeaderboard />,
-  },
-  {
-    path: "/groups",
-    element: isLoggedIn ? <GroupsPage /> : <Navigate to="/login" />,
-  },
-  {
-    path: "/activities",
-    element: isLoggedIn ? <ActivitiesPage /> : <Navigate to="/login" />,
-  },
-  {
-    path: "/groups/:hashtag",
-    element: isLoggedIn ? <GroupPage /> : <Navigate to="/login" />,
-  },
+const getRoutes = (isLoggedIn: boolean, role: string): RouteObject[] => [
+  defineRoute("/", isLoggedIn ? <Navigate to="/dashboard" /> : <Navigate to="/leaderboard" />),
+  defineRoute("/login", isLoggedIn ? <Navigate to="/" /> : <Login />),
+  defineRoute("/register", isLoggedIn ? <Navigate to="/dashboard" /> : <Register />),
+  defineRoute("/dashboard", isLoggedIn ? <DashboardPage /> : <Navigate to="/login" />),
+  defineRoute("/submissions", isLoggedIn ? <SubmissionsPage /> : <Navigate to="/login" />),
+  defineRoute("/study", isLoggedIn ? <StudyPage /> : <Navigate to="/login" />),
+  defineRoute("/settings", isLoggedIn ? <Settings /> : <Navigate to="/login" />),
+  defineRoute("/users", isLoggedIn && role === "ADMIN" ? <UserManagement /> : <Navigate to="/login" />),
+  defineRoute("/@:username", <Profile />),
+  defineRoute("/leaderboard", <LeaderboardPage />),
+  defineRoute("/groups", isLoggedIn ? <GroupsPage /> : <Navigate to="/login" />),
+  defineRoute("/activities", isLoggedIn ? <ActivitiesPage /> : <Navigate to="/login" />),
+  defineRoute("/groups/:hashtag", isLoggedIn ? <GroupPage /> : <Navigate to="/login" />),
+  defineRoute("*", <NotFoundPage />),
 ]
 
-export default routes
+export default getRoutes

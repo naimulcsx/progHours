@@ -68,7 +68,7 @@ Right now we have support for 17 Online Judges, but some of them might have a fe
 
 ## Tech Stack
 
-- _Frontend:_ React, Chakra UI, React Query
+- _Frontend:_ React, Mantine, React Query
 - _Backend:_ TypeScript, NestJS, Prisma
 - _Database:_ PostgreSQL
 
@@ -88,9 +88,10 @@ Begin by cloning this repository to your machine, and running it through `Docker
 
 ```
 POSTGRES_USER=
-POSTGRES_PASS=
+POSTGRES_PASSWORD=
 POSTGRES_PORT=
 POSTGRES_DB=
+DATABASE_URL=
 ACCESS_TOKEN_SECRET=
 VJUDGE_USERNAME=
 VJUDGE_PASSWORD=

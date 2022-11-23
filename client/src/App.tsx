@@ -1,93 +1,80 @@
-import { useEffect } from "react"
-import { HelmetProvider } from "react-helmet-async"
-import { QueryClient, QueryClientProvider } from "react-query"
+import { FC, useEffect } from "react"
+import { Box, ColorScheme, ColorSchemeProvider, MantineProvider } from "@mantine/core"
+import { SpotlightProvider } from "@mantine/spotlight"
+import { NotificationsProvider } from "@mantine/notifications"
 import { useLocation, useNavigate, useRoutes } from "react-router-dom"
-import clearAuthData from "@/utils/clearAuthData"
-import axios from "axios"
-import { ReactQueryDevtools } from "react-query/devtools"
-import { useToast } from "@chakra-ui/react"
-import { Box } from "@chakra-ui/react"
-import { useColorModeValue as mode } from "@chakra-ui/react"
+import { IconSearch } from "@tabler/icons"
 
-/**
- * Import Styles
- */
-// import "@/styles/fonts.css"
-// import "@/styles/spinner.css"
-import "@fontsource/inter/400.css"
-import "@fontsource/inter/500.css"
-import "@fontsource/inter/600.css"
-import "@fontsource/inter/700.css"
+import type { User } from "~/contexts/UserContext"
+import SubmissionsProvider from "~/contexts/SubmissionsContext"
+import getSpotlightActions from "~/utils/getSpotlightActions"
+import getRoutes from "~/routes"
+import useUser from "~/hooks/useUser"
+import useLogout from "~/hooks/useLogout"
+import theme from "~/styles/theme"
+import "~/styles/custom.css"
+import { useLocalStorage } from "@mantine/hooks"
 
-/**
- * Import Routes
- */
-import routes from "./routes"
-
-/**
- * Import Components
- */
-import { GlobalStateProvider } from "./GlobalStateProvider"
-import { DEFAULT_TOAST_OPTIONS } from "./configs/toast-config"
-
-/**
- * Initialize query client
- */
-const queryClient = new QueryClient()
-
-const App = (): JSX.Element => {
-  const toast = useToast(DEFAULT_TOAST_OPTIONS)
+const Entry: FC<{ isLoggedIn: boolean; user: User | null }> = ({ isLoggedIn, user }) => {
+  const handleLogout = useLogout()
   const navigate = useNavigate()
+  const role: string = user ? user.role : "GUEST"
+  const matchedPage = useRoutes(getRoutes(isLoggedIn, role))
+
   const { pathname } = useLocation()
-
-  /**
-   * Check if user has the appropiate cookie to access the private pages
-   */
   useEffect(() => {
-    async function checkUser() {
-      try {
-        await axios.get("/api/users/me")
-      } catch (err) {
-        await clearAuthData()
-        navigate("/login")
-        toast({ status: "error", title: "Access denied!" })
-      }
-    }
-    /**
-     * Excluding from checking since these are public pages
-     */
-    function userOrOtherPath(pathname: string) {
-      return pathname.substring(0, 6) === "/users" ? "/users" : pathname
-    }
-    if (
-      !["/", "/leaderboard", "/login", "/register", "/users"].includes(
-        userOrOtherPath(pathname)
-      )
-    )
-      checkUser()
-  }, [])
+    window.scrollTo(0, 0)
+  }, [pathname])
 
-  const isLoggedIn: boolean = !!localStorage.getItem("isLoggedIn")
-  const role: string = localStorage.getItem("role")!
-  const matchedPage = useRoutes(routes(isLoggedIn, role))
+  const [colorScheme, setColorScheme] = useLocalStorage<ColorScheme>({
+    key: "mantine-color-scheme",
+    defaultValue: "light",
+    getInitialValueInEffect: true,
+  })
+
+  const toggleColorScheme = (value?: ColorScheme) =>
+    setColorScheme(value || (colorScheme === "dark" ? "light" : "dark"))
 
   return (
-    <QueryClientProvider client={queryClient}>
-      {/* @ts-ignore */}
-      <HelmetProvider>
-        <Box minH="100vh" bg={mode("gray.50", "gray.900")}>
-          {isLoggedIn ? (
-            <GlobalStateProvider>
-              <main>{matchedPage}</main>
-            </GlobalStateProvider>
-          ) : (
-            <main>{matchedPage}</main>
-          )}
-        </Box>
-        {/* <ReactQueryDevtools position="bottom-right" /> */}
-      </HelmetProvider>
-    </QueryClientProvider>
+    <ColorSchemeProvider colorScheme={colorScheme} toggleColorScheme={toggleColorScheme}>
+      <MantineProvider withGlobalStyles withNormalizeCSS theme={{ colorScheme, ...theme }}>
+        <NotificationsProvider position="top-center" transitionDuration={250}>
+          <SpotlightProvider
+            actions={getSpotlightActions(navigate, handleLogout, user)}
+            searchIcon={<IconSearch size={18} />}
+            searchPlaceholder="Search..."
+            shortcut="mod + shift + p"
+            nothingFoundMessage="Nothing found..."
+          >
+            <Box
+              sx={(theme) => ({
+                background: colorScheme === "dark" ? theme.colors.dark[8] : theme.colors.gray[0],
+                minHeight: "100vh",
+                overflow: "hidden",
+              })}
+            >
+              {isLoggedIn ? (
+                <SubmissionsProvider>
+                  <main>{matchedPage}</main>
+                </SubmissionsProvider>
+              ) : (
+                <main>{matchedPage}</main>
+              )}
+            </Box>
+          </SpotlightProvider>
+          {/* <ReactQueryDevtools position="bottom-right" /> */}
+        </NotificationsProvider>
+      </MantineProvider>
+    </ColorSchemeProvider>
   )
 }
 
-export default App
+export default function App() {
+  const { user } = useUser()
+  // request is loading
+  if (user === undefined) return <></>
+
+  // user is null when no user is logged in
+  const isLoggedIn = user !== null
+  return <Entry isLoggedIn={isLoggedIn} user={user} />
+}

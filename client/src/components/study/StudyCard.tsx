@@ -1,17 +1,14 @@
+import { ActionIcon, Box, Button, Group, Menu, Paper, Text, Title, useMantineTheme } from "@mantine/core"
 import {
-  Box,
-  Heading,
-  Flex,
-  IconButton,
-  useColorModeValue as mode,
-} from "@chakra-ui/react"
-import {
-  ExternalLinkIcon,
-  NewspaperIcon,
-  PencilAltIcon,
-  PlayIcon,
-  TranslateIcon,
-} from "@heroicons/react/outline"
+  IconCaretRight,
+  IconDotsVertical,
+  IconEdit,
+  IconExternalLink,
+  IconLanguage,
+  IconNews,
+  IconTrash,
+  IconVideo,
+} from "@tabler/icons"
 import moment from "moment"
 import { useState } from "react"
 import PopupBuilder from "../PopupBuilder"
@@ -28,116 +25,107 @@ interface Study {
   studyTime: number
 }
 
-export default function StudyCard(studies: Study) {
-  const [isOpen, setIsOpen] = useState(false)
+export default function StudyCard(props: Study) {
+  const theme = useMantineTheme()
 
-  const { title, type, language, link, difficulty, studyTime, studyDate } =
-    studies
+  const [editOpen, setEditOpen] = useState(false)
+  const [deleteOpen, setDeleteOpen] = useState(false)
+
+  const { title, type, language, link, difficulty, studyTime, studyDate } = props
 
   return (
-    <Box
-      as="article"
-      p="5"
-      rounded="lg"
-      bg={mode("white", "gray.700")}
-      shadow="base"
-    >
-      <Heading size="md" my="1">
-        <Box
-          as={"a"}
-          display="flex"
-          columnGap={"5px"}
-          color={mode("blue.500", "blue.300")}
-          href={link}
-          target={"_blank"}
-        >
-          {title}
-          <ExternalLinkIcon width={20} height={20} />
-        </Box>
-      </Heading>
+    <Paper p="lg" sx={{ borderRadius: theme.radius.md, position: "relative" }}>
+      <Group position="apart">
+        <Title order={4}>{title}</Title>
+        <Menu>
+          <Menu.Target>
+            <Button color="gray" variant="subtle" size="xs" sx={{ position: "absolute", top: 8, right: 8, padding: 4 }}>
+              <IconDotsVertical size={16} />
+            </Button>
+          </Menu.Target>
 
-      <Flex alignItems={"center"} my="2" justifyContent="space-between">
-        <Box fontWeight={"semibold"} color="gray.500" fontSize={"sm"}>
-          {studyTime} minutes
-        </Box>
-        <Box fontWeight={"semibold"} color="gray.500" fontSize={"sm"}>
-          {moment(studyDate).format("ll")}
-        </Box>
-      </Flex>
+          <Menu.Dropdown>
+            <Menu.Item
+              component="a"
+              icon={<IconExternalLink size={16} />}
+              target="_blank"
+              href={link}
+              sx={{ height: 36 }}
+            >
+              View Resource
+            </Menu.Item>
+            <Menu.Item icon={<IconEdit size={14} />} onClick={() => setEditOpen(true)}>
+              Edit Resource
+            </Menu.Item>
+            <Menu.Item icon={<IconTrash size={14} />} onClick={() => setDeleteOpen(true)}>
+              Delete Resource
+            </Menu.Item>
 
-      <Flex alignItems={"center"} my="2" justifyContent="space-between">
-        <Flex alignItems={"center"} columnGap="4px">
-          {type === "Video" ? (
-            <PlayIcon width={18} height={18} />
-          ) : (
-            <NewspaperIcon width={18} height={18} />
-          )}
-          <Box fontSize={"sm"}>{type}</Box>
-        </Flex>
+            {/* Other items ... */}
+          </Menu.Dropdown>
+        </Menu>
+      </Group>
 
-        <Flex alignItems={"center"} columnGap="4px">
-          <TranslateIcon width={18} height={18} />
-          <Box fontSize={"sm"}>{language}</Box>
-        </Flex>
-      </Flex>
+      <Group position="apart" my="sm">
+        <Text size="sm">{studyTime} minutes</Text>
+        <Text size="sm"> {moment(studyDate).format("ll")}</Text>
+      </Group>
 
-      <Flex alignItems={"center"} justifyContent="space-between">
-        <Flex alignItems={"center"} columnGap="6px">
-          {[1, 2, 3].map((circle) => {
-            const map: any = {
-              Beginner: 1,
-              Intermediate: 2,
-              Advanced: 3,
-            }
+      <Group position="apart">
+        <Group spacing={4}>
+          {type === "Video" ? <IconVideo size={16} /> : <IconNews size={16} />}
+          <Text size="sm">{type}</Text>
+        </Group>
+        <Group spacing={4}>
+          <IconLanguage size={16} />
+          <Text size="sm">{language}</Text>
+        </Group>
+      </Group>
 
-            while (circle <= map[difficulty]) {
-              return (
-                <Box
-                  key={circle}
-                  rounded="full"
-                  bgColor={mode("blue.500", "blue.300")}
-                  width={"3"}
-                  height={"3"}
-                />
-              )
-            }
+      <Group align="center" spacing={6} mt="sm">
+        {[1, 2, 3].map((circle) => {
+          const map: any = {
+            Beginner: 1,
+            Intermediate: 2,
+            Advanced: 3,
+          }
+          while (circle <= map[difficulty]) {
             return (
               <Box
                 key={circle}
-                rounded="full"
-                borderColor={mode("blue.500", "blue.300")}
-                width={"3"}
-                height={"3"}
-                border="2px"
+                sx={(theme) => ({
+                  borderRadius: "100%",
+                  width: 10,
+                  height: 10,
+                  border: "2px solid",
+                  backgroundColor: theme.colors.blue[4],
+                  borderColor: theme.colors.blue[4],
+                })}
               />
             )
-          })}
-
-          <Box>{difficulty}</Box>
-        </Flex>
-
-        <Flex alignItems={"center"}>
-          <Box>
-            <IconButton
-              aria-label="edit study button"
-              variant={"outline"}
-              border="none"
-              color={"green.500"}
-              icon={<PencilAltIcon width={20} height={20} />}
-              onClick={() => setIsOpen(true)}
+          }
+          return (
+            <Box
+              key={circle}
+              sx={(theme) => ({
+                borderRadius: "100%",
+                width: 10,
+                height: 10,
+                border: "2px solid",
+                borderColor: theme.colors.blue[4],
+              })}
             />
-            <PopupBuilder
-              isOpen={isOpen}
-              setIsOpen={setIsOpen}
-              title={`Edit ${title}`}
-            >
-              <StudyForm setIsOpen={setIsOpen} studies={studies} />
-            </PopupBuilder>
-          </Box>
+          )
+        })}
 
-          <DeleteStudyList item={studies} />
-        </Flex>
-      </Flex>
-    </Box>
+        <Text size="sm">{difficulty}</Text>
+      </Group>
+
+      <PopupBuilder isOpen={editOpen} setIsOpen={setEditOpen} title={`Edit ${title}`}>
+        <StudyForm setIsOpen={setEditOpen} study={props} />
+      </PopupBuilder>
+
+      <DeleteStudyList item={props} setDeleteOpen={setDeleteOpen} deleteOpen={deleteOpen} />
+    </Paper>
   )
 }

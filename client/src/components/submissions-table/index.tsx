@@ -1,177 +1,88 @@
-import { useMemo, ReactNode } from "react"
-import { usePagination, useTable, useSortBy, Column } from "react-table"
-import { Submission } from "@/types/Submission"
-import { useColorModeValue as mode } from "@chakra-ui/react"
+import { DataGrid } from "~/components/datagrid"
 
-/**
- * Import table columnes
- */
+// ts types
+import { Submission } from "~/types/Submission"
+
+// table cells
+import ProblemName from "./cells/non-editable/ProblemName"
+import NonEditableTags from "./cells/non-editable/Tags"
+import Verdict from "./cells/editable/Verdict"
+import SolveTime from "./cells/editable/SolveTime"
+import Actions from "./cells/editable/Actions"
+import DatePicker from "./cells/editable/DatePicker"
 import SubmissionForm from "./SubmissionForm"
+import { Box } from "@mantine/core"
 
-/**
- * Import Icons
- */
-import { ArrowSmDownIcon, ArrowSmUpIcon } from "@heroicons/react/outline"
-import { Box, Table, Tbody, Td, Th, Thead, Tr } from "@chakra-ui/react"
-import { Pagination } from "./Pagination"
-import { getTableColumns } from "./getTableColumns"
-import { CELL_STYLES } from "./cells/cellStyles"
-
-export const SubmissionsTable = ({
-  submissions,
-  isEditable = false,
-}: {
-  submissions: Submission[]
-  isEditable?: boolean
-}) => {
-  /**
-   * Attach a serial number to each submissions
-   */
+export const SubmissionsTable = ({ submissions }: { submissions: Submission[] }) => {
+  // Attach a serial number to each submissions
   let k = submissions.length
   submissions.forEach((el) => (el.serial = k--))
 
-  /**
-   * Define table columns
-   */
-  const tableColumns = useMemo(() => getTableColumns(isEditable), [])
-
-  const {
-    getTableProps,
-    getTableBodyProps,
-    prepareRow,
-    page,
-    headerGroups,
-    canPreviousPage,
-    canNextPage,
-    pageOptions,
-    pageCount,
-    gotoPage,
-    nextPage,
-    previousPage,
-    setPageSize,
-    state: { pageIndex, pageSize },
-  } = useTable(
-    {
-      data: submissions,
-      columns: tableColumns,
-      initialState: {
-        pageSize: 20,
-        sortBy: [
+  return (
+    <Box sx={{ marginLeft: -16, marginRight: -16 }}>
+      <DataGrid<Submission>
+        sx={(theme) => ({
+          background: "white",
+          boxShadow: theme.shadows.xs,
+        })}
+        firstRow={<SubmissionForm serial={submissions.length + 1} />}
+        pageSizes={["10", "25", "50", "100"]}
+        initialState={{ pagination: { pageSize: 10 } }}
+        data={submissions ? submissions : []}
+        withSorting
+        withPagination
+        withColumnFilters
+        horizontalSpacing="lg"
+        withGlobalFilter
+        tableTitle="Submissions"
+        columns={[
           {
-            id: "solved-at",
-            desc: true,
+            header: "Id",
+            accessorKey: "problem.pid",
+            size: 40,
+            cell: ({ cell }) => cell.row.original.serial,
           },
-        ],
-      },
-    },
-    useSortBy,
-    usePagination
-  )
-
-  return (
-    <Box
-      pb={["64px", 10]}
-      mt={isEditable ? 6 : 2}
-      mx={isEditable ? -4 : 0}
-      overflowX="auto"
-      mb={[10, 4]}
-    >
-      <Box rounded={isEditable ? "none" : "lg"}>
-        <Table {...getTableProps()} id="submissions-table">
-          <Thead>
-            {headerGroups.map((headerGroup) => {
-              return (
-                <Tr
-                  fontSize="xs"
-                  textTransform="uppercase"
-                  bg={mode("gray.100", "gray.900")}
-                  borderBottom="1px solid"
-                  borderColor={mode("gray.200", "gray.700")}
-                  {...headerGroup.getHeaderGroupProps()}
-                >
-                  {headerGroup.headers.map((header) => {
-                    return (
-                      <Th
-                        py={4}
-                        letterSpacing="-0.5px"
-                        {...header.getHeaderProps(
-                          header.getSortByToggleProps()
-                        )}
-                        border={0}
-                      >
-                        <Box display="flex" alignItems="center" minH="5">
-                          <>
-                            {header.render("Header")}
-                            <Box display="inline" as="span" ml={1}>
-                              {header.isSorted ? (
-                                header.isSortedDesc ? (
-                                  <ArrowSmDownIcon height={16} />
-                                ) : (
-                                  <ArrowSmUpIcon height={16} />
-                                )
-                              ) : (
-                                ""
-                              )}
-                            </Box>
-                          </>
-                        </Box>
-                      </Th>
-                    )
-                  })}
-                </Tr>
-              )
-            })}
-          </Thead>
-          <Tbody {...getTableBodyProps()}>
-            {isEditable && <SubmissionForm id={submissions.length + 1} />}
-            {page.map((row, idx) => {
-              prepareRow(row)
-              return <SubmissionRow key={row.original.id} row={row} />
-            })}
-          </Tbody>
-        </Table>
-        {/* Pagination */}
-        <Pagination
-          isPublic={!isEditable}
-          pageIndex={pageIndex}
-          pageOptions={pageOptions}
-          pageSize={pageSize}
-          setPageSize={setPageSize}
-          canPreviousPage={canPreviousPage}
-          canNextPage={canNextPage}
-          gotoPage={gotoPage}
-          pageCount={pageCount}
-          previousPage={previousPage}
-          nextPage={nextPage}
-        />
-      </Box>
+          {
+            header: "Problem Name",
+            accessorKey: "problem.name",
+            cell: ProblemName,
+            size: 260,
+          },
+          {
+            header: "Verdict",
+            accessorKey: "verdict",
+            cell: Verdict,
+            size: 80,
+          },
+          {
+            header: "Solve Time",
+            accessorKey: "solveTime",
+            size: 95,
+            cell: SolveTime,
+          },
+          {
+            header: "Tags",
+            cell: NonEditableTags,
+            size: 480,
+          },
+          {
+            header: "Difficulty",
+            accessorKey: "problem.difficulty",
+            size: 90,
+            cell: (cell) => (cell.getValue() ? cell.getValue() : "—"),
+          },
+          {
+            header: "Solved On",
+            accessorKey: "solvedAt",
+            size: 170,
+            cell: DatePicker,
+          },
+          {
+            header: "Actions",
+            cell: Actions,
+          },
+        ]}
+      />
     </Box>
-  )
-}
-
-const SubmissionRow = ({ row }: any) => {
-  return (
-    <Tr
-      bg={mode("white", "gray.800")}
-      _hover={{ bg: mode("gray.50", "gray.750") }}
-      {...row.getRowProps()}
-    >
-      {row.cells.map((cell: any) => {
-        const cellType: any = cell.column.Header
-        return (
-          <Td
-            h={16}
-            minH={16}
-            borderBottom="1px solid"
-            borderColor={mode("gray.200", "gray.700")}
-            fontSize="sm"
-            {...cell.getCellProps()}
-            {...CELL_STYLES[cellType]}
-          >
-            {cell.render("Cell") as ReactNode}
-          </Td>
-        )
-      })}
-    </Tr>
   )
 }

@@ -14,6 +14,9 @@ export class HandlesService {
         userId,
         onlineJudgeId,
       },
+      include: {
+        onlineJudge: true,
+      },
     })
   }
 

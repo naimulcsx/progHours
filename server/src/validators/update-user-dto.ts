@@ -1,13 +1,5 @@
 import { Role } from "@prisma/client"
-import {
-  IsEmail,
-  IsString,
-  IsNumber,
-  IsOptional,
-  IsPositive,
-  Min,
-  Max,
-} from "class-validator"
+import { IsEmail, IsString, IsNumber, IsOptional, IsPositive, Min, Max, ValidateIf } from "class-validator"
 
 export class UpdateUserDto {
   @IsString()
@@ -25,6 +17,9 @@ export class UpdateUserDto {
   @IsNumber()
   @IsOptional()
   @IsPositive()
+  @ValidateIf((obj, val) => {
+    return val === 0
+  })
   batch: number
 
   @IsNumber()

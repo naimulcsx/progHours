@@ -1,21 +1,6 @@
 import { IsAuthenticatedGuard } from "@/guards/is-authenticated"
-import {
-  Controller,
-  Get,
-  Req,
-  UseGuards,
-  Param,
-  NotFoundException,
-  HttpStatus,
-  Query,
-} from "@nestjs/common"
-import {
-  ApiForbiddenResponse,
-  ApiNotFoundResponse,
-  ApiOkResponse,
-  ApiOperation,
-  ApiTags,
-} from "@nestjs/swagger"
+import { Controller, Get, Req, UseGuards, Param, NotFoundException, HttpStatus, Query } from "@nestjs/common"
+import { ApiForbiddenResponse, ApiNotFoundResponse, ApiOkResponse, ApiOperation, ApiTags } from "@nestjs/swagger"
 import { UsersService } from "@/modules/users/users.service"
 import { StatsService } from "./stats.service"
 import * as moment from "moment"
@@ -23,10 +8,7 @@ import * as moment from "moment"
 @Controller("/stats")
 @ApiTags("stats")
 export class StatsController {
-  constructor(
-    private readonly statsService: StatsService,
-    private readonly usersService: UsersService
-  ) {}
+  constructor(private readonly statsService: StatsService, private readonly usersService: UsersService) {}
 
   /**
    * GET /stats/me
@@ -127,7 +109,7 @@ export class StatsController {
       }
     }
 
-    // this month
+    // last month
     if (type === "lastMonth") {
       const start = moment({
         date: 1,
@@ -135,7 +117,7 @@ export class StatsController {
         year: new Date().getFullYear(),
       }).subtract(1, "months")
 
-      const end = moment(start).endOf("month").subtract(1, 'day')
+      const end = moment(start).endOf("month").subtract(1, "day")
 
       // query the result
       result = await this.statsService.getWeeklyLeaderboard(

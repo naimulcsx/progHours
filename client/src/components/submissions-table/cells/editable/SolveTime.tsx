@@ -1,25 +1,23 @@
 import { useMutation, useQueryClient } from "react-query"
-import { updateSubmission } from "@/api/submissions"
+import { updateSubmission } from "~/api/submissions"
 import React, { useRef, useState } from "react"
-import { Cell } from "react-table"
-import { Submission } from "@/types/Submission"
-import { Practice } from "@/types/Practice"
-import { Input, useToast } from "@chakra-ui/react"
-import { DEFAULT_TOAST_OPTIONS } from "@/configs/toast-config"
-import { useColorModeValue as mode } from "@chakra-ui/react"
+import { Submission } from "~/types/Submission"
+import { Practice } from "~/types/Practice"
+import { CellContext } from "@tanstack/react-table"
+import { TextInput } from "@mantine/core"
+import showToast from "~/utils/showToast"
 
-export default function SolveTime(cell: Cell<Submission>) {
-  const toast = useToast(DEFAULT_TOAST_OPTIONS)
+export default function SolveTime(cell: CellContext<Submission, unknown>) {
   const client = useQueryClient()
-  const prevRef = useRef(cell.value)
-  const [time, setTime] = useState(cell.value)
+  const prevRef = useRef(cell.getValue())
+  const [time, setTime] = useState(cell.getValue() as string)
 
   const { mutate } = useMutation(updateSubmission, {
     onSuccess: (res) => {
       /**
        * After data is updated in the server, we need to update it the client state
        */
-      toast({ status: "success", title: res.message })
+      showToast("success", res.message)
       const oldData: Practice | undefined = client.getQueryData("submissions")
       const newData = oldData?.body.submissions.map((el: Submission) => {
         /**
@@ -37,7 +35,7 @@ export default function SolveTime(cell: Cell<Submission>) {
       })
     },
     onError: (err: any) => {
-      toast({ title: err?.response?.data.message, status: "error" })
+      showToast("error", err?.response?.data.message)
     },
   })
 
@@ -56,14 +54,12 @@ export default function SolveTime(cell: Cell<Submission>) {
   }
 
   return (
-    <Input
+    <TextInput
       type="number"
       value={time}
-      fontSize="sm"
       onChange={(e) => setTime(e.target.value)}
       onBlur={(e) => handleBlur(e.target.value)}
       onKeyUp={(e) => handleEnter(e)}
-      borderColor={mode("gray.200", "gray.600")}
     />
   )
 }
