@@ -20,7 +20,7 @@ export default function TagsFreqChart({ data }: any) {
   data.sort((a: any, b: any) => {
     return b.count - a.count
   })
-  const slicedData = data.slice(0, 15).reverse()
+  const slicedData = data.slice(0, 10).reverse()
   const theme = useMantineTheme()
   const state = {
     series: [

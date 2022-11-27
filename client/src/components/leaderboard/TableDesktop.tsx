@@ -1,6 +1,7 @@
-import { Anchor, Box, Group, HoverCard, Stack, Text } from "@mantine/core"
-import { DataGrid, numberFilterFn } from "~/components/datagrid"
+import { Box, Text } from "@mantine/core"
 import { Link } from "react-router-dom"
+
+import { DataGrid, numberFilterFn } from "~/components/datagrid"
 import Avatar from "~/components/Avatar"
 
 const LeaderboardTable = ({ data }: any) => {
@@ -10,7 +11,7 @@ const LeaderboardTable = ({ data }: any) => {
         background: "white",
         boxShadow: theme.shadows.xs,
       })}
-      data={data || []}
+      data={data}
       withSorting
       withPagination
       withColumnFilters

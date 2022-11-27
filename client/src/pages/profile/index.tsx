@@ -135,7 +135,7 @@ export default function Profile() {
                     <Paper mt="md">
                       <Table
                         verticalSpacing="sm"
-                        horizontalSpacing="lg"
+                        horizontalSpacing="xl"
                         sx={(theme) => ({
                           borderRadius: theme.radius.md,
                           overflow: "clip",

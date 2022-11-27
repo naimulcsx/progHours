@@ -1,10 +1,11 @@
-import { ActionIcon, Anchor, Box, Button, Group, Header, Text, useMantineColorScheme } from "@mantine/core"
+import { ActionIcon, Anchor, Button, Group, Header, Text, useMantineColorScheme } from "@mantine/core"
+import { IconMoonStars, IconSearch, IconSun } from "@tabler/icons"
 import { Link } from "react-router-dom"
+import { openSpotlight } from "@mantine/spotlight"
+
 import Logo from "~/components/Logo"
 import useUser from "~/hooks/useUser"
 import UserMenu from "./UserMenu"
-import { IconMoonStars, IconSearch, IconSun } from "@tabler/icons"
-import { openSpotlight } from "@mantine/spotlight"
 
 const Navbar = () => {
   const { user } = useUser()
@@ -36,7 +37,7 @@ const Navbar = () => {
       >
         <Logo />
       </Anchor>
-      <Group>
+      <Group spacing={4}>
         <ActionIcon
           variant="outline"
           color={dark ? "yellow" : "blue"}
@@ -51,6 +52,7 @@ const Navbar = () => {
               leftIcon={<IconSearch size={14} />}
               variant="outline"
               color="gray"
+              ml="sm"
               onClick={() => openSpotlight()}
               sx={(theme) => ({
                 borderColor: theme.colorScheme === "dark" ? theme.colors.dark[4] : theme.colors.gray[3],

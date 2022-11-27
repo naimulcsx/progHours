@@ -83,7 +83,7 @@ export default function TagsSolveTimeChart({ data }: any) {
 
   return (
     // @ts-ignore
-    <Paper shadow="xs" p="xl">
+    <Paper shadow="xs" p="xl" sx={{ height: "100%" }}>
       <Title order={6} sx={{ textAlign: "center" }} mb="sm">
         Time spent by category{" "}
         <Anchor size="sm" sx={{ fontWeight: 400 }} onClick={() => setOpen(true)}>
@@ -95,7 +95,7 @@ export default function TagsSolveTimeChart({ data }: any) {
         options={options}
         series={series}
         type="donut"
-        height={320}
+        height={400}
       />
       <Modal opened={open} onClose={() => setOpen(false)} title={<Title order={4}>Time spent by category</Title>}>
         {/* Modal content */}

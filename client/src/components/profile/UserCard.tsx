@@ -1,7 +1,6 @@
 import { useState } from "react"
-import { Anchor, Badge, Box, Container, Flex, Group, Text, Title, Image } from "@mantine/core"
+import { Anchor, Badge, Box, Container, Flex, Group, Text, Title } from "@mantine/core"
 import { useQuery } from "react-query"
-import { IconPoint } from "@tabler/icons"
 
 import Avatar from "~/components/Avatar"
 import { CCIcon, CFIcon, LightOJIcon, TophIcon } from "~/components/Icons"
@@ -22,7 +21,11 @@ export default function UserCard({ user }: UserCardProps) {
   return (
     <Box sx={{ marginBottom: 40, marginTop: 80 }}>
       <Container size="xl">
-        <Group sx={{ position: "relative" }}>
+        <Group
+          sx={{
+            position: "relative",
+          }}
+        >
           <Avatar name={name} width={96} height={96} fontSize={32} />
           <Box>
             <Group>
@@ -37,14 +40,6 @@ export default function UserCard({ user }: UserCardProps) {
               })}
             >
               <Text>{username.toUpperCase()}</Text>
-              {/* {user.department && user.batch && (
-                <>
-                  •
-                  <Text>
-                    {user.department} {user.batch}
-                  </Text>
-                </>
-              )} */}
             </Flex>
           </Box>
         </Group>

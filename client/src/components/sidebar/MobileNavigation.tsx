@@ -18,7 +18,7 @@ export default function MobileNavigation() {
   return (
     <Group
       py="6px"
-      sx={(theme) => ({
+      sx={{
         display: "none",
         justifyContent: "center",
         position: "fixed",
@@ -33,75 +33,79 @@ export default function MobileNavigation() {
         [`@media (max-width: ${theme.breakpoints.lg}px)`]: {
           display: "flex",
         },
-      })}
+      }}
     >
       <NavLink
         component={Link}
         to="/dashboard"
-        icon={<IconLayout2 style={{ marginLeft: 12 }} size={20} stroke={1.5} />}
+        icon={<IconLayout2 style={{ marginLeft: 12 }} size={24} stroke={1.5} />}
         active={pathname === "/dashboard"}
-        sx={(theme) => ({
+        p="xs"
+        sx={{
           width: "auto",
           display: "flex",
           borderRadius: theme.radius.md,
           "&[data-active='true']": {
             background: theme.colorScheme === "dark" ? theme.colors.dark[4] : theme.colors.blue[0],
           },
-        })}
+        }}
       />
       <NavLink
         component={Link}
         to="/submissions"
-        icon={<IconClipboardList style={{ marginLeft: 12 }} size={20} stroke={1.5} />}
+        icon={<IconClipboardList style={{ marginLeft: 12 }} size={24} stroke={1.5} />}
         active={pathname === "/submissions"}
-        sx={(theme) => ({
+        p="xs"
+        sx={{
           width: "auto",
           display: "flex",
           borderRadius: theme.radius.md,
           "&[data-active='true']": {
             background: theme.colorScheme === "dark" ? theme.colors.dark[4] : theme.colors.blue[0],
           },
-        })}
+        }}
       />
       <NavLink
         component={Link}
         to="/study"
-        icon={<IconNotes style={{ marginLeft: 12 }} size={20} stroke={1.5} />}
+        icon={<IconNotes style={{ marginLeft: 12 }} size={24} stroke={1.5} />}
         active={pathname === "/study"}
-        sx={(theme) => ({
+        p="xs"
+        sx={{
           width: "auto",
           display: "flex",
           borderRadius: theme.radius.md,
           "&[data-active='true']": {
             background: theme.colorScheme === "dark" ? theme.colors.dark[4] : theme.colors.blue[0],
           },
-        })}
+        }}
       />
 
       <NavLink
         component={Link}
         to="/leaderboard"
-        icon={<IconChartBar style={{ marginLeft: 12 }} size={20} stroke={1.5} />}
+        icon={<IconChartBar style={{ marginLeft: 12 }} size={24} stroke={1.5} />}
         active={pathname === "/leaderboard"}
-        sx={(theme) => ({
+        p="xs"
+        sx={{
           width: "auto",
           display: "flex",
           borderRadius: theme.radius.md,
           "&[data-active='true']": {
             background: theme.colorScheme === "dark" ? theme.colors.dark[4] : theme.colors.blue[0],
           },
-        })}
+        }}
       />
 
       <Menu shadow="md" width={200}>
         <Menu.Target>
           <NavLink
-            icon={<IconDotsVertical style={{ marginLeft: 12 }} size={20} stroke={1.5} />}
-            sx={(theme) => ({
-              color: theme.colors.gray[5],
+            icon={<IconDotsVertical style={{ marginLeft: 12 }} size={24} stroke={1.5} />}
+            sx={{
+              color: theme.colorScheme === "dark" ? theme.colors.dark[1] : theme.black,
               width: "auto",
               borderRadius: theme.radius.md,
-            })}
+            }}
           />
         </Menu.Target>
         <Menu.Dropdown>

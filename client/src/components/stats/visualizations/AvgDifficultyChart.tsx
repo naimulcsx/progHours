@@ -66,12 +66,12 @@ export default function AvgDifficultyChart({ avgDifficulty }: any) {
     },
   }
   return (
-    <Paper p="xl">
+    <Paper p="xl" sx={{ height: "100%" }}>
       <Title order={6} sx={{ textAlign: "center" }}>
         Average difficulty by week
       </Title>
       {/* @ts-ignore */}
-      <ReactApexChart options={options} series={series} type="line" height={325} />
+      <ReactApexChart options={options} series={series} type="line" height={375} />
     </Paper>
   )
 }

@@ -11,7 +11,7 @@ export const DashboardLayout: FC<AppShellProps> = ({ children }) => {
         header={<Navbar />}
         sx={(theme) => ({
           "@media (max-width: 755px)": {
-            paddingBottom: 48,
+            paddingBottom: 56,
           },
         })}
         navbar={<NewSidebar />}
