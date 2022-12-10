@@ -46,28 +46,29 @@ const Navbar = () => {
         >
           {dark ? <IconSun size={18} /> : <IconMoonStars size={18} />}
         </ActionIcon>
-        {user ? (
-          <Group>
-            <Button
-              leftIcon={<IconSearch size={14} />}
-              variant="outline"
-              color="gray"
-              ml="sm"
-              onClick={() => openSpotlight()}
-              sx={(theme) => ({
-                borderColor: theme.colorScheme === "dark" ? theme.colors.dark[4] : theme.colors.gray[3],
-                [`@media (max-width: ${theme.breakpoints.lg}px)`]: {
-                  display: "none",
-                },
-              })}
-            >
-              <Text mr="xl">Search...</Text>
-              <Text ml="xl">⌘ + ⇧ + P</Text>
-            </Button>
-            <UserMenu user={user} />
-          </Group>
-        ) : (
-          <Group>
+
+        <Group>
+          <Button
+            leftIcon={<IconSearch size={14} />}
+            variant="outline"
+            color="gray"
+            ml="sm"
+            onClick={() => openSpotlight()}
+            sx={(theme) => ({
+              borderColor: theme.colorScheme === "dark" ? theme.colors.dark[4] : theme.colors.gray[3],
+              [`@media (max-width: ${theme.breakpoints.lg}px)`]: {
+                display: "none",
+              },
+            })}
+          >
+            <Text mr="xl">Search...</Text>
+            <Text ml="xl">⌘ + K</Text>
+          </Button>
+          {user && <UserMenu user={user} />}
+        </Group>
+
+        {!user && (
+          <Group ml="lg">
             <Anchor component={Link} to="/login">
               Login
             </Anchor>

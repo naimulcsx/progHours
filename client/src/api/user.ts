@@ -23,10 +23,4 @@ const udpateUserData = (id, values) => {
   return axios.patch(`/api/users/${id}`, values).then((res) => res.data)
 }
 
-export {
-  getUser,
-  updateUserAccount,
-  getUserByUsername,
-  getAllUsers,
-  udpateUserData,
-}
+export { getUser, updateUserAccount, getUserByUsername, getAllUsers, udpateUserData }

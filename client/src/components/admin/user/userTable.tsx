@@ -7,8 +7,6 @@ import Avatar from "~/components/Avatar"
 import Action from "./Actions"
 
 export default function UserManagementTable({ users }: { users: User[] }) {
-  const [isOpen, setIsOpen] = useState(false)
-
   return (
     <>
       <Box sx={{ marginLeft: -16, marginRight: -16 }}>

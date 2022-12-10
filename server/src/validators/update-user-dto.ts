@@ -1,5 +1,5 @@
 import { Role } from "@prisma/client"
-import { IsEmail, IsString, IsNumber, IsOptional, IsPositive, Min, Max, ValidateIf } from "class-validator"
+import { IsEmail, IsString, IsNumber, IsOptional, IsPositive, Min, Max, ValidateIf, MinLength } from "class-validator"
 
 export class UpdateUserDto {
   @IsString()
@@ -23,7 +23,6 @@ export class UpdateUserDto {
   batch: number
 
   @IsNumber()
-  @IsPositive()
   @Min(0)
   @Max(4)
   @IsOptional()
@@ -44,4 +43,14 @@ export class UpdateUserDto {
   @IsString()
   @IsOptional()
   section: string
+
+  @IsString()
+  @MinLength(8)
+  @IsOptional()
+  currentPassword: string
+
+  @IsString()
+  @MinLength(8)
+  @IsOptional()
+  newPassword: string
 }

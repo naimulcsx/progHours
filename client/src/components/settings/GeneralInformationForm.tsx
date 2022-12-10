@@ -20,7 +20,11 @@ const infoSchema = Yup.object().shape({
     .nullable(true)
     .transform((_, val) => (val === Number(val) ? val : null)),
   section: Yup.string().trim(),
-  cgpa: Yup.number().min(0.0).max(4.0),
+  cgpa: Yup.number()
+    .nullable(true)
+    .min(0)
+    .max(4)
+    .transform((_, val) => (val === Number(val) ? val : null)),
 })
 
 export const GeneralInformationForm = () => {
@@ -52,13 +56,17 @@ export const GeneralInformationForm = () => {
       department: user?.department || "",
       batch: user?.batch || "",
       section: user?.section || "",
-      cgpa: user?.cgpa || 0.0,
+      cgpa: user?.cgpa || "",
     },
     validate: yupResolver(infoSchema),
   })
 
   const handleSubmit = form.onSubmit((values) => {
-    mutation.mutateAsync(values)
+    const data = {
+      ...values,
+      cgpa: Number(values.cgpa),
+    }
+    mutation.mutateAsync(data)
   })
 
   return (

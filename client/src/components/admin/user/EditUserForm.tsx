@@ -10,14 +10,16 @@ const userSchema = Yup.object().shape({
   username: Yup.string().trim(),
   name: Yup.string().trim(),
   email: Yup.string().email("Invalid email").trim(),
-  batch: Yup.number()
-    .min(0)
-    .nullable(true)
-    .transform((_, val) => (val === Number(val) ? val : null)),
   section: Yup.string().trim(),
   department: Yup.string().trim(),
   mobile: Yup.string().trim(),
-  cgpa: Yup.number().min(0.0).max(4.0),
+  batch: Yup.number()
+    .positive("Invalid Batch")
+    .nullable(true)
+    .transform((_, val) => (val === Number(val) ? val : null)),
+  cgpa: Yup.number()
+    .nullable(true)
+    .transform((_, val) => (val === Number(val) ? val : null)),
   role: Yup.string().trim(),
 })
 
@@ -47,7 +49,7 @@ export default function EditUserForm({ data: user, setIsOpen }: any) {
       section: user?.section || "",
       department: user?.department || "",
       mobile: user?.mobile || "",
-      cgpa: user?.cgpa || 0.0,
+      cgpa: user?.cgpa || "",
       role: user?.role || "",
     },
 
@@ -55,8 +57,11 @@ export default function EditUserForm({ data: user, setIsOpen }: any) {
   })
 
   const handleSubmit = form.onSubmit(async (values: any) => {
-    values.batch = Number(values.batch)
-    mutation.mutateAsync(values)
+    const data = {
+      ...values,
+      cgpa: Number(values.cgpa),
+    }
+    mutation.mutateAsync(data)
   })
 
   return (

@@ -74,7 +74,7 @@ export class UsersController {
     enum: ["data", "password"],
   })
   @UseGuards(IsAuthenticatedGuard)
-  async updateUser(@Body() body: any, @Req() req, @Query() query) {
+  async updateUser(@Body() body: UpdateUserDto, @Req() req, @Query() query) {
     // request body
     const { name, email, mobile, department, batch, cgpa, currentPassword, newPassword, section } = body
 

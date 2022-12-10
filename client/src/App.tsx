@@ -43,7 +43,7 @@ const Entry: FC<{ isLoggedIn: boolean; user: User | null }> = ({ isLoggedIn, use
             actions={getSpotlightActions(navigate, handleLogout, user)}
             searchIcon={<IconSearch size={18} />}
             searchPlaceholder="Search..."
-            shortcut="mod + shift + p"
+            shortcut="mod + k"
             nothingFoundMessage="Nothing found..."
           >
             <Box
