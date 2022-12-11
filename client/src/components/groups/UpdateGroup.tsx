@@ -7,6 +7,8 @@ import * as Yup from "yup"
 
 import { editGroup } from "~/api/groups"
 import showToast from "~/utils/showToast"
+import { DeleteGroupModal } from "../modals/DeleteGroupModal"
+import { useState } from "react"
 
 // schema validation
 const updateGroupSchema = Yup.object().shape({
@@ -15,6 +17,7 @@ const updateGroupSchema = Yup.object().shape({
 })
 
 const UpdateGroup = ({ group }: any) => {
+  const [isOpen, setIsOpen] = useState(false)
   const navigate = useNavigate()
   const queryClient = useQueryClient()
 
@@ -48,7 +51,7 @@ const UpdateGroup = ({ group }: any) => {
     >
       <form onSubmit={handleSubmit}>
         <Stack>
-          <TextInput withAsterisk label="Group Name" type="text" {...form.getInputProps("name")} />
+          <TextInput withAsterisk label="Name" type="text" {...form.getInputProps("name")} />
           <TextInput
             withAsterisk
             description="Slug to be used in the URL of the groups. Space is not allowed."
@@ -68,18 +71,14 @@ const UpdateGroup = ({ group }: any) => {
           This will delete your group permanently.
         </Alert>
         <Box>
-          <Button color="red">Delete</Button>
+          <Button color="red" onClick={() => setIsOpen(true)}>
+            Delete
+          </Button>
         </Box>
       </Stack>
 
       {/* delete popup */}
-      {/* <DeleteGroupModal
-        id={group.id}
-        name={group.name}
-        hashtag={group.hashtag}
-        isOpen={isOpen}
-        setIsOpen={setIsOpen}
-      /> */}
+      <DeleteGroupModal id={group.id} name={group.name} hashtag={group.hashtag} isOpen={isOpen} setIsOpen={setIsOpen} />
     </Paper>
   )
 }

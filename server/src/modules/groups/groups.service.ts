@@ -184,4 +184,33 @@ export class GroupsService {
       },
     })
   }
+
+  //////////////////////////////////
+  // Admin
+  async getGroups() {
+    return await this.prisma.userGroup.findMany({
+      include: {
+        group: {
+          include: {
+            users: {
+              include: { user: true },
+            },
+          },
+        },
+        user: true,
+      },
+    })
+  }
+
+  async editGroupForAdmin(id: any, body: any) {
+    const { name, hashtag, userId } = body
+
+    await this.prisma.group.update({
+      where: { id },
+      data: {
+        name,
+        hashtag,
+      },
+    })
+  }
 }

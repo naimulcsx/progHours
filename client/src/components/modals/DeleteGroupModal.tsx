@@ -1,23 +1,26 @@
 import { deleteGroup } from "~/api/groups"
 import { Button, Group, Modal, Text, Title } from "@mantine/core"
 import { useMutation, useQueryClient } from "react-query"
-import { useNavigate } from "react-router-dom"
+import { useLocation, useNavigate } from "react-router-dom"
+import useUser from "~/hooks/useUser"
+import showToast from "~/utils/showToast"
 
-export const DeleteGroupModal = ({
-  isOpen,
-  setIsOpen,
-  name,
-  hashtag,
-  id,
-}: any) => {
+export const DeleteGroupModal = ({ isOpen, setIsOpen, name, hashtag, id }: any) => {
   const navigate = useNavigate()
   const queryClient = useQueryClient()
+  const { user } = useUser()
+
+  const { pathname } = useLocation()
 
   const { mutate } = useMutation(deleteGroup, {
     onSuccess: () => {
-      // toast({ status: "success", title: "Group deleted!" })
       queryClient.invalidateQueries("groups")
-      navigate("/groups")
+      // toast({ status: "success", title: "Group deleted!" })
+      showToast("success", "Group deleted!")
+
+      if (!pathname.includes("/admin/groups")) {
+        navigate("/groups")
+      }
     },
   })
 
@@ -29,8 +32,7 @@ export const DeleteGroupModal = ({
       title={<Title order={4}>Delete group: {name}</Title>}
     >
       <Text>
-        Are you sure you want to delete:{" "}
-        <Text component="span">#{hashtag}</Text>?
+        Are you sure you want to delete: <Text component="span">#{hashtag}</Text>?
       </Text>
       <Group sx={{ justifyContent: "flex-end" }} mt="sm">
         <Button variant="light" onClick={() => setIsOpen(false)}>

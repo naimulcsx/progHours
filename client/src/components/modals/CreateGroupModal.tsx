@@ -42,6 +42,7 @@ export default function CreateGroupModal({ isOpen, setIsOpen }: any) {
       <form
         onSubmit={form.onSubmit((values) => {
           mutate(values)
+          form.reset()
         })}
       >
         <TextInput withAsterisk label="Name" {...form.getInputProps("name")} placeholder="CSE 46 BM" />

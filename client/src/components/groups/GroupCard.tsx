@@ -1,4 +1,4 @@
-import { Anchor, Badge, Button, Menu, Paper, Stack, Text, Title } from "@mantine/core"
+import { Anchor, Badge, Button, Group, Menu, Paper, Stack, Text, Title } from "@mantine/core"
 import { IconDotsVertical, IconTrash } from "@tabler/icons"
 import { useState } from "react"
 import { Link, useNavigate } from "react-router-dom"
@@ -25,6 +25,11 @@ const GroupCard = ({ group, role }: any) => {
           <Text sx={(theme) => ({ fontWeight: 600 })}>#{group.hashtag}</Text>
         </Anchor>
         <Badge color="pink">{role}</Badge>
+        <Group>
+          <Text color="blue" size="sm">
+            {group.users.filter((item: any) => item.role === "MEMBER").length} members
+          </Text>
+        </Group>
       </Stack>
 
       <Menu>

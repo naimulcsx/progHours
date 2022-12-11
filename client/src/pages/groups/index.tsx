@@ -15,9 +15,14 @@ import useUser from "~/hooks/useUser"
 
 export default function GroupsPage() {
   const { user } = useUser()
+  const [groups, setGroups] = useState<any>()
 
   // fetch groups data
-  const { data, isLoading, isFetching } = useQuery(["groups"], getUserGroups)
+  const { isLoading, isFetching } = useQuery(["groups"], getUserGroups, {
+    onSuccess: (data) => {
+      setGroups(data?.body.groups.filter((group: any) => group.userId === user?.id))
+    },
+  })
 
   // modal states
   const [createIsOpen, setCreateIsOpen] = useState(false)
@@ -87,11 +92,11 @@ export default function GroupsPage() {
               cols={5}
               spacing="lg"
             >
-              {data.body.groups.map((el: any) => (
+              {groups?.map((el: any) => (
                 <GroupCard key={el.group.id} {...el} />
               ))}
             </SimpleGrid>
-            {data.body.groups.length === 0 && <Text>You don't belong to any group.</Text>}
+            {groups?.length === 0 && <Text>You don't belong to any group.</Text>}
           </motion.div>
         )}
       </AnimatePresence>

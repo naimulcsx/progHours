@@ -4,16 +4,7 @@ import { IsAuthenticatedGuard } from "@/guards/is-authenticated"
 import { AddUserToGroupDto } from "@/validators/add-user-to-group-dto"
 import { CreateGroupDto } from "@/validators/create-group-dto"
 
-import {
-  ApiBadRequestResponse,
-  ApiConflictResponse,
-  ApiCreatedResponse,
-  ApiForbiddenResponse,
-  ApiNotFoundResponse,
-  ApiOkResponse,
-  ApiOperation,
-  ApiTags,
-} from "@nestjs/swagger"
+import { ApiBadRequestResponse, ApiCreatedResponse, ApiOperation, ApiTags } from "@nestjs/swagger"
 
 import {
   BadRequestException,
@@ -80,8 +71,7 @@ export class GroupsController {
   @Get("/")
   async getGroups(@Req() req) {
     // get the groups the current user is a part of
-    const groups = await this.groupsService.getUserGroups(req.user.id)
-
+    const groups = await this.groupsService.getGroups()
     // return the response
     return {
       statusCode: HttpStatus.OK,
@@ -101,7 +91,7 @@ export class GroupsController {
 
   @Patch("/:id")
   @UseGuards(IsAdminOrModerator)
-  async editGroup(@Param() params, @Body() body) {
+  async editGroup(@Req() req, @Param() params, @Body() body) {
     const { name, hashtag, private: isPrivate } = body
 
     // check if the hashtag has spaces in it
@@ -109,8 +99,13 @@ export class GroupsController {
       throw new BadRequestException("Spaces in hashtag is not allowed!")
     }
 
+    let group
+    // if (req.user.role === "ADMIN") {
+    //   group = await this.groupsService.editGroupForAdmin(Number, body)
+    // }
+
     // edit the group
-    const group = await this.groupsService.editGroup(Number(params.id), name, hashtag, isPrivate)
+    group = await this.groupsService.editGroup(Number(params.id), name, hashtag, isPrivate)
 
     // return the response
     return {

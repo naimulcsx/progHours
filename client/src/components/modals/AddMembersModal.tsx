@@ -54,6 +54,7 @@ export default function AddMembersModal({ isOpen, setIsOpen, groupName, groupId,
 
   const handleSubmit = form.onSubmit((values) => {
     mutateAsync(values)
+    form.reset()
   })
 
   return (

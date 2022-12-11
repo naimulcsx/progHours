@@ -1,7 +1,7 @@
 import { Helmet } from "react-helmet-async"
 import { DashboardLayout } from "~/components/layouts/Dashboard"
 import { useState } from "react"
-import { useNavigate, useParams } from "react-router-dom"
+import { useParams } from "react-router-dom"
 import { getGroupByHashtag } from "~/api/groups"
 import { useQuery } from "react-query"
 
@@ -128,8 +128,7 @@ const GroupPage = () => {
                       return (
                         <MemberCard
                           key={userGroup.user.id}
-                          groupId={data.body.group.id}
-                          hashtag={data.body.group.hashtag}
+                          group={data.body.group}
                           isOwner={data.body.isOwner}
                           {...userGroup}
                         />
