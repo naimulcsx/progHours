@@ -13,6 +13,7 @@ import GroupsPage from "~/pages/groups"
 import GroupPage from "~/pages/groups/$slug"
 import ActivitiesPage from "~/pages/Activities"
 import UserManagement from "~/pages/admin/userManagement"
+import ProblemManagement from "./pages/admin/problemManagement"
 import NotFoundPage from "~/pages/404"
 import StudyPage from "./pages/studylist"
 
@@ -28,6 +29,7 @@ const getRoutes = (isLoggedIn: boolean, role: string): RouteObject[] => [
   defineRoute("/study", isLoggedIn ? <StudyPage /> : <Navigate to="/login" />),
   defineRoute("/settings", isLoggedIn ? <Settings /> : <Navigate to="/login" />),
   defineRoute("/users", isLoggedIn && role === "ADMIN" ? <UserManagement /> : <Navigate to="/login" />),
+  defineRoute("/problems", isLoggedIn && role === "ADMIN" ? <ProblemManagement /> : <Navigate to="/login" />),
   defineRoute("/@:username", <Profile />),
   defineRoute("/leaderboard", <LeaderboardPage />),
   defineRoute("/groups", isLoggedIn ? <GroupsPage /> : <Navigate to="/login" />),

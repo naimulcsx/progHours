@@ -238,6 +238,24 @@ const NewSidebar = () => {
               active={pathname === "/users"}
               sx={navItemStyles}
             />
+            <NavLink
+              component={Link}
+              to="/problems"
+              label="User Management"
+              icon={
+                <ThemeIcon
+                  size="md"
+                  variant="gradient"
+                  gradient={{ from: "pink", to: "blue" }}
+                  style={{ marginLeft: 8 }}
+                  sx={{ boxShadow: `inset 1px 2px 2px 1px ${theme.colors.blue[3]}` }}
+                >
+                  <IconUsers size={16} stroke={2} />
+                </ThemeIcon>
+              }
+              active={pathname === "/users"}
+              sx={navItemStyles}
+            />
           </Stack>
         )}
       </Navbar.Section>
