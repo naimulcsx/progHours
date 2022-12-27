@@ -16,6 +16,7 @@ services:
       - /home/node/server/node_modules
     depends_on:
       - postgres
+      - gojudge
   postgres:
     image: postgres:14
     ports:
@@ -43,3 +44,24 @@ services:
       - client
     volumes:
       - ./nginx/default.conf:/etc/nginx/conf.d/default.conf
+  
+  redis:
+    image: redis:latest
+    ports:
+      - 6379:6379
+    command: redis-server --save 20 1 --loglevel warning --requirepass IMTIAZCHO
+    volumes: 
+      - cache:/data
+
+  gojudge:
+    build: 
+      context: ./server
+      dockerfile: Dockerfile.exec
+    privileged: true
+    ports: 
+      - 5050:5050
+
+volumes:
+  cache:
+    driver: local
+

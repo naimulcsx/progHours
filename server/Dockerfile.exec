@@ -1,0 +1,24 @@
+FROM criyle/executorserver:latest AS executorserver 
+
+FROM ubuntu:latest
+
+ENV TZ=America/Vancouver
+
+ENV DEBIAN_FRONTEND=noninteractive
+
+RUN apt-get update \
+    && apt-get install -y --no-install-recommends \
+    gcc \
+    g++ \
+    vim \
+    nano \
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/* 
+    
+WORKDIR /opt
+
+COPY --from=executorserver /opt/executorserver /opt/mount.yaml /opt/
+
+EXPOSE 5050/tcp 5051/tcp
+
+ENTRYPOINT ["./executorserver"]

@@ -11,6 +11,9 @@ import { ConfigModule } from "@nestjs/config"
 import { PrismaModule } from "./prisma/prisma.module"
 import { StudiesModule } from "./studies/studies.module"
 import { GroupsModule } from "./groups/groups.module"
+import { JudgeSubmissionManagerModule } from "./judge-submission-manager/judge-submission-manager.module"
+import { JudgeProblemManagerModule } from "./judge-problem-manager/judge-problem-manager.module"
+import { BullModule } from '@nestjs/bull'
 
 @Module({
   imports: [
@@ -27,6 +30,16 @@ import { GroupsModule } from "./groups/groups.module"
     PrismaModule,
     StudiesModule,
     GroupsModule,
+
+    BullModule.forRoot({
+      redis: {
+        host: 'redis',
+        port: 6379,
+        password: 'IMTIAZCHO'
+      },
+    }),
+    JudgeProblemManagerModule,
+    JudgeSubmissionManagerModule,
   ],
 })
 export class AppModule {}

@@ -7,7 +7,8 @@ generator client {
 
 datasource db {
   provider = "postgresql"
-  url      = env("DATABASE_URL")
+  // url      = "postgresql://user:pass@localhost:5432/app"
+  url         = env("DATABASE_URL")
 }
 
 model User {
@@ -23,11 +24,17 @@ model User {
   cgpa        Float?
   role        Role         @default(USER)
   memberSince DateTime     @default(now())
+
   submissions Submission[]
   userStat    UserStat?
   groups      UserGroup[]
   studies     UserStudy[]
   handles     Handle[]
+
+  judgeContestAuthors  JudgeContests[]  
+  judgeProblemAurhor JudgeProblems[]
+  judgeProblemSolution JudgeProblemSolutions[]
+  judgeSubmissions JudgeSubmissions[]
 
   @@index(username)
 }
@@ -43,6 +50,7 @@ model Tag {
   id       Int          @id @default(autoincrement())
   name     String       @unique
   problems ProblemTag[]
+  judgeProblems JudgeProblems[]
 }
 
 model Problem {
@@ -153,4 +161,167 @@ enum Verdict {
   AC
   WA
   TLE
+  RE
 }
+
+
+// Judging system progHours
+enum ContestStatus {
+  Upcoming
+  Running
+  Finished
+  Judging
+}
+enum ContestMode {
+  Invitation
+  Temporary
+  Private
+  Public
+}
+enum StandingsMode {
+  SimpleMode
+  PenaltyMode
+}
+enum ProblemDifficulty {
+  EASY
+  MEDIUM
+  HARD
+}
+enum checkerType {
+  String
+  Float
+  Int
+  YesNo
+  Custom
+}
+enum testType {
+  Sample
+  Regular
+  Additional
+}
+enum problemStatus {
+  Locked
+  Free
+  Published
+}
+enum judgeLanguage {
+  CPP17
+  CPP20
+  Python
+  Java
+  Rust
+}
+model JudgeContests {
+  id Int  @id @default(autoincrement())
+  authors User[] // many to many
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  startDateTime DateTime
+  duration DateTime
+  currentStatus ContestStatus @default(Upcoming)
+  contestMode ContestMode @default(Private)
+  standingsMode StandingsMode @default(PenaltyMode)
+  penalty Int @default(20) // default 20 points
+  contestPassword String?
+
+  problems JudgeProblems[]
+
+  @@index([id])
+}
+model Category {
+  id Int @id @default(autoincrement())
+  title String @unique
+  subCategory SubCategory[]
+
+  @@index([id, title])
+}
+model SubCategory {
+  id Int @id @default(autoincrement())
+  title String @unique
+  category Category @relation(fields: [categoryTitle], references: [title])
+  categoryTitle String
+  problems JudgeProblems[]
+
+  @@index([id])
+}
+model JudgeProblems {
+  id    Int     @id @default(autoincrement())
+  title String
+  author User  @relation(fields: [authorName], references: [username])
+  authorName String // only one author
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  cpuLimit  Float @default(1000) // int milisecond
+  memoryLimit Int @default(256000) // in KB
+  problemStatement String?
+  inputStatement  String?
+  outputStatement String?
+  noteStatement String?
+  inOutBaseFolder String
+  totalInOutFiles Int @default(0) 
+  isVisible Boolean @default(true) // statement visiblility during contest
+  difficulty ProblemDifficulty?
+  tags Tag[] // many to many
+
+  checkerType checkerType @default(String)
+  fold Boolean @default(false)
+  strictSpace Boolean @default(false)
+  absolute Boolean @default(false)
+  checkerPrecision Float @default(0.0001)
+  checkerCustomCode String?
+  type testType @default(Regular)
+
+  isPublishable Boolean @default(false)
+  currentStatus problemStatus @default(Free)
+
+  contest JudgeContests? @relation(fields: [contestId], references: [id])
+  subCategory SubCategory? @relation(fields: [subCategoryId], references: [id])
+  contestId Int?
+  subCategoryId Int?
+  editorial String?
+
+  submissions JudgeSubmissions[]
+  tests JudgeProblemTests[]
+  
+  @@index([id])
+}
+model JudgeProblemTests {
+  id  Int   @id @default(autoincrement())
+  weight Int @default(1)
+  label String?
+  type testType @default(Regular)
+  testFolder String // stores the prefix of the path
+  problem JudgeProblems @relation(fields: [problemId], references: [id])
+  problemId Int
+
+  @@index([weight])
+}
+
+model JudgeProblemSolutions {
+  id  Int @id @default(autoincrement())
+  label String?
+  language judgeLanguage @default(CPP17)
+  sourceCode String?
+  isPrivate Boolean @default(true)
+  solutionAuthor User @relation(fields: [author], references: [username])
+  author String
+
+  @@index([id])
+}
+
+model JudgeSubmissions {
+  id Int @id @default(autoincrement())
+  user User @relation(fields: [userName], references: [username])
+  userName String
+  problem JudgeProblems @relation(fields: [problemId], references: [id])
+  problemId Int
+
+  sourceCode String
+  verdict Verdict
+  cpuTime Float
+  memorySize Int
+
+  @@index([id])
+}
+
