@@ -241,7 +241,7 @@ const NewSidebar = () => {
             <NavLink
               component={Link}
               to="/problems"
-              label="User Management"
+              label="Problem Management"
               icon={
                 <ThemeIcon
                   size="md"
@@ -253,7 +253,7 @@ const NewSidebar = () => {
                   <IconUsers size={16} stroke={2} />
                 </ThemeIcon>
               }
-              active={pathname === "/users"}
+              active={pathname === "/problems"}
               sx={navItemStyles}
             />
           </Stack>

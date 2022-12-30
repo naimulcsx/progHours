@@ -14,6 +14,7 @@ export default function UserManagement() {
       res.body.sort(function (a: User, b: User) {
         return a.id - b.id
       })
+      console.log(res.body)
       setUsers(res.body)
     },
   })
