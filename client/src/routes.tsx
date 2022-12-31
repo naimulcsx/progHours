@@ -13,9 +13,10 @@ import GroupsPage from "~/pages/groups"
 import GroupPage from "~/pages/groups/$slug"
 import ActivitiesPage from "~/pages/Activities"
 import UserManagement from "~/pages/admin/userManagement"
-import ProblemManagement from "./pages/admin/problemManagement"
+import ProblemManagement from "./pages/admin/ProblemManagement"
 import NotFoundPage from "~/pages/404"
 import StudyPage from "./pages/studylist"
+import ProblemEditPage from "./pages/admin/ProblemEditPage"
 
 // utility for defining routes
 const defineRoute = (path: string, element: ReactNode) => ({ path, element })
@@ -30,6 +31,8 @@ const getRoutes = (isLoggedIn: boolean, role: string): RouteObject[] => [
   defineRoute("/settings", isLoggedIn ? <Settings /> : <Navigate to="/login" />),
   defineRoute("/users", isLoggedIn && role === "ADMIN" ? <UserManagement /> : <Navigate to="/login" />),
   defineRoute("/problems", isLoggedIn && role === "ADMIN" ? <ProblemManagement /> : <Navigate to="/login" />),
+  defineRoute("/problems/:id", isLoggedIn && role === "ADMIN" ? <ProblemEditPage /> : <Navigate to="/login" />),
+
   defineRoute("/@:username", <Profile />),
   defineRoute("/leaderboard", <LeaderboardPage />),
   defineRoute("/groups", isLoggedIn ? <GroupsPage /> : <Navigate to="/login" />),

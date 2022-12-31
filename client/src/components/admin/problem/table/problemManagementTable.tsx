@@ -1,13 +1,10 @@
 import "regenerator-runtime/runtime"
-import { useState } from "react"
-import type { User } from "~/contexts/UserContext"
 import { DataGrid } from "~/components/datagrid"
 import { Group, Box, Text, Button, Anchor } from "@mantine/core"
-import Avatar from "~/components/Avatar"
-import Action from "./Actions"
+import ProblemName from "../cell/ProblemName"
 
+import { Link } from "react-router-dom"
 export default function ProblemManagementTable({ prob }) {
-  console.log(prob)
   return (
     <>
       <Box sx={{ marginLeft: -16, marginRight: -16 }}>
@@ -27,15 +24,18 @@ export default function ProblemManagementTable({ prob }) {
             {
               accessorKey: "id",
               header: "Id",
+              size: 20,
             },
             {
               accessorKey: "name",
               header: "Problem name",
-              cell: (cell) => (cell.getValue() as string).toUpperCase(),
+              size: 300,
+              cell: ProblemName,
             },
             {
-              accessorKey: "link",
-              header: "Link",
+              accessorKey: "",
+              header: "Tags",
+              size: 200,
             },
             {
               accessorKey: "difficulty",
@@ -46,6 +46,17 @@ export default function ProblemManagementTable({ prob }) {
               accessorKey: "pid",
               header: "Problem ID",
               cell: (cell) => (cell.getValue() ? (cell.getValue() as string) : "—"),
+            },
+            {
+              header: "Test",
+              cell: (cell) => {
+                //console.log(cell.row.original.pid)
+                return (
+                  <Anchor component={Link} to={`/problems/${cell.row.original.pid}`}>
+                    <Button>Edit</Button>
+                  </Anchor>
+                )
+              },
             },
           ]}
         />
