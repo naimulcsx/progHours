@@ -20,6 +20,7 @@ const Navbar = () => {
         top: 0,
         left: 0,
         right: 0,
+        zIndex: 10,
         display: "flex",
         justifyContent: "space-between",
         alignItems: "center",
@@ -37,23 +38,24 @@ const Navbar = () => {
       >
         <Logo />
       </Anchor>
-      <Group spacing={4}>
+      <Group spacing={0}>
         <ActionIcon
           variant="outline"
           color={dark ? "yellow" : "blue"}
           onClick={() => toggleColorScheme()}
           title="Toggle color scheme"
+          mr="lg"
         >
           {dark ? <IconSun size={18} /> : <IconMoonStars size={18} />}
         </ActionIcon>
 
-        <Group>
+        <Group spacing={0}>
           <Button
             leftIcon={<IconSearch size={14} />}
             variant="outline"
             color="gray"
-            ml="sm"
             onClick={() => openSpotlight()}
+            mr={user ? "xs" : "lg"}
             sx={(theme) => ({
               borderColor: theme.colorScheme === "dark" ? theme.colors.dark[4] : theme.colors.gray[3],
               [`@media (max-width: ${theme.breakpoints.lg}px)`]: {
@@ -62,13 +64,13 @@ const Navbar = () => {
             })}
           >
             <Text mr="xl">Search...</Text>
-            <Text ml="xl">⌘ + K</Text>
+            <Text ml="xl">Ctrl + K</Text>
           </Button>
           {user && <UserMenu user={user} />}
         </Group>
 
         {!user && (
-          <Group ml="lg">
+          <Group spacing="xs">
             <Anchor component={Link} to="/login">
               Login
             </Anchor>

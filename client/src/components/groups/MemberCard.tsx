@@ -1,12 +1,13 @@
 import { removeMember } from "~/api/groups"
 import { useMutation, useQueryClient } from "react-query"
 import { useNavigate } from "react-router-dom"
-import { Badge, Button, Menu, Paper, Stack, Text, Title } from "@mantine/core"
+import { Badge, Button, Menu, Paper, Stack, Text, Title, useMantineColorScheme, useMantineTheme } from "@mantine/core"
 import { IconDotsVertical, IconMinus, IconUser } from "@tabler/icons"
 import showToast from "~/utils/showToast"
 import Avatar from "../Avatar"
 
 export default function MemberCard({ user, role, groupId, isOwner, hashtag }: any) {
+  const theme = useMantineTheme()
   const queryClient = useQueryClient()
   const navigate = useNavigate()
   const { mutate } = useMutation(removeMember, {
@@ -36,7 +37,7 @@ export default function MemberCard({ user, role, groupId, isOwner, hashtag }: an
       >
         <Avatar name={user.name} width={48} height={48} fontSize={18} />
         <Title order={4}>{user.name}</Title>
-        <Badge>{role}</Badge>
+        <Badge color={theme.colorScheme === "dark" ? "indigo" : "blue"}>{role}</Badge>
         <Text size="sm">{user.username.toUpperCase()}</Text>
         <Menu shadow="md" width={200}>
           <Menu.Target>

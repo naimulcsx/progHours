@@ -1,7 +1,7 @@
 import { Box, Text } from "@mantine/core"
 import { Link } from "react-router-dom"
 
-import { DataGrid, numberFilterFn } from "~/components/datagrid"
+import { DataGrid, numberFilterFn, stringFilterFn } from "~/components/datagrid"
 import Avatar from "~/components/Avatar"
 
 const LeaderboardTable = ({ data }: any) => {
@@ -24,6 +24,7 @@ const LeaderboardTable = ({ data }: any) => {
           accessorKey: "rank",
           header: "Rank",
           size: 55,
+          enableGlobalFilter: true,
         },
         {
           accessorKey: "user.name",
@@ -34,7 +35,7 @@ const LeaderboardTable = ({ data }: any) => {
             return (
               <Box
                 component={Link}
-                to={`/@${username.toUpperCase()}`}
+                to={`/${username.toUpperCase()}`}
                 sx={{ textDecoration: "none" }}
                 title="Visit profile"
               >
@@ -74,20 +75,34 @@ const LeaderboardTable = ({ data }: any) => {
           },
         },
         {
+          accessorKey: "user.batch",
+          header: "Batch",
+          cell: ({ cell }) => {
+            const { department, batch } = cell.row.original.user
+            return department && batch ? `${department} ${batch}` : "—"
+          },
+          filterFn: stringFilterFn,
+          size: 100,
+        },
+        {
           accessorKey: "totalSolved",
           header: "Solved",
           filterFn: numberFilterFn,
+          size: 100,
         },
         {
           accessorKey: "totalSolveTime",
           header: "Solve Time",
           filterFn: numberFilterFn,
+          cell: ({ cell }) => {
+            const { totalSolveTime } = cell.row.original
+            return `${Math.floor(totalSolveTime / 60)}h ${Math.floor(totalSolveTime % 60)}m`
+          },
         },
         {
           accessorKey: "averageDifficulty",
-          header: "Average Difficulty",
+          header: "Avg. Difficulty",
           filterFn: numberFilterFn,
-          size: 200,
         },
         {
           accessorKey: "score",

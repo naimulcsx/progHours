@@ -5,6 +5,9 @@ const theme: MantineThemeOverride = {
   primaryColor: "blue",
   primaryShade: 5,
   fontFamily: "Inter, sans-serif",
+  headings: {
+    fontFamily: "Inter, sans-serif",
+  },
   colors: {
     blue: [
       "#EDF1FD",
@@ -28,7 +31,7 @@ const theme: MantineThemeOverride = {
       "#242936", // 6 -> navbar bg
       "#191b27", // 7 -> paper bg
       "#14171F", // 8 -> body bg
-      "#0D0F15",
+      "#0d0f1e",
     ],
   },
   components: {
@@ -43,7 +46,9 @@ const theme: MantineThemeOverride = {
       styles: (theme: MantineTheme, params: ButtonStylesParams) => ({
         root: {
           boxShadow:
-            theme.colorScheme === "dark" ? "inset 1px 2px 4px 0px rgba(166, 182, 255, 0.075)" : theme.shadows.xs,
+            theme.colorScheme === "dark"
+              ? "0px 4px 8px -4px rgb(0 0 0 / 25%), inset 0px -1px 1px rgb(0 0 0 / 4%), inset 0px 2px 0px rgb(255 255 255 / 6%)"
+              : theme.shadows.xs,
           background:
             theme.colorScheme === "dark"
               ? "linear-gradient(to right bottom, #1e212e 1.34%, #1c1e2b 98.64%)"

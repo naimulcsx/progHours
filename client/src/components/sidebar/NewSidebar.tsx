@@ -26,14 +26,13 @@ const navItemStyles = (theme: MantineTheme) => ({
   paddingRight: 4,
   "&[data-active='true']": {
     "&:hover": {
-      background: theme.colorScheme === "dark" ? theme.colors.dark[3] : theme.colors.gray[2],
+      background: theme.colorScheme === "dark" ? theme.colors.dark[4] : theme.colors.gray[2],
     },
     color: theme.colorScheme === "dark" ? theme.white : theme.colors.dark[8],
-    // background: `linear-gradient(180deg, ${theme.colors.blue[4]} 0%, ${theme.colors.blue[5]} 50%, ${theme.colors.blue[6]} 100%)`,
     background: theme.colorScheme === "dark" ? theme.colors.dark[4] : theme.colors.gray[1],
     boxShadow:
       theme.colorScheme === "dark"
-        ? "inset 0.125em -0.125em 0.3em rgb(68 68 68 / 40%), inset -0.3em 0 0.0625em -0.25em rgb(34 34 34 / 10%), inset 0.4em 0.5em 0.5em -0.25em rgb(255 255 255 / 5%), 0.04em 0.25em 0 -0.3em #333"
+        ? "inset 0px -2px 1px rgb(0 0 0 / 40%), inset 0px 1px 1px rgb(255 255 255 / 11%)"
         : "none",
   },
   "& span": {
@@ -57,13 +56,10 @@ const NewSidebar = () => {
       p="xs"
       sx={(theme) => ({
         fontWeight: 500,
-        background:
-          theme.colorScheme === "dark"
-            ? `linear-gradient(to left, ${theme.colors.dark[7]}, ${theme.colors.dark[8]})`
-            : theme.white,
+        background: theme.colorScheme === "dark" ? theme.colors.dark[7] : theme.white,
       })}
-      hidden
       hiddenBreakpoint="lg"
+      hidden
     >
       {/* Navlink */}
       <Navbar.Section grow mt="xs">

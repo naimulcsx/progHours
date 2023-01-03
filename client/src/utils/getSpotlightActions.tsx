@@ -21,16 +21,22 @@ export default function getSpotlightActions(
   if (!user) {
     return [
       {
+        title: "Login",
+        description: "Visit the dashboard page",
+        onTrigger: () => navigate("/login"),
+        icon: <IconLogin size={18} />,
+      },
+      {
         title: "Register",
         description: "Visit the dashboard page",
         onTrigger: () => navigate("/register"),
         icon: <IconUserPlus size={18} />,
       },
       {
-        title: "Login",
-        description: "Visit the dashboard page",
-        onTrigger: () => navigate("/login"),
-        icon: <IconLogin size={18} />,
+        title: "Leaderboard",
+        description: "Visit the leaderboard page",
+        onTrigger: () => navigate("/leaderboard"),
+        icon: <IconChartBar size={18} />,
       },
     ]
   }

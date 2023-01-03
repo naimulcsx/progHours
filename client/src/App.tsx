@@ -48,7 +48,7 @@ const Entry: FC<{ isLoggedIn: boolean; user: User | null }> = ({ isLoggedIn, use
           >
             <Box
               sx={(theme) => ({
-                background: colorScheme === "dark" ? theme.colors.dark[8] : theme.colors.gray[0],
+                background: colorScheme === "dark" ? theme.colors.dark[9] : theme.colors.gray[0],
                 minHeight: "100vh",
                 overflow: "hidden",
               })}
