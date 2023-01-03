@@ -145,7 +145,7 @@ describe("Parsers", () => {
     })
   })
 
-  test("LightOJ Test", async () => {
+  test("LightOJ Test 1", async () => {
     const data = await fetchProblem("https://lightoj.com/problem/lighting-system-design")
     expect(data).toStrictEqual({
       pid: "LOJ-1295",

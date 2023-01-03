@@ -12,7 +12,15 @@ import {
   useMantineTheme,
   Title,
 } from "@mantine/core"
-import { IconChartBar, IconClipboardList, IconLayout2, IconNotes, IconSettings, IconUsers } from "@tabler/icons"
+import {
+  IconChartBar,
+  IconClipboardList,
+  IconHeartRateMonitor,
+  IconLayout2,
+  IconNotes,
+  IconSettings,
+  IconUsers,
+} from "@tabler/icons"
 import { useEffect, useState } from "react"
 import { Link, useLocation } from "react-router-dom"
 
@@ -232,6 +240,19 @@ const NewSidebar = () => {
                 </ThemeIcon>
               }
               active={pathname === "/users"}
+              sx={navItemStyles}
+            />
+
+            <NavLink
+              component={Link}
+              to="/admin/parsers-healthcheck"
+              label="Parsers Healthcheck"
+              icon={
+                <ThemeIcon size="md" style={{ marginLeft: 8 }} color="green">
+                  <IconHeartRateMonitor size={16} stroke={2} />
+                </ThemeIcon>
+              }
+              active={pathname === "/admin/parsers-healthcheck"}
               sx={navItemStyles}
             />
           </Stack>

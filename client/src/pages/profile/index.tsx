@@ -106,7 +106,7 @@ export default function Profile() {
                     <Tabs.Tab value="medals" icon={<IconMessageCircle size={16} />}>
                       MEDALS
                     </Tabs.Tab>
-                    <Tabs.Tab value="activity" icon={<IconSettings size={16} />}>
+                    <Tabs.Tab value="activities" icon={<IconSettings size={16} />}>
                       ACTIVITY
                     </Tabs.Tab>
                   </Tabs.List>

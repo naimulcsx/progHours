@@ -503,6 +503,14 @@
     "@mantine/utils" "5.8.2"
     react-transition-group "4.4.2"
 
+"@mantine/prism@^5.9.6":
+  version "5.9.6"
+  resolved "https://registry.yarnpkg.com/@mantine/prism/-/prism-5.9.6.tgz#628dc314dde94fb36e890827d5bde97b732232cb"
+  integrity sha512-V0I1jfkETSOI7uLZ/0cTxIiGVUWSomhUvXs/JQq1TsOfDE556vIySbvoA6nuxtUPLWWt9r1lgOvNoA1bTSPZGg==
+  dependencies:
+    "@mantine/utils" "5.9.6"
+    prism-react-renderer "^1.2.1"
+
 "@mantine/spotlight@^5.8.2":
   version "5.8.2"
   resolved "https://registry.yarnpkg.com/@mantine/spotlight/-/spotlight-5.8.2.tgz#7faf8dc746e6e7529683503452f24845b3f45226"
@@ -527,6 +535,11 @@
   version "5.8.3"
   resolved "https://registry.yarnpkg.com/@mantine/utils/-/utils-5.8.3.tgz#2cc4b5eb9fcd0465e1e29f444b0e3f2413fc564f"
   integrity sha512-MprJbMh/z3TbC8yPF2PQftitRwl58w7hvhp7O9fT+9jrvJHKM8V7r15iHMwBw2jgX6zmlksstO7QfhENc0vMHQ==
+
+"@mantine/utils@5.9.6":
+  version "5.9.6"
+  resolved "https://registry.yarnpkg.com/@mantine/utils/-/utils-5.9.6.tgz#9ac36b29092256a1dd3d63b63321d4195460b161"
+  integrity sha512-MMKUsTLWzt9g7z1sfjPHIAaV2TzEdH6oRREZgFFtzfRR7V9jrpFdzCPruh+K/Cxh8xDWGPXKaSOkCfX6FSXw6A==
 
 "@motionone/animation@^10.12.0":
   version "10.14.0"
@@ -1538,6 +1551,11 @@ prettier@^2.5.1:
   version "2.7.1"
   resolved "https://registry.yarnpkg.com/prettier/-/prettier-2.7.1.tgz#e235806850d057f97bb08368a4f7d899f7760c64"
   integrity sha512-ujppO+MkdPqoVINuDFDRLClm7D78qbDt0/NR+wp5FqEZOoTNAjPHWj17QRhu7geIHJfcNhRk1XVQmF8Bp3ye+g==
+
+prism-react-renderer@^1.2.1:
+  version "1.3.5"
+  resolved "https://registry.yarnpkg.com/prism-react-renderer/-/prism-react-renderer-1.3.5.tgz#786bb69aa6f73c32ba1ee813fbe17a0115435085"
+  integrity sha512-IJ+MSwBWKG+SM3b2SUfdrhC+gu01QkV2KmRQgREThBfSQRoufqRfxfHUxpG1WcaFjP+kojcFyO9Qqtpgt3qLCg==
 
 prop-types@^15.5.7, prop-types@^15.6.2, prop-types@^15.7.2:
   version "15.8.1"
