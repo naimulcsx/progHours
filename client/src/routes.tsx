@@ -15,6 +15,7 @@ import ActivitiesPage from "~/pages/Activities"
 import UserManagement from "~/pages/admin/userManagement"
 import NotFoundPage from "~/pages/404"
 import StudyPage from "./pages/studylist"
+import ParsersStatus from "./pages/admin/parsersStatus"
 
 // utility for defining routes
 const defineRoute = (path: string, element: ReactNode) => ({ path, element })
@@ -28,6 +29,10 @@ const getRoutes = (isLoggedIn: boolean, role: string): RouteObject[] => [
   defineRoute("/study", isLoggedIn ? <StudyPage /> : <Navigate to="/login" />),
   defineRoute("/settings", isLoggedIn ? <Settings /> : <Navigate to="/login" />),
   defineRoute("/users", isLoggedIn && role === "ADMIN" ? <UserManagement /> : <Navigate to="/login" />),
+  defineRoute(
+    "/admin/parsers-healthcheck",
+    isLoggedIn && role === "ADMIN" ? <ParsersStatus /> : <Navigate to="/login" />
+  ),
   defineRoute("/:username", <Profile />),
   defineRoute("/leaderboard", <LeaderboardPage />),
   defineRoute("/groups", isLoggedIn ? <GroupsPage /> : <Navigate to="/login" />),
