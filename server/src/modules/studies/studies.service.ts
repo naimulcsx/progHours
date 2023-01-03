@@ -41,7 +41,7 @@ export class StudiesService {
   getStudiesByUserId(userId: number) {
     return this.prisma.userStudy.findMany({
       where: { userId },
-      orderBy: { id: "asc" },
+      orderBy: { studyDate: "desc" },
     })
   }
 
