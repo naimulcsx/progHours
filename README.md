@@ -1,34 +1,60 @@
-![progHours](./client/public/cover.png)
-
 # progHours
 
-Competitive programmers are always on the lookout for ways to improve their skills. For a participant, sometimes it gets difficult to stay motivated at times. This is where our application comes into play. We've tried to gamify the whole experience of Competitive Programming. We have a few primary goals in mind.
+**_A platform based on gamification to engage students in competitve programming_**
 
-- Provide a competitive environment for competitive programmers to keep going without slowing down.
-- Help competitive programmers in keeping track of what they are doing throughout their journey.
-- Assist coaches in identifying the progress of his students.
+![GitHub Repo stars](https://img.shields.io/github/stars/naimulcsx/proghours?style=social)
+![GitHub issues](https://img.shields.io/github/issues/naimulcsx/progHours)
+![GitHub commits since tagged version](https://img.shields.io/github/commits-since/naimulcsx/progHours/v0.1.1)
+
+![progHours](./client/public/cover.png)
+
+There is a high learning curve for programming. We can look at beginner level CS courses. They begin with small line by line coding exercises, progress to fill in the blank exercises, and only after quite a while are people comfortable making whole functions and classes. Most people learn to code via scripting languages, which provide instant feedback and clear error messages.
+
+Competitive programming is compelling because of the same reason: fast feedback. You have complete control over whether a program will work or not, and feedback is one dimensional: AC (accepted) or WA (rejected). You finish one problem, learn a trick, and move ahead. This boils down into training your mind to think faster and to think in new ways that no other programmer is capable of.
+
+## Motivation
+
+Motivating students to learn and practice competitive programming is a challenge. However, with the right approach and tools, it is possible to engage and motivate students to learn and improve their skills in this area.
+
+Gamification can be a useful tool to make learning and practicing competitive programming more engaging and enjoyable. It can also be a way to motivate people to keep practicing and improving their skills. This is especially important in competitive programming, where the learning curve is steep and there is always more to learn and improve upon.
+
+## Goals
+
+Please note that this project is highly experimental and we are still working to define and refine our goals. However, we have settled on the following common goals for the project:
+
+- To provide a fun and engaging platform for students to learn and practice competitive programming
+- To use gamification techniques, such as leaderboard, points and rewards, to motivate students to learn and improve their skills
+- To foster a sense of community and shared accomplishment among students by providing a platform for them to compete with one another and track their progress
+- To help students develop a growth mindset and a love of learning through the use of game-like mechanics
+- To provide students with the opportunity to showcase their profile and skillls to tech recruiters.
 
 ## Features
 
-- [x] Personal tracking system
+- [x] Submissions tracking system
   - [x] Supports over 15 online judges
   - [x] Supports vjudge private contests
-  - [ ] Automated tracking from online judges
+  - [ ] Automated tracking from online judges (Planned)
 - [x] User profile and statistics
-- [ ] Role Based Access Control (RBAC)
-  - [x] User Management
-  - [ ] Problem Management
-- [ ] Problem Lists
-- [x] User Groups
+- [x] Study list (to bookmark useful resources)
+- [x] User activities (show what problems are solved by students in realtime)
+- [x] Leaderboard
+- [x] Groups
+  - [x] Group leaderboard
   - [ ] Problem Lists integration for Groups
-- [ ] Gamified Elements
+- [ ] Problem Lists
+- [ ] Reward system
   - [x] Medals based on solve count
-- [ ] Contest Platform
+  - [ ] Medals based on categories
+- [ ] Contest Platform (WIP)
   - [ ] Host contests with custom problemset.
+- [x] Role Based Access Control (RBAC)
+- [x] User Management
+- [ ] Group Management
+- [ ] Problem Management
 
 ## Online Judge Support
 
-Right now we have support for 17 Online Judges, but some of them might have a few limitations. You can only add problems that is supported by our systems right now. The work is in progress and we are working hard to make it more flexible and easy.
+Right now we have support for over 15 Online Judges, but some of them might have a few limitations. You can only add problems that is supported by our systems right now. The work is in progress and we are working hard to make it more flexible and easy.
 
 - **Codeforces**
   - `https://codeforces.com/gym/{gymId}/problem/{problemId}`
