@@ -30,6 +30,7 @@ const LeaderboardTable = ({ data }: any) => {
           accessorKey: "user.name",
           header: "Name",
           size: 300,
+          filterFn: stringFilterFn,
           cell: ({ cell }) => {
             const { name, username } = cell.row.original.user
             return (
