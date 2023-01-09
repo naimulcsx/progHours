@@ -1,14 +1,4 @@
-import {
-  Body,
-  Controller,
-  Delete,
-  Get,
-  HttpStatus,
-  Param,
-  Patch,
-  Post,
-  UseGuards,
-} from "@nestjs/common"
+import { Body, Controller, Delete, Get, HttpStatus, Param, Patch, Post, UseGuards } from "@nestjs/common"
 
 /**
  * Import Guards
@@ -19,11 +9,7 @@ import { IsAuthenticatedGuard } from "@/guards/is-authenticated"
  * Import Services
  */
 import { ProblemsService } from "@/modules/problems/problems.service"
-import {
-  ApiCreatedResponse,
-  ApiForbiddenResponse,
-  ApiOperation,
-} from "@nestjs/swagger"
+import { ApiCreatedResponse, ApiForbiddenResponse, ApiOperation } from "@nestjs/swagger"
 import { ProblemDto } from "@/validators/problem-dto"
 import { IsAdmin } from "@/guards/is-admin"
 
@@ -68,10 +54,7 @@ export class ProblemsController {
   @ApiOperation({ summary: "Update a problem" })
   @ApiForbiddenResponse({ description: "Forbidden." })
   @UseGuards(IsAuthenticatedGuard, IsAdmin)
-  async updateProblemByProblemId(
-    @Body() body: ProblemDto,
-    @Param("pid") pid: string
-  ) {
+  async updateProblemByProblemId(@Body() body: ProblemDto, @Param("pid") pid: string) {
     await this.problemService.updateProblem(body, pid)
 
     return { statusCode: HttpStatus.OK, message: "Problem Updated" }

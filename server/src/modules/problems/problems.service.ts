@@ -1,9 +1,4 @@
-import {
-  BadRequestException,
-  Inject,
-  Injectable,
-  NotFoundException,
-} from "@nestjs/common"
+import { BadRequestException, Inject, Injectable, NotFoundException } from "@nestjs/common"
 
 /**
  * Import services
@@ -13,10 +8,7 @@ import { ParsersService } from "../parsers/parsers.service"
 
 @Injectable()
 export class ProblemsService {
-  constructor(
-    private prisma: PrismaService,
-    @Inject(ParsersService) private parsersService: ParsersService
-  ) {}
+  constructor(private prisma: PrismaService, @Inject(ParsersService) private parsersService: ParsersService) {}
 
   async createProblem({ pid, name, link, difficulty, onlineJudgeId }) {
     try {
@@ -24,8 +16,7 @@ export class ProblemsService {
        * check if the problem link is valid
        * if so, then throw an error
        */
-      if (!this.parsersService.isValidLink(link))
-        throw new BadRequestException("problem link is not valid!")
+      if (!this.parsersService.isValidLink(link)) throw new BadRequestException("problem link is not valid!")
 
       /**
        * check if the problem is exist
@@ -67,10 +58,7 @@ export class ProblemsService {
     }
   }
 
-  async updateProblem(
-    { name, pid: problemId, link, difficulty, onlineJudgeId },
-    pid: string
-  ) {
+  async updateProblem({ name, pid: problemId, link, difficulty, onlineJudgeId }, pid: string) {
     try {
       const problem = await this.getProblem(pid)
 
@@ -107,6 +95,15 @@ export class ProblemsService {
   }
 
   async getAllProblems() {
-    return this.prisma.problem.findMany()
+    return this.prisma.problem.findMany({
+      include: {
+        tags: {
+          select: {
+            problemId: true,
+            tag: true,
+          },
+        },
+      },
+    })
   }
 }
