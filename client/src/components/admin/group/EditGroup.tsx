@@ -4,6 +4,8 @@ import { useForm, yupResolver } from "@mantine/form"
 import showToast from "~/utils/showToast"
 import { Button, Stack, TextInput } from "@mantine/core"
 import { editGroup } from "~/api/groups"
+import Groups from "~/types/Group"
+import { Dispatch, SetStateAction } from "react"
 
 // schema validation
 const groupSchema = Yup.object().shape({
@@ -11,14 +13,17 @@ const groupSchema = Yup.object().shape({
   hashtag: Yup.string().trim().required("Slug is required"),
 })
 
-export default function EditGroup({ data, setIsOpen }: any) {
-  const client = useQueryClient()
+interface Props {
+  group: Groups
+  setIsOpen: Dispatch<SetStateAction<boolean>>
+}
 
-  const group = data?.group
+export default function EditGroup({ group, setIsOpen }: Props) {
+  const client = useQueryClient()
 
   // mutation
   const mutation = useMutation((values: any) => editGroup(group.id, values), {
-    onSuccess(res) {
+    onSuccess() {
       client.invalidateQueries(`groups`)
       setIsOpen(false)
       showToast("success", "Group updated!")

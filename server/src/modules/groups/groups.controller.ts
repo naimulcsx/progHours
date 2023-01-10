@@ -71,11 +71,13 @@ export class GroupsController {
   @Get("/")
   async getGroups(@Req() req) {
     // get the groups the current user is a part of
+    const userGroups = await this.groupsService.getUserGroups(req.user.id)
     const groups = await this.groupsService.getGroups()
     // return the response
     return {
       statusCode: HttpStatus.OK,
       body: {
+        userGroups,
         groups,
       },
     }
@@ -99,13 +101,8 @@ export class GroupsController {
       throw new BadRequestException("Spaces in hashtag is not allowed!")
     }
 
-    let group
-    // if (req.user.role === "ADMIN") {
-    //   group = await this.groupsService.editGroupForAdmin(Number, body)
-    // }
-
     // edit the group
-    group = await this.groupsService.editGroup(Number(params.id), name, hashtag, isPrivate)
+    const group = await this.groupsService.editGroup(Number(params.id), name, hashtag, isPrivate)
 
     // return the response
     return {

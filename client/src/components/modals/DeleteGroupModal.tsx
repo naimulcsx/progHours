@@ -31,9 +31,7 @@ export const DeleteGroupModal = ({ isOpen, setIsOpen, name, hashtag, id }: any) 
       onClose={() => setIsOpen(false)}
       title={<Title order={4}>Delete group: {name}</Title>}
     >
-      <Text>
-        Are you sure you want to delete: <Text component="span">#{hashtag}</Text>?
-      </Text>
+      <Text>Are you sure you want to delete this group ?</Text>
       <Group sx={{ justifyContent: "flex-end" }} mt="sm">
         <Button variant="light" onClick={() => setIsOpen(false)}>
           Cancel

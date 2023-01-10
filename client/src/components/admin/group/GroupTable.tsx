@@ -1,12 +1,10 @@
 import "regenerator-runtime/runtime"
-import { useState } from "react"
-import type { User } from "~/contexts/UserContext"
 import { DataGrid } from "~/components/datagrid"
-import { Group, Box, Text, Button, Anchor, Select } from "@mantine/core"
-import Avatar from "~/components/Avatar"
+import { Box, Text } from "@mantine/core"
 import Action from "./Action"
+import Groups from "~/types/Group"
 
-export default function GroupManagementTable({ groups }: { groups: any }) {
+export default function GroupManagementTable({ groups }: { groups: Groups[] }) {
   return (
     <>
       <Box sx={{ marginLeft: -16, marginRight: -16 }}>
@@ -17,7 +15,7 @@ export default function GroupManagementTable({ groups }: { groups: any }) {
             background: "white",
             boxShadow: theme.shadows.xs,
           })}
-          data={groups || []}
+          data={groups}
           withPagination
           horizontalSpacing="md"
           pageSizes={["25", "50", "100"]}
@@ -29,7 +27,7 @@ export default function GroupManagementTable({ groups }: { groups: any }) {
               size: 30,
             },
             {
-              accessorKey: "group.name",
+              accessorKey: "name",
               header: "Name",
               size: 300,
               cell: (cell) => {
@@ -38,23 +36,22 @@ export default function GroupManagementTable({ groups }: { groups: any }) {
               },
             },
             {
-              accessorKey: "group.hashtag",
+              accessorKey: "hashtag",
               header: "Slug",
-              cell: (cell) => (cell.getValue() as string).toUpperCase(),
+              cell: (cell) => cell.getValue() as string,
             },
 
             {
               header: "Admin",
-              cell: (cell: any) => {
-                const admin = cell?.row.original?.group?.users.filter((item: any) => item.role === "ADMIN")[0]
-                return <Text>{admin?.user?.name}</Text>
+              cell: (cell) => {
+                const admin = cell.row.original.users.filter((item: any) => item.role === "ADMIN")[0]
+                return <Text>{admin.user.name}</Text>
               },
             },
 
             {
               header: "Members",
-              cell: (cell: any) =>
-                cell?.row.original?.group?.users.filter((item: any) => item.role === "MEMBER").length,
+              cell: (cell) => cell.row.original.users.filter((item: any) => item.role === "MEMBER").length,
             },
 
             {

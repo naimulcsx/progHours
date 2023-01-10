@@ -7,12 +7,12 @@ import showToast from "~/utils/showToast"
 import Avatar from "../Avatar"
 import { useState } from "react"
 import { RemoveMemberModal } from "../modals/RemoveMemberModal"
-// import UserGroups from "~/types/UserGroup"
-// import Groups from "~/types/Group"
+import UserGroups from "~/types/UserGroup"
+import Groups from "~/types/Group"
 
 interface Props {
-  userGroup: any
-  group: any
+  userGroup: UserGroups
+  group: Groups
   isOwner: boolean
 }
 

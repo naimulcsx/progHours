@@ -1,23 +1,18 @@
-import { getAllUsers } from "~/api/user"
-import UserManagementTable from "~/components/admin/user/userTable"
 import { DashboardLayout } from "~/components/layouts/Dashboard"
-import type { User } from "~/contexts/UserContext"
 import { useState } from "react"
 import { Helmet } from "react-helmet-async"
 import { useQuery } from "react-query"
-import { getUserGroups } from "~/api/groups"
-import useUser from "~/hooks/useUser"
+import { getGroups } from "~/api/groups"
 import GroupManagementTable from "~/components/admin/group/GroupTable"
+import Groups from "~/types/Group"
 
 export default function GroupManagement() {
-  const { user } = useUser()
-
-  const [groups, setGroups] = useState<any>()
+  const [groups, setGroups] = useState<Groups[]>()
 
   // fetch groups data
-  const { isLoading, isFetching } = useQuery(["groups"], getUserGroups, {
+  useQuery(["groups"], getGroups, {
     onSuccess: (data) => {
-      setGroups(data?.body.groups.filter((group: any) => group.role === "ADMIN"))
+      setGroups(data?.body.groups)
     },
   })
 

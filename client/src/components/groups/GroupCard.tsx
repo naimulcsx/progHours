@@ -1,12 +1,14 @@
 import { Anchor, Badge, Button, Group, Menu, Paper, Stack, Text, Title } from "@mantine/core"
 import { IconDotsVertical, IconTrash } from "@tabler/icons"
 import { useState } from "react"
-import { Link, useNavigate } from "react-router-dom"
+import { Link } from "react-router-dom"
+import UserGroups from "~/types/UserGroup"
 import { DeleteGroupModal } from "../modals/DeleteGroupModal"
 
-const GroupCard = ({ group, role }: any) => {
+const GroupCard = ({ item }: { item: UserGroups }) => {
   const [isOpen, setIsOpen] = useState(false)
-  const navigate = useNavigate()
+  const group = item.group
+
   return (
     <Paper
       p="lg"
@@ -14,7 +16,6 @@ const GroupCard = ({ group, role }: any) => {
         position: "relative",
         borderRadius: theme.radius.md,
       })}
-      key={group.id}
     >
       <Stack align="flex-start" spacing={"xs"}>
         <Anchor component={Link} to={`/groups/${group.hashtag}`} sx={{ "&:hover": { textDecoration: "none" } }}>
@@ -22,9 +23,9 @@ const GroupCard = ({ group, role }: any) => {
         </Anchor>
 
         <Anchor component={Link} to={`/groups/${group.hashtag}`} sx={{ "&:hover": { textDecoration: "none" } }}>
-          <Text sx={(theme) => ({ fontWeight: 600 })}>#{group.hashtag}</Text>
+          <Text sx={{ fontWeight: 600 }}>#{group.hashtag}</Text>
         </Anchor>
-        <Badge color="pink">{role}</Badge>
+        <Badge color="pink">{item.role}</Badge>
         <Group>
           <Text color="blue" size="sm">
             {group.users.filter((item: any) => item.role === "MEMBER").length} members

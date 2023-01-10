@@ -1,6 +1,6 @@
 import axios from "axios"
 
-export const getUserGroups = () => {
+export const getGroups = () => {
   return axios.get("/api/groups").then((res) => res.data)
 }
 
@@ -21,15 +21,11 @@ export const getGroupByHashtag = (hashtag: string = "") => {
 }
 
 export const addMember = (groupId: any) => (formData: any) => {
-  return axios
-    .post(`/api/groups/${groupId}/members`, formData)
-    .then((res) => res.data)
+  return axios.post(`/api/groups/${groupId}/members`, formData).then((res) => res.data)
 }
 
 export const removeMember = ({ groupId, userId }: any) => {
-  return axios
-    .delete(`/api/groups/${groupId}/members/${userId}`)
-    .then((res) => res.data)
+  return axios.delete(`/api/groups/${groupId}/members/${userId}`).then((res) => res.data)
 }
 
 export const joinGroup = (data: any) => {
