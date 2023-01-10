@@ -51,7 +51,7 @@ export default function getSpotlightActions(
     {
       title: "Your Profile",
       description: "Visit your profile",
-      onTrigger: () => user && navigate(`/@${user.username}`),
+      onTrigger: () => user && navigate(`/${user.username}`),
       icon: <IconUser size={18} />,
     },
     {

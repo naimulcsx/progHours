@@ -28,7 +28,7 @@ const LeaderboardTableMobile = ({ data }: any) => {
             return (
               <Box
                 component={Link}
-                to={`/@${username.toUpperCase()}`}
+                to={`/${username.toUpperCase()}`}
                 sx={{ textDecoration: "none" }}
                 title="Visit profile"
               >

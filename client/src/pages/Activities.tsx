@@ -86,7 +86,7 @@ const ActivitiesPage = () => {
                   <Group spacing={4}>
                     <Avatar name={sub.user.name} />
                     <Text size="sm">
-                      <Anchor component={RouterLink} to={`/@${sub.user.username}`}>
+                      <Anchor component={RouterLink} to={`/${sub.user.username}`}>
                         {sub.user.name}
                       </Anchor>{" "}
                       got <Text component="span">{sub.verdict}</Text> in{" "}
