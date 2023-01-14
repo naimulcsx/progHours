@@ -101,6 +101,12 @@ export class ProblemsController {
   @Patch("/:pid")
   @HttpCode(HttpStatus.OK)
   @ApiOperation({ summary: "Update a problem" })
+  @ApiParam({
+    name: "pid",
+    description: "Should be an pid of a problem that exists in the database.",
+    type: String,
+    required: true,
+  })
   @ApiOkResponse({
     description: "Record has been updated successfully.",
     type: UpdateProblemDto,
