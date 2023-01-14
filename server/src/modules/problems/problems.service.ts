@@ -48,6 +48,14 @@ export class ProblemsService {
     try {
       const problem = await this.prisma.problem.findFirst({
         where: { pid },
+        include: {
+          tags: {
+            select: {
+              problemId: true,
+              tag: true,
+            },
+          },
+        },
       })
 
       if (!problem) throw new NotFoundException("Problem not found!")
@@ -95,7 +103,7 @@ export class ProblemsService {
   }
 
   async getAllProblems() {
-    return this.prisma.problem.findMany({
+    const problems = await this.prisma.problem.findMany({
       include: {
         tags: {
           select: {
@@ -104,6 +112,10 @@ export class ProblemsService {
           },
         },
       },
+
+      orderBy: { createdAt: "asc" },
     })
+
+    return problems
   }
 }

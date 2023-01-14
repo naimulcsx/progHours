@@ -1,7 +1,9 @@
 import { Body, Controller, Post, Res } from "@nestjs/common"
+import { ApiTags } from "@nestjs/swagger"
 import { Response } from "express"
 import { ParsersService } from "./parsers.service"
 
+@ApiTags("Parsers API")
 @Controller("/parsers")
 export class ParsersController {
   constructor(private readonly parsersService: ParsersService) {}

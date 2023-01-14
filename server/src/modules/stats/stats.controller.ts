@@ -6,7 +6,7 @@ import { StatsService } from "./stats.service"
 import * as moment from "moment"
 
 @Controller("/stats")
-@ApiTags("stats")
+@ApiTags("Stats")
 export class StatsController {
   constructor(private readonly statsService: StatsService, private readonly usersService: UsersService) {}
 
