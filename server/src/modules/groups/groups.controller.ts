@@ -1,10 +1,21 @@
 import { IsAdmin } from "@/guards/is-admin"
 import { IsAuthenticatedGuard } from "@/guards/is-authenticated"
 
-import { AddUserToGroupDto } from "@/validators/add-user-to-group-dto"
-import { CreateGroupDto } from "@/validators/create-group-dto"
+import { AddUserToGroupDto } from "@/validators/group/add-user-to-group-dto"
 
-import { ApiBadRequestResponse, ApiCreatedResponse, ApiOperation, ApiTags } from "@nestjs/swagger"
+import {
+  ApiBadRequestResponse,
+  ApiBody,
+  ApiConsumes,
+  ApiCreatedResponse,
+  ApiNoContentResponse,
+  ApiNotFoundResponse,
+  ApiOkResponse,
+  ApiOperation,
+  ApiParam,
+  ApiProduces,
+  ApiTags,
+} from "@nestjs/swagger"
 
 import {
   BadRequestException,
@@ -13,6 +24,7 @@ import {
   Delete,
   ForbiddenException,
   Get,
+  HttpCode,
   HttpStatus,
   Param,
   Patch,
@@ -24,6 +36,9 @@ import { GroupRole } from "@prisma/client"
 import { GroupsService } from "./groups.service"
 import { UsersService } from "../users/users.service"
 import { IsAdminOrModerator } from "@/guards/is-admin-or-moderator"
+import { CreateGroupDto } from "@/validators/group/create-group-dto"
+import { JoinGroupDto } from "@/validators/group/join-group-dto"
+import { UpdateGroupDto } from "@/validators/group/update-group-dto"
 
 @ApiTags("Groups")
 @Controller("groups")
@@ -32,11 +47,23 @@ export class GroupsController {
   constructor(private groupsService: GroupsService, private readonly userService: UsersService) {}
 
   @Post("/")
-  @ApiOperation({ summary: "Create new group." })
-  @ApiCreatedResponse({ description: "Login successful." })
+  @HttpCode(HttpStatus.CREATED)
+  @ApiOperation({ summary: "Create a new group." })
+  @ApiCreatedResponse({
+    status: HttpStatus.CREATED,
+    type: CreateGroupDto,
+    description: "Record has been created successfully.",
+  })
+  @ApiBody({
+    type: CreateGroupDto,
+    description: "Data to create a new record.",
+    required: true,
+  })
   @ApiBadRequestResponse({
     description: "Hashtag taken or there are spaces in hashtag.",
   })
+  @ApiConsumes("application/json")
+  @ApiProduces("application/json")
   @UseGuards(IsAdminOrModerator)
   async createGroup(@Body() body: CreateGroupDto, @Req() req) {
     const { name, hashtag } = body
@@ -69,6 +96,15 @@ export class GroupsController {
   }
 
   @Get("/")
+  @ApiOperation({ summary: "Get all groups" })
+  @ApiOkResponse({
+    description: "Records have been retrieved successfully.",
+    isArray: true,
+  })
+  @ApiNotFoundResponse({
+    description: "No data found.",
+  })
+  @ApiProduces("application/json")
   async getGroups(@Req() req) {
     // get the groups the current user is a part of
     const userGroups = await this.groupsService.getUserGroups(req.user.id)
@@ -84,7 +120,24 @@ export class GroupsController {
   }
 
   @Post("/join")
-  async joinGroup(@Body() body, @Req() req) {
+  @HttpCode(HttpStatus.CREATED)
+  @ApiOperation({ summary: "Join to a group" })
+  @ApiCreatedResponse({
+    status: HttpStatus.CREATED,
+    type: JoinGroupDto,
+    description: "Record has been created successfully.",
+  })
+  @ApiBody({
+    type: JoinGroupDto,
+    description: "Data to create a new record.",
+    required: true,
+  })
+  @ApiBadRequestResponse({
+    description: "Bad request.",
+  })
+  @ApiConsumes("application/json")
+  @ApiProduces("application/json")
+  async joinGroup(@Body() body: JoinGroupDto, @Req() req) {
     await this.groupsService.joinGroupByCode(body.accessCode, req.user.id)
     return {
       statusCode: HttpStatus.OK,
@@ -92,8 +145,30 @@ export class GroupsController {
   }
 
   @Patch("/:id")
+  @HttpCode(HttpStatus.OK)
+  @ApiOperation({ summary: "Update group information" })
+  @ApiParam({
+    name: "id",
+    description: "Should be an id of a group that exists in the database.",
+    type: Number,
+    required: true,
+  })
+  @ApiOkResponse({
+    description: "Record has been updated successfully.",
+    type: UpdateGroupDto,
+  })
+  @ApiBody({
+    type: UpdateGroupDto,
+    description: "Data to update record.",
+    required: true,
+  })
+  @ApiNotFoundResponse({
+    description: "No data found.",
+  })
+  @ApiConsumes("application/json")
+  @ApiProduces("application/json")
   @UseGuards(IsAdminOrModerator)
-  async editGroup(@Req() req, @Param() params, @Body() body) {
+  async editGroup(@Req() req, @Param() params, @Body() body: UpdateGroupDto) {
     const { name, hashtag, private: isPrivate } = body
 
     // check if the hashtag has spaces in it
@@ -115,18 +190,45 @@ export class GroupsController {
   }
 
   @Delete("/:id")
+  @HttpCode(HttpStatus.NO_CONTENT)
+  @ApiOperation({ summary: "Delete a group." })
+  @ApiParam({
+    name: "id",
+    description: "Should be an id of a group that exists in the database.",
+    type: Number,
+    required: true,
+  })
+  @ApiNoContentResponse({
+    description: "Record has been deleted successfully.",
+  })
+  @ApiNotFoundResponse({
+    description: "No data found.",
+  })
   @UseGuards(IsAdminOrModerator)
   async deleteGroup(@Param() params) {
-    // delete the group
     await this.groupsService.deleteGroup(Number(params.id))
 
-    // deleted
     return {
       statusCode: HttpStatus.OK,
     }
   }
 
   @Get("/:hashtag")
+  @ApiOperation({ summary: "Get a group by hashtag." })
+  @ApiParam({
+    name: "hashtag",
+    description: "Should be an hashtag of a group that exists in the database.",
+    type: String,
+    required: true,
+  })
+  @ApiOkResponse({
+    description: "Record has been retrieved successfully.",
+    isArray: false,
+  })
+  @ApiNotFoundResponse({
+    description: "Data not found",
+  })
+  @ApiProduces("application/json")
   async getGroup(@Param() params, @Req() req) {
     const { group, groupUsers, ranklist } = await this.groupsService.getGroupByHashtag(params.hashtag)
 
@@ -158,6 +260,29 @@ export class GroupsController {
   }
 
   @Post("/:id/members")
+  @HttpCode(HttpStatus.CREATED)
+  @ApiOperation({ summary: "Create a new member in a group" })
+  @ApiParam({
+    name: "id",
+    description: "Should be Id of a group that exists in the database.",
+    type: Number,
+    required: true,
+  })
+  @ApiCreatedResponse({
+    status: HttpStatus.CREATED,
+    type: AddUserToGroupDto,
+    description: "Record has been created successfully.",
+  })
+  @ApiBody({
+    type: AddUserToGroupDto,
+    description: "Data to create a new record.",
+    required: true,
+  })
+  @ApiBadRequestResponse({
+    description: "Bad Request.",
+  })
+  @ApiConsumes("application/json")
+  @ApiProduces("application/json")
   async addUser(@Param() params, @Body() body: AddUserToGroupDto, @Req() req) {
     const usernames = body.username.split("\n").filter((el) => el.length > 0)
 
@@ -179,10 +304,30 @@ export class GroupsController {
   }
 
   @Delete("/:id/members/:userId")
+  @HttpCode(HttpStatus.NO_CONTENT)
+  @ApiOperation({ summary: "Delete a group member." })
+  @ApiParam({
+    name: "id",
+    description: "Should be Id of a group that exists in the database.",
+    type: Number,
+    required: true,
+  })
+  @ApiParam({
+    name: "userId",
+    description: "Should be userId that exists in the database.",
+    type: Number,
+    required: true,
+  })
+  @ApiNoContentResponse({
+    description: "Record has been deleted successfully.",
+  })
+  @ApiNotFoundResponse({
+    description: "No data found.",
+  })
   async removeUser(@Param() params) {
     const { id: groupId, userId } = params
     // remove the user
-    const result = await this.groupsService.removeUserFromGroup(Number(groupId), Number(userId))
+    await this.groupsService.removeUserFromGroup(Number(groupId), Number(userId))
     return {
       statusCode: HttpStatus.OK,
       message: "Member removed!",
