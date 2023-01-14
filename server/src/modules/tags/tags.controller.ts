@@ -33,7 +33,6 @@ export class TagsController {
     name: "id",
     description: "Should be an id of a tag that exists in the database.",
     type: Number,
-    format: "uuid",
     required: true,
   })
   @ApiOkResponse({
