@@ -4,7 +4,7 @@ import { IsString } from "class-validator"
 export class CreateGroupDto {
   @ApiProperty({ type: String })
   @IsString()
-  hashtag: string
+  slug: string
 
   @ApiProperty({ type: String })
   @IsString()

@@ -1,8 +1,6 @@
-import "regenerator-runtime/runtime"
-import { useState } from "react"
 import type { User } from "~/contexts/UserContext"
 import { DataGrid } from "~/components/datagrid"
-import { Group, Box, Text, Button, Anchor } from "@mantine/core"
+import { Group, Box, Text } from "@mantine/core"
 import Avatar from "~/components/Avatar"
 import Action from "./Actions"
 

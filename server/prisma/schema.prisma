@@ -117,7 +117,7 @@ model Handle {
 model Group {
   id         Int         @id @default(autoincrement())
   name       String
-  hashtag    String      @unique
+  slug       String      @unique
   accessCode String
   createdAt  DateTime    @default(now())
   users      UserGroup[]

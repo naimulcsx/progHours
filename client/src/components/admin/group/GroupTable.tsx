@@ -1,10 +1,9 @@
-import "regenerator-runtime/runtime"
 import { DataGrid } from "~/components/datagrid"
 import { Box, Text } from "@mantine/core"
 import Action from "./Action"
-import Groups from "~/types/Group"
+import type Group from "~/types/Group"
 
-export default function GroupManagementTable({ groups }: { groups: Groups[] }) {
+export default function GroupManagementTable({ groups }: { groups: Group[] }) {
   return (
     <>
       <Box sx={{ marginLeft: -16, marginRight: -16 }}>
@@ -44,14 +43,14 @@ export default function GroupManagementTable({ groups }: { groups: Groups[] }) {
             {
               header: "Admin",
               cell: (cell) => {
-                const admin = cell.row.original.users.filter((item: any) => item.role === "ADMIN")[0]
+                const admin = cell.row.original.users.filter((item) => item.role === "ADMIN")[0]
                 return <Text>{admin.user.name}</Text>
               },
             },
 
             {
               header: "Members",
-              cell: (cell) => cell.row.original.users.filter((item: any) => item.role === "MEMBER").length,
+              cell: (cell) => cell.row.original.users.filter((item) => item.role === "MEMBER").length,
             },
 
             {

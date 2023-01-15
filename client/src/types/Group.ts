@@ -1,6 +1,6 @@
 import UserGroup from "./UserGroup"
 
-export default interface Groups {
+export default interface Group {
   id: number
   name: string
   hashtag: string

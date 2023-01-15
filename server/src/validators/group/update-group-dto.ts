@@ -5,7 +5,7 @@ export class UpdateGroupDto {
   @ApiProperty({ type: String })
   @IsString()
   @IsOptional()
-  hashtag: string
+  slug: string
 
   @ApiProperty({ type: String })
   @IsString()

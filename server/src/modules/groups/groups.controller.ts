@@ -1,4 +1,3 @@
-import { IsAdmin } from "@/guards/is-admin"
 import { IsAuthenticatedGuard } from "@/guards/is-authenticated"
 
 import { AddUserToGroupDto } from "@/validators/group/add-user-to-group-dto"
@@ -60,23 +59,23 @@ export class GroupsController {
     required: true,
   })
   @ApiBadRequestResponse({
-    description: "Hashtag taken or there are spaces in hashtag.",
+    description: "Slug taken or there are spaces in slug.",
   })
   @ApiConsumes("application/json")
   @ApiProduces("application/json")
   @UseGuards(IsAdminOrModerator)
   async createGroup(@Body() body: CreateGroupDto, @Req() req) {
-    const { name, hashtag } = body
+    const { name, slug } = body
 
     let group: any
 
-    // check if the hashtag has spaces in it
-    if (hashtag.includes(" ")) {
-      throw new BadRequestException("Spaces in hashtag is not allowed!")
+    // check if the slug has spaces in it
+    if (slug.includes(" ")) {
+      throw new BadRequestException("Spaces in slug is not allowed!")
     }
 
     // create the group
-    group = await this.groupsService.createGroup(name, hashtag)
+    group = await this.groupsService.createGroup(name, slug)
 
     // make the user as the OWNER of the group
     await this.groupsService.joinOnGroup({
@@ -108,7 +107,13 @@ export class GroupsController {
   async getGroups(@Req() req) {
     // get the groups the current user is a part of
     const userGroups = await this.groupsService.getUserGroups(req.user.id)
-    const groups = await this.groupsService.getGroups()
+
+    // all groups - for ADMIN
+    let groups: Awaited<ReturnType<typeof this.groupsService.getGroups | undefined>> = undefined
+    if (req.user.role === "ADMIN") {
+      groups = await this.groupsService.getGroups()
+    }
+
     // return the response
     return {
       statusCode: HttpStatus.OK,
@@ -169,15 +174,15 @@ export class GroupsController {
   @ApiProduces("application/json")
   @UseGuards(IsAdminOrModerator)
   async editGroup(@Req() req, @Param() params, @Body() body: UpdateGroupDto) {
-    const { name, hashtag, private: isPrivate } = body
+    const { name, slug, private: isPrivate } = body
 
-    // check if the hashtag has spaces in it
-    if (hashtag.includes(" ")) {
-      throw new BadRequestException("Spaces in hashtag is not allowed!")
+    // check if the slug has spaces in it
+    if (slug.includes(" ")) {
+      throw new BadRequestException("Spaces in slug is not allowed!")
     }
 
     // edit the group
-    const group = await this.groupsService.editGroup(Number(params.id), name, hashtag, isPrivate)
+    const group = await this.groupsService.editGroup(Number(params.id), name, slug, isPrivate)
 
     // return the response
     return {
@@ -213,11 +218,11 @@ export class GroupsController {
     }
   }
 
-  @Get("/:hashtag")
-  @ApiOperation({ summary: "Get a group by hashtag." })
+  @Get("/:slug")
+  @ApiOperation({ summary: "Get a group by slug." })
   @ApiParam({
-    name: "hashtag",
-    description: "Should be an hashtag of a group that exists in the database.",
+    name: "slug",
+    description: "Should be an slug of a group that exists in the database.",
     type: String,
     required: true,
   })
@@ -229,8 +234,8 @@ export class GroupsController {
     description: "Data not found",
   })
   @ApiProduces("application/json")
-  async getGroup(@Param() params, @Req() req) {
-    const { group, groupUsers, ranklist } = await this.groupsService.getGroupByHashtag(params.hashtag)
+  async getGroup(@Param("slug") slug: string, @Req() req) {
+    const { group, groupUsers, ranklist } = await this.groupsService.getGroupBySlug(slug)
 
     // check if the user is the owner of the group
     let isOwner = false,
