@@ -32,7 +32,7 @@ export class StatsController {
   @ApiOperation({ summary: "Returns the ranklist of the users." })
   @ApiOkResponse({ description: "Success." })
   @ApiForbiddenResponse({ description: "Forbidden." })
-  async getRanklist(@Query("type") type) {
+  async getRanklist(@Query("type") type: string, @Query("groupId") groupId: string) {
     let result = null
     if (type === "currentWeek") {
       let lastSat = moment(new Date())
@@ -41,10 +41,18 @@ export class StatsController {
       while (lastSat.day() !== 6) lastSat = lastSat.subtract(1, "day")
 
       // query the result
-      result = await this.statsService.getWeeklyLeaderboard(
-        lastSat.format("YYYY-MM-DD"),
-        moment(new Date()).add(1, "day").format("YYYY-MM-DD")
-      )
+      if (groupId) {
+        result = await this.statsService.getGroupLeaderboard(
+          groupId,
+          lastSat.format("YYYY-MM-DD"),
+          moment(new Date()).add(1, "day").format("YYYY-MM-DD")
+        )
+      } else {
+        result = await this.statsService.getWeeklyLeaderboard(
+          lastSat.format("YYYY-MM-DD"),
+          moment(new Date()).add(1, "day").format("YYYY-MM-DD")
+        )
+      }
 
       // return response
       return {
@@ -66,10 +74,18 @@ export class StatsController {
       lastSat = lastSat.subtract(7, "days")
 
       // query the result
-      result = await this.statsService.getWeeklyLeaderboard(
-        lastSat.format("YYYY-MM-DD"),
-        moment(lastSat).add(7, "day").format("YYYY-MM-DD")
-      )
+      if (groupId) {
+        result = await this.statsService.getGroupLeaderboard(
+          groupId,
+          lastSat.format("YYYY-MM-DD"),
+          moment(lastSat).add(7, "day").format("YYYY-MM-DD")
+        )
+      } else {
+        result = await this.statsService.getWeeklyLeaderboard(
+          lastSat.format("YYYY-MM-DD"),
+          moment(lastSat).add(7, "day").format("YYYY-MM-DD")
+        )
+      }
 
       // return response
       return {
@@ -93,10 +109,18 @@ export class StatsController {
       const end = moment(new Date())
 
       // query the result
-      result = await this.statsService.getWeeklyLeaderboard(
-        start.format("YYYY-MM-DD"),
-        end.add(1, "day").format("YYYY-MM-DD")
-      )
+      if (groupId) {
+        result = await this.statsService.getGroupLeaderboard(
+          groupId,
+          start.format("YYYY-MM-DD"),
+          end.add(1, "day").format("YYYY-MM-DD")
+        )
+      } else {
+        result = await this.statsService.getWeeklyLeaderboard(
+          start.format("YYYY-MM-DD"),
+          end.add(1, "day").format("YYYY-MM-DD")
+        )
+      }
 
       // return response
       return {
@@ -120,10 +144,18 @@ export class StatsController {
       const end = moment(start).endOf("month").subtract(1, "day")
 
       // query the result
-      result = await this.statsService.getWeeklyLeaderboard(
-        start.format("YYYY-MM-DD"),
-        end.add(1, "day").format("YYYY-MM-DD")
-      )
+      if (groupId) {
+        result = await this.statsService.getGroupLeaderboard(
+          groupId,
+          start.format("YYYY-MM-DD"),
+          end.add(1, "day").format("YYYY-MM-DD")
+        )
+      } else {
+        result = await this.statsService.getWeeklyLeaderboard(
+          start.format("YYYY-MM-DD"),
+          end.add(1, "day").format("YYYY-MM-DD")
+        )
+      }
 
       // return response
       return {
@@ -137,7 +169,16 @@ export class StatsController {
     }
 
     // full leaderboard
-    result = await this.statsService.getRankList()
+
+    if (groupId) {
+      result = await this.statsService.getGroupLeaderboard(
+        groupId,
+        moment({ year: 2000, day: 1, month: 1 }).format("YYYY-MM-DD"),
+        moment().format("YYYY-MM-DD")
+      )
+    } else {
+      result = await this.statsService.getRankList()
+    }
     return {
       statusCode: HttpStatus.OK,
       body: {

@@ -37,13 +37,13 @@ export function getSubmissionStats(submissions: any[]) {
   })
 
   // weeks with 0 solve
-  const weeks = Object.keys(frequency).map((key) => parseInt(key))
-  const lastWeek = weeks[weeks.length - 1]
-  for (let i = 1; i <= lastWeek; ++i) {
-    if (!frequency[i]) {
-      frequency[i] = 0
-    }
-  }
+  // const weeks = Object.keys(frequency).map((key) => parseInt(key))
+  // const lastWeek = weeks[weeks.length - 1]
+  // for (let i = 1; i <= lastWeek; ++i) {
+  //   if (!frequency[i]) {
+  //     frequency[i] = 0
+  //   }
+  // }
 
   return { frequency, avgDifficulty }
 }

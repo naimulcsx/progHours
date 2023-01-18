@@ -35,6 +35,19 @@ const testCases = [
   },
   {
     id: 4,
+    title: "Codeforces Group 1",
+    link: "https://codeforces.com/group/MWSDmqGsZm/contest/219158/problem/L",
+    expect: {
+      pid: "CF-219158L",
+      name: "The Brothers",
+      tags: [],
+      difficulty: 0,
+      judge_id: 1,
+      link: "https://codeforces.com/group/MWSDmqGsZm/contest/219158/problem/L",
+    },
+  },
+  {
+    id: 5,
     title: "CodeChef Test 1",
     link: "https://www.codechef.com/START15C/problems/NPAIRS",
     expect: {
@@ -47,7 +60,7 @@ const testCases = [
     },
   },
   {
-    id: 5,
+    id: 6,
     title: "CodeChef Test 2",
     link: "https://www.codechef.com/problems/MANIPULATE",
     expect: {
@@ -60,7 +73,7 @@ const testCases = [
     },
   },
   {
-    id: 6,
+    id: 7,
     title: "CSES Test 1",
     link: "https://cses.fi/problemset/task/1736",
     expect: {
@@ -73,7 +86,7 @@ const testCases = [
     },
   },
   {
-    id: 7,
+    id: 8,
     title: "UVa Test 1",
     link: "https://onlinejudge.org/index.php?option=com_onlinejudge&Itemid=8&page=show_problem&problem=2421",
     expect: {
@@ -86,7 +99,7 @@ const testCases = [
     },
   },
   {
-    id: 8,
+    id: 9,
     title: "Toph Test 1",
     link: "https://toph.co/p/i-did-not-do-the-assignment",
     expect: {
@@ -99,7 +112,7 @@ const testCases = [
     },
   },
   {
-    id: 9,
+    id: 10,
     title: "SPOJ Test 1",
     link: "https://www.spoj.com/problems/AGGRCOW/",
     expect: {
@@ -112,7 +125,7 @@ const testCases = [
     },
   },
   {
-    id: 10,
+    id: 11,
     title: "HackerRank Test 1",
     link: "https://www.hackerrank.com/challenges/2d-array/problem?isFullScreen=true",
     expect: {
@@ -125,7 +138,7 @@ const testCases = [
     },
   },
   {
-    id: 11,
+    id: 12,
     title: "HackerRank Test 2",
     link: "https://www.hackerrank.com/contests/bootcamp-2021female-mirror-contest/challenges/picking-fruits-1",
     expect: {
@@ -138,7 +151,7 @@ const testCases = [
     },
   },
   {
-    id: 12,
+    id: 13,
     title: "LightOJ Test 1",
     link: "https://lightoj.com/problem/lighting-system-design",
     expect: {
@@ -151,7 +164,7 @@ const testCases = [
     },
   },
   {
-    id: 13,
+    id: 14,
     title: "Atcoder Test 1",
     link: "https://atcoder.jp/contests/arc123/tasks/arc123_a",
     expect: {
@@ -164,7 +177,7 @@ const testCases = [
     },
   },
   {
-    id: 14,
+    id: 15,
     title: "Eolymp Test 1",
     link: "https://eolymp.com/en/problems/9655",
     expect: {
@@ -177,7 +190,7 @@ const testCases = [
     },
   },
   {
-    id: 15,
+    id: 16,
     title: "LeetCode Test 1",
     link: "https://leetcode.com/problems/first-bad-version",
     expect: {
@@ -190,7 +203,7 @@ const testCases = [
     },
   },
   {
-    id: 16,
+    id: 17,
     title: "Timus Test 1",
     link: "https://acm.timus.ru/problem.aspx?space=1&num=1203",
     expect: {
@@ -203,7 +216,7 @@ const testCases = [
     },
   },
   {
-    id: 17,
+    id: 18,
     title: "CodeToWin Test 1",
     link: "https://codeto.win/problem/1154",
     expect: {
@@ -216,7 +229,7 @@ const testCases = [
     },
   },
   {
-    id: 18,
+    id: 19,
     title: "Kattis OJ Test 1",
     link: "https://open.kattis.com/problems/hello",
     expect: {

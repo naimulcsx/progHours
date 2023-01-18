@@ -253,4 +253,51 @@ export class StatsService {
 
     return computeRankAndSort(data)
   }
+
+  async getGroupLeaderboard(groupId: string, fromDate: string, toDate: string) {
+    const result: any = await this.prisma.$queryRaw`
+      SELECT 
+        "User"."id", 
+        "User".name, 
+        "User".username,
+        "User".batch,
+        SUM("Submission"."solveTime") AS "totalSolveTime", 
+        SUM("Problem".difficulty) AS "totalDifficulty",
+        COUNT("Problem".id) AS "totalSolved",
+        COUNT(case when "Problem"."difficulty" > 0 then 1 else null end) AS "totalSolvedWithDifficulty"
+      FROM
+        "Submission" 
+        LEFT JOIN "Problem" ON "Submission"."problemId" = "Problem"."id" 
+        LEFT JOIN "User" ON "User"."id" = "Submission"."userId" 
+      WHERE 
+        "Submission".verdict = 'AC' 
+        AND "Submission"."solvedAt" >= TO_TIMESTAMP(${fromDate}, 'YYYY-MM-DD') 
+        AND "Submission"."solvedAt" < TO_TIMESTAMP(${toDate}, 'YYYY-MM-DD')
+        AND "User"."id" IN (SELECT "UserGroup"."userId" FROM "UserGroup" WHERE "UserGroup"."groupId" = ${Number(
+          groupId
+        )})
+      GROUP BY 
+        "User"."id"
+      `
+
+    console.log(result)
+
+    const data = result.map((stat: any) => {
+      return {
+        id: Number(stat.id),
+        totalSolveTime: Number(stat.totalSolveTime),
+        totalDifficulty: Number(stat.totalDifficulty),
+        totalSolved: Number(stat.totalSolved),
+        totalSolvedWithDifficulty: Number(stat.totalSolvedWithDifficulty),
+        user: {
+          id: Number(stat.id),
+          name: stat.name,
+          username: stat.username,
+          batch: Number(stat.batch),
+        },
+      }
+    })
+
+    return computeRankAndSort(data)
+  }
 }
