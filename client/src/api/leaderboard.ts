@@ -1,8 +1,6 @@
 import axios from "axios"
 
-const getRankList = (
-  type: "full" | "currentWeek" | "lastWeek" | "currentMonth"
-) => {
+const getRankList = (type: "full" | "currentWeek" | "lastWeek" | "currentMonth", groupSlug?: string) => {
   const obj = {
     full: "/api/stats",
     currentWeek: "/api/stats?type=currentWeek",
@@ -10,6 +8,7 @@ const getRankList = (
     currentMonth: "/api/stats?type=currentMonth",
     lastMonth: "/api/stats?type=lastMonth",
   }
+  if (groupSlug) obj[type] += type === "full" ? `?groupSlug=${groupSlug}` : `&groupSlug=${groupSlug}`
   return axios.get(obj[type]).then((res) => res.data)
 }
 

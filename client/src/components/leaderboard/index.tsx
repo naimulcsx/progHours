@@ -2,7 +2,7 @@ import { Box } from "@mantine/core"
 import LeaderboardTable from "./TableDesktop"
 import LeaderboardTableMobile from "./TableMobile"
 
-export default function Leaderboard({ data }: any) {
+export default function Leaderboard({ data, isLoading }: any) {
   return (
     <>
       <Box
@@ -13,7 +13,7 @@ export default function Leaderboard({ data }: any) {
           },
         })}
       >
-        <LeaderboardTable data={data} />
+        <LeaderboardTable data={data} isLoading={isLoading} />
       </Box>
       <Box
         sx={(theme) => ({
@@ -23,7 +23,7 @@ export default function Leaderboard({ data }: any) {
           },
         })}
       >
-        <LeaderboardTableMobile data={data} />
+        <LeaderboardTableMobile data={data} isLoading={isLoading} />
       </Box>
     </>
   )

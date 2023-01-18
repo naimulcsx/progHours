@@ -32,8 +32,9 @@ export class StatsController {
   @ApiOperation({ summary: "Returns the ranklist of the users." })
   @ApiOkResponse({ description: "Success." })
   @ApiForbiddenResponse({ description: "Forbidden." })
-  async getRanklist(@Query("type") type: string, @Query("groupId") groupId: string) {
+  async getRanklist(@Query("type") type: string, @Query("groupSlug") groupSlug: string) {
     let result = null
+
     if (type === "currentWeek") {
       let lastSat = moment(new Date())
 
@@ -41,9 +42,9 @@ export class StatsController {
       while (lastSat.day() !== 6) lastSat = lastSat.subtract(1, "day")
 
       // query the result
-      if (groupId) {
+      if (groupSlug) {
         result = await this.statsService.getGroupLeaderboard(
-          groupId,
+          groupSlug,
           lastSat.format("YYYY-MM-DD"),
           moment(new Date()).add(1, "day").format("YYYY-MM-DD")
         )
@@ -74,9 +75,9 @@ export class StatsController {
       lastSat = lastSat.subtract(7, "days")
 
       // query the result
-      if (groupId) {
+      if (groupSlug) {
         result = await this.statsService.getGroupLeaderboard(
-          groupId,
+          groupSlug,
           lastSat.format("YYYY-MM-DD"),
           moment(lastSat).add(7, "day").format("YYYY-MM-DD")
         )
@@ -109,9 +110,9 @@ export class StatsController {
       const end = moment(new Date())
 
       // query the result
-      if (groupId) {
+      if (groupSlug) {
         result = await this.statsService.getGroupLeaderboard(
-          groupId,
+          groupSlug,
           start.format("YYYY-MM-DD"),
           end.add(1, "day").format("YYYY-MM-DD")
         )
@@ -144,9 +145,9 @@ export class StatsController {
       const end = moment(start).endOf("month").subtract(1, "day")
 
       // query the result
-      if (groupId) {
+      if (groupSlug) {
         result = await this.statsService.getGroupLeaderboard(
-          groupId,
+          groupSlug,
           start.format("YYYY-MM-DD"),
           end.add(1, "day").format("YYYY-MM-DD")
         )
@@ -170,9 +171,9 @@ export class StatsController {
 
     // full leaderboard
 
-    if (groupId) {
+    if (groupSlug) {
       result = await this.statsService.getGroupLeaderboard(
-        groupId,
+        groupSlug,
         moment({ year: 2000, day: 1, month: 1 }).format("YYYY-MM-DD"),
         moment().format("YYYY-MM-DD")
       )

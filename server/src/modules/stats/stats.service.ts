@@ -254,7 +254,9 @@ export class StatsService {
     return computeRankAndSort(data)
   }
 
-  async getGroupLeaderboard(groupId: string, fromDate: string, toDate: string) {
+  async getGroupLeaderboard(groupSlug: string, fromDate: string, toDate: string) {
+    const group = await this.prisma.group.findUnique({ where: { hashtag: groupSlug } })
+
     const result: any = await this.prisma.$queryRaw`
       SELECT 
         "User"."id", 
@@ -273,9 +275,7 @@ export class StatsService {
         "Submission".verdict = 'AC' 
         AND "Submission"."solvedAt" >= TO_TIMESTAMP(${fromDate}, 'YYYY-MM-DD') 
         AND "Submission"."solvedAt" < TO_TIMESTAMP(${toDate}, 'YYYY-MM-DD')
-        AND "User"."id" IN (SELECT "UserGroup"."userId" FROM "UserGroup" WHERE "UserGroup"."groupId" = ${Number(
-          groupId
-        )})
+        AND "User"."id" IN (SELECT "UserGroup"."userId" FROM "UserGroup" WHERE "UserGroup"."groupId" = ${group?.id})
       GROUP BY 
         "User"."id"
       `

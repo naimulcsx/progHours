@@ -4,7 +4,7 @@ import { Link } from "react-router-dom"
 import { DataGrid, numberFilterFn, stringFilterFn } from "~/components/datagrid"
 import Avatar from "~/components/Avatar"
 
-const LeaderboardTable = ({ data }: any) => {
+const LeaderboardTable = ({ data, isLoading }: any) => {
   return (
     <DataGrid
       sx={(theme) => ({
@@ -19,6 +19,7 @@ const LeaderboardTable = ({ data }: any) => {
       verticalSpacing="sm"
       pageSizes={["25", "50", "100"]}
       initialState={{ pagination: { pageSize: 25 } }}
+      loading={isLoading}
       columns={[
         {
           accessorKey: "rank",

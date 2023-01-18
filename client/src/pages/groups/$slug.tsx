@@ -8,18 +8,33 @@ import { useQuery } from "react-query"
 import MemberCard from "~/components/groups/MemberCard"
 import UpdateGroup from "~/components/groups/UpdateGroup"
 import useUser from "~/hooks/useUser"
-import { Tabs, SimpleGrid, Title, Group, Loader, Box, CopyButton, Button } from "@mantine/core"
+import { Tabs, SimpleGrid, Title, Group, Loader, Box, CopyButton, Button, Select } from "@mantine/core"
 import { IconChartBar, IconCopy, IconSettings, IconUserPlus, IconUsers } from "@tabler/icons"
 import { AnimatePresence, motion } from "framer-motion"
 import Leaderboard from "~/components/leaderboard"
 import AddMembersModal from "~/components/modals/AddMembersModal"
+import { getRankList } from "~/api/leaderboard"
 
 const GroupPage = () => {
-  const navigate = useNavigate()
-  const { user } = useUser()
   const { hashtag } = useParams()
   const [open, setOpen] = useState(false)
   const { data, isLoading, isFetching } = useQuery(`groups/${hashtag}`, () => getGroupByHashtag(hashtag))
+
+  const [leaderboardType, setLeaderboardType] = useState<"full" | "currentWeek" | "lastWeek" | "currentMonth">("full")
+  const [dateRange, setDateRange] = useState<any>({})
+  const {
+    data: leaderboardData,
+    isLoading: leaderboardLoading,
+    isFetching: leaderboardFetching,
+  } = useQuery(["ranklist", leaderboardType], () => getRankList(leaderboardType, hashtag), {
+    onSuccess: (res) => {
+      const { fromDate, toDate } = res.body
+      if (fromDate && toDate) setDateRange({ from: fromDate, to: toDate })
+      else setDateRange({})
+    },
+  })
+
+  console.log(leaderboardData)
 
   return (
     <DashboardLayout>
@@ -125,9 +140,68 @@ const GroupPage = () => {
               </Tabs.Panel>
 
               <Tabs.Panel value="leaderboard" pt="xs">
-                <Box sx={{ marginLeft: -16, marginRight: -16 }}>
-                  <Leaderboard data={data?.body?.ranklist} isLoading={isLoading} />
-                </Box>
+                <Group position="apart" align="start" mb="md" mt="md">
+                  <Group align="center">
+                    <Title order={4}>Leaderboard</Title>
+                    <AnimatePresence>
+                      {(leaderboardLoading || leaderboardFetching) && (
+                        <motion.div
+                          initial={{ opacity: 1 }}
+                          exit={{ opacity: 0 }}
+                          transition={{ duration: 0.5 }}
+                          style={{ display: "flex", alignItems: "center" }}
+                        >
+                          <Loader size="xs" />
+                        </motion.div>
+                      )}
+                    </AnimatePresence>
+                  </Group>
+                  <Box>
+                    <Select
+                      size="xs"
+                      defaultValue="currentWeek"
+                      onChange={(value: "full" | "currentWeek" | "lastWeek" | "currentMonth") => {
+                        setLeaderboardType(value)
+                      }}
+                      data={[
+                        {
+                          value: "full",
+                          label: "All Time",
+                        },
+                        {
+                          value: "currentWeek",
+                          label: "Current Week",
+                        },
+                        {
+                          value: "lastWeek",
+                          label: "Last Week",
+                        },
+                        {
+                          value: "currentMonth",
+                          label: "Current Month",
+                        },
+                        {
+                          value: "lastMonth",
+                          label: "Last Month",
+                        },
+                      ]}
+                    />
+                  </Box>
+                </Group>
+
+                <AnimatePresence>
+                  {!leaderboardLoading && (
+                    <motion.div
+                      initial={{ opacity: 0, height: 0 }}
+                      animate={{ opacity: 1, height: "auto" }}
+                      transition={{ delay: 0.25, duration: 0.35 }}
+                    >
+                      <Box sx={{ marginLeft: -16, marginRight: -16 }}>
+                        <Leaderboard data={leaderboardData?.body?.stats} loading={isLoading} />
+                      </Box>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
               </Tabs.Panel>
 
               {data?.body?.isOwner && (

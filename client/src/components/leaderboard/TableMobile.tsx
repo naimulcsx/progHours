@@ -4,7 +4,7 @@ import { Link, useNavigate } from "react-router-dom"
 import { DataGrid, numberFilterFn } from "~/components/datagrid"
 import Avatar from "~/components/Avatar"
 
-const LeaderboardTableMobile = ({ data }: any) => {
+const LeaderboardTableMobile = ({ data, isLoading }: any) => {
   const navigate = useNavigate()
   return (
     <DataGrid
@@ -18,6 +18,7 @@ const LeaderboardTableMobile = ({ data }: any) => {
       horizontalSpacing="md"
       pageSizes={["25", "50", "100"]}
       initialState={{ pagination: { pageSize: 25 } }}
+      loading={isLoading}
       columns={[
         {
           accessorKey: "user.name",
