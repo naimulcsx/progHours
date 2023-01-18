@@ -1,9 +1,14 @@
 import { DataGrid } from "~/components/datagrid"
-import { Box, Text } from "@mantine/core"
+import { Box, Group as MantineGroup, Text, ThemeIcon } from "@mantine/core"
 import Action from "./Action"
 import type Group from "~/types/Group"
+import Avatar from "~/components/Avatar"
+import { IconFriends } from "@tabler/icons"
+import { useNavigate } from "react-router-dom"
 
 export default function GroupManagementTable({ groups }: { groups: Group[] }) {
+  const navigate = useNavigate()
+
   return (
     <>
       <Box sx={{ marginLeft: -16, marginRight: -16 }}>
@@ -31,20 +36,31 @@ export default function GroupManagementTable({ groups }: { groups: Group[] }) {
               size: 300,
               cell: (cell) => {
                 const name = cell.getValue() as string
-                return <Text>{name}</Text>
+
+                return (
+                  <MantineGroup
+                    sx={{ cursor: "pointer" }}
+                    onClick={() => navigate(`/groups/${cell.row.original.slug}`)}
+                  >
+                    <ThemeIcon size="lg" radius="xl" variant="light" color="blue">
+                      <IconFriends size={16} stroke={2} />
+                    </ThemeIcon>
+                    <Text>{name}</Text>
+                  </MantineGroup>
+                )
               },
-            },
-            {
-              accessorKey: "hashtag",
-              header: "Slug",
-              cell: (cell) => cell.getValue() as string,
             },
 
             {
               header: "Admin",
               cell: (cell) => {
                 const admin = cell.row.original.users.filter((item) => item.role === "ADMIN")[0]
-                return <Text>{admin.user.name}</Text>
+                return (
+                  <MantineGroup sx={{ cursor: "pointer" }} onClick={() => navigate(`/${admin.user.username}`)}>
+                    <Avatar name={admin.user.name} />
+                    <Text>{admin.user.name}</Text>
+                  </MantineGroup>
+                )
               },
             },
 

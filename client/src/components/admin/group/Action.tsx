@@ -15,8 +15,12 @@ const Action = (cell: any) => {
   return (
     <Box>
       <Group>
-        <Anchor onClick={() => setEditOpen(true)}>Edit</Anchor>
-        <Anchor onClick={() => setDeleteOpen(true)}>Delete</Anchor>
+        <Anchor size="sm" onClick={() => setEditOpen(true)}>
+          Edit
+        </Anchor>
+        <Anchor size="sm" color="red" onClick={() => setDeleteOpen(true)}>
+          Delete
+        </Anchor>
       </Group>
       <Modal
         opened={editOpen}
@@ -29,7 +33,7 @@ const Action = (cell: any) => {
       <DeleteGroupModal
         id={group.id}
         name={group.name}
-        hashtag={group.hashtag}
+        slug={group.slug}
         isOpen={deleteOpen}
         setIsOpen={setDeleteOpen}
       />

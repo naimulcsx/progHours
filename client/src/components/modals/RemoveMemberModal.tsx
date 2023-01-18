@@ -9,7 +9,7 @@ export const RemoveMemberModal = ({ isOpen, setIsOpen, data }: any) => {
 
   const { mutate } = useMutation(removeMember, {
     onSuccess: (res: any) => {
-      queryClient.invalidateQueries(`groups/${data?.group.hashtag}`)
+      queryClient.invalidateQueries(`groups/${data?.group.slug}`)
       showToast("success", "Member removed!")
     },
     onError: (err: any) => {

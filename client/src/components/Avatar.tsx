@@ -2,12 +2,7 @@ import { getAvatarColors } from "~/utils/getAvatarColors"
 import { Box, BoxProps } from "@mantine/core"
 import { FC } from "react"
 
-const Avatar: FC<AvatarProps> = ({
-  name,
-  height = 32,
-  width = 32,
-  fontSize = 12,
-}) => {
+const Avatar: FC<AvatarProps> = ({ name, height = 32, width = 32, fontSize = 12 }) => {
   const { bg, color } = getAvatarColors(name)
 
   const initials = name

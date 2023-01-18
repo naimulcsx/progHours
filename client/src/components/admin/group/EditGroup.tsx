@@ -10,7 +10,7 @@ import { Dispatch, SetStateAction } from "react"
 // schema validation
 const groupSchema = Yup.object().shape({
   name: Yup.string().trim().required("Group name is required"),
-  hashtag: Yup.string().trim().required("Slug is required"),
+  slug: Yup.string().trim().required("Slug is required"),
 })
 
 interface Props {
@@ -33,7 +33,7 @@ export default function EditGroup({ group, setIsOpen }: Props) {
   const form = useForm({
     initialValues: {
       name: group.name || "",
-      hashtag: group.hashtag || "",
+      slug: group.slug || "",
     },
 
     validate: yupResolver(groupSchema),
@@ -47,7 +47,7 @@ export default function EditGroup({ group, setIsOpen }: Props) {
     <form onSubmit={handleSubmit}>
       <Stack>
         <TextInput withAsterisk label="Group Name" type="text" {...form.getInputProps("name")} />
-        <TextInput withAsterisk label="Group Slug" type="text" {...form.getInputProps("hashtag")} />
+        <TextInput withAsterisk label="Group Slug" type="text" {...form.getInputProps("slug")} />
 
         <Button type="submit" sx={{ alignSelf: "start" }}>
           Save

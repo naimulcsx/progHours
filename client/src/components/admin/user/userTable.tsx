@@ -3,8 +3,11 @@ import { DataGrid } from "~/components/datagrid"
 import { Group, Box, Text } from "@mantine/core"
 import Avatar from "~/components/Avatar"
 import Action from "./Actions"
+import { useNavigate } from "react-router-dom"
 
 export default function UserManagementTable({ users }: { users: User[] }) {
+  const navigate = useNavigate()
+
   return (
     <>
       <Box sx={{ marginLeft: -16, marginRight: -16 }}>
@@ -33,7 +36,7 @@ export default function UserManagementTable({ users }: { users: User[] }) {
               cell: (cell) => {
                 const name = cell.getValue() as string
                 return (
-                  <Group>
+                  <Group sx={{ cursor: "pointer" }} onClick={() => navigate(`/${cell.row.original.username}`)}>
                     <Avatar name={name} />
                     <Text>{name}</Text>
                   </Group>

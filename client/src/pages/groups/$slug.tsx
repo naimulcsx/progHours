@@ -2,7 +2,7 @@ import { Helmet } from "react-helmet-async"
 import { DashboardLayout } from "~/components/layouts/Dashboard"
 import { useState } from "react"
 import { useParams } from "react-router-dom"
-import { getGroupByHashtag } from "~/api/groups"
+import { getGroupBySlug } from "~/api/groups"
 import { useQuery } from "react-query"
 
 import MemberCard from "~/components/groups/MemberCard"
@@ -27,11 +27,11 @@ interface Props {
 }
 
 const GroupPage = () => {
-  const { hashtag } = useParams()
+  const { slug } = useParams()
   const [open, setOpen] = useState(false)
   const [group, setGroup] = useState<Props>()
 
-  const { isLoading, isFetching } = useQuery(`groups/${hashtag}`, () => getGroupByHashtag(hashtag), {
+  const { isLoading, isFetching } = useQuery(`groups/${slug}`, () => getGroupBySlug(slug), {
     onSuccess: (data) => {
       setGroup(data?.body)
     },
@@ -66,7 +66,7 @@ const GroupPage = () => {
         setIsOpen={setOpen}
         groupName={group?.group?.name}
         groupId={group?.group?.id}
-        hashtag={group?.group?.hashtag}
+        slug={group?.group?.slug}
       />
 
       {/* page title and buttons */}

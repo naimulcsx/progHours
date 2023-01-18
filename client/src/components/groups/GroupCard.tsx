@@ -18,12 +18,12 @@ const GroupCard = ({ item }: { item: UserGroups }) => {
       })}
     >
       <Stack align="flex-start" spacing={"xs"}>
-        <Anchor component={Link} to={`/groups/${group.hashtag}`} sx={{ "&:hover": { textDecoration: "none" } }}>
+        <Anchor component={Link} to={`/groups/${group.slug}`} sx={{ "&:hover": { textDecoration: "none" } }}>
           <Title order={4}>{group.name}</Title>
         </Anchor>
 
-        <Anchor component={Link} to={`/groups/${group.hashtag}`} sx={{ "&:hover": { textDecoration: "none" } }}>
-          <Text sx={{ fontWeight: 600 }}>#{group.hashtag}</Text>
+        <Anchor component={Link} to={`/groups/${group.slug}`} sx={{ "&:hover": { textDecoration: "none" } }}>
+          <Text sx={{ fontWeight: 600 }}>#{group.slug}</Text>
         </Anchor>
         <Badge color="pink">{item.role}</Badge>
         <Group>
@@ -50,7 +50,7 @@ const GroupCard = ({ item }: { item: UserGroups }) => {
       </Menu>
 
       {/* delete popup */}
-      <DeleteGroupModal id={group.id} name={group.name} hashtag={group.hashtag} isOpen={isOpen} setIsOpen={setIsOpen} />
+      <DeleteGroupModal id={group.id} name={group.name} slug={group.slug} isOpen={isOpen} setIsOpen={setIsOpen} />
     </Paper>
   )
 }

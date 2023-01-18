@@ -16,8 +16,8 @@ export const deleteGroup = (groupId: any) => {
   return axios.delete(`/api/groups/${groupId}`).then((res) => res.data)
 }
 
-export const getGroupByHashtag = (hashtag: string = "") => {
-  return axios.get(`/api/groups/${hashtag}`).then((res) => res.data)
+export const getGroupBySlug = (slug: string = "") => {
+  return axios.get(`/api/groups/${slug}`).then((res) => res.data)
 }
 
 export const addMember = (groupId: any) => (formData: any) => {

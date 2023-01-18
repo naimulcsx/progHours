@@ -5,7 +5,7 @@ import { useLocation, useNavigate } from "react-router-dom"
 import useUser from "~/hooks/useUser"
 import showToast from "~/utils/showToast"
 
-export const DeleteGroupModal = ({ isOpen, setIsOpen, name, hashtag, id }: any) => {
+export const DeleteGroupModal = ({ isOpen, setIsOpen, name, slug, id }: any) => {
   const navigate = useNavigate()
   const queryClient = useQueryClient()
   const { user } = useUser()

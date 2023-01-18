@@ -9,7 +9,7 @@ import { createGroup } from "~/api/groups"
 // schema validation
 const groupSchema = Yup.object().shape({
   name: Yup.string().trim().required("Group Name is required"),
-  hashtag: Yup.string().trim().required("Group tag is required"),
+  slug: Yup.string().trim().required("Group tag is required"),
 })
 
 // modal for creating groups
@@ -27,7 +27,7 @@ export default function CreateGroupModal({ isOpen, setIsOpen }: any) {
   const form = useForm({
     initialValues: {
       name: "",
-      hashtag: "",
+      slug: "",
     },
     validate: yupResolver(groupSchema),
   })
@@ -47,7 +47,7 @@ export default function CreateGroupModal({ isOpen, setIsOpen }: any) {
       >
         <TextInput withAsterisk label="Name" {...form.getInputProps("name")} placeholder="CSE 46 BM" />
 
-        <TextInput withAsterisk mt="md" label="Slug" placeholder="cse_46_bm" {...form.getInputProps("hashtag")} />
+        <TextInput withAsterisk mt="md" label="Slug" placeholder="cse_46_bm" {...form.getInputProps("slug")} />
 
         <Group position="right" mt="md">
           <Button type="submit">Submit</Button>

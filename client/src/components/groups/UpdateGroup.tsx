@@ -13,7 +13,7 @@ import { useState } from "react"
 // schema validation
 const updateGroupSchema = Yup.object().shape({
   name: Yup.string().trim().required("Group name is required"),
-  hashtag: Yup.string().trim().required("Slug is required"),
+  slug: Yup.string().trim().required("Slug is required"),
 })
 
 const UpdateGroup = ({ group }: any) => {
@@ -24,8 +24,8 @@ const UpdateGroup = ({ group }: any) => {
   // mutation
   const mutation = useMutation((values: any) => editGroup(group.id, values), {
     onSuccess(res) {
-      navigate(`/groups/${res.body.group.hashtag}`)
-      queryClient.invalidateQueries(`groups/${group.hashtag}`)
+      navigate(`/groups/${res.body.group.slug}`)
+      queryClient.invalidateQueries(`groups/${group.slug}`)
       showToast("success", "Group updated!")
     },
   })
@@ -34,7 +34,7 @@ const UpdateGroup = ({ group }: any) => {
   const form = useForm({
     initialValues: {
       name: group?.name || "",
-      hashtag: group?.hashtag || "",
+      slug: group?.slug || "",
     },
     validate: yupResolver(updateGroupSchema),
   })
@@ -57,7 +57,7 @@ const UpdateGroup = ({ group }: any) => {
             description="Slug to be used in the URL of the groups. Space is not allowed."
             label="Slug"
             type="text"
-            {...form.getInputProps("hashtag")}
+            {...form.getInputProps("slug")}
           />
 
           <Button type="submit" sx={{ alignSelf: "start" }}>
@@ -78,7 +78,7 @@ const UpdateGroup = ({ group }: any) => {
       </Stack>
 
       {/* delete popup */}
-      <DeleteGroupModal id={group.id} name={group.name} hashtag={group.hashtag} isOpen={isOpen} setIsOpen={setIsOpen} />
+      <DeleteGroupModal id={group.id} name={group.name} slug={group.slug} isOpen={isOpen} setIsOpen={setIsOpen} />
     </Paper>
   )
 }
