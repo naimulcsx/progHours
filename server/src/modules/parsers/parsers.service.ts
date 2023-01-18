@@ -1,11 +1,5 @@
 import { HttpService } from "@nestjs/axios"
-import {
-  BadRequestException,
-  CACHE_MANAGER,
-  ConsoleLogger,
-  Inject,
-  Injectable,
-} from "@nestjs/common"
+import { BadRequestException, CACHE_MANAGER, ConsoleLogger, Inject, Injectable } from "@nestjs/common"
 import { lastValueFrom } from "rxjs"
 import * as cheerio from "cheerio"
 import ShortUniqueId from "short-unique-id"
@@ -29,11 +23,7 @@ import {
   codetowinLinkTransformer,
   hackerearthLinkTransformer,
 } from "@/utils/linkTransformers"
-import {
-  removeParams,
-  removeTrailingSlash,
-  toHttps,
-} from "@/utils/globalLinkTransformers"
+import { removeParams, removeTrailingSlash, toHttps } from "@/utils/globalLinkTransformers"
 import { isUppercase } from "class-validator"
 import { ConfigService } from "@nestjs/config"
 
@@ -51,10 +41,7 @@ interface ParsedResult {
 
 @Injectable()
 export class ParsersService {
-  constructor(
-    private httpService: HttpService,
-    @Inject(CACHE_MANAGER) private cacheManager: Cache
-  ) {}
+  constructor(private httpService: HttpService, @Inject(CACHE_MANAGER) private cacheManager: Cache) {}
 
   /**
    * Checks if a link is valid
@@ -181,6 +168,7 @@ export class ParsersService {
     const cfValidPatterns = [
       new UrlPattern("/contest/:contestId/problem/:problemId"),
       new UrlPattern("/gym/:gymId/problem/:problemId"),
+      new UrlPattern("/group/:groupId/contest/:contestId/problem/:problemId"),
     ]
 
     let matchedResult: any
@@ -210,7 +198,7 @@ export class ParsersService {
       const { data } = await lastValueFrom(
         this.httpService.get(
           `https://codeforces.com/api/contest.standings?contestId=${
-            matchedResult.contestId || matchedResult.gymId
+            matchedResult.contestId || matchedResult.gymId || matchedResult.groupId
           }&from=1&count=1`
         )
       )
@@ -251,12 +239,7 @@ export class ParsersService {
       const response = await lastValueFrom(this.httpService.get(link))
       const $ = cheerio.load(response.data)
 
-      name = $("div.header > div.title")
-        .text()
-        .trim()
-        .split(". ")
-        .slice(1)
-        .join("")
+      name = $("div.header > div.title").text().trim().split(". ").slice(1).join("")
 
       pid = matchedResult.contestId
         ? `CF-${matchedResult.contestId}${matchedResult.problemId}`
@@ -278,7 +261,9 @@ export class ParsersService {
        * Removing query params before saving the link into database
        */
       link: matchedResult.contestId
-        ? `https://codeforces.com/contest/${matchedResult.contestId}/problem/${matchedResult.problemId}`
+        ? matchedResult.groupId
+          ? `https://codeforces.com/group/${matchedResult.groupId}/contest/${matchedResult.contestId}/problem/${matchedResult.problemId}`
+          : `https://codeforces.com/contest/${matchedResult.contestId}/problem/${matchedResult.problemId}`
         : `https://codeforces.com/gym/${matchedResult.gymId}/problem/${matchedResult.problemId}`,
     }
   }
@@ -320,17 +305,13 @@ export class ParsersService {
     /**
      * If the problem id is invalid
      */
-    if (response.data.status === "error")
-      throw new Error("Invalid CodeChef problem!")
+    if (response.data.status === "error") throw new Error("Invalid CodeChef problem!")
 
     return {
       pid: `CC-${response.data.problem_code}`.trim(),
       name: response.data.problem_name.trim(),
       tags: response.data.user_tags.map((e) => e.toLowerCase()),
-      difficulty:
-        Number(response.data.difficulty_rating) < 0
-          ? 0
-          : Number(response.data.difficulty_rating),
+      difficulty: Number(response.data.difficulty_rating) < 0 ? 0 : Number(response.data.difficulty_rating),
       judge_id: 2,
       link: `https://www.codechef.com/problems/${response.data.problem_code}`,
     }
@@ -391,13 +372,7 @@ export class ParsersService {
     const page = linkURL.searchParams.get("page")
     const itemId = linkURL.searchParams.get("Itemid")
 
-    let isInvalid = !(
-      matchedResult !== null &&
-      problemId &&
-      option &&
-      page &&
-      itemId
-    )
+    let isInvalid = !(matchedResult !== null && problemId && option && page && itemId)
     if (isInvalid) throw new Error("Invalid UVA link!")
 
     /**
@@ -503,10 +478,7 @@ export class ParsersService {
     /**
      * Get problem name and link
      */
-    const [problemCode, name] = $(".prob #problem-name")
-      .text()
-      .trim()
-      .split(" - ")
+    const [problemCode, name] = $(".prob #problem-name").text().trim().split(" - ")
 
     return {
       pid: `SPOJ-${problemCode}`,
@@ -568,9 +540,7 @@ export class ParsersService {
       name = $('meta[property="og:title"]').attr("content")
     } else {
       pLink = `https://www.hackerrank.com/challenges/${problemId}`
-      name = $(".challenge-page-label-wrapper .ui-icon-label.page-label")
-        .text()
-        .trim()
+      name = $(".challenge-page-label-wrapper .ui-icon-label.page-label").text().trim()
     }
 
     return {
@@ -607,8 +577,7 @@ export class ParsersService {
        * `https://lightoj.com/problem/1026` redirects to `https://lightoj.com/problem/critical-links`
        * So always saving `https://lightoj.com/problem/critical-links` into database
        */
-      const originalUrl =
-        response?.request?.socket?._httpMessage?.res?.responseUrl
+      const originalUrl = response?.request?.socket?._httpMessage?.res?.responseUrl
 
       const $ = cheerio.load(response.data)
       /**
@@ -663,11 +632,7 @@ export class ParsersService {
     /**
      * Parse problem name
      */
-    const name = $("#main-container .row span.h2")
-      .text()
-      .trim()
-      .split("\n")[0]
-      .slice(4)
+    const name = $("#main-container .row span.h2").text().trim().split("\n")[0].slice(4)
 
     return {
       name,
@@ -901,13 +866,7 @@ export class ParsersService {
     const page = linkURL.searchParams.get("page")
     const itemId = linkURL.searchParams.get("Itemid")
 
-    let isInvalid = !(
-      matchedResult !== null &&
-      problemId &&
-      option &&
-      page &&
-      itemId
-    )
+    let isInvalid = !(matchedResult !== null && problemId && option && page && itemId)
 
     if (isInvalid) throw new Error("Invalid ICPC Live Archive link!")
 
@@ -946,9 +905,7 @@ export class ParsersService {
     const linkUrl = new URL(link)
 
     const heURLPatterns = [
-      new UrlPattern(
-        "/practice/:taskName/:category/:subCategory/practice-problems/:problemType/:problemId"
-      ),
+      new UrlPattern("/practice/:taskName/:category/:subCategory/practice-problems/:problemType/:problemId"),
       new UrlPattern("/problem/:problemType/:problemId"),
     ]
 
@@ -965,8 +922,7 @@ export class ParsersService {
 
     if (isInvalid) throw new Error("Invalid hackerearth problem link!")
 
-    const { taskName, category, subCategory, problemType, problemId } =
-      matchedResult
+    const { taskName, category, subCategory, problemType, problemId } = matchedResult
 
     /**
      * Extract data from provided link
