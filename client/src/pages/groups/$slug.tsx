@@ -43,7 +43,7 @@ const GroupPage = () => {
     data: leaderboardData,
     isLoading: leaderboardLoading,
     isFetching: leaderboardFetching,
-  } = useQuery(["ranklist", leaderboardType], () => getRankList(leaderboardType, hashtag), {
+  } = useQuery(["ranklist", leaderboardType], () => getRankList(leaderboardType, slug), {
     onSuccess: (res) => {
       const { fromDate, toDate } = res.body
       if (fromDate && toDate) setDateRange({ from: fromDate, to: toDate })
