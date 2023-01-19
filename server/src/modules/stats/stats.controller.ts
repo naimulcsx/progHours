@@ -175,7 +175,7 @@ export class StatsController {
       result = await this.statsService.getGroupLeaderboard(
         groupSlug,
         moment({ year: 2000, day: 1, month: 1 }).format("YYYY-MM-DD"),
-        moment().format("YYYY-MM-DD")
+        moment().add(1, "year").format("YYYY-MM-DD")
       )
     } else {
       result = await this.statsService.getRankList()

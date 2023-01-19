@@ -37,7 +37,9 @@ const GroupPage = () => {
     },
   })
 
-  const [leaderboardType, setLeaderboardType] = useState<"full" | "currentWeek" | "lastWeek" | "currentMonth">("full")
+  const [leaderboardType, setLeaderboardType] = useState<"full" | "currentWeek" | "lastWeek" | "currentMonth">(
+    "currentMonth"
+  )
   const [dateRange, setDateRange] = useState<any>({})
   const {
     data: leaderboardData,
@@ -50,8 +52,6 @@ const GroupPage = () => {
       else setDateRange({})
     },
   })
-
-  console.log(leaderboardData)
 
   return (
     <DashboardLayout>
@@ -204,7 +204,6 @@ const GroupPage = () => {
                     />
                   </Box>
                 </Group>
-
                 <AnimatePresence>
                   {!leaderboardLoading && (
                     <motion.div

@@ -23,7 +23,8 @@ export default function GroupManagementTable({ groups }: { groups: Group[] }) {
           })}
           data={groups}
           withPagination
-          horizontalSpacing="md"
+          horizontalSpacing="xl"
+          verticalSpacing="xs"
           pageSizes={["25", "50", "100"]}
           initialState={{ pagination: { pageSize: 25 } }}
           columns={[

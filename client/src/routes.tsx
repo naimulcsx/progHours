@@ -33,10 +33,10 @@ const getRoutes = (isLoggedIn: boolean, role: string): RouteObject[] => [
     "/admin/parsers-healthcheck",
     isLoggedIn && role === "ADMIN" ? <ParsersStatus /> : <Navigate to="/login" />
   ),
+  defineRoute("/:username", <Profile />),
   defineRoute("/leaderboard", <LeaderboardPage />),
   defineRoute("/groups", isLoggedIn ? <GroupsPage /> : <Navigate to="/login" />),
   defineRoute("/activities", isLoggedIn ? <ActivitiesPage /> : <Navigate to="/login" />),
-  defineRoute("/groups/:hashtag", isLoggedIn ? <GroupPage /> : <Navigate to="/login" />),
   defineRoute("/groups/:slug", isLoggedIn ? <GroupPage /> : <Navigate to="/login" />),
   defineRoute("/admin/users", isLoggedIn && role === "ADMIN" ? <UserManagement /> : <Navigate to="/login" />),
   defineRoute("/admin/groups", isLoggedIn && role === "ADMIN" ? <GroupManagement /> : <Navigate to="/login" />),
