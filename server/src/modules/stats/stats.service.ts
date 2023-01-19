@@ -255,7 +255,7 @@ export class StatsService {
   }
 
   async getGroupLeaderboard(groupSlug: string, fromDate: string, toDate: string) {
-    const group = await this.prisma.group.findUnique({ where: { hashtag: groupSlug } })
+    const group = await this.prisma.group.findUnique({ where: { slug: groupSlug } })
 
     const result: any = await this.prisma.$queryRaw`
       SELECT 
