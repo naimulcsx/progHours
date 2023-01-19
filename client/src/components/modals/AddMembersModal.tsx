@@ -12,7 +12,7 @@ const addMembersSchema = Yup.object({
   username: Yup.string().trim().required("University IDs are required"),
 })
 
-export default function AddMembersModal({ isOpen, setIsOpen, groupName, groupId, hashtag }: any) {
+export default function AddMembersModal({ isOpen, setIsOpen, groupName, groupId, slug }: any) {
   const queryClient = useQueryClient()
   const [failed, setFailed] = useState([])
 
@@ -25,7 +25,7 @@ export default function AddMembersModal({ isOpen, setIsOpen, groupName, groupId,
 
   const { mutateAsync, isLoading } = useMutation((values: any) => addMember(groupId)(values), {
     onSuccess: (res) => {
-      queryClient.invalidateQueries(`groups/${hashtag}`)
+      queryClient.invalidateQueries(`groups/${slug}`)
       showToast("success", res.message)
       // close if there is no errors
       if (res.body.failed.length === 0) {
@@ -54,6 +54,7 @@ export default function AddMembersModal({ isOpen, setIsOpen, groupName, groupId,
 
   const handleSubmit = form.onSubmit((values) => {
     mutateAsync(values)
+    form.reset()
   })
 
   return (
@@ -102,7 +103,7 @@ export default function AddMembersModal({ isOpen, setIsOpen, groupName, groupId,
         }}
         mutation={addMember(groupId)}
         onSuccess={(res) => {
-          queryClient.invalidateQueries(`groups/${hashtag}`)
+          queryClient.invalidateQueries(`groups/${slug}`)
           toast({ status: "success", title: res.message })
           // close if there is no errors
           if (res.body.failed.length === 0) {

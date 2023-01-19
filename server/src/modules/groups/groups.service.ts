@@ -4,25 +4,28 @@ import * as crypto from "crypto"
 import { GroupRole, User } from "@prisma/client"
 import { computeRankAndSort } from "../stats/stats.service"
 
+// submit count
+//
+
 @Injectable()
 export class GroupsService {
   constructor(private prisma: PrismaService) {}
 
-  async createGroup(name, hashtag) {
-    const group = await this.prisma.group.findFirst({ where: { hashtag } })
+  async createGroup(name: string, slug: string) {
+    const group = await this.prisma.group.findFirst({ where: { slug } })
     if (group) {
-      throw new BadRequestException("Hashtag is taken!")
+      throw new BadRequestException("slug is taken!")
     }
     return this.prisma.group.create({
       data: {
         name,
-        hashtag,
+        slug,
         accessCode: crypto.randomBytes(4).toString("hex"),
       },
     })
   }
 
-  async joinGroupByCode(accessCode, userId) {
+  async joinGroupByCode(accessCode: string, userId: number) {
     // find the group with the accessCode
     const group = await this.prisma.group.findFirst({ where: { accessCode } })
 
@@ -59,24 +62,31 @@ export class GroupsService {
     })
   }
 
-  async getUserGroups(userId) {
+  async getUserGroups(userId: number) {
     return this.prisma.userGroup.findMany({
       where: { userId },
+      orderBy: {
+        id: "asc",
+      },
       include: {
-        group: true,
+        group: {
+          include: {
+            users: true,
+          },
+        },
       },
     })
   }
 
-  async deleteGroup(groupId) {
+  async deleteGroup(groupId: number) {
     // delete the users from the group
     await this.prisma.userGroup.deleteMany({ where: { groupId } })
     return this.prisma.group.delete({ where: { id: groupId } })
   }
 
-  async getGroupByHashtag(hashtag: string) {
-    // find the group with the hashtag
-    const group = await this.prisma.group.findUnique({ where: { hashtag } })
+  async getGroupBySlug(slug: string) {
+    // find the group with the slug
+    const group = await this.prisma.group.findUnique({ where: { slug } })
 
     // find the users of the group
     let groupUsers = await this.prisma.userGroup.findMany({
@@ -142,7 +152,7 @@ export class GroupsService {
     return { failed }
   }
 
-  async isGroupOwner(groupId, userId) {
+  async isGroupOwner(groupId: number, userId: number) {
     const userGroup = await this.prisma.userGroup.findFirst({
       where: { userId, groupId },
     })
@@ -167,7 +177,7 @@ export class GroupsService {
     })
   }
 
-  async editGroup(id: number, name: string, hashtag: string, isPrivate: boolean) {
+  async editGroup(id: number, name: string, slug: string, isPrivate: boolean) {
     const group = await this.prisma.group.findFirst({ where: { id } })
     if (!group) {
       throw new NotFoundException("Group is not found!")
@@ -179,8 +189,25 @@ export class GroupsService {
       },
       data: {
         name,
-        hashtag,
+        slug,
         private: isPrivate,
+      },
+    })
+  }
+
+  //////////////////////////////////
+  // Admin
+  async getGroups() {
+    return await this.prisma.group.findMany({
+      include: {
+        users: {
+          include: {
+            user: true,
+          },
+        },
+      },
+      orderBy: {
+        createdAt: "asc",
       },
     })
   }

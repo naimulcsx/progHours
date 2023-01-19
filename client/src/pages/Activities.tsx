@@ -83,7 +83,7 @@ const ActivitiesPage = () => {
                   }}
                   spacing={4}
                 >
-                  <Group spacing={4}>
+                  <Group spacing="xs">
                     <Avatar name={sub.user.name} />
                     <Text size="sm">
                       <Anchor component={RouterLink} to={`/${sub.user.username}`}>

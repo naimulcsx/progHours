@@ -16,6 +16,7 @@ import {
   IconChartBar,
   IconClipboardList,
   IconHeartRateMonitor,
+  IconFriends,
   IconLayout2,
   IconNotes,
   IconSettings,
@@ -226,20 +227,27 @@ const NewSidebar = () => {
           <Stack spacing="xs">
             <NavLink
               component={Link}
-              to="/users"
+              to="/admin/users"
               label="User Management"
               icon={
-                <ThemeIcon
-                  size="md"
-                  variant="gradient"
-                  gradient={{ from: "pink", to: "blue" }}
-                  style={{ marginLeft: 8 }}
-                  sx={{ boxShadow: `inset 1px 2px 2px 1px ${theme.colors.blue[3]}` }}
-                >
+                <ThemeIcon size="md" color="orange" style={{ marginLeft: 8 }}>
                   <IconUsers size={16} stroke={2} />
                 </ThemeIcon>
               }
-              active={pathname === "/users"}
+              active={pathname === "/admin/users"}
+              sx={navItemStyles}
+            />
+
+            <NavLink
+              component={Link}
+              to="/admin/groups"
+              label="Group Management"
+              icon={
+                <ThemeIcon size="md" color="cyan" style={{ marginLeft: 8 }}>
+                  <IconFriends size={16} stroke={2} />
+                </ThemeIcon>
+              }
+              active={pathname === "/admin/groups"}
               sx={navItemStyles}
             />
 

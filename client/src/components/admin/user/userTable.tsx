@@ -1,12 +1,12 @@
-import "regenerator-runtime/runtime"
-import { useState } from "react"
 import type { User } from "~/contexts/UserContext"
 import { DataGrid } from "~/components/datagrid"
-import { Group, Box, Text, Button, Anchor } from "@mantine/core"
+import { Group, Box, Text } from "@mantine/core"
 import Avatar from "~/components/Avatar"
 import Action from "./Actions"
+import { useNavigate } from "react-router-dom"
 
 export default function UserManagementTable({ users }: { users: User[] }) {
+  const navigate = useNavigate()
   return (
     <>
       <Box sx={{ marginLeft: -16, marginRight: -16 }}>
@@ -19,7 +19,7 @@ export default function UserManagementTable({ users }: { users: User[] }) {
           })}
           data={users || []}
           withPagination
-          horizontalSpacing="md"
+          horizontalSpacing="xl"
           pageSizes={["25", "50", "100"]}
           initialState={{ pagination: { pageSize: 25 } }}
           columns={[
@@ -29,43 +29,38 @@ export default function UserManagementTable({ users }: { users: User[] }) {
               size: 30,
             },
             {
-              accessorKey: "name",
               header: "Name",
               size: 300,
+              accessorFn: (row) => {
+                return row.name + " " + row.username
+              },
               cell: (cell) => {
-                const name = cell.getValue() as string
                 return (
-                  <Group>
-                    <Avatar name={name} />
-                    <Text>{name}</Text>
+                  <Group sx={{ cursor: "pointer" }} onClick={() => navigate(`/${cell.row.original.username}`)}>
+                    <Avatar name={cell.row.original.name} />
+                    <Box>
+                      <Text sx={{ fontWeight: 500 }}>{cell.row.original.name}</Text>
+                      <Text color="dimmed">{cell.row.original.username.toUpperCase()}</Text>
+                    </Box>
                   </Group>
                 )
               },
             },
             {
-              accessorKey: "username",
-              header: "University Id",
-              cell: (cell) => (cell.getValue() as string).toUpperCase(),
-            },
-            {
               accessorKey: "email",
               header: "Email",
             },
-            {
-              accessorKey: "batch",
-              header: "Batch",
-              cell: (cell) => (cell.getValue() ? (cell.getValue() as string) : "—"),
-            },
+
             {
               accessorKey: "mobile",
               header: "Mobile",
               cell: (cell) => (cell.getValue() ? (cell.getValue() as string) : "—"),
             },
-            {
-              accessorKey: "cgpa",
-              header: "CGPA",
-              cell: (cell) => (cell.getValue() ? (cell.getValue() as string) : "—"),
-            },
+            // {
+            //   accessorKey: "cgpa",
+            //   header: "CGPA",
+            //   cell: (cell) => (cell.getValue() ? (cell.getValue() as string) : "—"),
+            // },
             {
               accessorKey: "role",
               header: "Role",

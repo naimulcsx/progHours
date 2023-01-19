@@ -1,8 +1,8 @@
 import { Helmet } from "react-helmet-async"
 import { DashboardLayout } from "~/components/layouts/Dashboard"
 import { useState } from "react"
-import { useNavigate, useParams } from "react-router-dom"
-import { getGroupByHashtag } from "~/api/groups"
+import { useParams } from "react-router-dom"
+import { getGroupBySlug } from "~/api/groups"
 import { useQuery } from "react-query"
 
 import MemberCard from "~/components/groups/MemberCard"
@@ -14,19 +14,38 @@ import { AnimatePresence, motion } from "framer-motion"
 import Leaderboard from "~/components/leaderboard"
 import AddMembersModal from "~/components/modals/AddMembersModal"
 import { getRankList } from "~/api/leaderboard"
+import Groups from "~/types/Group"
+import { RanklistItem } from "~/types/RanklistItem"
+import UserGroups from "~/types/UserGroup"
+
+interface Props {
+  group: Groups
+  isOwner: boolean
+  isMember: boolean
+  ranklist: RanklistItem
+  users: UserGroups[]
+}
 
 const GroupPage = () => {
-  const { hashtag } = useParams()
+  const { slug } = useParams()
   const [open, setOpen] = useState(false)
-  const { data, isLoading, isFetching } = useQuery(`groups/${hashtag}`, () => getGroupByHashtag(hashtag))
+  const [group, setGroup] = useState<Props>()
 
-  const [leaderboardType, setLeaderboardType] = useState<"full" | "currentWeek" | "lastWeek" | "currentMonth">("full")
+  const { isLoading, isFetching } = useQuery(`groups/${slug}`, () => getGroupBySlug(slug), {
+    onSuccess: (data) => {
+      setGroup(data?.body)
+    },
+  })
+
+  const [leaderboardType, setLeaderboardType] = useState<"full" | "currentWeek" | "lastWeek" | "currentMonth">(
+    "currentMonth"
+  )
   const [dateRange, setDateRange] = useState<any>({})
   const {
     data: leaderboardData,
     isLoading: leaderboardLoading,
     isFetching: leaderboardFetching,
-  } = useQuery(["ranklist", leaderboardType], () => getRankList(leaderboardType, hashtag), {
+  } = useQuery(["ranklist", leaderboardType], () => getRankList(leaderboardType, slug), {
     onSuccess: (res) => {
       const { fromDate, toDate } = res.body
       if (fromDate && toDate) setDateRange({ from: fromDate, to: toDate })
@@ -34,28 +53,26 @@ const GroupPage = () => {
     },
   })
 
-  console.log(leaderboardData)
-
   return (
     <DashboardLayout>
       {/* page title */}
       <Helmet>
-        <title>{data?.body?.group?.name || "Group"}</title>
+        <title>{group?.group?.name || "Group"}</title>
       </Helmet>
 
       {/* add members modal */}
       <AddMembersModal
         isOpen={open}
         setIsOpen={setOpen}
-        groupName={data?.body?.group?.name}
-        groupId={data?.body?.group?.id}
-        hashtag={data?.body?.group?.hashtag}
+        groupName={group?.group?.name}
+        groupId={group?.group?.id}
+        slug={group?.group?.slug}
       />
 
       {/* page title and buttons */}
       <Group position="apart" align="start" spacing={4} mb="md">
         <Group align="center">
-          <Title order={3}>{data?.body?.group?.name}</Title>
+          <Title order={3}>{group?.group?.name}</Title>
           <AnimatePresence>
             {(isLoading || isFetching) && (
               <motion.div
@@ -70,13 +87,13 @@ const GroupPage = () => {
           </AnimatePresence>
         </Group>
         <Group>
-          {data?.body?.isOwner && (
+          {group?.isOwner && (
             <Button size="xs" leftIcon={<IconUserPlus size={14} />} onClick={() => setOpen(true)}>
               Add Members
             </Button>
           )}
-          {data?.body?.isMember && (
-            <CopyButton value={data?.body?.group?.accessCode}>
+          {group?.isMember && (
+            <CopyButton value={group?.group?.accessCode}>
               {({ copied, copy }) => (
                 <Button
                   variant="outline"
@@ -85,7 +102,7 @@ const GroupPage = () => {
                   onClick={copy}
                   leftIcon={<IconCopy size={16} />}
                 >
-                  {!copied ? data?.body?.group?.accessCode : "Copied"}
+                  {!copied ? group?.group?.accessCode : "Copied"}
                 </Button>
               )}
             </CopyButton>
@@ -108,7 +125,7 @@ const GroupPage = () => {
                 <Tabs.Tab value="leaderboard" icon={<IconChartBar size={14} />}>
                   Leaderboard
                 </Tabs.Tab>
-                {data?.body?.isOwner && (
+                {group?.isOwner && (
                   <Tabs.Tab value="settings" icon={<IconSettings size={14} />}>
                     Settings
                   </Tabs.Tab>
@@ -116,7 +133,7 @@ const GroupPage = () => {
               </Tabs.List>
 
               <Tabs.Panel value="members" pt="xs">
-                {data && (
+                {group && (
                   <SimpleGrid
                     breakpoints={[
                       { minWidth: "sm", cols: 2 },
@@ -124,14 +141,13 @@ const GroupPage = () => {
                       { minWidth: 1200, cols: 5 },
                     ]}
                   >
-                    {data.body.users.map((userGroup: any) => {
+                    {group?.users.map((userGroup) => {
                       return (
                         <MemberCard
                           key={userGroup.user.id}
-                          groupId={data.body.group.id}
-                          hashtag={data.body.group.hashtag}
-                          isOwner={data.body.isOwner}
-                          {...userGroup}
+                          group={group.group}
+                          isOwner={group.isOwner}
+                          userGroup={userGroup}
                         />
                       )
                     })}
@@ -188,7 +204,6 @@ const GroupPage = () => {
                     />
                   </Box>
                 </Group>
-
                 <AnimatePresence>
                   {!leaderboardLoading && (
                     <motion.div
@@ -204,9 +219,9 @@ const GroupPage = () => {
                 </AnimatePresence>
               </Tabs.Panel>
 
-              {data?.body?.isOwner && (
+              {group?.isOwner && (
                 <Tabs.Panel value="settings" pt="xs">
-                  {data?.body?.group && <UpdateGroup group={data.body.group} />}
+                  {group?.group && <UpdateGroup group={group.group} />}
                 </Tabs.Panel>
               )}
             </Tabs>

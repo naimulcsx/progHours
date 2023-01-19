@@ -7,17 +7,24 @@ import { IconPlus } from "@tabler/icons"
 import { AnimatePresence } from "framer-motion"
 
 import { DashboardLayout } from "~/components/layouts/Dashboard"
-import { getUserGroups } from "~/api/groups"
+import { getGroups } from "~/api/groups"
 import CreateGroupModal from "~/components/modals/CreateGroupModal"
 import GroupCard from "~/components/groups/GroupCard"
 import { JoinGroupModal } from "~/components/modals/JoinGroupModal"
 import useUser from "~/hooks/useUser"
+import Groups from "~/types/Group"
+import UserGroups from "~/types/UserGroup"
 
 export default function GroupsPage() {
   const { user } = useUser()
+  const [groups, setGroups] = useState<UserGroups[]>()
 
   // fetch groups data
-  const { data, isLoading, isFetching } = useQuery(["groups"], getUserGroups)
+  const { isLoading, isFetching } = useQuery(["groups"], getGroups, {
+    onSuccess: (data) => {
+      setGroups(data?.body.userGroups)
+    },
+  })
 
   // modal states
   const [createIsOpen, setCreateIsOpen] = useState(false)
@@ -87,11 +94,11 @@ export default function GroupsPage() {
               cols={5}
               spacing="lg"
             >
-              {data.body.groups.map((el: any) => (
-                <GroupCard key={el.group.id} {...el} />
+              {groups?.map((item) => (
+                <GroupCard key={item.group.id} item={item} />
               ))}
             </SimpleGrid>
-            {data.body.groups.length === 0 && <Text>You don't belong to any group.</Text>}
+            {groups?.length === 0 && <Text>You don't belong to any group.</Text>}
           </motion.div>
         )}
       </AnimatePresence>
