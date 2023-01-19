@@ -243,7 +243,7 @@ const NewSidebar = () => {
               to="/admin/groups"
               label="Group Management"
               icon={
-                <ThemeIcon size="md" color="green" style={{ marginLeft: 8 }}>
+                <ThemeIcon size="md" color="cyan" style={{ marginLeft: 8 }}>
                   <IconFriends size={16} stroke={2} />
                 </ThemeIcon>
               }
