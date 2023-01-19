@@ -106,6 +106,7 @@ export class ProblemsController {
     description: "Should be an pid of a problem that exists in the database.",
     type: String,
     required: true,
+    example: "CF-1783F",
   })
   @ApiOkResponse({
     description: "Record has been updated successfully.",

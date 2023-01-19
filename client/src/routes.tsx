@@ -33,7 +33,7 @@ const getRoutes = (isLoggedIn: boolean, role: string): RouteObject[] => [
   defineRoute("/problems", isLoggedIn && role === "ADMIN" ? <ProblemManagement /> : <Navigate to="/login" />),
   defineRoute("/problems/:id", isLoggedIn && role === "ADMIN" ? <ProblemEditPage /> : <Navigate to="/login" />),
 
-  defineRoute("/@:username", <Profile />),
+  defineRoute("/:username", <Profile />),
   defineRoute("/leaderboard", <LeaderboardPage />),
   defineRoute("/groups", isLoggedIn ? <GroupsPage /> : <Navigate to="/login" />),
   defineRoute("/activities", isLoggedIn ? <ActivitiesPage /> : <Navigate to="/login" />),

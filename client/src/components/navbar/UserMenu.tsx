@@ -29,7 +29,7 @@ const UserMenu: FC<{ user: User }> = ({ user }) => {
         </Button>
       </Menu.Target>
       <Menu.Dropdown>
-        <Menu.Item icon={<IconUser size={14} />} onClick={() => navigate(`/@${user.username}`)}>
+        <Menu.Item icon={<IconUser size={14} />} onClick={() => navigate(`/${user.username}`)}>
           Profile
         </Menu.Item>
         <Menu.Item icon={<IconSettings size={14} />} onClick={() => navigate("/settings")}>

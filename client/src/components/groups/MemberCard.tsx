@@ -45,7 +45,7 @@ export default function MemberCard({ user, role, groupId, isOwner, hashtag }: an
             </Button>
           </Menu.Target>
           <Menu.Dropdown>
-            <Menu.Item icon={<IconUser size={14} />} onClick={() => navigate(`/@${user.username}`)}>
+            <Menu.Item icon={<IconUser size={14} />} onClick={() => navigate(`/${user.username}`)}>
               View Profile
             </Menu.Item>
             {isOwner && (

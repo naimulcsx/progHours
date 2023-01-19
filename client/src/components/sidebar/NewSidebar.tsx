@@ -44,7 +44,7 @@ const navItemStyles = (theme: MantineTheme) => ({
 const NewSidebar = () => {
   const { user } = useUser()
   const { pathname } = useLocation()
-  const [value, setValue] = useState(() => localStorage.getItem("__sc") || "user")
+  const [value, setValue] = useState("user")
   const theme = useMantineTheme()
 
   useEffect(() => {
