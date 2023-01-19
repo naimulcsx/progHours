@@ -230,13 +230,7 @@ const NewSidebar = () => {
               to="/admin/users"
               label="User Management"
               icon={
-                <ThemeIcon
-                  size="md"
-                  variant="gradient"
-                  gradient={{ from: "pink", to: "blue" }}
-                  style={{ marginLeft: 8 }}
-                  sx={{ boxShadow: `inset 1px 2px 2px 1px ${theme.colors.blue[3]}` }}
-                >
+                <ThemeIcon size="md" color="orange" style={{ marginLeft: 8 }}>
                   <IconUsers size={16} stroke={2} />
                 </ThemeIcon>
               }
@@ -249,13 +243,7 @@ const NewSidebar = () => {
               to="/admin/groups"
               label="Group Management"
               icon={
-                <ThemeIcon
-                  size="md"
-                  variant="gradient"
-                  gradient={{ from: "pink", to: "blue" }}
-                  style={{ marginLeft: 8 }}
-                  sx={{ boxShadow: `inset 1px 2px 2px 1px ${theme.colors.blue[3]}` }}
-                >
+                <ThemeIcon size="md" color="green" style={{ marginLeft: 8 }}>
                   <IconFriends size={16} stroke={2} />
                 </ThemeIcon>
               }
