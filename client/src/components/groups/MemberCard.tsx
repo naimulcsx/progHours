@@ -23,7 +23,7 @@ export default function MemberCard({ userGroup, group, isOwner }: Props) {
 
   return (
     <>
-      <Paper>
+      <Paper sx={{ cursor: "pointer" }} onClick={() => navigate(`/${user.username.toUpperCase()}`)}>
         <Stack
           spacing="xs"
           sx={(theme) => ({
@@ -45,16 +45,29 @@ export default function MemberCard({ userGroup, group, isOwner }: Props) {
                 variant="subtle"
                 size="xs"
                 sx={{ position: "absolute", top: 8, right: 8, padding: 4 }}
+                onClick={(e) => e.stopPropagation()}
               >
                 <IconDotsVertical size={18} />
               </Button>
             </Menu.Target>
             <Menu.Dropdown>
-              <Menu.Item icon={<IconUser size={14} />} onClick={() => navigate(`/${user.username}`)}>
+              <Menu.Item
+                icon={<IconUser size={14} />}
+                onClick={(e) => {
+                  e.stopPropagation()
+                  navigate(`/${user.username}`)
+                }}
+              >
                 View Profile
               </Menu.Item>
               {isOwner && (
-                <Menu.Item icon={<IconMinus size={14} />} onClick={() => setOpened(true)}>
+                <Menu.Item
+                  icon={<IconMinus size={14} />}
+                  onClick={(e) => {
+                    e.stopPropagation()
+                    setOpened(true)
+                  }}
+                >
                   Remove
                 </Menu.Item>
               )}
