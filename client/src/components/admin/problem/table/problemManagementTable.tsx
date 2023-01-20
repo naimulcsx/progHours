@@ -1,7 +1,8 @@
 import "regenerator-runtime/runtime"
 import { DataGrid } from "~/components/datagrid"
-import { Group, Box, Text, Button, Anchor } from "@mantine/core"
+import { Group, Box, Text, Button, Anchor, MultiSelect } from "@mantine/core"
 import ProblemName from "../cell/ProblemName"
+import Tags from "../cell/Tags"
 
 import { Link } from "react-router-dom"
 export default function ProblemManagementTable({ prob }) {
@@ -29,23 +30,25 @@ export default function ProblemManagementTable({ prob }) {
             {
               accessorKey: "name",
               header: "Problem name",
-              size: 300,
+              size: 250,
               cell: ProblemName,
             },
             {
-              accessorKey: "",
               header: "Tags",
-              size: 200,
+              size: 450,
+              cell: Tags,
             },
             {
               accessorKey: "difficulty",
               header: "Difficulty",
               cell: (cell) => (cell.getValue() ? (cell.getValue() as string) : "—"),
+              size: 80,
             },
             {
               accessorKey: "pid",
               header: "Problem ID",
               cell: (cell) => (cell.getValue() ? (cell.getValue() as string) : "—"),
+              size: 100,
             },
             {
               header: "Test",

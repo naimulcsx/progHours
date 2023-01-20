@@ -13,7 +13,7 @@ import { Badge, Group } from "@mantine/core"
  */
 
 const NonEditableTags = (cell: CellContext<Submission, unknown>) => {
-  const { tags } = cell.row.original.problem
+  const { tags } = cell.row.original
   if (tags.length === 0) return "—"
   return (
     <Group spacing="xs">

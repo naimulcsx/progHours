@@ -1,4 +1,4 @@
-import { getProblemByPid } from "~/api/problems"
+import { getProblemByPid, getProblemTags } from "~/api/problems"
 import { DashboardLayout } from "~/components/layouts/Dashboard"
 import { useState } from "react"
 import { Helmet } from "react-helmet-async"
@@ -11,10 +11,27 @@ export default function ProblemEditPage() {
     id: string
   }
   const [prob, setProb] = useState(null)
+  const [tags, setTags] = useState(null)
 
   useQuery("prob", () => getProblemByPid(id), {
     onSuccess: (res) => {
-      setProb(res.body.problem)
+      let temp = res.body.problem
+      let tagList = []
+      temp.tags.map((value) => {
+        tagList.push(value.tag.name)
+      })
+      temp.tagList = tagList
+      console.log(temp)
+      setProb(temp)
+    },
+  })
+  useQuery("tags", getProblemTags, {
+    onSuccess: (res) => {
+      let temp = []
+      res.body.tags.map((value) => {
+        temp.push(value.name)
+      })
+      setTags(temp)
     },
   })
 
@@ -24,7 +41,7 @@ export default function ProblemEditPage() {
       <Helmet>
         <title>Problems</title>
       </Helmet>
-      {prob ? <ProblemEditForm prob={prob}></ProblemEditForm> : null}
+      {prob && tags ? <ProblemEditForm prob={prob} tags={tags}></ProblemEditForm> : null}
     </DashboardLayout>
   )
 }
