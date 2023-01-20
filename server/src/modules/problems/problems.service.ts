@@ -56,6 +56,7 @@ export class ProblemsService {
               tag: true,
             },
           },
+          onlineJudge: true
         },
       })
 
@@ -138,8 +139,10 @@ export class ProblemsService {
           select: {
             problemId: true,
             tag: true,
+            
           },
         },
+        onlineJudge: true
       },
 
       orderBy: { createdAt: "asc" },
