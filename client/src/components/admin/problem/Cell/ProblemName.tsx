@@ -18,9 +18,9 @@ import {
 } from "~/components/Icons"
 
 import { CellContext } from "@tanstack/react-table"
-import { Submission } from "~/types/Submission"
 import { Anchor, Box, Group, Text, Title } from "@mantine/core"
 import { IconExternalLink, IconQuestionMark } from "@tabler/icons"
+import { Problem } from "~/types/Problem"
 
 const iconMap = [
   { prefix: "Gym-", icon: CFIcon },
@@ -43,11 +43,10 @@ const iconMap = [
   { prefix: "KT-", icon: KattisOJIcon },
 ]
 
-const ProblemName = (cell: CellContext<Submission, unknown>) => {
-  //  console.log(cell)
+const ProblemName = (cell: CellContext<Problem, unknown>) => {
   const { pid, name, link } = cell.cell.row.original
   // select icon based on the online judge
-  let OnlineJudgeIcon: any = iconMap.filter((item, i) => (pid.includes(item.prefix) ? true : false)).at(0)
+  let OnlineJudgeIcon: any = iconMap.filter((item) => (pid.includes(item.prefix) ? true : false)).at(0)
 
   // If there is no match, use the Unknown icon
   if (!OnlineJudgeIcon) OnlineJudgeIcon.icon = IconQuestionMark

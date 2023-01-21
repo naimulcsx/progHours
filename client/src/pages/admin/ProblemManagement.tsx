@@ -1,19 +1,17 @@
 import { getAllProblems } from "~/api/problems"
-import UserManagementTable from "~/components/admin/user/userTable"
 import { DashboardLayout } from "~/components/layouts/Dashboard"
-import type { User } from "~/contexts/UserContext"
-import { useEffect, useState } from "react"
+import { useState } from "react"
 import { Helmet } from "react-helmet-async"
 import { useQuery } from "react-query"
-import ProblemManagementTable from "~/components/admin/problem/table/problemManagementTable"
+import { Problem } from "~/types/Problem"
+import ProblemTable from "~/components/admin/problem/ProblemTable"
 
 export default function ProblemManagement() {
-  const [prob, setProb] = useState(null)
+  const [problems, setProblems] = useState<Problem[]>()
 
-  useQuery("prob", getAllProblems, {
+  useQuery("problems", getAllProblems, {
     onSuccess: (res) => {
-      //     console.log(res.body.problems)
-      setProb(res.body.problems)
+      setProblems(res.body.problems)
     },
   })
 
@@ -23,7 +21,7 @@ export default function ProblemManagement() {
       <Helmet>
         <title>Problems</title>
       </Helmet>
-      {prob && <ProblemManagementTable prob={prob} />}
+      {problems && <ProblemTable data={problems} />}
     </DashboardLayout>
   )
 }

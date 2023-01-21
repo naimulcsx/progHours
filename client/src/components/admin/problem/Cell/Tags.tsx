@@ -1,18 +1,8 @@
-import { Column } from "@tanstack/react-table"
-
-/**
- * Import types
- */
-import { Tag } from "~/types/Tag"
-import { Submission } from "~/types/Submission"
 import { CellContext } from "@tanstack/react-table"
 import { Badge, Group } from "@mantine/core"
+import { Problem } from "~/types/Problem"
 
-/**
- * Import components
- */
-
-const NonEditableTags = (cell: CellContext<Submission, unknown>) => {
+const Tags = (cell: CellContext<Problem, unknown>) => {
   const { tags } = cell.row.original
   if (tags.length === 0) return "—"
   return (
@@ -37,4 +27,4 @@ const NonEditableTags = (cell: CellContext<Submission, unknown>) => {
     </Group>
   )
 }
-export default NonEditableTags
+export default Tags

@@ -23,7 +23,6 @@ export class UpdateProblemDto {
 
   @ApiProperty({ type: Number, example: 1 })
   @IsNumber()
-  @IsOptional()
   onlineJudgeId: number
 
   @ApiProperty({ type: Array, example: ["dfs and similar", "flows", "graph matchings", "graphs"] })

@@ -56,7 +56,7 @@ export class ProblemsService {
               tag: true,
             },
           },
-          onlineJudge: true
+          onlineJudge: true,
         },
       })
 
@@ -105,11 +105,11 @@ export class ProblemsService {
           id: problem.id,
         },
         data: {
-          pid: problemId.toUpperCase(),
+          pid: problem.pid,
           name,
           link,
           difficulty: Number(difficulty),
-          onlineJudgeId: Number(onlineJudgeId),
+          onlineJudgeId: problem.onlineJudgeId,
         },
       })
     } catch (err) {
@@ -139,10 +139,9 @@ export class ProblemsService {
           select: {
             problemId: true,
             tag: true,
-            
           },
         },
-        onlineJudge: true
+        onlineJudge: true,
       },
 
       orderBy: { createdAt: "asc" },

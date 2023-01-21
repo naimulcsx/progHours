@@ -16,7 +16,7 @@ import UserManagement from "~/pages/admin/userManagement"
 import ProblemManagement from "./pages/admin/ProblemManagement"
 import NotFoundPage from "~/pages/404"
 import StudyPage from "./pages/studylist"
-import ProblemEditPage from "./pages/admin/ProblemEditPage"
+import EditProblemPage from "./pages/admin/EditProblem"
 
 // utility for defining routes
 const defineRoute = (path: string, element: ReactNode) => ({ path, element })
@@ -31,7 +31,7 @@ const getRoutes = (isLoggedIn: boolean, role: string): RouteObject[] => [
   defineRoute("/settings", isLoggedIn ? <Settings /> : <Navigate to="/login" />),
   defineRoute("/users", isLoggedIn && role === "ADMIN" ? <UserManagement /> : <Navigate to="/login" />),
   defineRoute("/problems", isLoggedIn && role === "ADMIN" ? <ProblemManagement /> : <Navigate to="/login" />),
-  defineRoute("/problems/:id", isLoggedIn && role === "ADMIN" ? <ProblemEditPage /> : <Navigate to="/login" />),
+  defineRoute("/problems/:pid", isLoggedIn && role === "ADMIN" ? <EditProblemPage /> : <Navigate to="/login" />),
 
   defineRoute("/:username", <Profile />),
   defineRoute("/leaderboard", <LeaderboardPage />),
