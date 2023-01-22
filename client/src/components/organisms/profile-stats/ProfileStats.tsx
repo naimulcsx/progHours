@@ -5,7 +5,7 @@ import convertMinsToHours from "~/utils/convertMinsToHours"
 import calculatePoints from "~/utils/calculatePoints"
 
 export default function ProfileStats({ statistics }: ProfileStatsProps) {
-  let { totalSolved, totalSolveTime, totalDifficulty } = statistics
+  let { totalSolved, totalSolvedWithDifficulty, totalSolveTime, totalDifficulty } = statistics
   const items = [
     {
       label: "Points",
@@ -24,7 +24,7 @@ export default function ProfileStats({ statistics }: ProfileStatsProps) {
     },
     {
       label: "Average Difficulty",
-      value: (totalDifficulty / totalSolved || 0).toFixed(2),
+      value: (totalDifficulty / totalSolvedWithDifficulty || 0).toFixed(2),
       Icon: () => <IconEnergy />,
     },
   ]
