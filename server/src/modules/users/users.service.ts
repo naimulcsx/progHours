@@ -114,7 +114,7 @@ export class UsersService {
 
   /**********************  ADMIN  ******************** */
   async getAllUsers() {
-    return this.prisma.user.findMany()
+    return this.prisma.user.findMany({ orderBy: { id: "asc" } })
   }
 
   async updateUserData(

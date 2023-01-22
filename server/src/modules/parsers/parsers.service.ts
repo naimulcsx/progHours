@@ -1,5 +1,11 @@
 import { HttpService } from "@nestjs/axios"
-import { BadRequestException, CACHE_MANAGER, ConsoleLogger, Inject, Injectable } from "@nestjs/common"
+import {
+  BadRequestException,
+  CACHE_MANAGER,
+  ConsoleLogger,
+  Inject,
+  Injectable,
+} from "@nestjs/common"
 import { lastValueFrom } from "rxjs"
 import * as cheerio from "cheerio"
 import ShortUniqueId from "short-unique-id"
@@ -41,7 +47,10 @@ interface ParsedResult {
 
 @Injectable()
 export class ParsersService {
-  constructor(private httpService: HttpService, @Inject(CACHE_MANAGER) private cacheManager: Cache) {}
+  constructor(
+    private httpService: HttpService,
+    @Inject(CACHE_MANAGER) private cacheManager: Cache
+  ) {}
 
   /**
    * Checks if a link is valid
@@ -311,7 +320,8 @@ export class ParsersService {
       pid: `CC-${response.data.problem_code}`.trim(),
       name: response.data.problem_name.trim(),
       tags: response.data.user_tags.map((e) => e.toLowerCase()),
-      difficulty: Number(response.data.difficulty_rating) < 0 ? 0 : Number(response.data.difficulty_rating),
+      difficulty:
+        Number(response.data.difficulty_rating) < 0 ? 0 : Number(response.data.difficulty_rating),
       judge_id: 2,
       link: `https://www.codechef.com/problems/${response.data.problem_code}`,
     }
@@ -381,6 +391,10 @@ export class ParsersService {
     const response = await lastValueFrom(this.httpService.get(link))
     const $ = cheerio.load(response.data)
 
+    const err = $(".err").text().trim()
+    if (err.length) {
+      throw new Error("Server down")
+    }
     const str = $(".floatbox tr td h3").text().trim()
     if (!str.length) throw new Error("Invalid problem link!")
 
@@ -905,7 +919,9 @@ export class ParsersService {
     const linkUrl = new URL(link)
 
     const heURLPatterns = [
-      new UrlPattern("/practice/:taskName/:category/:subCategory/practice-problems/:problemType/:problemId"),
+      new UrlPattern(
+        "/practice/:taskName/:category/:subCategory/practice-problems/:problemType/:problemId"
+      ),
       new UrlPattern("/problem/:problemType/:problemId"),
     ]
 

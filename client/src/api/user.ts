@@ -6,7 +6,7 @@ const getUser = () => {
   return axios.get("/api/users/me").then((res) => res.data)
 }
 
-const getUserByUsername = (username) => {
+const getUserByUsername = (username: string | undefined) => {
   return axios.get(`/api/users/${username}`).then((res) => res.data)
 }
 

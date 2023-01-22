@@ -1,11 +1,12 @@
-import { createContext, ReactNode, useEffect, useState } from "react"
-import { useLocation } from "react-router-dom"
+import { createContext, ReactNode } from "react"
 import { useQuery } from "react-query"
 import { getSubmissions } from "~/api/submissions"
 
 import type { Submission } from "~/types/Submission"
 
-export const SubmissionsContext = createContext<{ submissions: Submission[] | null | undefined } | undefined>(undefined)
+export const SubmissionsContext = createContext<
+  { submissions: Submission[] | undefined } | undefined
+>(undefined)
 
 export default function SubmissionsProvider({ children }: { children?: ReactNode }) {
   const { data } = useQuery("submissions", getSubmissions, {

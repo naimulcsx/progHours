@@ -1,16 +1,12 @@
 import { getWeekRanges } from "./getWeekRanges"
 
-export interface Frequency {
-  [name: string]: number
-}
-
 export function getSubmissionStats(submissions: any[]) {
   const weekRanges = getWeekRanges(submissions)
 
-  const frequency: Frequency = {},
+  const frequency: { [name: string]: number } = {},
     difficulty: any = {},
     frequencyWithDifficulty: any = {},
-    avgDifficulty: any = {}
+    avgDifficulty: { [name: string]: number } = {}
 
   // For each week k, calculate how many problems are solved in the k'th week
   for (let i = 0; i < submissions.length; ++i) {

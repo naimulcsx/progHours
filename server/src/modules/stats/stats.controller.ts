@@ -1,6 +1,21 @@
 import { IsAuthenticatedGuard } from "@/guards/is-authenticated"
-import { Controller, Get, Req, UseGuards, Param, NotFoundException, HttpStatus, Query } from "@nestjs/common"
-import { ApiForbiddenResponse, ApiNotFoundResponse, ApiOkResponse, ApiOperation, ApiTags } from "@nestjs/swagger"
+import {
+  Controller,
+  Get,
+  Req,
+  UseGuards,
+  Param,
+  NotFoundException,
+  HttpStatus,
+  Query,
+} from "@nestjs/common"
+import {
+  ApiForbiddenResponse,
+  ApiNotFoundResponse,
+  ApiOkResponse,
+  ApiOperation,
+  ApiTags,
+} from "@nestjs/swagger"
 import { UsersService } from "@/modules/users/users.service"
 import { StatsService } from "./stats.service"
 import * as moment from "moment"
@@ -8,7 +23,10 @@ import * as moment from "moment"
 @Controller("/stats")
 @ApiTags("stats")
 export class StatsController {
-  constructor(private readonly statsService: StatsService, private readonly usersService: UsersService) {}
+  constructor(
+    private readonly statsService: StatsService,
+    private readonly usersService: UsersService
+  ) {}
 
   /**
    * GET /stats/me
@@ -58,11 +76,9 @@ export class StatsController {
       // return response
       return {
         statusCode: HttpStatus.OK,
-        body: {
-          fromDate: lastSat.format("YYYY-MM-DD"),
-          toDate: moment(new Date()).format("YYYY-MM-DD"),
-          stats: result,
-        },
+        fromDate: lastSat.format("YYYY-MM-DD"),
+        toDate: moment(new Date()).format("YYYY-MM-DD"),
+        leaderboard: result,
       }
     }
 
@@ -91,11 +107,9 @@ export class StatsController {
       // return response
       return {
         statusCode: HttpStatus.OK,
-        body: {
-          fromDate: lastSat.format("YYYY-MM-DD"),
-          toDate: lastSat.add(6, "day").format("YYYY-MM-DD"),
-          stats: result,
-        },
+        fromDate: lastSat.format("YYYY-MM-DD"),
+        toDate: lastSat.add(6, "day").format("YYYY-MM-DD"),
+        leaderboard: result,
       }
     }
 
@@ -126,11 +140,9 @@ export class StatsController {
       // return response
       return {
         statusCode: HttpStatus.OK,
-        body: {
-          fromDate: start.format("YYYY-MM-DD"),
-          toDate: end.format("YYYY-MM-DD"),
-          stats: result,
-        },
+        fromDate: start.format("YYYY-MM-DD"),
+        toDate: end.format("YYYY-MM-DD"),
+        leaderboard: result,
       }
     }
 
@@ -161,11 +173,9 @@ export class StatsController {
       // return response
       return {
         statusCode: HttpStatus.OK,
-        body: {
-          fromDate: start.format("YYYY-MM-DD"),
-          toDate: end.format("YYYY-MM-DD"),
-          stats: result,
-        },
+        fromDate: start.format("YYYY-MM-DD"),
+        toDate: end.format("YYYY-MM-DD"),
+        leaderboard: result,
       }
     }
 
@@ -182,9 +192,7 @@ export class StatsController {
     }
     return {
       statusCode: HttpStatus.OK,
-      body: {
-        stats: result,
-      },
+      leaderboard: result,
     }
   }
 

@@ -2,9 +2,6 @@ import { useNavigate } from "react-router-dom"
 import axios from "axios"
 import showToast from "~/utils/showToast"
 
-/**
- * Responsible for logging out an user
- */
 const useLogout = () => {
   const navigate = useNavigate()
   const handleLogout = () => {

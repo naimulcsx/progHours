@@ -16,9 +16,7 @@ export type User = {
   section?: string
 }
 
-export const UserContext = createContext<
-  { user: User | null | undefined } | undefined
->(undefined)
+export const UserContext = createContext<{ user: User | null | undefined } | undefined>(undefined)
 
 export const UserProvider = ({ children }: { children?: ReactNode }) => {
   const { pathname } = useLocation()
@@ -29,7 +27,5 @@ export const UserProvider = ({ children }: { children?: ReactNode }) => {
       .then((res) => setUser(res.data.body.user))
       .catch(() => setUser(null))
   }, [pathname])
-  return (
-    <UserContext.Provider value={{ user }}>{children}</UserContext.Provider>
-  )
+  return <UserContext.Provider value={{ user }}>{children}</UserContext.Provider>
 }
