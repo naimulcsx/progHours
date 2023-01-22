@@ -16,7 +16,10 @@ const ellipsis: CSSObject = {
 }
 
 export default createStyles(
-  (theme, { height, width, noEllipsis, withFixedHeader, paginationMode = "default" }: DataGridStylesParams) => ({
+  (
+    theme,
+    { height, width, noEllipsis, withFixedHeader, paginationMode = "default" }: DataGridStylesParams
+  ) => ({
     wrapper: {
       height: height ? height + "px" : undefined,
       width: width ? width + "px" : undefined,
@@ -103,7 +106,9 @@ export default createStyles(
       justifyContent: "center",
       alignItems: "center",
       background: theme.colorScheme === "dark" ? theme.colors.dark[7] : theme.white,
-      borderTop: `1px solid ${theme.colorScheme === "dark" ? theme.colors.dark[4] : theme.colors.gray[3]} !important`,
+      borderTop: `1px solid ${
+        theme.colorScheme === "dark" ? theme.colors.dark[4] : theme.colors.gray[3]
+      } !important`,
       [`@media (min-width: ${theme.breakpoints.xl}px)`]: {
         justifyContent: paginationMode === "default" ? "space-between" : "flex-end",
       },

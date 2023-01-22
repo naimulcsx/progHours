@@ -11,6 +11,7 @@ import { ConfigModule } from "@nestjs/config"
 import { PrismaModule } from "./prisma/prisma.module"
 import { StudiesModule } from "./studies/studies.module"
 import { GroupsModule } from "./groups/groups.module"
+import { TagsModule } from './tags/tags.module';
 
 @Module({
   imports: [
@@ -27,6 +28,7 @@ import { GroupsModule } from "./groups/groups.module"
     PrismaModule,
     StudiesModule,
     GroupsModule,
+    TagsModule,
   ],
 })
 export class AppModule {}

@@ -1,5 +1,5 @@
 import { ThemeIcon } from "@mantine/core"
-import { IconUsers, IconFriends, IconHeartRateMonitor } from "@tabler/icons"
+import { IconUsers, IconFriends, IconHeartRateMonitor, IconBook2 } from "@tabler/icons"
 
 export const adminLinks = [
   {
@@ -12,6 +12,15 @@ export const adminLinks = [
     ),
   },
   {
+    label: "Problem Management",
+    to: "/admin/problems",
+    Icon: () => (
+      <ThemeIcon size="md" color="red" style={{ marginLeft: 8 }}>
+        <IconBook2 size={16} stroke={2} />
+      </ThemeIcon>
+    ),
+  },
+  {
     label: "Group Management",
     to: "/admin/groups",
     Icon: () => (
@@ -20,6 +29,7 @@ export const adminLinks = [
       </ThemeIcon>
     ),
   },
+
   {
     label: "Parsers Status",
     to: "/admin/parsers-status",

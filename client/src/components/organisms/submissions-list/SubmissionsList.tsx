@@ -1,4 +1,9 @@
-import { DataGrid } from "~/components/organisms/datagrid"
+import {
+  DataGrid,
+  dateFilterFn,
+  numberFilterFn,
+  stringFilterFn,
+} from "~/components/organisms/datagrid"
 
 // ts types
 import { Submission } from "~/types/Submission"
@@ -19,7 +24,7 @@ export default function SubmissionsList({ submissions }: { submissions: Submissi
   submissions.forEach((el) => (el.serial = k--))
 
   return (
-    <Box sx={{ marginLeft: -16, marginRight: -16 }}>
+    <Box sx={{ marginLeft: -16, marginRight: -16, zIndex: 999 }}>
       <DataGrid<Submission>
         sx={(theme) => ({
           background: "white",
@@ -59,15 +64,18 @@ export default function SubmissionsList({ submissions }: { submissions: Submissi
             accessorKey: "solveTime",
             size: 95,
             cell: SolveTime,
+            filterFn: numberFilterFn,
           },
           {
             header: "Tags",
             cell: NonEditableTags,
             size: 480,
+            filterFn: stringFilterFn,
           },
           {
             header: "Difficulty",
             accessorKey: "problem.difficulty",
+            filterFn: numberFilterFn,
             size: 90,
             cell: (cell) => (cell.getValue() ? cell.getValue() : "—"),
           },
@@ -76,6 +84,7 @@ export default function SubmissionsList({ submissions }: { submissions: Submissi
             accessorKey: "solvedAt",
             size: 170,
             cell: DatePicker,
+            filterFn: dateFilterFn,
           },
           {
             header: "Actions",

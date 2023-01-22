@@ -94,7 +94,10 @@ const Verdict = (cell: CellContext<Submission, unknown>) => {
       value={selected}
       onChange={handleSelected}
       sx={(theme) => ({
-        input: theme.colorScheme === "dark" ? getStyles(theme)[selected] : getLightStyles(theme)[selected],
+        input:
+          theme.colorScheme === "dark"
+            ? getStyles(theme)[selected]
+            : getLightStyles(theme)[selected],
       })}
       rightSection={<IconSelector size={16} color="white" />}
       rightSectionProps={{

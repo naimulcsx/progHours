@@ -1,15 +1,11 @@
-import {
-  BadRequestException,
-  Inject,
-  Injectable,
-  NotFoundException,
-} from "@nestjs/common"
+import { BadRequestException, Inject, Injectable, NotFoundException } from "@nestjs/common"
 
 /**
  * Import services
  */
 import { PrismaService } from "../prisma/prisma.service"
 import { ParsersService } from "../parsers/parsers.service"
+import { UpdateProblemDto } from "@/validators/update-problem-dto"
 
 @Injectable()
 export class ProblemsService {
@@ -57,6 +53,15 @@ export class ProblemsService {
     try {
       const problem = await this.prisma.problem.findFirst({
         where: { pid },
+        include: {
+          tags: {
+            select: {
+              problemId: true,
+              tag: true,
+            },
+          },
+          onlineJudge: true,
+        },
       })
 
       if (!problem) throw new NotFoundException("Problem not found!")
@@ -67,23 +72,48 @@ export class ProblemsService {
     }
   }
 
-  async updateProblem(
-    { name, pid: problemId, link, difficulty, onlineJudgeId },
-    pid: string
-  ) {
+  async updateProblem({ name, link, difficulty, tags }: UpdateProblemDto, pid: string) {
     try {
       const problem = await this.getProblem(pid)
+
+      // udpate tags
+      const dbTags = await this.prisma.problemTag.findMany({
+        where: { problemId: problem.id },
+        include: { tag: true },
+      })
+
+      for (let _ of dbTags) {
+        if (!tags.includes(_.tag.name))
+          await this.prisma.problemTag.delete({
+            where: { problemId_tagId: { problemId: problem.id, tagId: _.tagId } },
+          })
+      }
+
+      for (let tag of tags) {
+        if (!dbTags.map((item) => item.tag.name).includes(tag)) {
+          const isFound = await this.prisma.tag.findUnique({ where: { name: tag } })
+          let tagId: number
+          if (isFound) {
+            tagId = isFound.id
+          } else {
+            const newTag = await this.prisma.tag.create({ data: { name: tag } })
+            tagId = newTag.id
+          }
+
+          await this.prisma.problemTag.create({ data: { problemId: problem.id, tagId } })
+        }
+      }
 
       return await this.prisma.problem.update({
         where: {
           id: problem.id,
         },
         data: {
-          pid: problemId.toUpperCase(),
+          pid: problem.pid,
           name,
           link,
           difficulty: Number(difficulty),
-          onlineJudgeId: Number(onlineJudgeId),
+          onlineJudgeId: problem.onlineJudgeId,
         },
       })
     } catch (err) {
@@ -107,6 +137,29 @@ export class ProblemsService {
   }
 
   async getAllProblems() {
-    return this.prisma.problem.findMany()
+    const problems = await this.prisma.problem.findMany({
+      include: {
+        tags: {
+          select: {
+            problemId: true,
+            tag: true,
+          },
+        },
+        onlineJudge: true,
+      },
+
+      orderBy: { createdAt: "asc" },
+    })
+
+    return problems
   }
 }
+
+// if (upsertTag._count.problems === 0) {
+//   await this.prisma.problemTag.create({
+//     data: {
+//       problemId: problem.id,
+//       tagId: upsertTag.id,
+//     },
+//   })
+// }

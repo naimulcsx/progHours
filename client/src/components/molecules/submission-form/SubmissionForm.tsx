@@ -92,7 +92,7 @@ export default function SubmissionForm({ serial }: { serial: number }) {
     <>
       {/* table row starts here */}
 
-      <tr style={{ position: "relative" }}>
+      <tr role="row">
         {/* serial */}
         <td>
           {serial} <LoadingOverlay visible={createSubmissionMutation.isLoading} overlayBlur={1.0} />

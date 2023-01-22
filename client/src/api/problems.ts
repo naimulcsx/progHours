@@ -6,11 +6,16 @@ const getAllProblems = () => {
   return axios("/api/problems").then((res) => res.data)
 }
 
-const getProblemByPid = (pid) => {
+const getProblemByPid = (pid: string) => {
   return axios(`/api/problems/${pid}`).then((res) => res.data)
 }
-const updateProblemInfo = (pid, values) => {
+
+const getProblemTags = () => {
+  return axios(`/api/tags`).then((res) => res.data)
+}
+
+const updateProblem = (pid: string, values: any) => {
   return axios.patch(`/api/problems/${pid}`, values).then((res) => res.data)
 }
 
-export { updateProblemInfo, getProblemByPid, getAllProblems }
+export { updateProblem, getProblemByPid, getAllProblems, getProblemTags }

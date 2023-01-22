@@ -1,5 +1,13 @@
 import { RefCallback, useCallback, useEffect, useImperativeHandle, useState } from "react"
-import { Group, LoadingOverlay, ScrollArea, Stack, Table as MantineTable, Text, Title } from "@mantine/core"
+import {
+  Group,
+  LoadingOverlay,
+  ScrollArea,
+  Stack,
+  Table as MantineTable,
+  Text,
+  Title,
+} from "@mantine/core"
 import {
   ColumnFiltersState,
   flexRender,
@@ -27,7 +35,10 @@ import { DEFAULT_INITIAL_SIZE, Pagination } from "./Pagination"
 import { DataGridProps } from "./types"
 import { getRowSelectionColumn } from "./RowSelection"
 
-export function useDataGrid<TData extends RowData>(): [Table<TData> | null, RefCallback<Table<TData>>] {
+export function useDataGrid<TData extends RowData>(): [
+  Table<TData> | null,
+  RefCallback<Table<TData>>
+] {
   const [state, setState] = useState<Table<TData> | null>(null)
   return [state, setState]
 }
@@ -206,7 +217,8 @@ export function DataGrid<TData extends RowData>({
     [onRowSelectionChange]
   )
 
-  const pageCount = withPagination && total ? Math.ceil(total / table.getState().pagination.pageSize) : undefined
+  const pageCount =
+    withPagination && total ? Math.ceil(total / table.getState().pagination.pageSize) : undefined
 
   table.setOptions((prev) => ({
     ...prev,
@@ -239,7 +251,9 @@ export function DataGrid<TData extends RowData>({
             {tableTitle}
           </Title>
         )}
-        {withGlobalFilter && <GlobalFilter table={table} className={classes.globalFilter} locale={locale} />}
+        {withGlobalFilter && (
+          <GlobalFilter table={table} className={classes.globalFilter} locale={locale} />
+        )}
       </Group>
       <ScrollArea className={classes.scrollArea}>
         <LoadingOverlay visible={loading || false} overlayOpacity={0.8} />
@@ -274,10 +288,18 @@ export function DataGrid<TData extends RowData>({
                         </div>
                         <div className={classes.headerCellButtons}>
                           {header.column.getCanSort() && (
-                            <ColumnSorter className={classes.sorter} column={header.column} color={color} />
+                            <ColumnSorter
+                              className={classes.sorter}
+                              column={header.column}
+                              color={color}
+                            />
                           )}
                           {header.column.getCanFilter() && (
-                            <ColumnFilter className={classes.filter} column={header.column} color={color} />
+                            <ColumnFilter
+                              className={classes.filter}
+                              column={header.column}
+                              color={color}
+                            />
                           )}
                         </div>
                         {header.column.getCanResize() && (
@@ -302,7 +324,12 @@ export function DataGrid<TData extends RowData>({
                 const rowProps = onRow ? onRow(row) : {}
 
                 return (
-                  <tr {...rowProps} key={row.id} className={cx(classes.tr, rowProps.className)} role="row">
+                  <tr
+                    {...rowProps}
+                    key={row.id}
+                    className={cx(classes.tr, rowProps.className)}
+                    role="row"
+                  >
                     {row.getVisibleCells().map((cell) => {
                       const cellProps = onCell ? onCell(cell) : {}
                       const cellId = (cell.row.original as any).id
@@ -354,7 +381,12 @@ export function DataGrid<TData extends RowData>({
           pageSizes={pageSizes}
           fontSize={fontSize}
           color={color}
-          classes={[classes.pagination, classes.pagination_info, classes.pagination_size, classes.pagination_page]}
+          classes={[
+            classes.pagination,
+            classes.pagination_info,
+            classes.pagination_size,
+            classes.pagination_page,
+          ]}
           locale={locale}
           mode={paginationMode}
         />

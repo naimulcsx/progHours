@@ -1,4 +1,4 @@
-import { Tag } from "./Tag"
+import { ProblemTag } from "~/types/ProblemTag"
 
 export interface Problem {
   id: number
@@ -7,6 +7,6 @@ export interface Problem {
   link: string
   difficulty: number
   createdAt: string
-  onlineJudgeId: number
-  tags: Tag[]
+  onlineJudge: { name: string }
+  tags: ProblemTag[]
 }

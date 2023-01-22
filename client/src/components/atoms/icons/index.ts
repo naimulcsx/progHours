@@ -15,6 +15,14 @@ import CTWIcon from "./online-judges/IconCodeToWin"
 import HEIcon from "./online-judges/IconHackerearth"
 import KattisIcon from "./online-judges/IconKattis"
 import ACIcon from "./online-judges/IconAtCoder"
+import LightOJIcon from "./online-judges/IconLightOJ"
+import LeetCodeIcon from "./online-judges/IconLeetcode"
+import BeeCrowdIcon from "./online-judges/IconBeeCrowd"
+import HackerRankIcon from "./online-judges/IconHackerrank"
+import CodeToWinIcon from "./online-judges/IconCodeToWin"
+import HackerEarthIcon from "./online-judges/IconHackerearth"
+import AtCoderIcon from "./online-judges/IconAtCoder"
+import KattisOJIcon from "./online-judges/IconKattis"
 
 //  gamified icons
 import IconActivities from "./gamified-icons/IconActivities"
@@ -54,6 +62,14 @@ export {
   HEIcon,
   KattisIcon,
   ACIcon,
+  LightOJIcon,
+  BeeCrowdIcon,
+  CodeToWinIcon,
+  HackerEarthIcon,
+  HackerRankIcon,
+  KattisOJIcon,
+  LeetCodeIcon,
+  AtCoderIcon,
 
   // gamified icons
   IconActivities,

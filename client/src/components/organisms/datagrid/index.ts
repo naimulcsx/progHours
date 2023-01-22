@@ -1,5 +1,5 @@
-export { DataGrid, useDataGrid } from './DataGrid';
-export * from './filters';
+export { DataGrid, useDataGrid } from "./DataGrid"
+export * from "./filters"
 export type {
   DataGridFilterFn,
   DataGridFilterProps,
@@ -8,7 +8,7 @@ export type {
   DataGridSortingState,
   OnChangeCallback,
   DataGridProps,
-} from './types';
+} from "./types"
 
-export { ExternalColumnFilter } from './ColumnFilter';
-export type { ExternalColumnFilterProps } from './ColumnFilter';
+export { ExternalColumnFilter } from "./ColumnFilter"
+export type { ExternalColumnFilterProps } from "./ColumnFilter"

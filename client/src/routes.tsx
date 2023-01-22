@@ -19,6 +19,8 @@ import {
   ParsersStatusPage,
   UserProfilePage,
 } from "~/components/pages"
+import EditProblemPage from "./components/pages/problem-management/EditProblemPage"
+import ProblemManagementPage from "./components/pages/problem-management/ProblemManagement"
 
 // utility for defining routes
 const defineRoute = (path: string, element: ReactNode) => ({ path, element })
@@ -44,6 +46,14 @@ const getRoutes = (isLoggedIn: boolean, role: string): RouteObject[] => [
   defineRoute(
     "/admin/groups",
     isLoggedIn && role === "ADMIN" ? <GroupManagementPage /> : <Navigate to="/login" />
+  ),
+  defineRoute(
+    "/admin/problems",
+    isLoggedIn && role === "ADMIN" ? <ProblemManagementPage /> : <Navigate to="/login" />
+  ),
+  defineRoute(
+    "/admin/problems/:pid",
+    isLoggedIn && role === "ADMIN" ? <EditProblemPage /> : <Navigate to="/login" />
   ),
   defineRoute(
     "/admin/parsers-status",
