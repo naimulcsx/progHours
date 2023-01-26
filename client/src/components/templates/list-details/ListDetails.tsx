@@ -22,6 +22,8 @@ import { ListCollectionCreateModal, ProblemCard } from "~/components/molecules"
 import { useState } from "react"
 import ListAddProblemsModal from "~/components/molecules/list-add-problems-modal/ListAddProblemsModal"
 import ListCollectionDeleteModal from "~/components/molecules/list-collection-delete-modal/ListCollectionDeleteModal"
+import { ListDetailsPage } from "~/components/pages"
+import ListProgress from "~/components/organisms/list-progress/ListProgress"
 
 interface ListDetailsTemplateProps {
   list: any
@@ -218,9 +220,8 @@ export default function ListDetailsTemplate({ list, isLoading }: ListDetailsTemp
                 </Paper>
               </Box>
             </Tabs.Panel>
-
             <Tabs.Panel value="messages" pt="xs">
-              Messages tab content
+              <ListProgress />
             </Tabs.Panel>
           </Tabs>
         </motion.div>

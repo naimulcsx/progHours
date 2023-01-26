@@ -1,4 +1,4 @@
-import { Injectable } from "@nestjs/common"
+import { Injectable, NotFoundException } from "@nestjs/common"
 import e from "express"
 import { ParsersService } from "../parsers/parsers.service"
 import { PrismaService } from "../prisma/prisma.service"
@@ -97,5 +97,41 @@ export class ListsService {
   async removeCollection(listId: number, collectionId: number) {
     await this.prisma.listProblem.deleteMany({ where: { collectionId, listId } })
     await this.prisma.collection.delete({ where: { id: collectionId } })
+  }
+
+  async getListProgress(listId: number) {
+    const list = await this.prisma.list.findUnique({
+      where: { id: listId },
+      include: { group: true },
+    })
+    if (!list) {
+      return new NotFoundException("List not found!")
+    }
+    const members = await this.prisma.userGroup.findMany({
+      where: { groupId: list.group.id },
+      include: { user: true },
+    })
+    const problems = await this.prisma.listProblem.findMany({
+      where: { listId },
+      include: { problem: true },
+    })
+    const result = {}
+    for (let i = 0; i < problems.length; ++i) {
+      const problem = problems[i]
+      for (let j = 0; j < members.length; ++j) {
+        const user = members[j]
+        const submission = await this.prisma.submission.findFirst({
+          where: { userId: user.user.id, problemId: problem.problem.id },
+        })
+        if (!result[user.user.username]) result[user.user.username] = []
+        if (submission) {
+          result[user.user.username].push(problem.problem.pid)
+        }
+      }
+    }
+    return {
+      problems: problems.map((item) => item.problem.pid),
+      result,
+    }
   }
 }

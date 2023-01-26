@@ -86,8 +86,11 @@ export class ListsController {
     return this.listsService.update(+id, updateListDto)
   }
 
-  // @Delete(":id")
-  // remove(@Param("id") id: string) {
-  //   return this.listsService
-  // }
+  @Get("/:id/progress")
+  async getListProgress(@Param("id", ParseIntPipe) id: number) {
+    const result = await this.listsService.getListProgress(id)
+    return {
+      ...result,
+    }
+  }
 }
