@@ -1,7 +1,6 @@
 import {
   Anchor,
   Box,
-  Button,
   Group,
   HoverCard,
   MantineTheme,
@@ -9,7 +8,6 @@ import {
   Title,
   useMantineTheme,
 } from "@mantine/core"
-import { LeaderboardResponse } from "~/types/Stats"
 import { DateRangePicker, DateRangePickerValue } from "@mantine/dates"
 import { useEffect, useState } from "react"
 import moment from "moment"

@@ -17,10 +17,11 @@ import {
   useMantineTheme,
 } from "@mantine/core"
 import { Link } from "react-router-dom"
-import { IconAlertCircle, IconChartBar, IconEdit, IconList } from "@tabler/icons"
+import { IconAlertCircle, IconChartBar, IconEdit, IconList, IconTrash } from "@tabler/icons"
 import { ListCollectionCreateModal, ProblemCard } from "~/components/molecules"
 import { useState } from "react"
 import ListAddProblemsModal from "~/components/molecules/list-add-problems-modal/ListAddProblemsModal"
+import ListCollectionDeleteModal from "~/components/molecules/list-collection-delete-modal/ListCollectionDeleteModal"
 
 interface ListDetailsTemplateProps {
   list: any
@@ -31,6 +32,7 @@ export default function ListDetailsTemplate({ list, isLoading }: ListDetailsTemp
   const theme = useMantineTheme()
   const [open, setOpen] = useState(false)
   const [problemModalOpen, setProblemModalOpen] = useState(false)
+  const [deleteModalOpen, setDeleteModalOpen] = useState(false)
   const [collectionId, setCollectionId] = useState(0)
   const [problems, setProblems] = useState([])
 
@@ -43,6 +45,11 @@ export default function ListDetailsTemplate({ list, isLoading }: ListDetailsTemp
   return (
     <DashboardLayout>
       <ListCollectionCreateModal open={open} setOpen={setOpen} />
+      <ListCollectionDeleteModal
+        open={deleteModalOpen}
+        setOpen={setDeleteModalOpen}
+        collectionId={collectionId}
+      />
 
       <ListAddProblemsModal
         open={problemModalOpen}
@@ -72,7 +79,8 @@ export default function ListDetailsTemplate({ list, isLoading }: ListDetailsTemp
                   to={item.to}
                   size="sm"
                   sx={{
-                    color: theme.colors.gray[4],
+                    color:
+                      theme.colorScheme === "dark" ? theme.colors.gray[4] : theme.colors.gray[8],
                     fontWeight: 500,
                     "&:hover": { textDecoration: "none" },
                   }}
@@ -148,19 +156,33 @@ export default function ListDetailsTemplate({ list, isLoading }: ListDetailsTemp
                                       {collection?.problems?.length}
                                     </Badge>
                                   </Group>
-                                  <ActionIcon
-                                    component="div"
-                                    color="indigo"
-                                    variant="light"
-                                    onClick={(e) => {
-                                      setCollectionId(collection.id)
-                                      e.stopPropagation()
-                                      setProblemModalOpen(true)
-                                      setProblems(collection?.problems)
-                                    }}
-                                  >
-                                    <IconEdit size={14} />
-                                  </ActionIcon>
+                                  <Group>
+                                    <ActionIcon
+                                      component="div"
+                                      color="indigo"
+                                      variant="light"
+                                      onClick={(e) => {
+                                        setCollectionId(collection.id)
+                                        e.stopPropagation()
+                                        setProblemModalOpen(true)
+                                        setProblems(collection?.problems)
+                                      }}
+                                    >
+                                      <IconEdit size={14} />
+                                    </ActionIcon>
+                                    <ActionIcon
+                                      component="div"
+                                      color="red"
+                                      variant="light"
+                                      onClick={(e) => {
+                                        setCollectionId(collection.id)
+                                        e.stopPropagation()
+                                        setDeleteModalOpen(true)
+                                      }}
+                                    >
+                                      <IconTrash size={14} />
+                                    </ActionIcon>
+                                  </Group>
                                 </Group>
                               </Accordion.Control>
                               <Accordion.Panel px="sm">

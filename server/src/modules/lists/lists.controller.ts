@@ -50,6 +50,7 @@ export class ListsController {
   ) {
     const collection = await this.listsService.createCollection(id, createCollectionDto)
     return {
+      message: "Collection created!",
       statusCode: HttpStatus.CREATED,
       collection,
     }
@@ -64,9 +65,19 @@ export class ListsController {
     const problemIds = await this.listsService.getProblemIds(addProblemsDto.links)
     await this.listsService.addProblemsToCollection(id, collectionId, problemIds)
     return {
-      foo: "bar",
       problemIds,
       message: "Problems updated!",
+    }
+  }
+
+  @Delete("/:id/collections/:collectionId")
+  async deleteCollection(
+    @Param("id", ParseIntPipe) id: number,
+    @Param("collectionId", ParseIntPipe) collectionId: number
+  ) {
+    await this.listsService.removeCollection(id, collectionId)
+    return {
+      message: "Collection deleted!",
     }
   }
 
@@ -75,8 +86,8 @@ export class ListsController {
     return this.listsService.update(+id, updateListDto)
   }
 
-  @Delete(":id")
-  remove(@Param("id") id: string) {
-    return this.listsService.remove(+id)
-  }
+  // @Delete(":id")
+  // remove(@Param("id") id: string) {
+  //   return this.listsService
+  // }
 }

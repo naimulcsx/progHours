@@ -118,9 +118,7 @@ export default function GroupDetailsTemplate({
                 <Tabs.Tab value="members" icon={<IconUsers size={14} />}>
                   Members
                 </Tabs.Tab>
-                <Tabs.Tab value="lists" icon={<IconUsers size={14} />}>
-                  Problem Lists
-                </Tabs.Tab>
+
                 <Tabs.Tab value="leaderboard" icon={<IconChartBar size={14} />}>
                   Leaderboard
                 </Tabs.Tab>
@@ -129,6 +127,9 @@ export default function GroupDetailsTemplate({
                     Activity Calander
                   </Tabs.Tab>
                 )}
+                <Tabs.Tab value="lists" icon={<IconUsers size={14} />}>
+                  Problem Lists
+                </Tabs.Tab>
                 {group?.isOwner && (
                   <Tabs.Tab value="settings" icon={<IconSettings size={14} />}>
                     Settings

@@ -94,7 +94,8 @@ export class ListsService {
     return `This action updates a #${id} list`
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} list`
+  async removeCollection(listId: number, collectionId: number) {
+    await this.prisma.listProblem.deleteMany({ where: { collectionId, listId } })
+    await this.prisma.collection.delete({ where: { id: collectionId } })
   }
 }

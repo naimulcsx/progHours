@@ -1,7 +1,6 @@
 import axios from "axios"
 import { useQuery } from "react-query"
 import { useParams } from "react-router-dom"
-import { getGroupBySlug } from "~/api/groups"
 import ListDetailsTemplate from "~/components/templates/list-details/ListDetails"
 
 export default function ListDetailsPage() {
