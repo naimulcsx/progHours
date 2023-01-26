@@ -23,6 +23,8 @@ import SettingsProfileForm from "./settings-profile-form/SettingsProfileForm"
 import SettingsPasswordForm from "./settings-password-form/SettingsPasswordForm"
 import SettingsHandles from "./settings-handles/SettingsHandles"
 import AdminGroupEditModal from "./admin-group-edit-modal/AdminGroupEditModal"
+import ListCollectionCreateModal from "./list-collection-create-modal/ListCollectionCreateModal"
+import ProblemCard from "./problem-card/ProblemCard"
 
 export {
   SidebarSegmentedControl,
@@ -43,6 +45,8 @@ export {
   SettingsPasswordForm,
   SettingsHandles,
   AdminGroupEditModal,
+  ListCollectionCreateModal,
+  ProblemCard,
 
   // visualizations
   AverageDifficultyChart,

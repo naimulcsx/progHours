@@ -235,7 +235,7 @@ export class GroupsController {
   })
   @ApiProduces("application/json")
   async getGroup(@Param("slug") slug: string, @Req() req) {
-    const { group, groupUsers, ranklist } = await this.groupsService.getGroupBySlug(slug)
+    const { group, groupUsers } = await this.groupsService.getGroupBySlug(slug)
 
     // check if the user is the owner of the group
     let isOwner = false,
@@ -259,7 +259,6 @@ export class GroupsController {
         isOwner,
         isMember,
         users: groupUsers,
-        ranklist,
       },
     }
   }
@@ -336,6 +335,15 @@ export class GroupsController {
     return {
       statusCode: HttpStatus.OK,
       message: "Member removed!",
+    }
+  }
+
+  @Get("/:slug/lists")
+  async getProblemLists(@Param("slug") slug: string) {
+    const lists = await this.groupsService.getLists(slug)
+    return {
+      statusCode: HttpStatus.OK,
+      lists,
     }
   }
 }

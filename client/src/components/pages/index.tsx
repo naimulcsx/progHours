@@ -13,6 +13,7 @@ import UserManagementPage from "./user-management/UserManagement"
 import GroupManagementPage from "./group-management/GroupManagement"
 import ParsersStatusPage from "./parsers-status/ParsersStatus"
 import UserProfilePage from "./user-profile/UserProfile"
+import ListDetailsPage from "./list-details/ListDetails"
 
 export {
   ActivitiesPage,
@@ -30,4 +31,5 @@ export {
   GroupManagementPage,
   ParsersStatusPage,
   UserProfilePage,
+  ListDetailsPage,
 }

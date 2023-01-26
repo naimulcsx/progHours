@@ -32,6 +32,7 @@ import {
 import { removeParams, removeTrailingSlash, toHttps } from "@/utils/globalLinkTransformers"
 import { isUppercase } from "class-validator"
 import { ConfigService } from "@nestjs/config"
+import { PrismaService } from "../prisma/prisma.service"
 
 const UrlPattern = require("url-pattern")
 const genId = new ShortUniqueId({ length: 6 })
@@ -48,6 +49,7 @@ interface ParsedResult {
 @Injectable()
 export class ParsersService {
   constructor(
+    private readonly prisma: PrismaService,
     private httpService: HttpService,
     @Inject(CACHE_MANAGER) private cacheManager: Cache
   ) {}
@@ -115,6 +117,72 @@ export class ParsersService {
 
     if (linkConverters[hostname]) link = linkConverters[hostname](link)
     return link
+  }
+
+  async createOrParseProblem(link: string) {
+    let problemId: number
+    try {
+      link = await this.unifyLink(link)
+    } catch (err) {
+      throw new BadRequestException(err)
+    }
+    let foundProblem = await this.prisma.problem.findUnique({ where: { link } })
+    if (foundProblem) problemId = foundProblem.id
+    else {
+      // If the problem does not exist in the database
+      // then we need to parse it by making a network request
+      // and then save it in our database
+      try {
+        // parse the problem with the help of parser service
+        const problem = await this.parseProblem(link)
+
+        const { name, pid, tags, difficulty, judge_id } = problem
+
+        // save the problem that we've parsed
+        const newProblem = await this.prisma.problem.create({
+          data: {
+            name,
+            pid,
+            difficulty,
+            link,
+            onlineJudgeId: judge_id,
+          },
+        })
+
+        // * insert the tags, if they do not exist in the database
+        /**
+         * Some problem in codeforces have the same tag twice
+         * And our system constrains same tag multiple times for a problem
+         * So it results in an error. In order to fix it, we keep a map of booleans
+         * Eg. https://codeforces.com/contest/1593/problem/B
+         */
+        const tagMap = {}
+
+        for (let tag of tags) {
+          // find or create the tag
+          const tagObject = await this.prisma.tag.upsert({
+            where: { name: tag },
+            update: {},
+            create: { name: tag },
+          })
+          if (!tagMap[tagObject.id]) {
+            // insert tagId and problemId into the junction table
+            await this.prisma.problemTag.create({
+              data: {
+                problemId: newProblem.id,
+                tagId: tagObject.id,
+              },
+            })
+            tagMap[tagObject.id] = true
+          }
+        }
+        // save the problem id
+        problemId = newProblem.id
+      } catch (err) {
+        throw new BadRequestException(err.message)
+      }
+    }
+    return problemId
   }
 
   /**

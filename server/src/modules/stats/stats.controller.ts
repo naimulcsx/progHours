@@ -196,23 +196,19 @@ export class StatsController {
     }
   }
 
-  /**
-   * GET /stats/ranklist-live
-   * Returns the ranklist of the users
-   */
-  // @Get("/ranklist-live")
-  // @ApiOperation({
-  //   summary:
-  //     "Returns the ranklist of the users (aggregate from current database state).",
-  // })
-  // @ApiOkResponse({ description: "Success." })
-  // @ApiForbiddenResponse({ description: "Forbidden." })
-  // async getLiveRanklist() {
-  //   const result = await this.statsService.getLiveRanklist()
-  //   return {
-  //     ranklist: result,
-  //   }
-  // }
+  @Get("/progress")
+  async getProgress(
+    @Query("groupSlug") groupSlug: string,
+    @Query("fromDate") fromDate: string,
+    @Query("toDate") toDate: string
+  ) {
+    const data = await this.statsService.getGroupProgress(groupSlug, fromDate, toDate)
+    return {
+      fromDate,
+      toDate,
+      data,
+    }
+  }
 
   /**
    * GET /stats/{username}

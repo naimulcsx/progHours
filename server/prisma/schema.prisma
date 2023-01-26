@@ -46,16 +46,17 @@ model Tag {
 }
 
 model Problem {
-  id            Int          @id @default(autoincrement())
-  pid           String       @unique
+  id            Int           @id @default(autoincrement())
+  pid           String        @unique
   name          String
-  link          String       @unique
+  link          String        @unique
   difficulty    Int
-  createdAt     DateTime     @default(now())
+  createdAt     DateTime      @default(now())
   submissions   Submission[]
   tags          ProblemTag[]
-  onlineJudge   OnlineJudge  @relation(fields: [onlineJudgeId], references: [id])
+  onlineJudge   OnlineJudge   @relation(fields: [onlineJudgeId], references: [id])
   onlineJudgeId Int
+  ListProblem   ListProblem[]
 }
 
 model Submission {
@@ -122,6 +123,7 @@ model Group {
   createdAt  DateTime    @default(now())
   users      UserGroup[]
   private    Boolean     @default(false)
+  List       List[]
 
   @@index(accessCode)
 }
@@ -136,6 +138,38 @@ model UserGroup {
 
   @@index(userId)
   @@index(groupId)
+}
+
+model List {
+  id          Int           @id @default(autoincrement())
+  name        String
+  group       Group?        @relation(fields: [groupId], references: [id])
+  groupId     Int?
+  problems    ListProblem[]
+  collections Collection[]
+}
+
+model Collection {
+  id       Int           @id @default(autoincrement())
+  name     String
+  list     List          @relation(fields: [listId], references: [id])
+  listId   Int
+  order    Int           @default(autoincrement())
+  metaData Json?         @default("{}")
+  problems ListProblem[]
+}
+
+model ListProblem {
+  id           Int         @id @default(autoincrement())
+  order        Int         @default(autoincrement())
+  list         List        @relation(fields: [listId], references: [id])
+  listId       Int
+  problem      Problem     @relation(fields: [problemId], references: [id])
+  problemId    Int
+  collection   Collection? @relation(fields: [collectionId], references: [id])
+  collectionId Int?
+
+  @@index([listId, problemId, collectionId])
 }
 
 enum GroupRole {

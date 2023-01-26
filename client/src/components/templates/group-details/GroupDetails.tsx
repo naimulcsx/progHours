@@ -12,17 +12,27 @@ import {
   Button,
   Select,
 } from "@mantine/core"
-import { IconChartBar, IconCopy, IconSettings, IconUserPlus, IconUsers } from "@tabler/icons"
+import {
+  IconCalendarEvent,
+  IconChartBar,
+  IconCopy,
+  IconSettings,
+  IconSum,
+  IconUserPlus,
+  IconUsers,
+} from "@tabler/icons"
 import { AnimatePresence, motion } from "framer-motion"
-import { Leaderboard } from "~/components/organisms"
+import { GroupProblemLists, Leaderboard } from "~/components/organisms"
 import { GroupMemberCard, GroupUpdateForm } from "~/components/molecules"
 import GroupAddMembersModal from "~/components/molecules/group-add-members-modal/GroupAddMembersModal"
+import ProgressTable from "~/components/organisms/group-progress-table/GroupProgressTable"
 
 type LeaderboardType = "full" | "currentWeek" | "lastWeek" | "currentMonth" | "lastMonth"
 
 export interface GroupDetailsTemplateProps {
   group: any
   leaderboard: any
+  problemLists: any
   isLoading: boolean
   leaderboardType: LeaderboardType
   setLeaderboardType: Dispatch<SetStateAction<LeaderboardType>>
@@ -33,6 +43,7 @@ export default function GroupDetailsTemplate({
   leaderboard,
   isLoading,
   leaderboardType,
+  problemLists,
   setLeaderboardType,
 }: GroupDetailsTemplateProps) {
   const [open, setOpen] = useState(false)
@@ -107,9 +118,17 @@ export default function GroupDetailsTemplate({
                 <Tabs.Tab value="members" icon={<IconUsers size={14} />}>
                   Members
                 </Tabs.Tab>
+                <Tabs.Tab value="lists" icon={<IconUsers size={14} />}>
+                  Problem Lists
+                </Tabs.Tab>
                 <Tabs.Tab value="leaderboard" icon={<IconChartBar size={14} />}>
                   Leaderboard
                 </Tabs.Tab>
+                {group?.isOwner && (
+                  <Tabs.Tab value="progress" icon={<IconCalendarEvent size={14} />}>
+                    Activity Calander
+                  </Tabs.Tab>
+                )}
                 {group?.isOwner && (
                   <Tabs.Tab value="settings" icon={<IconSettings size={14} />}>
                     Settings
@@ -117,7 +136,19 @@ export default function GroupDetailsTemplate({
                 )}
               </Tabs.List>
 
-              <Tabs.Panel value="members" pt="xs">
+              {group?.isOwner && (
+                <Tabs.Panel value="progress" pt="md">
+                  <Box>
+                    <ProgressTable />
+                  </Box>
+                </Tabs.Panel>
+              )}
+
+              <Tabs.Panel value="lists" pt="md">
+                <GroupProblemLists groupId={group?.group?.id} problemLists={problemLists} />
+              </Tabs.Panel>
+
+              <Tabs.Panel value="members" pt="md">
                 {group && (
                   <SimpleGrid
                     breakpoints={[
@@ -140,8 +171,8 @@ export default function GroupDetailsTemplate({
                 )}
               </Tabs.Panel>
 
-              <Tabs.Panel value="leaderboard" pt="xs">
-                <Group position="apart" align="start" mb="md" mt="md">
+              <Tabs.Panel value="leaderboard" pt="md">
+                <Group position="apart" align="start" mb="md">
                   <Group align="center">
                     <Title order={4}>Leaderboard</Title>
                     <AnimatePresence>
@@ -207,7 +238,7 @@ export default function GroupDetailsTemplate({
               </Tabs.Panel>
 
               {group?.isOwner && (
-                <Tabs.Panel value="settings" pt="xs">
+                <Tabs.Panel value="settings" pt="md">
                   {group?.group && <GroupUpdateForm group={group.group} />}
                 </Tabs.Panel>
               )}

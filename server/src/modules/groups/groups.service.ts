@@ -52,7 +52,15 @@ export class GroupsService {
     })
   }
 
-  async joinOnGroup({ userId, groupId, role }: { userId: number; groupId: number; role: GroupRole }) {
+  async joinOnGroup({
+    userId,
+    groupId,
+    role,
+  }: {
+    userId: number
+    groupId: number
+    role: GroupRole
+  }) {
     return this.prisma.userGroup.create({
       data: {
         userId,
@@ -94,28 +102,15 @@ export class GroupsService {
       include: { user: true },
     })
 
-    // get leaderboard of the users
-    let ranklist = await this.prisma.userStat.findMany({
-      where: {
-        OR: groupUsers.map((groupUser) => ({ userId: groupUser.user.id })),
-      },
-      include: {
-        user: true,
-      },
-    })
-
     // remove password from the object
     groupUsers = groupUsers.map((groupUser) => {
       delete groupUser.user.password
       return groupUser
     })
 
-    const computedRanklist = computeRankAndSort(ranklist)
-
     return {
       group,
       groupUsers,
-      ranklist: computedRanklist,
     }
   }
 
@@ -193,6 +188,17 @@ export class GroupsService {
         private: isPrivate,
       },
     })
+  }
+
+  async getLists(slug: string) {
+    const group = await this.prisma.group.findUnique({ where: { slug } })
+    if (!group) {
+      throw new NotFoundException("Group is not found!")
+    }
+    const lists = await this.prisma.list.findMany({
+      where: { groupId: group.id },
+    })
+    return lists
   }
 
   //////////////////////////////////

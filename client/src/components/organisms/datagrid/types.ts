@@ -1,4 +1,11 @@
-import { ComponentPropsWithoutRef, ComponentType, HTMLAttributes, ReactElement, ReactNode, Ref } from "react"
+import {
+  ComponentPropsWithoutRef,
+  ComponentType,
+  HTMLAttributes,
+  ReactElement,
+  ReactNode,
+  Ref,
+} from "react"
 import { DefaultProps, MantineColor, MantineNumberSize, Selectors } from "@mantine/core"
 import {
   Cell,
@@ -45,6 +52,7 @@ export interface DataGridProps<TData extends RowData>
   total?: number
   /** Table instance reference */
   tableRef?: Ref<Table<TData>>
+  bordered?: boolean
 
   // Styles
   /** Table body height */

@@ -48,6 +48,8 @@ export function DataGrid<TData extends RowData>({
   columns,
   data,
   total,
+  bordered = false,
+
   // styles
   classNames,
   styles,
@@ -276,6 +278,13 @@ export function DataGrid<TData extends RowData>({
                     key={header.id}
                     style={{
                       width: header.getSize(),
+                      borderRight: bordered
+                        ? `1px solid ${
+                            theme.colorScheme === "dark"
+                              ? theme.colors.dark[4]
+                              : theme.colors.gray[2]
+                          }`
+                        : "0",
                     }}
                     className={classes.th}
                     colSpan={header.colSpan}
@@ -341,6 +350,13 @@ export function DataGrid<TData extends RowData>({
                           key={cellId}
                           style={{
                             width: cell.column.getSize(),
+                            borderRight: bordered
+                              ? `1px solid ${
+                                  theme.colorScheme === "dark"
+                                    ? theme.colors.dark[4]
+                                    : theme.colors.gray[2]
+                                }`
+                              : "0",
                           }}
                           className={cx(classes.td, cellProps.className)}
                           role="cell"

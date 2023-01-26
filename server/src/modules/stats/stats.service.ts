@@ -280,8 +280,6 @@ export class StatsService {
         "User"."id"
       `
 
-    console.log(result)
-
     const data = result.map((stat: any) => {
       return {
         id: Number(stat.id),
@@ -299,5 +297,46 @@ export class StatsService {
     })
 
     return computeRankAndSort(data)
+  }
+
+  async getProgress(userId: number, fromDate: string, toDate: string) {
+    const result: any = await this.prisma.$queryRaw`
+      SELECT 
+        date("Submission"."solvedAt"), 
+        COUNT("Problem".id) AS "totalSolved",
+        SUM("Submission"."solveTime") AS "totalSolveTime", 
+        SUM("Problem".difficulty) AS "totalDifficulty",
+        COUNT(case when "Problem"."difficulty" > 0 then 1 else null end) AS "totalSolvedWithDifficulty"
+      FROM
+        "Submission" 
+        LEFT JOIN "Problem" ON "Submission"."problemId" = "Problem"."id" 
+      WHERE 
+        "Submission"."userId" = ${userId}
+        AND "Submission".verdict = 'AC'
+        AND "Submission"."solvedAt" >= TO_TIMESTAMP(${fromDate}, 'YYYY-MM-DD')  
+        AND "Submission"."solvedAt" < TO_TIMESTAMP(${toDate}, 'YYYY-MM-DD')
+      GROUP BY 
+        date("Submission"."solvedAt");
+      `
+
+    return result
+  }
+
+  async getGroupProgress(groupSlug: string, fromDate: string, toDate: string) {
+    const group = await this.prisma.group.findUnique({ where: { slug: groupSlug } })
+    const groupUsers = await this.prisma.userGroup.findMany({
+      where: { groupId: group.id },
+      include: { user: true },
+    })
+
+    let result: any = {}
+    for (let i = 0; i < groupUsers.length; ++i) {
+      if (groupUsers[i].role !== "ADMIN") {
+        const val = await this.getProgress(groupUsers[i].userId, fromDate, toDate)
+        result[groupUsers[i].user.username] = val
+      }
+    }
+
+    return result
   }
 }

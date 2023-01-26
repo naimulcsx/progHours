@@ -18,6 +18,7 @@ import {
   GroupManagementPage,
   ParsersStatusPage,
   UserProfilePage,
+  ListDetailsPage,
 } from "~/components/pages"
 import EditProblemPage from "./components/pages/problem-management/EditProblemPage"
 import ProblemManagementPage from "./components/pages/problem-management/ProblemManagement"
@@ -38,6 +39,7 @@ const getRoutes = (isLoggedIn: boolean, role: string): RouteObject[] => [
   defineRoute("/groups", isLoggedIn ? <GroupsPage /> : <Navigate to="/login" />),
   defineRoute("/activities", isLoggedIn ? <ActivitiesPage /> : <Navigate to="/login" />),
   defineRoute("/groups/:slug", isLoggedIn ? <GroupDetailsPage /> : <Navigate to="/login" />),
+  defineRoute("/lists/:listId", isLoggedIn ? <ListDetailsPage /> : <Navigate to="/login" />),
   // admin routes
   defineRoute(
     "/admin/users",

@@ -77,16 +77,16 @@ export default function LeaderboardDesktop({ data }: { data: LeaderboardItem[] }
             )
           },
         },
-        {
-          header: "Batch",
-          accessorKey: "user.batch",
-          filterFn: stringFilterFn,
-          size: 100,
-          cell: ({ cell }) => {
-            const { department, batch } = cell.row.original.user
-            return department && batch ? `${department} ${batch}` : "—"
-          },
-        },
+        // {
+        //   header: "Batch",
+        //   accessorKey: "user.batch",
+        //   filterFn: stringFilterFn,
+        //   size: 100,
+        //   cell: ({ cell }) => {
+        //     const { department, batch } = cell.row.original.user
+        //     return department && batch ? `${department} ${batch}` : "—"
+        //   },
+        // },
         {
           header: "Solved",
           accessorKey: "totalSolved",
