@@ -1,5 +1,5 @@
 import { Box, Button, Group, Paper, Stack, Text, Title, useMantineTheme } from "@mantine/core"
-import { IconAlertCircle, IconPlus } from "@tabler/icons"
+import { IconAlertCircle, IconFolder, IconLayoutList, IconPlus } from "@tabler/icons"
 import { useState } from "react"
 import { useNavigate, useParams } from "react-router-dom"
 import ListCreateModal from "~/components/molecules/list-create-modal/ListCreateModal"
@@ -85,7 +85,10 @@ export default function GroupProblemLists({
                   onClick={() => navigate(`/lists/${list.id}`)}
                 >
                   <Group position="apart">
-                    <Text sx={{ fontWeight: 500 }}>{list.name}</Text>
+                    <Group>
+                      <IconLayoutList />
+                      <Text sx={{ fontWeight: 500 }}>{list.name}</Text>
+                    </Group>
                     <Text>
                       {totalProblem} {totalProblem > 0 ? "Problems" : "Problem"}
                     </Text>

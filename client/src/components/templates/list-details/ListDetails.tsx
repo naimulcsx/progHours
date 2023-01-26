@@ -24,6 +24,7 @@ import {
   IconDots,
   IconDotsVertical,
   IconEdit,
+  IconFolder,
   IconList,
   IconPlus,
   IconSettings,
@@ -158,9 +159,9 @@ export default function ListDetailsTemplate({
                     <Box>
                       <Accordion
                         multiple
-                        defaultValue={list.collections.map((collection: any) =>
-                          collection.id.toString()
-                        )}
+                        // defaultValue={list.collections.map((collection: any) =>
+                        //   collection.id.toString()
+                        // )}
                       >
                         {list?.collections?.map((collection: any) => {
                           return (
@@ -180,7 +181,10 @@ export default function ListDetailsTemplate({
                               >
                                 <Group position="apart">
                                   <Group>
-                                    <Title order={4}>{collection.name}</Title>{" "}
+                                    <Group>
+                                      <IconFolder size={20} />
+                                      <Title order={4}>{collection.name}</Title>
+                                    </Group>
                                     <Badge
                                       color="blue"
                                       variant="filled"
