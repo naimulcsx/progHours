@@ -149,7 +149,11 @@ export default function GroupDetailsTemplate({
               )}
 
               <Tabs.Panel value="lists" pt="md">
-                <GroupProblemLists groupId={group?.group?.id} problemLists={problemLists} />
+                <GroupProblemLists
+                  isAdmin={group?.isOwner || false}
+                  groupId={group?.group?.id}
+                  problemLists={problemLists}
+                />
               </Tabs.Panel>
 
               <Tabs.Panel value="members" pt="md">

@@ -10,6 +10,7 @@ import {
   UseGuards,
   Req,
   ParseIntPipe,
+  ForbiddenException,
 } from "@nestjs/common"
 import { ListsService } from "./lists.service"
 import { CreateListDto } from "./dto/create-list.dto"
@@ -18,11 +19,15 @@ import { IsAuthenticatedGuard } from "@/guards/is-authenticated"
 import { IsGroupAdminGuard } from "@/guards/is-group-admin/is-group-admin.guard"
 import { CreateCollectionDto } from "./dto/create-collection.dto"
 import { AddProblemsDto } from "./dto/add-problems.dto"
+import { GroupsService } from "../groups/groups.service"
 
 @Controller("lists")
 @UseGuards(IsAuthenticatedGuard)
 export class ListsController {
-  constructor(private readonly listsService: ListsService) {}
+  constructor(
+    private readonly listsService: ListsService,
+    private readonly groupsService: GroupsService
+  ) {}
 
   @Post()
   @UseGuards(IsGroupAdminGuard)
@@ -35,11 +40,16 @@ export class ListsController {
   }
 
   @Get(":id")
-  async findOne(@Param("id") id: string) {
+  async findOne(@Param("id") id: string, @Req() req) {
     const list = await this.listsService.findOne(+id)
+
+    // check if user is allowed to add members
+    const groupOwner = await this.groupsService.isGroupOwner(list.groupId, req.user.id)
+
     return {
       statusCode: HttpStatus.CREATED,
       list,
+      isGroupAdmin: groupOwner,
     }
   }
 

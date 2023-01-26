@@ -3,7 +3,7 @@
  */
 function calculatePoints(obj: any) {
   const { totalSolved: y, totalSolveTime: z, totalDifficulty } = obj
-  const x = totalDifficulty / y
+  const x = totalDifficulty / y || 0
   return (x * y) / 100 + z
 }
 

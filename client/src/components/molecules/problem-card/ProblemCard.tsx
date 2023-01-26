@@ -88,7 +88,8 @@ export default function ProblemCard({ name, link, pid }: ProblemCardProps) {
             </Title>
           </Anchor>
           <Box>
-            <IconCheck color="lime" />
+            {/* <IconCheck color="lime" /> */}
+            <Text size="sm">{name}</Text>
           </Box>
         </Group>
         {/* <Text

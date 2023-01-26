@@ -25,6 +25,7 @@ import {
   IconDotsVertical,
   IconEdit,
   IconList,
+  IconPlus,
   IconSettings,
   IconTrash,
 } from "@tabler/icons"
@@ -39,10 +40,15 @@ import { List } from "~/types/List"
 
 interface ListDetailsTemplateProps {
   list: List
+  isGroupAdmin: boolean
   isLoading: boolean
 }
 
-export default function ListDetailsTemplate({ list, isLoading }: ListDetailsTemplateProps) {
+export default function ListDetailsTemplate({
+  list,
+  isLoading,
+  isGroupAdmin,
+}: ListDetailsTemplateProps) {
   const theme = useMantineTheme()
   const [open, setOpen] = useState(false)
   const [problemModalOpen, setProblemModalOpen] = useState(false)
@@ -85,9 +91,11 @@ export default function ListDetailsTemplate({ list, isLoading }: ListDetailsTemp
           <Box>
             <Group position="apart">
               <Title order={3}>{list?.name}</Title>
-              <Button size="xs" onClick={() => setOpen(true)}>
-                Add collection
-              </Button>
+              {isGroupAdmin && (
+                <Button leftIcon={<IconPlus size={14} />} size="xs" onClick={() => setOpen(true)}>
+                  Add collection
+                </Button>
+              )}
             </Group>
             <Breadcrumbs mt="xs">
               {items.map((item, index) => (
@@ -117,15 +125,17 @@ export default function ListDetailsTemplate({ list, isLoading }: ListDetailsTemp
               <Tabs.Tab value="messages" icon={<IconChartBar size={14} />}>
                 Progress
               </Tabs.Tab>
-              <Tabs.Tab value="settings" icon={<IconSettings size={14} />}>
-                Settings
-              </Tabs.Tab>
+              {isGroupAdmin && (
+                <Tabs.Tab value="settings" icon={<IconSettings size={14} />}>
+                  Settings
+                </Tabs.Tab>
+              )}
             </Tabs.List>
 
             <Tabs.Panel value="gallery">
               <Box sx={{ maxWidth: "1024px", margin: "0 auto" }}>
                 <Paper mt="md" sx={{ overflow: "clip" }}>
-                  {list?.collections?.length === 0 ? (
+                  {list?.collections?.length === 0 && isGroupAdmin ? (
                     <Stack p="xl">
                       <Group>
                         <IconAlertCircle />
@@ -135,7 +145,11 @@ export default function ListDetailsTemplate({ list, isLoading }: ListDetailsTemp
                         </Text>
                       </Group>
                       <Group>
-                        <Button size="xs" onClick={() => setOpen(true)}>
+                        <Button
+                          leftIcon={<IconPlus size={14} />}
+                          size="xs"
+                          onClick={() => setOpen(true)}
+                        >
                           Add collection
                         </Button>
                       </Group>
@@ -177,33 +191,35 @@ export default function ListDetailsTemplate({ list, isLoading }: ListDetailsTemp
                                       {collection?.problems?.length}
                                     </Badge>
                                   </Group>
-                                  <Group>
-                                    <ActionIcon
-                                      component="div"
-                                      color="indigo"
-                                      variant="light"
-                                      onClick={(e) => {
-                                        setCollection(collection)
-                                        e.stopPropagation()
-                                        setProblemModalOpen(true)
-                                        setProblems(collection?.problems)
-                                      }}
-                                    >
-                                      <IconEdit size={14} />
-                                    </ActionIcon>
-                                    <ActionIcon
-                                      component="div"
-                                      color="red"
-                                      variant="light"
-                                      onClick={(e) => {
-                                        setCollection(collection)
-                                        e.stopPropagation()
-                                        setDeleteModalOpen(true)
-                                      }}
-                                    >
-                                      <IconTrash size={14} />
-                                    </ActionIcon>
-                                  </Group>
+                                  {isGroupAdmin && (
+                                    <Group>
+                                      <ActionIcon
+                                        component="div"
+                                        color="indigo"
+                                        variant="light"
+                                        onClick={(e) => {
+                                          setCollection(collection)
+                                          e.stopPropagation()
+                                          setProblemModalOpen(true)
+                                          setProblems(collection?.problems)
+                                        }}
+                                      >
+                                        <IconEdit size={14} />
+                                      </ActionIcon>
+                                      <ActionIcon
+                                        component="div"
+                                        color="red"
+                                        variant="light"
+                                        onClick={(e) => {
+                                          setCollection(collection)
+                                          e.stopPropagation()
+                                          setDeleteModalOpen(true)
+                                        }}
+                                      >
+                                        <IconTrash size={14} />
+                                      </ActionIcon>
+                                    </Group>
+                                  )}
                                 </Group>
                               </Accordion.Control>
                               <Accordion.Panel px="sm">
@@ -244,7 +260,7 @@ export default function ListDetailsTemplate({ list, isLoading }: ListDetailsTemp
             </Tabs.Panel>
 
             <Tabs.Panel value="settings" pt="xs">
-              <ListUpdateForm list={list} />
+              {isGroupAdmin && <ListUpdateForm list={list} />}
             </Tabs.Panel>
           </Tabs>
         </motion.div>

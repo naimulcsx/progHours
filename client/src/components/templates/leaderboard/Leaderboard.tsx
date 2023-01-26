@@ -24,7 +24,7 @@ export default function LeaderboardTemplate({
 }: LeaderboardProps) {
   const { user } = useUser()
   return createElement(
-    user ? DashboardLayout : Box,
+    user ? DashboardLayout : "div",
     null,
     <>
       <Helmet>

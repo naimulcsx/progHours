@@ -8,15 +8,18 @@ import { List } from "~/types/List"
 interface GroupProblemListsProps {
   groupId: number
   problemLists: List[]
+  isAdmin: boolean
 }
 
-export default function GroupProblemLists({ groupId, problemLists }: GroupProblemListsProps) {
+export default function GroupProblemLists({
+  isAdmin,
+  groupId,
+  problemLists,
+}: GroupProblemListsProps) {
   const theme = useMantineTheme()
   const navigate = useNavigate()
   const { slug } = useParams()
   const [open, setOpen] = useState(false)
-
-  console.log(problemLists)
 
   return (
     <Box sx={{ maxWidth: "1024px", margin: "0 auto" }}>
@@ -25,7 +28,7 @@ export default function GroupProblemLists({ groupId, problemLists }: GroupProble
       <Group position="apart" mb="lg">
         <Title order={3}>Problem lists</Title>
 
-        {problemLists.length > 0 && (
+        {problemLists.length > 0 && isAdmin && (
           <Box>
             <Button size="xs" leftIcon={<IconPlus size={14} />} onClick={() => setOpen(true)}>
               Create list
@@ -45,15 +48,18 @@ export default function GroupProblemLists({ groupId, problemLists }: GroupProble
             <Group>
               <IconAlertCircle />
               <Text>
-                Looks like you have no problem list. Consider creating a problem list and add
-                collections.
+                {isAdmin
+                  ? "Looks like you have no problem list. Consider creating a problem list and add collections."
+                  : "Looks like there is no problem list available."}
               </Text>
             </Group>
-            <Group>
-              <Button size="xs" onClick={() => setOpen(true)}>
-                Create list
-              </Button>
-            </Group>
+            {isAdmin && (
+              <Group>
+                <Button size="xs" leftIcon={<IconPlus size={14} />} onClick={() => setOpen(true)}>
+                  Create list
+                </Button>
+              </Group>
+            )}
           </Stack>
         ) : (
           <>

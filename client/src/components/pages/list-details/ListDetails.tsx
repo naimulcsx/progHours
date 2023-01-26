@@ -8,5 +8,12 @@ export default function ListDetailsPage() {
   const listQuery = useQuery(`lists/${listId}`, () =>
     axios.get(`/api/lists/${listId}`).then((res) => res.data)
   )
-  return <ListDetailsTemplate list={listQuery?.data?.list} isLoading={false} />
+
+  return (
+    <ListDetailsTemplate
+      isGroupAdmin={listQuery?.data?.isGroupAdmin}
+      list={listQuery?.data?.list}
+      isLoading={false}
+    />
+  )
 }
