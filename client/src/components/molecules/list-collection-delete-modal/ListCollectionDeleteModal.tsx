@@ -4,15 +4,16 @@ import { useParams } from "react-router-dom"
 import showToast from "~/utils/showToast"
 import { Dispatch, SetStateAction } from "react"
 import axios from "axios"
+import { Collection } from "~/types/Collection"
 
 export interface ListCollectionDeleteModalProps {
-  collectionId: number
+  collection: any
   open: boolean
   setOpen: Dispatch<SetStateAction<boolean>>
 }
 
 export default function ListCollectionDeleteModal({
-  collectionId,
+  collection,
   open,
   setOpen,
 }: ListCollectionDeleteModalProps) {
@@ -28,6 +29,7 @@ export default function ListCollectionDeleteModal({
       },
     }
   )
+
   return (
     <Modal
       lockScroll={false}
@@ -43,7 +45,7 @@ export default function ListCollectionDeleteModal({
         <Button
           color="red"
           onClick={() => {
-            mutate(collectionId)
+            mutate(collection.id)
             setOpen(false)
           }}
         >

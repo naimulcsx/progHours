@@ -11,8 +11,11 @@ import {
   CopyButton,
   Button,
   Select,
+  Stack,
+  Text,
 } from "@mantine/core"
 import {
+  IconAlertCircle,
   IconCalendarEvent,
   IconChartBar,
   IconCopy,

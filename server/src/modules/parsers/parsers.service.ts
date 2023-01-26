@@ -258,7 +258,7 @@ export class ParsersService {
       }
     })
 
-    if (isInvalid) {
+    if (isInvalid || matchedResult.problemId.length > 2) {
       throw new Error("Invalid codeforces link!")
     }
 

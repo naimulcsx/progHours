@@ -197,6 +197,13 @@ export class GroupsService {
     }
     const lists = await this.prisma.list.findMany({
       where: { groupId: group.id },
+      include: {
+        collections: {
+          include: {
+            problems: true,
+          },
+        },
+      },
     })
     return lists
   }

@@ -64,6 +64,10 @@ export class ListsController {
   ) {
     const problemIds = await this.listsService.getProblemIds(addProblemsDto.links)
     await this.listsService.addProblemsToCollection(id, collectionId, problemIds)
+
+    if (addProblemsDto.name)
+      await this.listsService.updateCollection(collectionId, addProblemsDto.name)
+
     return {
       problemIds,
       message: "Problems updated!",
@@ -82,8 +86,8 @@ export class ListsController {
   }
 
   @Patch(":id")
-  update(@Param("id") id: string, @Body() updateListDto: UpdateListDto) {
-    return this.listsService.update(+id, updateListDto)
+  updateList(@Param("id") id: string, @Body() updateListDto: UpdateListDto) {
+    return this.listsService.updateList(+id, updateListDto)
   }
 
   @Get("/:id/progress")
@@ -92,5 +96,10 @@ export class ListsController {
     return {
       ...result,
     }
+  }
+
+  @Delete(":id")
+  removeList(@Param("id") id: string) {
+    return this.listsService.deleteList(+id)
   }
 }

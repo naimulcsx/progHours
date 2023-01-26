@@ -90,8 +90,8 @@ export class ListsService {
     })
   }
 
-  update(id: number, updateListDto: UpdateListDto) {
-    return `This action updates a #${id} list`
+  async updateList(id: number, updateListDto: UpdateListDto) {
+    return await this.prisma.list.update({ where: { id }, data: { ...updateListDto } })
   }
 
   async removeCollection(listId: number, collectionId: number) {
@@ -133,5 +133,14 @@ export class ListsService {
       problems: problems.map((item) => item.problem.pid),
       result,
     }
+  }
+  async updateCollection(collectionId: number, name: string) {
+    await this.prisma.collection.update({ where: { id: collectionId }, data: { name } })
+  }
+
+  async deleteList(listId: number) {
+    await this.prisma.listProblem.deleteMany({ where: { listId } })
+    await this.prisma.collection.deleteMany({ where: { listId } })
+    await this.prisma.list.delete({ where: { id: listId } })
   }
 }

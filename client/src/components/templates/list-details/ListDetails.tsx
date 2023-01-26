@@ -9,6 +9,7 @@ import {
   Breadcrumbs,
   Button,
   Group,
+  Menu,
   Paper,
   Stack,
   Tabs,
@@ -17,16 +18,27 @@ import {
   useMantineTheme,
 } from "@mantine/core"
 import { Link } from "react-router-dom"
-import { IconAlertCircle, IconChartBar, IconEdit, IconList, IconTrash } from "@tabler/icons"
+import {
+  IconAlertCircle,
+  IconChartBar,
+  IconDots,
+  IconDotsVertical,
+  IconEdit,
+  IconList,
+  IconSettings,
+  IconTrash,
+} from "@tabler/icons"
 import { ListCollectionCreateModal, ProblemCard } from "~/components/molecules"
 import { useState } from "react"
 import ListAddProblemsModal from "~/components/molecules/list-add-problems-modal/ListAddProblemsModal"
 import ListCollectionDeleteModal from "~/components/molecules/list-collection-delete-modal/ListCollectionDeleteModal"
 import { ListDetailsPage } from "~/components/pages"
 import ListProgress from "~/components/organisms/list-progress/ListProgress"
+import ListUpdateForm from "~/components/molecules/list-update-form/ListUpdateForm"
+import { List } from "~/types/List"
 
 interface ListDetailsTemplateProps {
-  list: any
+  list: List
   isLoading: boolean
 }
 
@@ -35,7 +47,7 @@ export default function ListDetailsTemplate({ list, isLoading }: ListDetailsTemp
   const [open, setOpen] = useState(false)
   const [problemModalOpen, setProblemModalOpen] = useState(false)
   const [deleteModalOpen, setDeleteModalOpen] = useState(false)
-  const [collectionId, setCollectionId] = useState(0)
+  const [collection, setCollection] = useState()
   const [problems, setProblems] = useState([])
 
   const items = [
@@ -47,18 +59,22 @@ export default function ListDetailsTemplate({ list, isLoading }: ListDetailsTemp
   return (
     <DashboardLayout>
       <ListCollectionCreateModal open={open} setOpen={setOpen} />
-      <ListCollectionDeleteModal
-        open={deleteModalOpen}
-        setOpen={setDeleteModalOpen}
-        collectionId={collectionId}
-      />
+      {collection && (
+        <ListCollectionDeleteModal
+          open={deleteModalOpen}
+          setOpen={setDeleteModalOpen}
+          collection={collection}
+        />
+      )}
 
-      <ListAddProblemsModal
-        open={problemModalOpen}
-        setOpen={setProblemModalOpen}
-        collectionId={collectionId}
-        problems={problems.map((item: any) => item.problem.link)}
-      />
+      {collection && (
+        <ListAddProblemsModal
+          open={problemModalOpen}
+          setOpen={setProblemModalOpen}
+          collection={collection}
+          problems={problems.map((item: any) => item.problem.link)}
+        />
+      )}
 
       {!isLoading && list && (
         <motion.div
@@ -100,6 +116,9 @@ export default function ListDetailsTemplate({ list, isLoading }: ListDetailsTemp
               </Tabs.Tab>
               <Tabs.Tab value="messages" icon={<IconChartBar size={14} />}>
                 Progress
+              </Tabs.Tab>
+              <Tabs.Tab value="settings" icon={<IconSettings size={14} />}>
+                Settings
               </Tabs.Tab>
             </Tabs.List>
 
@@ -164,7 +183,7 @@ export default function ListDetailsTemplate({ list, isLoading }: ListDetailsTemp
                                       color="indigo"
                                       variant="light"
                                       onClick={(e) => {
-                                        setCollectionId(collection.id)
+                                        setCollection(collection)
                                         e.stopPropagation()
                                         setProblemModalOpen(true)
                                         setProblems(collection?.problems)
@@ -177,7 +196,7 @@ export default function ListDetailsTemplate({ list, isLoading }: ListDetailsTemp
                                       color="red"
                                       variant="light"
                                       onClick={(e) => {
-                                        setCollectionId(collection.id)
+                                        setCollection(collection)
                                         e.stopPropagation()
                                         setDeleteModalOpen(true)
                                       }}
@@ -222,6 +241,10 @@ export default function ListDetailsTemplate({ list, isLoading }: ListDetailsTemp
             </Tabs.Panel>
             <Tabs.Panel value="messages" pt="xs">
               <ListProgress />
+            </Tabs.Panel>
+
+            <Tabs.Panel value="settings" pt="xs">
+              <ListUpdateForm list={list} />
             </Tabs.Panel>
           </Tabs>
         </motion.div>
