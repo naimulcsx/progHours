@@ -127,7 +127,7 @@ export default function GroupDetailsTemplate({
                 </Tabs.Tab>
                 {group?.isOwner && (
                   <Tabs.Tab value="progress" icon={<IconCalendarEvent size={14} />}>
-                    Activity Calander
+                    Activity Calender
                   </Tabs.Tab>
                 )}
                 <Tabs.Tab value="lists" icon={<IconUsers size={14} />}>

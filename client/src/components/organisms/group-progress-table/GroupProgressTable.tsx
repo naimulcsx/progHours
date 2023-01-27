@@ -83,7 +83,7 @@ export default function ProgressTable() {
   return (
     <>
       <Group position="apart" align="start" spacing={4} mb="md">
-        <Title order={4}>Activity Calander</Title>
+        <Title order={4}>Activity Calender</Title>
         <DateRangePicker
           placeholder="Pick dates range"
           value={value}
