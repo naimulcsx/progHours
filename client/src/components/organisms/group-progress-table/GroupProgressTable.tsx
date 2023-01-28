@@ -72,14 +72,6 @@ export default function ProgressTable() {
     }
   }, [value])
 
-  const dataArray = Object.keys(progressQuery.data?.data || {})
-    .sort()
-    .map((key) => ({
-      id: key,
-      username: key,
-      list: progressQuery.data?.data[key],
-    }))
-
   return (
     <>
       <Group position="apart" align="start" spacing={4} mb="md">
@@ -112,16 +104,17 @@ export default function ProgressTable() {
               bordered
               horizontalSpacing="xl"
               id="progress-table"
-              data={dataArray || []}
+              data={progressQuery.data?.data || []}
               withPagination
               pageSizes={["10", "15", "25", "50", "100"]}
               initialState={{ pagination: { pageSize: 10 } }}
               columns={[
                 {
-                  header: "Student Id",
+                  header: "Student",
                   accessorKey: "username",
                   cell: (cell) => {
                     const username = cell.getValue() as string
+                    const name = cell.row.original.name as string
                     return (
                       <Anchor
                         component={Link}
@@ -131,11 +124,12 @@ export default function ProgressTable() {
                           color: theme.colorScheme === "dark" ? theme.white : theme.colors.dark[9],
                         }}
                       >
-                        {username.toUpperCase()}
+                        <Text>{name}</Text>
+                        <Text>{username.toUpperCase()}</Text>
                       </Anchor>
                     )
                   },
-                  size: 80,
+                  size: 210,
                 },
                 ...Array(days + 1 || 0)
                   ?.fill(0)
@@ -143,7 +137,7 @@ export default function ProgressTable() {
                     return {
                       id: idx.toString(),
                       header: moment(value[0]).add(idx, "day").format("DD-MM-YYYY"),
-                      accessorKey: "list",
+                      accessorKey: "stats",
                       cell: (cell: any) => {
                         const list = cell.getValue()
                         return (

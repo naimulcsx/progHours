@@ -123,9 +123,11 @@ export class ListsService {
         const submission = await this.prisma.submission.findFirst({
           where: { userId: user.user.id, problemId: problem.problem.id },
         })
-        if (!result[user.user.username]) result[user.user.username] = []
+
+        const key = user.user.username + user.user.name
+        if (!result[key]) result[key] = []
         if (submission) {
-          result[user.user.username].push(problem.problem.pid)
+          result[key].push({ name: user.user.name, pid: problem.problem.pid })
         }
       }
     }

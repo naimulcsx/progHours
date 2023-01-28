@@ -1,4 +1,4 @@
-import { Anchor, Box, useMantineTheme } from "@mantine/core"
+import { Anchor, Box, Text, useMantineTheme } from "@mantine/core"
 import { IconCheck } from "@tabler/icons"
 import axios from "axios"
 import { useQuery } from "react-query"
@@ -69,8 +69,11 @@ export default function ListProgress() {
           {
             header: "Student Id",
             accessorKey: "username",
+            size: 210,
             cell: (cell: any) => {
               const username = cell.getValue() as string
+              const id = username.slice(0, 7)
+              const name = username.slice(7)
               return (
                 <Anchor
                   component={Link}
@@ -80,7 +83,8 @@ export default function ListProgress() {
                     color: theme.colorScheme === "dark" ? theme.white : theme.colors.dark[9],
                   }}
                 >
-                  {username.toUpperCase()}
+                  <Text>{id.toUpperCase()}</Text>
+                  <Text>{name}</Text>
                 </Anchor>
               )
             },

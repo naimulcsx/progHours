@@ -329,14 +329,19 @@ export class StatsService {
       include: { user: true },
     })
 
-    let result: any = {}
+    let results = []
     for (let i = 0; i < groupUsers.length; ++i) {
       if (groupUsers[i].role !== "ADMIN") {
         const val = await this.getProgress(groupUsers[i].userId, fromDate, toDate)
-        result[groupUsers[i].user.username] = val
+        const data = {
+          username: groupUsers[i].user.username,
+          name: groupUsers[i].user.name,
+          stats: val,
+        }
+        results.push(data)
       }
     }
 
-    return result
+    return results
   }
 }

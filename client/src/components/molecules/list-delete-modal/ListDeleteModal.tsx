@@ -10,8 +10,6 @@ const ListDeleteModal = ({ isOpen, setIsOpen, list }: ListDeleteModalProps) => {
   const client = useQueryClient()
   const navigate = useNavigate()
 
-  console.log(list)
-
   // list mutation
   const { mutateAsync } = useMutation(deleteList, {
     onSuccess: () => {
