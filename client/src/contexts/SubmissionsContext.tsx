@@ -9,9 +9,7 @@ export const SubmissionsContext = createContext<
 >(undefined)
 
 export default function SubmissionsProvider({ children }: { children?: ReactNode }) {
-  const { data } = useQuery("submissions", getSubmissions, {
-    refetchOnWindowFocus: false,
-  })
+  const { data } = useQuery("submissions", getSubmissions)
   return (
     <SubmissionsContext.Provider value={{ submissions: data?.body.submissions }}>
       {children}
