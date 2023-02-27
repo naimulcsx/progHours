@@ -64,13 +64,15 @@ export default function ProgressTable() {
   ])
 
   const days = moment(value[1]).diff(moment(value[0]), "days")
-  const progressQuery = useQuery(`groups/${slug}/progress`, () => getProgress(slug || "", value))
+  const progressQuery = useQuery(`groups/${slug}/progress`, () => getProgress(slug || "", value), {
+    refetchOnWindowFocus: false,
+  })
 
-  // useEffect(() => {
-  //   if (value[0] && value[1]) {
-  //     progressQuery.refetch()
-  //   }
-  // }, [value])
+  useEffect(() => {
+    if (value[0] && value[1]) {
+      progressQuery.refetch()
+    }
+  }, [value])
 
   return (
     <>

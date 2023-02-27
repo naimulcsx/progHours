@@ -4,7 +4,9 @@ import { useState, useEffect } from "react"
 import { useQuery } from "react-query"
 
 function useSubmissions() {
-  const query = useQuery("submissions", getSubmissions)
+  const query = useQuery("submissions", getSubmissions, {
+    refetchOnWindowFocus: false,
+  })
   let [filteredData, setFilteredData] = useState([])
 
   /**
