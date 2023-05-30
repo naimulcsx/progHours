@@ -2,7 +2,7 @@ import Axios, { InternalAxiosRequestConfig } from "axios";
 import storage from "./storage";
 
 export const axios = Axios.create({
-  baseURL: "http://localhost:3000"
+  baseURL: "http://localhost:3333"
 });
 
 axios.interceptors.request.use((config: InternalAxiosRequestConfig) => {
