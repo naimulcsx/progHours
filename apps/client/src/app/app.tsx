@@ -1,6 +1,6 @@
-import { Button, MantineProvider } from '@mantine/core';
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { Link, Route, Routes } from 'react-router-dom';
+import { Button, MantineProvider } from "@mantine/core";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { Link, Route, Routes } from "react-router-dom";
 
 const queryClient = new QueryClient();
 
@@ -14,7 +14,7 @@ export function App() {
               path="/"
               element={
                 <div>
-                  progHours{' '}
+                  progHours{" "}
                   <Button variant="subtle" component={Link} to="/page-2">
                     Click here for page 2.
                   </Button>

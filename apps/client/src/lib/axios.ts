@@ -1,8 +1,8 @@
-import Axios, { InternalAxiosRequestConfig } from 'axios';
-import storage from './storage';
+import Axios, { InternalAxiosRequestConfig } from "axios";
+import storage from "./storage";
 
 export const axios = Axios.create({
-  baseURL: 'http://localhost:3000',
+  baseURL: "http://localhost:3000"
 });
 
 axios.interceptors.request.use((config: InternalAxiosRequestConfig) => {
@@ -10,7 +10,7 @@ axios.interceptors.request.use((config: InternalAxiosRequestConfig) => {
   if (token) {
     config.headers.authorization = `Bearer ${token}`;
   }
-  config.headers.Accept = 'application/json';
+  config.headers.Accept = "application/json";
   return config;
 });
 

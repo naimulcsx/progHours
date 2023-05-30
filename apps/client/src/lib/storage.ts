@@ -1,4 +1,4 @@
-const storagePrefix = 'ph__';
+const storagePrefix = "ph__";
 
 type Token = {
   accessToken: string;
@@ -18,7 +18,7 @@ const storage = {
   },
   clearToken: () => {
     window.localStorage.removeItem(`${storagePrefix}token`);
-  },
+  }
 };
 
 export default storage;
