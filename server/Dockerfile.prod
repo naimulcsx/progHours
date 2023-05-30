@@ -1,8 +1,0 @@
-FROM node:16.13.0-alpine
-WORKDIR /usr/src/app
-COPY package.json ./
-RUN yarn
-COPY . .
-RUN yarn generate
-RUN yarn build
-CMD [ "node", "dist/src/main.js" ]

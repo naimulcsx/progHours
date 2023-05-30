@@ -1,0 +1,14 @@
+{
+  "name": "@prog-hours/source",
+  "version": "0.3.0",
+  "license": "MIT",
+  "scripts": {
+  },
+  "private": true,
+  "dependencies": {
+  },
+  "devDependencies": {
+    "nx": "16.2.2",
+    "@nx/workspace": "16.2.2"
+  }
+}
