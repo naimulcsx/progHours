@@ -5,7 +5,11 @@
     "esModuleInterop": false,
     "allowSyntheticDefaultImports": true,
     "strict": false,
-    "types": ["vite/client", "vitest"]
+    "types": ["vite/client", "vitest"],
+    "baseUrl": ".",
+    "paths": {
+      "~/*": ["./src/*"]
+    }
   },
   "files": [],
   "include": [],
