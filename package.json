@@ -4,6 +4,7 @@
   "license": "MIT",
   "scripts": {
     "prepare": "husky install",
+    "db:migrate": "env-cmd -f ./apps/api/.env.local prisma migrate dev --schema=./apps/api/prisma/schema.prisma",
     "dev": "nx run-many --target=serve --all"
   },
   "private": true,
@@ -19,6 +20,7 @@
     "@nestjs/config": "^2.3.2",
     "@nestjs/core": "^9.1.1",
     "@nestjs/platform-express": "^9.1.1",
+    "@prisma/client": "4.15.0",
     "@swc/helpers": "~0.5.0",
     "@tanstack/react-query": "^4.29.12",
     "axios": "^1.4.0",
@@ -26,6 +28,7 @@
     "class-validator": "^0.14.0",
     "dayjs": "^1.11.7",
     "joi": "^17.9.2",
+    "prisma": "^4.15.0",
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "react-router-dom": "6.8.1",
@@ -65,6 +68,7 @@
     "@vitest/ui": "^0.31.0",
     "commitizen": "^4.3.0",
     "cz-conventional-changelog": "^3.3.0",
+    "env-cmd": "^10.1.0",
     "eslint": "~8.15.0",
     "eslint-config-prettier": "8.1.0",
     "eslint-plugin-import": "2.27.5",

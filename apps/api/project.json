@@ -4,6 +4,14 @@
   "sourceRoot": "apps/api/src",
   "projectType": "application",
   "targets": {
+    "prisma": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "prisma",
+        "cwd": "apps/api",
+        "color": true
+      }
+    },
     "build": {
       "executor": "@nx/webpack:webpack",
       "outputs": ["{options.outputPath}"],
