@@ -1,0 +1,18 @@
+version: "3.7"
+services:
+  postgres:
+    image: postgres:latest
+    restart: always
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=proghours
+    ports:
+      - "5432:5432"
+    volumes:
+      - /var/lib/postgresql/data
+  adminer:
+    image: adminer
+    restart: always
+    ports:
+      - 8080:8080
