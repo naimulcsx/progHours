@@ -48,7 +48,7 @@ export class AuthService {
   async signIn(signInDto: SignInDto) {
     const user = await this.prisma.user.findUnique({
       where: {
-        username: signInDto.username
+        username: signInDto.username.toLowerCase()
       }
     });
     if (!user) {
