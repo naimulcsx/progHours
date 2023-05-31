@@ -21,6 +21,10 @@ async function bootstrap() {
     .setTitle("progHours")
     .setDescription("progHours API documentation")
     .setVersion("0.3.0")
+    .addBearerAuth(
+      { type: "http", scheme: "bearer", bearerFormat: "JWT" },
+      "JWT"
+    )
     .build();
 
   const document = SwaggerModule.createDocument(app, config);
@@ -28,7 +32,7 @@ async function bootstrap() {
 
   SwaggerModule.setup("api/docs", app, document, {
     customSiteTitle: "progHours - API Docs",
-    customCss: theme.getBuffer("feeling-blue")
+    customCss: theme.getBuffer("flattop")
   });
 
   await app.listen(port);
