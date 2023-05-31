@@ -1056,7 +1056,7 @@
     "@babel/types" "^7.4.4"
     esutils "^2.0.2"
 
-"@babel/preset-react@^7.18.6":
+"@babel/preset-react@^7.14.5", "@babel/preset-react@^7.18.6":
   version "7.22.3"
   resolved "https://registry.yarnpkg.com/@babel/preset-react/-/preset-react-7.22.3.tgz#2ec7f91d0c924fa2ea0c7cfbbf690bc62b79cd84"
   integrity sha512-lxDz1mnZ9polqClBCVBjIVUypoB4qV3/tZUDb/IlYbW1kiiLaXaX+bInbRjl+lNQ/iUZraQ3+S8daEmoELMWug==
