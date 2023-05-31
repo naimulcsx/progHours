@@ -48,7 +48,7 @@ export class AuthService {
   async signIn(signInDto: SignInDto) {
     const user = await this.prisma.user.findUnique({
       where: {
-        email: signInDto.email
+        username: signInDto.username
       }
     });
     if (!user) {
@@ -59,7 +59,7 @@ export class AuthService {
       user.password
     );
     if (!isEqual) {
-      throw new UnauthorizedException();
+      throw new UnauthorizedException("Invalid UID or password");
     }
     const tokens = await this.generateTokens(user);
     return tokens;
