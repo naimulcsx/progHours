@@ -52,7 +52,7 @@ export class AuthService {
       }
     });
     if (!user) {
-      throw new UnauthorizedException();
+      throw new UnauthorizedException("Invalid UID or password");
     }
     const isEqual = await this.hashingService.compare(
       signInDto.password,

@@ -11,7 +11,8 @@ datasource db {
 }
 
 enum Role {
-  USER
+  DEMO
+  REGULAR
   MENTOR
   ADMIN
 }
@@ -23,7 +24,7 @@ model User {
   username  String   @unique
   password  String
   phone     String?
-  role      Role     @default(USER)
+  role      Role     @default(REGULAR)
   lastSeen  DateTime @default(now()) @map("last_seen") @db.Timestamptz()
   createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz()
   updatedAt DateTime @default(now()) @map("updated_at") @db.Timestamptz()

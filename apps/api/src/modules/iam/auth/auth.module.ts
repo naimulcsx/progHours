@@ -4,11 +4,12 @@ import { AuthController } from "./auth.controller";
 import { HashingService } from "./hashing/hashing.service";
 import { BcryptService } from "./hashing/bcrypt.service";
 import { JwtModule } from "@nestjs/jwt";
-import jwtConfig from "./config/jwt.config";
 import { ConfigModule } from "@nestjs/config";
 import { APP_GUARD } from "@nestjs/core";
 import { AccessTokenGuard } from "./guards/access-token.guard";
 import { AuthenticationGuard } from "./guards/authentication.guard";
+import { RolesGuard } from "./guards/roles.guard";
+import jwtConfig from "./config/jwt.config";
 
 @Module({
   imports: [
@@ -18,10 +19,11 @@ import { AuthenticationGuard } from "./guards/authentication.guard";
   providers: [
     { provide: HashingService, useClass: BcryptService },
     /**
-     * Global access token guard that applies to all routes
+     * Global access token and roles guard that applies to all routes
      * Learn more: https://docs.nestjs.com/guards#binding-guards
      */
     { provide: APP_GUARD, useClass: AuthenticationGuard },
+    { provide: APP_GUARD, useClass: RolesGuard },
     AccessTokenGuard,
     AuthService
   ],

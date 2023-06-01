@@ -20,7 +20,7 @@ import {
   ApiTags,
   ApiUnauthorizedResponse
 } from "@nestjs/swagger";
-import { User, UserJwtPayload } from "./decorators/user.decorator";
+import { User, ActiveUserData } from "./decorators/user.decorator";
 
 @ApiTags("Auth")
 @Auth(AuthType.None)
@@ -38,7 +38,7 @@ export class AuthController {
   @ApiUnauthorizedResponse({
     description: "No active user"
   })
-  async getUser(@User() user: UserJwtPayload) {
+  async getUser(@User() user: ActiveUserData) {
     return user;
   }
 
