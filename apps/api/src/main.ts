@@ -3,7 +3,7 @@
  * This is only a minimal backend to get started.
  */
 
-import { Logger, ValidationPipe } from "@nestjs/common";
+import { Logger, ValidationPipe, VersioningType } from "@nestjs/common";
 import { NestFactory } from "@nestjs/core";
 import { SwaggerModule, DocumentBuilder } from "@nestjs/swagger";
 import { SwaggerTheme } from "swagger-themes";
@@ -15,7 +15,10 @@ async function bootstrap() {
   const globalPrefix = "api";
   app.setGlobalPrefix(globalPrefix);
   app.useGlobalPipes(new ValidationPipe());
-  const port = process.env.PORT || 3000;
+  app.enableVersioning({
+    type: VersioningType.URI,
+    defaultVersion: "1"
+  });
 
   const config = new DocumentBuilder()
     .setTitle("progHours")
@@ -35,6 +38,7 @@ async function bootstrap() {
     customCss: theme.getBuffer("flattop")
   });
 
+  const port = process.env.PORT || 3000;
   await app.listen(port);
 
   Logger.log(
