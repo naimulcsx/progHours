@@ -3,6 +3,7 @@ import { ConfigModule } from "@nestjs/config";
 import appConfig from "~/config/app.config";
 import { PrismaModule } from "~/modules/prisma/prisma.module";
 import { AuthModule } from "~/modules/iam/auth/auth.module";
+import { UsersModule } from "~/modules/iam/users/users.module";
 import Joi from "joi";
 
 @Module({
@@ -18,7 +19,8 @@ import Joi from "joi";
       })
     }),
     PrismaModule,
-    AuthModule
+    AuthModule,
+    UsersModule
   ],
   controllers: [],
   providers: []

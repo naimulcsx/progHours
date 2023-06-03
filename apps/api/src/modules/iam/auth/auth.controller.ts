@@ -1,17 +1,9 @@
-import {
-  Body,
-  Controller,
-  Get,
-  HttpCode,
-  HttpStatus,
-  Post
-} from "@nestjs/common";
+import { Body, Controller, HttpCode, HttpStatus, Post } from "@nestjs/common";
 import { SignUpDto } from "./dto/sign-up.dto";
 import { AuthService } from "./auth.service";
 import { SignInDto } from "./dto/sign-in.dto";
 import { Auth, AuthType } from "./decorators/auth.decorator";
 import {
-  ApiBearerAuth,
   ApiBody,
   ApiConflictResponse,
   ApiCreatedResponse,
@@ -20,27 +12,12 @@ import {
   ApiTags,
   ApiUnauthorizedResponse
 } from "@nestjs/swagger";
-import { User, ActiveUserData } from "./decorators/user.decorator";
 
 @ApiTags("Auth")
 @Auth(AuthType.None)
 @Controller("auth")
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
-
-  @Get("me")
-  @Auth(AuthType.Bearer)
-  @ApiOperation({ summary: "Current user" })
-  @ApiBearerAuth("JWT")
-  @ApiOkResponse({
-    description: "Active user"
-  })
-  @ApiUnauthorizedResponse({
-    description: "No active user"
-  })
-  async getUser(@User() user: ActiveUserData) {
-    return user;
-  }
 
   @Post("sign-up")
   @ApiOperation({ summary: "User sign up" })
