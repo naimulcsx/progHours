@@ -1,5 +1,13 @@
 import { ApiProperty } from "@nestjs/swagger";
-import { IsEmail, IsString, Matches, MinLength } from "class-validator";
+import {
+  IsEmail,
+  IsOptional,
+  IsString,
+  Matches,
+  MinLength
+} from "class-validator";
+import IsJsonObject from "../decorators/isJsonObject";
+import { Prisma } from "@prisma/client";
 
 export class CreateUserDto {
   @ApiProperty({
@@ -31,4 +39,18 @@ export class CreateUserDto {
   })
   @MinLength(8)
   password: string;
+
+  @ApiProperty({
+    description: "User metadata",
+    required: false,
+    example: {
+      department: "Computer Science and Engineering",
+      section: "BM",
+      batch: 46,
+      cgpa: 3.67
+    }
+  })
+  @IsJsonObject()
+  @IsOptional()
+  metaData?: Prisma.InputJsonObject;
 }

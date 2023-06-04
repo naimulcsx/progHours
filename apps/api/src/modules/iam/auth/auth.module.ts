@@ -27,6 +27,7 @@ import jwtConfig from "./config/jwt.config";
     AccessTokenGuard,
     AuthService
   ],
-  controllers: [AuthController]
+  controllers: [AuthController],
+  exports: [{ provide: HashingService, useClass: BcryptService }]
 })
 export class AuthModule {}
