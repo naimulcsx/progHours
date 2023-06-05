@@ -5,6 +5,7 @@ import { PrismaModule } from "~/modules/prisma/prisma.module";
 import { AuthModule } from "~/modules/iam/auth/auth.module";
 import { UsersModule } from "~/modules/iam/users/users.module";
 import Joi from "joi";
+import { ParserModule } from "~/modules/parser/parser.module";
 
 @Module({
   imports: [
@@ -20,7 +21,8 @@ import Joi from "joi";
     }),
     PrismaModule,
     AuthModule,
-    UsersModule
+    UsersModule,
+    ParserModule
   ],
   controllers: [],
   providers: []

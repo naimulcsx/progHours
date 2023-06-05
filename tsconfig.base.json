@@ -14,7 +14,9 @@
     "skipLibCheck": true,
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
-    "paths": {}
+    "paths": {
+      "@proghours/oj-problem-parser": ["libs/oj-problem-parser/src/index.ts"]
+    }
   },
   "exclude": ["node_modules", "tmp"]
 }

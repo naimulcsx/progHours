@@ -14,7 +14,10 @@
     "esModuleInterop": true,
     "baseUrl": ".",
     "paths": {
-      "~/*": ["./src/*"]
+      "~/*": ["./src/*"],
+      "@proghours/oj-problem-parser": [
+        "../../libs/oj-problem-parser/src/index.ts"
+      ]
     }
   }
 }
