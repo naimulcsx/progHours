@@ -159,7 +159,7 @@ export class CodeforcesParser extends OJParser<CfUrlParams> {
         /**
          * i.e Forcing to trigger the catch block, because the problem is not found in the response
          */
-      } catch {
+      } catch (err) {
         /**
          * Case 1: Valid pattern but wrong problemId, for example problem `Z` would less likely
          * to exist in Codeforces rounds. e.g https://codeforces.com/contest/1616/problem/Z
@@ -174,7 +174,7 @@ export class CodeforcesParser extends OJParser<CfUrlParams> {
          * Case 3: Other axios errors
          * ? This error is thrown by axios
          */
-        throw new Error("Invalid Codeforces URL");
+        throw new Error("Invalid Codeforces problem");
       }
     }
   }

@@ -8,11 +8,7 @@ describe("OJProblemParser", () => {
     parser = new OJProblemParser();
   });
 
-  it("should have parse method", () => {
-    expect(parser.parse).toBeDefined();
-  });
-
-  it("codeforces problemset link: 1826B", async () => {
+  it("should parse codeforces problem - 1826B (problemset link)", async () => {
     const result = await parser.parse(
       "https://codeforces.com/problemset/problem/1826/B"
     );
@@ -26,7 +22,7 @@ describe("OJProblemParser", () => {
     expect(result).toEqual(expectedResult);
   });
 
-  it("codeforces contest link: 1826B", async () => {
+  it("should parse codeforces problem - 1826C (contest link)", async () => {
     const result = await parser.parse(
       "https://codeforces.com/contest/1826/problem/C"
     );
@@ -40,7 +36,7 @@ describe("OJProblemParser", () => {
     expect(result).toEqual(expectedResult);
   });
 
-  it("codeforces group link: 219158A", async () => {
+  it("should parse codeforces problem - 219158A (group link)", async () => {
     const result = await parser.parse(
       "https://codeforces.com/group/MWSDmqGsZm/contest/219158/problem/A"
     );
@@ -52,5 +48,79 @@ describe("OJProblemParser", () => {
       url: "https://codeforces.com/group/MWSDmqGsZm/contest/219158/problem/A"
     };
     expect(result).toEqual(expectedResult);
+  });
+
+  it("should parse codeforces problem - 219158B (group link and without https)", async () => {
+    const result = await parser.parse(
+      "http://codeforces.com/group/MWSDmqGsZm/contest/219158/problem/B"
+    );
+    const expectedResult: ParseResult = {
+      pid: "CF-219158B",
+      name: "Basic Data Types",
+      difficulty: 0,
+      tags: [],
+      url: "https://codeforces.com/group/MWSDmqGsZm/contest/219158/problem/B"
+    };
+    expect(result).toEqual(expectedResult);
+  });
+
+  it("should parse codeforces problem - 1826D (with www in the url)", async () => {
+    const result = await parser.parse(
+      "https://www.codeforces.com/problemset/problem/1826/D"
+    );
+    const expectedResult: ParseResult = {
+      pid: "CF-1826D",
+      name: "Running Miles",
+      difficulty: 2000,
+      tags: ["brute force", "dp", "greedy"],
+      url: "https://codeforces.com/contest/1826/problem/D"
+    };
+    expect(result).toEqual(expectedResult);
+  });
+
+  it("should parse codeforces problem - 1826E (without https and www in the url)", async () => {
+    const result = await parser.parse(
+      "http://www.codeforces.com/problemset/problem/1826/E"
+    );
+    const expectedResult: ParseResult = {
+      pid: "CF-1826E",
+      name: "Walk the Runway",
+      difficulty: 2500,
+      tags: [
+        "bitmasks",
+        "brute force",
+        "data structures",
+        "dp",
+        "graphs",
+        "implementation",
+        "sortings"
+      ],
+      url: "https://codeforces.com/contest/1826/problem/E"
+    };
+    expect(result).toEqual(expectedResult);
+  });
+
+  it("should throw an error if there is any typo on the url", async () => {
+    try {
+      await parser.parse("https://codeforcess.com/problemset/problem/1826/E");
+    } catch (err) {
+      expect(err).toBeInstanceOf(Error);
+    }
+  });
+
+  it("should throw an error if the problem does not exist (eg. 1826Z)", async () => {
+    try {
+      await parser.parse("https://codeforces.com/problemset/problem/1826/Z");
+    } catch (err) {
+      expect(err).toBeInstanceOf(Error);
+    }
+  });
+
+  it("should throw an error if the contest is invalid (eg. 182699Z)", async () => {
+    try {
+      await parser.parse("https://codeforces.com/problemset/problem/182699/A");
+    } catch (err) {
+      expect(err).toBeInstanceOf(Error);
+    }
   });
 });
