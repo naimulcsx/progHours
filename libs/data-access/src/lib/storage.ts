@@ -4,7 +4,7 @@ type Token = {
   accessToken: string;
 };
 
-const storage = {
+export const storage = {
   getToken: () => {
     return JSON.parse(
       window.localStorage.getItem(`${storagePrefix}token`) as string
@@ -20,5 +20,3 @@ const storage = {
     window.localStorage.removeItem(`${storagePrefix}token`);
   }
 };
-
-export default storage;
