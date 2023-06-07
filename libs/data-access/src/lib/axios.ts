@@ -23,6 +23,11 @@ axios.interceptors.response.use(
   },
   (error) => {
     if (error instanceof AxiosError) {
+      if (error?.response?.status === 417) {
+        storage.clearToken();
+        window.location.reload();
+        return;
+      }
       notifications.show({
         icon: React.createElement(IconAlertCircle),
         color: "red",

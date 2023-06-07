@@ -13,10 +13,12 @@ import {
 import { Helmet } from "react-helmet-async";
 import { z } from "zod";
 import { useForm, zodResolver } from "@mantine/form";
-import { IconAt, IconLock } from "@tabler/icons-react";
-import { Link } from "react-router-dom";
+import { IconAt, IconLock, IconCheck } from "@tabler/icons-react";
+import { Link, useNavigate } from "react-router-dom";
 import { AppLogo } from "~/assets/AppLogo";
 import { Footer } from "~/components/common/Footer";
+import { storage, useLoginMutation } from "@proghours/data-access";
+import { notifications } from "@mantine/notifications";
 
 const signInSchema = z.object({
   username: z
@@ -29,6 +31,21 @@ const signInSchema = z.object({
 type SignInSchema = z.infer<typeof signInSchema>;
 
 export default function SignInPage() {
+  const navigate = useNavigate();
+  const { mutate } = useLoginMutation({
+    config: {
+      onSuccess: (res) => {
+        storage.setToken({ accessToken: res.accessToken });
+        notifications.show({
+          icon: <IconCheck />,
+          color: "green",
+          title: "Success",
+          message: "Successfully logged in!"
+        });
+        navigate("/");
+      }
+    }
+  });
   const theme = useMantineTheme();
   const form = useForm<SignInSchema>({
     initialValues: {
@@ -74,7 +91,7 @@ export default function SignInPage() {
             </Box>
             <form
               onSubmit={form.onSubmit((values) => {
-                console.log(values);
+                mutate(values);
               })}
             >
               <Stack>

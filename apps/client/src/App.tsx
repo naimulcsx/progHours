@@ -1,15 +1,17 @@
 import { Box, MantineProvider, useMantineTheme } from "@mantine/core";
+import { Notifications } from "@mantine/notifications";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { useRoutes } from "react-router-dom";
 import theme from "~/styles/theme";
 import { getRoutes } from "./routes";
+import { useUser } from "./hooks/useUser";
 
 const queryClient = new QueryClient();
 
 function Entry() {
+  const { user } = useUser();
   const theme = useMantineTheme();
-  const isLoggedIn = false;
-  const page = useRoutes(getRoutes(isLoggedIn));
+  const page = useRoutes(getRoutes(!!user));
   return (
     <Box
       component="main"
@@ -31,6 +33,7 @@ export function App() {
     <QueryClientProvider client={queryClient}>
       <MantineProvider withGlobalStyles withNormalizeCSS theme={theme}>
         <Entry />
+        <Notifications position="top-right" />
       </MantineProvider>
     </QueryClientProvider>
   );

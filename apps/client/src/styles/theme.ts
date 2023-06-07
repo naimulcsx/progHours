@@ -8,6 +8,7 @@ import {
   TextProps,
   TitleProps
 } from "@mantine/core";
+import { NotificationProps } from "@mantine/notifications";
 
 const getTitleDefaultProps = (theme: MantineTheme): TitleProps => ({
   color: theme.colors.dark[9]
@@ -49,6 +50,24 @@ const getPasswordInputDefaultProps = (
   }
 });
 
+const getNotificationDefaultProps = (
+  theme: MantineTheme
+): Omit<NotificationProps, "message"> => ({
+  styles: {
+    root: {
+      boxShadow: theme.shadows.xs
+      // border: `1px solid ${theme.colors.gray[2]}`
+    },
+    title: {
+      fontWeight: 600,
+      color: theme.colors.dark[9]
+    },
+    description: {
+      color: theme.colors.dark[4]
+    }
+  }
+});
+
 const theme: MantineThemeOverride = {
   defaultRadius: "md",
   fontFamily: "Manrope, sans-serif",
@@ -58,7 +77,8 @@ const theme: MantineThemeOverride = {
     Button: { defaultProps: getButtonDefaultProps },
     Anchor: { defaultProps: getAnchorDefaultProps },
     TextInput: { defaultProps: getTextInputDefaultProps },
-    PasswordInputProps: { defaultProps: getPasswordInputDefaultProps }
+    PasswordInputProps: { defaultProps: getPasswordInputDefaultProps },
+    Notification: { defaultProps: getNotificationDefaultProps }
   },
   colors: {
     blue: [
