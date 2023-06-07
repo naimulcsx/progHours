@@ -4,6 +4,21 @@
   "sourceRoot": "apps/api/src",
   "projectType": "application",
   "targets": {
+    "build-captain": {
+      "executor": "nx:run-commands",
+      "options": {
+        "commands": ["nx build api", "ts-node scripts/build-captain-api.ts"],
+        "parallel": false
+      }
+    },
+    "prisma": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "prisma",
+        "cwd": "apps/api",
+        "color": true
+      }
+    },
     "build": {
       "executor": "@nx/webpack:webpack",
       "outputs": ["{options.outputPath}"],
@@ -16,7 +31,8 @@
         "tsConfig": "apps/api/tsconfig.app.json",
         "assets": ["apps/api/src/assets"],
         "isolatedConfig": true,
-        "webpackConfig": "apps/api/webpack.config.js"
+        "webpackConfig": "apps/api/webpack.config.js",
+        "generatePackageJson": true
       },
       "configurations": {
         "development": {},
