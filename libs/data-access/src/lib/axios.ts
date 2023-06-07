@@ -1,8 +1,8 @@
 import Axios, { InternalAxiosRequestConfig } from "axios";
-import storage from "./storage";
+import { storage } from "./storage";
 
 export const axios = Axios.create({
-  baseURL: "http://localhost:3333"
+  baseURL: "https://proghours.com/api"
 });
 
 axios.interceptors.request.use((config: InternalAxiosRequestConfig) => {

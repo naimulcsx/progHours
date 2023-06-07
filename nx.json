@@ -33,7 +33,7 @@
       "!{projectRoot}/.eslintrc.json",
       "!{projectRoot}/jest.config.[jt]s"
     ],
-    "sharedGlobals": []
+    "sharedGlobals": ["{workspaceRoot}/babel.config.json"]
   },
   "generators": {
     "@nx/react": {
@@ -48,7 +48,8 @@
       },
       "library": {
         "style": "css",
-        "linter": "eslint"
+        "linter": "eslint",
+        "unitTestRunner": "none"
       }
     }
   }

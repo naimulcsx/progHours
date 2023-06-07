@@ -8,7 +8,8 @@
     "types": ["vite/client", "vitest"],
     "baseUrl": ".",
     "paths": {
-      "~/*": ["./src/*"]
+      "~/*": ["./src/*"],
+      "@proghours/data-access": ["../../libs/data-access/src/index.ts"]
     }
   },
   "files": [],
