@@ -1,7 +1,14 @@
-import { Box } from "@mantine/core";
+import { Box, Button } from "@mantine/core";
 import { useActiveUser } from "@proghours/data-access";
+import { useLogout } from "~/hooks/useLogout";
 
 export default function HomePage() {
   const { data } = useActiveUser();
-  return <Box>{JSON.stringify(data, null, 2)}</Box>;
+  const { handleLogout } = useLogout();
+  return (
+    <Box>
+      <Button onClick={handleLogout}>Log out</Button>
+      <pre>{JSON.stringify(data, null, 2)}</pre>
+    </Box>
+  );
 }
