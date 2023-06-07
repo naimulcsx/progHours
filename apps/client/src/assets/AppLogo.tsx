@@ -4,6 +4,7 @@ import {
   GroupProps,
   Text,
   Title,
+  TitleOrder,
   useMantineTheme
 } from "@mantine/core";
 import { SVGProps } from "react";
@@ -84,8 +85,23 @@ export function AppIcon(props: SVGProps<SVGSVGElement>) {
   );
 }
 
-export function AppLogo(props: GroupProps) {
+export function AppLogo({
+  size = "md",
+  ...props
+}: GroupProps & { size?: "sm" | "md" }) {
   const theme = useMantineTheme();
+  const styles = {
+    sm: {
+      logoSize: 28,
+      textSize: "10px",
+      titleOrder: 5
+    },
+    md: {
+      logoSize: 40,
+      textSize: "xs",
+      titleOrder: 3
+    }
+  };
   return (
     <Group
       spacing="sm"
@@ -95,10 +111,10 @@ export function AppLogo(props: GroupProps) {
       }}
       {...props}
     >
-      <AppIcon width={40} height={40} />
+      <AppIcon width={styles[size].logoSize} height={styles[size].logoSize} />
       <Box>
         <Title
-          order={3}
+          order={styles[size].titleOrder as TitleOrder}
           sx={{
             color:
               theme.colorScheme === "dark" ? theme.white : theme.colors.blue[5]
@@ -107,7 +123,7 @@ export function AppLogo(props: GroupProps) {
           progHours
         </Title>
         <Text
-          size="xs"
+          size={styles[size].textSize}
           sx={{
             color:
               theme.colorScheme === "dark" ? theme.white : theme.colors.blue[5]

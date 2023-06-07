@@ -16,6 +16,7 @@ import { useForm, zodResolver } from "@mantine/form";
 import { IconAt, IconLock } from "@tabler/icons-react";
 import { Link } from "react-router-dom";
 import { AppLogo } from "~/assets/AppLogo";
+import { Footer } from "~/components/common/Footer";
 
 const signInSchema = z.object({
   username: z
@@ -46,7 +47,7 @@ export default function SignInPage() {
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
-          minHeight: "100vh"
+          height: "calc(100vh - 56px)"
         }}
       >
         <Paper
@@ -102,6 +103,7 @@ export default function SignInPage() {
           </Stack>
         </Paper>
       </Box>
+      <Footer />
     </>
   );
 }

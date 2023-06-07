@@ -12,6 +12,7 @@ function Entry() {
   const page = useRoutes(getRoutes(isLoggedIn));
   return (
     <Box
+      component="main"
       sx={{
         minHeight: "100vh",
         background:
@@ -20,7 +21,7 @@ function Entry() {
             : theme.colors.gray[0]
       }}
     >
-      <main>{page}</main>
+      {page}
     </Box>
   );
 }

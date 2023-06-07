@@ -16,6 +16,7 @@ import { useForm, zodResolver } from "@mantine/form";
 import { IconUser, IconMail, IconAt, IconLock } from "@tabler/icons-react";
 import { Link } from "react-router-dom";
 import { AppLogo } from "~/assets/AppLogo";
+import { Footer } from "~/components/common/Footer";
 
 const signUpSchema = z.object({
   fullName: z.string().trim().min(1, "Name is required"),
@@ -50,7 +51,7 @@ export default function SignUpPage() {
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
-          minHeight: "100vh"
+          minHeight: "calc(100vh - 56px)"
         }}
       >
         <Paper
@@ -120,6 +121,7 @@ export default function SignUpPage() {
           </Stack>
         </Paper>
       </Box>
+      <Footer />
     </>
   );
 }

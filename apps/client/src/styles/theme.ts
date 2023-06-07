@@ -3,6 +3,8 @@ import {
   ButtonProps,
   MantineTheme,
   MantineThemeOverride,
+  PasswordInputProps,
+  TextInputProps,
   TextProps,
   TitleProps
 } from "@mantine/core";
@@ -12,12 +14,12 @@ const getTitleDefaultProps = (theme: MantineTheme): TitleProps => ({
 });
 
 const getTextDefaultProps = (theme: MantineTheme): TextProps => ({
-  color: theme.colors.dark[7]
+  color: theme.colors.dark[4]
 });
 
 const getButtonDefaultProps = (theme: MantineTheme): ButtonProps => ({
   sx: {
-    fontWeight: 500,
+    fontWeight: 600,
     background: theme.colors.blue[5],
     "&:hover": {
       background: theme.colors.blue[6]
@@ -26,20 +28,37 @@ const getButtonDefaultProps = (theme: MantineTheme): ButtonProps => ({
 });
 
 const getAnchorDefaultProps = (theme: MantineTheme): AnchorProps => ({
-  color: theme.colors.blue[5],
-  sx: {
-    fontWeight: 500
+  color: theme.colors.blue[5]
+});
+
+const getTextInputDefaultProps = (theme: MantineTheme): TextInputProps => ({
+  styles: {
+    label: {
+      fontWeight: 600
+    }
+  }
+});
+
+const getPasswordInputDefaultProps = (
+  theme: MantineTheme
+): PasswordInputProps => ({
+  styles: {
+    label: {
+      fontWeight: 600
+    }
   }
 });
 
 const theme: MantineThemeOverride = {
   defaultRadius: "md",
-  fontFamily: "Inter, sans-serif",
+  fontFamily: "Manrope, sans-serif",
   components: {
     Text: { defaultProps: getTextDefaultProps },
     Title: { defaultProps: getTitleDefaultProps },
     Button: { defaultProps: getButtonDefaultProps },
-    Anchor: { defaultProps: getAnchorDefaultProps }
+    Anchor: { defaultProps: getAnchorDefaultProps },
+    TextInput: { defaultProps: getTextInputDefaultProps },
+    PasswordInputProps: { defaultProps: getPasswordInputDefaultProps }
   },
   colors: {
     blue: [
@@ -55,12 +74,12 @@ const theme: MantineThemeOverride = {
       "#29347f"
     ],
     dark: [
-      "#C1C7D6",
-      "#A8B1C6",
-      "#909BB6",
-      "#3C455D",
-      "#282E3E",
-      "#212634",
+      "#eceef2",
+      "#d4d8e3",
+      "#8390ad",
+      "#637394",
+      "#4e5b7b",
+      "#3c455d",
       "#242936", // [6] navbar bg
       "#191b27", // [7] paper bg
       "#14171F", // [8] body bg
