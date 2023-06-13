@@ -7,8 +7,7 @@ import {
   Stack,
   Text,
   TextInput,
-  Title,
-  useMantineTheme
+  Title
 } from "@mantine/core";
 import { Helmet } from "react-helmet-async";
 import { z } from "zod";
@@ -46,7 +45,6 @@ export default function SignInPage() {
       }
     }
   });
-  const theme = useMantineTheme();
   const form = useForm<SignInSchema>({
     initialValues: {
       username: "",
@@ -67,58 +65,52 @@ export default function SignInPage() {
           height: "calc(100vh - 56px)"
         }}
       >
-        <Paper
-          p="xl"
-          shadow="sm"
-          sx={{
-            border: `1px solid ${theme.colors.gray[2]}`,
-            maxWidth: "480px",
-            flexGrow: 1
-          }}
-        >
-          <Stack>
-            <Box>
-              <AppLogo mb="xs" />
-              <Title order={2} mb="4px">
-                Sign in to your account
-              </Title>
-              <Text>
-                Don&apos;t have an account?{" "}
-                <Anchor component={Link} to="/auth/signup">
-                  Sign Up
-                </Anchor>
-              </Text>
-            </Box>
-            <form
-              onSubmit={form.onSubmit((values) => {
-                mutate(values);
-              })}
-            >
-              <Stack>
-                <TextInput
-                  label="University ID"
-                  placeholder="Enter your University ID"
-                  icon={<IconAt size={16} />}
-                  withAsterisk
-                  {...form.getInputProps("username")}
-                />
-                <PasswordInput
-                  label="Password"
-                  icon={<IconLock size={16} />}
-                  placeholder="Enter your password"
-                  withAsterisk
-                  {...form.getInputProps("password")}
-                />
-                <Text size="sm">
-                  By signing in, you agree to our Terms and Conditions
+        <Box sx={{ maxWidth: "480px", flexGrow: 1 }}>
+          <Paper p="xl" shadow="sm">
+            <Stack>
+              <Box>
+                <AppLogo mb="xs" />
+                <Title order={2} mb="4px">
+                  Sign in to your account
+                </Title>
+                <Text>
+                  Don&apos;t have an account?{" "}
+                  <Anchor component={Link} to="/auth/sign-up">
+                    Sign Up
+                  </Anchor>
                 </Text>
-                <Button size="md" type="submit">
-                  Sign In
-                </Button>
-              </Stack>
-            </form>
-          </Stack>
-        </Paper>
+              </Box>
+              <form
+                onSubmit={form.onSubmit((values) => {
+                  mutate(values);
+                })}
+              >
+                <Stack>
+                  <TextInput
+                    label="University ID"
+                    placeholder="Enter your University ID"
+                    icon={<IconAt size={16} />}
+                    withAsterisk
+                    {...form.getInputProps("username")}
+                  />
+                  <PasswordInput
+                    label="Password"
+                    icon={<IconLock size={16} />}
+                    placeholder="Enter your password"
+                    withAsterisk
+                    {...form.getInputProps("password")}
+                  />
+                  <Text size="sm">
+                    By signing in, you agree to our Terms and Conditions
+                  </Text>
+                  <Button size="md" type="submit">
+                    Sign In
+                  </Button>
+                </Stack>
+              </form>
+            </Stack>
+          </Paper>
+        </Box>
       </Box>
       <Footer />
     </>

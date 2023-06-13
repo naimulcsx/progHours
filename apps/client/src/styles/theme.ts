@@ -3,6 +3,7 @@ import {
   ButtonProps,
   MantineTheme,
   MantineThemeOverride,
+  PaperProps,
   PasswordInputProps,
   TextInputProps,
   TextProps,
@@ -11,11 +12,12 @@ import {
 import { NotificationProps } from "@mantine/notifications";
 
 const getTitleDefaultProps = (theme: MantineTheme): TitleProps => ({
-  color: theme.colors.dark[9]
+  color: theme.colorScheme === "dark" ? theme.white : theme.colors.dark[9]
 });
 
 const getTextDefaultProps = (theme: MantineTheme): TextProps => ({
-  color: theme.colors.dark[4]
+  color:
+    theme.colorScheme === "dark" ? theme.colors.gray[4] : theme.colors.gray[7]
 });
 
 const getButtonDefaultProps = (theme: MantineTheme): ButtonProps => ({
@@ -29,7 +31,8 @@ const getButtonDefaultProps = (theme: MantineTheme): ButtonProps => ({
 });
 
 const getAnchorDefaultProps = (theme: MantineTheme): AnchorProps => ({
-  color: theme.colors.blue[5]
+  color:
+    theme.colorScheme === "dark" ? theme.colors.blue[4] : theme.colors.blue[5]
 });
 
 const getTextInputDefaultProps = (theme: MantineTheme): TextInputProps => ({
@@ -68,7 +71,20 @@ const getNotificationDefaultProps = (
   }
 });
 
+const getPaperDefaultProps = (theme: MantineTheme): PaperProps => ({
+  sx: {
+    ...(theme.colorScheme === "light" && {
+      border: `1px solid ${theme.colors.gray[2]}`
+    }),
+    ...(theme.colorScheme === "dark" && {
+      boxShadow:
+        "rgba(0, 0, 0, 0.25) 0px 4px 8px -4px, rgba(0, 0, 0, 0.04) 0px -1px 1px inset, rgba(255, 255, 255, 0.06) 0px 2px 0px inset"
+    })
+  }
+});
+
 const theme: MantineThemeOverride = {
+  colorScheme: "dark",
   defaultRadius: "md",
   fontFamily: "Manrope, sans-serif",
   components: {
@@ -78,7 +94,8 @@ const theme: MantineThemeOverride = {
     Anchor: { defaultProps: getAnchorDefaultProps },
     TextInput: { defaultProps: getTextInputDefaultProps },
     PasswordInputProps: { defaultProps: getPasswordInputDefaultProps },
-    Notification: { defaultProps: getNotificationDefaultProps }
+    Notification: { defaultProps: getNotificationDefaultProps },
+    Paper: { defaultProps: getPaperDefaultProps }
   },
   colors: {
     blue: [
@@ -97,13 +114,13 @@ const theme: MantineThemeOverride = {
       "#eceef2",
       "#d4d8e3",
       "#8390ad",
-      "#637394",
-      "#4e5b7b",
-      "#3c455d",
-      "#242936", // [6] navbar bg
+      "#637394", // [3] input placeholder text
+      "#3c455d", // [4] input border
+      "#384054",
+      "#242936", // [6] navbar bg, input bg
       "#191b27", // [7] paper bg
       "#14171F", // [8] body bg
-      "#0d0f1e"
+      "#0d0f1e" // [9] title color
     ]
   }
 };
