@@ -1,5 +1,6 @@
 import { CodechefParser } from "../parsers/codechef.parser";
 import { CodeforcesParser } from "../parsers/codeforces.parser";
+import { CsesParser } from "../parsers/cses.parser";
 import { ParseResult } from "../types/ParseResult";
 
 export class OJProblemParser {
@@ -42,6 +43,11 @@ export class OJProblemParser {
 
     if (hostname.endsWith("codechef.com")) {
       const parser = new CodechefParser(this.removeWWWFromURL(url));
+      return parser.parse();
+    }
+
+    if (hostname.endsWith("cses.fi")) {
+      const parser = new CsesParser(this.removeWWWFromURL(url));
       return parser.parse();
     }
 
