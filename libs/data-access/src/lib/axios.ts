@@ -1,8 +1,11 @@
-import Axios, { InternalAxiosRequestConfig } from "axios";
+import Axios, { AxiosError, InternalAxiosRequestConfig } from "axios";
+import { notifications } from "@mantine/notifications";
+import { IconAlertCircle } from "@tabler/icons-react";
 import { storage } from "./storage";
+import React from "react";
 
 export const axios = Axios.create({
-  baseURL: "https://proghours.com/api"
+  baseURL: "http://localhost:4200/api/v1"
 });
 
 axios.interceptors.request.use((config: InternalAxiosRequestConfig) => {
@@ -16,9 +19,22 @@ axios.interceptors.request.use((config: InternalAxiosRequestConfig) => {
 
 axios.interceptors.response.use(
   (response) => {
-    return response.data;
+    return response;
   },
   (error) => {
+    if (error instanceof AxiosError) {
+      if (error?.response?.status === 417) {
+        storage.clearToken();
+        window.location.reload();
+        return;
+      }
+      notifications.show({
+        icon: React.createElement(IconAlertCircle),
+        color: "red",
+        title: error?.response?.data?.error,
+        message: error?.response?.data?.message
+      });
+    }
     // TODO: show errors through mantine notifications
     return Promise.reject(error);
   }

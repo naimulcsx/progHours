@@ -3,7 +3,9 @@ import {
   CanActivate,
   ExecutionContext,
   UnauthorizedException,
-  Inject
+  Inject,
+  HttpException,
+  HttpStatus
 } from "@nestjs/common";
 import { JwtService } from "@nestjs/jwt";
 import { Request } from "express";
@@ -32,7 +34,7 @@ export class AccessTokenGuard implements CanActivate {
       );
       request[REQUEST_USER_KEY] = payload;
     } catch {
-      throw new UnauthorizedException();
+      throw new HttpException("Invalid token", HttpStatus.EXPECTATION_FAILED);
     }
     return true;
   }

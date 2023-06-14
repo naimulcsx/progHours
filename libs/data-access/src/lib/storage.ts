@@ -5,7 +5,7 @@ type Token = {
 };
 
 export const storage = {
-  getToken: () => {
+  getToken: (): string | null => {
     return JSON.parse(
       window.localStorage.getItem(`${storagePrefix}token`) as string
     );
