@@ -58,15 +58,21 @@ const getNotificationDefaultProps = (
 ): Omit<NotificationProps, "message"> => ({
   styles: {
     root: {
-      boxShadow: theme.shadows.xs
-      // border: `1px solid ${theme.colors.gray[2]}`
+      boxShadow: theme.shadows.xs,
+      ...(theme.colorScheme === "dark" && {
+        boxShadow:
+          "rgba(0, 0, 0, 0.25) 0px 4px 8px -4px, rgba(0, 0, 0, 0.04) 0px -1px 1px inset, rgba(255, 255, 255, 0.06) 0px 2px 0px inset"
+      })
     },
     title: {
       fontWeight: 600,
-      color: theme.colors.dark[9]
+      color: theme.colorScheme === "dark" ? theme.white : theme.colors.dark[9]
     },
     description: {
-      color: theme.colors.dark[4]
+      color:
+        theme.colorScheme === "dark"
+          ? theme.colors.gray[4]
+          : theme.colors.gray[7]
     }
   }
 });
@@ -107,7 +113,7 @@ const theme: MantineThemeOverride = {
       "#4169e1", // [5] button bg
       "#3957d7", // [6] button hover bg
       "#3044c5",
-      "#2d39a0",
+      "#2d39a0", // [8] input focus border
       "#29347f"
     ],
     dark: [
