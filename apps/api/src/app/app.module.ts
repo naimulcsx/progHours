@@ -4,8 +4,9 @@ import appConfig from "~/config/app.config";
 import { PrismaModule } from "~/modules/prisma/prisma.module";
 import { AuthModule } from "~/modules/iam/auth/auth.module";
 import { UsersModule } from "~/modules/iam/users/users.module";
-import Joi from "joi";
 import { ParserModule } from "~/modules/parser/parser.module";
+import { SubmissionsModule } from "~/modules/submissions/submissions.module";
+import Joi from "joi";
 
 @Module({
   imports: [
@@ -22,6 +23,7 @@ import { ParserModule } from "~/modules/parser/parser.module";
     PrismaModule,
     AuthModule,
     UsersModule,
+    SubmissionsModule,
     ParserModule
   ],
   controllers: [],

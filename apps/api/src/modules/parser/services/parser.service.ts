@@ -1,6 +1,5 @@
 import { BadRequestException, Injectable } from "@nestjs/common";
 import { OJProblemParser } from "@proghours/oj-problem-parser";
-import { ParseProblemDto } from "../dto/parse-problem.dto";
 
 @Injectable()
 export class ParserService {
@@ -8,9 +7,9 @@ export class ParserService {
   constructor() {
     this.problemParser = new OJProblemParser();
   }
-  async parse(parseProblemDto: ParseProblemDto) {
+  async parse(url: string) {
     try {
-      const data = await this.problemParser.parse(parseProblemDto.url);
+      const data = await this.problemParser.parse(url);
       return data;
     } catch (error) {
       console.log(error);
