@@ -3,8 +3,7 @@ import {
   ColorScheme,
   MantineProvider,
   ColorSchemeProvider,
-  useMantineTheme,
-  DefaultMantineColor
+  useMantineTheme
 } from "@mantine/core";
 import { Notifications } from "@mantine/notifications";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
@@ -13,6 +12,7 @@ import theme from "~/styles/theme";
 import { getRoutes } from "./routes";
 import { useUser } from "./hooks/useUser";
 import { useLocalStorage } from "@mantine/hooks";
+import { useColorAccent } from "./contexts/ColorAccentContext";
 
 const queryClient = new QueryClient();
 
@@ -46,7 +46,7 @@ export function App() {
   const toggleColorScheme = (value?: ColorScheme) =>
     setColorScheme(value || (colorScheme === "dark" ? "light" : "dark"));
 
-  const primaryColor: DefaultMantineColor = "blue";
+  const { accentColor } = useColorAccent();
 
   return (
     <ColorSchemeProvider
@@ -56,7 +56,7 @@ export function App() {
       <MantineProvider
         withGlobalStyles
         withNormalizeCSS
-        theme={{ ...theme, colorScheme, primaryColor }}
+        theme={{ ...theme, colorScheme, primaryColor: accentColor }}
       >
         <QueryClientProvider client={queryClient}>
           <Entry />

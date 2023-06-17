@@ -69,7 +69,9 @@ export function AppLogo({
           order={styles[size].titleOrder as TitleOrder}
           sx={{
             color:
-              theme.colorScheme === "dark" ? theme.white : theme.colors.blue[5]
+              theme.colorScheme === "dark"
+                ? theme.white
+                : theme.colors[theme.primaryColor][7]
           }}
         >
           progHours
@@ -78,7 +80,9 @@ export function AppLogo({
           size={styles[size].textSize}
           sx={{
             color:
-              theme.colorScheme === "dark" ? theme.white : theme.colors.blue[5]
+              theme.colorScheme === "dark"
+                ? theme.white
+                : theme.colors[theme.primaryColor][7]
           }}
         >
           v0.4.0
