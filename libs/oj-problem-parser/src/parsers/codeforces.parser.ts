@@ -128,7 +128,8 @@ export class CodeforcesParser extends OJParser<CfUrlParams> {
             name: string;
             index: string;
             tags: string[];
-            points: number;
+            points?: number;
+            rating?: number;
           }>;
         };
       };
@@ -145,10 +146,11 @@ export class CodeforcesParser extends OJParser<CfUrlParams> {
 
         for (const problem of data.result.problems) {
           if (problem.index === result.problemId) {
+            console.log(problem);
             return {
               pid: this.getPid(result),
               name: problem.name,
-              difficulty: problem.points ?? 0,
+              difficulty: problem.points ?? problem.rating ?? 0,
               tags: problem.tags,
               url: `https://codeforces.com/contest/${result.contestId}/problem/${result.problemId}`
             };

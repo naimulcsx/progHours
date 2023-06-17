@@ -1,6 +1,7 @@
 import { Body, Controller, Get, Post } from "@nestjs/common";
 import {
   ApiBearerAuth,
+  ApiCreatedResponse,
   ApiOkResponse,
   ApiOperation,
   ApiTags,
@@ -21,8 +22,13 @@ export class SubmissionsController {
   @Post()
   @ApiBearerAuth("JWT")
   @ApiOperation({ summary: "Create new submission" })
-  async createSubmission(@Body() createSubmissionDto: CreateSubmissionDto) {
-    return createSubmissionDto;
+  @ApiCreatedResponse({ description: "Submission created" })
+  @ApiUnauthorizedResponse({ description: "Unauthorized user" })
+  async createSubmission(
+    @User() user: ActiveUserData,
+    @Body() createSubmissionDto: CreateSubmissionDto
+  ) {
+    return this.submissionsService.create(user.sub, createSubmissionDto);
   }
 
   @Get()

@@ -7,6 +7,7 @@ import { UsersModule } from "~/modules/iam/users/users.module";
 import { ParserModule } from "~/modules/parser/parser.module";
 import { SubmissionsModule } from "~/modules/submissions/submissions.module";
 import Joi from "joi";
+import { ProblemsModule } from "~/modules/problems/problems.module";
 
 @Module({
   imports: [
@@ -23,6 +24,7 @@ import Joi from "joi";
     PrismaModule,
     AuthModule,
     UsersModule,
+    ProblemsModule,
     SubmissionsModule,
     ParserModule
   ],

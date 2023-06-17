@@ -45,7 +45,7 @@ model Problem {
   id          Int          @id @default(autoincrement())
   pid         String       @unique
   name        String
-  link        String       @unique
+  url         String       @unique
   difficulty  Int
   createdAt   DateTime     @default(now()) @map("created_at") @db.Timestamptz()
   updatedAt   DateTime     @updatedAt @map("updated_at") @db.Timestamptz()
@@ -69,7 +69,7 @@ model ProblemTag {
   tagId     Int @map("tag_id")
 
   tag     Tag     @relation(fields: [tagId], references: [id])
-  problem Problem @relation(fields: [problemId], references: [id])
+  problem Problem @relation(fields: [problemId], references: [id], onDelete: Cascade)
 
   @@id([problemId, tagId])
   @@map("problem_tags")
@@ -89,8 +89,7 @@ model Submission {
   user    User    @relation(fields: [userId], references: [id])
   problem Problem @relation(fields: [problemId], references: [id])
 
-  @@index(problemId)
-  @@index(userId)
+  @@unique([userId, problemId])
   @@index(solvedAt)
   @@map("submissions")
 }
