@@ -7,7 +7,8 @@ import {
   PasswordInputProps,
   TextInputProps,
   TextProps,
-  TitleProps
+  TitleProps,
+  NavLinkProps
 } from "@mantine/core";
 import { NotificationProps } from "@mantine/notifications";
 
@@ -22,11 +23,7 @@ const getTextDefaultProps = (theme: MantineTheme): TextProps => ({
 
 const getButtonDefaultProps = (theme: MantineTheme): ButtonProps => ({
   sx: {
-    fontWeight: 600,
-    background: theme.colors.blue[5],
-    "&:hover": {
-      background: theme.colors.blue[6]
-    }
+    fontWeight: 600
   }
 });
 
@@ -89,6 +86,42 @@ const getPaperDefaultProps = (theme: MantineTheme): PaperProps => ({
   }
 });
 
+const getNavLinkDefaultProps = (theme: MantineTheme): NavLinkProps => ({
+  styles: {
+    root: {
+      background: "transparent",
+      borderRadius: theme.radius.md,
+      paddingLeft: 4,
+      paddingRight: 4,
+      "&[data-active='true']": {
+        "&:hover": {
+          background:
+            theme.colorScheme === "dark"
+              ? theme.colors.dark[4]
+              : theme.colors.gray[2]
+        },
+
+        background:
+          theme.colorScheme === "dark"
+            ? theme.colors.dark[5]
+            : theme.colors.gray[1],
+        boxShadow:
+          theme.colorScheme === "dark"
+            ? "inset 0px 1px 1px rgb(255 255 255 / 15%)"
+            : "none",
+
+        "& span": {
+          color:
+            theme.colorScheme === "dark" ? theme.white : theme.colors.dark[8]
+        }
+      },
+      "& span": {
+        fontWeight: 600
+      }
+    }
+  }
+});
+
 const theme: MantineThemeOverride = {
   colorScheme: "dark",
   defaultRadius: "md",
@@ -101,32 +134,21 @@ const theme: MantineThemeOverride = {
     TextInput: { defaultProps: getTextInputDefaultProps },
     PasswordInputProps: { defaultProps: getPasswordInputDefaultProps },
     Notification: { defaultProps: getNotificationDefaultProps },
-    Paper: { defaultProps: getPaperDefaultProps }
+    Paper: { defaultProps: getPaperDefaultProps },
+    NavLink: { defaultProps: getNavLinkDefaultProps }
   },
   colors: {
-    blue: [
-      "#f1f4fd",
-      "#dfe7fa",
-      "#c5d5f8",
-      "#9ebbf2",
-      "#7097ea",
-      "#4169e1", // [5] button bg
-      "#3957d7", // [6] button hover bg
-      "#3044c5",
-      "#2d39a0", // [8] input focus border
-      "#29347f"
-    ],
     dark: [
       "#eceef2",
       "#d4d8e3",
       "#8390ad",
       "#637394", // [3] input placeholder text
       "#3c455d", // [4] input border
-      "#384054",
-      "#242936", // [6] navbar bg, input bg
-      "#191b27", // [7] paper bg
-      "#14171F", // [8] body bg
-      "#0d0f1e" // [9] title color
+      "#282e3e",
+      "#242936", // [6] input bg
+      "#1a1d26", // [7] navbar bg, sidebar bg, paper bg
+      "#13151c", // [8]
+      "#0c0d12" // [9] bpdy bg, title color
     ]
   }
 };

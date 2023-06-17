@@ -1,10 +1,18 @@
-import { Box, MantineProvider, useMantineTheme } from "@mantine/core";
+import {
+  Box,
+  ColorScheme,
+  MantineProvider,
+  ColorSchemeProvider,
+  useMantineTheme,
+  DefaultMantineColor
+} from "@mantine/core";
 import { Notifications } from "@mantine/notifications";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { useRoutes } from "react-router-dom";
 import theme from "~/styles/theme";
 import { getRoutes } from "./routes";
 import { useUser } from "./hooks/useUser";
+import { useLocalStorage } from "@mantine/hooks";
 
 const queryClient = new QueryClient();
 
@@ -20,7 +28,7 @@ function Entry() {
         background:
           theme.colorScheme === "dark"
             ? theme.colors.dark[9]
-            : theme.colors.gray[0]
+            : theme.colors.gray[1]
       }}
     >
       {page}
@@ -29,13 +37,33 @@ function Entry() {
 }
 
 export function App() {
+  const [colorScheme, setColorScheme] = useLocalStorage<ColorScheme>({
+    key: "mantine-color-scheme",
+    defaultValue: "dark",
+    getInitialValueInEffect: false
+  });
+
+  const toggleColorScheme = (value?: ColorScheme) =>
+    setColorScheme(value || (colorScheme === "dark" ? "light" : "dark"));
+
+  const primaryColor: DefaultMantineColor = "blue";
+
   return (
-    <QueryClientProvider client={queryClient}>
-      <MantineProvider withGlobalStyles withNormalizeCSS theme={theme}>
-        <Entry />
-        <Notifications position="top-right" />
+    <ColorSchemeProvider
+      colorScheme={colorScheme}
+      toggleColorScheme={toggleColorScheme}
+    >
+      <MantineProvider
+        withGlobalStyles
+        withNormalizeCSS
+        theme={{ ...theme, colorScheme, primaryColor }}
+      >
+        <QueryClientProvider client={queryClient}>
+          <Entry />
+          <Notifications position="top-right" />
+        </QueryClientProvider>
       </MantineProvider>
-    </QueryClientProvider>
+    </ColorSchemeProvider>
   );
 }
 

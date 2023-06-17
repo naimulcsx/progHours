@@ -1,14 +1,16 @@
-import { Box, Button } from "@mantine/core";
+import { Button } from "@mantine/core";
 import { useActiveUser } from "@proghours/data-access";
+import { DashboardLayout } from "~/components/common/dashboard/Layout";
 import { useLogout } from "~/hooks/useLogout";
 
-export default function HomePage() {
+export default function SubmissionsPage() {
   const { data } = useActiveUser();
   const { handleLogout } = useLogout();
   return (
-    <Box>
+    <DashboardLayout>
+      Submissions page
       <Button onClick={handleLogout}>Log out</Button>
       <pre>{JSON.stringify(data, null, 2)}</pre>
-    </Box>
+    </DashboardLayout>
   );
 }

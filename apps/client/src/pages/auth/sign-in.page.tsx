@@ -7,7 +7,8 @@ import {
   Stack,
   Text,
   TextInput,
-  Title
+  Title,
+  useMantineTheme
 } from "@mantine/core";
 import { Helmet } from "react-helmet-async";
 import { z } from "zod";
@@ -30,6 +31,7 @@ const signInSchema = z.object({
 type SignInSchema = z.infer<typeof signInSchema>;
 
 export default function SignInPage() {
+  const theme = useMantineTheme();
   const navigate = useNavigate();
   const { mutate } = useLoginMutation({
     config: {
@@ -62,7 +64,9 @@ export default function SignInPage() {
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
-          height: "calc(100vh - 56px)"
+          height: "calc(100vh - 56px)",
+          paddingLeft: theme.spacing.sm,
+          paddingRight: theme.spacing.sm
         }}
       >
         <Box sx={{ maxWidth: "480px", flexGrow: 1 }}>

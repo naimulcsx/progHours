@@ -7,7 +7,8 @@ import {
   Stack,
   Text,
   TextInput,
-  Title
+  Title,
+  useMantineTheme
 } from "@mantine/core";
 import { Helmet } from "react-helmet-async";
 import { z } from "zod";
@@ -32,6 +33,7 @@ const signUpSchema = z.object({
 type SignUpSchema = z.infer<typeof signUpSchema>;
 
 export default function SignUpPage() {
+  const theme = useMantineTheme();
   const navigate = useNavigate();
   const form = useForm<SignUpSchema>({
     initialValues: {
@@ -63,7 +65,9 @@ export default function SignUpPage() {
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
-          minHeight: "calc(100vh - 56px)"
+          minHeight: "calc(100vh - 56px)",
+          paddingLeft: theme.spacing.sm,
+          paddingRight: theme.spacing.sm
         }}
       >
         <Box sx={{ maxWidth: "480px", flexGrow: 1 }}>

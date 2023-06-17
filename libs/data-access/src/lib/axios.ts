@@ -28,6 +28,7 @@ axios.interceptors.response.use(
         window.location.reload();
         return;
       }
+      // show alert messages through mantine notifications
       notifications.show({
         icon: React.createElement(IconAlertCircle),
         color: "red",
@@ -35,7 +36,6 @@ axios.interceptors.response.use(
         message: error?.response?.data?.message
       });
     }
-    // TODO: show errors through mantine notifications
     return Promise.reject(error);
   }
 );
