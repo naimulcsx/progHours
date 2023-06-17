@@ -1,6 +1,7 @@
 import { CodechefParser } from "../parsers/codechef.parser";
 import { CodeforcesParser } from "../parsers/codeforces.parser";
 import { CsesParser } from "../parsers/cses.parser";
+import { SPOJParser } from "../parsers/spoj.parser";
 import { TophParser } from "../parsers/toph.parser";
 import { ParseResult } from "../types/ParseResult";
 
@@ -54,6 +55,11 @@ export class OJProblemParser {
 
     if (hostname.endsWith("toph.co")) {
       const parser = new TophParser(this.removeWWWFromURL(url));
+      return parser.parse();
+    }
+
+    if (hostname.endsWith("spoj.com") || hostname.endsWith("www.spoj.com")) {
+      const parser = new SPOJParser(this.removeWWWFromURL(url));
       return parser.parse();
     }
 
