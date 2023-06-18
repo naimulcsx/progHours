@@ -13,8 +13,7 @@ export class ParserService {
       const data = await this.problemParser.parse(url);
       return data;
     } catch (error) {
-      console.log(error);
-      throw new BadRequestException(error.message);
+      throw new BadRequestException(error?.message);
     }
   }
 
