@@ -7,6 +7,7 @@ import { ParserService } from "~/modules/parser/services/parser.service";
 import { PrismaService } from "~/modules/prisma/services/prisma.service";
 import { ProblemsService } from "~/modules/problems/services/problems.service";
 import { CreateSubmissionDto } from "../dto/create-submission.dto";
+import { UpdateSubmissionDto } from "../dto/update-sumission.dto";
 
 @Injectable()
 export class SubmissionsService {
@@ -64,5 +65,15 @@ export class SubmissionsService {
       }
       throw new InternalServerErrorException();
     }
+  }
+
+  async update(id: number, updateSubmissionDto: UpdateSubmissionDto) {
+    const updatedSubmission = await this.prisma.submission.update({
+      where: { id },
+      data: {
+        ...updateSubmissionDto
+      }
+    });
+    return updatedSubmission;
   }
 }

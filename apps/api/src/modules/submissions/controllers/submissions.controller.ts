@@ -1,7 +1,17 @@
-import { Body, Controller, Get, Post } from "@nestjs/common";
+import {
+  Body,
+  Controller,
+  Get,
+  Param,
+  ParseIntPipe,
+  Patch,
+  Post,
+  UseGuards
+} from "@nestjs/common";
 import {
   ApiBearerAuth,
   ApiCreatedResponse,
+  ApiNotFoundResponse,
   ApiOkResponse,
   ApiOperation,
   ApiTags,
@@ -13,6 +23,8 @@ import {
 } from "~/modules/iam/auth/decorators/user.decorator";
 import { SubmissionsService } from "../services/submissions.service";
 import { CreateSubmissionDto } from "../dto/create-submission.dto";
+import { UpdateSubmissionDto } from "../dto/update-sumission.dto";
+import { UpdateSubmissionGuard } from "../guards/update-submission.guard";
 
 @Controller("submissions")
 @ApiTags("Submissions")
@@ -42,5 +54,19 @@ export class SubmissionsController {
   })
   async getSubmissions(@User() user: ActiveUserData) {
     return this.submissionsService.getByUser(user.sub);
+  }
+
+  @Patch(":id")
+  @ApiBearerAuth("JWT")
+  @ApiOperation({ summary: "Update a submission" })
+  @ApiOkResponse({ description: "Submission updated" })
+  @ApiNotFoundResponse({ description: "Submission not found" })
+  @ApiUnauthorizedResponse({ description: "Unauthorized user" })
+  @UseGuards(UpdateSubmissionGuard)
+  async updateSubmission(
+    @Param("id", ParseIntPipe) id: number,
+    @Body() updateSubmissionDto: UpdateSubmissionDto
+  ) {
+    return this.submissionsService.update(id, updateSubmissionDto);
   }
 }
