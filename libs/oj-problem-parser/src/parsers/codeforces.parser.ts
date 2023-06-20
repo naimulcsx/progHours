@@ -146,7 +146,6 @@ export class CodeforcesParser extends OJParser<CfUrlParams> {
 
         for (const problem of data.result.problems) {
           if (problem.index === result.problemId) {
-            console.log(problem);
             return {
               pid: this.getPid(result),
               name: problem.name,

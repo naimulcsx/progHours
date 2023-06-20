@@ -14,14 +14,14 @@ export function DashboardLayout({ children }: AppShellProps) {
           }
         })}
         navbar={<Sidebar />}
-        styles={(theme) => ({
-          main: {
-            backgroundColor:
-              theme.colorScheme === "dark"
-                ? theme.colors.dark[9]
-                : theme.colors.gray[0]
-          }
-        })}
+        // styles={(theme) => ({
+        //   main: {
+        //     backgroundColor:
+        //       theme.colorScheme === "dark"
+        //         ? theme.colors.dark[9]
+        //         : theme.colors.gray[0]
+        //   }
+        // })}
       >
         {children}
       </AppShell>

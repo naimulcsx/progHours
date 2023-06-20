@@ -27,8 +27,9 @@ function Entry() {
         minHeight: "100vh",
         background:
           theme.colorScheme === "dark"
-            ? theme.colors.dark[9]
-            : theme.colors.gray[1]
+            ? theme.colors.dark[8]
+            : theme.colors.gray[0],
+        overflowX: "hidden"
       }}
     >
       {page}

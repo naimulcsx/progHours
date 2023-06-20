@@ -8,7 +8,8 @@ import {
   TextInputProps,
   TextProps,
   TitleProps,
-  NavLinkProps
+  NavLinkProps,
+  TableProps
 } from "@mantine/core";
 import { NotificationProps } from "@mantine/notifications";
 
@@ -122,6 +123,27 @@ const getNavLinkDefaultProps = (theme: MantineTheme): NavLinkProps => ({
   }
 });
 
+const getTableDefaultProps = (theme: MantineTheme): TableProps => {
+  return {
+    verticalSpacing: "sm",
+    horizontalSpacing: "md",
+    sx: {
+      background:
+        theme.colorScheme === "dark" ? theme.colors.dark[7] : theme.white,
+      "thead tr th": {
+        borderBottom: "2px solid"
+      },
+      "tbody tr td, thead tr th": {
+        borderColor:
+          theme.colorScheme === "dark"
+            ? theme.colors.dark[5]
+            : theme.colors.gray[3],
+        verticalAlign: "top"
+      }
+    }
+  };
+};
+
 const theme: MantineThemeOverride = {
   colorScheme: "dark",
   defaultRadius: "md",
@@ -135,7 +157,8 @@ const theme: MantineThemeOverride = {
     PasswordInputProps: { defaultProps: getPasswordInputDefaultProps },
     Notification: { defaultProps: getNotificationDefaultProps },
     Paper: { defaultProps: getPaperDefaultProps },
-    NavLink: { defaultProps: getNavLinkDefaultProps }
+    NavLink: { defaultProps: getNavLinkDefaultProps },
+    Table: { defaultProps: getTableDefaultProps }
   },
   colors: {
     dark: [
@@ -147,8 +170,8 @@ const theme: MantineThemeOverride = {
       "#282e3e",
       "#242936", // [6] input bg
       "#1a1d26", // [7] navbar bg, sidebar bg, paper bg
-      "#13151c", // [8]
-      "#0c0d12" // [9] bpdy bg, title color
+      "#13151c", // [8] body bg
+      "#0c0d12" // [9] title color
     ]
   }
 };
