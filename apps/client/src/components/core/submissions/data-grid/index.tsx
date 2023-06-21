@@ -168,7 +168,7 @@ export function SubmissionsDataTable<TData, TValue>({
             {table.getHeaderGroups().map((headerGroup) => (
               <tr key={headerGroup.id}>
                 {headerGroup.headers.map((header, idx) => {
-                  const cellWidth = [260, 120, 120, 320, 260];
+                  const cellWidth = [260, 110, 110, 320, 260];
                   return (
                     <th
                       key={header.id}

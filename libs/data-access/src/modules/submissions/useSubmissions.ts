@@ -14,7 +14,7 @@ export type GetSubmissionsResponse = Array<
   }
 >;
 
-const getSubmissions = async (): Promise<GetSubmissionsResponse> => {
+export const getSubmissions = async (): Promise<GetSubmissionsResponse> => {
   return axios.get("/submissions").then((res) => res.data);
 };
 

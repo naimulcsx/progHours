@@ -2,6 +2,8 @@ import { ColumnDef } from "@tanstack/react-table";
 import { GetSubmissionsResponse } from "@proghours/data-access";
 import { Badge, Group } from "@mantine/core";
 import { ProblemName } from "./cell/ProblemName";
+import VerdictCell from "./cell/Verdict";
+import SolveTimeCell from "./cell/SolveTime";
 
 type ArrayElement<A> = A extends readonly (infer T)[] ? T : never;
 export type Submission = ArrayElement<GetSubmissionsResponse>;
@@ -14,11 +16,13 @@ export const columns: ColumnDef<Submission>[] = [
   },
   {
     accessorKey: "verdict",
-    header: "Verdict"
+    header: "Verdict",
+    cell: VerdictCell
   },
   {
     accessorKey: "solveTime",
-    header: "Solve Time"
+    header: "Solve Time",
+    cell: SolveTimeCell
   },
   {
     accessorFn: (row) =>
