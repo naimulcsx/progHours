@@ -30,6 +30,9 @@ export class SubmissionsService {
             }
           }
         }
+      },
+      orderBy: {
+        createdAt: "desc"
       }
     });
   }
