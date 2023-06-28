@@ -79,7 +79,7 @@ model Submission {
   id        Int      @id @default(autoincrement())
   solveTime Int      @map("solve_time")
   verdict   Verdict
-  solvedAt  DateTime @map("solved_at") @db.Timestamptz()
+  solvedAt  DateTime @map("solved_at") @db.Date
   createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz()
   updatedAt DateTime @updatedAt @map("updated_at") @db.Timestamptz()
   userId    Int      @map("user_id")

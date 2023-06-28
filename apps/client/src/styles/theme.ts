@@ -9,8 +9,11 @@ import {
   TextProps,
   TitleProps,
   NavLinkProps,
-  TableProps
+  TableProps,
+  MenuProps,
+  SegmentedControlProps
 } from "@mantine/core";
+import { DatePickerInputProps } from "@mantine/dates";
 import { NotificationProps } from "@mantine/notifications";
 
 const getTitleDefaultProps = (theme: MantineTheme): TitleProps => ({
@@ -24,7 +27,7 @@ const getTextDefaultProps = (theme: MantineTheme): TextProps => ({
 
 const getButtonDefaultProps = (theme: MantineTheme): ButtonProps => ({
   sx: {
-    fontWeight: 600
+    fontWeight: 500
   }
 });
 
@@ -35,9 +38,7 @@ const getAnchorDefaultProps = (theme: MantineTheme): AnchorProps => ({
 
 const getTextInputDefaultProps = (theme: MantineTheme): TextInputProps => ({
   styles: {
-    label: {
-      fontWeight: 600
-    }
+    label: {}
   }
 });
 
@@ -45,9 +46,7 @@ const getPasswordInputDefaultProps = (
   theme: MantineTheme
 ): PasswordInputProps => ({
   styles: {
-    label: {
-      fontWeight: 600
-    }
+    label: {}
   }
 });
 
@@ -91,9 +90,8 @@ const getNavLinkDefaultProps = (theme: MantineTheme): NavLinkProps => ({
   styles: {
     root: {
       background: "transparent",
-      borderRadius: theme.radius.md,
-      paddingLeft: 4,
-      paddingRight: 4,
+      paddingLeft: 16,
+      paddingRight: 16,
       "&[data-active='true']": {
         "&:hover": {
           background:
@@ -101,24 +99,31 @@ const getNavLinkDefaultProps = (theme: MantineTheme): NavLinkProps => ({
               ? theme.colors.dark[4]
               : theme.colors.gray[2]
         },
-
         background:
           theme.colorScheme === "dark"
             ? theme.colors.dark[5]
             : theme.colors.gray[1],
-        boxShadow:
-          theme.colorScheme === "dark"
-            ? "inset 0px 1px 1px rgb(255 255 255 / 15%)"
-            : "none",
 
         "& span": {
           color:
-            theme.colorScheme === "dark" ? theme.white : theme.colors.dark[8]
+            theme.colorScheme === "dark" ? theme.white : theme.colors.dark[9]
+        },
+        "&:before": {
+          content: "''",
+          position: "absolute",
+          left: 0,
+          height: 42,
+          display: "block",
+          width: 3,
+          background: theme.colors[theme.primaryColor][5]
         }
       },
       "& span": {
-        fontWeight: 600
+        fontWeight: 500
       }
+    },
+    icon: {
+      color: theme.colors.gray[6]
     }
   }
 });
@@ -126,19 +131,66 @@ const getNavLinkDefaultProps = (theme: MantineTheme): NavLinkProps => ({
 const getTableDefaultProps = (theme: MantineTheme): TableProps => {
   return {
     verticalSpacing: "sm",
-    horizontalSpacing: "md",
     sx: {
-      background:
-        theme.colorScheme === "dark" ? theme.colors.dark[7] : theme.white,
-      "thead tr th": {
-        borderBottom: "2px solid"
-      },
-      "tbody tr td, thead tr th": {
-        borderColor:
+      "thead.mantine-DataGrid-thead tr th": {
+        background:
           theme.colorScheme === "dark"
-            ? theme.colors.dark[5]
-            : theme.colors.gray[3],
-        verticalAlign: "top"
+            ? theme.colors.dark[6]
+            : theme.colors.gray[1],
+        border: 0,
+        "&:first-of-type": {
+          borderTopLeftRadius: theme.radius.md,
+          borderBottomLeftRadius: theme.radius.md
+        },
+        "&:last-of-type": {
+          borderTopRightRadius: theme.radius.md,
+          borderBottomRightRadius: theme.radius.md
+        }
+      }
+    }
+  };
+};
+
+const getDatePickerInputDefaultProps = (
+  theme: MantineTheme
+): DatePickerInputProps => {
+  return {
+    styles: {
+      weekdaysRow: {
+        th: {
+          fontSize: "0.75rem !important",
+          padding: "0 !important",
+          paddingBottom: "calc(0.625rem / 2) !important"
+        }
+      }
+    }
+  };
+};
+
+export const customTransition = {
+  in: { opacity: 1, transform: "scale(1)" },
+  out: { opacity: 0, transform: "scale(0.85)" },
+  common: { transformOrigin: "top" },
+  transitionProperty: "transform, opacity"
+};
+
+const getMenuDefaultProps = (theme: MantineTheme): MenuProps => {
+  return {
+    transitionProps: {
+      transition: customTransition
+    }
+  };
+};
+
+const getSegmentedControlDefaultProps = (
+  theme: MantineTheme
+): SegmentedControlProps => {
+  return {
+    data: [],
+    styles: {
+      label: {
+        paddingTop: 3,
+        paddingBottom: 3
       }
     }
   };
@@ -147,7 +199,7 @@ const getTableDefaultProps = (theme: MantineTheme): TableProps => {
 const theme: MantineThemeOverride = {
   colorScheme: "dark",
   defaultRadius: "md",
-  fontFamily: "Manrope, sans-serif",
+  fontFamily: "'Inter', sans-serif",
   components: {
     Text: { defaultProps: getTextDefaultProps },
     Title: { defaultProps: getTitleDefaultProps },
@@ -158,22 +210,27 @@ const theme: MantineThemeOverride = {
     Notification: { defaultProps: getNotificationDefaultProps },
     Paper: { defaultProps: getPaperDefaultProps },
     NavLink: { defaultProps: getNavLinkDefaultProps },
-    Table: { defaultProps: getTableDefaultProps }
+    Table: { defaultProps: getTableDefaultProps },
+    Menu: { defaultProps: getMenuDefaultProps },
+    DatePickerInput: { defaultProps: getDatePickerInputDefaultProps },
+    SegmentedControl: { defaultProps: getSegmentedControlDefaultProps }
   },
-  colors: {
-    dark: [
-      "#eceef2",
-      "#d4d8e3",
-      "#8390ad",
-      "#637394", // [3] input placeholder text
-      "#3c455d", // [4] input border
-      "#282e3e",
-      "#242936", // [6] input bg
-      "#1a1d26", // [7] navbar bg, sidebar bg, paper bg
-      "#13151c", // [8] body bg
-      "#0c0d12" // [9] title color
-    ]
-  }
+  colors: {}
 };
+
+/**
+  dark: [
+    "#eceef2",
+    "#d4d8e3",
+    "#8390ad",
+    "#637394", // [3] input placeholder text
+    "#3c455d", // [4] input border
+    "#282e3e",
+    "#242936", // [6] input bg
+    "#1a1d26", // [7] navbar bg, sidebar bg, paper bg
+    "#13151c", // [8] body bg
+    "#0c0d12" // [9] title color
+  ]
+ */
 
 export default theme;

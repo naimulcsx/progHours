@@ -26,9 +26,7 @@ function Entry() {
       sx={{
         minHeight: "100vh",
         background:
-          theme.colorScheme === "dark"
-            ? theme.colors.dark[8]
-            : theme.colors.gray[0],
+          theme.colorScheme === "dark" ? theme.colors.dark[8] : theme.white,
         overflowX: "hidden"
       }}
     >

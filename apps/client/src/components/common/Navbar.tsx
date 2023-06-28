@@ -26,12 +26,12 @@ export function Navbar() {
         top: 0,
         left: 0,
         right: 0,
-        zIndex: 10,
+        zIndex: 100,
         display: "flex",
         justifyContent: "space-between",
         alignItems: "center",
         background:
-          theme.colorScheme === "dark" ? theme.colors.dark[7] : theme.white
+          theme.colorScheme === "dark" ? theme.colors.dark[8] : theme.white
       }}
     >
       <Anchor

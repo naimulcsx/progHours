@@ -2,18 +2,21 @@ import { useQueryClient } from "@tanstack/react-query";
 import { useRef, useState, KeyboardEvent } from "react";
 import { CellContext } from "@tanstack/react-table";
 import { TextInput } from "@mantine/core";
-import { Submission } from "../columns";
 import {
+  SubmissionRow,
   getSubmissions,
   useUpdateSubmissionMutation
 } from "@proghours/data-access";
 import { notifications } from "@mantine/notifications";
 import { IconCheck } from "@tabler/icons-react";
 
-export default function SolveTimeCell(cell: CellContext<Submission, unknown>) {
+export default function SolveTimeCell(
+  cell: CellContext<SubmissionRow, unknown>
+) {
   const client = useQueryClient();
   const prevRef = useRef(cell.getValue());
   const [solveTime, setSolveTime] = useState(cell.getValue() as string);
+
   const { mutate } = useUpdateSubmissionMutation({
     config: {
       onSuccess: () => {

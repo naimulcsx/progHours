@@ -1,219 +1,107 @@
+import { Badge, Group } from "@mantine/core";
+import { SubmissionRow } from "@proghours/data-access";
 import {
-  Box,
-  Button,
-  Checkbox,
-  Flex,
-  Menu,
-  ScrollArea,
   Table,
-  TextInput,
-  useMantineTheme
-} from "@mantine/core";
-import { useDebouncedState, useLocalStorage } from "@mantine/hooks";
-import { IconAdjustmentsHorizontal } from "@tabler/icons-react";
-import { renderToString } from "react-dom/server";
-
-import {
-  ColumnDef,
-  FilterFn,
-  VisibilityState,
-  flexRender,
-  getCoreRowModel,
-  getFilteredRowModel,
-  useReactTable
+  getFacetedRowModel,
+  getFacetedUniqueValues
 } from "@tanstack/react-table";
-import { isValidElement, useEffect } from "react";
+import { DataGrid } from "~/components/common/datagrid";
+import { ProblemName } from "./cell/ProblemName";
+import VerdictCell from "./cell/Verdict";
+import SolveTimeCell from "./cell/SolveTime";
+import { SolvedAtCell } from "./cell/SolvedAt";
+import { RefCallback } from "react";
 
-interface SubmissionsDataTableProps<TData, TValue> {
-  columns: ColumnDef<TData, TValue>[];
-  data: TData[];
+export interface SubmissionsTableProps {
+  data: SubmissionRow[];
+  tableRef: RefCallback<Table<SubmissionRow>>;
 }
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-export const globalFilterFn: FilterFn<any> = (
-  row,
-  columnId: string,
-  filterValue: string
-) => {
-  const value = row.getValue<string>(columnId);
-  console.log(value, "here");
-  if (!value) return false;
-
-  // if is a react element, then render it to string, so it can be searched
-  if (isValidElement(value)) {
-    const htmlString = renderToString(value);
-    const parser = new DOMParser();
-    const doc = parser.parseFromString(htmlString, "text/html");
-    return (doc.body.textContent || doc.body.innerText)
-      .toLowerCase()
-      .includes(filterValue.toLowerCase());
-  }
-
-  return value
-    .toString()
-    .toLowerCase()
-    .includes(filterValue.toString().toLowerCase());
-};
-
-export function SubmissionsDataTable<TData, TValue>({
-  columns,
-  data
-}: SubmissionsDataTableProps<TData, TValue>) {
-  const theme = useMantineTheme();
-
-  const [columnVisibility, setColumnVisibility] =
-    useLocalStorage<VisibilityState>({
-      key: "submissions-table-columns",
-      defaultValue: {}
-    });
-
-  const table = useReactTable({
-    data,
-    columns,
-    getCoreRowModel: getCoreRowModel(),
-    getFilteredRowModel: getFilteredRowModel(),
-    onColumnVisibilityChange: setColumnVisibility,
-    enableGlobalFilter: true,
-    globalFilterFn,
-    state: {
-      columnVisibility
-    }
-  });
-
-  const [globalFilterValue, setGlobalFilterValue] = useDebouncedState(
-    table.getState().globalFilter || "",
-    200
-  );
-
-  useEffect(() => {
-    table.setGlobalFilter(globalFilterValue);
-  }, [table, globalFilterValue]);
-
+export function SubmissionsTable({ tableRef, data }: SubmissionsTableProps) {
   return (
-    <div>
-      <Flex my="sm" justify="space-between">
-        <Box>
-          <TextInput
-            defaultValue={globalFilterValue}
-            placeholder="Filter submissions"
-            styles={{
-              input: {
-                width: 250,
-                height: 32,
-                border: `1px solid ${
-                  theme.colorScheme === "dark"
-                    ? theme.colors.dark[5]
-                    : theme.colors.gray[3]
-                }`,
-                backgroundColor:
-                  theme.colorScheme === "dark"
-                    ? theme.colors.dark[7]
-                    : theme.white
-              }
-            }}
-            onChange={(event) =>
-              setGlobalFilterValue(event.currentTarget.value)
-            }
-          />
-        </Box>
-        <Menu shadow="md" width={200}>
-          <Menu.Target>
-            <Button
-              size="xs"
-              leftIcon={<IconAdjustmentsHorizontal size={16} stroke={1.2} />}
-            >
-              View
-            </Button>
-          </Menu.Target>
-
-          <Menu.Dropdown>
-            <Menu.Label>Toggle columns</Menu.Label>
-            {table
-              .getAllColumns()
-              .filter((column) => column.getCanHide())
-              .map((column) => {
-                return (
-                  <Menu.Item key={column.id}>
-                    <Checkbox
-                      id={column.id}
-                      label={column.id}
-                      checked={column.getIsVisible()}
-                      onChange={(e) => {
-                        column.toggleVisibility(!!e.target.checked);
-                      }}
-                    ></Checkbox>
-                  </Menu.Item>
-                );
-              })}
-          </Menu.Dropdown>
-        </Menu>
-      </Flex>
-
-      <ScrollArea
-        sx={{
-          margin: "0 -16px",
-          boxShadow: theme.shadows.xs,
-          borderTop:
-            theme.colorScheme === "dark"
-              ? `1px solid ${theme.colors.dark[5]}`
-              : 0,
-          borderBottom:
-            theme.colorScheme === "dark"
-              ? `1px solid ${theme.colors.dark[5]}`
-              : 0
-        }}
-      >
-        <Table>
-          <thead>
-            {table.getHeaderGroups().map((headerGroup) => (
-              <tr key={headerGroup.id}>
-                {headerGroup.headers.map((header, idx) => {
-                  const cellWidth = [260, 110, 110, 320, 260];
+    <DataGrid
+      data={data}
+      tableRef={tableRef}
+      withSorting
+      withPagination
+      withGlobalFilter
+      withToolbarPadding
+      withColumnFilters
+      options={{
+        getFacetedRowModel: getFacetedRowModel(),
+        getFacetedUniqueValues: getFacetedUniqueValues()
+      }}
+      pageSizes={["5", "25", "50", "100"]}
+      initialState={{ pagination: { pageSize: 5 } }}
+      columns={[
+        {
+          id: "problem_name",
+          accessorFn: (row) => `${row.problem.pid} - ${row.problem.name}`,
+          header: "Name",
+          cell: ProblemName,
+          minSize: 280,
+          maxSize: 280
+        },
+        {
+          id: "verdict",
+          accessorKey: "verdict",
+          header: "Verdict",
+          cell: VerdictCell,
+          minSize: 90,
+          maxSize: 90,
+          filterFn: (row, columnId, filterValue: Set<string>) => {
+            if (filterValue.size === 0) return true;
+            return filterValue.has(row.original.verdict);
+          }
+        },
+        {
+          id: "solve_time",
+          accessorKey: "solveTime",
+          header: "Solve Time",
+          cell: SolveTimeCell,
+          minSize: 120,
+          maxSize: 120
+        },
+        {
+          accessorFn: (row) =>
+            row.problem.problemTags
+              .map((problemTag) => problemTag.tag.name)
+              .toString(),
+          header: "Tags",
+          minSize: 320,
+          maxSize: 320,
+          cell: (value) => {
+            const tags = value.cell.row.original.problem.problemTags.map(
+              (problemTag) => problemTag.tag.name
+            );
+            return (
+              <Group spacing="xs" sx={{ maxWidth: 240 }}>
+                {tags.map((tag) => {
                   return (
-                    <th
-                      key={header.id}
-                      style={{
-                        width: cellWidth[idx],
-                        maxWidth: cellWidth[idx],
-                        minWidth: cellWidth[idx]
-                      }}
-                    >
-                      {header.isPlaceholder
-                        ? null
-                        : flexRender(
-                            header.column.columnDef.header,
-                            header.getContext()
-                          )}
-                    </th>
+                    <Badge size="sm" key={tag}>
+                      {tag}
+                    </Badge>
                   );
                 })}
-              </tr>
-            ))}
-          </thead>
-          <tbody>
-            {table.getRowModel().rows?.length ? (
-              table.getRowModel().rows.map((row) => (
-                <tr key={row.id} data-state={row.getIsSelected() && "selected"}>
-                  {row.getVisibleCells().map((cell) => (
-                    <td key={cell.id}>
-                      {flexRender(
-                        cell.column.columnDef.cell,
-                        cell.getContext()
-                      )}
-                    </td>
-                  ))}
-                </tr>
-              ))
-            ) : (
-              <tr>
-                <td colSpan={columns.length} className="h-24 text-center">
-                  No results.
-                </td>
-              </tr>
-            )}
-          </tbody>
-        </Table>
-      </ScrollArea>
-    </div>
+              </Group>
+            );
+          }
+        },
+        {
+          id: "problem_difficulty",
+          accessorKey: "problem.difficulty",
+          header: "Difficulty",
+          filterFn: (row, columnId, filterValue: Set<number>) => {
+            if (filterValue.size === 0) return true;
+            return filterValue?.has(row.original.problem.difficulty) ?? false;
+          }
+        },
+        {
+          accessorKey: "solvedAt",
+          header: "Date Solved",
+          cell: SolvedAtCell
+        }
+      ]}
+    />
   );
 }

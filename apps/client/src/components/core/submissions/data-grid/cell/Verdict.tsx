@@ -2,9 +2,9 @@ import { useState } from "react";
 import { MantineTheme, Select, useMantineTheme } from "@mantine/core";
 import { CellContext } from "@tanstack/react-table";
 import { IconCheck, IconSelector } from "@tabler/icons-react";
-import { Submission } from "../columns";
 import { useQueryClient } from "@tanstack/react-query";
 import {
+  SubmissionRow,
   getSubmissions,
   useUpdateSubmissionMutation
 } from "@proghours/data-access";
@@ -41,7 +41,7 @@ const getLightStyles = (theme: MantineTheme) => ({
   }
 });
 
-const VerdictCell = (cell: CellContext<Submission, unknown>) => {
+const VerdictCell = (cell: CellContext<SubmissionRow, unknown>) => {
   const theme = useMantineTheme();
   const client = useQueryClient();
   const [selected, setSelected] = useState<Verdict>(cell.getValue() as Verdict);

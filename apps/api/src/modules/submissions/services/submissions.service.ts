@@ -8,6 +8,7 @@ import { PrismaService } from "~/modules/prisma/services/prisma.service";
 import { ProblemsService } from "~/modules/problems/services/problems.service";
 import { CreateSubmissionDto } from "../dto/create-submission.dto";
 import { UpdateSubmissionDto } from "../dto/update-sumission.dto";
+import moment from "moment";
 
 @Injectable()
 export class SubmissionsService {
@@ -71,10 +72,14 @@ export class SubmissionsService {
   }
 
   async update(id: number, updateSubmissionDto: UpdateSubmissionDto) {
+    console.log(
+      updateSubmissionDto.solvedAt,
+      moment(updateSubmissionDto.solvedAt).utcOffset(6).toDate()
+    );
     const updatedSubmission = await this.prisma.submission.update({
       where: { id },
       data: {
-        ...updateSubmissionDto
+        solvedAt: moment.utc(updateSubmissionDto.solvedAt).toDate()
       }
     });
     return updatedSubmission;

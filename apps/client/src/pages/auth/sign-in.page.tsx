@@ -73,7 +73,7 @@ export default function SignInPage() {
           <Paper p="xl" shadow="sm">
             <Stack>
               <Box>
-                <AppLogo mb="xs" />
+                <AppLogo size="lg" mb="xs" />
                 <Title order={2} mb="4px">
                   Sign in to your account
                 </Title>

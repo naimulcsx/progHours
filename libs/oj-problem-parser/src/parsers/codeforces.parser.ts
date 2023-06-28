@@ -149,7 +149,7 @@ export class CodeforcesParser extends OJParser<CfUrlParams> {
             return {
               pid: this.getPid(result),
               name: problem.name,
-              difficulty: problem.points ?? problem.rating ?? 0,
+              difficulty: problem.rating ?? 0,
               tags: problem.tags,
               url: `https://codeforces.com/contest/${result.contestId}/problem/${result.problemId}`
             };

@@ -3,10 +3,13 @@ import {
   Button,
   ColorSwatch,
   Group,
+  Switch,
   Tooltip,
+  useMantineColorScheme,
   useMantineTheme
 } from "@mantine/core";
 import { useActiveUser } from "@proghours/data-access";
+import { IconMoonStars, IconSun } from "@tabler/icons-react";
 import { DashboardLayout } from "~/components/common/dashboard/Layout";
 import { useColorAccent } from "~/contexts/ColorAccentContext";
 import { useLogout } from "~/hooks/useLogout";
@@ -16,11 +19,22 @@ export default function OverviewPage() {
   const { handleLogout } = useLogout();
   const theme = useMantineTheme();
   const { accentColor, setAccentColor } = useColorAccent();
+  const { colorScheme, toggleColorScheme } = useMantineColorScheme();
   return (
     <DashboardLayout>
       Overview page
       <Button onClick={handleLogout}>Log out</Button>
       <pre>{JSON.stringify(data, null, 2)}</pre>
+      <Switch
+        checked={colorScheme === "dark"}
+        color="yellow"
+        onChange={() => toggleColorScheme()}
+        size="md"
+        onLabel={<IconSun color={theme.white} size={16} stroke={1.5} />}
+        offLabel={
+          <IconMoonStars color={theme.colors.gray[6]} size={16} stroke={1.5} />
+        }
+      />
       <Group>
         {Object.keys(theme.colors)
           .filter((color) => !["dark", "gray"].includes(color))

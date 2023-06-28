@@ -1,20 +1,18 @@
-import { Group, Loader, Title, Transition } from "@mantine/core";
+import { Box, Group, Loader, Title, Transition } from "@mantine/core";
 import { DashboardLayout } from "~/components/common/dashboard/Layout";
-import { SubmissionsDataTable } from "~/components/core/submissions/data-grid";
-import { columns } from "~/components/core/submissions/data-grid/columns";
-import { useSubmissions } from "@proghours/data-access";
+import { SubmissionRow, useSubmissions } from "@proghours/data-access";
+import { DataGridToolbar } from "~/components/common/datagrid/Toolbar";
+import { SubmissionsTable } from "~/components/core/submissions/data-grid";
+import { useDataGrid } from "~/components/common/datagrid";
 
 export default function SubmissionsPage() {
-  const { data, isLoading, isFetching, isSuccess } = useSubmissions();
+  const [table, setRef] = useDataGrid<SubmissionRow>();
+  const { data, isFetching, isSuccess } = useSubmissions();
   return (
     <DashboardLayout>
       <Group sx={{ alignItems: "center" }}>
-        <Title order={3}>Submissions</Title>
-        <Transition
-          mounted={isLoading || isFetching}
-          transition="fade"
-          duration={800}
-        >
+        <Title order={2}>Submissions</Title>
+        <Transition mounted={isFetching} transition="fade" duration={800}>
           {(styles) => (
             <div style={{ ...styles, display: "flex", alignItems: "center" }}>
               <Loader size="xs" />
@@ -22,11 +20,33 @@ export default function SubmissionsPage() {
           )}
         </Transition>
       </Group>
-      <Transition mounted={isSuccess} transition="fade" duration={800}>
+      <Transition mounted={!isFetching} transition="fade" duration={300}>
         {(styles) => (
-          <div style={{ ...styles, transitionDelay: "250ms" }}>
-            <SubmissionsDataTable columns={columns} data={data || []} />
-          </div>
+          <Box style={{ ...styles, transitionDelay: "250ms" }}>
+            {isSuccess && (
+              <Box>
+                {/* table toolbar */}
+                {table && (
+                  <DataGridToolbar
+                    table={table}
+                    withGlobalFilter
+                    columnFilters={[
+                      {
+                        id: "problem_difficulty",
+                        label: "Difficulty"
+                      },
+                      {
+                        id: "verdict",
+                        label: "Verdict"
+                      }
+                    ]}
+                  />
+                )}
+                {/* submissions table */}
+                <SubmissionsTable data={data} tableRef={setRef} />
+              </Box>
+            )}
+          </Box>
         )}
       </Transition>
     </DashboardLayout>

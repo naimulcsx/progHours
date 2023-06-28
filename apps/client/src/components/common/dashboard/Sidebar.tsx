@@ -1,4 +1,6 @@
 import {
+  Anchor,
+  Box,
   Navbar,
   NavLink,
   SegmentedControl,
@@ -9,6 +11,7 @@ import { Link, useLocation } from "react-router-dom";
 import { useLocalStorage } from "@mantine/hooks";
 import { useUser } from "~/hooks/useUser";
 import { userLinks, adminLinks } from "./_data";
+import { AppLogo } from "~/assets/AppLogo";
 
 export default function Sidebar() {
   const { user } = useUser();
@@ -22,20 +25,34 @@ export default function Sidebar() {
 
   return (
     <Navbar
-      p="xs"
+      p="md"
       hidden
       width={{ base: 0, lg: 220 }}
       hiddenBreakpoint="lg"
       sx={{
         fontWeight: 500,
         backgroundColor:
-          theme.colorScheme === "dark" ? theme.colors.dark[7] : theme.white
+          theme.colorScheme === "dark" ? theme.colors.dark[8] : theme.white
       }}
     >
-      <Navbar.Section grow mt="xs">
+      <Navbar.Section grow>
+        <Box mb="md">
+          <Anchor
+            component={Link}
+            to="/dashboard"
+            sx={{
+              ":hover": {
+                textDecoration: "none"
+              }
+            }}
+          >
+            <AppLogo size="md" />
+          </Anchor>
+        </Box>
+
         {user?.role === "ADMIN" && (
           <SegmentedControl
-            mb="xl"
+            mb="md"
             fullWidth
             value={selected}
             onChange={setSelected}
@@ -52,7 +69,8 @@ export default function Sidebar() {
             }}
           />
         )}
-        <Stack spacing="xs">
+
+        <Stack spacing={6} sx={{ margin: "0 -16px" }}>
           {selected === "REGULAR"
             ? userLinks.map((link, index) => {
                 return (

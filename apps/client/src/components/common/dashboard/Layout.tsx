@@ -1,31 +1,15 @@
-import { AppShell, AppShellProps } from "@mantine/core";
-import { Navbar } from "../Navbar";
+import { AppShell, AppShellProps, Box } from "@mantine/core";
 import Sidebar from "./Sidebar";
 
 export function DashboardLayout({ children }: AppShellProps) {
   return (
-    <>
-      <AppShell
-        header={<Navbar />}
-        sx={(theme) => ({
-          // replace with theme function
-          "@media (max-width: 755px)": {
-            paddingBottom: 56
-          }
-        })}
-        navbar={<Sidebar />}
-        // styles={(theme) => ({
-        //   main: {
-        //     backgroundColor:
-        //       theme.colorScheme === "dark"
-        //         ? theme.colors.dark[9]
-        //         : theme.colors.gray[0]
-        //   }
-        // })}
-      >
-        {children}
-      </AppShell>
-      {/* <MobileNav /> */}
-    </>
+    <AppShell
+      styles={{
+        body: {}
+      }}
+      navbar={<Sidebar />}
+    >
+      <Box p={8}>{children}</Box>
+    </AppShell>
   );
 }

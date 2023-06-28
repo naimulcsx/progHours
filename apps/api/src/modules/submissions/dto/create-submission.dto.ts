@@ -1,4 +1,4 @@
-import { IsString, IsNumber, IsDateString, IsUrl } from "class-validator";
+import { IsString, IsNumber, IsUrl, IsISO8601 } from "class-validator";
 import { Verdict } from "@prisma/client";
 import { ApiProperty } from "@nestjs/swagger";
 
@@ -26,8 +26,8 @@ export class CreateSubmissionDto {
 
   @ApiProperty({
     description: "Solved at",
-    example: new Date().toISOString()
+    example: "2023-05-23"
   })
-  @IsDateString()
-  solvedAt: Date;
+  @IsISO8601()
+  solvedAt: string;
 }
