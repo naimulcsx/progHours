@@ -167,17 +167,10 @@ const getDatePickerInputDefaultProps = (
   };
 };
 
-export const customTransition = {
-  in: { opacity: 1, transform: "scale(1)" },
-  out: { opacity: 0, transform: "scale(0.85)" },
-  common: { transformOrigin: "top" },
-  transitionProperty: "transform, opacity"
-};
-
 const getMenuDefaultProps = (theme: MantineTheme): MenuProps => {
   return {
     transitionProps: {
-      transition: customTransition
+      transition: "pop"
     }
   };
 };
