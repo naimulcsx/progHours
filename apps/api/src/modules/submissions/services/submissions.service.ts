@@ -84,4 +84,10 @@ export class SubmissionsService {
     });
     return updatedSubmission;
   }
+
+  async delete(id: number) {
+    const result = await this.prisma.submission.delete({ where: { id } });
+    console.log(result);
+    return result;
+  }
 }

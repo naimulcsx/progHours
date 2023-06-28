@@ -1,6 +1,7 @@
 import {
   Body,
   Controller,
+  Delete,
   Get,
   Param,
   ParseIntPipe,
@@ -68,5 +69,14 @@ export class SubmissionsController {
     @Body() updateSubmissionDto: UpdateSubmissionDto
   ) {
     return this.submissionsService.update(id, updateSubmissionDto);
+  }
+
+  @Delete(":id")
+  @ApiBearerAuth("JWT")
+  @ApiOperation({ summary: "Delete a submission" })
+  @ApiOkResponse({ description: "Submission deleted" })
+  @ApiUnauthorizedResponse({ description: "Unauthorized user" })
+  async deleteSubmission(@Param("id", ParseIntPipe) id: number) {
+    return this.submissionsService.delete(id);
   }
 }
