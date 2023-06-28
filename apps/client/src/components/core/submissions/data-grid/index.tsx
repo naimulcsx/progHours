@@ -33,8 +33,8 @@ export function SubmissionsTable({ tableRef, data }: SubmissionsTableProps) {
         getFacetedRowModel: getFacetedRowModel(),
         getFacetedUniqueValues: getFacetedUniqueValues()
       }}
-      pageSizes={["5", "25", "50", "100"]}
-      initialState={{ pagination: { pageSize: 5 } }}
+      pageSizes={["10", "25", "50", "100"]}
+      initialState={{ pagination: { pageSize: 10 } }}
       columns={[
         {
           id: "problem_name",

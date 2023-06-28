@@ -1,20 +1,33 @@
 import { ActionIcon, Menu } from "@mantine/core";
-import { IconDots, IconReload, IconTrash } from "@tabler/icons-react";
+import {
+  IconCheck,
+  IconDots,
+  IconReload,
+  IconTrash
+} from "@tabler/icons-react";
 import {
   SubmissionRow,
   useRefetchProblemMutation
 } from "@proghours/data-access";
 import { CellContext } from "@tanstack/react-table";
 import { useQueryClient } from "@tanstack/react-query";
+import { notifications } from "@mantine/notifications";
 
 export function ActionsCell({ cell }: CellContext<SubmissionRow, unknown>) {
   const {
-    problem: { id }
+    problem: { id, pid }
   } = cell.row.original;
   const client = useQueryClient();
   const { mutate } = useRefetchProblemMutation({
     config: {
       onSuccess: (updatedProblem) => {
+        notifications.update({
+          id: `refetch-problem-${pid}`,
+          color: "green",
+          title: "Success",
+          message: `Refetched ${pid}`,
+          icon: <IconCheck />
+        });
         const submissions: SubmissionRow[] =
           client.getQueryData(["submissions"]) ?? [];
         const newSubmissions = submissions.map((submission) => {
@@ -40,6 +53,13 @@ export function ActionsCell({ cell }: CellContext<SubmissionRow, unknown>) {
         <Menu.Item
           icon={<IconReload size={14} />}
           onClick={() => {
+            notifications.show({
+              id: `refetch-problem-${pid}`,
+              color: "yellow",
+              title: "Loading",
+              message: `Refetching ${pid}`,
+              loading: true
+            });
             mutate({ id });
           }}
         >
