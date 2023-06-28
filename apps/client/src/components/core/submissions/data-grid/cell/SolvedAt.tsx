@@ -29,7 +29,7 @@ export function SolvedAtCell(cell: CellContext<SubmissionRow, unknown>) {
   return (
     <DatePickerInput
       size="xs"
-      sx={{ minWidth: 160 }}
+      sx={{ minWidth: 100 }}
       value={solvedAt}
       valueFormat="DD-MM-YYYY"
       onChange={(date) => {

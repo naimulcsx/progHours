@@ -11,6 +11,7 @@ import VerdictCell from "./cell/Verdict";
 import SolveTimeCell from "./cell/SolveTime";
 import { SolvedAtCell } from "./cell/SolvedAt";
 import { RefCallback } from "react";
+import { ActionsCell } from "./cell/Actions";
 
 export interface SubmissionsTableProps {
   data: SubmissionRow[];
@@ -28,6 +29,7 @@ export function SubmissionsTable({ tableRef, data }: SubmissionsTableProps) {
       withToolbarPadding
       withColumnFilters
       options={{
+        autoResetPageIndex: false,
         getFacetedRowModel: getFacetedRowModel(),
         getFacetedUniqueValues: getFacetedUniqueValues()
       }}
@@ -94,12 +96,20 @@ export function SubmissionsTable({ tableRef, data }: SubmissionsTableProps) {
           filterFn: (row, columnId, filterValue: Set<number>) => {
             if (filterValue.size === 0) return true;
             return filterValue?.has(row.original.problem.difficulty) ?? false;
-          }
+          },
+          minSize: 100,
+          maxSize: 100
         },
         {
           accessorKey: "solvedAt",
           header: "Date Solved",
-          cell: SolvedAtCell
+          cell: SolvedAtCell,
+          minSize: 120
+        },
+        {
+          id: "actions",
+          header: "Actions",
+          cell: ActionsCell
         }
       ]}
     />

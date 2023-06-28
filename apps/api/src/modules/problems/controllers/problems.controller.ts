@@ -33,10 +33,10 @@ export class ProblemsController {
     return this.problemsService.getById(id);
   }
 
-  @Patch(":id/retrieve")
+  @Patch(":id/refetch")
   @ApiBearerAuth("JWT")
-  @ApiOperation({ summary: "Retrieve problem by Id" })
+  @ApiOperation({ summary: "Refetch problem by Id" })
   async refetchProblem(@Param("id", ParseIntPipe) id: number) {
-    return this.problemsService.retrieveById(id);
+    return this.problemsService.refetchById(id);
   }
 }

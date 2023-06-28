@@ -49,7 +49,7 @@ export class ProblemsService {
     return createdProblem;
   }
 
-  async retrieveById(id: number) {
+  async refetchById(id: number) {
     const problem = await this.prisma.problem.findUnique({ where: { id } });
     if (!problem) {
       throw new NotFoundException("Problem not found");
@@ -57,7 +57,8 @@ export class ProblemsService {
     const { tags, ...problemData } = await this.parserService.parse(
       problem.url
     );
-    await this.prisma.$transaction([
+    /* eslint-disable @typescript-eslint/no-unused-vars */
+    const [_, updatedProblem] = await this.prisma.$transaction([
       this.prisma.problemTag.deleteMany({ where: { problemId: id } }),
       this.prisma.problem.update({
         where: { id },
@@ -79,11 +80,18 @@ export class ProblemsService {
               };
             })
           }
+        },
+        include: {
+          problemTags: {
+            include: {
+              tag: true
+            }
+          }
         }
       })
     ]);
     return {
-      message: "Problem retrieved"
+      ...updatedProblem
     };
   }
 }
