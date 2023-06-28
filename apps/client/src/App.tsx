@@ -7,12 +7,14 @@ import {
 } from "@mantine/core";
 import { Notifications } from "@mantine/notifications";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { useRoutes } from "react-router-dom";
+import { useLocation, useRoutes } from "react-router-dom";
 import theme from "~/styles/theme";
 import { getRoutes } from "./routes";
 import { useUser } from "./hooks/useUser";
 import { useLocalStorage } from "@mantine/hooks";
 import { useColorAccent } from "./contexts/ColorAccentContext";
+import { NavigationProgress, nprogress } from "@mantine/nprogress";
+import { useEffect } from "react";
 
 const queryClient = new QueryClient();
 
@@ -20,6 +22,7 @@ function Entry() {
   const { user } = useUser();
   const theme = useMantineTheme();
   const page = useRoutes(getRoutes(!!user));
+
   return (
     <Box
       component="main"
@@ -47,6 +50,12 @@ export function App() {
 
   const { accentColor } = useColorAccent();
 
+  const location = useLocation();
+
+  useEffect(() => {
+    nprogress.complete();
+  }, [location.pathname]);
+
   return (
     <ColorSchemeProvider
       colorScheme={colorScheme}
@@ -57,6 +66,7 @@ export function App() {
         withNormalizeCSS
         theme={{ ...theme, colorScheme, primaryColor: accentColor }}
       >
+        <NavigationProgress autoReset={true} />
         <QueryClientProvider client={queryClient}>
           <Entry />
           <Notifications position="top-right" />

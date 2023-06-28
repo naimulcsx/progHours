@@ -1893,12 +1893,12 @@
     "@mantine/utils" "6.0.13"
     react-transition-group "4.4.2"
 
-"@mantine/nprogress@^6.0.13":
-  version "6.0.13"
-  resolved "https://registry.yarnpkg.com/@mantine/nprogress/-/nprogress-6.0.13.tgz#06f7e29b3f0efa00d15b0a8267067fea62a5a859"
-  integrity sha512-EHrB/0+XpvE1Iu3+guIiRLQNF4x3xPrmEbw4Ry/0FF+JC1LcZVQ7fF/SuxTFO8K1lBV8HxKnb5tB0LmcFa+Elw==
+"@mantine/nprogress@^6.0.15":
+  version "6.0.15"
+  resolved "https://registry.yarnpkg.com/@mantine/nprogress/-/nprogress-6.0.15.tgz#50374d78e7ab851671f595a2572e9205ce91fa4b"
+  integrity sha512-SHmRq3t0iy1FsZ0E4vdlR/EHsQHeo9dt3920KJqvTUyJLIk8DY8cIDK36qav56V49Ocef4uIEUR+G/foTa2EgQ==
   dependencies:
-    "@mantine/utils" "6.0.13"
+    "@mantine/utils" "6.0.15"
 
 "@mantine/spotlight@^6.0.13":
   version "6.0.13"
@@ -1919,6 +1919,11 @@
   version "6.0.13"
   resolved "https://registry.yarnpkg.com/@mantine/utils/-/utils-6.0.13.tgz#a7adc128a2e7c07031c7221c1533800d0c80279a"
   integrity sha512-iqIU9wurqAeccVbWjM0yr1JGne5VP+ob55M03QAXOEN4+ck93VDTjCkZJR2RFhDcs5q0twQFoOmU/gULR8aKIA==
+
+"@mantine/utils@6.0.15":
+  version "6.0.15"
+  resolved "https://registry.yarnpkg.com/@mantine/utils/-/utils-6.0.15.tgz#d4144221f9406aece12b979bed5888da50d86771"
+  integrity sha512-iVaobFQTCQWG6SRi3im0/nONKCtGRPobG7bXn9GiIT96E4t7uTPglQpo/ZktDrF1XCL8CO/HoQmks4A2iXuMFw==
 
 "@mapbox/node-pre-gyp@^1.0.10":
   version "1.0.10"
