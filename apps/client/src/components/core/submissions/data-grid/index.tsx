@@ -14,6 +14,7 @@ import { RefCallback } from "react";
 import { ActionsCell } from "./cell/Actions";
 import { DeleteModal } from "~/components/common/modals/DeleteModal";
 import { useDisclosure } from "@mantine/hooks";
+import { CreateSubmissionRow } from "./CreateSubmissionRow";
 
 export interface SubmissionsTableProps {
   data: SubmissionRow[];
@@ -26,6 +27,7 @@ export function SubmissionsTable({ tableRef, data }: SubmissionsTableProps) {
     <>
       <DeleteModal opened={opened} open={open} close={close} />
       <DataGrid
+        FirstRow={CreateSubmissionRow}
         verticalSpacing="sm"
         data={data}
         tableRef={tableRef}
@@ -47,8 +49,8 @@ export function SubmissionsTable({ tableRef, data }: SubmissionsTableProps) {
             accessorFn: (row) => `${row.problem.pid} - ${row.problem.name}`,
             header: "Name",
             cell: ProblemName,
-            minSize: 280,
-            maxSize: 280
+            size: 280,
+            minSize: 280
           },
           {
             id: "verdict",
@@ -71,13 +73,14 @@ export function SubmissionsTable({ tableRef, data }: SubmissionsTableProps) {
             maxSize: 120
           },
           {
+            id: "tags",
             accessorFn: (row) =>
               row.problem.problemTags
                 .map((problemTag) => problemTag.tag.name)
                 .toString(),
             header: "Tags",
-            minSize: 340,
-            maxSize: 340,
+            size: 320,
+            minSize: 320,
             cell: (value) => {
               const tags = value.cell.row.original.problem.problemTags.map(
                 (problemTag) => problemTag.tag.name
@@ -99,10 +102,11 @@ export function SubmissionsTable({ tableRef, data }: SubmissionsTableProps) {
               if (filterValue.size === 0) return true;
               return filterValue?.has(row.original.problem.difficulty) ?? false;
             },
-            minSize: 100,
-            maxSize: 100
+            size: 100,
+            minSize: 100
           },
           {
+            id: "solved_at",
             accessorKey: "solvedAt",
             header: "Date Solved",
             cell: SolvedAtCell,

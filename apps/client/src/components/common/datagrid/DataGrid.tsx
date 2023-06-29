@@ -59,6 +59,7 @@ export function useDataGrid<TData extends RowData>(): [
 }
 
 export function DataGrid<TData extends RowData>({
+  FirstRow,
   // data
   columns,
   data,
@@ -119,7 +120,6 @@ export function DataGrid<TData extends RowData>({
     bodyRow,
     bodyCell,
     pagination,
-    columnFilter,
     columnSorter
   } = {},
   // table option ovverides
@@ -429,10 +429,21 @@ export function DataGrid<TData extends RowData>({
                 rowVirtualizer.range.startIndex % 2 === 0
               )}
             {virtualRows.length > 0 ? (
-              virtualRows.map((virtualRow) => {
+              virtualRows.map((virtualRow, idx) => {
                 const row = rows[virtualRow.index] as Row<TData>;
                 const rowProps = onRow ? onRow(row) : {};
-                return (
+                const _FirstRow =
+                  idx === 0 ? (
+                    <FirstRow
+                      {...rowProps}
+                      table={table}
+                      key={row.id + "first_row"}
+                      className={cx(classes.tr, rowProps.className)}
+                      role="row"
+                    />
+                  ) : null;
+                return [
+                  _FirstRow,
                   <Fragment key={row.id}>
                     <BodyRow
                       {...rowProps}
@@ -483,7 +494,7 @@ export function DataGrid<TData extends RowData>({
                       </BodyRow>
                     )}
                   </Fragment>
-                );
+                ];
               })
             ) : (
               <tr className={classes.tr} role="row">

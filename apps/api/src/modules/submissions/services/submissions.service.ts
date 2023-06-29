@@ -59,8 +59,20 @@ export class SubmissionsService {
           problemId,
           userId,
           solvedAt: new Date(createSubmissionDto.solvedAt)
+        },
+        include: {
+          problem: {
+            include: {
+              problemTags: {
+                include: {
+                  tag: true
+                }
+              }
+            }
+          }
         }
       });
+      console.log(newSubmission);
       return newSubmission;
     } catch (error) {
       const uniqueConstraintErrorCode = "P2002";

@@ -5,6 +5,7 @@ import {
   Checkbox,
   Group,
   Menu,
+  ScrollArea,
   TextInput,
   useMantineTheme
 } from "@mantine/core";
@@ -25,6 +26,8 @@ export function DataGridToolbar<TData>({
     label: string;
   }>;
 }) {
+  const theme = useMantineTheme();
+
   const [value, setValue] = useDebouncedState(
     table?.getState()?.globalFilter,
     500
@@ -56,14 +59,16 @@ export function DataGridToolbar<TData>({
   }, [table, visibleColumns]);
 
   return (
-    <Group py="md" position="apart">
+    <Group position="apart">
       <Group>
         {withGlobalFilter && (
           <TextInput
             size="xs"
             placeholder="Search your submissions"
             sx={{ minWidth: 260 }}
-            styles={{ input: { borderStyle: "dashed" } }}
+            styles={{
+              input: { background: theme.colors.dark[8], borderStyle: "dashed" }
+            }}
             defaultValue={value}
             onChange={(e) => {
               setValue(e.target.value);
@@ -172,14 +177,17 @@ function ColumnFilter<TTable>({ id, table, label }: ColumnFilterProps<TTable>) {
           size="xs"
           sx={{
             backgroundColor:
-              theme.colorScheme === "dark" ? theme.colors.dark[6] : theme.white,
+              theme.colorScheme === "dark" ? theme.colors.dark[7] : theme.white,
             border: `1px dashed ${
               theme.colorScheme === "dark"
                 ? theme.colors.dark[4]
                 : theme.colors.gray[4]
             }`,
             color:
-              theme.colorScheme === "dark" ? theme.white : theme.colors.dark[9]
+              theme.colorScheme === "dark"
+                ? theme.colors.dark[2]
+                : theme.colors.dark[9],
+            fontWeight: 500
           }}
           leftIcon={<IconCirclePlus size={18} stroke={1.5} />}
           variant="light"
@@ -194,7 +202,7 @@ function ColumnFilter<TTable>({ id, table, label }: ColumnFilterProps<TTable>) {
                       size="sm"
                       key={item as string}
                       sx={{
-                        backgroundColor: theme.colors.dark[7],
+                        backgroundColor: theme.colors.dark[9],
                         color: theme.colors.dark[2]
                       }}
                     >
@@ -219,33 +227,36 @@ function ColumnFilter<TTable>({ id, table, label }: ColumnFilterProps<TTable>) {
       </Menu.Target>
       <Menu.Dropdown>
         <Menu.Label>{label}</Menu.Label>
-        {options.map((option) => {
-          return (
-            <Menu.Item key={option.value as Key} closeMenuOnClick={false}>
-              <Checkbox
-                size="sm"
-                label={option.label}
-                checked={filterState.has(option.value)}
-                onChange={(e) => {
-                  const checked = e.target.checked;
-                  if (checked) {
-                    setFilterState((prevSet) => {
-                      const nextSet = new Set(prevSet);
-                      nextSet.add(option.value);
-                      return nextSet;
-                    });
-                  } else {
-                    setFilterState((prevSet) => {
-                      const nextSet = new Set(prevSet);
-                      nextSet.delete(option.value);
-                      return nextSet;
-                    });
-                  }
-                }}
-              />
-            </Menu.Item>
-          );
-        })}
+        <ScrollArea h={200}>
+          {options.map((option) => {
+            return (
+              <Menu.Item key={option.value as Key} closeMenuOnClick={false}>
+                <Checkbox
+                  size="sm"
+                  label={option.label}
+                  checked={filterState.has(option.value)}
+                  onChange={(e) => {
+                    const checked = e.target.checked;
+                    if (checked) {
+                      setFilterState((prevSet) => {
+                        const nextSet = new Set(prevSet);
+                        nextSet.add(option.value);
+                        return nextSet;
+                      });
+                    } else {
+                      setFilterState((prevSet) => {
+                        const nextSet = new Set(prevSet);
+                        nextSet.delete(option.value);
+                        return nextSet;
+                      });
+                    }
+                  }}
+                />
+              </Menu.Item>
+            );
+          })}
+        </ScrollArea>
+
         <Menu.Item component="div">
           <Button
             size="xs"

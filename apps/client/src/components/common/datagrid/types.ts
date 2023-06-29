@@ -28,7 +28,6 @@ import {
   ReactNode,
   Ref
 } from "react";
-import { ColumnFilterProps } from "./ColumnFilter";
 import { ColumnSorterProps } from "./ColumnSorter";
 import useStyles from "./DataGrid.styles";
 import { PaginationProps } from "./Pagination";
@@ -65,6 +64,8 @@ export type PaginationMode = "default" | "compact";
 export interface DataGridProps<TData extends RowData>
   extends DefaultProps<DataGridStylesNames, object>,
     ComponentPropsWithoutRef<"div"> {
+  /* eslint-disable @typescript-eslint/no-explicit-any */
+  FirstRow: (props: any) => JSX.Element;
   withToolbarPadding: boolean;
 
   /** Gird column definitions */
@@ -249,6 +250,5 @@ export type DataGridComponents<TData> = {
   bodyRow: ComponentType<DataGridBodyRowProps<TData>>;
   bodyCell: ComponentType<DataGridBodyCellProps<TData>>;
   pagination: ComponentType<PaginationProps<TData>>;
-  columnFilter: ComponentType<ColumnFilterProps>;
   columnSorter: ComponentType<ColumnSorterProps>;
 };

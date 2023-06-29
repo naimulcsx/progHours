@@ -66,7 +66,7 @@ export const ProblemName = ({ cell }: CellContext<SubmissionRow, unknown>) => {
       </Box>
       <Box>
         <Group spacing="xs" align="center">
-          <Title order={5} sx={{ fontWeight: 600 }}>
+          <Title order={6} sx={{ fontWeight: 600 }}>
             {pid}
           </Title>
           {/* <Anchor href={url} target="_blank">

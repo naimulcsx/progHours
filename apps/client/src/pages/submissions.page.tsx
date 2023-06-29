@@ -1,4 +1,4 @@
-import { Box, Group, Loader, Title, Transition } from "@mantine/core";
+import { Box, Group, Loader, Stack, Title, Transition } from "@mantine/core";
 import { DashboardLayout } from "~/components/common/dashboard/Layout";
 import { SubmissionRow, useSubmissions } from "@proghours/data-access";
 import { DataGridToolbar } from "~/components/common/datagrid/Toolbar";
@@ -24,7 +24,7 @@ export default function SubmissionsPage() {
         {(styles) => (
           <Box style={{ ...styles, transitionDelay: "250ms" }}>
             {isSuccess && (
-              <Box>
+              <Stack mt="md" spacing="lg">
                 {/* table toolbar */}
                 {table && (
                   <DataGridToolbar
@@ -44,7 +44,7 @@ export default function SubmissionsPage() {
                 )}
                 {/* submissions table */}
                 <SubmissionsTable data={data} tableRef={setRef} />
-              </Box>
+              </Stack>
             )}
           </Box>
         )}

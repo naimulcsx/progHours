@@ -39,6 +39,9 @@ const getAnchorDefaultProps = (theme: MantineTheme): AnchorProps => ({
 
 const getTextInputDefaultProps = (theme: MantineTheme): TextInputProps => ({
   styles: {
+    input: {
+      border: 0
+    },
     label: {}
   }
 });
@@ -47,6 +50,9 @@ const getPasswordInputDefaultProps = (
   theme: MantineTheme
 ): PasswordInputProps => ({
   styles: {
+    input: {
+      border: 0
+    },
     label: {}
   }
 });
@@ -132,7 +138,13 @@ const getNavLinkDefaultProps = (theme: MantineTheme): NavLinkProps => ({
 const getTableDefaultProps = (theme: MantineTheme): TableProps => {
   return {
     sx: {
+      "thead.mantine-DataGrid-thead": {
+        position: "sticky",
+        top: 0
+      },
       "thead.mantine-DataGrid-thead tr th": {
+        paddingTop: 8,
+        paddingBottom: 8,
         background:
           theme.colorScheme === "dark"
             ? theme.colors.dark[6]
@@ -156,6 +168,9 @@ const getDatePickerInputDefaultProps = (
 ): DatePickerInputProps => {
   return {
     styles: {
+      input: {
+        border: 0
+      },
       weekdaysRow: {
         th: {
           fontSize: "0.75rem !important",
@@ -193,8 +208,15 @@ const getBadgeDefaultProps = (theme: MantineTheme): BadgeProps => {
   return {
     styles: {
       root: {
-        background: theme.colors.dark[5],
-        color: theme.colors.dark[0]
+        background:
+          theme.colorScheme === "dark"
+            ? theme.colors.dark[5]
+            : theme.colors.gray[2],
+        color:
+          theme.colorScheme === "dark"
+            ? theme.colors.dark[0]
+            : theme.colors.gray[7],
+        fontWeight: 500
       }
     }
   };
@@ -210,7 +232,7 @@ const theme: MantineThemeOverride = {
     Button: { defaultProps: getButtonDefaultProps },
     Anchor: { defaultProps: getAnchorDefaultProps },
     TextInput: { defaultProps: getTextInputDefaultProps },
-    PasswordInputProps: { defaultProps: getPasswordInputDefaultProps },
+    PasswordInput: { defaultProps: getPasswordInputDefaultProps },
     Notification: { defaultProps: getNotificationDefaultProps },
     Paper: { defaultProps: getPaperDefaultProps },
     NavLink: { defaultProps: getNavLinkDefaultProps },
