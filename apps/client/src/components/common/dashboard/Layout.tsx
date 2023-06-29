@@ -1,7 +1,9 @@
-import { AppShell, AppShellProps, Box } from "@mantine/core";
+import { AppShell, AppShellProps, Box, useMantineTheme } from "@mantine/core";
 import Sidebar from "./Sidebar";
 
 export function DashboardLayout({ children }: AppShellProps) {
+  const theme = useMantineTheme();
+
   return (
     <AppShell
       styles={{
@@ -9,7 +11,15 @@ export function DashboardLayout({ children }: AppShellProps) {
       }}
       navbar={<Sidebar />}
     >
-      <Box p={8}>{children}</Box>
+      <Box
+        sx={{
+          [theme.fn.largerThan("md")]: {
+            padding: 8
+          }
+        }}
+      >
+        {children}
+      </Box>
     </AppShell>
   );
 }

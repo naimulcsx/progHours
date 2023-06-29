@@ -62,7 +62,11 @@ export default createStyles(
       display: "flex",
       height: "inherit"
     },
-    td: { display: "flex", justifyContent: "space-between" },
+    td: {
+      display: "flex",
+      justifyContent: "space-between",
+      alignItems: "center"
+    },
     headerCellContent: {
       ...ellipsis,
       fontSize: theme.fontSizes.xs

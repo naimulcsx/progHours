@@ -11,7 +11,8 @@ import {
   NavLinkProps,
   TableProps,
   MenuProps,
-  SegmentedControlProps
+  SegmentedControlProps,
+  BadgeProps
 } from "@mantine/core";
 import { DatePickerInputProps } from "@mantine/dates";
 import { NotificationProps } from "@mantine/notifications";
@@ -130,7 +131,6 @@ const getNavLinkDefaultProps = (theme: MantineTheme): NavLinkProps => ({
 
 const getTableDefaultProps = (theme: MantineTheme): TableProps => {
   return {
-    verticalSpacing: "sm",
     sx: {
       "thead.mantine-DataGrid-thead tr th": {
         background:
@@ -189,6 +189,17 @@ const getSegmentedControlDefaultProps = (
   };
 };
 
+const getBadgeDefaultProps = (theme: MantineTheme): BadgeProps => {
+  return {
+    styles: {
+      root: {
+        background: theme.colors.dark[5],
+        color: theme.colors.dark[0]
+      }
+    }
+  };
+};
+
 const theme: MantineThemeOverride = {
   colorScheme: "dark",
   defaultRadius: "md",
@@ -206,7 +217,8 @@ const theme: MantineThemeOverride = {
     Table: { defaultProps: getTableDefaultProps },
     Menu: { defaultProps: getMenuDefaultProps },
     DatePickerInput: { defaultProps: getDatePickerInputDefaultProps },
-    SegmentedControl: { defaultProps: getSegmentedControlDefaultProps }
+    SegmentedControl: { defaultProps: getSegmentedControlDefaultProps },
+    Badge: { defaultProps: getBadgeDefaultProps }
   },
   colors: {}
 };

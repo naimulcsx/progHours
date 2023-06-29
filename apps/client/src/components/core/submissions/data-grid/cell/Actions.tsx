@@ -13,11 +13,20 @@ import { CellContext } from "@tanstack/react-table";
 import { useQueryClient } from "@tanstack/react-query";
 import { notifications } from "@mantine/notifications";
 
-export function ActionsCell({ cell }: CellContext<SubmissionRow, unknown>) {
+export function ActionsCell({
+  cell,
+  modalState
+}: CellContext<SubmissionRow, unknown> & {
+  modalState: { opened: boolean; open: () => void; close: () => void };
+}) {
   const {
     problem: { id, pid }
   } = cell.row.original;
+
+  const { open } = modalState;
   const client = useQueryClient();
+
+  // refetch problem
   const { mutate } = useRefetchProblemMutation({
     config: {
       onSuccess: (updatedProblem) => {
@@ -28,8 +37,10 @@ export function ActionsCell({ cell }: CellContext<SubmissionRow, unknown>) {
           message: `Refetched ${pid}`,
           icon: <IconCheck />
         });
+
         const submissions: SubmissionRow[] =
           client.getQueryData(["submissions"]) ?? [];
+
         const newSubmissions = submissions.map((submission) => {
           if (submission.problemId === updatedProblem.id)
             return {
@@ -38,10 +49,12 @@ export function ActionsCell({ cell }: CellContext<SubmissionRow, unknown>) {
             };
           return submission;
         });
+
         client.setQueryData(["submissions"], newSubmissions);
       }
     }
   });
+
   return (
     <Menu shadow="md" width={200}>
       <Menu.Target>
@@ -65,7 +78,14 @@ export function ActionsCell({ cell }: CellContext<SubmissionRow, unknown>) {
         >
           Refetch
         </Menu.Item>
-        <Menu.Item icon={<IconTrash size={14} />}>Delete</Menu.Item>
+        <Menu.Item
+          icon={<IconTrash size={14} />}
+          onClick={() => {
+            open();
+          }}
+        >
+          Delete
+        </Menu.Item>
       </Menu.Dropdown>
     </Menu>
   );
