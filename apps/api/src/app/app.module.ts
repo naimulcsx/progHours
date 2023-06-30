@@ -10,6 +10,7 @@ import { ProblemsModule } from "~/modules/problems/problems.module";
 import { PrometheusModule } from "@willsoto/nestjs-prometheus";
 import { PrometheusController } from "~/modules/prometheus/controllers/prometheus.controller";
 import Joi from "joi";
+import { TrackerModule } from "~/modules/tracker/tracker.module";
 
 @Module({
   imports: [
@@ -31,7 +32,8 @@ import Joi from "joi";
     UsersModule,
     ProblemsModule,
     SubmissionsModule,
-    ParserModule
+    ParserModule,
+    TrackerModule
   ],
   controllers: [],
   providers: []
