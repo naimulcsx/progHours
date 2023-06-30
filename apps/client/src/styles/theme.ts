@@ -12,7 +12,8 @@ import {
   TableProps,
   MenuProps,
   SegmentedControlProps,
-  BadgeProps
+  BadgeProps,
+  ModalProps
 } from "@mantine/core";
 import { DatePickerInputProps } from "@mantine/dates";
 import { NotificationProps } from "@mantine/notifications";
@@ -222,6 +223,22 @@ const getBadgeDefaultProps = (theme: MantineTheme): BadgeProps => {
   };
 };
 
+const getModalDefaultProps = (theme: MantineTheme): ModalProps => {
+  return {
+    opened: false,
+    /* eslint-disable @typescript-eslint/no-empty-function */
+    onClose: () => {},
+    styles: {
+      header: {
+        backgroundColor: theme.colors.dark[6]
+      },
+      body: {
+        backgroundColor: theme.colors.dark[6]
+      }
+    }
+  };
+};
+
 const theme: MantineThemeOverride = {
   colorScheme: "dark",
   defaultRadius: "md",
@@ -240,7 +257,8 @@ const theme: MantineThemeOverride = {
     Menu: { defaultProps: getMenuDefaultProps },
     DatePickerInput: { defaultProps: getDatePickerInputDefaultProps },
     SegmentedControl: { defaultProps: getSegmentedControlDefaultProps },
-    Badge: { defaultProps: getBadgeDefaultProps }
+    Badge: { defaultProps: getBadgeDefaultProps },
+    Modal: { defaultProps: getModalDefaultProps }
   },
   colors: {}
 };

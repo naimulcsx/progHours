@@ -1,4 +1,4 @@
-import { ActionIcon, Menu } from "@mantine/core";
+import { ActionIcon, Menu, Text, Title } from "@mantine/core";
 import {
   IconCheck,
   IconDots,
@@ -7,27 +7,21 @@ import {
 } from "@tabler/icons-react";
 import {
   SubmissionRow,
-  useRefetchProblemMutation
+  useDeleteSubmission,
+  useRefetchProblem
 } from "@proghours/data-access";
 import { CellContext } from "@tanstack/react-table";
 import { useQueryClient } from "@tanstack/react-query";
 import { notifications } from "@mantine/notifications";
+import { modals } from "@mantine/modals";
 
-export function ActionsCell({
-  cell,
-  modalState
-}: CellContext<SubmissionRow, unknown> & {
-  modalState: { opened: boolean; open: () => void; close: () => void };
-}) {
+export function ActionsCell({ cell }: CellContext<SubmissionRow, unknown>) {
   const {
     problem: { id, pid }
   } = cell.row.original;
-
-  const { open } = modalState;
   const client = useQueryClient();
 
-  // refetch problem
-  const { mutate } = useRefetchProblemMutation({
+  const { mutate: refetchProblem } = useRefetchProblem({
     config: {
       onSuccess: (updatedProblem) => {
         notifications.update({
@@ -55,6 +49,46 @@ export function ActionsCell({
     }
   });
 
+  const { mutate: deleteSubmission } = useDeleteSubmission({
+    config: {
+      onSuccess(data) {
+        notifications.show({
+          color: "green",
+          title: "Success",
+          message: `Deleted ${pid}`,
+          icon: <IconCheck />
+        });
+
+        const submissions: SubmissionRow[] =
+          client.getQueryData(["submissions"]) ?? [];
+
+        const newSubmissions = submissions.filter((submission) => {
+          if (submission.problemId === data.id) return false;
+          return true;
+        });
+
+        client.setQueryData(["submissions"], newSubmissions);
+      }
+    }
+  });
+
+  const openDeleteModal = () =>
+    modals.openConfirmModal({
+      title: <Title order={6}>Delete {pid}</Title>,
+      children: (
+        <Text size="sm">
+          Are you sure you want to delete {pid}? This action is destructive and
+          the data can not be restored.
+        </Text>
+      ),
+      labels: { confirm: "Delete submission", cancel: "Cancel" },
+      confirmProps: { color: "red" },
+      onCancel: () => console.log("Cancel"),
+      onConfirm: () => {
+        deleteSubmission({ id });
+      }
+    });
+
   return (
     <Menu shadow="md" width={200}>
       <Menu.Target>
@@ -73,17 +107,12 @@ export function ActionsCell({
               message: `Refetching ${pid}`,
               loading: true
             });
-            mutate({ id });
+            refetchProblem({ id });
           }}
         >
           Refetch
         </Menu.Item>
-        <Menu.Item
-          icon={<IconTrash size={14} />}
-          onClick={() => {
-            open();
-          }}
-        >
+        <Menu.Item icon={<IconTrash size={14} />} onClick={openDeleteModal}>
           Delete
         </Menu.Item>
       </Menu.Dropdown>

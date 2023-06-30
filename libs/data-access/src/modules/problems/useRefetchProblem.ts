@@ -14,7 +14,7 @@ export const refetchProblem = async ({
   return axios.patch(`/problems/${id}/refetch`).then((res) => res.data);
 };
 
-type useRefetchProblemMutationOptions = {
+type useRefetchProblemOptions = {
   config?: UseMutationOptions<
     RefetchProblemResponse,
     unknown,
@@ -22,9 +22,9 @@ type useRefetchProblemMutationOptions = {
   >;
 };
 
-export const useRefetchProblemMutation = ({
+export const useRefetchProblem = ({
   config
-}: useRefetchProblemMutationOptions = {}) => {
+}: useRefetchProblemOptions = {}) => {
   return useMutation({
     mutationFn: (values) => refetchProblem(values),
     ...config

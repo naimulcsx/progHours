@@ -14,6 +14,7 @@ import { useUser } from "./hooks/useUser";
 import { useLocalStorage } from "@mantine/hooks";
 import { useColorAccent } from "./contexts/ColorAccentContext";
 import { NavigationProgress, nprogress } from "@mantine/nprogress";
+import { ModalsProvider } from "@mantine/modals";
 import { useEffect } from "react";
 
 const queryClient = new QueryClient();
@@ -66,11 +67,13 @@ export function App() {
         withNormalizeCSS
         theme={{ ...theme, colorScheme, primaryColor: accentColor }}
       >
-        <NavigationProgress autoReset={true} />
-        <QueryClientProvider client={queryClient}>
-          <Entry />
-          <Notifications position="top-right" />
-        </QueryClientProvider>
+        <ModalsProvider>
+          <NavigationProgress autoReset={true} />
+          <QueryClientProvider client={queryClient}>
+            <Entry />
+            <Notifications position="top-right" />
+          </QueryClientProvider>
+        </ModalsProvider>
       </MantineProvider>
     </ColorSchemeProvider>
   );
