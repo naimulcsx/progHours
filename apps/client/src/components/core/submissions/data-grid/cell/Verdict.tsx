@@ -85,6 +85,7 @@ const VerdictCell = (cell: CellContext<SubmissionRow, unknown>) => {
 
   return (
     <Select
+      sx={{ maxWidth: 70 }}
       size="xs"
       styles={{
         input: {

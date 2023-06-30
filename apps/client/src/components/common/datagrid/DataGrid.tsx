@@ -310,8 +310,11 @@ export function DataGrid<TData extends RowData>({
         </Group>
       )} */}
       <ScrollArea
+        h={700}
         viewportRef={tableContainerRef}
-        className={classes.scrollArea}
+        // className={classes.scrollArea}
+        type="never"
+        offsetScrollbars
         styles={(theme) => {
           const border = `1px solid ${
             theme.colorScheme === "dark"

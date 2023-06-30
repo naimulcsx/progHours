@@ -123,7 +123,7 @@ export function CreateSubmissionRow({
         >
           <form id="add-submission" onSubmit={handleSubmit}></form>
           <TextInput
-            sx={{ marginLeft: -8 }}
+            sx={{ marginLeft: -8, maxWidth: 280 }}
             form="add-submission"
             placeholder="Problem Link"
             size="xs"
@@ -145,6 +145,7 @@ export function CreateSubmissionRow({
           }}
         >
           <Select
+            sx={{ maxWidth: 70 }}
             value={selected}
             onChange={handleSelected}
             size="xs"
@@ -168,6 +169,7 @@ export function CreateSubmissionRow({
           }}
         >
           <TextInput
+            sx={{ maxWidth: 80 }}
             type="number"
             placeholder="e.g. 80"
             form="add-submission"
@@ -194,64 +196,56 @@ export function CreateSubmissionRow({
       )}
 
       {/* difficulty  */}
-      <td
-        role="cell"
-        style={{
-          flex: `${difficultyColumn?.getSize()} 0 auto`,
-          width: difficultyColumn?.getSize(),
-          maxWidth: difficultyColumn?.columnDef.maxSize,
-          minWidth: difficultyColumn?.columnDef.minSize
-        }}
-      >
-        —{" "}
-      </td>
+      {difficultyColumn?.getIsVisible() && (
+        <td
+          role="cell"
+          style={{
+            flex: `${difficultyColumn?.getSize()} 0 auto`,
+            width: difficultyColumn?.getSize(),
+            maxWidth: difficultyColumn?.columnDef.maxSize,
+            minWidth: difficultyColumn?.columnDef.minSize
+          }}
+        >
+          —{" "}
+        </td>
+      )}
 
       {/* solved at */}
-      <td
-        role="cell"
-        style={{
-          flex: `${solvedAtColumn?.getSize()} 0 auto`,
-          width: solvedAtColumn?.getSize(),
-          maxWidth: solvedAtColumn?.columnDef.maxSize,
-          minWidth: solvedAtColumn?.columnDef.minSize
-        }}
-      >
-        <DatePickerInput
-          size="xs"
-          sx={{ maxWidth: 100 }}
-          valueFormat="DD-MM-YYYY"
-          {...form.getInputProps("solvedAt")}
-        />
-      </td>
+      {solvedAtColumn?.getIsVisible() && (
+        <td
+          role="cell"
+          style={{
+            flex: `${solvedAtColumn?.getSize()} 0 auto`,
+            width: solvedAtColumn?.getSize(),
+            maxWidth: solvedAtColumn?.columnDef.maxSize,
+            minWidth: solvedAtColumn?.columnDef.minSize
+          }}
+        >
+          <DatePickerInput
+            size="xs"
+            sx={{ maxWidth: 100 }}
+            valueFormat="DD-MM-YYYY"
+            {...form.getInputProps("solvedAt")}
+          />
+        </td>
+      )}
 
       {/* actions */}
-      <td
-        role="cell"
-        style={{
-          flex: `${actionsColumn?.getSize()} 0 auto`,
-          width: actionsColumn?.getSize(),
-          maxWidth: actionsColumn?.columnDef.maxSize,
-          minWidth: actionsColumn?.columnDef.minSize
-        }}
-      >
-        {/* <Button
-          variant="outline"
-          color="purple"
-          form="add-submission"
-          size="xs"
-          type="submit"
-          sx={(theme) => ({
-            height: 24,
-            paddingLeft: 6,
-            paddingRight: 6
-          })}
+      {actionsColumn?.getIsVisible() && (
+        <td
+          role="cell"
+          style={{
+            flex: `${actionsColumn?.getSize()} 0 auto`,
+            width: actionsColumn?.getSize(),
+            maxWidth: actionsColumn?.columnDef.maxSize,
+            minWidth: actionsColumn?.columnDef.minSize
+          }}
         >
-          Add
-        </Button> */}
-        <ActionIcon type="submit" form="add-submission">
-          <IconCirclePlus size={18} stroke={1.5} />
-        </ActionIcon>
-      </td>
+          <ActionIcon type="submit" form="add-submission">
+            <IconCirclePlus size={18} stroke={1.5} />
+          </ActionIcon>
+        </td>
+      )}
     </tr>
   );
 }

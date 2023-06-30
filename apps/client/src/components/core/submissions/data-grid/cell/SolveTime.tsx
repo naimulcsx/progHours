@@ -61,6 +61,7 @@ export default function SolveTimeCell(
   };
   return (
     <TextInput
+      sx={{ maxWidth: 80 }}
       size="xs"
       type="number"
       value={solveTime}

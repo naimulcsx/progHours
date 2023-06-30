@@ -52,7 +52,6 @@ export function SubmissionsTable({ tableRef, data }: SubmissionsTableProps) {
           accessorKey: "verdict",
           header: "Verdict",
           cell: VerdictCell,
-          minSize: 90,
           maxSize: 90,
           filterFn: (row, columnId, filterValue: Set<string>) => {
             if (filterValue.size === 0) return true;
@@ -64,7 +63,6 @@ export function SubmissionsTable({ tableRef, data }: SubmissionsTableProps) {
           accessorKey: "solveTime",
           header: "Solve Time",
           cell: SolveTimeCell,
-          minSize: 120,
           maxSize: 120
         },
         {

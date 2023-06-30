@@ -135,9 +135,10 @@ const getNavLinkDefaultProps = (theme: MantineTheme): NavLinkProps => ({
 const getTableDefaultProps = (theme: MantineTheme): TableProps => {
   return {
     sx: {
-      "thead.mantine-DataGrid-thead": {
+      thead: {
         position: "sticky",
-        top: 0
+        top: 0,
+        zIndex: 20
       },
       "thead.mantine-DataGrid-thead tr th": {
         paddingTop: 8,
