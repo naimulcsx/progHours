@@ -1885,6 +1885,13 @@
   resolved "https://registry.yarnpkg.com/@mantine/hooks/-/hooks-6.0.13.tgz#d90fa315ee30a900e0d9a460c6bb00c9a65f18e0"
   integrity sha512-fHuE3zXo5OP/Q1dMOTnegU6U+tI9GuhO2tgOz6szVuOxrrk0Hzuq1Na9NUSv27HShSRbAfQk+hvyIh+iVV7KXA==
 
+"@mantine/modals@^6.0.15":
+  version "6.0.15"
+  resolved "https://registry.yarnpkg.com/@mantine/modals/-/modals-6.0.15.tgz#b499f3659ac881dba20e4419955a108ab9a221fe"
+  integrity sha512-1uGeE/IBA5EZRTzovUaAwv0gwVjDy4CGp8XO05HKuyj2jyzUIqRVpPNXD1VuMwLnzKyxabN8Al408fRgsxXGoQ==
+  dependencies:
+    "@mantine/utils" "6.0.15"
+
 "@mantine/notifications@^6.0.13":
   version "6.0.13"
   resolved "https://registry.yarnpkg.com/@mantine/notifications/-/notifications-6.0.13.tgz#5b409f6d8452b2733e0420cc00026cc0b504479a"
@@ -1893,12 +1900,12 @@
     "@mantine/utils" "6.0.13"
     react-transition-group "4.4.2"
 
-"@mantine/nprogress@^6.0.13":
-  version "6.0.13"
-  resolved "https://registry.yarnpkg.com/@mantine/nprogress/-/nprogress-6.0.13.tgz#06f7e29b3f0efa00d15b0a8267067fea62a5a859"
-  integrity sha512-EHrB/0+XpvE1Iu3+guIiRLQNF4x3xPrmEbw4Ry/0FF+JC1LcZVQ7fF/SuxTFO8K1lBV8HxKnb5tB0LmcFa+Elw==
+"@mantine/nprogress@^6.0.15":
+  version "6.0.15"
+  resolved "https://registry.yarnpkg.com/@mantine/nprogress/-/nprogress-6.0.15.tgz#50374d78e7ab851671f595a2572e9205ce91fa4b"
+  integrity sha512-SHmRq3t0iy1FsZ0E4vdlR/EHsQHeo9dt3920KJqvTUyJLIk8DY8cIDK36qav56V49Ocef4uIEUR+G/foTa2EgQ==
   dependencies:
-    "@mantine/utils" "6.0.13"
+    "@mantine/utils" "6.0.15"
 
 "@mantine/spotlight@^6.0.13":
   version "6.0.13"
@@ -1919,6 +1926,11 @@
   version "6.0.13"
   resolved "https://registry.yarnpkg.com/@mantine/utils/-/utils-6.0.13.tgz#a7adc128a2e7c07031c7221c1533800d0c80279a"
   integrity sha512-iqIU9wurqAeccVbWjM0yr1JGne5VP+ob55M03QAXOEN4+ck93VDTjCkZJR2RFhDcs5q0twQFoOmU/gULR8aKIA==
+
+"@mantine/utils@6.0.15":
+  version "6.0.15"
+  resolved "https://registry.yarnpkg.com/@mantine/utils/-/utils-6.0.15.tgz#d4144221f9406aece12b979bed5888da50d86771"
+  integrity sha512-iVaobFQTCQWG6SRi3im0/nONKCtGRPobG7bXn9GiIT96E4t7uTPglQpo/ZktDrF1XCL8CO/HoQmks4A2iXuMFw==
 
 "@mapbox/node-pre-gyp@^1.0.10":
   version "1.0.10"
@@ -3042,6 +3054,30 @@
     "@tanstack/query-core" "4.29.11"
     use-sync-external-store "^1.2.0"
 
+"@tanstack/react-table@8.6.0":
+  version "8.6.0"
+  resolved "https://registry.yarnpkg.com/@tanstack/react-table/-/react-table-8.6.0.tgz#c521621f52712c33aa8db3941cd5bcafd4de694b"
+  integrity sha512-n+8dFkfwmQgEiT+W5fmN5B7UaZNpFEAtbAxx2IJTUwPIMHAUKhlE+ENp7i9/e6XV0zBayGMBSe+CZXvymZyHSg==
+  dependencies:
+    "@tanstack/table-core" "8.6.0"
+
+"@tanstack/react-virtual@3.0.0-beta.26":
+  version "3.0.0-beta.26"
+  resolved "https://registry.yarnpkg.com/@tanstack/react-virtual/-/react-virtual-3.0.0-beta.26.tgz#8d2a25b1698e3732ec1016b774abb40e76aa0fda"
+  integrity sha512-0W1uwqNtVBs6/F9E1AOHS7vZs3MP7eLeJWOXteWuYQ9mv8s3ddSrhIheIkDY0D27cyNDF/oEnqEujxu9Xf/zLw==
+  dependencies:
+    "@tanstack/virtual-core" "3.0.0-beta.26"
+
+"@tanstack/table-core@8.6.0":
+  version "8.6.0"
+  resolved "https://registry.yarnpkg.com/@tanstack/table-core/-/table-core-8.6.0.tgz#1b12c07bd3283ba98a4ca7c872b8ac91918001e5"
+  integrity sha512-MHqITGrrGnPNWWgnFuRqIzl+/pHjzv54JTpb0UFymFTH79/bLC33mO3dKs7lx55dI43dTzhWz+e88vnJgXF7+w==
+
+"@tanstack/virtual-core@3.0.0-beta.26":
+  version "3.0.0-beta.26"
+  resolved "https://registry.yarnpkg.com/@tanstack/virtual-core/-/virtual-core-3.0.0-beta.26.tgz#5ea8333f254271c2e940d3520665c77f251eb9b3"
+  integrity sha512-rGsnGlWwUr52+tnvknitbl/O/SbzrB/DEI1r6cgsrMIKYMHvVMWXBl84FW/0eDIea4P8kjj7k5jGCLwiIMPAeQ==
+
 "@testing-library/dom@^9.0.0":
   version "9.3.0"
   resolved "https://registry.yarnpkg.com/@testing-library/dom/-/dom-9.3.0.tgz#ed8ce10aa5e05eb6eaf0635b5b8975d889f66075"
@@ -3797,6 +3833,11 @@
     "@webassemblyjs/ast" "1.11.6"
     "@xtuc/long" "4.2.2"
 
+"@willsoto/nestjs-prometheus@^5.1.2":
+  version "5.1.2"
+  resolved "https://registry.yarnpkg.com/@willsoto/nestjs-prometheus/-/nestjs-prometheus-5.1.2.tgz#fdebd21ba0fcb8c76ff8a04f5ca556b52eb43b3c"
+  integrity sha512-NWeYcxyAMo/CAVaVtP0ja44d54ll4ak9RtX43jwgtiq8EDpE7qChygPF5EpZkrXabPyqUrLhJnFiMUk2a6RQdA==
+
 "@xtuc/ieee754@^1.2.0":
   version "1.2.0"
   resolved "https://registry.yarnpkg.com/@xtuc/ieee754/-/ieee754-1.2.0.tgz#eef014a3145ae477a1cbc00cd1e552336dceb790"
@@ -4398,6 +4439,11 @@ binary-extensions@^2.0.0:
   version "2.2.0"
   resolved "https://registry.yarnpkg.com/binary-extensions/-/binary-extensions-2.2.0.tgz#75f502eeaf9ffde42fc98829645be4ea76bd9e2d"
   integrity sha512-jDctJ/IVQbZoJykoeHbhXpOlNBqGNcwXJKJog42E5HDPUwQTSdjCHdihjj0DlnheQ7blbT6dHOafNAiS8ooQKA==
+
+bintrees@1.0.2:
+  version "1.0.2"
+  resolved "https://registry.yarnpkg.com/bintrees/-/bintrees-1.0.2.tgz#49f896d6e858a4a499df85c38fb399b9aff840f8"
+  integrity sha512-VOMgTMwjAaUG580SXn3LacVgjurrbMme7ZZNYGSSV7mmtY6QQRh0Eg3pwIcntQ77DErK1L0NxkbetjcoXzVwKw==
 
 bl@^4.0.3, bl@^4.1.0:
   version "4.1.0"
@@ -8838,6 +8884,11 @@ mlly@^1.2.0:
     pkg-types "^1.0.3"
     ufo "^1.1.2"
 
+moment@^2.29.4:
+  version "2.29.4"
+  resolved "https://registry.yarnpkg.com/moment/-/moment-2.29.4.tgz#3dbe052889fe7c1b2ed966fcb3a77328964ef108"
+  integrity sha512-5LC9SOxjSc2HF6vO2CyuTDNivEdoz2IvyJJGj6X8DJ0eFyfszE0QiEd+iXmBvUP3WHxSjFH/vIsA0EN00cgr8w==
+
 mrmime@^1.0.0:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/mrmime/-/mrmime-1.0.1.tgz#5f90c825fad4bdd41dc914eff5d1a8cfdaf24f27"
@@ -9913,6 +9964,13 @@ process-nextick-args@~2.0.0:
   version "2.0.1"
   resolved "https://registry.yarnpkg.com/process-nextick-args/-/process-nextick-args-2.0.1.tgz#7820d9b16120cc55ca9ae7792680ae7dba6d7fe2"
   integrity sha512-3ouUOpQhtgrbOa17J7+uxOTpITYWaGP7/AhoR3+A+/1e9skrzelGi/dXzEYyvbxubEF6Wn2ypscTKiKJFFn1ag==
+
+prom-client@^14.2.0:
+  version "14.2.0"
+  resolved "https://registry.yarnpkg.com/prom-client/-/prom-client-14.2.0.tgz#ca94504e64156f6506574c25fb1c34df7812cf11"
+  integrity sha512-sF308EhTenb/pDRPakm+WgiN+VdM/T1RaHj1x+MvAuT8UiQP8JmOEbxVqtkbfR4LrvOg5n7ic01kRBDGXjYikA==
+  dependencies:
+    tdigest "^0.1.1"
 
 prompts@^2.0.1:
   version "2.4.2"
@@ -11259,6 +11317,13 @@ tar@^6.1.11:
     minizlib "^2.1.1"
     mkdirp "^1.0.3"
     yallist "^4.0.0"
+
+tdigest@^0.1.1:
+  version "0.1.2"
+  resolved "https://registry.yarnpkg.com/tdigest/-/tdigest-0.1.2.tgz#96c64bac4ff10746b910b0e23b515794e12faced"
+  integrity sha512-+G0LLgjjo9BZX2MfdvPfH+MKLCrxlXSYec5DaPYP1fe6Iyhf0/fSmJ0bFiZ1F8BT6cGXl2LpltQptzjXKWEkKA==
+  dependencies:
+    bintrees "1.0.2"
 
 terser-webpack-plugin@^5.3.3, terser-webpack-plugin@^5.3.7:
   version "5.3.9"

@@ -3,6 +3,7 @@ import { BrowserRouter } from "react-router-dom";
 import { HelmetProvider } from "react-helmet-async";
 
 import App from "./App";
+import { ColorAccentProvider } from "./contexts/ColorAccentContext";
 
 const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement
@@ -10,7 +11,9 @@ const root = ReactDOM.createRoot(
 root.render(
   <BrowserRouter>
     <HelmetProvider>
-      <App />
+      <ColorAccentProvider>
+        <App />
+      </ColorAccentProvider>
     </HelmetProvider>
   </BrowserRouter>
 );

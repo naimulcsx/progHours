@@ -17,6 +17,12 @@ enum Role {
   ADMIN
 }
 
+enum Verdict {
+  AC
+  WA
+  TLE
+}
+
 model User {
   id        Int      @id @default(autoincrement())
   fullName  String   @map("full_name")
@@ -27,8 +33,63 @@ model User {
   role      Role     @default(REGULAR)
   lastSeen  DateTime @default(now()) @map("last_seen") @db.Timestamptz()
   createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz()
-  updatedAt DateTime @default(now()) @map("updated_at") @db.Timestamptz()
+  updatedAt DateTime @updatedAt @map("updated_at") @db.Timestamptz()
   metaData  Json?    @default("{}") @map("metadata")
 
+  submissions Submission[]
+
   @@map("users")
+}
+
+model Problem {
+  id          Int          @id @default(autoincrement())
+  pid         String       @unique
+  name        String
+  url         String       @unique
+  difficulty  Int
+  createdAt   DateTime     @default(now()) @map("created_at") @db.Timestamptz()
+  updatedAt   DateTime     @updatedAt @map("updated_at") @db.Timestamptz()
+  metaData    Json?        @default("{}") @map("metadata")
+  problemTags ProblemTag[]
+  submissions Submission[]
+
+  @@map("problems")
+}
+
+model Tag {
+  id          Int          @id @default(autoincrement())
+  name        String       @unique
+  problemTags ProblemTag[]
+
+  @@map("tags")
+}
+
+model ProblemTag {
+  problemId Int @map("problem_id")
+  tagId     Int @map("tag_id")
+
+  tag     Tag     @relation(fields: [tagId], references: [id])
+  problem Problem @relation(fields: [problemId], references: [id], onDelete: Cascade)
+
+  @@id([problemId, tagId])
+  @@map("problem_tags")
+}
+
+model Submission {
+  id        Int      @id @default(autoincrement())
+  solveTime Int      @map("solve_time")
+  verdict   Verdict
+  solvedAt  DateTime @map("solved_at") @db.Date
+  createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz()
+  updatedAt DateTime @updatedAt @map("updated_at") @db.Timestamptz()
+  userId    Int      @map("user_id")
+  problemId Int      @map("problem_id")
+  metaData  Json?    @default("{}") @map("metadata")
+
+  user    User    @relation(fields: [userId], references: [id])
+  problem Problem @relation(fields: [problemId], references: [id])
+
+  @@unique([userId, problemId])
+  @@index(solvedAt)
+  @@map("submissions")
 }

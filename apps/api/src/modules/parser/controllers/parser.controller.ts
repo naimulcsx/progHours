@@ -14,6 +14,6 @@ export class ParserController {
   @ApiOperation({ summary: "Parse problem" })
   // TODO: make it only accessible for the admin
   async parseProblem(@Body() parseProblemDto: ParseProblemDto) {
-    return this.parserService.parse(parseProblemDto);
+    return this.parserService.parse(parseProblemDto.url);
   }
 }
