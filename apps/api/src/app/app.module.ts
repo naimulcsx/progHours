@@ -33,7 +33,7 @@ import { TrackerModule } from "~/modules/tracker/tracker.module";
     ProblemsModule,
     SubmissionsModule,
     ParserModule,
-    TrackerModule
+    TrackerModule.register()
   ],
   controllers: [],
   providers: []

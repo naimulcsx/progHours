@@ -14,7 +14,6 @@ async function bootstrap() {
     type: VersioningType.URI,
     defaultVersion: "1"
   });
-
   const config = new DocumentBuilder()
     .setTitle("progHours")
     .setDescription("progHours API documentation")
