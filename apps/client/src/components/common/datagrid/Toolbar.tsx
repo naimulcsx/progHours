@@ -67,7 +67,13 @@ export function DataGridToolbar<TData>({
             placeholder="Search your submissions"
             sx={{ minWidth: 260 }}
             styles={{
-              input: { background: theme.colors.dark[8], borderStyle: "dashed" }
+              input: {
+                background:
+                  theme.colorScheme === "dark"
+                    ? theme.colors.dark[8]
+                    : theme.white,
+                borderStyle: "dashed"
+              }
             }}
             defaultValue={value}
             onChange={(e) => {

@@ -40,9 +40,7 @@ const getAnchorDefaultProps = (theme: MantineTheme): AnchorProps => ({
 
 const getTextInputDefaultProps = (theme: MantineTheme): TextInputProps => ({
   styles: {
-    input: {
-      border: 0
-    },
+    input: {},
     label: {}
   }
 });
@@ -51,9 +49,7 @@ const getPasswordInputDefaultProps = (
   theme: MantineTheme
 ): PasswordInputProps => ({
   styles: {
-    input: {
-      border: 0
-    },
+    input: {},
     label: {}
   }
 });
@@ -169,9 +165,7 @@ const getDatePickerInputDefaultProps = (
 ): DatePickerInputProps => {
   return {
     styles: {
-      input: {
-        border: 0
-      },
+      input: {},
       weekdaysRow: {
         th: {
           fontSize: "0.75rem !important",
@@ -212,12 +206,12 @@ const getBadgeDefaultProps = (theme: MantineTheme): BadgeProps => {
         background:
           theme.colorScheme === "dark"
             ? theme.colors.dark[5]
-            : theme.colors.gray[2],
+            : theme.colors.gray[1],
         color:
           theme.colorScheme === "dark"
             ? theme.colors.dark[0]
-            : theme.colors.gray[7],
-        fontWeight: 500
+            : theme.colors.dark[3],
+        fontWeight: 600
       }
     }
   };
