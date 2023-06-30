@@ -17,6 +17,7 @@ import { modals } from "@mantine/modals";
 
 export function ActionsCell({ cell }: CellContext<SubmissionRow, unknown>) {
   const {
+    id: submissionId,
     problem: { id, pid }
   } = cell.row.original;
   const client = useQueryClient();
@@ -63,7 +64,7 @@ export function ActionsCell({ cell }: CellContext<SubmissionRow, unknown>) {
           client.getQueryData(["submissions"]) ?? [];
 
         const newSubmissions = submissions.filter((submission) => {
-          if (submission.problemId === data.id) return false;
+          if (submission.id === data.id) return false;
           return true;
         });
 
@@ -85,7 +86,7 @@ export function ActionsCell({ cell }: CellContext<SubmissionRow, unknown>) {
       confirmProps: { color: "red" },
       onCancel: () => console.log("Cancel"),
       onConfirm: () => {
-        deleteSubmission({ id });
+        deleteSubmission({ id: submissionId });
       }
     });
 

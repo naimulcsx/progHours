@@ -444,6 +444,7 @@ export function DataGrid<TData extends RowData>({
                   ) : null;
                 return [
                   _FirstRow,
+                  /* eslint-disable-next-line */
                   <Fragment key={row.id}>
                     <BodyRow
                       {...rowProps}
@@ -454,10 +455,13 @@ export function DataGrid<TData extends RowData>({
                     >
                       {row.getVisibleCells().map((cell) => {
                         const cellProps = onCell ? onCell(cell) : {};
+                        // eslint-disable-next-line
+                        const id = (cell.row.original as any).id;
+                        const cellId = id ? id + "_" + cell.id : cell.id;
                         return (
                           <BodyCell
                             {...cellProps}
-                            key={cell.id}
+                            key={cellId}
                             table={table}
                             // eslint-disable-next-line
                             // @ts-ignore
