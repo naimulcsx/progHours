@@ -6,13 +6,14 @@ import {
 } from "@nestjs/common";
 import { TrackerService } from "./services/tracker.service";
 import { TrackerController } from "./controllers/tracker.controller";
-import { BullModule, InjectQueue } from "@nestjs/bullmq";
+import { BullModule, InjectQueue } from "@nestjs/bull";
 import { SubmissionsProcessor } from "./processors/submissions.processor";
 import { ExpressAdapter } from "@bull-board/express";
 import { createBullBoard } from "@bull-board/api";
 import { BullAdapter } from "@bull-board/api/bullAdapter";
 import { BasicAuthMiddleware } from "./middlewares/basic-auth.middleware";
 import { Queue } from "bull";
+import { SubmissionsModule } from "~/modules/submissions/submissions.module";
 
 @Module({})
 export class TrackerModule implements NestModule {
@@ -27,12 +28,13 @@ export class TrackerModule implements NestModule {
       module: TrackerModule,
       imports: [
         BullModule.forRoot({
-          connection: {
+          redis: {
             host: "localhost",
             port: 6379
           }
         }),
-        submissionsQueue
+        submissionsQueue,
+        SubmissionsModule
       ],
       controllers: [TrackerController],
       providers: [

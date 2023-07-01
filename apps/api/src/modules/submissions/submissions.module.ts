@@ -7,6 +7,7 @@ import { ProblemsModule } from "../problems/problems.module";
 @Module({
   imports: [ParserModule, ProblemsModule],
   controllers: [SubmissionsController],
-  providers: [SubmissionsService]
+  providers: [SubmissionsService],
+  exports: [SubmissionsService]
 })
 export class SubmissionsModule {}

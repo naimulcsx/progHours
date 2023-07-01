@@ -1,7 +1,10 @@
 import { Controller, Get } from "@nestjs/common";
-import { ApiOperation, ApiTags } from "@nestjs/swagger";
+import { ApiBearerAuth, ApiOperation, ApiTags } from "@nestjs/swagger";
 import { TrackerService } from "../services/tracker.service";
-import { Auth, AuthType } from "~/modules/iam/auth/decorators/auth.decorator";
+import {
+  ActiveUserData,
+  User
+} from "~/modules/iam/auth/decorators/user.decorator";
 
 @Controller("tracker")
 @ApiTags("Tracker")
@@ -9,11 +12,9 @@ export class TrackerController {
   constructor(private readonly trackerService: TrackerService) {}
 
   @Get("pull")
-  @Auth(AuthType.None)
+  @ApiBearerAuth("JWT")
   @ApiOperation({ summary: "Pull user submissions" })
-  async pullSubmissions() {
-    return {
-      foo: "bar"
-    };
+  async pullSubmissions(@User() user: ActiveUserData) {
+    return this.trackerService.pull(user.sub);
   }
 }
