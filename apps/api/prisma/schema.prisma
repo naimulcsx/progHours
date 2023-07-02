@@ -37,6 +37,7 @@ model User {
   metaData  Json?    @default("{}") @map("metadata")
 
   submissions Submission[]
+  UserHandle  UserHandle[]
 
   @@map("users")
 }
@@ -92,4 +93,22 @@ model Submission {
   @@unique([userId, problemId])
   @@index(solvedAt)
   @@map("submissions")
+}
+
+enum HandleType {
+  CODEFORCES
+  CODECHEF
+  SPOJ
+  ATCODER
+  GITHUB
+}
+
+model UserHandle {
+  id     String     @id @default(cuid())
+  user   User       @relation(fields: [userId], references: [id])
+  userId Int        @map("user_id")
+  type   HandleType
+  handle String
+
+  @@map("user_handles")
 }

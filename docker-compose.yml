@@ -16,6 +16,17 @@ services:
     networks:
       - proghours
 
+  pgadmin:
+    image: dpage/pgadmin4
+    restart: always
+    environment:
+      PGADMIN_DEFAULT_EMAIL: naimulcsx@gmail.com
+      PGADMIN_DEFAULT_PASSWORD: pgadmin
+    ports:
+      - "8090:80"
+    volumes:
+      - /var/lib/pgadmin
+
   adminer:
     image: adminer
     restart: always

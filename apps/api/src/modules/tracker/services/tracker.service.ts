@@ -1,34 +1,22 @@
 import { Injectable } from "@nestjs/common";
-import { InjectQueue } from "@nestjs/bull";
 import { Queue } from "bull";
 import { OJStatisticsParser } from "@proghours/oj-statistics-parser";
-import { SubmissionsService } from "~/modules/submissions/services/submissions.service";
+import { InjectTrackerPullQueue } from "../processors/pull.processor";
 
 @Injectable()
 export class TrackerService {
   public statisticParser: OJStatisticsParser;
 
-  constructor(
-    @InjectQueue("submissions") private submissionsQueue: Queue,
-    private readonly submissionsService: SubmissionsService
-  ) {
+  constructor(@InjectTrackerPullQueue() private trackerPullQueue: Queue) {
     this.statisticParser = new OJStatisticsParser();
   }
 
   async pull(userId: number) {
-    const data = await this.statisticParser.parse({
-      judge: "codeforces",
-      handle: "tanveerkader"
+    await this.trackerPullQueue.add({
+      userId,
+      handle: "tanveerkader",
+      judge: "codeforces"
     });
-    for (const el of data.solvedProblems) {
-      const exists = await this.submissionsService.exists(userId, el.url);
-      if (!exists) {
-        await this.submissionsQueue.add({
-          userId,
-          ...el
-        });
-      }
-    }
     return {
       status: "OK"
     };

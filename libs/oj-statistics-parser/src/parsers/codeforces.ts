@@ -39,12 +39,12 @@ export class CodeforcesParser extends StatisticsParser {
       solvedProblems: _.uniqWith(
         acceptedSubmissions.map(
           ({ problem: { contestId, index }, creationTimeSeconds }) => ({
-            pid: `${contestId}${index}`,
+            pid: `CF-${contestId}${index}`,
             url: `https://codeforces.com/contest/${contestId}/problem/${index}`,
             solvedAt: moment.unix(creationTimeSeconds).toDate()
           })
         ),
-        _.isEqual
+        (a, b) => a.pid === b.pid
       )
     };
   }
