@@ -54,6 +54,15 @@ export class TrackerPushProcessor {
       verdict: "AC",
       solvedAt: new Date(solvedAt).toISOString()
     });
+
+    /** TEST */
+    const _ = await this.prisma.pullHistoryItem.findUnique({
+      where: { id: pullHistoryItemId }
+    });
+    if (!_) {
+      console.log("NOT FOUND", pullHistoryItemId);
+    }
+
     // update pull history item
     await this.prisma.pullHistoryItem.update({
       where: {
@@ -91,6 +100,15 @@ export class TrackerPushProcessor {
         processingTime: pullHistory.processingTime + processingTime
       }
     });
+
+    /** TEST */
+    const _ = await this.prisma.pullHistoryItem.findUnique({
+      where: { id: pullHistoryItemId }
+    });
+    if (!_) {
+      console.log("NOT FOUND", pullHistoryItemId);
+    }
+
     await this.prisma.pullHistoryItem.update({
       where: {
         id: pullHistoryItemId

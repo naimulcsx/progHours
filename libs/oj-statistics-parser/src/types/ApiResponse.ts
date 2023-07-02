@@ -9,9 +9,8 @@ export type CodeforcesApiResponse = {
       contestId: number;
       index: string;
       name: string;
-      type: string;
-      points: number;
-      rating: number;
+      points?: number;
+      rating?: number;
       tags: Array<string>;
     };
     verdict: string;

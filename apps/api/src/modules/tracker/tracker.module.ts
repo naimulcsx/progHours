@@ -23,6 +23,7 @@ import {
   TRACKER_PUSH_QUEUE,
   TrackerPushProcessor
 } from "./processors/push.processor";
+import { ProblemsModule } from "../problems/problems.module";
 
 @Module({})
 export class TrackerModule implements NestModule {
@@ -52,7 +53,8 @@ export class TrackerModule implements NestModule {
         }),
         trackerPullQueue,
         trackerPushQueue,
-        SubmissionsModule
+        SubmissionsModule,
+        ProblemsModule
       ],
       controllers: [TrackerController],
       providers: [

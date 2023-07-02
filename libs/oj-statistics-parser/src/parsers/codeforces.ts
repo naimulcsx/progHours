@@ -30,15 +30,17 @@ export class CodeforcesParser implements StatisticsParser {
     );
 
     const result: ParseResult = {
+      type: "full",
       totalSolved: acceptedSubmissions.length,
       solvedProblems: _.uniqWith(
-        acceptedSubmissions.map(
-          ({ problem: { contestId, index }, creationTimeSeconds }) => ({
-            pid: `CF-${contestId}${index}`,
-            url: `https://codeforces.com/contest/${contestId}/problem/${index}`,
-            solvedAt: moment.unix(creationTimeSeconds).toDate()
-          })
-        ),
+        acceptedSubmissions.map(({ problem, creationTimeSeconds }) => ({
+          pid: `CF-${problem.contestId}${problem.index}`,
+          name: problem.name,
+          url: `https://codeforces.com/contest/${problem.contestId}/problem/${problem.index}`,
+          solvedAt: moment.unix(creationTimeSeconds).toDate(),
+          difficulty: problem.rating || 0,
+          tags: problem.tags
+        })),
         (a, b) => a.pid === b.pid
       )
     };
