@@ -118,7 +118,7 @@ model UserHandle {
 enum PullHistoryStatus {
   PENDING // the pull history has been created
   STARTED // the job is started, totalItems is available
-  SUCCESS // all items has been fetched
+  OK // all items has been fetched
   ERROR // failed
 }
 
@@ -128,30 +128,27 @@ model PullHistory {
   userId         Int               @map("user_id")
   status         PullHistoryStatus @default(PENDING)
   totalCompleted Int               @default(0) @map("total_completed")
-  totalItems     Int               @map("total_items")
+  totalItems     Int               @default(0) @map("total_items")
   items          PullHistoryItem[]
   createdAt      DateTime          @default(now()) @map("created_at") @db.Timestamptz()
   updatedAt      DateTime          @updatedAt @map("updated_at") @db.Timestamptz()
+  processingTime BigInt            @default(0) @map("processing_time")
 
   @@map("pull_histories")
 }
 
-enum PullHistoryItemStatus {
-  PENDING // the pull history item has been created
-  OK // success
-  ERROR // failed
-}
-
 model PullHistoryItem {
-  id             Int                   @id @default(autoincrement())
-  problem        Problem               @relation(fields: [problemId], references: [id])
-  problemId      Int                   @map("problem_id")
-  status         PullHistoryItemStatus @default(PENDING)
-  processingTime Int?                  @map("processing_time")
-  pullHistory    PullHistory           @relation(fields: [pullHistoryId], references: [id])
-  pullHistoryId  String                @map("pull_history_id")
-  createdAt      DateTime              @default(now()) @map("created_at") @db.Timestamptz()
-  updatedAt      DateTime              @updatedAt @map("updated_at") @db.Timestamptz()
+  id             Int               @id @default(autoincrement())
+  problem        Problem?          @relation(fields: [problemId], references: [id])
+  problemId      Int?              @map("problem_id")
+  problemUrl     String            @map("problem_url")
+  status         PullHistoryStatus @default(PENDING)
+  processingTime BigInt            @default(0) @map("processing_time")
+  pullHistory    PullHistory       @relation(fields: [pullHistoryId], references: [id], onDelete: Cascade)
+  pullHistoryId  String            @map("pull_history_id")
+  createdAt      DateTime          @default(now()) @map("created_at") @db.Timestamptz()
+  updatedAt      DateTime          @updatedAt @map("updated_at") @db.Timestamptz()
 
+  @@index([pullHistoryId])
   @@map("pull_history_items")
 }
