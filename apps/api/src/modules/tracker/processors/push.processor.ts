@@ -1,4 +1,9 @@
-import { Processor, Process, InjectQueue } from "@nestjs/bull";
+import {
+  Processor,
+  Process,
+  InjectQueue,
+  OnQueueCompleted
+} from "@nestjs/bull";
 import { SubmissionsService } from "~/modules/submissions/services/submissions.service";
 import { OJStatisticsParser } from "@proghours/oj-statistics-parser";
 import { Job } from "bull";
@@ -24,7 +29,7 @@ export class TrackerPushProcessor {
   ) {
     const { userId, url, solvedAt } = job.data;
     // TODO: createdAt and updatedAt should be same as solvedAt
-    await this.submissionsService.create(userId, {
+    const submission = await this.submissionsService.create(userId, {
       url,
       solveTime: 0,
       verdict: "AC",
@@ -32,7 +37,21 @@ export class TrackerPushProcessor {
     });
     job.progress(100);
     return {
-      status: "OK"
+      status: "OK",
+      problemId: submission.problemId
     };
+  }
+
+  @OnQueueCompleted()
+  async onCompleted(
+    job: Job<{ userId: number; judge: string; handle: string }>,
+    result: {
+      status: string;
+    }
+  ) {
+    console.log("result", result);
+    console.log("started at", job.processedOn);
+    console.log("finished at", job.finishedOn);
+    console.log("time taken", job.finishedOn - job.processedOn);
   }
 }
