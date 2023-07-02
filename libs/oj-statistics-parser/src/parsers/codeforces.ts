@@ -1,30 +1,25 @@
-import { StatisticsParser } from "../core/StatisticsParser";
 import axios from "axios";
 import * as _ from "lodash";
 import * as moment from "moment";
+import {
+  StatisticsParser,
+  StatisticsParserOpts
+} from "../interfaces/StatisticsParser";
+import { ParseResult } from "../types/ParseResult";
+import { CodeforcesApiResponse } from "../types/ApiResponse";
 
-type CodeforcesApiResponse = {
-  status: string;
-  result: Array<{
-    id: number;
-    contestId: number;
-    creationTimeSeconds: number;
-    relativeTimeSeconds: number;
-    problem: {
-      contestId: number;
-      index: string;
-      name: string;
-      type: string;
-      points: number;
-      rating: number;
-      tags: Array<string>;
-    };
-    verdict: string;
-    testset: string;
-  }>;
-};
+export class CodeforcesParser implements StatisticsParser {
+  private handle: string;
 
-export class CodeforcesParser extends StatisticsParser {
+  set({ handle }: StatisticsParserOpts): CodeforcesParser {
+    this.handle = handle;
+    return this;
+  }
+
+  getHandle() {
+    return this.handle;
+  }
+
   async fetch() {
     const { data } = await axios.get<CodeforcesApiResponse>(
       `https://codeforces.com/api/user.status?handle=${this.handle}&from=1&count=10000`
@@ -34,7 +29,7 @@ export class CodeforcesParser extends StatisticsParser {
       (s) => s.verdict === "OK" && s.testset === "TESTS"
     );
 
-    return {
+    const result: ParseResult = {
       totalSolved: acceptedSubmissions.length,
       solvedProblems: _.uniqWith(
         acceptedSubmissions.map(
@@ -47,5 +42,7 @@ export class CodeforcesParser extends StatisticsParser {
         (a, b) => a.pid === b.pid
       )
     };
+
+    return result;
   }
 }

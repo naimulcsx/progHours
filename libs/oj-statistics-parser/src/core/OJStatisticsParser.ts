@@ -1,17 +1,16 @@
 import { CodeforcesParser } from "../parsers/codeforces";
-import { UserStatistics } from "./StatisticsParser";
+import { ParseResult } from "../types/ParseResult";
+
+export type ParserFetchArgs = {
+  judge: string;
+  handle: string;
+};
 
 export class OJStatisticsParser {
-  async parse({
-    judge,
-    handle
-  }: {
-    judge: string;
-    handle: string;
-  }): Promise<UserStatistics> {
+  async parse({ judge, handle }: ParserFetchArgs): Promise<ParseResult> {
     if (judge === "codeforces") {
-      const parser = new CodeforcesParser(handle);
-      const result = await parser.fetch();
+      const parser = new CodeforcesParser();
+      const result = await parser.set({ handle }).fetch();
       return result;
     }
     throw new Error("Invalid online judge");
