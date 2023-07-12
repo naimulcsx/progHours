@@ -86,6 +86,8 @@ const getNotificationDefaultProps = (
 
 const getPaperDefaultProps = (theme: MantineTheme): PaperProps => ({
   sx: {
+    background:
+      theme.colorScheme === "dark" ? theme.colors.dark[8] : theme.white,
     ...(theme.colorScheme === "light" && {
       border: `1px solid ${theme.colors.gray[2]}`
     }),
@@ -104,20 +106,24 @@ const getNavLinkDefaultProps = (theme: MantineTheme): NavLinkProps => ({
       "&[data-active='true']": {
         background:
           theme.colorScheme === "dark"
-            ? theme.colors[theme.primaryColor][9]
-            : theme.colors[theme.primaryColor][0],
+            ? theme.fn.rgba(theme.colors[theme.primaryColor][5], 0.5)
+            : theme.fn.rgba(theme.colors[theme.primaryColor][9], 0.075),
         "&:hover": {
           background:
             theme.colorScheme === "dark"
-              ? theme.colors[theme.primaryColor][9]
-              : theme.colors[theme.primaryColor][0]
+              ? theme.fn.rgba(theme.colors[theme.primaryColor][5], 0.5)
+              : theme.fn.rgba(theme.colors[theme.primaryColor][9], 0.1)
         },
         "& span": {
           color:
             theme.colorScheme === "dark"
               ? theme.white
               : theme.colors[theme.primaryColor][9]
-        }
+        },
+        ...(theme.colorScheme === "dark" && {
+          boxShadow:
+            "rgba(0, 0, 0, 0.25) 0px 4px 8px -4px, rgba(0, 0, 0, 0.04) 0px -1px 1px inset, rgba(255, 255, 255, 0.06) 0px 2px 0px inset"
+        })
       },
       "& span": {
         fontWeight: 500
@@ -233,7 +239,9 @@ const getNavbarDefaultProps = (theme: MantineTheme): NavbarProps => {
     styles: {
       root: {
         backgroundColor:
-          theme.colorScheme === "dark" ? theme.colors.dark[8] : theme.white
+          theme.colorScheme === "dark"
+            ? theme.colors.dark[8]
+            : theme.colors.gray[0]
       }
     }
   };
@@ -261,25 +269,35 @@ const theme: MantineThemeOverride = {
     Modal: { defaultProps: getModalDefaultProps },
     Navbar: { defaultProps: getNavbarDefaultProps }
   },
-  colors: {},
+  colors: {
+    gray: [
+      "#F8FAFC",
+      "#F1F5F9",
+      "#E5EDF4",
+      "#E2E8F0",
+      "#C7CFDA",
+      "#A8B5C6",
+      "#94A3B8",
+      "#334155",
+      "#0F172A",
+      "#020617"
+    ],
+    dark: [
+      "#DFE4E8",
+      "#BFC8D0",
+      "#97A5B1",
+      "#566676", // [3] input placeholder text
+      "#39414C", // [4] input border
+      "#323942",
+      "#2A3039", // [6] input bg
+      "#1C2025", // [7] navbar bg, sidebar bg, paper bg
+      "#15171B",
+      "#0B0D0F" // [8] body bg, title color
+    ]
+  },
   shadows: {
     xs: "0px 1px 2px 0px rgba(16, 24, 40, 0.05)"
   }
 };
-
-/**
-  dark: [
-    "#eceef2",
-    "#d4d8e3",
-    "#8390ad",
-    "#637394", // [3] input placeholder text
-    "#3c455d", // [4] input border
-    "#282e3e",
-    "#242936", // [6] input bg
-    "#1a1d26", // [7] navbar bg, sidebar bg, paper bg
-    "#13151c", // [8] body bg
-    "#0c0d12" // [9] title color
-  ]
- */
 
 export default theme;
