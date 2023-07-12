@@ -14,7 +14,8 @@ import {
   SegmentedControlProps,
   BadgeProps,
   ModalProps,
-  NavbarProps
+  NavbarProps,
+  SelectProps
 } from "@mantine/core";
 import { DatePickerInputProps } from "@mantine/dates";
 import { NotificationProps } from "@mantine/notifications";
@@ -46,7 +47,13 @@ const getAnchorDefaultProps = (theme: MantineTheme): AnchorProps => ({
 
 const getTextInputDefaultProps = (theme: MantineTheme): TextInputProps => ({
   styles: {
-    input: {},
+    input: {
+      border: `1px solid ${
+        theme.colorScheme === "dark"
+          ? theme.colors.dark[4]
+          : theme.colors.gray[3]
+      }`
+    },
     label: {}
   }
 });
@@ -55,10 +62,31 @@ const getPasswordInputDefaultProps = (
   theme: MantineTheme
 ): PasswordInputProps => ({
   styles: {
-    input: {},
+    input: {
+      border: `1px solid ${
+        theme.colorScheme === "dark"
+          ? theme.colors.dark[4]
+          : theme.colors.gray[3]
+      }`
+    },
     label: {}
   }
 });
+
+const getSelectDefaultProps = (theme: MantineTheme): SelectProps => {
+  return {
+    data: [],
+    styles: {
+      input: {
+        border: `1px solid ${
+          theme.colorScheme === "dark"
+            ? theme.colors.dark[4]
+            : theme.colors.gray[3]
+        }`
+      }
+    }
+  };
+};
 
 const getNotificationDefaultProps = (
   theme: MantineTheme
@@ -164,7 +192,13 @@ const getDatePickerInputDefaultProps = (
 ): DatePickerInputProps => {
   return {
     styles: {
-      input: {},
+      input: {
+        border: `1px solid ${
+          theme.colorScheme === "dark"
+            ? theme.colors.dark[4]
+            : theme.colors.gray[3]
+        }`
+      },
       weekdaysRow: {
         th: {
           fontSize: "0.75rem !important",
@@ -206,8 +240,8 @@ const getBadgeDefaultProps = (theme: MantineTheme): BadgeProps => {
         color:
           theme.colorScheme === "dark"
             ? theme.colors.dark[0]
-            : theme.colors.dark[3],
-        fontWeight: 600
+            : theme.colors.dark[4],
+        fontWeight: 500
       }
     }
   };
@@ -238,6 +272,11 @@ const getNavbarDefaultProps = (theme: MantineTheme): NavbarProps => {
     hiddenBreakpoint: "lg",
     styles: {
       root: {
+        borderRight: `1px solid ${
+          theme.colorScheme === "dark"
+            ? theme.colors.dark[6]
+            : theme.colors.gray[3]
+        }`,
         backgroundColor:
           theme.colorScheme === "dark"
             ? theme.colors.dark[8]
@@ -267,14 +306,15 @@ const theme: MantineThemeOverride = {
     SegmentedControl: { defaultProps: getSegmentedControlDefaultProps },
     Badge: { defaultProps: getBadgeDefaultProps },
     Modal: { defaultProps: getModalDefaultProps },
-    Navbar: { defaultProps: getNavbarDefaultProps }
+    Navbar: { defaultProps: getNavbarDefaultProps },
+    Select: { defaultProps: getSelectDefaultProps }
   },
   colors: {
     gray: [
       "#F8FAFC",
       "#F1F5F9",
       "#E5EDF4",
-      "#E2E8F0",
+      "#D7DFEA",
       "#C7CFDA",
       "#A8B5C6",
       "#94A3B8",
