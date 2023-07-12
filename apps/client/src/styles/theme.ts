@@ -332,7 +332,7 @@ const theme: MantineThemeOverride = {
       "#2A3039", // [6] input bg
       "#1C2025", // [7] navbar bg, sidebar bg, paper bg
       "#15171B",
-      "#0B0D0F" // [8] body bg, title color
+      "#0E0F11" // [8] body bg, title color, alt #0B0D0F
     ]
   },
   shadows: {
