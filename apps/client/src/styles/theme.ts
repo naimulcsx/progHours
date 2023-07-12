@@ -13,7 +13,8 @@ import {
   MenuProps,
   SegmentedControlProps,
   BadgeProps,
-  ModalProps
+  ModalProps,
+  NavbarProps
 } from "@mantine/core";
 import { DatePickerInputProps } from "@mantine/dates";
 import { NotificationProps } from "@mantine/notifications";
@@ -35,7 +36,12 @@ const getButtonDefaultProps = (theme: MantineTheme): ButtonProps => ({
 
 const getAnchorDefaultProps = (theme: MantineTheme): AnchorProps => ({
   color:
-    theme.colorScheme === "dark" ? theme.colors.blue[4] : theme.colors.blue[5]
+    theme.colorScheme === "dark" ? theme.colors.blue[4] : theme.colors.blue[5],
+  sx: {
+    ":hover": {
+      textDecoration: "none"
+    }
+  }
 });
 
 const getTextInputDefaultProps = (theme: MantineTheme): TextInputProps => ({
@@ -217,6 +223,22 @@ const getModalDefaultProps = (theme: MantineTheme): ModalProps => {
   };
 };
 
+const getNavbarDefaultProps = (theme: MantineTheme): NavbarProps => {
+  return {
+    p: "md",
+    children: null,
+    width: { base: 0, lg: 264 },
+    hidden: true,
+    hiddenBreakpoint: "lg",
+    styles: {
+      root: {
+        backgroundColor:
+          theme.colorScheme === "dark" ? theme.colors.dark[8] : theme.white
+      }
+    }
+  };
+};
+
 const theme: MantineThemeOverride = {
   colorScheme: "dark",
   defaultRadius: "md",
@@ -236,7 +258,8 @@ const theme: MantineThemeOverride = {
     DatePickerInput: { defaultProps: getDatePickerInputDefaultProps },
     SegmentedControl: { defaultProps: getSegmentedControlDefaultProps },
     Badge: { defaultProps: getBadgeDefaultProps },
-    Modal: { defaultProps: getModalDefaultProps }
+    Modal: { defaultProps: getModalDefaultProps },
+    Navbar: { defaultProps: getNavbarDefaultProps }
   },
   colors: {},
   shadows: {
