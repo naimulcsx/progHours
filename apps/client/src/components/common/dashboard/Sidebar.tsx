@@ -1,42 +1,46 @@
 import {
   Anchor,
+  Avatar,
   Box,
+  Group,
   Navbar,
   NavLink,
-  SegmentedControl,
   Stack,
+  Text,
   useMantineTheme
 } from "@mantine/core";
 import { Link, useLocation } from "react-router-dom";
-import { useLocalStorage } from "@mantine/hooks";
 import { useUser } from "~/hooks/useUser";
 import { userLinks, adminLinks } from "./_data";
 import { AppLogo } from "~/assets/AppLogo";
+import SpotlightButton from "./SpotlightButton";
+import { useLocalStorage } from "@mantine/hooks";
 
 export default function Sidebar() {
   const { user } = useUser();
+
   const { pathname } = useLocation();
   const theme = useMantineTheme();
+  // const { handleLogout } = useLogout();
 
-  const [selected, setSelected] = useLocalStorage({
+  const [selected] = useLocalStorage({
     key: "panel",
     defaultValue: "REGULAR"
   });
 
   return (
     <Navbar
-      p="md"
+      p="xl"
+      width={{ base: 0, lg: 250 }}
       hidden
-      width={{ base: 0, lg: 220 }}
       hiddenBreakpoint="lg"
       sx={{
-        fontWeight: 500,
         backgroundColor:
           theme.colorScheme === "dark" ? theme.colors.dark[8] : theme.white
       }}
     >
       <Navbar.Section grow>
-        <Box mb="md">
+        <Box mb={24}>
           <Anchor
             component={Link}
             to="/dashboard"
@@ -46,13 +50,15 @@ export default function Sidebar() {
               }
             }}
           >
-            <AppLogo size="md" />
+            <AppLogo size="lg" />
           </Anchor>
         </Box>
 
-        {user?.role === "ADMIN" && (
+        <SpotlightButton />
+
+        {/* {user?.role === "ADMIN" && (
           <SegmentedControl
-            mb="md"
+            mt="md"
             fullWidth
             value={selected}
             onChange={setSelected}
@@ -68,9 +74,9 @@ export default function Sidebar() {
                   : theme.colors.gray[1]
             }}
           />
-        )}
+        )} */}
 
-        <Stack spacing={6} sx={{ margin: "0 -16px" }}>
+        <Stack mt="xl" spacing={6} sx={{ margin: "0 -12px" }}>
           {selected === "REGULAR"
             ? userLinks.map((link, index) => {
                 return (
@@ -97,6 +103,44 @@ export default function Sidebar() {
                 );
               })}
         </Stack>
+      </Navbar.Section>
+      <Navbar.Section>
+        <Group spacing="xs">
+          <Avatar variant="filled" color={theme.primaryColor} radius="xl">
+            NH
+          </Avatar>
+          <Stack>
+            <Box>
+              <Text
+                sx={{
+                  overflow: "hidden",
+                  textOverflow: "ellipsis",
+                  whiteSpace: "nowrap",
+                  maxWidth: 145,
+                  fontWeight: 600
+                }}
+                size="sm"
+              >
+                Naimul Haque
+              </Text>
+              <Text
+                size="sm"
+                sx={{
+                  overflow: "hidden",
+                  textOverflow: "ellipsis",
+                  whiteSpace: "nowrap",
+                  maxWidth: 145
+                }}
+              >
+                {user?.email}
+              </Text>
+            </Box>
+            {/* Logout
+            <ActionIcon size="sm" onClick={handleLogout}>
+              <IconLogout />
+            </ActionIcon> */}
+          </Stack>
+        </Group>
       </Navbar.Section>
     </Navbar>
   );

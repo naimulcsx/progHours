@@ -1,15 +1,17 @@
 import { ThemeIcon } from "@mantine/core";
 import {
-  IconUsers,
   IconFriends,
   IconHeartRateMonitor,
-  IconBook2,
-  IconLayout2,
-  IconClipboardList,
-  IconNotes,
-  IconChartBar,
-  IconSettings
+  IconBook2
 } from "@tabler/icons-react";
+
+import {
+  IconUsers,
+  IconTable,
+  IconSettings,
+  IconHome,
+  IconBarChart
+} from "~/assets/icons";
 
 export const adminLinks = [
   {
@@ -17,7 +19,7 @@ export const adminLinks = [
     to: "/admin/users",
     Icon: () => (
       <ThemeIcon size="md" color="orange">
-        <IconUsers size={16} stroke={1.6} />
+        <IconUsers />
       </ThemeIcon>
     )
   },
@@ -55,64 +57,36 @@ export const userLinks = [
   {
     label: "Overview",
     to: "/overview",
-    Icon: () => (
-      <ThemeIcon size="md" color="orange">
-        <IconLayout2 size={16} stroke={1.6} />
-      </ThemeIcon>
-    )
+    Icon: () => <IconHome />
   },
   {
     label: "Submissions",
     to: "/submissions",
-    Icon: () => (
-      <ThemeIcon size="md" color="green">
-        <IconClipboardList size={16} stroke={1.6} />
-      </ThemeIcon>
-    )
+    Icon: () => <IconTable />
   },
   {
     label: "Study List",
     to: "/study",
-    Icon: () => (
-      <ThemeIcon size="md" color="lime">
-        <IconNotes size={16} stroke={1.6} />
-      </ThemeIcon>
-    )
+    Icon: () => <IconTable />
   },
   {
     label: "Groups",
     to: "/groups",
-    Icon: () => (
-      <ThemeIcon size="md" color="indigo">
-        <IconUsers size={16} stroke={1.6} />
-      </ThemeIcon>
-    )
+    Icon: () => <IconUsers />
   },
   {
     label: "Leaderboard",
     to: "/leaderboard",
-    Icon: () => (
-      <ThemeIcon size="md" color="cyan">
-        <IconChartBar size={16} stroke={1.6} />
-      </ThemeIcon>
-    )
+    Icon: () => <IconBarChart />
   },
   {
     label: "Activities",
     to: "/activities",
-    Icon: () => (
-      <ThemeIcon size="md" color="pink">
-        <IconNotes size={16} stroke={1.6} />
-      </ThemeIcon>
-    )
+    Icon: () => <IconBarChart />
   },
   {
     label: "Settings",
     to: "/settings",
-    Icon: () => (
-      <ThemeIcon size="md" color="red">
-        <IconSettings size={16} stroke={1.6} />
-      </ThemeIcon>
-    )
+    Icon: () => <IconSettings />
   }
 ];

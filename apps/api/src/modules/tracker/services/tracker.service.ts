@@ -25,7 +25,7 @@ export class TrackerService {
       {
         userId,
         pullHistoryId: pullHistory.id,
-        handle: "naimul_haque",
+        handle: "naimulcsx",
         judge: "codeforces"
       },
       {

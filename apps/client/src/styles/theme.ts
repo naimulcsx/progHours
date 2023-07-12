@@ -19,7 +19,7 @@ import { DatePickerInputProps } from "@mantine/dates";
 import { NotificationProps } from "@mantine/notifications";
 
 const getTitleDefaultProps = (theme: MantineTheme): TitleProps => ({
-  color: theme.colorScheme === "dark" ? theme.white : theme.colors.dark[9]
+  color: theme.colorScheme === "dark" ? theme.white : theme.colors.gray[8]
 });
 
 const getTextDefaultProps = (theme: MantineTheme): TextProps => ({
@@ -94,32 +94,23 @@ const getNavLinkDefaultProps = (theme: MantineTheme): NavLinkProps => ({
   styles: {
     root: {
       background: "transparent",
-      paddingLeft: 16,
-      paddingRight: 16,
+      borderRadius: 6,
       "&[data-active='true']": {
+        background:
+          theme.colorScheme === "dark"
+            ? theme.colors[theme.primaryColor][9]
+            : theme.colors[theme.primaryColor][0],
         "&:hover": {
           background:
             theme.colorScheme === "dark"
-              ? theme.colors.dark[4]
-              : theme.colors.gray[2]
+              ? theme.colors[theme.primaryColor][9]
+              : theme.colors[theme.primaryColor][0]
         },
-        background:
-          theme.colorScheme === "dark"
-            ? theme.colors.dark[5]
-            : theme.colors.gray[1],
-
         "& span": {
           color:
-            theme.colorScheme === "dark" ? theme.white : theme.colors.dark[9]
-        },
-        "&:before": {
-          content: "''",
-          position: "absolute",
-          left: 0,
-          height: 42,
-          display: "block",
-          width: 3,
-          background: theme.colors[theme.primaryColor][5]
+            theme.colorScheme === "dark"
+              ? theme.white
+              : theme.colors[theme.primaryColor][9]
         }
       },
       "& span": {
@@ -127,7 +118,7 @@ const getNavLinkDefaultProps = (theme: MantineTheme): NavLinkProps => ({
       }
     },
     icon: {
-      color: theme.colors.gray[6]
+      color: theme.colors.gray[5]
     }
   }
 });
@@ -135,18 +126,13 @@ const getNavLinkDefaultProps = (theme: MantineTheme): NavLinkProps => ({
 const getTableDefaultProps = (theme: MantineTheme): TableProps => {
   return {
     sx: {
-      thead: {
-        position: "sticky",
-        top: 0,
-        zIndex: 20
-      },
       "thead.mantine-DataGrid-thead tr th": {
         paddingTop: 8,
         paddingBottom: 8,
         background:
           theme.colorScheme === "dark"
             ? theme.colors.dark[6]
-            : theme.colors.gray[1],
+            : theme.colors.gray[0],
         border: 0,
         "&:first-of-type": {
           borderTopLeftRadius: theme.radius.md,
@@ -192,10 +178,7 @@ const getSegmentedControlDefaultProps = (
   return {
     data: [],
     styles: {
-      label: {
-        paddingTop: 3,
-        paddingBottom: 3
-      }
+      label: {}
     }
   };
 };
@@ -255,7 +238,10 @@ const theme: MantineThemeOverride = {
     Badge: { defaultProps: getBadgeDefaultProps },
     Modal: { defaultProps: getModalDefaultProps }
   },
-  colors: {}
+  colors: {},
+  shadows: {
+    xs: "0px 1px 2px 0px rgba(16, 24, 40, 0.05)"
+  }
 };
 
 /**

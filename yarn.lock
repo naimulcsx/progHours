@@ -1943,12 +1943,12 @@
   dependencies:
     "@mantine/utils" "6.0.15"
 
-"@mantine/spotlight@^6.0.13":
-  version "6.0.13"
-  resolved "https://registry.yarnpkg.com/@mantine/spotlight/-/spotlight-6.0.13.tgz#0b438ea41c7ce2f4cbdf6de263120a274653db75"
-  integrity sha512-HVpQRmE7pZxK9JWnX8G24KsrE2U/mgn5NF0MPbHNGbI5fbDjzW5rVDL7GvsgEHsWHXAhPeXci20sY+2v6573SA==
+"@mantine/spotlight@^6.0.16":
+  version "6.0.16"
+  resolved "https://registry.yarnpkg.com/@mantine/spotlight/-/spotlight-6.0.16.tgz#7b04a9fceeb107244e1d67ee80fd55edcce2d455"
+  integrity sha512-y5xUAgceGARlf7my22BShQjUbOyTKqxWkF8DOVN9LSexaWt5oP3Pj/7H9iFXiwPtSxYmdVGNT3sescyO1fCNOw==
   dependencies:
-    "@mantine/utils" "6.0.13"
+    "@mantine/utils" "6.0.16"
 
 "@mantine/styles@6.0.13":
   version "6.0.13"
@@ -1967,6 +1967,11 @@
   version "6.0.15"
   resolved "https://registry.yarnpkg.com/@mantine/utils/-/utils-6.0.15.tgz#d4144221f9406aece12b979bed5888da50d86771"
   integrity sha512-iVaobFQTCQWG6SRi3im0/nONKCtGRPobG7bXn9GiIT96E4t7uTPglQpo/ZktDrF1XCL8CO/HoQmks4A2iXuMFw==
+
+"@mantine/utils@6.0.16":
+  version "6.0.16"
+  resolved "https://registry.yarnpkg.com/@mantine/utils/-/utils-6.0.16.tgz#b39e47ef8fa4463322e9aa10cdd5980f4310b705"
+  integrity sha512-UFel9DbifL3zS8pTJlr6GfwGd6464OWXCJdUq0oLydgimbC1VV2PnptBr6FMwIpPVcxouLOtY1cChzwFH95PSA==
 
 "@mapbox/node-pre-gyp@^1.0.10":
   version "1.0.10"

@@ -25,7 +25,6 @@ export default function SubmissionsPage() {
           <Box style={{ ...styles, transitionDelay: "250ms" }}>
             {isSuccess && (
               <Stack mt="md" spacing="lg">
-                {/* table toolbar */}
                 {table && (
                   <DataGridToolbar
                     table={table}
@@ -42,7 +41,6 @@ export default function SubmissionsPage() {
                     ]}
                   />
                 )}
-                {/* submissions table */}
                 <SubmissionsTable data={data} tableRef={setRef} />
               </Stack>
             )}
