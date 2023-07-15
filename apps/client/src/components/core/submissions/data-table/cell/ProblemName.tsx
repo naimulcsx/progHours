@@ -1,5 +1,4 @@
 import { ReactNode } from "react";
-import { CellContext } from "@tanstack/react-table";
 import { SubmissionRow } from "@proghours/data-access";
 import { Box, Group, Text, Title } from "@mantine/core";
 import {
@@ -42,10 +41,10 @@ const iconMap = [
   { prefix: "KT-", icon: <KattisIcon /> }
 ];
 
-export const ProblemName = ({ cell }: CellContext<SubmissionRow, unknown>) => {
+export const ProblemName = (row: SubmissionRow) => {
   const {
     problem: { pid, name }
-  } = cell.row.original;
+  } = row;
   return (
     <Group spacing="md" sx={{ width: "100%" }}>
       <Box

@@ -1,6 +1,5 @@
 import { useQueryClient } from "@tanstack/react-query";
 import { useRef, useState, KeyboardEvent } from "react";
-import { CellContext } from "@tanstack/react-table";
 import { TextInput } from "@mantine/core";
 import {
   SubmissionRow,
@@ -10,12 +9,12 @@ import {
 import { notifications } from "@mantine/notifications";
 import { IconCheck } from "@tabler/icons-react";
 
-export default function SolveTimeCell(
-  cell: CellContext<SubmissionRow, unknown>
-) {
+export function SolveTimeCell(row: SubmissionRow) {
   const client = useQueryClient();
-  const prevRef = useRef(cell.getValue());
-  const [solveTime, setSolveTime] = useState(cell.getValue() as string);
+  const prevRef = useRef(row.solveTime.toString());
+  const [solveTime, setSolveTime] = useState(
+    row.solveTime.toString() as string
+  );
 
   const { mutate } = useUpdateSubmissionMutation({
     config: {
@@ -37,7 +36,7 @@ export default function SolveTimeCell(
       queryFn: getSubmissions
     });
     const newSubmissions = submissions?.map((submission) => {
-      if (submission.id === cell.row.original.id) {
+      if (submission.id === row.id) {
         return { ...submission, solveTime: parseInt(solveTime) };
       }
       return submission;
@@ -48,14 +47,14 @@ export default function SolveTimeCell(
   const handleBlur = async (value: string) => {
     if (prevRef.current !== solveTime) {
       await updateState();
-      mutate({ id: cell.row.original.id, solveTime: parseInt(value) });
+      mutate({ id: row.id, solveTime: parseInt(value) });
       prevRef.current = value;
     }
   };
   const handleEnter = async (e: KeyboardEvent<HTMLInputElement>) => {
     if (e.key === "Enter" && prevRef.current !== solveTime) {
       await updateState();
-      mutate({ id: cell.row.original.id, solveTime: parseInt(solveTime) });
+      mutate({ id: row.id, solveTime: parseInt(solveTime) });
       prevRef.current = solveTime;
     }
   };

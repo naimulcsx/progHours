@@ -1,6 +1,5 @@
 import { useState } from "react";
 import { DatePickerInput } from "@mantine/dates";
-import { CellContext } from "@tanstack/react-table";
 import {
   SubmissionRow,
   useUpdateSubmissionMutation
@@ -10,9 +9,9 @@ import { IconCheck } from "@tabler/icons-react";
 import { notifications } from "@mantine/notifications";
 import moment from "moment";
 
-export function SolvedAtCell(cell: CellContext<SubmissionRow, unknown>) {
+export function SolvedAtCell(row: SubmissionRow) {
   const queryClient = useQueryClient();
-  const [solvedAt, setSolvedAt] = useState(new Date(cell.getValue() as string));
+  const [solvedAt, setSolvedAt] = useState(new Date(row.solvedAt));
   const { mutate } = useUpdateSubmissionMutation({
     config: {
       onSuccess: () => {
@@ -36,7 +35,7 @@ export function SolvedAtCell(cell: CellContext<SubmissionRow, unknown>) {
         const value = date || new Date();
         setSolvedAt(value);
         mutate({
-          id: cell.row.original.id,
+          id: row.id,
           solvedAt: moment
             .utc({
               year: value?.getFullYear(),

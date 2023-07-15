@@ -1,6 +1,5 @@
 import { useState } from "react";
 import { MantineTheme, Select, useMantineTheme } from "@mantine/core";
-import { CellContext } from "@tanstack/react-table";
 import { IconCheck, IconSelector } from "@tabler/icons-react";
 import { useQueryClient } from "@tanstack/react-query";
 import {
@@ -41,10 +40,10 @@ const getLightStyles = (theme: MantineTheme) => ({
   }
 });
 
-const VerdictCell = (cell: CellContext<SubmissionRow, unknown>) => {
+export const VerdictCell = (row: SubmissionRow) => {
   const theme = useMantineTheme();
   const client = useQueryClient();
-  const [selected, setSelected] = useState<Verdict>(cell.getValue() as Verdict);
+  const [selected, setSelected] = useState<Verdict>(row.verdict);
   const { mutate } = useUpdateSubmissionMutation({
     config: {
       onSuccess: () => {
@@ -65,7 +64,7 @@ const VerdictCell = (cell: CellContext<SubmissionRow, unknown>) => {
       queryFn: getSubmissions
     });
     const newSubmissions = submissions?.map((submission) => {
-      if (cell.row.original.id === submission.id) {
+      if (row.id === submission.id) {
         return {
           ...submission,
           verdict: value
@@ -76,8 +75,8 @@ const VerdictCell = (cell: CellContext<SubmissionRow, unknown>) => {
     client.setQueryData(["submissions"], newSubmissions);
     // update submission in server
     if (value !== null) {
-      if (value !== cell.row.original.verdict) {
-        mutate({ id: cell.row.original.id, verdict: value });
+      if (value !== row.verdict) {
+        mutate({ id: row.id, verdict: value });
       }
       setSelected(value);
     }
@@ -115,5 +114,3 @@ const VerdictCell = (cell: CellContext<SubmissionRow, unknown>) => {
     />
   );
 };
-
-export default VerdictCell;

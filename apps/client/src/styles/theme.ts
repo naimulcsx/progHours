@@ -275,7 +275,7 @@ const getNavbarDefaultProps = (theme: MantineTheme): NavbarProps => {
         borderRight: `1px solid ${
           theme.colorScheme === "dark"
             ? theme.colors.dark[6]
-            : theme.colors.gray[3]
+            : theme.colors.gray[2]
         }`,
         backgroundColor:
           theme.colorScheme === "dark"

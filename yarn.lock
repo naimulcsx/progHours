@@ -8981,6 +8981,11 @@ makeerror@1.0.12:
   dependencies:
     tmpl "1.0.5"
 
+mantine-datatable@^2.8.3:
+  version "2.8.3"
+  resolved "https://registry.yarnpkg.com/mantine-datatable/-/mantine-datatable-2.8.3.tgz#10d4285a9fd0a66c8ab650bb45a39232ec46b0ad"
+  integrity sha512-FBmYaqwRchVLxUbNhvlME2DBqlR4apzBlcUG+ob48mRElA9kyq4081OpzcA7Nw8rtxIuAxtAdB0W0sLA+5wBWA==
+
 map-obj@^1.0.0:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/map-obj/-/map-obj-1.0.1.tgz#d933ceb9205d82bdcf4886f6742bdc2b4dea146d"
