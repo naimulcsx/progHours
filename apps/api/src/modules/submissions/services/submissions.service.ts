@@ -38,6 +38,22 @@ export class SubmissionsService {
     });
   }
 
+  async exists(userId: number, url: string) {
+    const problem = await this.prisma.problem.findUnique({
+      where: { url }
+    });
+    if (!problem) return false;
+    const submission = await this.prisma.submission.findUnique({
+      where: {
+        userId_problemId: {
+          userId,
+          problemId: problem.id
+        }
+      }
+    });
+    return submission ? true : false;
+  }
+
   async create(userId: number, createSubmissionDto: CreateSubmissionDto) {
     const url = this.parserService.getUnifiedUrl(createSubmissionDto.url);
     let problemId: number;
@@ -72,7 +88,6 @@ export class SubmissionsService {
           }
         }
       });
-      console.log(newSubmission);
       return newSubmission;
     } catch (error) {
       const uniqueConstraintErrorCode = "P2002";

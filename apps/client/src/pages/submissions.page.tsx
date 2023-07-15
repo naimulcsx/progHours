@@ -1,12 +1,9 @@
 import { Box, Group, Loader, Stack, Title, Transition } from "@mantine/core";
 import { DashboardLayout } from "~/components/common/dashboard/Layout";
-import { SubmissionRow, useSubmissions } from "@proghours/data-access";
-import { DataGridToolbar } from "~/components/common/datagrid/Toolbar";
-import { SubmissionsTable } from "~/components/core/submissions/data-grid";
-import { useDataGrid } from "~/components/common/datagrid";
+import { useSubmissions } from "@proghours/data-access";
+import SubmissionsDataTable from "~/components/core/submissions/data-table";
 
 export default function SubmissionsPage() {
-  const [table, setRef] = useDataGrid<SubmissionRow>();
   const { data, isFetching, isSuccess } = useSubmissions();
   return (
     <DashboardLayout>
@@ -25,25 +22,7 @@ export default function SubmissionsPage() {
           <Box style={{ ...styles, transitionDelay: "250ms" }}>
             {isSuccess && (
               <Stack mt="md" spacing="lg">
-                {/* table toolbar */}
-                {table && (
-                  <DataGridToolbar
-                    table={table}
-                    withGlobalFilter
-                    columnFilters={[
-                      {
-                        id: "problem_difficulty",
-                        label: "Difficulty"
-                      },
-                      {
-                        id: "verdict",
-                        label: "Verdict"
-                      }
-                    ]}
-                  />
-                )}
-                {/* submissions table */}
-                <SubmissionsTable data={data} tableRef={setRef} />
+                <SubmissionsDataTable data={data} />
               </Stack>
             )}
           </Box>

@@ -15,6 +15,18 @@ services:
       - /var/lib/postgresql/data
     networks:
       - proghours
+
+  pgadmin:
+    image: dpage/pgadmin4
+    restart: always
+    environment:
+      PGADMIN_DEFAULT_EMAIL: naimulcsx@gmail.com
+      PGADMIN_DEFAULT_PASSWORD: pgadmin
+    ports:
+      - "8090:80"
+    volumes:
+      - /var/lib/pgadmin
+
   adminer:
     image: adminer
     restart: always
@@ -22,6 +34,17 @@ services:
       - 8080:8080
     networks:
       - proghours
+
+  redis:
+    image: redis:latest
+    restart: always
+    ports:
+      - 6379:6379
+    volumes:
+      - /var/lib/redis/data
+    networks:
+      - proghours
+
 networks:
   proghours:
     driver: bridge

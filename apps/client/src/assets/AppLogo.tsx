@@ -175,14 +175,14 @@ export function AppLogo({
       fontSize: "16px"
     },
     lg: {
-      logoSize: 40,
+      logoSize: 36,
       textSize: "12px",
-      fontSize: "20px"
+      fontSize: "18px"
     }
   };
   return (
     <Group
-      spacing="sm"
+      spacing="xs"
       sx={{
         alignItems: "center",
         color: theme.colors[theme.primaryColor][5]
@@ -193,7 +193,7 @@ export function AppLogo({
       <Box>
         <Text
           sx={{
-            fontWeight: 600,
+            fontWeight: 700,
             lineHeight: 1.4,
             letterSpacing: -0.075,
             fontSize: styles[size].fontSize,
@@ -204,17 +204,6 @@ export function AppLogo({
           }}
         >
           progHours
-        </Text>
-        <Text
-          size={styles[size].textSize}
-          sx={{
-            color:
-              theme.colorScheme === "dark"
-                ? theme.white
-                : theme.colors[theme.primaryColor][7]
-          }}
-        >
-          v0.4.0
         </Text>
       </Box>
     </Group>

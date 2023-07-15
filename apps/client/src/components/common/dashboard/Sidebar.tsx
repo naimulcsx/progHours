@@ -1,6 +1,9 @@
 import {
+  ActionIcon,
   Anchor,
+  Avatar,
   Box,
+  Group,
   Navbar,
   NavLink,
   SegmentedControl,
@@ -8,94 +11,92 @@ import {
   useMantineTheme
 } from "@mantine/core";
 import { Link, useLocation } from "react-router-dom";
-import { useLocalStorage } from "@mantine/hooks";
 import { useUser } from "~/hooks/useUser";
-import { userLinks, adminLinks } from "./_data";
 import { AppLogo } from "~/assets/AppLogo";
+import SpotlightButton from "./SpotlightButton";
+import { useLocalStorage } from "@mantine/hooks";
+import { useLogout } from "~/hooks/useLogout";
+import { IconLogout } from "~/assets/icons/IconLogout";
+import { userLinks, adminLinks } from "./_data";
+import { UserDetails } from "./UserDetails";
 
 export default function Sidebar() {
   const { user } = useUser();
-  const { pathname } = useLocation();
   const theme = useMantineTheme();
-
+  const { pathname } = useLocation();
+  const { handleLogout } = useLogout();
   const [selected, setSelected] = useLocalStorage({
     key: "panel",
     defaultValue: "REGULAR"
   });
-
+  const links = selected === "REGULAR" ? userLinks : adminLinks;
   return (
-    <Navbar
-      p="md"
-      hidden
-      width={{ base: 0, lg: 220 }}
-      hiddenBreakpoint="lg"
-      sx={{
-        fontWeight: 500,
-        backgroundColor:
-          theme.colorScheme === "dark" ? theme.colors.dark[8] : theme.white
-      }}
-    >
+    <Navbar>
       <Navbar.Section grow>
-        <Box mb="md">
-          <Anchor
-            component={Link}
-            to="/dashboard"
-            sx={{
-              ":hover": {
-                textDecoration: "none"
-              }
-            }}
-          >
-            <AppLogo size="md" />
+        {/* logo */}
+        <Box mb={24}>
+          <Anchor component={Link} to="/dashboard">
+            <AppLogo size="lg" />
           </Anchor>
         </Box>
 
-        {user?.role === "ADMIN" && (
+        {/* nav switcher */}
+        {user && user.role === "ADMIN" && (
           <SegmentedControl
-            mb="md"
+            mt="md"
             fullWidth
             value={selected}
             onChange={setSelected}
+            transitionDuration={0}
             data={[
               { label: "User", value: "REGULAR" },
               { label: "Admin", value: "ADMIN" }
             ]}
-            transitionDuration={0}
             sx={{
               background:
                 theme.colorScheme === "dark"
-                  ? theme.colors.dark[9]
+                  ? theme.fn.darken(theme.colors.dark[9], 0.25)
                   : theme.colors.gray[1]
             }}
           />
         )}
 
-        <Stack spacing={6} sx={{ margin: "0 -16px" }}>
-          {selected === "REGULAR"
-            ? userLinks.map((link, index) => {
-                return (
-                  <NavLink
-                    key={index}
-                    component={Link}
-                    to={link.to}
-                    label={link.label}
-                    active={pathname === link.to}
-                    icon={<link.Icon />}
-                  />
-                );
-              })
-            : adminLinks.map((link, index) => {
-                return (
-                  <NavLink
-                    key={index}
-                    component={Link}
-                    to={link.to}
-                    label={link.label}
-                    active={pathname === link.to}
-                    icon={<link.Icon />}
-                  />
-                );
-              })}
+        {/* navlinks */}
+        <Stack mt="xl" spacing={6}>
+          {links.map((link, index) => {
+            return (
+              <NavLink
+                key={index}
+                component={Link}
+                to={link.to}
+                label={link.label}
+                active={pathname === link.to}
+                icon={<link.Icon />}
+              />
+            );
+          })}
+        </Stack>
+      </Navbar.Section>
+
+      <Navbar.Section>
+        <Stack spacing="xl">
+          {/* search button */}
+          <SpotlightButton />
+
+          <Group spacing="xs">
+            {/* user avatar */}
+            <Avatar variant="filled" color={theme.primaryColor} radius="xl">
+              NH
+            </Avatar>
+
+            {/* user details */}
+            <UserDetails />
+
+            {/* logout button */}
+            <ActionIcon onClick={handleLogout}>
+              <IconLogout />
+            </ActionIcon>
+          </Group>
         </Stack>
       </Navbar.Section>
     </Navbar>

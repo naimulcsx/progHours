@@ -18,6 +18,19 @@ export class ProblemsService {
   }
 
   async createProblem({ tags, ...problemData }: CreateProblemDto) {
+    const problem = await this.prisma.problem.findUnique({
+      where: { url: problemData.url },
+      include: {
+        problemTags: {
+          include: {
+            tag: true
+          }
+        }
+      }
+    });
+    if (problem) {
+      return problem;
+    }
     const createdProblem = await this.prisma.problem.create({
       data: {
         ...problemData,

@@ -17,6 +17,9 @@
       "~/*": ["./src/*"],
       "@proghours/oj-problem-parser": [
         "../../libs/oj-problem-parser/src/index.ts"
+      ],
+      "@proghours/oj-statistics-parser": [
+        "../../libs/oj-statistics-parser/src/index.ts"
       ]
     }
   }

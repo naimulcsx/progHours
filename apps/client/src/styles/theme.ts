@@ -13,13 +13,15 @@ import {
   MenuProps,
   SegmentedControlProps,
   BadgeProps,
-  ModalProps
+  ModalProps,
+  NavbarProps,
+  SelectProps
 } from "@mantine/core";
 import { DatePickerInputProps } from "@mantine/dates";
 import { NotificationProps } from "@mantine/notifications";
 
 const getTitleDefaultProps = (theme: MantineTheme): TitleProps => ({
-  color: theme.colorScheme === "dark" ? theme.white : theme.colors.dark[9]
+  color: theme.colorScheme === "dark" ? theme.white : theme.colors.gray[8]
 });
 
 const getTextDefaultProps = (theme: MantineTheme): TextProps => ({
@@ -35,12 +37,23 @@ const getButtonDefaultProps = (theme: MantineTheme): ButtonProps => ({
 
 const getAnchorDefaultProps = (theme: MantineTheme): AnchorProps => ({
   color:
-    theme.colorScheme === "dark" ? theme.colors.blue[4] : theme.colors.blue[5]
+    theme.colorScheme === "dark" ? theme.colors.blue[4] : theme.colors.blue[5],
+  sx: {
+    ":hover": {
+      textDecoration: "none"
+    }
+  }
 });
 
 const getTextInputDefaultProps = (theme: MantineTheme): TextInputProps => ({
   styles: {
-    input: {},
+    input: {
+      border: `1px solid ${
+        theme.colorScheme === "dark"
+          ? theme.colors.dark[4]
+          : theme.colors.gray[3]
+      }`
+    },
     label: {}
   }
 });
@@ -49,10 +62,31 @@ const getPasswordInputDefaultProps = (
   theme: MantineTheme
 ): PasswordInputProps => ({
   styles: {
-    input: {},
+    input: {
+      border: `1px solid ${
+        theme.colorScheme === "dark"
+          ? theme.colors.dark[4]
+          : theme.colors.gray[3]
+      }`
+    },
     label: {}
   }
 });
+
+const getSelectDefaultProps = (theme: MantineTheme): SelectProps => {
+  return {
+    data: [],
+    styles: {
+      input: {
+        border: `1px solid ${
+          theme.colorScheme === "dark"
+            ? theme.colors.dark[4]
+            : theme.colors.gray[3]
+        }`
+      }
+    }
+  };
+};
 
 const getNotificationDefaultProps = (
   theme: MantineTheme
@@ -80,6 +114,8 @@ const getNotificationDefaultProps = (
 
 const getPaperDefaultProps = (theme: MantineTheme): PaperProps => ({
   sx: {
+    background:
+      theme.colorScheme === "dark" ? theme.colors.dark[8] : theme.white,
     ...(theme.colorScheme === "light" && {
       border: `1px solid ${theme.colors.gray[2]}`
     }),
@@ -94,40 +130,35 @@ const getNavLinkDefaultProps = (theme: MantineTheme): NavLinkProps => ({
   styles: {
     root: {
       background: "transparent",
-      paddingLeft: 16,
-      paddingRight: 16,
+      borderRadius: 6,
       "&[data-active='true']": {
+        background:
+          theme.colorScheme === "dark"
+            ? theme.fn.rgba(theme.colors[theme.primaryColor][5], 0.5)
+            : theme.fn.rgba(theme.colors[theme.primaryColor][9], 0.075),
         "&:hover": {
           background:
             theme.colorScheme === "dark"
-              ? theme.colors.dark[4]
-              : theme.colors.gray[2]
+              ? theme.fn.rgba(theme.colors[theme.primaryColor][5], 0.5)
+              : theme.fn.rgba(theme.colors[theme.primaryColor][9], 0.1)
         },
-        background:
-          theme.colorScheme === "dark"
-            ? theme.colors.dark[5]
-            : theme.colors.gray[1],
-
         "& span": {
           color:
-            theme.colorScheme === "dark" ? theme.white : theme.colors.dark[9]
+            theme.colorScheme === "dark"
+              ? theme.white
+              : theme.colors[theme.primaryColor][9]
         },
-        "&:before": {
-          content: "''",
-          position: "absolute",
-          left: 0,
-          height: 42,
-          display: "block",
-          width: 3,
-          background: theme.colors[theme.primaryColor][5]
-        }
+        ...(theme.colorScheme === "dark" && {
+          boxShadow:
+            "rgba(0, 0, 0, 0.25) 0px 4px 8px -4px, rgba(0, 0, 0, 0.04) 0px -1px 1px inset, rgba(255, 255, 255, 0.06) 0px 2px 0px inset"
+        })
       },
       "& span": {
         fontWeight: 500
       }
     },
     icon: {
-      color: theme.colors.gray[6]
+      color: theme.colors.gray[5]
     }
   }
 });
@@ -135,18 +166,13 @@ const getNavLinkDefaultProps = (theme: MantineTheme): NavLinkProps => ({
 const getTableDefaultProps = (theme: MantineTheme): TableProps => {
   return {
     sx: {
-      thead: {
-        position: "sticky",
-        top: 0,
-        zIndex: 20
-      },
       "thead.mantine-DataGrid-thead tr th": {
         paddingTop: 8,
         paddingBottom: 8,
         background:
           theme.colorScheme === "dark"
             ? theme.colors.dark[6]
-            : theme.colors.gray[1],
+            : theme.colors.gray[0],
         border: 0,
         "&:first-of-type": {
           borderTopLeftRadius: theme.radius.md,
@@ -166,7 +192,13 @@ const getDatePickerInputDefaultProps = (
 ): DatePickerInputProps => {
   return {
     styles: {
-      input: {},
+      input: {
+        border: `1px solid ${
+          theme.colorScheme === "dark"
+            ? theme.colors.dark[4]
+            : theme.colors.gray[3]
+        }`
+      },
       weekdaysRow: {
         th: {
           fontSize: "0.75rem !important",
@@ -192,10 +224,7 @@ const getSegmentedControlDefaultProps = (
   return {
     data: [],
     styles: {
-      label: {
-        paddingTop: 3,
-        paddingBottom: 3
-      }
+      label: {}
     }
   };
 };
@@ -211,8 +240,8 @@ const getBadgeDefaultProps = (theme: MantineTheme): BadgeProps => {
         color:
           theme.colorScheme === "dark"
             ? theme.colors.dark[0]
-            : theme.colors.dark[3],
-        fontWeight: 600
+            : theme.colors.dark[4],
+        fontWeight: 500
       }
     }
   };
@@ -229,6 +258,29 @@ const getModalDefaultProps = (theme: MantineTheme): ModalProps => {
       },
       body: {
         backgroundColor: theme.colors.dark[6]
+      }
+    }
+  };
+};
+
+const getNavbarDefaultProps = (theme: MantineTheme): NavbarProps => {
+  return {
+    p: "md",
+    children: null,
+    width: { base: 0, lg: 264 },
+    hidden: true,
+    hiddenBreakpoint: "lg",
+    styles: {
+      root: {
+        borderRight: `1px solid ${
+          theme.colorScheme === "dark"
+            ? theme.colors.dark[6]
+            : theme.colors.gray[2]
+        }`,
+        backgroundColor:
+          theme.colorScheme === "dark"
+            ? theme.colors.dark[8]
+            : theme.colors.gray[0]
       }
     }
   };
@@ -253,24 +305,39 @@ const theme: MantineThemeOverride = {
     DatePickerInput: { defaultProps: getDatePickerInputDefaultProps },
     SegmentedControl: { defaultProps: getSegmentedControlDefaultProps },
     Badge: { defaultProps: getBadgeDefaultProps },
-    Modal: { defaultProps: getModalDefaultProps }
+    Modal: { defaultProps: getModalDefaultProps },
+    Navbar: { defaultProps: getNavbarDefaultProps },
+    Select: { defaultProps: getSelectDefaultProps }
   },
-  colors: {}
+  colors: {
+    gray: [
+      "#F8FAFC",
+      "#F1F5F9",
+      "#E5EDF4",
+      "#D7DFEA",
+      "#C7CFDA",
+      "#A8B5C6",
+      "#94A3B8",
+      "#334155",
+      "#0F172A",
+      "#020617"
+    ],
+    dark: [
+      "#DFE4E8",
+      "#BFC8D0",
+      "#97A5B1",
+      "#566676", // [3] input placeholder text
+      "#39414C", // [4] input border
+      "#323942",
+      "#2A3039", // [6] input bg
+      "#1C2025", // [7] navbar bg, sidebar bg, paper bg
+      "#15171B",
+      "#0E0F11" // [8] body bg, title color, alt #0B0D0F
+    ]
+  },
+  shadows: {
+    xs: "0px 1px 2px 0px rgba(16, 24, 40, 0.05)"
+  }
 };
-
-/**
-  dark: [
-    "#eceef2",
-    "#d4d8e3",
-    "#8390ad",
-    "#637394", // [3] input placeholder text
-    "#3c455d", // [4] input border
-    "#282e3e",
-    "#242936", // [6] input bg
-    "#1a1d26", // [7] navbar bg, sidebar bg, paper bg
-    "#13151c", // [8] body bg
-    "#0c0d12" // [9] title color
-  ]
- */
 
 export default theme;
