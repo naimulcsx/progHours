@@ -140,7 +140,6 @@ export function CreateSubmissionRow({
       <td role="cell">
         <DatePickerInput
           size="xs"
-          sx={{ maxWidth: 100 }}
           valueFormat="DD-MM-YYYY"
           {...form.getInputProps("solvedAt")}
         />
