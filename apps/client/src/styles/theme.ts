@@ -134,12 +134,12 @@ const getNavLinkDefaultProps = (theme: MantineTheme): NavLinkProps => ({
       "&[data-active='true']": {
         background:
           theme.colorScheme === "dark"
-            ? theme.fn.rgba(theme.colors.dark[5], 0.75)
+            ? theme.colors[theme.primaryColor][6]
             : theme.fn.rgba(theme.colors[theme.primaryColor][9], 0.075),
         "&:hover": {
           background:
             theme.colorScheme === "dark"
-              ? theme.fn.rgba(theme.colors.dark[5], 0.75)
+              ? theme.colors[theme.primaryColor][6]
               : theme.fn.rgba(theme.colors[theme.primaryColor][9], 0.1)
         },
         "& span": {
@@ -150,7 +150,7 @@ const getNavLinkDefaultProps = (theme: MantineTheme): NavLinkProps => ({
         },
         ...(theme.colorScheme === "dark" && {
           boxShadow:
-            "rgba(0, 0, 0, 0.25) 0px 4px 8px -4px, rgba(0, 0, 0, 0.05) 0px -1px 1px inset, rgba(255, 255, 255, 0.05) 0px 2px 0px inset"
+            "rgba(0, 0, 0, 0.25) 0px 4px 8px -4px, rgba(0, 0, 0, 0.05) 0px -1px 1px inset, rgba(255, 255, 255, 0.15) 0px 2px 0px inset"
         })
       },
       "& span": {
