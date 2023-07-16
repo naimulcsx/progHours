@@ -10,11 +10,13 @@ import { IconSearch } from "~/assets/icons";
 import { CreateSubmissionRow } from "./CreateSubmissionRow";
 import { ActionsCell } from "./cell/Actions";
 
+type SubmissionDataTableProps = {
+  data: GetSubmissionsResponse;
+};
+
 export default function SubmissionsDataTable({
   data
-}: {
-  data: GetSubmissionsResponse;
-}) {
+}: SubmissionDataTableProps) {
   const [submissions] = useState(data || []);
 
   // pagination
@@ -130,16 +132,17 @@ export default function SubmissionsDataTable({
           accessor: "verdict",
           title: "Verdict",
           render: VerdictCell,
-          width: 120
+          width: 90
         },
         {
           accessor: "solveTime",
           title: "Solve Time",
           render: SolveTimeCell,
-          width: 120
+          width: 110
         },
         {
           accessor: "problem.tags",
+          title: "Tags",
           render: (row) => {
             const tags = row.problem.problemTags.map(
               (problemTag) => problemTag.tag.name
@@ -187,13 +190,15 @@ export default function SubmissionsDataTable({
               searchable
             />
           ),
+          width: 140,
           filtering: selectedDifficulty.length > 0,
           sortable: true
         },
         {
           accessor: "solvedAt",
           title: "Solved At",
-          render: SolvedAtCell
+          render: SolvedAtCell,
+          width: 120
         },
         {
           accessor: "actions",
