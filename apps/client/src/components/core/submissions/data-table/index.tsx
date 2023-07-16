@@ -1,5 +1,5 @@
 import { Badge, Group, MultiSelect } from "@mantine/core";
-import { DataTable, DataTableSortStatus } from "mantine-datatable";
+import { DataTable, DataTableSortStatus } from "~/components/common/datatable";
 import { GetSubmissionsResponse } from "@proghours/data-access";
 import { ProblemName } from "./cell/ProblemName";
 import { VerdictCell } from "./cell/Verdict";
@@ -7,6 +7,8 @@ import { SolveTimeCell } from "./cell/SolveTime";
 import { SolvedAtCell } from "./cell/SolvedAt";
 import { useEffect, useRef, useState } from "react";
 import { IconSearch } from "~/assets/icons";
+import { CreateSubmissionRow } from "./CreateSubmissionRow";
+import { ActionsCell } from "./cell/Actions";
 
 export default function SubmissionsDataTable({
   data
@@ -106,6 +108,7 @@ export default function SubmissionsDataTable({
 
   return (
     <DataTable
+      firstRow={<CreateSubmissionRow />}
       withBorder={false}
       borderRadius="sm"
       // provide data
@@ -125,15 +128,16 @@ export default function SubmissionsDataTable({
         },
         {
           accessor: "verdict",
+          title: "Verdict",
           render: VerdictCell,
           width: 120
         },
         {
           accessor: "solveTime",
+          title: "Solve Time",
           render: SolveTimeCell,
           width: 120
         },
-
         {
           accessor: "problem.tags",
           render: (row) => {
@@ -168,6 +172,7 @@ export default function SubmissionsDataTable({
         },
         {
           accessor: "problem.difficulty",
+          title: "Difficulty",
           filter: (
             <MultiSelect
               id="difficulty-filter"
@@ -187,7 +192,13 @@ export default function SubmissionsDataTable({
         },
         {
           accessor: "solvedAt",
+          title: "Solved At",
           render: SolvedAtCell
+        },
+        {
+          accessor: "actions",
+          title: "Actions",
+          render: ActionsCell
         }
       ]}
     />
