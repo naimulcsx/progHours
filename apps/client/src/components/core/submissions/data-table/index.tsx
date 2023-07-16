@@ -111,6 +111,7 @@ export default function SubmissionsDataTable({
   return (
     <DataTable
       firstRow={<CreateSubmissionRow />}
+      verticalSpacing="xs"
       withBorder={false}
       borderRadius="sm"
       // provide data
