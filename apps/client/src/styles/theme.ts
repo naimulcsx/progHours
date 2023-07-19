@@ -134,12 +134,12 @@ const getNavLinkDefaultProps = (theme: MantineTheme): NavLinkProps => ({
       "&[data-active='true']": {
         background:
           theme.colorScheme === "dark"
-            ? theme.fn.rgba(theme.colors[theme.primaryColor][5], 0.5)
+            ? theme.colors[theme.primaryColor][8]
             : theme.fn.rgba(theme.colors[theme.primaryColor][9], 0.075),
         "&:hover": {
           background:
             theme.colorScheme === "dark"
-              ? theme.fn.rgba(theme.colors[theme.primaryColor][5], 0.5)
+              ? theme.colors[theme.primaryColor][8]
               : theme.fn.rgba(theme.colors[theme.primaryColor][9], 0.1)
         },
         "& span": {
@@ -150,7 +150,7 @@ const getNavLinkDefaultProps = (theme: MantineTheme): NavLinkProps => ({
         },
         ...(theme.colorScheme === "dark" && {
           boxShadow:
-            "rgba(0, 0, 0, 0.25) 0px 4px 8px -4px, rgba(0, 0, 0, 0.04) 0px -1px 1px inset, rgba(255, 255, 255, 0.06) 0px 2px 0px inset"
+            "rgba(0, 0, 0, 0.25) 0px 4px 8px -4px, rgba(0, 0, 0, 0.05) 0px -1px 1px inset, rgba(255, 255, 255, 0.15) 0px 2px 0px inset"
         })
       },
       "& span": {
@@ -321,18 +321,6 @@ const theme: MantineThemeOverride = {
       "#334155",
       "#0F172A",
       "#020617"
-    ],
-    dark: [
-      "#DFE4E8",
-      "#BFC8D0",
-      "#97A5B1",
-      "#566676", // [3] input placeholder text
-      "#39414C", // [4] input border
-      "#323942",
-      "#2A3039", // [6] input bg
-      "#1C2025", // [7] navbar bg, sidebar bg, paper bg
-      "#15171B",
-      "#0E0F11" // [8] body bg, title color, alt #0B0D0F
     ]
   },
   shadows: {
@@ -341,3 +329,17 @@ const theme: MantineThemeOverride = {
 };
 
 export default theme;
+
+// dark color scheme
+// [
+//   "#DFE4E8",
+//   "#BFC8D0",
+//   "#97A5B1",
+//   "#566676", // [3] input placeholder text
+//   "#39414C", // [4] input border
+//   "#323942",
+//   "#2A3039", // [6] input bg
+//   "#1C2025", // [7] navbar bg, sidebar bg, paper bg
+//   "#15171B",
+//   "#0E0F11" // [8] body bg, title color, alt #0B0D0F
+// ];

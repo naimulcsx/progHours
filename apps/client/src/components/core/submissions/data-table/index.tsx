@@ -1,5 +1,5 @@
 import { Badge, Group, MultiSelect } from "@mantine/core";
-import { DataTable, DataTableSortStatus } from "mantine-datatable";
+import { DataTable, DataTableSortStatus } from "~/components/common/datatable";
 import { GetSubmissionsResponse } from "@proghours/data-access";
 import { ProblemName } from "./cell/ProblemName";
 import { VerdictCell } from "./cell/Verdict";
@@ -7,12 +7,16 @@ import { SolveTimeCell } from "./cell/SolveTime";
 import { SolvedAtCell } from "./cell/SolvedAt";
 import { useEffect, useRef, useState } from "react";
 import { IconSearch } from "~/assets/icons";
+import { CreateSubmissionRow } from "./CreateSubmissionRow";
+import { ActionsCell } from "./cell/Actions";
+
+type SubmissionDataTableProps = {
+  data: GetSubmissionsResponse;
+};
 
 export default function SubmissionsDataTable({
   data
-}: {
-  data: GetSubmissionsResponse;
-}) {
+}: SubmissionDataTableProps) {
   const [submissions] = useState(data || []);
 
   // pagination
@@ -106,6 +110,8 @@ export default function SubmissionsDataTable({
 
   return (
     <DataTable
+      firstRow={<CreateSubmissionRow />}
+      verticalSpacing="xs"
       withBorder={false}
       borderRadius="sm"
       // provide data
@@ -125,17 +131,19 @@ export default function SubmissionsDataTable({
         },
         {
           accessor: "verdict",
+          title: "Verdict",
           render: VerdictCell,
-          width: 120
+          width: 90
         },
         {
           accessor: "solveTime",
+          title: "Solve Time",
           render: SolveTimeCell,
-          width: 120
+          width: 110
         },
-
         {
           accessor: "problem.tags",
+          title: "Tags",
           render: (row) => {
             const tags = row.problem.problemTags.map(
               (problemTag) => problemTag.tag.name
@@ -168,6 +176,7 @@ export default function SubmissionsDataTable({
         },
         {
           accessor: "problem.difficulty",
+          title: "Difficulty",
           filter: (
             <MultiSelect
               id="difficulty-filter"
@@ -182,12 +191,20 @@ export default function SubmissionsDataTable({
               searchable
             />
           ),
+          width: 140,
           filtering: selectedDifficulty.length > 0,
           sortable: true
         },
         {
           accessor: "solvedAt",
-          render: SolvedAtCell
+          title: "Solved At",
+          render: SolvedAtCell,
+          width: 120
+        },
+        {
+          accessor: "actions",
+          title: "Actions",
+          render: ActionsCell
         }
       ]}
     />

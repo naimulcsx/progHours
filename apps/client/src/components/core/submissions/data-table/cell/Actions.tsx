@@ -10,16 +10,15 @@ import {
   useDeleteSubmission,
   useRefetchProblem
 } from "@proghours/data-access";
-import { CellContext } from "@tanstack/react-table";
 import { useQueryClient } from "@tanstack/react-query";
 import { notifications } from "@mantine/notifications";
 import { modals } from "@mantine/modals";
 
-export function ActionsCell({ cell }: CellContext<SubmissionRow, unknown>) {
+export function ActionsCell(row: SubmissionRow) {
   const {
     id: submissionId,
     problem: { id, pid }
-  } = cell.row.original;
+  } = row;
   const client = useQueryClient();
 
   const { mutate: refetchProblem } = useRefetchProblem({
