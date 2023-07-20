@@ -15,7 +15,8 @@ import {
   BadgeProps,
   ModalProps,
   NavbarProps,
-  SelectProps
+  SelectProps,
+  AppShellProps
 } from "@mantine/core";
 import { DatePickerInputProps } from "@mantine/dates";
 import { NotificationProps } from "@mantine/notifications";
@@ -166,22 +167,13 @@ const getNavLinkDefaultProps = (theme: MantineTheme): NavLinkProps => ({
 const getTableDefaultProps = (theme: MantineTheme): TableProps => {
   return {
     sx: {
-      "thead.mantine-DataGrid-thead tr th": {
+      "tr th": {
         paddingTop: 8,
         paddingBottom: 8,
         background:
           theme.colorScheme === "dark"
-            ? theme.colors.dark[6]
-            : theme.colors.gray[0],
-        border: 0,
-        "&:first-of-type": {
-          borderTopLeftRadius: theme.radius.md,
-          borderBottomLeftRadius: theme.radius.md
-        },
-        "&:last-of-type": {
-          borderTopRightRadius: theme.radius.md,
-          borderBottomRightRadius: theme.radius.md
-        }
+            ? theme.colors.dark[8]
+            : theme.colors.gray[0]
       }
     }
   };
@@ -274,13 +266,26 @@ const getNavbarDefaultProps = (theme: MantineTheme): NavbarProps => {
       root: {
         borderRight: `1px solid ${
           theme.colorScheme === "dark"
-            ? theme.colors.dark[6]
+            ? theme.colors.dark[7]
             : theme.colors.gray[2]
         }`,
         backgroundColor:
           theme.colorScheme === "dark"
-            ? theme.colors.dark[8]
+            ? theme.colors.dark[9]
             : theme.colors.gray[0]
+      }
+    }
+  };
+};
+
+const getAppShellDefaultProps = (
+  theme: MantineTheme
+): Omit<AppShellProps, "children"> => {
+  return {
+    styles: {
+      main: {
+        padding: 24,
+        paddingLeft: "calc(var(--mantine-navbar-width, 0px) + 24px)"
       }
     }
   };
@@ -307,7 +312,8 @@ const theme: MantineThemeOverride = {
     Badge: { defaultProps: getBadgeDefaultProps },
     Modal: { defaultProps: getModalDefaultProps },
     Navbar: { defaultProps: getNavbarDefaultProps },
-    Select: { defaultProps: getSelectDefaultProps }
+    Select: { defaultProps: getSelectDefaultProps },
+    AppShell: { defaultProps: getAppShellDefaultProps }
   },
   colors: {
     gray: [
@@ -321,6 +327,18 @@ const theme: MantineThemeOverride = {
       "#334155",
       "#0F172A",
       "#020617"
+    ],
+    dark: [
+      "#C1C7D6",
+      "#A8B1C6",
+      "#909BB6",
+      "#505C7C", // [3] input placeholder text
+      "#3C455D", // [4] input border
+      "#353D53",
+      "#2F3648", // [6] input bg
+      "#212634", // [7] navbar bg, sidebar bg, paper bg
+      "#1B1F29",
+      "#14171F" // [9] body bg, title color
     ]
   },
   shadows: {

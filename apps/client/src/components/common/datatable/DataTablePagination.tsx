@@ -29,8 +29,6 @@ const useStyles = createStyles(
     }
   ) => ({
     root: {
-      background:
-        theme.colorScheme === "dark" ? theme.colors.dark[7] : theme.white,
       borderTop: `1px solid ${
         typeof topBorderColor === "function"
           ? topBorderColor(theme)

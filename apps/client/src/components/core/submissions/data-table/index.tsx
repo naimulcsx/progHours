@@ -5,7 +5,7 @@ import { ProblemName } from "./cell/ProblemName";
 import { VerdictCell } from "./cell/Verdict";
 import { SolveTimeCell } from "./cell/SolveTime";
 import { SolvedAtCell } from "./cell/SolvedAt";
-import { useEffect, useRef, useState } from "react";
+import { memo, useEffect, useRef, useState } from "react";
 import { IconSearch } from "~/assets/icons";
 import { CreateSubmissionRow } from "./CreateSubmissionRow";
 import { ActionsCell } from "./cell/Actions";
@@ -14,13 +14,11 @@ type SubmissionDataTableProps = {
   data: GetSubmissionsResponse;
 };
 
-export default function SubmissionsDataTable({
-  data
-}: SubmissionDataTableProps) {
+function SubmissionsDataTable({ data }: SubmissionDataTableProps) {
   const [submissions] = useState(data || []);
 
   // pagination
-  const batchSize = 10;
+  const batchSize = 20;
   const [page, setPage] = useState(1);
   const [records, setRecords] = useState(submissions.slice(0, batchSize));
 
@@ -110,6 +108,7 @@ export default function SubmissionsDataTable({
 
   return (
     <DataTable
+      height="calc(100vh - 150px)"
       firstRow={<CreateSubmissionRow />}
       verticalSpacing="xs"
       withBorder={false}
@@ -210,6 +209,8 @@ export default function SubmissionsDataTable({
     />
   );
 }
+
+export default memo(SubmissionsDataTable);
 
 // R&D: infinite scroll
 // const [loading, setLoading] = useState(false);

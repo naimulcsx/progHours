@@ -2,7 +2,7 @@ import { Box, createStyles, ScrollArea, ScrollAreaProps } from "@mantine/core";
 import type { ReactNode, Ref } from "react";
 
 const useStyles = createStyles((theme) => {
-  const shadowGradientAlpha = theme.colorScheme === "dark" ? 0.5 : 0.05;
+  const shadowGradientAlpha = theme.colorScheme === "dark" ? 0.2 : 0.05;
   return {
     root: {
       flex: "1 1 100%"
