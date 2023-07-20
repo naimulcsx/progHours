@@ -4,7 +4,6 @@ import {
   Container,
   Group,
   Select,
-  Slider,
   Stack,
   Tabs,
   Text,
@@ -13,7 +12,7 @@ import {
   useMantineColorScheme,
   useMantineTheme
 } from "@mantine/core";
-import { PropsWithChildren, useEffect, useRef } from "react";
+import { PropsWithChildren } from "react";
 import { DashboardLayout } from "~/components/common/dashboard/Layout";
 import { useColorAccent } from "~/contexts/ColorAccentContext";
 
@@ -21,20 +20,6 @@ export default function SettingsPage() {
   const theme = useMantineTheme();
   const { accentColor, setAccentColor } = useColorAccent();
   const { toggleColorScheme } = useMantineColorScheme();
-
-  const htmlRef = useRef<HTMLHtmlElement>();
-  useEffect(() => {
-    htmlRef.current = document.getElementsByTagName("html")[0];
-  }, []);
-
-  const MARKS = [
-    { value: 0, label: "XS" },
-    { value: 25, label: "SM" },
-    { value: 50, label: "MD" },
-    { value: 75, label: "LG" },
-    { value: 100, label: "XL" }
-  ];
-
   return (
     <DashboardLayout>
       <Container>
@@ -99,8 +84,9 @@ export default function SettingsPage() {
                 description="Choose progHour's default color scheme."
               >
                 <Select
+                  size="xs"
                   placeholder="Pick one"
-                  maw={140}
+                  maw={160}
                   defaultValue={theme.colorScheme}
                   onChange={(val) => {
                     if (val !== theme.colorScheme) {
@@ -111,35 +97,6 @@ export default function SettingsPage() {
                     { value: "dark", label: "Dark" },
                     { value: "light", label: "Light" }
                   ]}
-                />
-              </SettingsItem>
-
-              <SettingsItem
-                title="Font scale"
-                description="Choose your preffered font scaling."
-              >
-                <Slider
-                  w={240}
-                  label={(val) =>
-                    MARKS.find((mark) => mark.value === val)!.label
-                  }
-                  step={25}
-                  defaultValue={75}
-                  marks={MARKS}
-                  onChange={(value) => {
-                    const map: Record<string, string> = {
-                      0: "85%",
-                      25: "90%",
-                      50: "95%",
-                      75: "100%",
-                      100: "105%"
-                    };
-                    if (htmlRef.current) {
-                      setTimeout(() => {
-                        htmlRef.current!.style.fontSize = map[value];
-                      }, 200);
-                    }
-                  }}
                 />
               </SettingsItem>
             </Stack>
@@ -169,3 +126,46 @@ function SettingsItem({
     </Group>
   );
 }
+
+/* 
+FONT SCALING
+
+<SettingsItem
+  title="Font scale"
+  description="Choose your preffered font scaling."
+>
+  <Select
+    size="xs"
+    maw={160}
+    defaultValue="100%"
+    onChange={(val) => {
+      const htmlEl = document.querySelector("html");
+      if (htmlEl) {
+        htmlEl.style.fontSize = val!;
+      }
+    }}
+    data={[
+      {
+        value: "85%",
+        label: "Extra Small"
+      },
+      {
+        value: "90%",
+        label: "Small"
+      },
+      {
+        value: "95%",
+        label: "Medium"
+      },
+      {
+        value: "100%",
+        label: "Normal"
+      },
+      {
+        value: "105%",
+        label: "Large"
+      }
+    ]}
+  />
+</SettingsItem> 
+*/

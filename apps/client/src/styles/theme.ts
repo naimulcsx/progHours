@@ -131,18 +131,27 @@ const getPaperDefaultProps = (theme: MantineTheme): PaperProps => ({
 const getNavLinkDefaultProps = (theme: MantineTheme): NavLinkProps => ({
   styles: {
     root: {
+      position: "relative",
       background: "transparent",
       borderRadius: 6,
       "&[data-active='true']": {
         background:
           theme.colorScheme === "dark"
-            ? theme.colors[theme.primaryColor][8]
-            : theme.fn.rgba(theme.colors[theme.primaryColor][9], 0.075),
+            ? theme.colors.dark[6]
+            : theme.fn.rgba(theme.colors[theme.primaryColor][9], 0.1),
         "&:hover": {
           background:
             theme.colorScheme === "dark"
-              ? theme.colors[theme.primaryColor][8]
-              : theme.fn.rgba(theme.colors[theme.primaryColor][9], 0.1)
+              ? theme.colors.dark[6]
+              : theme.fn.rgba(theme.colors[theme.primaryColor][9], 0.125)
+        },
+        "&::after": {
+          content: "''",
+          display: "block",
+          position: "absolute",
+          inset: 0,
+          borderRadius: 6,
+          background: theme.fn.rgba(theme.colors[theme.primaryColor][4], 0.075)
         },
         "& span": {
           color:
@@ -152,7 +161,7 @@ const getNavLinkDefaultProps = (theme: MantineTheme): NavLinkProps => ({
         },
         ...(theme.colorScheme === "dark" && {
           boxShadow:
-            "rgba(0, 0, 0, 0.25) 0px 4px 8px -4px, rgba(0, 0, 0, 0.05) 0px -1px 1px inset, rgba(255, 255, 255, 0.15) 0px 2px 0px inset"
+            "rgba(0, 0, 0, 0.25) 0px 4px 8px -4px, rgba(0, 0, 0, 0.04) 0px -1px 1px inset, rgba(255, 255, 255, 0.06) 0px 2px 0px inset"
         })
       },
       "& span": {
@@ -172,11 +181,10 @@ const getTableDefaultProps = (theme: MantineTheme): TableProps => {
         paddingTop: 8,
         paddingBottom: 8,
         background:
-          theme.colorScheme === "dark"
-            ? theme.colors.dark[8]
-            : theme.colors.gray[0]
+          theme.colorScheme === "dark" ? theme.colors.dark[8] : theme.white
       }
-    }
+    },
+    styles: {}
   };
 };
 
