@@ -292,10 +292,7 @@ const getAppShellDefaultProps = (
 ): Omit<AppShellProps, "children"> => {
   return {
     styles: {
-      main: {
-        padding: 24,
-        paddingLeft: "calc(var(--mantine-navbar-width, 0px) + 24px)"
-      }
+      main: {}
     }
   };
 };
