@@ -12,31 +12,31 @@ import { notifications } from "@mantine/notifications";
 
 const getStyles = (theme: MantineTheme) => ({
   AC: {
-    background: theme.colors.green[8],
+    background: theme.colors.green[9],
     color: theme.colors.green[0]
   },
   WA: {
-    background: theme.colors.red[8],
+    background: theme.colors.red[9],
     color: theme.colors.red[0]
   },
   TLE: {
-    background: theme.colors.yellow[8],
+    background: theme.colors.yellow[9],
     color: theme.colors.yellow[0]
   }
 });
 
 const getLightStyles = (theme: MantineTheme) => ({
   AC: {
-    background: theme.colors.green[5],
-    color: theme.colors.green[0]
+    background: theme.colors.green[1],
+    color: theme.colors.green[9]
   },
   WA: {
-    background: theme.colors.red[5],
-    color: theme.colors.red[0]
+    background: theme.colors.red[1],
+    color: theme.colors.red[9]
   },
   TLE: {
-    background: theme.colors.yellow[5],
-    color: theme.colors.yellow[0]
+    background: theme.colors.orange[1],
+    color: theme.colors.orange[9]
   }
 });
 
@@ -100,7 +100,16 @@ export const VerdictCell = (row: SubmissionRow) => {
       }}
       value={selected}
       onChange={handleSelect}
-      rightSection={<IconSelector size={16} color="white" />}
+      rightSection={
+        <IconSelector
+          size={16}
+          color={
+            theme.colorScheme === "dark"
+              ? getStyles(theme)[selected].color
+              : getLightStyles(theme)[selected].color
+          }
+        />
+      }
       rightSectionProps={{
         style: {
           pointerEvents: "none"

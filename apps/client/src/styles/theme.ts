@@ -137,32 +137,32 @@ const getNavLinkDefaultProps = (theme: MantineTheme): NavLinkProps => ({
       "&[data-active='true']": {
         background:
           theme.colorScheme === "dark"
-            ? theme.colors.dark[6]
+            ? theme.colors[theme.primaryColor][6]
             : theme.fn.rgba(theme.colors[theme.primaryColor][9], 0.1),
         "&:hover": {
           background:
             theme.colorScheme === "dark"
-              ? theme.colors.dark[6]
+              ? theme.colors[theme.primaryColor][6]
               : theme.fn.rgba(theme.colors[theme.primaryColor][9], 0.125)
         },
-        "&::after": {
-          content: "''",
-          display: "block",
-          position: "absolute",
-          inset: 0,
-          borderRadius: 6,
-          background: theme.fn.rgba(theme.colors[theme.primaryColor][4], 0.075)
-        },
+        // "&::after": {
+        //   content: "''",
+        //   display: "block",
+        //   position: "absolute",
+        //   inset: 0,
+        //   borderRadius: 6,
+        //   background: theme.fn.rgba(theme.colors[theme.primaryColor][4], 0.075)
+        // },
         "& span": {
           color:
             theme.colorScheme === "dark"
               ? theme.white
               : theme.colors[theme.primaryColor][9]
-        },
-        ...(theme.colorScheme === "dark" && {
-          boxShadow:
-            "rgba(0, 0, 0, 0.25) 0px 4px 8px -4px, rgba(0, 0, 0, 0.04) 0px -1px 1px inset, rgba(255, 255, 255, 0.06) 0px 2px 0px inset"
-        })
+        }
+        // ...(theme.colorScheme === "dark" && {
+        //   boxShadow:
+        //     "rgba(0, 0, 0, 0.25) 0px 4px 8px -4px, rgba(0, 0, 0, 0.04) 0px -1px 1px inset, rgba(255, 255, 255, 0.06) 0px 2px 0px inset"
+        // })
       },
       "& span": {
         fontWeight: 500
@@ -275,7 +275,7 @@ const getNavbarDefaultProps = (theme: MantineTheme): NavbarProps => {
       root: {
         borderRight: `1px solid ${
           theme.colorScheme === "dark"
-            ? theme.colors.dark[7]
+            ? theme.colors.dark[6]
             : theme.colors.gray[2]
         }`,
         backgroundColor:
@@ -310,7 +310,7 @@ const getTabsDefaultProps = (
 const theme: MantineThemeOverride = {
   colorScheme: "dark",
   defaultRadius: "md",
-  fontFamily: "'Inter', sans-serif",
+  fontFamily: "'Rubik', sans-serif",
   components: {
     Text: { defaultProps: getTextDefaultProps },
     Title: { defaultProps: getTitleDefaultProps },
@@ -344,19 +344,19 @@ const theme: MantineThemeOverride = {
       "#334155",
       "#0F172A",
       "#020617"
-    ],
-    dark: [
-      "#C1C7D6",
-      "#A8B1C6",
-      "#909BB6",
-      "#505C7C", // [3] input placeholder text
-      "#3C455D", // [4] input border
-      "#353D53",
-      "#2F3648", // [6] input bg
-      "#212634", // [7] navbar bg, sidebar bg, paper bg
-      "#1B1F29",
-      "#14171F" // [9] body bg, title color
     ]
+    // dark: [
+    //   "#C1C7D6",
+    //   "#A8B1C6",
+    //   "#909BB6",
+    //   "#505C7C", // [3] input placeholder text
+    //   "#3C455D", // [4] input border
+    //   "#353D53",
+    //   "#2F3648", // [6] input bg
+    //   "#212634", // [7] navbar bg, sidebar bg, paper bg
+    //   "#1B1F29",
+    //   "#14171F" // [9] body bg, title color
+    // ]
   },
   shadows: {
     xs: "0px 1px 2px 0px rgba(16, 24, 40, 0.05)"
