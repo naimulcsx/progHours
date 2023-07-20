@@ -102,7 +102,6 @@ function SubmissionsDataTable({ data }: SubmissionDataTableProps) {
       firstRow={<CreateSubmissionRow />}
       verticalSpacing="xs"
       withBorder={false}
-      borderRadius="sm"
       // provide data
       records={records}
       // pagination
