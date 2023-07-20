@@ -16,7 +16,8 @@ import {
   ModalProps,
   NavbarProps,
   SelectProps,
-  AppShellProps
+  AppShellProps,
+  TabsProps
 } from "@mantine/core";
 import { DatePickerInputProps } from "@mantine/dates";
 import { NotificationProps } from "@mantine/notifications";
@@ -27,7 +28,7 @@ const getTitleDefaultProps = (theme: MantineTheme): TitleProps => ({
 
 const getTextDefaultProps = (theme: MantineTheme): TextProps => ({
   color:
-    theme.colorScheme === "dark" ? theme.colors.gray[4] : theme.colors.gray[7]
+    theme.colorScheme === "dark" ? theme.colors.gray[4] : theme.colors.dark[3]
 });
 
 const getButtonDefaultProps = (theme: MantineTheme): ButtonProps => ({
@@ -291,6 +292,16 @@ const getAppShellDefaultProps = (
   };
 };
 
+const getTabsDefaultProps = (
+  theme: MantineTheme
+): Omit<TabsProps, "children"> => {
+  return {
+    sx: {
+      "button[data-active]": {}
+    }
+  };
+};
+
 const theme: MantineThemeOverride = {
   colorScheme: "dark",
   defaultRadius: "md",
@@ -313,7 +324,8 @@ const theme: MantineThemeOverride = {
     Modal: { defaultProps: getModalDefaultProps },
     Navbar: { defaultProps: getNavbarDefaultProps },
     Select: { defaultProps: getSelectDefaultProps },
-    AppShell: { defaultProps: getAppShellDefaultProps }
+    AppShell: { defaultProps: getAppShellDefaultProps },
+    Tabs: { defaultProps: getTabsDefaultProps }
   },
   colors: {
     gray: [

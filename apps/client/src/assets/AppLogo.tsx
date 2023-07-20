@@ -165,19 +165,19 @@ export function AppLogo({
   const theme = useMantineTheme();
   const styles = {
     sm: {
-      logoSize: 28,
-      textSize: "10px",
-      fontSize: "16px"
+      logoSize: "1.75rem",
+      textSize: "0.625rem",
+      fontSize: "1rem"
     },
     md: {
-      logoSize: 32,
-      textSize: "10px",
-      fontSize: "16px"
+      logoSize: "2rem",
+      textSize: "0.625rem",
+      fontSize: "1rem"
     },
     lg: {
-      logoSize: 36,
-      textSize: "12px",
-      fontSize: "18px"
+      logoSize: "2.25rem",
+      textSize: "0.75rem",
+      fontSize: "1.125rem"
     }
   };
   return (
