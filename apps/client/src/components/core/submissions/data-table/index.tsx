@@ -18,6 +18,8 @@ function SubmissionsDataTable({ data }: SubmissionDataTableProps) {
   // data -> filtered records -> paginated records
   const [filteredRecords, setFilteredRecords] = useState(data || []);
   useEffect(() => {
+    setSelectedTags([]);
+    setSelectedDifficulty([]);
     setFilteredRecords(data);
   }, [data]);
 
@@ -25,6 +27,9 @@ function SubmissionsDataTable({ data }: SubmissionDataTableProps) {
   const batchSize = 20;
   const [page, setPage] = useState(1);
   const [records, setRecords] = useState(filteredRecords.slice(0, batchSize));
+  useEffect(() => {
+    setRecords(filteredRecords.slice(0, batchSize));
+  }, [filteredRecords]);
 
   useEffect(() => {
     const from = (page - 1) * batchSize;
