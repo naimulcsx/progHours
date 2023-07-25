@@ -5,7 +5,7 @@ export function DashboardLayout({ children }: AppShellProps) {
   return (
     <AppShell navbar={<Sidebar />}>
       <Box
-        mb="sm"
+        mb="md"
         sx={(theme) => ({
           margin: -16,
           background: theme.colors[theme.primaryColor][6]
