@@ -70,7 +70,7 @@ export function App() {
           <NavigationProgress autoReset={true} />
           <QueryClientProvider client={queryClient}>
             <Entry />
-            <Notifications position="top-right" />
+            <Notifications position="top-right" transitionDuration={400} />
           </QueryClientProvider>
         </ModalsProvider>
       </MantineProvider>

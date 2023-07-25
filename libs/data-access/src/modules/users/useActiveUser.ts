@@ -2,10 +2,17 @@ import { useQuery, UseQueryOptions } from "@tanstack/react-query";
 import { axios } from "../../lib/axios";
 import { User } from "@prisma/client";
 
-export type ActiveUserResponse = Omit<User, "password">;
+export type ActiveUserResponse = Omit<User, "password" | "metaData"> & {
+  metaData: {
+    department?: string;
+    section?: string;
+    batch?: string;
+    cgpa: string;
+  };
+};
 
 const getActiveUser = async (): Promise<ActiveUserResponse> => {
-  return axios.get("/users/me").then((res) => res.data);
+  return axios.get("/users/whoami").then((res) => res.data);
 };
 
 type UseUserOptions = {

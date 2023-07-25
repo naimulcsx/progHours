@@ -83,7 +83,7 @@ export class AuthService {
     // TODO: generate refresh token
     const [accessToken] = await Promise.all([
       await this.signToken(user.id, this.jwtConfiguration.accessTokenTtl, {
-        email: user.email,
+        username: user.username,
         role: user.role
       })
     ]);

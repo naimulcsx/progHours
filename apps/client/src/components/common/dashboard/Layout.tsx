@@ -15,7 +15,7 @@ export function DashboardLayout({ children }: AppShellProps) {
           <span aria-label="party popper emoji" role="img">
             🎉
           </span>{" "}
-          progHours v0.4.0 is released. See What's New!{" "}
+          progHours v1.0.0 is released. See What's New!{" "}
         </Text>
       </Box>
       {children}

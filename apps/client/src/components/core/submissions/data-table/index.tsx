@@ -152,11 +152,11 @@ function SubmissionsDataTable({ data }: SubmissionDataTableProps) {
             <MultiSelect
               id="tags-filter"
               maw={400}
-              label="Departments "
-              description="Show all data? working at the selected departments"
+              label="Tags"
+              description="Filter your submissions by tags"
               data={tags}
               value={selectedTags}
-              placeholder="Search departments…"
+              placeholder="Search tags"
               onChange={setSelectedTags}
               icon={<IconSearch />}
               clearable

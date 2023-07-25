@@ -30,7 +30,9 @@ export class UsersService {
   }
 
   async getUser(username: string) {
-    const user = await this.prisma.user.findUnique({ where: { username } });
+    const user = await this.prisma.user.findUnique({
+      where: { username: username.toLowerCase() }
+    });
     if (!user) {
       throw new NotFoundException();
     }
@@ -39,11 +41,18 @@ export class UsersService {
   }
 
   async updateUser(username: string, updateUserDto: UpdateUserDto) {
-    const user = await this.prisma.user.update({
+    username = username.toLowerCase();
+    const user = await this.prisma.user.findUnique({
+      where: { username }
+    });
+    if (!user) {
+      throw new NotFoundException();
+    }
+    const foundUser = await this.prisma.user.update({
       where: { username },
       data: updateUserDto
     });
-    delete user.password;
-    return user;
+    delete foundUser.password;
+    return foundUser;
   }
 }
