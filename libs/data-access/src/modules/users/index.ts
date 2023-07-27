@@ -1,2 +1,3 @@
 export * from "./useActiveUser";
-export * from "./useUserProfileMutation";
+export * from "./useUserMutation";
+export * from "./usePasswordMutation";

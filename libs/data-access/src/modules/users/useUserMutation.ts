@@ -27,7 +27,7 @@ async function updateUser({
   return axios.patch(`/users/${username}`, body).then((res) => res.data);
 }
 
-export function useUserProfileMutation({ config }: UseUpdateUserOptions = {}) {
+export function useUserMutation({ config }: UseUpdateUserOptions = {}) {
   return useMutation({
     mutationFn: (body) => updateUser(body),
     ...config

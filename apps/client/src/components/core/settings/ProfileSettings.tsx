@@ -1,6 +1,6 @@
 import { useForm, zodResolver } from "@mantine/form";
 import { Box, Button, Divider, Grid, Select, TextInput } from "@mantine/core";
-import { useActiveUser, useUserProfileMutation } from "@proghours/data-access";
+import { useActiveUser, useUserMutation } from "@proghours/data-access";
 import { useEffect } from "react";
 import { z } from "zod";
 import { notifications } from "@mantine/notifications";
@@ -18,12 +18,12 @@ const userUpdateSchema = z.object({
 
 export function ProfileSettings() {
   const { data: user } = useActiveUser();
-  const { mutate } = useUserProfileMutation({
+  const { mutate } = useUserMutation({
     config: {
-      onSuccess(res) {
+      onSuccess() {
         notifications.show({
           title: "🎉 Congratulations!",
-          message: "Your profile has been successfully updated. ",
+          message: "Your profile has been successfully updated.",
           icon: <IconCheck />,
           color: "green"
         });
