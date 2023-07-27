@@ -4,3 +4,6 @@ export * from "./IconSettings";
 export * from "./IconTable";
 export * from "./IconUsers";
 export * from "./IconSearch";
+export * from "./IconEdit";
+export * from "./IconTrash";
+export * from "./IconLinkExternal";

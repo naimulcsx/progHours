@@ -161,7 +161,7 @@ export function ProfileSettings() {
               <TextInput label="Phone" {...form.getInputProps("phone")} />
             </Grid.Col>
             <Grid.Col span={12}>
-              <Button mt="lg" size="md" type="submit" w="100%">
+              <Button mt="sm" type="submit" w="100%">
                 Save
               </Button>
             </Grid.Col>
