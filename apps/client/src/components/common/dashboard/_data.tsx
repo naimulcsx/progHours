@@ -86,7 +86,8 @@ export const userLinks = [
   },
   {
     label: "Settings",
-    to: "/settings",
+    to: "/settings/appearance",
+    activePath: "/settings",
     Icon: () => <IconSettings />
   }
 ];

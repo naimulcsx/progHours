@@ -70,7 +70,11 @@ export default function Sidebar() {
                 component={Link}
                 to={link.to}
                 label={link.label}
-                active={pathname === link.to}
+                active={
+                  pathname.includes("/settings")
+                    ? link.to.includes("/settings")
+                    : pathname === link.to
+                }
                 icon={<link.Icon />}
               />
             );

@@ -24,6 +24,10 @@ export const getRoutes = (isLoggedIn: boolean): RouteObject[] => [
     isLoggedIn ? <SettingsPage /> : <Navigate to="/auth/sign-in" />
   ),
   defineRoute(
+    "/settings/:tabValue",
+    isLoggedIn ? <SettingsPage /> : <Navigate to="/auth/sign-in" />
+  ),
+  defineRoute(
     "/auth/sign-up",
     isLoggedIn ? <Navigate to="/" /> : <SignUpPage />
   ),

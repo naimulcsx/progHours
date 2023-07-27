@@ -1,4 +1,5 @@
 import { Container, Group, Tabs, Title } from "@mantine/core";
+import { useNavigate, useParams } from "react-router-dom";
 import { DashboardLayout } from "~/components/common/dashboard/Layout";
 import { AppearanceSettings } from "~/components/core/settings/AppearanceSettings";
 import { HandlesSettings } from "~/components/core/settings/HandlesSettings";
@@ -6,13 +7,22 @@ import { ProfileSettings } from "~/components/core/settings/ProfileSettings";
 import { SecuritySettings } from "~/components/core/settings/SecuritySettings";
 
 export default function SettingsPage() {
+  const navigate = useNavigate();
+  const { tabValue } = useParams();
+  const value = ["profile", "security", "handles"].includes(tabValue ?? "")
+    ? tabValue
+    : "appearance";
   return (
     <DashboardLayout>
       <Container>
         <Group>
           <Title order={2}>Settings</Title>
         </Group>
-        <Tabs mt="md" defaultValue="appearance">
+        <Tabs
+          mt="md"
+          value={value}
+          onTabChange={(value) => navigate(`/settings/${value}`)}
+        >
           <Tabs.List>
             <Tabs.Tab value="appearance">Appearance</Tabs.Tab>
             <Tabs.Tab value="profile">Profile</Tabs.Tab>
