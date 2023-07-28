@@ -9,8 +9,8 @@ export type UpdateUserPayload = {
   metaData: {
     department?: string;
     section?: string;
-    batch?: string;
-    cgpa?: string;
+    batch?: number;
+    cgpa?: number;
   };
 };
 export type UpdateUserResponse = {

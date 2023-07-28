@@ -11,8 +11,8 @@ const userUpdateSchema = z.object({
   email: z.string().email("Invalid email").nonempty("Email is required"),
   mobile: z.string().optional(),
   department: z.string().optional(),
-  batch: z.coerce.number().optional(),
   section: z.string().optional(),
+  batch: z.coerce.number().optional(),
   cgpa: z.coerce.number().min(0).max(4).optional()
 });
 
@@ -51,8 +51,8 @@ export function ProfileSettings() {
         phone: user.phone || "",
         department: user.metaData?.department || "",
         section: user.metaData?.section || "",
-        batch: user.metaData?.batch || "",
-        cgpa: user.metaData?.cgpa || ""
+        batch: user.metaData?.batch?.toString() || "",
+        cgpa: user.metaData?.cgpa?.toString() || ""
       });
     }
     /* eslint-disable react-hooks/exhaustive-deps */
@@ -66,9 +66,9 @@ export function ProfileSettings() {
       ...(phone !== "" && { phone }),
       metaData: {
         ...(department !== "" && { department }),
-        ...(batch !== "" && { batch }),
+        ...(batch !== "" && { batch: parseInt(batch) }),
         ...(section !== "" && { section }),
-        ...(cgpa !== "" && { cgpa })
+        ...(cgpa !== "" && { cgpa: parseInt(cgpa) })
       }
     };
     const username: string = user!.username;

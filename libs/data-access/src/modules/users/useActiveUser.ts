@@ -6,8 +6,8 @@ export type ActiveUserResponse = Omit<User, "password" | "metaData"> & {
   metaData: {
     department?: string;
     section?: string;
-    batch?: string;
-    cgpa: string;
+    batch?: number;
+    cgpa?: number;
   };
 };
 

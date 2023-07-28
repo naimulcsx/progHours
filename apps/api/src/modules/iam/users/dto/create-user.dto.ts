@@ -6,8 +6,8 @@ import {
   Matches,
   MinLength
 } from "class-validator";
-import IsJsonObject from "../decorators/isJsonObject";
 import { Prisma } from "@prisma/client";
+import IsValidUserMetaData from "../decorators/IsUserMetadata";
 
 export class CreateUserDto {
   @ApiProperty({
@@ -50,7 +50,7 @@ export class CreateUserDto {
       cgpa: 3.67
     }
   })
-  @IsJsonObject()
+  @IsValidUserMetaData()
   @IsOptional()
   metaData?: Prisma.InputJsonObject;
 }
