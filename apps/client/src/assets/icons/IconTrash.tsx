@@ -1,6 +1,6 @@
 import { SVGProps } from "react";
 
-export function IconUsers(props: SVGProps<SVGSVGElement>) {
+export function IconTrash(props: SVGProps<SVGSVGElement>) {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -8,6 +8,7 @@ export function IconUsers(props: SVGProps<SVGSVGElement>) {
       height="24"
       fill="none"
       viewBox="0 0 24 24"
+      {...props}
     >
       <g>
         <path
@@ -15,7 +16,7 @@ export function IconUsers(props: SVGProps<SVGSVGElement>) {
           strokeLinecap="round"
           strokeLinejoin="round"
           strokeWidth="2"
-          d="M22 21v-2a4.002 4.002 0 00-3-3.874M15.5 3.291a4.001 4.001 0 010 7.418M17 21c0-1.864 0-2.796-.305-3.53a4 4 0 00-2.164-2.165C13.796 15 12.864 15 11 15H8c-1.864 0-2.796 0-3.53.305a4 4 0 00-2.166 2.164C2 18.204 2 19.136 2 21M13.5 7a4 4 0 11-8 0 4 4 0 018 0z"
+          d="M9 3h6M3 6h18m-2 0l-.701 10.52c-.105 1.578-.158 2.367-.499 2.965a3 3 0 01-1.298 1.215c-.62.3-1.41.3-2.993.3h-3.018c-1.582 0-2.373 0-2.993-.3A3 3 0 016.2 19.485c-.34-.598-.394-1.387-.499-2.966L5 6m5 4.5v5m4-5v5"
         ></path>
       </g>
     </svg>

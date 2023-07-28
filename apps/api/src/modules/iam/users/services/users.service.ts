@@ -1,4 +1,8 @@
-import { Injectable, NotFoundException } from "@nestjs/common";
+import {
+  Injectable,
+  NotFoundException,
+  UnauthorizedException
+} from "@nestjs/common";
 import { PrismaService } from "~/modules/prisma/services/prisma.service";
 import { UpdateUserDto } from "../dto/update-user.dto";
 import { CreateUserDto } from "../dto/create-user.dto";
@@ -30,7 +34,9 @@ export class UsersService {
   }
 
   async getUser(username: string) {
-    const user = await this.prisma.user.findUnique({ where: { username } });
+    const user = await this.prisma.user.findUnique({
+      where: { username: username.toLowerCase() }
+    });
     if (!user) {
       throw new NotFoundException();
     }
@@ -39,11 +45,37 @@ export class UsersService {
   }
 
   async updateUser(username: string, updateUserDto: UpdateUserDto) {
-    const user = await this.prisma.user.update({
-      where: { username },
-      data: updateUserDto
+    username = username.toLowerCase();
+    const user = await this.prisma.user.findUnique({
+      where: { username }
     });
-    delete user.password;
-    return user;
+
+    if (!user) {
+      throw new NotFoundException();
+    }
+
+    // for password reset
+    let hashedPassword = user.password;
+    const { currentPassword, newPassword, ...rest } = updateUserDto;
+    if (currentPassword && newPassword) {
+      const isEqual = await this.hashingService.compare(
+        currentPassword,
+        user.password
+      );
+      if (!isEqual) {
+        throw new UnauthorizedException("Invalid current password!");
+      }
+      hashedPassword = await this.hashingService.hash(newPassword);
+    }
+
+    const foundUser = await this.prisma.user.update({
+      where: { username },
+      data: {
+        ...rest,
+        password: hashedPassword
+      }
+    });
+    delete foundUser.password;
+    return foundUser;
   }
 }

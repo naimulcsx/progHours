@@ -15,17 +15,26 @@ type SubmissionDataTableProps = {
 };
 
 function SubmissionsDataTable({ data }: SubmissionDataTableProps) {
-  const [submissions] = useState(data || []);
+  // data -> filtered records -> paginated records
+  const [filteredRecords, setFilteredRecords] = useState(data || []);
+  useEffect(() => {
+    setSelectedTags([]);
+    setSelectedDifficulty([]);
+    setFilteredRecords(data);
+  }, [data]);
 
   // pagination
   const batchSize = 20;
   const [page, setPage] = useState(1);
-  const [records, setRecords] = useState(submissions.slice(0, batchSize));
+  const [records, setRecords] = useState(filteredRecords.slice(0, batchSize));
+  useEffect(() => {
+    setRecords(filteredRecords.slice(0, batchSize));
+  }, [filteredRecords]);
 
   useEffect(() => {
     const from = (page - 1) * batchSize;
     const to = from + batchSize;
-    setRecords(submissions.slice(from, to));
+    setRecords(filteredRecords.slice(from, to));
     /* eslint-disable react-hooks/exhaustive-deps */
   }, [page]);
 
@@ -40,11 +49,11 @@ function SubmissionsDataTable({ data }: SubmissionDataTableProps) {
 
   useEffect(() => {
     if (!initialRenderRef.current) {
-      let filteredRecords = submissions;
+      let newRecords = data;
 
       // apply tags filters
       if (selectedTags.length > 0) {
-        filteredRecords = filteredRecords.filter(({ problem }) => {
+        newRecords = newRecords.filter(({ problem }) => {
           const tags = problem.problemTags.map(
             (problemTag) => problemTag.tag.name
           );
@@ -60,7 +69,7 @@ function SubmissionsDataTable({ data }: SubmissionDataTableProps) {
 
       // apply difficulty filters
       if (selectedDifficulty.length > 0) {
-        filteredRecords = filteredRecords.filter(({ problem }) => {
+        newRecords = newRecords.filter(({ problem }) => {
           const difficulty = problem.difficulty.toString();
           if (
             selectedDifficulty.length > 0 &&
@@ -73,26 +82,13 @@ function SubmissionsDataTable({ data }: SubmissionDataTableProps) {
       }
 
       if (selectedDifficulty.length > 0 || selectedTags.length > 0) {
-        setRecords(filteredRecords);
+        setFilteredRecords(newRecords);
       } else {
-        setRecords(submissions.slice(0, batchSize));
+        setFilteredRecords(data);
       }
     }
     initialRenderRef.current = false;
   }, [selectedTags, selectedDifficulty]);
-
-  // has filters
-  const hasFilters = selectedTags.length > 0 || selectedDifficulty.length > 0;
-
-  // pagination props
-  const paginationProps = !hasFilters
-    ? {
-        totalRecords: submissions.length,
-        recordsPerPage: batchSize,
-        page: page,
-        onPageChange: (p: number) => setPage(p)
-      }
-    : {};
 
   // sort status
   const [sortStatus, setSortStatus] = useState<DataTableSortStatus>({
@@ -100,23 +96,19 @@ function SubmissionsDataTable({ data }: SubmissionDataTableProps) {
     direction: "asc"
   });
 
-  // TODO: add sorting logic
-  // useEffect(() => {
-  //   const data = sortBy(companies, sortStatus.columnAccessor) as Company[];
-  //   setRecords(sortStatus.direction === "desc" ? data.reverse() : data);
-  // }, [sortStatus]);
-
   return (
     <DataTable
       height="calc(100vh - 150px)"
       firstRow={<CreateSubmissionRow />}
       verticalSpacing="xs"
       withBorder={false}
-      borderRadius="sm"
       // provide data
       records={records}
       // pagination
-      {...paginationProps}
+      totalRecords={filteredRecords.length}
+      recordsPerPage={batchSize}
+      page={page}
+      onPageChange={(p: number) => setPage(p)}
       // column sorting
       sortStatus={sortStatus}
       onSortStatusChange={setSortStatus}
@@ -160,11 +152,11 @@ function SubmissionsDataTable({ data }: SubmissionDataTableProps) {
             <MultiSelect
               id="tags-filter"
               maw={400}
-              label="Departments "
-              description="Show all data? working at the selected departments"
+              label="Tags"
+              description="Filter your submissions by tags"
               data={tags}
               value={selectedTags}
-              placeholder="Search departments…"
+              placeholder="Search tags"
               onChange={setSelectedTags}
               icon={<IconSearch />}
               clearable

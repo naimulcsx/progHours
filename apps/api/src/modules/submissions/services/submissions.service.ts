@@ -99,13 +99,10 @@ export class SubmissionsService {
   }
 
   async update(id: number, updateSubmissionDto: UpdateSubmissionDto) {
-    console.log(
-      updateSubmissionDto.solvedAt,
-      moment(updateSubmissionDto.solvedAt).utcOffset(6).toDate()
-    );
     const updatedSubmission = await this.prisma.submission.update({
       where: { id },
       data: {
+        ...updateSubmissionDto,
         solvedAt: moment.utc(updateSubmissionDto.solvedAt).toDate()
       }
     });
@@ -114,7 +111,6 @@ export class SubmissionsService {
 
   async delete(id: number) {
     const result = await this.prisma.submission.delete({ where: { id } });
-    console.log(result);
     return result;
   }
 }

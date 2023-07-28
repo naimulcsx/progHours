@@ -19,7 +19,7 @@ export function Navbar() {
   const { colorScheme, toggleColorScheme } = useMantineColorScheme();
   return (
     <Header
-      height={50}
+      height={72}
       px="md"
       sx={{
         position: "fixed",
@@ -70,15 +70,10 @@ export function Navbar() {
         {/* Sign In / Sign Up buttons */}
         {!user && (
           <Group spacing="xs">
-            <Button
-              size="xs"
-              variant="light"
-              component={Link}
-              to="/auth/sign-in"
-            >
+            <Button variant="light" component={Link} to="/auth/sign-in">
               Sign In
             </Button>
-            <Button size="xs" component={Link} to="/auth/sign-up">
+            <Button component={Link} to="/auth/sign-up">
               Sign Up
             </Button>
           </Group>

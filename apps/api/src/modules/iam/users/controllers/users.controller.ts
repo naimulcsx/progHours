@@ -1,4 +1,12 @@
-import { Body, Controller, Get, Param, Patch, Post } from "@nestjs/common";
+import {
+  Body,
+  Controller,
+  Get,
+  Param,
+  Patch,
+  Post,
+  UseGuards
+} from "@nestjs/common";
 import { UsersService } from "../services/users.service";
 import {
   ApiBearerAuth,
@@ -19,6 +27,7 @@ import { Roles } from "~/modules/iam/auth/decorators/roles.decorator";
 import { Role } from "~/modules/iam/auth/enums/role.enum";
 import { UpdateUserDto } from "../dto/update-user.dto";
 import { CreateUserDto } from "../dto/create-user.dto";
+import { UpdateUserGuard } from "../guards/update-user.guard";
 
 @ApiTags("Users")
 @Controller("users")
@@ -53,7 +62,7 @@ export class UsersController {
     return this.usersService.createUser(createUserDto);
   }
 
-  @Get("me")
+  @Get("whoami")
   @ApiBearerAuth("JWT")
   @ApiOperation({ summary: "Get active user" })
   @ApiOkResponse({
@@ -63,7 +72,7 @@ export class UsersController {
     description: "Unauthorized user"
   })
   async getActiveUser(@User() user: ActiveUserData) {
-    return user;
+    return this.usersService.getUser(user.username);
   }
 
   @Get(":username")
@@ -86,9 +95,9 @@ export class UsersController {
   }
 
   @Patch(":username")
-  @Roles(Role.Admin)
+  @UseGuards(UpdateUserGuard)
   @ApiBearerAuth("JWT")
-  @ApiOperation({ summary: "Update user by username" })
+  @ApiOperation({ summary: "[ADMIN] Update user by username" })
   @ApiParam({
     name: "username",
     required: true,

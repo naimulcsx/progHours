@@ -16,10 +16,15 @@ import {
   ModalProps,
   NavbarProps,
   SelectProps,
-  AppShellProps
+  AppShellProps,
+  TabsProps,
+  DividerProps
 } from "@mantine/core";
 import { DatePickerInputProps } from "@mantine/dates";
 import { NotificationProps } from "@mantine/notifications";
+
+export const shadow3d =
+  "rgba(0, 0, 0, 0.25) 0px 4px 8px -4px, rgba(0, 0, 0, 0.04) 0px -1px 1px inset, rgba(255, 255, 255, 0.06) 0px 2px 0px inset";
 
 const getTitleDefaultProps = (theme: MantineTheme): TitleProps => ({
   color: theme.colorScheme === "dark" ? theme.white : theme.colors.gray[8]
@@ -94,7 +99,13 @@ const getNotificationDefaultProps = (
 ): Omit<NotificationProps, "message"> => ({
   styles: {
     root: {
-      boxShadow: theme.shadows.xs,
+      paddingTop: 16,
+      paddingBottom: 16,
+      background:
+        theme.colorScheme === "dark" ? theme.colors.dark[5] : theme.white,
+      boxShadow: theme.shadows.lg,
+      border:
+        theme.colorScheme === "dark" ? 0 : `1px solid ${theme.colors.dark[4]}`,
       ...(theme.colorScheme === "dark" && {
         boxShadow:
           "rgba(0, 0, 0, 0.25) 0px 4px 8px -4px, rgba(0, 0, 0, 0.04) 0px -1px 1px inset, rgba(255, 255, 255, 0.06) 0px 2px 0px inset"
@@ -107,7 +118,7 @@ const getNotificationDefaultProps = (
     description: {
       color:
         theme.colorScheme === "dark"
-          ? theme.colors.gray[4]
+          ? theme.colors.gray[3]
           : theme.colors.gray[7]
     }
   }
@@ -116,7 +127,7 @@ const getNotificationDefaultProps = (
 const getPaperDefaultProps = (theme: MantineTheme): PaperProps => ({
   sx: {
     background:
-      theme.colorScheme === "dark" ? theme.colors.dark[8] : theme.white,
+      theme.colorScheme === "dark" ? theme.colors.dark[7] : theme.white,
     ...(theme.colorScheme === "light" && {
       border: `1px solid ${theme.colors.gray[2]}`
     }),
@@ -130,36 +141,33 @@ const getPaperDefaultProps = (theme: MantineTheme): PaperProps => ({
 const getNavLinkDefaultProps = (theme: MantineTheme): NavLinkProps => ({
   styles: {
     root: {
+      position: "relative",
       background: "transparent",
       borderRadius: 6,
       "&[data-active='true']": {
         background:
           theme.colorScheme === "dark"
-            ? theme.colors[theme.primaryColor][8]
-            : theme.fn.rgba(theme.colors[theme.primaryColor][9], 0.075),
+            ? theme.fn.rgba(theme.colors[theme.primaryColor][3], 0.1)
+            : theme.fn.rgba(theme.colors[theme.primaryColor][9], 0.1),
         "&:hover": {
           background:
             theme.colorScheme === "dark"
-              ? theme.colors[theme.primaryColor][8]
-              : theme.fn.rgba(theme.colors[theme.primaryColor][9], 0.1)
+              ? theme.fn.rgba(theme.colors[theme.primaryColor][3], 0.1)
+              : theme.fn.rgba(theme.colors[theme.primaryColor][9], 0.125)
         },
         "& span": {
           color:
             theme.colorScheme === "dark"
               ? theme.white
               : theme.colors[theme.primaryColor][9]
-        },
-        ...(theme.colorScheme === "dark" && {
-          boxShadow:
-            "rgba(0, 0, 0, 0.25) 0px 4px 8px -4px, rgba(0, 0, 0, 0.05) 0px -1px 1px inset, rgba(255, 255, 255, 0.15) 0px 2px 0px inset"
-        })
+        }
       },
       "& span": {
         fontWeight: 500
       }
     },
     icon: {
-      color: theme.colors.gray[5]
+      color: theme.colors.gray[6]
     }
   }
 });
@@ -171,11 +179,10 @@ const getTableDefaultProps = (theme: MantineTheme): TableProps => {
         paddingTop: 8,
         paddingBottom: 8,
         background:
-          theme.colorScheme === "dark"
-            ? theme.colors.dark[8]
-            : theme.colors.gray[0]
+          theme.colorScheme === "dark" ? theme.colors.dark[8] : theme.white
       }
-    }
+    },
+    styles: {}
   };
 };
 
@@ -264,15 +271,14 @@ const getNavbarDefaultProps = (theme: MantineTheme): NavbarProps => {
     hiddenBreakpoint: "lg",
     styles: {
       root: {
-        borderRight: `1px solid ${
+        borderColor:
           theme.colorScheme === "dark"
-            ? theme.colors.dark[7]
-            : theme.colors.gray[2]
-        }`,
+            ? theme.colors.dark[5]
+            : theme.colors.gray[2],
         backgroundColor:
           theme.colorScheme === "dark"
             ? theme.colors.dark[9]
-            : theme.colors.gray[0]
+            : theme.fn.rgba(theme.colors[theme.primaryColor][0], 0.25)
       }
     }
   };
@@ -283,10 +289,41 @@ const getAppShellDefaultProps = (
 ): Omit<AppShellProps, "children"> => {
   return {
     styles: {
-      main: {
-        padding: 24,
-        paddingLeft: "calc(var(--mantine-navbar-width, 0px) + 24px)"
+      main: {}
+    }
+  };
+};
+
+const getTabsDefaultProps = (
+  theme: MantineTheme
+): Omit<TabsProps, "children"> => {
+  const borderBottomColor =
+    theme.colorScheme === "dark"
+      ? theme.colors[theme.primaryColor][3]
+      : theme.colors[theme.primaryColor][5];
+  return {
+    sx: {
+      "button[data-active]": {
+        background:
+          theme.colorScheme === "dark"
+            ? theme.colors.dark[5]
+            : theme.colors[theme.primaryColor][0],
+        borderTopLeftRadius: 6,
+        borderTopRightRadius: 6,
+        borderBottomColor,
+        "&:hover": {
+          borderBottomColor
+        }
       }
+    }
+  };
+};
+
+const getDividierDefaultProps = (theme: MantineTheme): DividerProps => {
+  return {
+    variant: "dotted",
+    styles: {
+      label: {}
     }
   };
 };
@@ -313,11 +350,13 @@ const theme: MantineThemeOverride = {
     Modal: { defaultProps: getModalDefaultProps },
     Navbar: { defaultProps: getNavbarDefaultProps },
     Select: { defaultProps: getSelectDefaultProps },
-    AppShell: { defaultProps: getAppShellDefaultProps }
+    AppShell: { defaultProps: getAppShellDefaultProps },
+    Tabs: { defaultProps: getTabsDefaultProps },
+    Divider: { defaultProps: getDividierDefaultProps }
   },
   colors: {
     gray: [
-      "#F8FAFC",
+      "#f4f3f7",
       "#F1F5F9",
       "#E5EDF4",
       "#D7DFEA",
@@ -329,17 +368,29 @@ const theme: MantineThemeOverride = {
       "#020617"
     ],
     dark: [
-      "#C1C7D6",
-      "#A8B1C6",
-      "#909BB6",
-      "#505C7C", // [3] input placeholder text
-      "#3C455D", // [4] input border
-      "#353D53",
-      "#2F3648", // [6] input bg
-      "#212634", // [7] navbar bg, sidebar bg, paper bg
-      "#1B1F29",
-      "#14171F" // [9] body bg, title color
+      "#cdc8d8",
+      "#8d879e",
+      "#6c6583",
+      "#5C5475",
+      "#403b52", // [4] input border
+      "#2d2939",
+      "#262331", // [6] input bg
+      "#1E1B26",
+      "#16141C",
+      "#121016"
     ]
+    // dark: [
+    //   "#C1C7D6",
+    //   "#A8B1C6",
+    //   "#909BB6",
+    //   "#505C7C", // [3] input placeholder text
+    //   "#3C455D", // [4] input border
+    //   "#353D53",
+    //   "#2F3648", // [6] input bg
+    //   "#212634", // [7] navbar bg, sidebar bg, paper bg
+    //   "#1B1F29",
+    //   "#16141c" // [9] body bg, title color
+    // ]
   },
   shadows: {
     xs: "0px 1px 2px 0px rgba(16, 24, 40, 0.05)"
