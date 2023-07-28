@@ -10,7 +10,8 @@ import {
   IconTable,
   IconSettings,
   IconHome,
-  IconBarChart
+  IconBarChart,
+  IconBookOpen
 } from "~/assets/icons";
 
 export const adminLinks = [
@@ -67,7 +68,7 @@ export const userLinks = [
   {
     label: "Study List",
     to: "/study",
-    Icon: () => <IconTable />
+    Icon: () => <IconBookOpen />
   },
   {
     label: "Groups",

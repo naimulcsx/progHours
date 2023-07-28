@@ -7,3 +7,5 @@ export * from "./IconSearch";
 export * from "./IconEdit";
 export * from "./IconTrash";
 export * from "./IconLinkExternal";
+export * from "./IconBookOpen";
+export * from "./IconInfoSquare";
