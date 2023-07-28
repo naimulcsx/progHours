@@ -160,6 +160,18 @@ export function ProfileSettings() {
             <Grid.Col span={6}>
               <TextInput label="Phone" {...form.getInputProps("phone")} />
             </Grid.Col>
+
+            <Grid.Col span={12}>
+              <Divider label="Social" />
+            </Grid.Col>
+
+            <Grid.Col span={6}>
+              <TextInput label="Facebook" placeholder="facebook profile URL" />
+            </Grid.Col>
+            <Grid.Col span={6}>
+              <TextInput label="Whatsapp" placeholder="Whatsapp number" />
+            </Grid.Col>
+
             <Grid.Col span={12}>
               <Button mt="sm" type="submit" w="100%">
                 Save

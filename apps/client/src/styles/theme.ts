@@ -23,6 +23,9 @@ import {
 import { DatePickerInputProps } from "@mantine/dates";
 import { NotificationProps } from "@mantine/notifications";
 
+export const shadow3d =
+  "rgba(0, 0, 0, 0.25) 0px 4px 8px -4px, rgba(0, 0, 0, 0.04) 0px -1px 1px inset, rgba(255, 255, 255, 0.06) 0px 2px 0px inset";
+
 const getTitleDefaultProps = (theme: MantineTheme): TitleProps => ({
   color: theme.colorScheme === "dark" ? theme.white : theme.colors.gray[8]
 });
@@ -370,8 +373,8 @@ const theme: MantineThemeOverride = {
       "#6c6583",
       "#5C5475",
       "#403b52", // [4] input border
-      "#292534",
-      "#262230", // [6] input bg
+      "#2d2939",
+      "#262331", // [6] input bg
       "#1E1B26",
       "#16141C",
       "#121016"
