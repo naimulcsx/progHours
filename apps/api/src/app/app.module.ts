@@ -12,6 +12,8 @@ import { PrometheusController } from "~/modules/prometheus/controllers/prometheu
 import { TrackerModule } from "~/modules/tracker/tracker.module";
 import Joi from "joi";
 import { LeaderboardModule } from "~/modules/leaderboard/leaderboard.module";
+import { CacheModule } from "@nestjs/cache-manager";
+import { redisStore } from "cache-manager-redis-yet";
 
 @Module({
   imports: [
@@ -26,6 +28,18 @@ import { LeaderboardModule } from "~/modules/leaderboard/leaderboard.module";
         PORT: Joi.number(),
         TZ: Joi.string(),
         JWT_SECRET: Joi.string().required()
+      })
+    }),
+    CacheModule.registerAsync({
+      isGlobal: true,
+      useFactory: async () => ({
+        store: await redisStore({
+          // TODO: need to replace these with config read from env
+          socket: {
+            host: "localhost",
+            port: 6379
+          }
+        })
       })
     }),
     PrismaModule,

@@ -38,6 +38,12 @@ export class StatisticsService {
       GROUP BY
           u.id
       `;
-    return result;
+    return result.map((entry) => ({
+      ...entry,
+      averageDifficulty:
+        entry.totalSolvedWithDifficulty > 0
+          ? entry.totalDifficulty / entry.totalSolvedWithDifficulty
+          : 0
+    }));
   }
 }
