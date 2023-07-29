@@ -29,7 +29,10 @@ async function bootstrap() {
 
   SwaggerModule.setup("api/docs", app, document, {
     customSiteTitle: "progHours - API Docs",
-    customCss: theme.getBuffer("flattop")
+    customCss: theme.getBuffer("flattop"),
+    swaggerOptions: {
+      displayRequestDuration: true
+    }
   });
 
   const port = process.env.PORT || 3000;

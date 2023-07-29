@@ -9,8 +9,9 @@ import { SubmissionsModule } from "~/modules/submissions/submissions.module";
 import { ProblemsModule } from "~/modules/problems/problems.module";
 import { PrometheusModule } from "@willsoto/nestjs-prometheus";
 import { PrometheusController } from "~/modules/prometheus/controllers/prometheus.controller";
-import Joi from "joi";
 import { TrackerModule } from "~/modules/tracker/tracker.module";
+import Joi from "joi";
+import { LeaderboardModule } from "~/modules/leaderboard/leaderboard.module";
 
 @Module({
   imports: [
@@ -33,7 +34,8 @@ import { TrackerModule } from "~/modules/tracker/tracker.module";
     ProblemsModule,
     SubmissionsModule,
     ParserModule,
-    TrackerModule.register()
+    TrackerModule.register(),
+    LeaderboardModule
   ],
   controllers: [],
   providers: []
