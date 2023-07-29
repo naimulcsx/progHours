@@ -8,8 +8,8 @@ export type LeaderboardEntry = {
     batch?: number;
     cgpa?: number;
   };
-  totalSolveTime: number;
-  totalDifficulty: number;
-  totalSolved: number;
-  totalSolvedWithDifficulty: number;
+  totalSolveTime: bigint;
+  totalDifficulty: bigint;
+  totalSolved: bigint;
+  totalSolvedWithDifficulty: bigint;
 };

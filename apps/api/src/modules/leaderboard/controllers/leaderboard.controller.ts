@@ -1,8 +1,9 @@
-import { Controller, Get, UseInterceptors } from "@nestjs/common";
+import { Controller, Get, Query, UseInterceptors } from "@nestjs/common";
 import { ApiOperation, ApiTags } from "@nestjs/swagger";
 import { Auth, AuthType } from "~/modules/iam/auth/decorators/auth.decorator";
 import { LeaderboardService } from "../services/leaderboard.service";
 import { CacheInterceptor, CacheKey, CacheTTL } from "@nestjs/cache-manager";
+import { LeaderboardQueryDto } from "../dto/leaderboard-query.dto";
 
 @Controller("leaderboard")
 @ApiTags("Leaderboard")
@@ -15,7 +16,7 @@ export class LeaderboardController {
   @UseInterceptors(CacheInterceptor)
   @CacheKey("leaderboard")
   @CacheTTL(300000)
-  async getLeaderboard() {
-    return this.leaderboardService.getLeaderboard();
+  async getLeaderboard(@Query() leaderboardQueryDto: LeaderboardQueryDto) {
+    return this.leaderboardService.getLeaderboard(leaderboardQueryDto);
   }
 }

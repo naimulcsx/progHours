@@ -97,7 +97,7 @@ export class UsersController {
   @Patch(":username")
   @UseGuards(UpdateUserGuard)
   @ApiBearerAuth("JWT")
-  @ApiOperation({ summary: "[ADMIN] Update user by username" })
+  @ApiOperation({ summary: "Update user by username" })
   @ApiParam({
     name: "username",
     required: true,

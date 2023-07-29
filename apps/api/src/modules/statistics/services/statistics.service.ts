@@ -1,6 +1,7 @@
 import { Injectable } from "@nestjs/common";
 import { PrismaService } from "~/modules/prisma/services/prisma.service";
 import { LeaderboardEntry } from "../types";
+import { Prisma } from "@prisma/client";
 
 // issue: https://github.com/prisma/studio/issues/614
 /* eslint-disable @typescript-eslint/no-explicit-any */
@@ -13,7 +14,18 @@ bigIntPrototype.toJSON = function () {
 export class StatisticsService {
   constructor(private readonly prisma: PrismaService) {}
 
-  async getLeaderboard() {
+  async getUsersStatistics(
+    query:
+      | { type: "full" }
+      | { type: "range"; fromDate: string; toDate: string }
+  ) {
+    const timeFilter =
+      query.type === "range"
+        ? Prisma.sql`
+      AND s.solved_at >= TO_TIMESTAMP(${query.fromDate}, 'YYYY-MM-DD') 
+      AND s.solved_at <= TO_TIMESTAMP(${query.toDate}, 'YYYY-MM-DD')
+    `
+        : Prisma.sql``;
     const result: LeaderboardEntry[] = await this.prisma.$queryRaw`
       SELECT
           u.id AS "userId",
@@ -34,16 +46,10 @@ export class StatisticsService {
           LEFT JOIN problems AS p ON s.problem_id = p.id
           LEFT JOIN users AS u ON u.id = s.user_id
       WHERE
-          s.verdict = 'AC'
+          s.verdict = 'AC' ${timeFilter}
       GROUP BY
           u.id
       `;
-    return result.map((entry) => ({
-      ...entry,
-      averageDifficulty:
-        entry.totalSolvedWithDifficulty > 0
-          ? entry.totalDifficulty / entry.totalSolvedWithDifficulty
-          : 0
-    }));
+    return result;
   }
 }
