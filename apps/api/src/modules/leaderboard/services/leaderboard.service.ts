@@ -1,4 +1,4 @@
-import { Injectable } from "@nestjs/common";
+import { Inject, Injectable } from "@nestjs/common";
 import { StatisticsService } from "~/modules/statistics/services/statistics.service";
 import {
   LeaderboardQueryDto,
@@ -6,10 +6,15 @@ import {
 } from "../dto/leaderboard-query.dto";
 import moment, { Moment } from "moment";
 import { LeaderboardEntry } from "~/modules/statistics/types";
+import { CACHE_MANAGER } from "@nestjs/cache-manager";
+import { Cache } from "cache-manager";
 
 @Injectable()
 export class LeaderboardService {
-  constructor(private readonly statisticsService: StatisticsService) {}
+  constructor(
+    private readonly statisticsService: StatisticsService,
+    @Inject(CACHE_MANAGER) private cacheManager: Cache
+  ) {}
 
   async getLeaderboard(leaderboardQueryDto: LeaderboardQueryDto) {
     const type: "full" | "range" =
@@ -23,18 +28,26 @@ export class LeaderboardService {
         this.getLastWeek())
     };
 
-    const result = await this.statisticsService.getUsersStatistics(args);
+    const cacheKey = "leaderboard/" + leaderboardQueryDto.type;
+    const cachedData = await this.cacheManager.get(cacheKey);
 
-    return result
-      .map((entry) => ({
-        ...entry,
-        ...this.calculatePointsAndAvgDifficulty(entry)
-      }))
-      .sort((a, b) => b.points - a.points)
-      .map((entry, i) => ({
-        rank: i + 1,
-        ...entry
-      }));
+    if (!cachedData) {
+      const result = await this.statisticsService.getUsersStatistics(args);
+      const leaderboard = result
+        .map((entry) => ({
+          ...entry,
+          ...this.calculatePointsAndAvgDifficulty(entry)
+        }))
+        .sort((a, b) => b.points - a.points)
+        .map((entry, i) => ({
+          rank: i + 1,
+          ...entry
+        }));
+      await this.cacheManager.set(cacheKey, leaderboard, 5 * 60000);
+      return leaderboard;
+    }
+
+    return cachedData;
   }
 
   private calculatePointsAndAvgDifficulty(entry: LeaderboardEntry) {
