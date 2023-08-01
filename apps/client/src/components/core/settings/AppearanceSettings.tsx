@@ -25,8 +25,17 @@ export function AppearanceSettings() {
       >
         <Group>
           {Object.keys(theme.colors)
-            .filter(
-              (color) => !["red", "yellow", "dark", "gray"].includes(color)
+            .filter((color) =>
+              [
+                "pink",
+                "grape",
+                "violet",
+                "indigo",
+                "blue",
+                "red",
+                "yellow",
+                "orange"
+              ].includes(color)
             )
             .map((color) => (
               <Tooltip

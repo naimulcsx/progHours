@@ -67,7 +67,7 @@ export function AppLogo({
             fontSize: styles[size].fontSize,
             color:
               theme.colorScheme === "dark"
-                ? theme.white
+                ? theme.colors.amber[0]
                 : theme.colors[theme.primaryColor][7]
           }}
         >

@@ -1,10 +1,19 @@
-import { Group, Loader, Select, Title, Transition } from "@mantine/core";
+import {
+  Box,
+  Group,
+  Loader,
+  Select,
+  Title,
+  Tooltip,
+  Transition
+} from "@mantine/core";
 import { DashboardLayout } from "~/components/common/dashboard/Layout";
 import { LeaderboardType, useLeaderboard } from "@proghours/data-access";
 import { useState } from "react";
 import { AnimatePresence } from "framer-motion";
 import { FadeInTransition } from "~/components/common/transition/FadeInTransition";
 import LeaderboardDataTable from "~/components/core/leaderboard/data-table";
+import { IconInfoCircle } from "~/assets/icons";
 
 export default function LeaderboardPage() {
   const [type, setType] = useState<LeaderboardType>("full");
@@ -14,7 +23,14 @@ export default function LeaderboardPage() {
     <DashboardLayout>
       <Group position="apart">
         <Group sx={{ alignItems: "center" }}>
-          <Title order={3}>Leaderboard</Title>
+          <Title order={3}>
+            Leaderboard{" "}
+            <Tooltip label="Latest data may experience a delay of up to 5 minutes.">
+              <Box component="span" ml="xs">
+                <IconInfoCircle width={16} height={16} />
+              </Box>
+            </Tooltip>
+          </Title>
           <Transition mounted={isFetching} transition="fade" duration={800}>
             {(styles) => (
               <div style={{ ...styles, display: "flex", alignItems: "center" }}>

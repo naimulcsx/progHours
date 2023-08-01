@@ -40,7 +40,7 @@ export class LeaderboardService {
         }))
         .sort((a, b) => b.points - a.points)
         .map((entry, i) => ({
-          rank: i + 1,
+          id: i + 1,
           ...entry
         }));
       await this.cacheManager.set(cacheKey, leaderboard, 5 * 60000);

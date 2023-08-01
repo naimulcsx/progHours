@@ -27,12 +27,15 @@ export const shadow3d =
   "rgba(0, 0, 0, 0.25) 0px 4px 8px -4px, rgba(0, 0, 0, 0.04) 0px -1px 1px inset, rgba(255, 255, 255, 0.06) 0px 2px 0px inset";
 
 const getTitleDefaultProps = (theme: MantineTheme): TitleProps => ({
-  color: theme.colorScheme === "dark" ? theme.white : theme.colors.gray[8]
+  color:
+    theme.colorScheme === "dark" ? theme.colors.amber[0] : theme.colors.gray[8]
 });
 
 const getTextDefaultProps = (theme: MantineTheme): TextProps => ({
   color:
-    theme.colorScheme === "dark" ? theme.colors.gray[4] : theme.colors.gray[7]
+    theme.colorScheme === "dark"
+      ? theme.fn.darken(theme.colors.amber[0], 0.15)
+      : theme.colors.gray[7]
 });
 
 const getButtonDefaultProps = (theme: MantineTheme): ButtonProps => ({
@@ -144,21 +147,27 @@ const getNavLinkDefaultProps = (theme: MantineTheme): NavLinkProps => ({
       position: "relative",
       background: "transparent",
       borderRadius: 6,
+      "&:hover": {
+        background:
+          theme.colorScheme === "dark"
+            ? theme.colors.dark[7]
+            : theme.fn.rgba(theme.colors[theme.primaryColor][9], 0.1)
+      },
       "&[data-active='true']": {
         background:
           theme.colorScheme === "dark"
-            ? theme.fn.rgba(theme.colors[theme.primaryColor][3], 0.1)
+            ? theme.colors.dark[7]
             : theme.fn.rgba(theme.colors[theme.primaryColor][9], 0.1),
         "&:hover": {
           background:
             theme.colorScheme === "dark"
-              ? theme.fn.rgba(theme.colors[theme.primaryColor][3], 0.1)
+              ? theme.colors.dark[7]
               : theme.fn.rgba(theme.colors[theme.primaryColor][9], 0.125)
         },
         "& span": {
           color:
             theme.colorScheme === "dark"
-              ? theme.white
+              ? theme.colors.amber[0]
               : theme.colors[theme.primaryColor][9]
         }
       },
@@ -167,7 +176,10 @@ const getNavLinkDefaultProps = (theme: MantineTheme): NavLinkProps => ({
       }
     },
     icon: {
-      color: theme.colors.gray[6]
+      color:
+        theme.colorScheme === "dark"
+          ? theme.fn.darken(theme.colors.amber[0], 0.25)
+          : theme.colors.gray[6]
     }
   }
 });
@@ -175,11 +187,22 @@ const getNavLinkDefaultProps = (theme: MantineTheme): NavLinkProps => ({
 const getTableDefaultProps = (theme: MantineTheme): TableProps => {
   return {
     sx: {
-      "tr th": {
-        paddingTop: 8,
-        paddingBottom: 8,
+      color:
+        theme.colorScheme === "dark"
+          ? theme.fn.darken(theme.colors.amber[0], 0.15)
+          : theme.colors.dark[8],
+      "thead.sticky": {
+        display: "none",
+        [theme.fn.smallerThan("xl")]: {
+          display: "table-header-group"
+        }
+      },
+      "thead tr th": {
+        borderBottom: "3px solid",
+        borderColor: theme.colors.dark[6],
         background:
-          theme.colorScheme === "dark" ? theme.colors.dark[8] : theme.white
+          theme.colorScheme === "dark" ? theme.colors.dark[8] : theme.white,
+        color: theme.colors.amber[0]
       }
     },
     styles: {}
@@ -375,22 +398,34 @@ const theme: MantineThemeOverride = {
       "#403b52", // [4] input border
       "#2d2939",
       "#262331", // [6] input bg
+      "#221e2a",
       "#1E1B26",
-      "#16141C",
       "#121016"
+    ],
+    amber: [
+      "#FEFBFA",
+      "#fef3c7",
+      "#fde68a",
+      "#fcd34d",
+      "#fbbf24",
+      "#f59e0b",
+      "#d97706",
+      "#b45309",
+      "#92400e",
+      "#78350f"
+    ],
+    pink: [
+      "#ffebff",
+      "#fad6f5",
+      "#f0ace7",
+      "#e57ed9",
+      "#dd58cc",
+      "#d83fc5",
+      "#d632c2",
+      "#be24ac",
+      "#aa1c99",
+      "#951086"
     ]
-    // dark: [
-    //   "#C1C7D6",
-    //   "#A8B1C6",
-    //   "#909BB6",
-    //   "#505C7C", // [3] input placeholder text
-    //   "#3C455D", // [4] input border
-    //   "#353D53",
-    //   "#2F3648", // [6] input bg
-    //   "#212634", // [7] navbar bg, sidebar bg, paper bg
-    //   "#1B1F29",
-    //   "#16141c" // [9] body bg, title color
-    // ]
   },
   shadows: {
     xs: "0px 1px 2px 0px rgba(16, 24, 40, 0.05)"
@@ -398,17 +433,3 @@ const theme: MantineThemeOverride = {
 };
 
 export default theme;
-
-// dark color scheme
-// [
-//   "#DFE4E8",
-//   "#BFC8D0",
-//   "#97A5B1",
-//   "#566676", // [3] input placeholder text
-//   "#39414C", // [4] input border
-//   "#323942",
-//   "#2A3039", // [6] input bg
-//   "#1C2025", // [7] navbar bg, sidebar bg, paper bg
-//   "#15171B",
-//   "#0E0F11" // [8] body bg, title color, alt #0B0D0F
-// ];

@@ -9,3 +9,4 @@ export * from "./IconTrash";
 export * from "./IconLinkExternal";
 export * from "./IconBookOpen";
 export * from "./IconInfoSquare";
+export * from "./IconInfoCircle";
