@@ -35,7 +35,7 @@ function Entry() {
       sx={{
         minHeight: "100vh",
         background:
-          theme.colorScheme === "dark" ? theme.colors.dark[8] : theme.white
+          theme.colorScheme === "dark" ? theme.colors.dark[9] : theme.white
       }}
     >
       {page}

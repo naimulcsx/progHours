@@ -3,8 +3,8 @@ import { axios } from "../../lib/axios";
 
 export type LeaderboardType = "full" | "currentWeek" | "lastWeek";
 
-export type UseLeaderboardResponse = Array<{
-  rank: number;
+export type LeaderboardEntry = {
+  id: number;
   userId: number;
   fullName: string;
   username: string;
@@ -20,7 +20,9 @@ export type UseLeaderboardResponse = Array<{
   totalSolvedWithDifficulty: number;
   points: number;
   averageDifficulty: number;
-}>;
+};
+
+export type UseLeaderboardResponse = Array<LeaderboardEntry>;
 
 export type UseLeaderboardOptions = {
   type: LeaderboardType;

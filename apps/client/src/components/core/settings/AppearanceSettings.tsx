@@ -103,7 +103,9 @@ function SettingsItem({
   return (
     <Group position="apart">
       <Box mb="sm">
-        <Title order={4}>{title}</Title>
+        <Title order={4} fw={600}>
+          {title}
+        </Title>
         <Text size="sm">{description}</Text>
       </Box>
       <Box>{children}</Box>
