@@ -68,13 +68,19 @@ export function TopPerformers({ topUsers }: { topUsers: LeaderboardEntry[] }) {
                 {idx === 1 && <IconSecondPlace />}
                 {idx === 2 && <IconThirdPlace />}
                 <Box>
-                  <Title order={4} sx={{ color: "white" }} lineClamp={1}>
+                  <Title
+                    fw={500}
+                    order={4}
+                    sx={{ color: "white" }}
+                    lineClamp={1}
+                  >
                     {user.fullName}
                   </Title>
                   <Text
+                    fw={700}
                     lineClamp={1}
                     sx={{
-                      fontWeight: 500,
+                      fontSize: theme.headings.sizes.h3.fontSize,
                       color: theme.white
                     }}
                   >
