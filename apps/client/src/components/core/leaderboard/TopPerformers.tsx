@@ -7,16 +7,17 @@ import { IconThirdPlace } from "~/assets/icons/IconThirdPlace";
 
 export function TopPerformers({ topUsers }: { topUsers: LeaderboardEntry[] }) {
   const theme = useMantineTheme();
+  const isDark = theme.colorScheme === "dark";
 
-  const gradientStart =
-    theme.colorScheme === "dark"
-      ? theme.colors.dark[6]
-      : theme.colors[theme.primaryColor][6];
+  const gradientStart = theme.fn.darken(
+    theme.colors[theme.primaryColor][6],
+    isDark ? 0.5 : 0
+  );
 
-  const gradientEnd =
-    theme.colorScheme === "dark"
-      ? theme.colors.dark[8]
-      : theme.colors[theme.primaryColor][8];
+  const gradientEnd = theme.fn.darken(
+    theme.colors[theme.primaryColor][8],
+    isDark ? 0.5 : 0
+  );
 
   return (
     <Box
@@ -33,7 +34,7 @@ export function TopPerformers({ topUsers }: { topUsers: LeaderboardEntry[] }) {
       <BgPattern />
       <Box sx={{ position: "relative" }}>
         <Box mb="xl">
-          <Title mb={2} order={2} sx={{ color: "white" }}>
+          <Title mb={2} order={3} sx={{ color: "white" }}>
             Top Performers
           </Title>
           <Text sx={{ color: "white" }}>
@@ -55,7 +56,7 @@ export function TopPerformers({ topUsers }: { topUsers: LeaderboardEntry[] }) {
                 position: "relative",
                 background: theme.fn.rgba(
                   "#fff",
-                  theme.colorScheme === "dark" ? 0.035 : 0.1
+                  theme.colorScheme === "dark" ? 0.075 : 0.1
                 ),
                 order: _order[idx],
                 borderRadius: theme.radius.lg,
@@ -70,7 +71,7 @@ export function TopPerformers({ topUsers }: { topUsers: LeaderboardEntry[] }) {
                 <Box>
                   <Title
                     fw={500}
-                    order={4}
+                    order={5}
                     sx={{ color: "white" }}
                     lineClamp={1}
                   >
@@ -113,6 +114,7 @@ export function TopPerformers({ topUsers }: { topUsers: LeaderboardEntry[] }) {
 
 function BgPattern() {
   const theme = useMantineTheme();
+  const isDark = theme.colorScheme === "dark";
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -142,11 +144,10 @@ function BgPattern() {
         </mask>
         <g mask="url(#mask0_2_2343)">
           <path
-            fill={
-              theme.colorScheme === "dark"
-                ? theme.colors.dark[7]
-                : theme.colors[theme.primaryColor][7]
-            }
+            fill={theme.fn.darken(
+              theme.colors[theme.primaryColor][7],
+              isDark ? 0.5 : 0
+            )}
             d="M0 -15H360V225H0z"
           ></path>
         </g>

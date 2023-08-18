@@ -10,3 +10,7 @@ export * from "./IconLinkExternal";
 export * from "./IconBookOpen";
 export * from "./IconInfoSquare";
 export * from "./IconInfoCircle";
+export * from "./IconEnergy";
+export * from "./IconFlag";
+export * from "./IconTime";
+export * from "./IconPoints";

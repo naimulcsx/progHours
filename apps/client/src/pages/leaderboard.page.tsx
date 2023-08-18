@@ -23,7 +23,7 @@ export default function LeaderboardPage() {
   const topUsers = data?.slice(0, 3);
   return (
     <DashboardLayout>
-      <Container size="xl">
+      <Container size="xl" px={0}>
         <Group position="apart">
           <Group sx={{ alignItems: "center" }}>
             <Title order={3}>

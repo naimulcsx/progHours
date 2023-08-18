@@ -133,10 +133,14 @@ const getNotificationDefaultProps = (
 
 const getPaperDefaultProps = (theme: MantineTheme): PaperProps => ({
   sx: {
+    padding: theme.spacing.lg,
     background:
-      theme.colorScheme === "dark" ? theme.colors.dark[6] : theme.white,
+      theme.colorScheme === "dark"
+        ? `linear-gradient(45deg, ${theme.colors.dark[6]}, ${theme.colors.dark[8]})`
+        : theme.white,
     ...(theme.colorScheme === "light" && {
-      border: `1px solid ${theme.colors.gray[2]}`
+      border: `1px solid ${theme.fn.rgba(theme.colors.gray[2], 0.8)}`,
+      boxShadow: theme.shadows.xs
     }),
     ...(theme.colorScheme === "dark" && {
       boxShadow:
