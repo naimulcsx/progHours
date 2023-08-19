@@ -1,0 +1,11 @@
+.dark .apexcharts-tooltip {
+  background: #121821 !important;
+  color: white !important;
+  box-shadow: none !important;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.dark .apexcharts-tooltip-title {
+  background: #030712 !important;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1) !important;
+}

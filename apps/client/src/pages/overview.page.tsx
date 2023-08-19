@@ -15,7 +15,7 @@ import {
 } from "~/assets/icons";
 import { DashboardLayout } from "~/components/common/dashboard/Layout";
 import { StatCard } from "~/components/core/overview/StatCard";
-import { MyResponsiveLine } from "~/components/core/overview/charts/WeeklySolvedChart";
+import { WeeklySolvedChart } from "~/components/core/overview/charts/WeeklySolvedChart";
 
 export default function OverviewPage() {
   return (
@@ -29,7 +29,6 @@ export default function OverviewPage() {
             </Box>
           </Tooltip>
         </Title>
-
         <SimpleGrid mt="xl" cols={4}>
           <StatCard
             icon={<IconPoints width={40} height={40} />}
@@ -54,7 +53,7 @@ export default function OverviewPage() {
         </SimpleGrid>
         <SimpleGrid mt="md" cols={2}>
           <Paper>
-            <MyResponsiveLine />
+            <WeeklySolvedChart />
           </Paper>
           <Paper>{/* <WeeklySolvedCharts /> */}</Paper>
         </SimpleGrid>

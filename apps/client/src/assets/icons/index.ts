@@ -14,3 +14,4 @@ export * from "./IconEnergy";
 export * from "./IconFlag";
 export * from "./IconTime";
 export * from "./IconPoints";
+export * from "./IconLayoutAlt";

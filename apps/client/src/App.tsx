@@ -37,6 +37,7 @@ function Entry() {
         background:
           theme.colorScheme === "dark" ? theme.colors.dark[9] : theme.white
       }}
+      className={theme.colorScheme}
     >
       {page}
     </Box>

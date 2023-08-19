@@ -1,9 +1,17 @@
-import { Box, SimpleGrid, Text, Title, useMantineTheme } from "@mantine/core";
+import {
+  Box,
+  Group,
+  SimpleGrid,
+  Text,
+  Title,
+  useMantineTheme
+} from "@mantine/core";
 import { shadow3d } from "~/styles/theme";
 import { LeaderboardEntry } from "@proghours/data-access";
 import { IconSecondPlace } from "~/assets/icons/IconSecondPlace";
 import { IconFirstPlace } from "~/assets/icons/IconFirstPlace";
 import { IconThirdPlace } from "~/assets/icons/IconThirdPlace";
+import { Countdown } from "./Countdown";
 
 export function TopPerformers({ topUsers }: { topUsers: LeaderboardEntry[] }) {
   const theme = useMantineTheme();
@@ -33,14 +41,17 @@ export function TopPerformers({ topUsers }: { topUsers: LeaderboardEntry[] }) {
     >
       <BgPattern />
       <Box sx={{ position: "relative" }}>
-        <Box mb="xl">
-          <Title mb={2} order={3} sx={{ color: "white" }}>
-            Top Performers
-          </Title>
-          <Text sx={{ color: "white" }}>
-            The stage is set, and the world is watching. It's time to shine!
-          </Text>
-        </Box>
+        <Group position="apart" align="start">
+          <Box mb="xl">
+            <Title mb={2} order={3} sx={{ color: "white" }}>
+              Top Performers
+            </Title>
+            <Text sx={{ color: theme.colors[theme.primaryColor][1] }}>
+              The stage is set, and the world is watching. It's time to shine!
+            </Text>
+          </Box>
+          <Countdown />
+        </Group>
       </Box>
       <SimpleGrid
         cols={3}

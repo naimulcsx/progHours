@@ -134,9 +134,10 @@ const getNotificationDefaultProps = (
 const getPaperDefaultProps = (theme: MantineTheme): PaperProps => ({
   sx: {
     padding: theme.spacing.lg,
+    borderRadius: theme.radius.md,
     background:
       theme.colorScheme === "dark"
-        ? `linear-gradient(45deg, ${theme.colors.dark[6]}, ${theme.colors.dark[8]})`
+        ? `linear-gradient(to bottom right, ${theme.colors.dark[6]}, ${theme.colors.dark[8]})`
         : theme.white,
     ...(theme.colorScheme === "light" && {
       border: `1px solid ${theme.fn.rgba(theme.colors.gray[2], 0.8)}`,
@@ -248,7 +249,12 @@ const getSegmentedControlDefaultProps = (
   return {
     data: [],
     styles: {
-      label: {}
+      root: {
+        background:
+          theme.colorScheme === "dark"
+            ? theme.fn.darken(theme.colors.dark[4], 0.5)
+            : theme.colors.gray[1]
+      }
     }
   };
 };
@@ -353,7 +359,7 @@ const getDividierDefaultProps = (theme: MantineTheme): DividerProps => {
 const theme: MantineThemeOverride = {
   colorScheme: "dark",
   defaultRadius: "md",
-  fontFamily: "'Inter', sans-serif",
+  fontFamily: "'Rubik', sans-serif",
   components: {
     Text: { defaultProps: getTextDefaultProps },
     Title: { defaultProps: getTitleDefaultProps },

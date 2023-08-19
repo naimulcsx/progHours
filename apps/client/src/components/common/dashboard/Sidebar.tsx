@@ -30,6 +30,7 @@ export default function Sidebar() {
     defaultValue: "REGULAR"
   });
   const links = selected === "REGULAR" ? userLinks : adminLinks;
+
   return (
     <Navbar>
       <Navbar.Section grow>
@@ -52,12 +53,6 @@ export default function Sidebar() {
               { label: "User", value: "REGULAR" },
               { label: "Admin", value: "ADMIN" }
             ]}
-            sx={{
-              background:
-                theme.colorScheme === "dark"
-                  ? theme.fn.darken(theme.colors.dark[9], 0.25)
-                  : theme.colors.gray[1]
-            }}
           />
         )}
 

@@ -1,9 +1,10 @@
-import { Box, ScrollArea, useMantineTheme } from "@mantine/core";
+import { Box, ScrollArea, Text, useMantineTheme } from "@mantine/core";
 import Chart from "react-apexcharts";
 import { ApexOptions } from "apexcharts";
 import { useEffect, useRef } from "react";
 
-export const MyResponsiveLine = () => {
+export const WeeklySolvedChart = () => {
+  const totalItems = 20;
   const theme = useMantineTheme();
   const viewport = useRef<HTMLDivElement>(null);
   useEffect(() => {
@@ -15,7 +16,9 @@ export const MyResponsiveLine = () => {
   const series = [
     {
       name: "Solved",
-      data: Array.from({ length: 200 }, () => Math.floor(Math.random() * 10))
+      data: Array.from({ length: totalItems }, () =>
+        Math.floor(Math.random() * 10)
+      )
     }
   ];
   const options: ApexOptions = {
@@ -38,7 +41,7 @@ export const MyResponsiveLine = () => {
     grid: {
       borderColor:
         theme.colorScheme === "dark"
-          ? theme.fn.rgba(theme.colors.dark[3], 0.5)
+          ? theme.fn.rgba(theme.colors.dark[3], 0.25)
           : theme.colors.gray[3],
       yaxis: {
         lines: {
@@ -48,7 +51,12 @@ export const MyResponsiveLine = () => {
     },
     theme: {
       mode: theme.colorScheme,
-      palette: "palette1"
+      monochrome: {
+        enabled: true,
+        color: theme.colors.blue[5],
+        shadeTo: "light",
+        shadeIntensity: 0.65
+      }
     },
     dataLabels: {
       enabled: true
@@ -62,36 +70,28 @@ export const MyResponsiveLine = () => {
         enabled: false
       }
     },
-    markers: {
-      size: 4,
-      colors: undefined,
-      strokeColors: "#fff",
-      strokeWidth: 2,
-      strokeOpacity: 1,
-      strokeDashArray: 0,
-      fillOpacity: 1,
-      discrete: [],
-      shape: "circle",
-      radius: 2,
-      offsetX: 0,
-      offsetY: 0,
-      onClick(e) {
-        console.log(e);
-        alert("hello world");
-      },
-      onDblClick: undefined,
-      showNullDataPoints: true,
-      hover: {
-        size: undefined,
-        sizeOffset: 0
-      }
+    tooltip: {
+      enabled: true
     }
   };
   return (
-    <ScrollArea h={350} viewportRef={viewport}>
-      <Box sx={{ width: 200 * 50 }}>
-        <Chart options={options} series={series} type="area" height={330} />
-      </Box>
-    </ScrollArea>
+    <>
+      <Text
+        size="sm"
+        align="center"
+        style={{
+          fontWeight: 500,
+          color:
+            theme.colorScheme === "dark" ? theme.white : theme.colors.dark[4]
+        }}
+      >
+        Number of problem solved by week
+      </Text>
+      <ScrollArea h={350} viewportRef={viewport}>
+        <Box sx={{ width: totalItems <= 10 ? "100%" : totalItems * 50 }}>
+          <Chart options={options} series={series} type="area" height={330} />
+        </Box>
+      </ScrollArea>
+    </>
   );
 };
