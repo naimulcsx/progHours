@@ -17,7 +17,13 @@ import { NavigationProgress, nprogress } from "@mantine/nprogress";
 import { ModalsProvider } from "@mantine/modals";
 import { useEffect } from "react";
 
-const queryClient = new QueryClient();
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      refetchOnWindowFocus: false
+    }
+  }
+});
 
 function Entry() {
   const { user } = useUser();
@@ -29,9 +35,9 @@ function Entry() {
       sx={{
         minHeight: "100vh",
         background:
-          theme.colorScheme === "dark" ? theme.colors.dark[8] : theme.white,
-        overflowX: "hidden"
+          theme.colorScheme === "dark" ? theme.colors.dark[9] : theme.white
       }}
+      className={theme.colorScheme}
     >
       {page}
     </Box>

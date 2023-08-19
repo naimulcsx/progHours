@@ -1,7 +1,8 @@
 import { Box, Group, Loader, Stack, Title, Transition } from "@mantine/core";
 import { DashboardLayout } from "~/components/common/dashboard/Layout";
 import { useSubmissions } from "@proghours/data-access";
-import SubmissionsDataTable from "~/components/core/submissions/data-table";
+import { SubmissionsDataTable } from "~/components/core/submissions/table";
+// import SubmissionsDataTable from "~/components/core/submissions/data-table";
 
 export default function SubmissionsPage() {
   const { data, isFetching, isSuccess } = useSubmissions();

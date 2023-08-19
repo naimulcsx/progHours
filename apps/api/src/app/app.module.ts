@@ -9,8 +9,11 @@ import { SubmissionsModule } from "~/modules/submissions/submissions.module";
 import { ProblemsModule } from "~/modules/problems/problems.module";
 import { PrometheusModule } from "@willsoto/nestjs-prometheus";
 import { PrometheusController } from "~/modules/prometheus/controllers/prometheus.controller";
-import Joi from "joi";
 import { TrackerModule } from "~/modules/tracker/tracker.module";
+import Joi from "joi";
+import { LeaderboardModule } from "~/modules/leaderboard/leaderboard.module";
+import { CacheModule } from "@nestjs/cache-manager";
+import { redisStore } from "cache-manager-redis-yet";
 
 @Module({
   imports: [
@@ -27,13 +30,26 @@ import { TrackerModule } from "~/modules/tracker/tracker.module";
         JWT_SECRET: Joi.string().required()
       })
     }),
+    CacheModule.registerAsync({
+      isGlobal: true,
+      useFactory: async () => ({
+        store: await redisStore({
+          // TODO: need to replace these with config read from env
+          socket: {
+            host: "localhost",
+            port: 6379
+          }
+        })
+      })
+    }),
     PrismaModule,
     AuthModule,
     UsersModule,
     ProblemsModule,
     SubmissionsModule,
     ParserModule,
-    TrackerModule.register()
+    TrackerModule.register(),
+    LeaderboardModule
   ],
   controllers: [],
   providers: []

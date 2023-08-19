@@ -11,7 +11,8 @@ import {
   IconSettings,
   IconHome,
   IconBarChart,
-  IconBookOpen
+  IconBookOpen,
+  IconLayoutAlt
 } from "~/assets/icons";
 
 export const adminLinks = [
@@ -83,7 +84,7 @@ export const userLinks = [
   {
     label: "Activities",
     to: "/activities",
-    Icon: () => <IconBarChart />
+    Icon: () => <IconLayoutAlt />
   },
   {
     label: "Settings",

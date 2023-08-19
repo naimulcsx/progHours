@@ -26,21 +26,16 @@ import { NotificationProps } from "@mantine/notifications";
 export const shadow3d =
   "rgba(0, 0, 0, 0.25) 0px 4px 8px -4px, rgba(0, 0, 0, 0.04) 0px -1px 1px inset, rgba(255, 255, 255, 0.06) 0px 2px 0px inset";
 
+/**
+ * Typography Styles
+ */
 const getTitleDefaultProps = (theme: MantineTheme): TitleProps => ({
-  color: theme.colorScheme === "dark" ? theme.white : theme.colors.gray[8]
+  color: theme.colorScheme === "dark" ? theme.white : theme.colors.dark[4]
 });
-
 const getTextDefaultProps = (theme: MantineTheme): TextProps => ({
   color:
-    theme.colorScheme === "dark" ? theme.colors.gray[4] : theme.colors.gray[7]
+    theme.colorScheme === "dark" ? theme.colors.gray[5] : theme.colors.gray[7]
 });
-
-const getButtonDefaultProps = (theme: MantineTheme): ButtonProps => ({
-  sx: {
-    fontWeight: 500
-  }
-});
-
 const getAnchorDefaultProps = (theme: MantineTheme): AnchorProps => ({
   color:
     theme.colorScheme === "dark" ? theme.colors.blue[4] : theme.colors.blue[5],
@@ -51,44 +46,56 @@ const getAnchorDefaultProps = (theme: MantineTheme): AnchorProps => ({
   }
 });
 
-const getTextInputDefaultProps = (theme: MantineTheme): TextInputProps => ({
-  styles: {
-    input: {
-      border: `1px solid ${
-        theme.colorScheme === "dark"
-          ? theme.colors.dark[4]
-          : theme.colors.gray[3]
-      }`
-    },
-    label: {}
+/**
+ * Buttons
+ */
+const getButtonDefaultProps = (theme: MantineTheme): ButtonProps => ({
+  sx: {
+    fontWeight: 500
   }
 });
 
+/**
+ * Input styles
+ */
+function getBorderColor(theme: MantineTheme) {
+  return theme.colorScheme === "dark"
+    ? theme.colors.dark[4]
+    : theme.colors.gray[2];
+}
+const getTextInputDefaultProps = (theme: MantineTheme): TextInputProps => ({
+  styles: {
+    input: {
+      background: "transparent",
+      borderColor: getBorderColor(theme),
+      "&:disabled": {
+        background:
+          theme.colorScheme === "dark"
+            ? theme.colors.dark[4]
+            : theme.colors.gray[2]
+      }
+    }
+  }
+});
 const getPasswordInputDefaultProps = (
   theme: MantineTheme
 ): PasswordInputProps => ({
   styles: {
-    input: {
-      border: `1px solid ${
-        theme.colorScheme === "dark"
-          ? theme.colors.dark[4]
-          : theme.colors.gray[3]
-      }`
-    },
+    input: { background: "transparent", borderColor: getBorderColor(theme) },
     label: {}
   }
 });
-
 const getSelectDefaultProps = (theme: MantineTheme): SelectProps => {
   return {
     data: [],
     styles: {
       input: {
-        border: `1px solid ${
-          theme.colorScheme === "dark"
-            ? theme.colors.dark[4]
-            : theme.colors.gray[3]
-        }`
+        background: "transparent",
+        borderColor: getBorderColor(theme)
+      },
+      dropdown: {
+        background:
+          theme.colorScheme === "dark" ? theme.colors.dark[7] : theme.white
       }
     }
   };
@@ -126,10 +133,15 @@ const getNotificationDefaultProps = (
 
 const getPaperDefaultProps = (theme: MantineTheme): PaperProps => ({
   sx: {
+    padding: theme.spacing.lg,
+    borderRadius: theme.radius.md,
     background:
-      theme.colorScheme === "dark" ? theme.colors.dark[7] : theme.white,
+      theme.colorScheme === "dark"
+        ? `linear-gradient(to bottom right, ${theme.colors.dark[6]}, ${theme.colors.dark[8]})`
+        : theme.white,
     ...(theme.colorScheme === "light" && {
-      border: `1px solid ${theme.colors.gray[2]}`
+      border: `1px solid ${theme.fn.rgba(theme.colors.gray[2], 0.8)}`,
+      boxShadow: theme.shadows.xs
     }),
     ...(theme.colorScheme === "dark" && {
       boxShadow:
@@ -144,15 +156,21 @@ const getNavLinkDefaultProps = (theme: MantineTheme): NavLinkProps => ({
       position: "relative",
       background: "transparent",
       borderRadius: 6,
+      "&:hover": {
+        background:
+          theme.colorScheme === "dark"
+            ? theme.colors.dark[5]
+            : theme.fn.rgba(theme.colors[theme.primaryColor][9], 0.1)
+      },
       "&[data-active='true']": {
         background:
           theme.colorScheme === "dark"
-            ? theme.fn.rgba(theme.colors[theme.primaryColor][3], 0.1)
+            ? theme.colors.dark[5]
             : theme.fn.rgba(theme.colors[theme.primaryColor][9], 0.1),
         "&:hover": {
           background:
             theme.colorScheme === "dark"
-              ? theme.fn.rgba(theme.colors[theme.primaryColor][3], 0.1)
+              ? theme.colors.dark[5]
               : theme.fn.rgba(theme.colors[theme.primaryColor][9], 0.125)
         },
         "& span": {
@@ -167,22 +185,24 @@ const getNavLinkDefaultProps = (theme: MantineTheme): NavLinkProps => ({
       }
     },
     icon: {
-      color: theme.colors.gray[6]
+      color:
+        theme.colorScheme === "dark"
+          ? theme.colors.gray[6]
+          : theme.colors.gray[5]
     }
   }
 });
 
 const getTableDefaultProps = (theme: MantineTheme): TableProps => {
+  const styles = {
+    borderColor:
+      theme.colorScheme === "dark" ? theme.colors.dark[4] : theme.colors.gray[2]
+  };
   return {
     sx: {
-      "tr th": {
-        paddingTop: 8,
-        paddingBottom: 8,
-        background:
-          theme.colorScheme === "dark" ? theme.colors.dark[8] : theme.white
-      }
-    },
-    styles: {}
+      "tbody tr td": styles,
+      "thead tr th": styles
+    }
   };
 };
 
@@ -213,6 +233,12 @@ const getMenuDefaultProps = (theme: MantineTheme): MenuProps => {
   return {
     transitionProps: {
       transition: "pop"
+    },
+    styles: {
+      dropdown: {
+        background:
+          theme.colorScheme === "dark" ? theme.colors.dark[9] : theme.white
+      }
     }
   };
 };
@@ -223,7 +249,12 @@ const getSegmentedControlDefaultProps = (
   return {
     data: [],
     styles: {
-      label: {}
+      root: {
+        background:
+          theme.colorScheme === "dark"
+            ? theme.fn.darken(theme.colors.dark[4], 0.5)
+            : theme.colors.gray[1]
+      }
     }
   };
 };
@@ -273,12 +304,10 @@ const getNavbarDefaultProps = (theme: MantineTheme): NavbarProps => {
       root: {
         borderColor:
           theme.colorScheme === "dark"
-            ? theme.colors.dark[5]
-            : theme.colors.gray[2],
+            ? theme.colors.dark[6]
+            : theme.fn.rgba(theme.colors.gray[2], 0.75),
         backgroundColor:
-          theme.colorScheme === "dark"
-            ? theme.colors.dark[9]
-            : theme.fn.rgba(theme.colors[theme.primaryColor][0], 0.25)
+          theme.colorScheme === "dark" ? theme.colors.dark[9] : theme.white
       }
     }
   };
@@ -289,7 +318,9 @@ const getAppShellDefaultProps = (
 ): Omit<AppShellProps, "children"> => {
   return {
     styles: {
-      main: {}
+      main: {
+        width: "calc(100vw - 15px)"
+      }
     }
   };
 };
@@ -297,23 +328,22 @@ const getAppShellDefaultProps = (
 const getTabsDefaultProps = (
   theme: MantineTheme
 ): Omit<TabsProps, "children"> => {
-  const borderBottomColor =
-    theme.colorScheme === "dark"
-      ? theme.colors[theme.primaryColor][3]
-      : theme.colors[theme.primaryColor][5];
   return {
-    sx: {
-      "button[data-active]": {
-        background:
-          theme.colorScheme === "dark"
-            ? theme.colors.dark[5]
-            : theme.colors[theme.primaryColor][0],
-        borderTopLeftRadius: 6,
-        borderTopRightRadius: 6,
-        borderBottomColor,
-        "&:hover": {
-          borderBottomColor
+    styles: {
+      tab: {
+        fontWeight: 500,
+        "&[data-active=true]": {
+          span: {
+            color:
+              theme.colorScheme === "dark" ? theme.white : theme.colors.dark[9]
+          }
         }
+      },
+      tabLabel: {
+        color:
+          theme.colorScheme === "dark"
+            ? theme.colors.gray[5]
+            : theme.colors.gray[6]
       }
     }
   };
@@ -331,7 +361,7 @@ const getDividierDefaultProps = (theme: MantineTheme): DividerProps => {
 const theme: MantineThemeOverride = {
   colorScheme: "dark",
   defaultRadius: "md",
-  fontFamily: "'Inter', sans-serif",
+  fontFamily: "'Rubik', sans-serif",
   components: {
     Text: { defaultProps: getTextDefaultProps },
     Title: { defaultProps: getTitleDefaultProps },
@@ -358,57 +388,32 @@ const theme: MantineThemeOverride = {
     gray: [
       "#f4f3f7",
       "#F1F5F9",
-      "#E5EDF4",
+      "#DFE5EE",
       "#D7DFEA",
       "#C7CFDA",
       "#A8B5C6",
-      "#94A3B8",
+      "#687281",
       "#334155",
       "#0F172A",
       "#020617"
     ],
     dark: [
-      "#cdc8d8",
-      "#8d879e",
-      "#6c6583",
-      "#5C5475",
-      "#403b52", // [4] input border
-      "#2d2939",
-      "#262331", // [6] input bg
-      "#1E1B26",
-      "#16141C",
-      "#121016"
+      "#D2D2D4",
+      "#9CA0AC",
+      "#a3a8b4",
+      "#52596D", // [3] input placeholder text
+      "#1F2937", // [4] input border
+      "#1C2532",
+      "#19212C", // [6] input bg
+      "#161D27",
+      "#121821", // HSL(224°, 35%, 10%)
+      "#030712" // HSL(224°, 71%, 4%) [9] body bg, title color
     ]
-    // dark: [
-    //   "#C1C7D6",
-    //   "#A8B1C6",
-    //   "#909BB6",
-    //   "#505C7C", // [3] input placeholder text
-    //   "#3C455D", // [4] input border
-    //   "#353D53",
-    //   "#2F3648", // [6] input bg
-    //   "#212634", // [7] navbar bg, sidebar bg, paper bg
-    //   "#1B1F29",
-    //   "#16141c" // [9] body bg, title color
-    // ]
   },
   shadows: {
-    xs: "0px 1px 2px 0px rgba(16, 24, 40, 0.05)"
+    xs: "0px 1px 2px 0px rgba(16, 24, 40, 0.05)",
+    "3d": shadow3d
   }
 };
 
 export default theme;
-
-// dark color scheme
-// [
-//   "#DFE4E8",
-//   "#BFC8D0",
-//   "#97A5B1",
-//   "#566676", // [3] input placeholder text
-//   "#39414C", // [4] input border
-//   "#323942",
-//   "#2A3039", // [6] input bg
-//   "#1C2025", // [7] navbar bg, sidebar bg, paper bg
-//   "#15171B",
-//   "#0E0F11" // [8] body bg, title color, alt #0B0D0F
-// ];
