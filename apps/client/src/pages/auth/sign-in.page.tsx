@@ -2,7 +2,6 @@ import {
   Anchor,
   Box,
   Button,
-  Paper,
   PasswordInput,
   Stack,
   Text,
@@ -69,51 +68,49 @@ export default function SignInPage() {
           paddingRight: theme.spacing.sm
         }}
       >
-        <Box sx={{ maxWidth: "480px", flexGrow: 1 }}>
-          <Paper p="xl" shadow="sm">
-            <Stack>
-              <Box>
-                <AppLogo size="lg" mb="xs" />
-                <Title order={2} mb="4px">
-                  Sign in to your account
-                </Title>
-                <Text>
-                  Don&apos;t have an account?{" "}
-                  <Anchor component={Link} to="/auth/sign-up">
-                    Sign Up
-                  </Anchor>
+        <Box sx={{ maxWidth: "440px", flexGrow: 1 }}>
+          <Stack>
+            <Box>
+              <AppLogo size="xl" mb="lg" />
+              <Title order={2} mb="4px">
+                Sign in to your account
+              </Title>
+              <Text>
+                Don&apos;t have an account?{" "}
+                <Anchor component={Link} to="/auth/sign-up">
+                  Sign Up
+                </Anchor>
+              </Text>
+            </Box>
+            <form
+              onSubmit={form.onSubmit((values) => {
+                mutate(values);
+              })}
+            >
+              <Stack>
+                <TextInput
+                  label="University ID"
+                  placeholder="Enter your University ID"
+                  icon={<IconAt size={16} />}
+                  withAsterisk
+                  {...form.getInputProps("username")}
+                />
+                <PasswordInput
+                  label="Password"
+                  icon={<IconLock size={16} />}
+                  placeholder="Enter your password"
+                  withAsterisk
+                  {...form.getInputProps("password")}
+                />
+                <Text size="sm">
+                  By signing in, you agree to our Terms and Conditions
                 </Text>
-              </Box>
-              <form
-                onSubmit={form.onSubmit((values) => {
-                  mutate(values);
-                })}
-              >
-                <Stack>
-                  <TextInput
-                    label="University ID"
-                    placeholder="Enter your University ID"
-                    icon={<IconAt size={16} />}
-                    withAsterisk
-                    {...form.getInputProps("username")}
-                  />
-                  <PasswordInput
-                    label="Password"
-                    icon={<IconLock size={16} />}
-                    placeholder="Enter your password"
-                    withAsterisk
-                    {...form.getInputProps("password")}
-                  />
-                  <Text size="sm">
-                    By signing in, you agree to our Terms and Conditions
-                  </Text>
-                  <Button size="md" type="submit">
-                    Sign In
-                  </Button>
-                </Stack>
-              </form>
-            </Stack>
-          </Paper>
+                <Button size="md" type="submit">
+                  Sign In
+                </Button>
+              </Stack>
+            </form>
+          </Stack>
         </Box>
       </Box>
       <Footer />

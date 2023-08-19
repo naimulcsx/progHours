@@ -29,7 +29,7 @@ export function AppIcon(props: SVGProps<SVGSVGElement>) {
 export function AppLogo({
   size = "md",
   ...props
-}: GroupProps & { size?: "sm" | "md" | "lg" }) {
+}: GroupProps & { size?: "sm" | "md" | "lg" | "xl" }) {
   const theme = useMantineTheme();
   const styles = {
     sm: {
@@ -46,6 +46,11 @@ export function AppLogo({
       logoSize: "2rem",
       textSize: "0.75rem",
       fontSize: "1.125rem"
+    },
+    xl: {
+      logoSize: "2.5rem",
+      textSize: "1rem",
+      fontSize: "1.5rem"
     }
   };
   return (
