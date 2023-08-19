@@ -23,7 +23,6 @@ export default function SubmissionsPage() {
           <Box style={{ ...styles, transitionDelay: "250ms" }}>
             {isSuccess && (
               <Stack mt="md" spacing="lg">
-                {/* <SubmissionsDataTable data={data} /> */}
                 <SubmissionsDataTable data={data} />
               </Stack>
             )}

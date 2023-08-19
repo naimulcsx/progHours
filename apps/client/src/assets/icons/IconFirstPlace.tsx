@@ -221,7 +221,7 @@ export function IconFirstPlace() {
       <g filter="url(#filter16_f_3_484)">
         <path
           stroke="url(#paint32_linear_3_484)"
-          strokeWidth="2"
+          strokeWidth="1.7"
           d="M555.394 327.11c7.705 6.095 49.841-8.094 68.539-36.943 10.814-2.171 30.47-2.521 73.36-14.126 34.152-10.429 74.356-16.757 74.355-83.435"
         ></path>
       </g>
@@ -408,7 +408,7 @@ export function IconFirstPlace() {
       <g filter="url(#filter31_f_3_484)">
         <path
           stroke="url(#paint59_linear_3_484)"
-          strokeWidth="2"
+          strokeWidth="1.7"
           d="M223.521 327.11c-7.705 6.095-49.841-8.094-68.539-36.943-10.814-2.171-30.47-2.521-73.36-14.126-34.152-10.429-74.356-16.757-74.355-83.435"
         ></path>
       </g>
@@ -465,7 +465,7 @@ export function IconFirstPlace() {
           cy="281.304"
           r="161.08"
           stroke="url(#paint65_linear_3_484)"
-          strokeWidth="2"
+          strokeWidth="1.7"
         ></circle>
       </g>
       <path

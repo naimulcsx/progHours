@@ -184,7 +184,7 @@ export function IconThirdPlace() {
           cy="280.325"
           r="161.08"
           stroke="url(#paint26_linear_3_230)"
-          strokeWidth="2"
+          strokeWidth="1.7"
         ></circle>
       </g>
       <g filter="url(#filter12_i_3_230)">

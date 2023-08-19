@@ -318,7 +318,9 @@ const getAppShellDefaultProps = (
 ): Omit<AppShellProps, "children"> => {
   return {
     styles: {
-      main: {}
+      main: {
+        width: "calc(100vw - 15px)"
+      }
     }
   };
 };

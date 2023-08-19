@@ -15,7 +15,7 @@ export function IconSearch(props: SVGProps<SVGSVGElement>) {
           stroke="currentColor"
           strokeLinecap="round"
           strokeLinejoin="round"
-          strokeWidth="2"
+          strokeWidth="1.7"
           d="M21 21l-3.5-3.5m2.5-6a8.5 8.5 0 11-17 0 8.5 8.5 0 0117 0z"
         ></path>
       </g>

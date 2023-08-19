@@ -41,7 +41,7 @@ export const columns: ColumnDef<SubmissionRow>[] = [
         </Group>
       );
     },
-    size: 320
+    size: 300
   },
   {
     accessorKey: "problem.difficulty",

@@ -277,7 +277,7 @@ export function IconSecondPlace() {
         <g filter="url(#filter18_f_3_318)">
           <path
             stroke="url(#paint36_linear_3_318)"
-            strokeWidth="2"
+            strokeWidth="1.7"
             d="M504.713 205.837l-94.294-16.976-75.597 45.755 3.713 84.88 51.326 64.588 92.506-.514"
           ></path>
         </g>
@@ -338,7 +338,7 @@ export function IconSecondPlace() {
         <g filter="url(#filter19_f_3_318)">
           <path
             stroke="url(#paint46_linear_3_318)"
-            strokeWidth="2"
+            strokeWidth="1.7"
             d="M504.576 205.537l-94.294-16.976-75.597 45.755 3.713 84.88 51.326 64.589 92.506-.514"
           ></path>
         </g>

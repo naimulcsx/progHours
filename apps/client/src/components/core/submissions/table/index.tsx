@@ -39,7 +39,7 @@ export function SubmissionsDataTable({ data }: DataTableProps) {
   });
 
   return (
-    <ScrollArea>
+    <ScrollArea sx={{ overflowY: "hidden" }}>
       <Table fontSize="sm">
         <thead>
           {table.getHeaderGroups().map((headerGroup) => (
