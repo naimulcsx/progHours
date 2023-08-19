@@ -1,5 +1,5 @@
 import { PropsWithChildren } from "react";
-import { AppShell, useMantineTheme } from "@mantine/core";
+import { AppShell, Box, useMantineTheme } from "@mantine/core";
 import { Navbar } from "./Navbar";
 
 export function Layout({ children }: PropsWithChildren) {
@@ -9,14 +9,12 @@ export function Layout({ children }: PropsWithChildren) {
       styles={{
         main: {
           background:
-            theme.colorScheme === "dark"
-              ? theme.colors.dark[8]
-              : theme.colors.gray[0]
+            theme.colorScheme === "dark" ? theme.colors.dark[9] : theme.white
         }
       }}
       header={<Navbar />}
     >
-      {children}
+      <Box mt="md">{children}</Box>
     </AppShell>
   );
 }

@@ -19,7 +19,7 @@ export function Navbar() {
   const { colorScheme, toggleColorScheme } = useMantineColorScheme();
   return (
     <Header
-      height={72}
+      height={64}
       px="md"
       sx={{
         position: "fixed",
@@ -31,7 +31,7 @@ export function Navbar() {
         justifyContent: "space-between",
         alignItems: "center",
         background:
-          theme.colorScheme === "dark" ? theme.colors.dark[8] : theme.white
+          theme.colorScheme === "dark" ? theme.colors.dark[9] : theme.white
       }}
     >
       <Anchor
@@ -43,7 +43,7 @@ export function Navbar() {
           }
         }}
       >
-        <AppLogo size="sm" />
+        <AppLogo size="md" />
       </Anchor>
       <Group spacing="xs">
         {/* color scheme toggler  */}
@@ -51,7 +51,7 @@ export function Navbar() {
           checked={colorScheme === "dark"}
           color="yellow"
           onChange={() => toggleColorScheme()}
-          size="md"
+          size="lg"
           onLabel={<IconSun color={theme.white} size={16} stroke={1.5} />}
           offLabel={
             <IconMoonStars

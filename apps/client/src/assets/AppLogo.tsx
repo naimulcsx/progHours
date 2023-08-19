@@ -40,7 +40,7 @@ export function AppLogo({
     md: {
       logoSize: "2rem",
       textSize: "0.625rem",
-      fontSize: "1rem"
+      fontSize: "1.125rem"
     },
     lg: {
       logoSize: "2rem",
