@@ -55,7 +55,6 @@ export default function OverviewPage() {
           <Paper>
             <WeeklySolvedChart />
           </Paper>
-          <Paper>{/* <WeeklySolvedCharts /> */}</Paper>
         </SimpleGrid>
       </Container>
     </DashboardLayout>

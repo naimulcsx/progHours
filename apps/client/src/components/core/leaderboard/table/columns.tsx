@@ -106,12 +106,19 @@ export const columns: ColumnDef<LeaderboardEntry>[] = [
       );
     },
     size: 180,
-    cell: (cell) => <Text>{cell.row.original.totalSolveTime}</Text>
+    cell: (cell) => (
+      <Text>
+        {Math.floor(cell.row.original.totalSolveTime / 60)}h{" "}
+        {cell.row.original.totalSolveTime % 60}m
+      </Text>
+    )
   },
   {
     accessorKey: "averageDifficulty",
     size: 240,
-    cell: (cell) => <Text>{cell.row.original.averageDifficulty}</Text>,
+    cell: (cell) => (
+      <Text>{cell.row.original.averageDifficulty.toFixed(2)}</Text>
+    ),
     header: ({ column, table }) => {
       return (
         <Group>
@@ -155,7 +162,7 @@ export const columns: ColumnDef<LeaderboardEntry>[] = [
         </Group>
       );
     },
-    cell: (cell) => <Text>{cell.row.original.points}</Text>
+    cell: (cell) => <Text>{cell.row.original.points.toFixed(2)}</Text>
   }
 ];
 
