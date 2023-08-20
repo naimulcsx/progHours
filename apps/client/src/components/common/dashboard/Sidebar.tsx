@@ -44,7 +44,7 @@ export default function Sidebar() {
         {/* nav switcher */}
         {user && user.role === "ADMIN" && (
           <SegmentedControl
-            mt="md"
+            mt="xs"
             fullWidth
             value={selected}
             onChange={setSelected}

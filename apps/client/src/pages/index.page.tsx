@@ -21,9 +21,10 @@ export default function HomePage() {
   const [type, setType] = useState<LeaderboardType>("full");
   const { data, isFetching } = useLeaderboard({ type });
   const topUsers = data?.slice(0, 3);
+  console.log("rendered");
   return (
     <Layout>
-      <Container size="xl" px={0}>
+      <Container size="lg">
         <Group position="apart">
           <Group sx={{ alignItems: "center" }}>
             <Title order={3}>

@@ -70,6 +70,7 @@ export function App() {
       <MantineProvider
         withGlobalStyles
         withNormalizeCSS
+        withCSSVariables
         theme={{ ...theme, colorScheme, primaryColor: accentColor }}
       >
         <ModalsProvider>

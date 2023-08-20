@@ -21,7 +21,7 @@ import {
 } from "@tanstack/react-table";
 import { LeaderboardEntry } from "@proghours/data-access";
 import { columns } from "./columns";
-import { useState } from "react";
+import { memo, useState } from "react";
 import { getBorderColor } from "~/styles/colors";
 import { useLocalStorage } from "@mantine/hooks";
 
@@ -29,7 +29,7 @@ interface DataTableProps {
   data: LeaderboardEntry[];
 }
 
-export function LeaderboardDataTable({ data }: DataTableProps) {
+export const LeaderboardDataTable = memo(function ({ data }: DataTableProps) {
   const PAGE_SIZE = 25;
   const theme = useMantineTheme();
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
@@ -149,4 +149,4 @@ export function LeaderboardDataTable({ data }: DataTableProps) {
       </Group>
     </ScrollArea>
   );
-}
+});

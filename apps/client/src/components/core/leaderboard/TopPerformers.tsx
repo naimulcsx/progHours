@@ -12,8 +12,13 @@ import { IconSecondPlace } from "~/assets/icons/IconSecondPlace";
 import { IconFirstPlace } from "~/assets/icons/IconFirstPlace";
 import { IconThirdPlace } from "~/assets/icons/IconThirdPlace";
 import { Countdown } from "./Countdown";
+import { memo } from "react";
 
-export function TopPerformers({ topUsers }: { topUsers: LeaderboardEntry[] }) {
+export const TopPerformers = memo(function ({
+  topUsers
+}: {
+  topUsers: LeaderboardEntry[];
+}) {
   const theme = useMantineTheme();
   const isDark = theme.colorScheme === "dark";
 
@@ -121,7 +126,7 @@ export function TopPerformers({ topUsers }: { topUsers: LeaderboardEntry[] }) {
       </SimpleGrid>
     </Box>
   );
-}
+});
 
 function BgPattern() {
   const theme = useMantineTheme();

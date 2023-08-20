@@ -79,7 +79,7 @@ export const columns: ColumnDef<LeaderboardEntry>[] = [
         </Group>
       );
     },
-    size: 180,
+    size: 170,
     cell: (cell) => <Text>{cell.row.original.totalSolved}</Text>,
     enableSorting: true
   },
@@ -105,7 +105,7 @@ export const columns: ColumnDef<LeaderboardEntry>[] = [
         </Group>
       );
     },
-    size: 180,
+    size: 170,
     cell: (cell) => (
       <Text>
         {Math.floor(cell.row.original.totalSolveTime / 60)}h{" "}

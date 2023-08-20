@@ -1,6 +1,9 @@
-import { Avatar as MantineAvatar } from "@mantine/core";
+import { Avatar as MantineAvatar, AvatarProps } from "@mantine/core";
 
-export function Avatar({ fullName }: { fullName: string }) {
+export function Avatar({
+  fullName,
+  ...props
+}: { fullName: string } & AvatarProps) {
   const avatarName = fullName
     .split(" ")
     .splice(0, 2)
@@ -14,6 +17,7 @@ export function Avatar({ fullName }: { fullName: string }) {
       }}
       radius="xl"
       size="lg"
+      {...props}
     >
       {avatarName}
     </MantineAvatar>
