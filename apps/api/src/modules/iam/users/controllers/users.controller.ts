@@ -45,7 +45,7 @@ export class UsersController {
     description: "Unauthorized user"
   })
   async getUsers() {
-    return [];
+    return this.usersService.getUsers();
   }
 
   @Post()

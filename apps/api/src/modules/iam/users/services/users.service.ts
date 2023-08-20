@@ -30,7 +30,18 @@ export class UsersService {
 
   async getUsers() {
     // TODO: add pagination and filtering
-    return this.prisma.user.findMany();
+    return this.prisma.user.findMany({
+      select: {
+        id: true,
+        fullName: true,
+        email: true,
+        username: true,
+        phone: true,
+        role: true,
+        metaData: true,
+        createdAt: true
+      }
+    });
   }
 
   async getUser(username: string) {
