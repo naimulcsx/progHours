@@ -26,16 +26,23 @@ export function Header() {
               <AppLogo size="sm" />
             </Anchor>
             <Flex ml="lg" gap="md">
-              <Anchor size="sm" underline="never">
+              <Anchor component={Link} to="/" size="sm" underline="never">
                 Home
               </Anchor>
-              <Anchor size="sm" underline="never">
-                About
-              </Anchor>
-              <Anchor size="sm" underline="never">
+              <Anchor
+                component={Link}
+                to="/leaderboard"
+                size="sm"
+                underline="never"
+              >
                 Leaderboard
               </Anchor>
-              <Anchor size="sm" underline="never">
+              <Anchor
+                href="https://github.com/naimulcsx/progHours"
+                target="_blank"
+                size="sm"
+                underline="never"
+              >
                 Github
               </Anchor>
             </Flex>
