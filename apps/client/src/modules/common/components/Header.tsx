@@ -56,8 +56,12 @@ export function Header() {
               onLabel={<IconSun size={16} stroke={1.5} />}
               offLabel={<IconMoonStars size={16} stroke={1.5} />}
             />
-            <Button variant="msu-secondary">Sign In</Button>
-            <Button>Sign Up</Button>
+            <Button component={Link} to="/auth/sign-in" variant="msu-secondary">
+              Sign In
+            </Button>
+            <Button component={Link} to="/auth/sign-up">
+              Sign Up
+            </Button>
           </Group>
           <Burger opened={opened} onClick={toggle} hiddenFrom="sm" size="sm" />
         </Flex>

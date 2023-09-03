@@ -10,7 +10,10 @@ import {
   ActionIcon,
   Select,
   Table,
-  Title
+  Title,
+  TextInput,
+  PasswordInput,
+  Input
 } from "@mantine/core";
 
 import textClasses from "./css/Text.module.css";
@@ -21,6 +24,9 @@ import appShellClasses from "./css/AppShell.module.css";
 import actionIconClasses from "./css/ActionIcon.module.css";
 import selectClasses from "./css/Select.module.css";
 import tableClasses from "./css/Table.module.css";
+import passwordInputClasses from "./css/PasswordInput.module.css";
+import textInputClasses from "./css/TextInput.module.css";
+import inputClasses from "./css/Input.module.css";
 
 export const resolver: CSSVariablesResolver = () => ({
   variables: {},
@@ -71,6 +77,9 @@ export const resolver: CSSVariablesResolver = () => ({
 
 export const theme = createTheme({
   defaultRadius: "md",
+  shadows: {
+    xs: "0 1px 2px 0 rgba(0,0,0,.05)"
+  },
   headings: {
     sizes: {
       h1: {
@@ -140,6 +149,18 @@ export const theme = createTheme({
     Table: Table.extend({
       defaultProps: { variant: "proghours-ui" },
       classNames: tableClasses
+    }),
+    TextInput: TextInput.extend({
+      defaultProps: { variant: "proghours-ui" },
+      classNames: textInputClasses
+    }),
+    PasswordInput: PasswordInput.extend({
+      defaultProps: { variant: "proghours-ui" },
+      classNames: passwordInputClasses
+    }),
+    Input: Input.extend({
+      defaultProps: { variant: "proghours-ui" },
+      classNames: inputClasses
     })
   }
 });

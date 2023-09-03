@@ -7,6 +7,7 @@ import { BrowserRouter, useRoutes } from "react-router-dom";
 import { resolver, theme } from "./theme";
 import { getRoutes } from "./routes";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { HelmetProvider } from "react-helmet-async";
 
 import "@mantine/core/styles.css";
 import "./theme/global.css";
@@ -33,7 +34,9 @@ function App() {
         cssVariablesResolver={resolver}
       >
         <QueryClientProvider client={queryClient}>
-          <Entry />
+          <HelmetProvider>
+            <Entry />
+          </HelmetProvider>
         </QueryClientProvider>
       </MantineProvider>
     </BrowserRouter>
