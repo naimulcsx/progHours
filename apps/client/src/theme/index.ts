@@ -13,7 +13,8 @@ import {
   Title,
   TextInput,
   PasswordInput,
-  Input
+  Input,
+  AppShellNavbar
 } from "@mantine/core";
 
 import textClasses from "./css/Text.module.css";
@@ -132,6 +133,9 @@ export const theme = createTheme({
       classNames: appShellClasses
     }),
     AppShellHeader: AppShellHeader.extend({
+      defaultProps: { variant: "proghours-ui" }
+    }),
+    AppShellNavbar: AppShellNavbar.extend({
       defaultProps: { variant: "proghours-ui" }
     }),
     Anchor: Anchor.extend({

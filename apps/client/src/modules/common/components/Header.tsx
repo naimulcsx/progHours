@@ -1,4 +1,3 @@
-import { useDisclosure } from "@mantine/hooks";
 import {
   Anchor,
   AppShellHeader,
@@ -17,40 +16,62 @@ import { IconChevronDown, IconMoonStars, IconSun } from "@tabler/icons-react";
 import { useUser } from "~/modules/auth/hooks/useUser";
 import { useLogout } from "~/modules/auth/hooks/useLogout";
 
-export function Header() {
+export function Header({
+  fullWidth = false,
+  isDashboard = false,
+  sidebar
+}: {
+  fullWidth?: boolean;
+  isDashboard?: boolean;
+  sidebar?: {
+    opened: boolean;
+    toggle: () => void;
+  };
+}) {
   const { user } = useUser();
   const { handleLogout } = useLogout();
-  const [opened, { toggle }] = useDisclosure();
   const { colorScheme, toggleColorScheme } = useMantineColorScheme();
+  const containerProps = {
+    size: fullWidth ? undefined : "xl"
+  };
   return (
     <AppShellHeader style={{ display: "flex", alignItems: "center" }}>
-      <Container size="xl" w="100%">
+      <Container w="100%" {...containerProps}>
         <Flex justify="space-between" align="center">
           <Group>
+            {sidebar && (
+              <Burger
+                hiddenFrom="sm"
+                opened={sidebar.opened}
+                onClick={sidebar.toggle}
+              />
+            )}
             <Anchor component={Link} to="/dashboard" underline="never">
               <AppLogo size="sm" />
             </Anchor>
-            <Flex ml="lg" gap="md">
-              <Anchor component={Link} to="/" size="sm" underline="never">
-                Home
-              </Anchor>
-              <Anchor
-                component={Link}
-                to="/leaderboard"
-                size="sm"
-                underline="never"
-              >
-                Leaderboard
-              </Anchor>
-              <Anchor
-                href="https://github.com/naimulcsx/progHours"
-                target="_blank"
-                size="sm"
-                underline="never"
-              >
-                Github
-              </Anchor>
-            </Flex>
+            {!isDashboard && (
+              <Flex ml="lg" gap="md">
+                <Anchor component={Link} to="/" size="sm" underline="never">
+                  Home
+                </Anchor>
+                <Anchor
+                  component={Link}
+                  to="/leaderboard"
+                  size="sm"
+                  underline="never"
+                >
+                  Leaderboard
+                </Anchor>
+                <Anchor
+                  href="https://github.com/naimulcsx/progHours"
+                  target="_blank"
+                  size="sm"
+                  underline="never"
+                >
+                  Github
+                </Anchor>
+              </Flex>
+            )}
           </Group>
           <Group>
             <Switch
@@ -92,7 +113,6 @@ export function Header() {
               </Menu>
             )}
           </Group>
-          <Burger opened={opened} onClick={toggle} hiddenFrom="sm" size="sm" />
         </Flex>
       </Container>
     </AppShellHeader>
