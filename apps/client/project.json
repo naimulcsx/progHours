@@ -4,20 +4,12 @@
   "sourceRoot": "apps/client/src",
   "projectType": "application",
   "targets": {
-    "build-captain": {
-      "executor": "nx:run-commands",
-      "options": {
-        "commands": ["nx build client", "ts-node scripts/build-captain-fe.ts"],
-        "parallel": false
-      }
-    },
     "build": {
       "executor": "@nx/vite:build",
       "outputs": ["{options.outputPath}"],
       "defaultConfiguration": "production",
       "options": {
-        "outputPath": "dist/apps/client",
-        "generatePackageJson": true
+        "outputPath": "dist/apps/client"
       },
       "configurations": {
         "development": {
@@ -32,12 +24,12 @@
       "executor": "@nx/vite:dev-server",
       "defaultConfiguration": "development",
       "options": {
-        "buildTarget": "client:build",
-        "proxyConfig": "apps/client/proxy.conf.json"
+        "buildTarget": "client:build"
       },
       "configurations": {
         "development": {
           "buildTarget": "client:build:development",
+          "proxyConfig": "apps/client/proxy.conf.json",
           "hmr": true
         },
         "production": {

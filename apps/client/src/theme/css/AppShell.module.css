@@ -1,0 +1,6 @@
+.header {
+  &[data-variant="mantine-shadcn-ui"] {
+    background-color: hsl(var(--background));
+    border-color: hsl(var(--border));
+  }
+}

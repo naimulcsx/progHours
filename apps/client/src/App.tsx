@@ -1,21 +1,19 @@
 import {
   Box,
-  ColorScheme,
   MantineProvider,
-  ColorSchemeProvider,
-  useMantineTheme
+  localStorageColorSchemeManager
 } from "@mantine/core";
-import { Notifications } from "@mantine/notifications";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { useLocation, useRoutes } from "react-router-dom";
-import theme from "~/styles/theme";
+import { BrowserRouter, useRoutes } from "react-router-dom";
+import { resolver, theme } from "./theme";
 import { getRoutes } from "./routes";
-import { useUser } from "./hooks/useUser";
-import { useLocalStorage } from "@mantine/hooks";
-import { useColorAccent } from "./contexts/ColorAccentContext";
-import { NavigationProgress, nprogress } from "@mantine/nprogress";
-import { ModalsProvider } from "@mantine/modals";
-import { useEffect } from "react";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+
+import "@mantine/core/styles.css";
+import "./theme/global.css";
+
+const colorSchemeManager = localStorageColorSchemeManager({
+  key: "proghours-color-scheme"
+});
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -25,64 +23,26 @@ const queryClient = new QueryClient({
   }
 });
 
-function Entry() {
-  const { user } = useUser();
-  const theme = useMantineTheme();
-  const page = useRoutes(getRoutes(!!user));
+function App() {
   return (
-    <Box
-      component="main"
-      sx={{
-        minHeight: "100vh",
-        background:
-          theme.colorScheme === "dark" ? theme.colors.dark[9] : theme.white
-      }}
-      className={theme.colorScheme}
-    >
-      {page}
-    </Box>
+    <BrowserRouter>
+      <MantineProvider
+        theme={theme}
+        defaultColorScheme="light"
+        colorSchemeManager={colorSchemeManager}
+        cssVariablesResolver={resolver}
+      >
+        <QueryClientProvider client={queryClient}>
+          <Entry />
+        </QueryClientProvider>
+      </MantineProvider>
+    </BrowserRouter>
   );
 }
 
-export function App() {
-  const [colorScheme, setColorScheme] = useLocalStorage<ColorScheme>({
-    key: "mantine-color-scheme",
-    defaultValue: "dark",
-    getInitialValueInEffect: false
-  });
-
-  const toggleColorScheme = (value?: ColorScheme) =>
-    setColorScheme(value || (colorScheme === "dark" ? "light" : "dark"));
-
-  const { accentColor } = useColorAccent();
-
-  const location = useLocation();
-
-  useEffect(() => {
-    nprogress.complete();
-  }, [location.pathname]);
-
-  return (
-    <ColorSchemeProvider
-      colorScheme={colorScheme}
-      toggleColorScheme={toggleColorScheme}
-    >
-      <MantineProvider
-        withGlobalStyles
-        withNormalizeCSS
-        withCSSVariables
-        theme={{ ...theme, colorScheme, primaryColor: accentColor }}
-      >
-        <ModalsProvider>
-          <NavigationProgress autoReset={true} />
-          <QueryClientProvider client={queryClient}>
-            <Entry />
-            <Notifications position="top-right" transitionDuration={400} />
-          </QueryClientProvider>
-        </ModalsProvider>
-      </MantineProvider>
-    </ColorSchemeProvider>
-  );
+function Entry() {
+  const children = useRoutes(getRoutes(false));
+  return <Box>{children}</Box>;
 }
 
 export default App;

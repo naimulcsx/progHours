@@ -16,12 +16,7 @@ export default defineConfig({
     host: "localhost"
   },
 
-  plugins: [
-    react(),
-    viteTsConfigPaths({
-      root: "../../"
-    })
-  ],
+  plugins: [react(), viteTsConfigPaths()]
 
   // Uncomment this if you are using workers.
   // worker: {
@@ -31,13 +26,16 @@ export default defineConfig({
   //    }),
   //  ],
   // },
-
-  test: {
-    globals: true,
-    cache: {
-      dir: "../../node_modules/.vitest"
-    },
-    environment: "jsdom",
-    include: ["src/**/*.{test,spec}.{js,mjs,cjs,ts,mts,cts,jsx,tsx}"]
-  }
+  // define: {
+  //   "import.meta.vitest": undefined
+  // },
+  // test: {
+  //   globals: true,
+  //   cache: {
+  //     dir: "../../node_modules/.vitest"
+  //   },
+  //   environment: "jsdom",
+  //   include: ["src/**/*.{test,spec}.{js,mjs,cjs,ts,mts,cts,jsx,tsx}"],
+  //   includeSource: ["src/**/*.{js,mjs,cjs,ts,mts,cts,jsx,tsx}"]
+  // }
 });

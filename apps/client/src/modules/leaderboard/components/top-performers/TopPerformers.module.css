@@ -1,0 +1,19 @@
+.root {
+  border-radius: var(--mantine-radius-md);
+  background: hsl(var(--primary) / 0.95);
+  position: relative;
+  overflow: hidden;
+}
+
+.card {
+  position: relative;
+  background: hsl(var(--secondary) / 0.1);
+  border-radius: var(--mantine-radius-md);
+  backdrop-filter: blur(4px);
+}
+
+.rank {
+  position: absolute;
+  top: 16px;
+  right: 24px;
+}
