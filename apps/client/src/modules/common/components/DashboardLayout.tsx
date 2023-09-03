@@ -1,4 +1,4 @@
-import { AppShell, AppShellProps } from "@mantine/core";
+import { AppShell, AppShellProps, Box } from "@mantine/core";
 import { Header } from "./Header";
 import { useDisclosure } from "@mantine/hooks";
 import { Sidebar } from "./Sidebar";
@@ -16,7 +16,9 @@ export function DashboardLayout({ children }: AppShellProps) {
     >
       <Header fullWidth isDashboard sidebar={{ opened, toggle }} />
       <Sidebar />
-      <AppShell.Main>{children}</AppShell.Main>
+      <AppShell.Main>
+        <Box p="lg">{children}</Box>
+      </AppShell.Main>
     </AppShell>
   );
 }

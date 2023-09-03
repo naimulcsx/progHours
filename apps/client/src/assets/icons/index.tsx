@@ -8,3 +8,7 @@ export * from "./IconUsers";
 export * from "./IconBarChart";
 export * from "./IconSettings";
 export * from "./IconLayoutAlt";
+export * from "./IconTime";
+export * from "./IconEnergy";
+export * from "./IconFlag";
+export * from "./IconPoints";

@@ -14,7 +14,10 @@ import {
   TextInput,
   PasswordInput,
   Input,
-  AppShellNavbar
+  AppShellNavbar,
+  NavLink,
+  SegmentedControl,
+  Paper
 } from "@mantine/core";
 
 import textClasses from "./css/Text.module.css";
@@ -28,6 +31,9 @@ import tableClasses from "./css/Table.module.css";
 import passwordInputClasses from "./css/PasswordInput.module.css";
 import textInputClasses from "./css/TextInput.module.css";
 import inputClasses from "./css/Input.module.css";
+import navlinkClasses from "./css/NavLink.module.css";
+import segmentedControlClasses from "./css/SegmentedControl.module.css";
+import paperClasses from "./css/Paper.module.css";
 
 export const resolver: CSSVariablesResolver = () => ({
   variables: {},
@@ -77,6 +83,7 @@ export const resolver: CSSVariablesResolver = () => ({
 });
 
 export const theme = createTheme({
+  fontFamily: "Rubik, sans-serif",
   defaultRadius: "md",
   shadows: {
     xs: "0 1px 2px 0 rgba(0,0,0,.05)"
@@ -165,6 +172,18 @@ export const theme = createTheme({
     Input: Input.extend({
       defaultProps: { variant: "proghours-ui" },
       classNames: inputClasses
+    }),
+    NavLink: NavLink.extend({
+      defaultProps: { variant: "proghours-ui" },
+      classNames: navlinkClasses
+    }),
+    SegmentedControl: SegmentedControl.extend({
+      defaultProps: { variant: "proghours-ui" },
+      classNames: segmentedControlClasses
+    }),
+    Paper: Paper.extend({
+      defaultProps: { variant: "proghours-ui" },
+      classNames: paperClasses
     })
   }
 });

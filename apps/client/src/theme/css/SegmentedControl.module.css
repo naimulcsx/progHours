@@ -1,0 +1,12 @@
+.root {
+  &[data-variant="proghours-ui"] {
+    @mixin light {
+      background: hsl(var(--secondary));
+      --sc-color: hsl(var(--background));
+    }
+    @mixin dark {
+      background: hsl(var(--secondary) / 0.4);
+      --sc-color: hsl(var(--secondary));
+    }
+  }
+}
