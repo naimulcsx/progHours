@@ -1,6 +1,7 @@
 import { AppShell, NavLink, SegmentedControl, Stack } from "@mantine/core";
 import { useLocalStorage } from "@mantine/hooks";
 import { Link, useLocation } from "react-router-dom";
+import { AppLogo } from "~/assets/AppLogo";
 import {
   IconBarChart,
   IconBookOpen,
@@ -21,6 +22,7 @@ export function Sidebar() {
   const links = userLinks;
   return (
     <AppShell.Navbar p="md">
+      <AppLogo size="md" mb="lg" />
       <SegmentedControl
         mt="xs"
         fullWidth

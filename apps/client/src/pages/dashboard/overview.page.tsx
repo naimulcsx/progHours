@@ -14,7 +14,7 @@ export default function OverviewPage() {
           <IconInfoCircle width={16} height={16} />
         </Tooltip>
       </Group>
-      <SimpleGrid mt="xl" cols={4}>
+      <SimpleGrid mt="lg" cols={4}>
         <StatCard
           icon={<IconPoints width={40} height={40} />}
           label="Points"

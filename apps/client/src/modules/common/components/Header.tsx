@@ -1,7 +1,6 @@
 import {
   Anchor,
   AppShellHeader,
-  Burger,
   Button,
   Container,
   Flex,
@@ -16,62 +15,40 @@ import { IconChevronDown, IconMoonStars, IconSun } from "@tabler/icons-react";
 import { useUser } from "~/modules/auth/hooks/useUser";
 import { useLogout } from "~/modules/auth/hooks/useLogout";
 
-export function Header({
-  fullWidth = false,
-  isDashboard = false,
-  sidebar
-}: {
-  fullWidth?: boolean;
-  isDashboard?: boolean;
-  sidebar?: {
-    opened: boolean;
-    toggle: () => void;
-  };
-}) {
+export function Header() {
   const { user } = useUser();
   const { handleLogout } = useLogout();
   const { colorScheme, toggleColorScheme } = useMantineColorScheme();
-  const containerProps = {
-    size: fullWidth ? undefined : "xl"
-  };
+
   return (
     <AppShellHeader style={{ display: "flex", alignItems: "center" }}>
-      <Container w="100%" {...containerProps}>
+      <Container w="100%" size="xl">
         <Flex justify="space-between" align="center">
           <Group>
-            {sidebar && (
-              <Burger
-                hiddenFrom="sm"
-                opened={sidebar.opened}
-                onClick={sidebar.toggle}
-              />
-            )}
             <Anchor component={Link} to="/dashboard" underline="never">
               <AppLogo size="sm" />
             </Anchor>
-            {!isDashboard && (
-              <Flex ml="lg" gap="md">
-                <Anchor component={Link} to="/" size="sm" underline="never">
-                  Home
-                </Anchor>
-                <Anchor
-                  component={Link}
-                  to="/leaderboard"
-                  size="sm"
-                  underline="never"
-                >
-                  Leaderboard
-                </Anchor>
-                <Anchor
-                  href="https://github.com/naimulcsx/progHours"
-                  target="_blank"
-                  size="sm"
-                  underline="never"
-                >
-                  Github
-                </Anchor>
-              </Flex>
-            )}
+            <Flex ml="lg" gap="md">
+              <Anchor component={Link} to="/" size="sm" underline="never">
+                Home
+              </Anchor>
+              <Anchor
+                component={Link}
+                to="/leaderboard"
+                size="sm"
+                underline="never"
+              >
+                Leaderboard
+              </Anchor>
+              <Anchor
+                href="https://github.com/naimulcsx/progHours"
+                target="_blank"
+                size="sm"
+                underline="never"
+              >
+                Github
+              </Anchor>
+            </Flex>
           </Group>
           <Group>
             <Switch
