@@ -9,6 +9,7 @@ import { getRoutes } from "./routes";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { Notifications } from "@mantine/notifications";
 import { HelmetProvider } from "react-helmet-async";
+import { useUser } from "./modules/auth/hooks/useUser";
 
 import "@mantine/core/styles.css";
 import "@mantine/notifications/styles.css";
@@ -38,7 +39,7 @@ function App() {
         <QueryClientProvider client={queryClient}>
           <HelmetProvider>
             <Entry />
-            <Notifications position="top-right" />
+            <Notifications position="top-center" />
           </HelmetProvider>
         </QueryClientProvider>
       </MantineProvider>
@@ -47,7 +48,8 @@ function App() {
 }
 
 function Entry() {
-  const children = useRoutes(getRoutes(false));
+  const { user } = useUser();
+  const children = useRoutes(getRoutes(!!user));
   return <Box>{children}</Box>;
 }
 

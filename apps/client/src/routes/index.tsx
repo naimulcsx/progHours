@@ -1,5 +1,5 @@
 import { ReactNode } from "react";
-import { RouteObject } from "react-router-dom";
+import { Navigate, RouteObject } from "react-router-dom";
 import SignInPage from "~/pages/auth/sign-in.page";
 import SignUpPage from "~/pages/auth/sign-up.page";
 
@@ -14,6 +14,12 @@ export const getRoutes = (isLoggedIn: boolean): RouteObject[] => [
     "/leaderboard",
     isLoggedIn ? <LeaderboardPage /> : <LeaderboardPage />
   ),
-  defineRoute("/auth/sign-in", isLoggedIn ? <SignInPage /> : <SignInPage />),
-  defineRoute("/auth/sign-up", isLoggedIn ? <SignUpPage /> : <SignUpPage />)
+  defineRoute(
+    "/auth/sign-in",
+    isLoggedIn ? <Navigate to="/" /> : <SignInPage />
+  ),
+  defineRoute(
+    "/auth/sign-up",
+    isLoggedIn ? <Navigate to="/" /> : <SignUpPage />
+  )
 ];

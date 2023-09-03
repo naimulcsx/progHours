@@ -7,14 +7,19 @@ import {
   Container,
   Flex,
   Group,
+  Menu,
   Switch,
   useMantineColorScheme
 } from "@mantine/core";
 import { AppLogo } from "~/assets/AppLogo";
 import { Link } from "react-router-dom";
-import { IconMoonStars, IconSun } from "@tabler/icons-react";
+import { IconChevronDown, IconMoonStars, IconSun } from "@tabler/icons-react";
+import { useUser } from "~/modules/auth/hooks/useUser";
+import { useLogout } from "~/modules/auth/hooks/useLogout";
 
 export function Header() {
+  const { user } = useUser();
+  const { handleLogout } = useLogout();
   const [opened, { toggle }] = useDisclosure();
   const { colorScheme, toggleColorScheme } = useMantineColorScheme();
   return (
@@ -56,12 +61,36 @@ export function Header() {
               onLabel={<IconSun size={16} stroke={1.5} />}
               offLabel={<IconMoonStars size={16} stroke={1.5} />}
             />
-            <Button component={Link} to="/auth/sign-in" variant="msu-secondary">
-              Sign In
-            </Button>
-            <Button component={Link} to="/auth/sign-up">
-              Sign Up
-            </Button>
+            {!user ? (
+              <>
+                <Button
+                  component={Link}
+                  to="/auth/sign-in"
+                  variant="msu-secondary"
+                >
+                  Sign In
+                </Button>
+                <Button component={Link} to="/auth/sign-up">
+                  Sign Up
+                </Button>
+              </>
+            ) : (
+              <Menu width={200}>
+                <Menu.Target>
+                  <Button
+                    variant="msu-secondary"
+                    rightSection={<IconChevronDown size={16} />}
+                  >
+                    {user.fullName}
+                  </Button>
+                </Menu.Target>
+                <Menu.Dropdown>
+                  <Menu.Item>Dashboard</Menu.Item>
+                  <Menu.Item>Settings</Menu.Item>
+                  <Menu.Item onClick={handleLogout}>Logout</Menu.Item>
+                </Menu.Dropdown>
+              </Menu>
+            )}
           </Group>
           <Burger opened={opened} onClick={toggle} hiddenFrom="sm" size="sm" />
         </Flex>
