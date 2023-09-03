@@ -128,18 +128,18 @@ export const theme = createTheme({
       classNames: textClasses
     }),
     AppShell: AppShell.extend({
-      defaultProps: { variant: "mantine-shadcn-ui" },
+      defaultProps: { variant: "proghours-ui" },
       classNames: appShellClasses
     }),
     AppShellHeader: AppShellHeader.extend({
-      defaultProps: { variant: "mantine-shadcn-ui" }
+      defaultProps: { variant: "proghours-ui" }
     }),
     Anchor: Anchor.extend({
-      defaultProps: { variant: "mantine-shadcn-ui" },
+      defaultProps: { variant: "proghours-ui" },
       classNames: anchorClasses
     }),
     ActionIcon: ActionIcon.extend({
-      defaultProps: { variant: "mantine-shadcn-ui" },
+      defaultProps: { variant: "proghours-ui" },
       classNames: actionIconClasses
     }),
     Select: Select.extend({

@@ -7,9 +7,11 @@ import { BrowserRouter, useRoutes } from "react-router-dom";
 import { resolver, theme } from "./theme";
 import { getRoutes } from "./routes";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { Notifications } from "@mantine/notifications";
 import { HelmetProvider } from "react-helmet-async";
 
 import "@mantine/core/styles.css";
+import "@mantine/notifications/styles.css";
 import "./theme/global.css";
 
 const colorSchemeManager = localStorageColorSchemeManager({
@@ -36,6 +38,7 @@ function App() {
         <QueryClientProvider client={queryClient}>
           <HelmetProvider>
             <Entry />
+            <Notifications position="top-right" />
           </HelmetProvider>
         </QueryClientProvider>
       </MantineProvider>

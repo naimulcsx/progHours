@@ -1,5 +1,5 @@
 .root {
-  &[data-variant="mantine-shadcn-ui"] {
+  &[data-variant="proghours-ui"] {
     --ai-size-xs: rem(22px);
     --ai-size-sm: rem(28px);
     --ai-size-md: rem(36px);

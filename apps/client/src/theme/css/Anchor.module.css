@@ -1,5 +1,5 @@
 .root {
-  &[data-variant="mantine-shadcn-ui"] {
+  &[data-variant="proghours-ui"] {
     font-weight: 500;
     color: hsl(var(--foreground) / 0.6);
     transition: color 0.15s;
