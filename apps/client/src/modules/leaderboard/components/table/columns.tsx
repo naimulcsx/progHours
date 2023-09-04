@@ -42,16 +42,11 @@ export const columns: ColumnDef<LeaderboardEntry>[] = [
               maw={210}
               lineClamp={1}
               variant="proghours-ui-strong"
-              fw={400}
               size="sm"
             >
               {fullName}
             </Text>
-            <Text
-              style={{ fontWeight: 400 }}
-              variant="proghours-ui-secondary"
-              size="sm"
-            >
+            <Text style={{ fontWeight: 400 }} size="sm">
               {username.toUpperCase()}
             </Text>
           </Box>

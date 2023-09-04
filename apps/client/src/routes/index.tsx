@@ -8,6 +8,7 @@ import HomePage from "~/pages/index.page";
 import LeaderboardPage from "~/pages/leaderboard.page";
 import DashboardLeaderboardPage from "~/pages/dashboard/leaderboard.page";
 import SubmissionsPage from "~/pages/dashboard/submissions.page";
+import SettingsPage from "~/pages/dashboard/settings.page";
 
 const defineRoute = (path: string, element: ReactNode) => ({ path, element });
 
@@ -32,5 +33,13 @@ export const getRoutes = (isLoggedIn: boolean): RouteObject[] => [
   defineRoute(
     "/submissions",
     isLoggedIn ? <SubmissionsPage /> : <Navigate to="/auth/login" />
+  ),
+  defineRoute(
+    "/settings",
+    isLoggedIn ? <SettingsPage /> : <Navigate to="/auth/sign-in" />
+  ),
+  defineRoute(
+    "/settings/:tabValue",
+    isLoggedIn ? <SettingsPage /> : <Navigate to="/auth/sign-in" />
   )
 ];
