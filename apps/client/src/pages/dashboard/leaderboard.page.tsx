@@ -1,5 +1,5 @@
 import { Flex, Group, Loader, Select, Title, Tooltip } from "@mantine/core";
-import { IconInfoCircle } from "@tabler/icons-react";
+import { IconInfoCircle } from "~/assets/icons";
 import { AnimatePresence } from "framer-motion";
 import { useState } from "react";
 import { FadeInTransition } from "~/modules/common/components/FadeInTransition";

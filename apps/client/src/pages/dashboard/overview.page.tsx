@@ -1,5 +1,5 @@
 import { Group, SimpleGrid, Title, Tooltip } from "@mantine/core";
-import { IconInfoCircle } from "@tabler/icons-react";
+import { IconInfoCircle } from "~/assets/icons";
 import { DashboardLayout } from "~/modules/common/components/DashboardLayout";
 import { StatCard } from "~/modules/dashboard/overview/components/StatCard";
 

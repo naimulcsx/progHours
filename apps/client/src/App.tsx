@@ -32,7 +32,7 @@ function App() {
     <BrowserRouter>
       <MantineProvider
         theme={theme}
-        defaultColorScheme="light"
+        defaultColorScheme="dark"
         colorSchemeManager={colorSchemeManager}
         cssVariablesResolver={resolver}
       >

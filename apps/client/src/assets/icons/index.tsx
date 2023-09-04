@@ -12,3 +12,4 @@ export * from "./IconTime";
 export * from "./IconEnergy";
 export * from "./IconFlag";
 export * from "./IconPoints";
+export * from "./IconInfoCircle";

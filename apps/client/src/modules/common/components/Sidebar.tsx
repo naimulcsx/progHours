@@ -28,6 +28,7 @@ export function Sidebar() {
         fullWidth
         value={selected}
         onChange={setSelected}
+        transitionDuration={0}
         data={[
           { label: "User", value: "REGULAR" },
           { label: "Admin", value: "ADMIN" }

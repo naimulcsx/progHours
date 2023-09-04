@@ -17,7 +17,8 @@ import {
   AppShellNavbar,
   NavLink,
   SegmentedControl,
-  Paper
+  Paper,
+  Badge
 } from "@mantine/core";
 
 import textClasses from "./css/Text.module.css";
@@ -34,6 +35,7 @@ import inputClasses from "./css/Input.module.css";
 import navlinkClasses from "./css/NavLink.module.css";
 import segmentedControlClasses from "./css/SegmentedControl.module.css";
 import paperClasses from "./css/Paper.module.css";
+import badgeClasses from "./css/Badge.module.css";
 
 export const resolver: CSSVariablesResolver = () => ({
   variables: {},
@@ -184,6 +186,10 @@ export const theme = createTheme({
     Paper: Paper.extend({
       defaultProps: { variant: "proghours-ui" },
       classNames: paperClasses
+    }),
+    Badge: Badge.extend({
+      defaultProps: { variant: "proghours-ui" },
+      classNames: badgeClasses
     })
   }
 });

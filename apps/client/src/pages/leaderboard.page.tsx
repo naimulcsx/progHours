@@ -1,5 +1,5 @@
 import { Flex, Group, Loader, Select, Title, Tooltip } from "@mantine/core";
-import { IconInfoCircle } from "@tabler/icons-react";
+import { IconInfoCircle } from "~/assets/icons";
 import { AnimatePresence } from "framer-motion";
 import { useState } from "react";
 import { FadeInTransition } from "~/modules/common/components/FadeInTransition";
@@ -17,7 +17,7 @@ export default function LeaderboardPage() {
       <Group justify="space-between">
         <Group style={{ alignItems: "center" }}>
           <Flex align="center" gap="xs">
-            <Title order={3}>Leaderboard </Title>
+            <Title order={3}>Leaderboard</Title>
             <Tooltip label="Latest data may experience a delay of up to 5 minutes.">
               <IconInfoCircle width={18} height={18} />
             </Tooltip>
