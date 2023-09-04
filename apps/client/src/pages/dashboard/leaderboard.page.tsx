@@ -1,4 +1,12 @@
-import { Flex, Group, Loader, Select, Title, Tooltip } from "@mantine/core";
+import {
+  Flex,
+  Group,
+  Loader,
+  Select,
+  Title,
+  Tooltip,
+  Transition
+} from "@mantine/core";
 import { IconInfoCircle } from "~/assets/icons";
 import { AnimatePresence } from "framer-motion";
 import { useState } from "react";
@@ -22,7 +30,13 @@ export default function DashboardLeaderboardPage() {
               <IconInfoCircle width={18} height={18} />
             </Tooltip>
           </Flex>
-          {isFetching && <Loader size="xs" />}
+          <Transition mounted={isFetching} transition="fade" duration={800}>
+            {(styles) => (
+              <div style={{ ...styles, display: "flex", alignItems: "center" }}>
+                <Loader size="xs" />
+              </div>
+            )}
+          </Transition>
         </Group>
         <Select
           value={type}

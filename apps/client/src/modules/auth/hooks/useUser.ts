@@ -2,6 +2,7 @@ import { storage } from "@proghours/data-access";
 import jwtDecode from "jwt-decode";
 
 type User = {
+  email: string;
   username: string;
   fullName: string;
   id: number;
@@ -19,6 +20,7 @@ export function useUser() {
         fullName: string;
         sub: number;
         role: string;
+        email: string;
       }>(token);
       const currentTimestamp = Math.floor(Date.now() / 1000);
       if (currentTimestamp < decoded.exp) {
@@ -26,7 +28,8 @@ export function useUser() {
           id: decoded.sub,
           username: decoded.username,
           fullName: decoded.fullName,
-          role: decoded.role
+          role: decoded.role,
+          email: decoded.email
         };
       }
     } catch {

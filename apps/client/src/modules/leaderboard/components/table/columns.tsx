@@ -42,7 +42,8 @@ export const columns: ColumnDef<LeaderboardEntry>[] = [
               maw={210}
               lineClamp={1}
               variant="proghours-ui-strong"
-              fw={500}
+              fw={400}
+              size="sm"
             >
               {fullName}
             </Text>

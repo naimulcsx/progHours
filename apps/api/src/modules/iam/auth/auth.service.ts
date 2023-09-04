@@ -85,7 +85,8 @@ export class AuthService {
       await this.signToken(user.id, this.jwtConfiguration.accessTokenTtl, {
         username: user.username,
         fullName: user.fullName,
-        role: user.role
+        role: user.role,
+        email: user.email
       })
     ]);
     return {

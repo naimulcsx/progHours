@@ -2,6 +2,7 @@ import { createParamDecorator, ExecutionContext } from "@nestjs/common";
 
 export type ActiveUserData = {
   sub: number;
+  email: string;
   username: string;
   role: string;
   iat: number;
