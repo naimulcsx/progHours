@@ -25,7 +25,7 @@ export function Header() {
       <Container w="100%" size="xl">
         <Flex justify="space-between" align="center">
           <Group>
-            <Anchor component={Link} to="/dashboard" underline="never">
+            <Anchor component={Link} to="/" underline="never">
               <AppLogo size="sm" />
             </Anchor>
             <Flex ml="lg" gap="md">
@@ -83,8 +83,12 @@ export function Header() {
                   </Button>
                 </Menu.Target>
                 <Menu.Dropdown>
-                  <Menu.Item>Dashboard</Menu.Item>
-                  <Menu.Item>Settings</Menu.Item>
+                  <Menu.Item component={Link} to="/overview">
+                    Dashboard
+                  </Menu.Item>
+                  <Menu.Item component={Link} to="/settings/appearance">
+                    Settings
+                  </Menu.Item>
                   <Menu.Item onClick={handleLogout}>Logout</Menu.Item>
                 </Menu.Dropdown>
               </Menu>

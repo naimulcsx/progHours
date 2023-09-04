@@ -39,6 +39,7 @@ export default function LeaderboardPage() {
           </Transition>
         </Group>
         <Select
+          size="xs"
           value={type}
           withCheckIcon={false}
           defaultValue="full"

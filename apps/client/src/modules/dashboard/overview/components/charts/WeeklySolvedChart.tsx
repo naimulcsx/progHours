@@ -24,9 +24,7 @@ export const WeeklySolvedChart = () => {
     number,
     number
   ];
-  hsl[2] = 65;
   const __color = "#" + convert.hsl.hex(hsl);
-
   useEffect(() => {
     viewport?.current?.scrollTo({
       left: viewport.current.scrollWidth,
