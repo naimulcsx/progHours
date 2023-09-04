@@ -1,9 +1,10 @@
-import { Group, SimpleGrid, Title, Tooltip } from "@mantine/core";
+import { Group, Paper, SimpleGrid, Title, Tooltip } from "@mantine/core";
 import { IconInfoCircle } from "~/assets/icons";
 import { DashboardLayout } from "~/modules/common/components/DashboardLayout";
 import { StatCard } from "~/modules/dashboard/overview/components/StatCard";
 
 import { IconEnergy, IconFlag, IconPoints, IconTime } from "~/assets/icons";
+import { WeeklySolvedChart } from "~/modules/dashboard/overview/components/charts/WeeklySolvedChart";
 
 export default function OverviewPage() {
   return (
@@ -35,6 +36,11 @@ export default function OverviewPage() {
           label="Average Difficulty"
           value="1004.76"
         />
+      </SimpleGrid>
+      <SimpleGrid mt="md" cols={2}>
+        <Paper p="lg">
+          <WeeklySolvedChart />
+        </Paper>
       </SimpleGrid>
     </DashboardLayout>
   );

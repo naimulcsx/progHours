@@ -1,7 +1,8 @@
 import {
   Box,
   MantineProvider,
-  localStorageColorSchemeManager
+  localStorageColorSchemeManager,
+  useMantineColorScheme
 } from "@mantine/core";
 import { BrowserRouter, useRoutes } from "react-router-dom";
 import { resolvers, theme } from "./theme";
@@ -14,6 +15,7 @@ import { useUser } from "./modules/auth/hooks/useUser";
 import "@mantine/core/styles.css";
 import "@mantine/notifications/styles.css";
 import "./theme/global.css";
+
 import { useAccentColor } from "./modules/common/contexts/AccentColorContext";
 
 const colorSchemeManager = localStorageColorSchemeManager({
@@ -51,8 +53,9 @@ function App() {
 
 function Entry() {
   const { user } = useUser();
+  const { colorScheme } = useMantineColorScheme();
   const children = useRoutes(getRoutes(!!user));
-  return <Box>{children}</Box>;
+  return <Box className={colorScheme}>{children}</Box>;
 }
 
 export default App;

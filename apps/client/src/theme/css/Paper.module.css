@@ -2,7 +2,7 @@
   &[data-variant="proghours-ui"] {
     background: linear-gradient(
       to bottom right,
-      hsl(var(--secondary) / 0.7),
+      hsl(var(--secondary) / 0.75),
       hsl(var(--secondary) / 0.5)
     );
     @mixin dark {
