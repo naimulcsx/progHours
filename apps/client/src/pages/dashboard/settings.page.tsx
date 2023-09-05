@@ -15,7 +15,7 @@ export default function SettingsPage() {
     : "appearance";
   return (
     <DashboardLayout>
-      <Container>
+      <Container size="md">
         <Group>
           <Title order={2}>Settings</Title>
         </Group>

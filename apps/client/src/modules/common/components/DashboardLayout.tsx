@@ -7,7 +7,7 @@ export function DashboardLayout({ children }: AppShellProps) {
   return (
     <AppShell
       navbar={{
-        width: 280,
+        width: 260,
         breakpoint: "sm",
         collapsed: { mobile: !opened }
       }}

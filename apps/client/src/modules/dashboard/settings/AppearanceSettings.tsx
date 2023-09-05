@@ -17,7 +17,13 @@ import {
 } from "~/modules/common/contexts/AccentColorContext";
 import { resolvers } from "~/theme";
 
-const accentColors: AccentColor[] = ["green", "violet", "blue"];
+const accentColors: AccentColor[] = [
+  "green",
+  "violet",
+  "blue",
+  "orange",
+  "rose"
+];
 
 export function AppearanceSettings() {
   const { colorScheme, toggleColorScheme } = useMantineColorScheme();

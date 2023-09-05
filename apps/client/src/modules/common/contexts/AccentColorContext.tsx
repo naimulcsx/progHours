@@ -7,7 +7,7 @@ import {
   useContext
 } from "react";
 
-export type AccentColor = "blue" | "violet" | "green";
+export type AccentColor = "blue" | "violet" | "green" | "orange" | "rose";
 
 const AccentColorContext = createContext<
   | {

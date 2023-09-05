@@ -13,10 +13,10 @@ export function StatCard({ icon, label, value }: StatCardProps) {
       <Group>
         {icon}
         <Box>
-          <Title order={5} fw={500}>
+          <Title order={5} fw={700}>
             {label}
           </Title>
-          <Text fw={700} size="xl">
+          <Text fw={400} size="xl" variant="proghours-ui-secondary">
             {value}
           </Text>
         </Box>

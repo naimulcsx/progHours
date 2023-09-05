@@ -15,3 +15,9 @@
     /* --_input-disabled-color: red; */
   }
 }
+
+.option {
+  &:hover {
+    background: hsl(var(--secondary));
+  }
+}

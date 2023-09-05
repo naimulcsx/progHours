@@ -40,10 +40,10 @@ export const Countdown = () => {
 
   return (
     <Flex align="end" direction="column">
-      <Title order={5} style={{ color: "white" }}>
+      <Title order={5} style={{ color: "hsl(var(--primary-foreground)" }}>
         Week Ends in
       </Title>
-      <Text size="xl" style={{ color: "white" }}>
+      <Text size="xl" style={{ color: "hsl(var(--primary-foreground)" }}>
         {countdown.days}d {countdown.hours}h {countdown.minutes}m{" "}
         {countdown.seconds}s
       </Text>
