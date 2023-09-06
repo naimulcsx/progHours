@@ -16,6 +16,7 @@ import { NavigationProgress, nprogress } from "@mantine/nprogress";
 import "@mantine/core/styles.css";
 import "@mantine/notifications/styles.css";
 import "@mantine/nprogress/styles.css";
+import "@mantine/dates/styles.css";
 import "./theme/global.css";
 
 import { useAccentColor } from "./modules/common/contexts/AccentColorContext";
