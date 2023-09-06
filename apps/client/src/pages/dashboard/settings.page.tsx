@@ -1,5 +1,7 @@
-import { Container, Group, Tabs, Title } from "@mantine/core";
 import { useNavigate, useParams } from "react-router-dom";
+
+import { Container, Group, Tabs, Title } from "@mantine/core";
+
 import { DashboardLayout } from "~/modules/common/components/DashboardLayout";
 import { AppearanceSettings } from "~/modules/dashboard/settings/AppearanceSettings";
 import { HandlesSettings } from "~/modules/dashboard/settings/HandleSettings";

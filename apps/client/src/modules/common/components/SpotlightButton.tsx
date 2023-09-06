@@ -1,5 +1,6 @@
 import { Button, Text, useMantineTheme } from "@mantine/core";
 import { openSpotlight } from "@mantine/spotlight";
+
 import { IconSearch } from "~/assets/icons";
 
 export default function SpotlightButton() {

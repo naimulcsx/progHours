@@ -1,11 +1,14 @@
 import { ColumnDef } from "@tanstack/react-table";
-import { SubmissionRow } from "@proghours/data-access";
-import { ProblemName } from "./cell/ProblemName";
-import { VerdictCell } from "./cell/Verdict";
-import { SolveTimeCell } from "./cell/SolveTime";
+
 import { Badge, Group } from "@mantine/core";
-import { SolvedAtCell } from "./cell/SolvedAt";
+
 import { ActionsCell } from "./cell/Actions";
+import { ProblemName } from "./cell/ProblemName";
+import { SolveTimeCell } from "./cell/SolveTime";
+import { SolvedAtCell } from "./cell/SolvedAt";
+import { VerdictCell } from "./cell/Verdict";
+
+import { SubmissionRow } from "@proghours/data-access";
 
 export const columns: ColumnDef<SubmissionRow>[] = [
   {

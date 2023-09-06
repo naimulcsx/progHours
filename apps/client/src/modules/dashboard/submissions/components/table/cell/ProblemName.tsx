@@ -1,25 +1,28 @@
-import { ReactNode } from "react";
-import { SubmissionRow } from "@proghours/data-access";
-import { Box, Group, Text, Title } from "@mantine/core";
-import {
-  CFIcon,
-  CCIcon,
-  SPOJIcon,
-  ACIcon,
-  LOJIcon,
-  UVAIcon,
-  CSESIcon,
-  TophIcon,
-  EOlympIcon,
-  BCIcon,
-  HRIcon,
-  LCIcon,
-  TimusIcon,
-  CTWIcon,
-  HEIcon,
-  KattisIcon
-} from "~/assets/oj-icons";
 import { CellContext } from "@tanstack/react-table";
+import { ReactNode } from "react";
+
+import { Box, Group, Text, Title } from "@mantine/core";
+
+import {
+  ACIcon,
+  BCIcon,
+  CCIcon,
+  CFIcon,
+  CSESIcon,
+  CTWIcon,
+  EOlympIcon,
+  HEIcon,
+  HRIcon,
+  KattisIcon,
+  LCIcon,
+  LOJIcon,
+  SPOJIcon,
+  TimusIcon,
+  TophIcon,
+  UVAIcon
+} from "~/assets/oj-icons";
+
+import { SubmissionRow } from "@proghours/data-access";
 
 const iconMap = [
   { prefix: "Gym-", icon: <CFIcon /> },

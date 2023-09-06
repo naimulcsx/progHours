@@ -1,12 +1,15 @@
-import { SubmissionRow } from "@proghours/data-access";
 import {
   flexRender,
   getCoreRowModel,
   getPaginationRowModel,
   useReactTable
 } from "@tanstack/react-table";
-import { columns } from "./columns";
+
 import { Group, Pagination, ScrollArea, Table, Text } from "@mantine/core";
+
+import { columns } from "./columns";
+
+import { SubmissionRow } from "@proghours/data-access";
 
 interface DataTableProps {
   data: SubmissionRow[];

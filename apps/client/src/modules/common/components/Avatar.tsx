@@ -1,4 +1,4 @@
-import { Avatar as MantineAvatar, AvatarProps } from "@mantine/core";
+import { AvatarProps, Avatar as MantineAvatar } from "@mantine/core";
 
 export function Avatar({
   fullName,

@@ -1,5 +1,6 @@
+import { useEffect, useState } from "react";
+
 import { Flex, Text, Title } from "@mantine/core";
-import React, { useState, useEffect } from "react";
 
 export const Countdown = () => {
   const [countdown, setCountdown] = useState({

@@ -1,5 +1,6 @@
-import { Box, Group, Paper, Text, Title } from "@mantine/core";
 import { ReactNode } from "react";
+
+import { Box, Group, Paper, Text, Title } from "@mantine/core";
 
 export interface StatCardProps {
   icon: ReactNode;

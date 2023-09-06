@@ -1,3 +1,8 @@
+import { ApexOptions } from "apexcharts";
+import convert from "color-convert";
+import { useEffect, useRef } from "react";
+import Chart from "react-apexcharts";
+
 import {
   Box,
   ScrollArea,
@@ -5,12 +10,9 @@ import {
   useMantineColorScheme,
   useMantineTheme
 } from "@mantine/core";
-import Chart from "react-apexcharts";
-import { ApexOptions } from "apexcharts";
-import { useEffect, useRef } from "react";
+
 import { useAccentColor } from "~/modules/common/contexts/AccentColorContext";
 import { resolvers } from "~/theme";
-import convert from "color-convert";
 
 export const WeeklySolvedChart = () => {
   const totalItems = 20;

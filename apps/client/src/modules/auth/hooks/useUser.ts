@@ -1,5 +1,6 @@
-import { storage } from "@proghours/data-access";
 import jwtDecode from "jwt-decode";
+
+import { storage } from "@proghours/data-access";
 
 type User = {
   email: string;

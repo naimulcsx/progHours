@@ -1,5 +1,6 @@
-import { Group, GroupProps, Text } from "@mantine/core";
 import { SVGProps } from "react";
+
+import { Group, GroupProps, Text } from "@mantine/core";
 
 export function AppIcon(props: SVGProps<SVGSVGElement>) {
   return (

@@ -1,26 +1,26 @@
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { useEffect } from "react";
+import { HelmetProvider } from "react-helmet-async";
+import { BrowserRouter, useLocation, useRoutes } from "react-router-dom";
+
 import {
   Box,
   MantineProvider,
   localStorageColorSchemeManager,
   useMantineColorScheme
 } from "@mantine/core";
-import { BrowserRouter, useLocation, useRoutes } from "react-router-dom";
-import { resolvers, theme } from "./theme";
-import { getRoutes } from "./routes";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { Notifications } from "@mantine/notifications";
-import { HelmetProvider } from "react-helmet-async";
-import { useUser } from "./modules/auth/hooks/useUser";
-import { NavigationProgress, nprogress } from "@mantine/nprogress";
-
 import "@mantine/core/styles.css";
-import "@mantine/notifications/styles.css";
-import "@mantine/nprogress/styles.css";
 import "@mantine/dates/styles.css";
-import "./theme/global.css";
+import { Notifications } from "@mantine/notifications";
+import "@mantine/notifications/styles.css";
+import { NavigationProgress, nprogress } from "@mantine/nprogress";
+import "@mantine/nprogress/styles.css";
 
+import { useUser } from "./modules/auth/hooks/useUser";
 import { useAccentColor } from "./modules/common/contexts/AccentColorContext";
-import { useEffect } from "react";
+import { getRoutes } from "./routes";
+import { resolvers, theme } from "./theme";
+import "./theme/global.css";
 
 const colorSchemeManager = localStorageColorSchemeManager({
   key: "proghours-color-scheme"

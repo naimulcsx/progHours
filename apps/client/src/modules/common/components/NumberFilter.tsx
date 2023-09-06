@@ -1,3 +1,7 @@
+import { IconFilter } from "@tabler/icons-react";
+import { Table } from "@tanstack/react-table";
+import { useState } from "react";
+
 import {
   ActionIcon,
   Button,
@@ -6,9 +10,6 @@ import {
   Stack,
   TextInput
 } from "@mantine/core";
-import { IconFilter } from "@tabler/icons-react";
-import { Table } from "@tanstack/react-table";
-import { useState } from "react";
 
 type FilterType = "gte" | "lte" | "eq";
 

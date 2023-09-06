@@ -1,3 +1,5 @@
+import { Link, useLocation } from "react-router-dom";
+
 import {
   ActionIcon,
   AppShell,
@@ -9,7 +11,7 @@ import {
   Text
 } from "@mantine/core";
 import { useLocalStorage } from "@mantine/hooks";
-import { Link, useLocation } from "react-router-dom";
+
 import { AppLogo } from "~/assets/AppLogo";
 import {
   IconBarChart,
@@ -20,11 +22,12 @@ import {
   IconTable,
   IconUsers
 } from "~/assets/icons";
-import SpotlightButton from "./SpotlightButton";
-import { Avatar } from "./Avatar";
-import { useUser } from "~/modules/auth/hooks/useUser";
-import { useLogout } from "~/modules/auth/hooks/useLogout";
 import { IconLogout } from "~/assets/icons/IconLogout";
+import { useLogout } from "~/modules/auth/hooks/useLogout";
+import { useUser } from "~/modules/auth/hooks/useUser";
+
+import { Avatar } from "./Avatar";
+import SpotlightButton from "./SpotlightButton";
 
 export function Sidebar() {
   const { pathname } = useLocation();

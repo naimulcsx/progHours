@@ -1,3 +1,6 @@
+import { IconCheck } from "@tabler/icons-react";
+import { z } from "zod";
+
 import {
   Box,
   Button,
@@ -9,9 +12,8 @@ import {
 } from "@mantine/core";
 import { useForm, zodResolver } from "@mantine/form";
 import { notifications } from "@mantine/notifications";
+
 import { useActiveUser, usePasswordMutation } from "@proghours/data-access";
-import { IconCheck } from "@tabler/icons-react";
-import { z } from "zod";
 
 const passwordUpdateSchema = z.object({
   currentPassword: z.string().min(8),

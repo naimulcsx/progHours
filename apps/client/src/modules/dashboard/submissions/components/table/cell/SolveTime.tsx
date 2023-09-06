@@ -1,14 +1,16 @@
+import { IconCheck } from "@tabler/icons-react";
 import { useQueryClient } from "@tanstack/react-query";
-import { useRef, useState, KeyboardEvent } from "react";
+import { CellContext } from "@tanstack/react-table";
+import { KeyboardEvent, useRef, useState } from "react";
+
 import { TextInput } from "@mantine/core";
+import { notifications } from "@mantine/notifications";
+
 import {
   SubmissionRow,
   getSubmissions,
   useUpdateSubmissionMutation
 } from "@proghours/data-access";
-import { notifications } from "@mantine/notifications";
-import { IconCheck } from "@tabler/icons-react";
-import { CellContext } from "@tanstack/react-table";
 
 export function SolveTimeCell(cell: CellContext<SubmissionRow, unknown>) {
   const { id } = cell.row.original;

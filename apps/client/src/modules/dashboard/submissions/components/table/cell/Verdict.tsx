@@ -1,20 +1,22 @@
+import { Verdict } from "@prisma/client";
+import { IconCheck, IconSelector } from "@tabler/icons-react";
+import { useQueryClient } from "@tanstack/react-query";
+import { CellContext } from "@tanstack/react-table";
 import { useState } from "react";
+
 import {
   MantineTheme,
   Select,
   useMantineColorScheme,
   useMantineTheme
 } from "@mantine/core";
-import { IconCheck, IconSelector } from "@tabler/icons-react";
-import { useQueryClient } from "@tanstack/react-query";
+import { notifications } from "@mantine/notifications";
+
 import {
   SubmissionRow,
   getSubmissions,
   useUpdateSubmissionMutation
 } from "@proghours/data-access";
-import { Verdict } from "@prisma/client";
-import { notifications } from "@mantine/notifications";
-import { CellContext } from "@tanstack/react-table";
 
 const getStyles = (theme: MantineTheme) => ({
   AC: {

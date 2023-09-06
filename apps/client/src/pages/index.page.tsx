@@ -1,4 +1,5 @@
 import { Button, Group, Stack, Text, Title } from "@mantine/core";
+
 import { Layout } from "~/modules/common/components/Layout";
 
 export default function HomePage() {

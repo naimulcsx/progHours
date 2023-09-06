@@ -1,3 +1,5 @@
+import { memo } from "react";
+
 import {
   Box,
   Group,
@@ -6,16 +8,17 @@ import {
   Title,
   useMantineTheme
 } from "@mantine/core";
-import { LeaderboardEntry } from "@proghours/data-access";
-import { Countdown } from "../Countdown";
-import { memo } from "react";
+
 import {
   IconFirstPlace,
   IconSecondPlace,
   IconThirdPlace
 } from "~/assets/icons";
 
+import { Countdown } from "../Countdown";
 import classes from "./TopPerformers.module.css";
+
+import { LeaderboardEntry } from "@proghours/data-access";
 
 export const TopPerformers = memo(function ({
   topUsers

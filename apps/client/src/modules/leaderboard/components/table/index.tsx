@@ -1,4 +1,3 @@
-import { Group, Pagination, ScrollArea, Table, Text } from "@mantine/core";
 import {
   ColumnFiltersState,
   SortingState,
@@ -12,10 +11,14 @@ import {
   getSortedRowModel,
   useReactTable
 } from "@tanstack/react-table";
-import { LeaderboardEntry } from "@proghours/data-access";
-import { columns } from "./columns";
 import { memo, useState } from "react";
+
+import { Group, Pagination, ScrollArea, Table, Text } from "@mantine/core";
 import { useLocalStorage } from "@mantine/hooks";
+
+import { columns } from "./columns";
+
+import { LeaderboardEntry } from "@proghours/data-access";
 
 interface DataTableProps {
   data: LeaderboardEntry[];

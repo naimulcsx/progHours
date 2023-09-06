@@ -1,3 +1,5 @@
+import { PropsWithChildren } from "react";
+
 import {
   Box,
   ColorSwatch,
@@ -10,7 +12,7 @@ import {
   useMantineColorScheme,
   useMantineTheme
 } from "@mantine/core";
-import { PropsWithChildren } from "react";
+
 import {
   AccentColor,
   useAccentColor

@@ -1,52 +1,53 @@
 import {
-  Button,
-  Text,
-  createTheme,
-  CSSVariablesResolver,
-  rem,
+  ActionIcon,
+  Anchor,
   AppShell,
   AppShellHeader,
-  Anchor,
-  ActionIcon,
+  AppShellNavbar,
+  Badge,
+  Button,
+  CSSVariablesResolver,
+  Divider,
+  Input,
+  Menu,
+  NavLink,
+  Notification,
+  Paper,
+  PasswordInput,
+  Popover,
+  SegmentedControl,
   Select,
   Table,
-  Title,
-  TextInput,
-  PasswordInput,
-  Input,
-  AppShellNavbar,
-  NavLink,
-  SegmentedControl,
-  Paper,
-  Badge,
   Tabs,
-  Popover,
-  Divider,
-  Notification,
-  Menu
+  Text,
+  TextInput,
+  Title,
+  createTheme,
+  rem
 } from "@mantine/core";
+
 import { AccentColor } from "~/modules/common/contexts/AccentColorContext";
 
-import textClasses from "./css/Text.module.css";
-import titleClasses from "./css/Title.module.css";
-import buttonClasses from "./css/Button.module.css";
+import actionIconClasses from "./css/ActionIcon.module.css";
 import anchorClasses from "./css/Anchor.module.css";
 import appShellClasses from "./css/AppShell.module.css";
-import actionIconClasses from "./css/ActionIcon.module.css";
+import badgeClasses from "./css/Badge.module.css";
+import buttonClasses from "./css/Button.module.css";
+import dividerClasses from "./css/Divider.module.css";
+import inputClasses from "./css/Input.module.css";
+import menuClasses from "./css/Menu.module.css";
+import navlinkClasses from "./css/NavLink.module.css";
+import notificationClasses from "./css/Notification.module.css";
+import paperClasses from "./css/Paper.module.css";
+import passwordInputClasses from "./css/PasswordInput.module.css";
+import popoverClasses from "./css/Popover.module.css";
+import segmentedControlClasses from "./css/SegmentedControl.module.css";
 import selectClasses from "./css/Select.module.css";
 import tableClasses from "./css/Table.module.css";
-import passwordInputClasses from "./css/PasswordInput.module.css";
-import textInputClasses from "./css/TextInput.module.css";
-import inputClasses from "./css/Input.module.css";
-import navlinkClasses from "./css/NavLink.module.css";
-import segmentedControlClasses from "./css/SegmentedControl.module.css";
-import paperClasses from "./css/Paper.module.css";
-import badgeClasses from "./css/Badge.module.css";
 import tabsClasses from "./css/Tabs.module.css";
-import popoverClasses from "./css/Popover.module.css";
-import dividerClasses from "./css/Divider.module.css";
-import notificationClasses from "./css/Notification.module.css";
-import menuClasses from "./css/Menu.module.css";
+import textClasses from "./css/Text.module.css";
+import textInputClasses from "./css/TextInput.module.css";
+import titleClasses from "./css/Title.module.css";
 
 export const resolvers: Record<AccentColor, CSSVariablesResolver> = {
   blue: () => ({

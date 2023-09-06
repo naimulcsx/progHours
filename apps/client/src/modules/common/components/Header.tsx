@@ -1,3 +1,6 @@
+import { IconChevronDown, IconMoonStars, IconSun } from "@tabler/icons-react";
+import { Link } from "react-router-dom";
+
 import {
   Anchor,
   AppShellHeader,
@@ -9,11 +12,10 @@ import {
   Switch,
   useMantineColorScheme
 } from "@mantine/core";
+
 import { AppLogo } from "~/assets/AppLogo";
-import { Link } from "react-router-dom";
-import { IconChevronDown, IconMoonStars, IconSun } from "@tabler/icons-react";
-import { useUser } from "~/modules/auth/hooks/useUser";
 import { useLogout } from "~/modules/auth/hooks/useLogout";
+import { useUser } from "~/modules/auth/hooks/useUser";
 
 export function Header() {
   const { user } = useUser();

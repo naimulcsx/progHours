@@ -1,14 +1,16 @@
+import { IconCheck } from "@tabler/icons-react";
+import { useQueryClient } from "@tanstack/react-query";
+import { CellContext } from "@tanstack/react-table";
+import moment from "moment";
 import { useState } from "react";
+
 import { DatePickerInput } from "@mantine/dates";
+import { notifications } from "@mantine/notifications";
+
 import {
   SubmissionRow,
   useUpdateSubmissionMutation
 } from "@proghours/data-access";
-import { useQueryClient } from "@tanstack/react-query";
-import { IconCheck } from "@tabler/icons-react";
-import { notifications } from "@mantine/notifications";
-import moment from "moment";
-import { CellContext } from "@tanstack/react-table";
 
 export function SolvedAtCell(cell: CellContext<SubmissionRow, unknown>) {
   const queryClient = useQueryClient();

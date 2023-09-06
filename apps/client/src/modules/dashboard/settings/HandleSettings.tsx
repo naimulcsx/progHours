@@ -1,4 +1,5 @@
 import { Alert, Box, Button, Grid, TextInput } from "@mantine/core";
+
 import { IconInfoSquare } from "~/assets/icons/IconInfoSquare";
 
 export function HandlesSettings() {

@@ -1,10 +1,12 @@
-import { useForm, zodResolver } from "@mantine/form";
-import { Box, Button, Divider, Grid, Select, TextInput } from "@mantine/core";
-import { useActiveUser, useUserMutation } from "@proghours/data-access";
+import { IconCheck } from "@tabler/icons-react";
 import { useEffect } from "react";
 import { z } from "zod";
+
+import { Box, Button, Divider, Grid, Select, TextInput } from "@mantine/core";
+import { useForm, zodResolver } from "@mantine/form";
 import { notifications } from "@mantine/notifications";
-import { IconCheck } from "@tabler/icons-react";
+
+import { useActiveUser, useUserMutation } from "@proghours/data-access";
 
 const userUpdateSchema = z.object({
   fullName: z.string().min(8),

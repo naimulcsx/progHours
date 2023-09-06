@@ -1,6 +1,8 @@
-import { AppShell, Container } from "@mantine/core";
-import { Header } from "./Header";
 import { PropsWithChildren } from "react";
+
+import { AppShell, Container } from "@mantine/core";
+
+import { Header } from "./Header";
 
 export function Layout({ children }: PropsWithChildren) {
   return (

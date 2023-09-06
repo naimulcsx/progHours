@@ -1,9 +1,9 @@
 import { Group, Paper, SimpleGrid, Title, Tooltip } from "@mantine/core";
+
 import { IconInfoCircle } from "~/assets/icons";
+import { IconEnergy, IconFlag, IconPoints, IconTime } from "~/assets/icons";
 import { DashboardLayout } from "~/modules/common/components/DashboardLayout";
 import { StatCard } from "~/modules/dashboard/overview/components/StatCard";
-
-import { IconEnergy, IconFlag, IconPoints, IconTime } from "~/assets/icons";
 import { WeeklySolvedChart } from "~/modules/dashboard/overview/components/charts/WeeklySolvedChart";
 
 export default function OverviewPage() {

@@ -1,3 +1,6 @@
+import { AnimatePresence } from "framer-motion";
+import { useState } from "react";
+
 import {
   Flex,
   Group,
@@ -7,14 +10,14 @@ import {
   Tooltip,
   Transition
 } from "@mantine/core";
+
 import { IconInfoCircle } from "~/assets/icons";
-import { AnimatePresence } from "framer-motion";
-import { useState } from "react";
+import { DashboardLayout } from "~/modules/common/components/DashboardLayout";
 import { FadeInTransition } from "~/modules/common/components/FadeInTransition";
-import { LeaderboardType, useLeaderboard } from "@proghours/data-access";
 import { LeaderboardDataTable } from "~/modules/leaderboard/components/table";
 import { TopPerformers } from "~/modules/leaderboard/components/top-performers/TopPerformers";
-import { DashboardLayout } from "~/modules/common/components/DashboardLayout";
+
+import { LeaderboardType, useLeaderboard } from "@proghours/data-access";
 
 export default function DashboardLeaderboardPage() {
   const [type, setType] = useState<LeaderboardType>("full");

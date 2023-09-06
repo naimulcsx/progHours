@@ -1,6 +1,7 @@
-import { Box, BoxProps } from "@mantine/core";
 import { motion } from "framer-motion";
 import { PropsWithChildren } from "react";
+
+import { Box, BoxProps } from "@mantine/core";
 
 export function FadeInTransition({
   children,

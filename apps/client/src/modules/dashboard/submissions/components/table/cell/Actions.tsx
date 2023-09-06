@@ -1,19 +1,21 @@
-import { ActionIcon, Menu, Text, Title } from "@mantine/core";
 import {
   IconCheck,
   IconDots,
   IconReload,
   IconTrash
 } from "@tabler/icons-react";
+import { useQueryClient } from "@tanstack/react-query";
+import { CellContext } from "@tanstack/react-table";
+
+import { ActionIcon, Menu, Text, Title } from "@mantine/core";
+import { modals } from "@mantine/modals";
+import { notifications } from "@mantine/notifications";
+
 import {
   SubmissionRow,
   useDeleteSubmission,
   useRefetchProblem
 } from "@proghours/data-access";
-import { useQueryClient } from "@tanstack/react-query";
-import { notifications } from "@mantine/notifications";
-import { modals } from "@mantine/modals";
-import { CellContext } from "@tanstack/react-table";
 
 export function ActionsCell(cell: CellContext<SubmissionRow, unknown>) {
   const {

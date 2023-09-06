@@ -1,12 +1,15 @@
-import { ColumnDef } from "@tanstack/react-table";
-import { LeaderboardEntry } from "@proghours/data-access";
-import { ActionIcon, Avatar, Box, Group, Text } from "@mantine/core";
 import {
   IconChevronDown,
   IconChevronUp,
   IconSelector
 } from "@tabler/icons-react";
+import { ColumnDef } from "@tanstack/react-table";
+
+import { ActionIcon, Avatar, Box, Group, Text } from "@mantine/core";
+
 import { NumberFilter } from "~/modules/common/components/NumberFilter";
+
+import { LeaderboardEntry } from "@proghours/data-access";
 
 export const columns: ColumnDef<LeaderboardEntry>[] = [
   {
