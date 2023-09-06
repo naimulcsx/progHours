@@ -1,0 +1,12 @@
+.root {
+  --divider-color: hsl(var(--border));
+}
+
+.label {
+  @mixin dark {
+    color: hsl(var(--muted-foreground));
+  }
+  @mixin light {
+    color: hsl(var(--muted-foreground));
+  }
+}

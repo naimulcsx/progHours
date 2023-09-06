@@ -14,10 +14,9 @@ import { z } from "zod";
 import { useForm, zodResolver } from "@mantine/form";
 import { IconUser, IconMail, IconAt, IconLock } from "@tabler/icons-react";
 import { Link, useNavigate } from "react-router-dom";
-import { AppLogo } from "~/assets/AppLogo";
-import { Footer } from "~/components/common/Footer";
 import { useSignUpMutation } from "@proghours/data-access";
 import { notifications } from "@mantine/notifications";
+import { Layout } from "~/modules/common/components/Layout";
 
 const signUpSchema = z.object({
   fullName: z.string().trim().min(1, "Name is required"),
@@ -55,30 +54,37 @@ export default function SignUpPage() {
     }
   });
   return (
-    <>
+    <Layout>
       <Helmet>
-        <title>Sign Up</title>
+        <title>Sign Up | progHours</title>
       </Helmet>
       <Box
-        sx={{
+        mt="xl"
+        style={{
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
-          minHeight: "calc(100vh - 56px)",
           paddingLeft: theme.spacing.sm,
           paddingRight: theme.spacing.sm
         }}
       >
-        <Box sx={{ maxWidth: "440px", flexGrow: 1 }}>
+        <Box style={{ maxWidth: "440px", flexGrow: 1 }}>
           <Stack>
             <Box>
-              <AppLogo size="xl" mb="lg" />
               <Title order={2} mb="4px">
                 Sign up for an account
               </Title>
               <Text>
                 Already have an account?{" "}
-                <Anchor component={Link} to="/auth/sign-in">
+                <Anchor
+                  underline="always"
+                  style={{
+                    color: "hsl(var(--primary))",
+                    textUnderlineOffset: 2
+                  }}
+                  component={Link}
+                  to="/auth/sign-in"
+                >
                   Sign In
                 </Anchor>
               </Text>
@@ -91,14 +97,14 @@ export default function SignUpPage() {
               <Stack>
                 <TextInput
                   label="Name"
-                  icon={<IconUser size={16} />}
+                  leftSection={<IconUser size={16} />}
                   placeholder="Enter your Full Name"
                   withAsterisk
                   {...form.getInputProps("fullName")}
                 />
                 <TextInput
                   label="Email"
-                  icon={<IconMail size={16} />}
+                  leftSection={<IconMail size={16} />}
                   placeholder="Enter your Email address"
                   withAsterisk
                   {...form.getInputProps("email")}
@@ -106,13 +112,13 @@ export default function SignUpPage() {
                 <TextInput
                   label="University ID"
                   placeholder="Enter your University ID"
-                  icon={<IconAt size={16} />}
+                  leftSection={<IconAt size={16} />}
                   withAsterisk
                   {...form.getInputProps("username")}
                 />
                 <PasswordInput
                   label="Password"
-                  icon={<IconLock size={16} />}
+                  leftSection={<IconLock size={16} />}
                   placeholder="Enter your password"
                   withAsterisk
                   {...form.getInputProps("password")}
@@ -128,7 +134,6 @@ export default function SignUpPage() {
           </Stack>
         </Box>
       </Box>
-      <Footer />
-    </>
+    </Layout>
   );
 }

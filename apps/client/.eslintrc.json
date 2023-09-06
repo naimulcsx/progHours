@@ -4,11 +4,7 @@
   "overrides": [
     {
       "files": ["*.ts", "*.tsx", "*.js", "*.jsx"],
-      "rules": {
-        "@typescript-eslint/no-non-null-assertion": "off",
-        "@typescript-eslint/no-unused-vars": "warn",
-        "react/jsx-no-useless-fragment": "off"
-      }
+      "rules": {}
     },
     {
       "files": ["*.ts", "*.tsx"],

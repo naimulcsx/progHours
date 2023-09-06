@@ -1,8 +1,7 @@
-import { Box, Group, GroupProps, Text, useMantineTheme } from "@mantine/core";
+import { Group, GroupProps, Text } from "@mantine/core";
 import { SVGProps } from "react";
 
 export function AppIcon(props: SVGProps<SVGSVGElement>) {
-  const theme = useMantineTheme();
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -13,7 +12,7 @@ export function AppIcon(props: SVGProps<SVGSVGElement>) {
       {...props}
     >
       <path
-        fill={theme.colors[theme.primaryColor][5]}
+        fill="hsl(var(--primary))"
         fillRule="evenodd"
         d="M8.247.43a3.778 3.778 0 013.505 0l6.333 3.322c.578.3 1.06.748 1.398 1.295A3.46 3.46 0 0120 6.857v6.286a3.46 3.46 0 01-.517 1.81c-.337.547-.82.995-1.398 1.296l-6.333 3.321a3.778 3.778 0 01-3.505 0L1.915 16.25a3.587 3.587 0 01-1.398-1.296A3.46 3.46 0 010 13.143V6.857a3.46 3.46 0 01.517-1.81c.337-.547.82-.994 1.398-1.295L8.247.43z"
         clipRule="evenodd"
@@ -29,56 +28,39 @@ export function AppIcon(props: SVGProps<SVGSVGElement>) {
 export function AppLogo({
   size = "md",
   ...props
-}: GroupProps & { size?: "sm" | "md" | "lg" | "xl" }) {
-  const theme = useMantineTheme();
+}: GroupProps & { size?: "sm" | "md" | "lg" }) {
   const styles = {
     sm: {
-      logoSize: "1.75rem",
-      textSize: "0.625rem",
-      fontSize: "1rem"
+      logoSize: "30px",
+      fontSize: "20px"
     },
     md: {
       logoSize: "2rem",
-      textSize: "0.625rem",
       fontSize: "1.125rem"
     },
     lg: {
       logoSize: "2rem",
-      textSize: "0.75rem",
       fontSize: "1.125rem"
-    },
-    xl: {
-      logoSize: "2.5rem",
-      textSize: "1rem",
-      fontSize: "1.5rem"
     }
   };
   return (
     <Group
-      spacing="xs"
-      sx={{
-        alignItems: "center",
-        color: theme.colors[theme.primaryColor][5]
+      gap="xs"
+      style={{
+        alignItems: "center"
       }}
       {...props}
     >
       <AppIcon width={styles[size].logoSize} height={styles[size].logoSize} />
-      <Box>
-        <Text
-          sx={{
-            fontWeight: 700,
-            lineHeight: 1.4,
-            letterSpacing: -0.075,
-            fontSize: styles[size].fontSize,
-            color:
-              theme.colorScheme === "dark"
-                ? theme.colors.gray[0]
-                : theme.colors[theme.primaryColor][7]
-          }}
-        >
-          progHours
-        </Text>
-      </Box>
+      <Text
+        style={{
+          fontSize: styles[size].fontSize,
+          fontWeight: 600,
+          color: "hsl(var(--accent-foreground))"
+        }}
+      >
+        progHours
+      </Text>
     </Group>
   );
 }

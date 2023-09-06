@@ -9,15 +9,14 @@ import {
   Title,
   useMantineTheme
 } from "@mantine/core";
-import { Helmet } from "react-helmet-async";
 import { z } from "zod";
 import { useForm, zodResolver } from "@mantine/form";
 import { IconAt, IconLock, IconCheck } from "@tabler/icons-react";
 import { Link, useNavigate } from "react-router-dom";
-import { AppLogo } from "~/assets/AppLogo";
-import { Footer } from "~/components/common/Footer";
 import { storage, useLoginMutation } from "@proghours/data-access";
 import { notifications } from "@mantine/notifications";
+import { Layout } from "~/modules/common/components/Layout";
+import { Helmet } from "react-helmet-async";
 
 const signInSchema = z.object({
   username: z
@@ -54,30 +53,37 @@ export default function SignInPage() {
     validate: zodResolver(signInSchema)
   });
   return (
-    <>
+    <Layout>
       <Helmet>
-        <title>Sign In</title>
+        <title>Sign In | progHours</title>
       </Helmet>
       <Box
-        sx={{
+        mt="xl"
+        style={{
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
-          height: "calc(100vh - 56px)",
           paddingLeft: theme.spacing.sm,
           paddingRight: theme.spacing.sm
         }}
       >
-        <Box sx={{ maxWidth: "440px", flexGrow: 1 }}>
+        <Box style={{ maxWidth: "440px", flexGrow: 1 }}>
           <Stack>
             <Box>
-              <AppLogo size="xl" mb="lg" />
               <Title order={2} mb="4px">
                 Sign in to your account
               </Title>
               <Text>
                 Don&apos;t have an account?{" "}
-                <Anchor component={Link} to="/auth/sign-up">
+                <Anchor
+                  underline="always"
+                  style={{
+                    color: "hsl(var(--primary))",
+                    textUnderlineOffset: 2
+                  }}
+                  component={Link}
+                  to="/auth/sign-up"
+                >
                   Sign Up
                 </Anchor>
               </Text>
@@ -91,13 +97,13 @@ export default function SignInPage() {
                 <TextInput
                   label="University ID"
                   placeholder="Enter your University ID"
-                  icon={<IconAt size={16} />}
+                  leftSection={<IconAt size={16} />}
                   withAsterisk
                   {...form.getInputProps("username")}
                 />
                 <PasswordInput
                   label="Password"
-                  icon={<IconLock size={16} />}
+                  leftSection={<IconLock size={16} />}
                   placeholder="Enter your password"
                   withAsterisk
                   {...form.getInputProps("password")}
@@ -113,7 +119,6 @@ export default function SignInPage() {
           </Stack>
         </Box>
       </Box>
-      <Footer />
-    </>
+    </Layout>
   );
 }

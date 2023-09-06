@@ -84,7 +84,9 @@ export class AuthService {
     const [accessToken] = await Promise.all([
       await this.signToken(user.id, this.jwtConfiguration.accessTokenTtl, {
         username: user.username,
-        role: user.role
+        fullName: user.fullName,
+        role: user.role,
+        email: user.email
       })
     ]);
     return {

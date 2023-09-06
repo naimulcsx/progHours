@@ -33,7 +33,7 @@ export class SubmissionsService {
         }
       },
       orderBy: {
-        createdAt: "desc"
+        solvedAt: "desc"
       }
     });
   }
@@ -103,7 +103,9 @@ export class SubmissionsService {
       where: { id },
       data: {
         ...updateSubmissionDto,
-        solvedAt: moment.utc(updateSubmissionDto.solvedAt).toDate()
+        ...(updateSubmissionDto.solvedAt && {
+          solvedAt: moment.utc(updateSubmissionDto.solvedAt).toDate()
+        })
       }
     });
     return updatedSubmission;

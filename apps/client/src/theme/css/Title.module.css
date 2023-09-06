@@ -1,0 +1,5 @@
+.root {
+  &[data-variant="proghours-ui-primary"] {
+    color: hsl(var(--primary-foreground));
+  }
+}

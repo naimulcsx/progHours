@@ -1,0 +1,13 @@
+.header {
+  &[data-variant="proghours-ui"] {
+    background-color: hsl(var(--background));
+    border-color: hsl(var(--border));
+  }
+}
+
+.navbar {
+  &[data-variant="proghours-ui"] {
+    background-color: hsl(var(--background));
+    border-color: hsl(var(--border));
+  }
+}
