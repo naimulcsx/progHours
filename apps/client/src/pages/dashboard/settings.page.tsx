@@ -2,6 +2,9 @@ import { Container, Group, Tabs, Title } from "@mantine/core";
 import { useNavigate, useParams } from "react-router-dom";
 import { DashboardLayout } from "~/modules/common/components/DashboardLayout";
 import { AppearanceSettings } from "~/modules/dashboard/settings/AppearanceSettings";
+import { HandlesSettings } from "~/modules/dashboard/settings/HandleSettings";
+import { ProfileSettings } from "~/modules/dashboard/settings/ProfileSettings";
+import { SecuritySettings } from "~/modules/dashboard/settings/SecuritySettings";
 
 // import { HandlesSettings } from "~/components/core/settings/HandlesSettings";
 // import { ProfileSettings } from "~/components/core/settings/ProfileSettings";
@@ -17,7 +20,7 @@ export default function SettingsPage() {
     <DashboardLayout>
       <Container size="md">
         <Group>
-          <Title order={2}>Settings</Title>
+          <Title order={3}>Settings</Title>
         </Group>
         <Tabs
           mt="md"
@@ -34,13 +37,13 @@ export default function SettingsPage() {
             <AppearanceSettings />
           </Tabs.Panel>
           <Tabs.Panel value="profile" mt="lg">
-            {/* <ProfileSettings /> */}
+            <ProfileSettings />
           </Tabs.Panel>
           <Tabs.Panel value="security" mt="lg">
-            {/* <SecuritySettings /> */}
+            <SecuritySettings />
           </Tabs.Panel>
           <Tabs.Panel value="handles" mt="lg">
-            {/* <HandlesSettings /> */}
+            <HandlesSettings />
           </Tabs.Panel>
         </Tabs>
       </Container>

@@ -14,3 +14,4 @@ export * from "./IconFlag";
 export * from "./IconPoints";
 export * from "./IconInfoCircle";
 export * from "./IconSearch";
+export * from "./IconInfoSquare";

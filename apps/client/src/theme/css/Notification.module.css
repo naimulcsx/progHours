@@ -1,0 +1,22 @@
+.root {
+  &[data-variant="proghours-ui"] {
+    border: 1px solid hsl(var(--foreground) / 0.05);
+
+    @mixin dark {
+      background: hsl(var(--secondary));
+    }
+    @mixin light {
+      background: hsl(var(--background));
+    }
+  }
+}
+.title {
+  &[data-variant="proghours-ui"] {
+    color: hsl(var(--foreground));
+  }
+}
+.description {
+  &[data-variant="proghours-ui"] {
+    color: hsl(var(--muted-foreground));
+  }
+}

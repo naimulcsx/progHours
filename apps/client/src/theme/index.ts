@@ -20,7 +20,10 @@ import {
   Paper,
   Badge,
   Tabs,
-  Popover
+  Popover,
+  Divider,
+  Notification,
+  Menu
 } from "@mantine/core";
 import { AccentColor } from "~/modules/common/contexts/AccentColorContext";
 
@@ -41,6 +44,9 @@ import paperClasses from "./css/Paper.module.css";
 import badgeClasses from "./css/Badge.module.css";
 import tabsClasses from "./css/Tabs.module.css";
 import popoverClasses from "./css/Popover.module.css";
+import dividerClasses from "./css/Divider.module.css";
+import notificationClasses from "./css/Notification.module.css";
+import menuClasses from "./css/Menu.module.css";
 
 export const resolvers: Record<AccentColor, CSSVariablesResolver> = {
   blue: () => ({
@@ -383,6 +389,20 @@ export const theme = createTheme({
     }),
     Popover: Popover.extend({
       classNames: popoverClasses
+    }),
+    Divider: Divider.extend({
+      classNames: dividerClasses
+    }),
+    Menu: Menu.extend({
+      defaultProps: { variant: "proghours-ui" },
+      classNames: menuClasses
+    }),
+    Notification: Notification.extend({
+      defaultProps: {
+        variant: "proghours-ui",
+        closeButtonProps: { variant: "proghours-ui" }
+      },
+      classNames: notificationClasses
     })
   }
 });

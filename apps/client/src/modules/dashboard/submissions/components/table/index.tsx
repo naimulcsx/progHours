@@ -58,9 +58,9 @@ export function SubmissionsDataTable({ data }: DataTableProps) {
         </Table.Thead>
         <Table.Tbody>
           {table.getRowModel().rows?.length ? (
-            table.getRowModel().rows.map((row) => (
+            table.getRowModel().rows.map((row, index) => (
               <Table.Tr
-                key={row.id}
+                key={data[index].id}
                 data-state={row.getIsSelected() && "selected"}
               >
                 {row.getVisibleCells().map((cell) => (
