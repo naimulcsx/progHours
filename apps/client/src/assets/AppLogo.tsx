@@ -1,6 +1,6 @@
 import { SVGProps } from "react";
 
-import { Group, GroupProps, Text } from "@mantine/core";
+import { Badge, Group, GroupProps, Text } from "@mantine/core";
 
 export function AppIcon(props: SVGProps<SVGSVGElement>) {
   return (
@@ -62,6 +62,7 @@ export function AppLogo({
       >
         progHours
       </Text>
+      <Badge>beta</Badge>
     </Group>
   );
 }

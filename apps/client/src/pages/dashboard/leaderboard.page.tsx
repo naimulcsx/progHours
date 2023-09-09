@@ -1,3 +1,4 @@
+import { IconInfoCircle } from "@tabler/icons-react";
 import { AnimatePresence } from "framer-motion";
 import { useState } from "react";
 
@@ -11,7 +12,6 @@ import {
   Transition
 } from "@mantine/core";
 
-import { IconInfoCircle } from "~/assets/icons";
 import { DashboardLayout } from "~/modules/common/components/DashboardLayout";
 import { FadeInTransition } from "~/modules/common/components/FadeInTransition";
 import { LeaderboardDataTable } from "~/modules/leaderboard/components/table";
@@ -30,7 +30,7 @@ export default function DashboardLeaderboardPage() {
           <Flex align="center" gap="xs">
             <Title order={3}>Leaderboard </Title>
             <Tooltip label="Latest data may experience a delay of up to 5 minutes.">
-              <IconInfoCircle width={18} height={18} />
+              <IconInfoCircle size={22} />
             </Tooltip>
           </Flex>
           <Transition mounted={isFetching} transition="fade" duration={800}>
