@@ -13,5 +13,5 @@
   "importOrder": ["^@mantine/(.*)$", "^~/(.*)$", "^[./]", "^@proghours/(.*)$"],
   "importOrderSeparation": true,
   "importOrderSortSpecifiers": true,
-  "importOrderParserPlugins": ["jsx", "typescript"]
+  "importOrderParserPlugins": ["jsx", "typescript", "decorators-legacy"]
 }

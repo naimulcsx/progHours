@@ -1,3 +1,4 @@
+import { IconChecks } from "@tabler/icons-react";
 import { CellContext } from "@tanstack/react-table";
 import { ReactNode } from "react";
 
@@ -47,7 +48,8 @@ const iconMap = [
 
 export const ProblemName = (cell: CellContext<SubmissionRow, unknown>) => {
   const {
-    problem: { pid, name }
+    problem: { pid, name },
+    isVerified
   } = cell.row.original;
   return (
     <Group gap="md" style={{ width: "100%" }}>
@@ -64,11 +66,14 @@ export const ProblemName = (cell: CellContext<SubmissionRow, unknown>) => {
         {(iconMap.filter((item, i) => pid.includes(item.prefix)).at(0)
           ?.icon as ReactNode) ?? undefined}
       </Box>
-      <Box>
-        <Group gap="xs" align="center">
+      <Box style={{ flex: 1 }}>
+        <Group gap="xs" align="center" justify="space-between" w="100%">
           <Title order={6} style={{ fontWeight: 500 }}>
             {pid}
           </Title>
+          {isVerified && (
+            <IconChecks size={16} color="green" style={{ marginRight: 4 }} />
+          )}
         </Group>
         <Text
           size="sm"

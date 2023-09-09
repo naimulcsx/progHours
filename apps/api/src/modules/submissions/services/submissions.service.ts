@@ -3,12 +3,14 @@ import {
   Injectable,
   InternalServerErrorException
 } from "@nestjs/common";
+import moment from "moment";
+
 import { ParserService } from "~/modules/parser/services/parser.service";
 import { PrismaService } from "~/modules/prisma/services/prisma.service";
 import { ProblemsService } from "~/modules/problems/services/problems.service";
+
 import { CreateSubmissionDto } from "../dto/create-submission.dto";
 import { UpdateSubmissionDto } from "../dto/update-sumission.dto";
-import moment from "moment";
 
 @Injectable()
 export class SubmissionsService {
@@ -36,6 +38,26 @@ export class SubmissionsService {
         solvedAt: "desc"
       }
     });
+  }
+
+  async getByUserIdAndUrl(userId: number, url: string) {
+    const problem = await this.prisma.problem.findUnique({
+      where: { url }
+    });
+    if (!problem) return null;
+    const submission = await this.prisma.submission.findUnique({
+      where: {
+        userId_problemId: {
+          userId,
+          problemId: problem.id
+        }
+      },
+      select: {
+        id: true
+      }
+    });
+    if (!submission) return null;
+    return submission;
   }
 
   async exists(userId: number, url: string) {
@@ -109,6 +131,13 @@ export class SubmissionsService {
       }
     });
     return updatedSubmission;
+  }
+
+  async markVerified(id: number) {
+    return this.prisma.submission.update({
+      where: { id },
+      data: { isVerified: true }
+    });
   }
 
   async delete(id: number) {

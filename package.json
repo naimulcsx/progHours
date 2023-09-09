@@ -4,11 +4,11 @@
   "license": "MIT",
   "scripts": {
     "prepare": "husky install",
-    "db:migrate": "env-cmd -f ./apps/api/.env.local prisma migrate dev --schema=./apps/api/prisma/schema.prisma",
     "dev": "nx run-many --target=serve --all",
     "build:client": "nx run client:build-captain",
     "build:api": "nx run api:build-captain",
     "build": "run-p build:*",
+    "db:migrate": "env-cmd -f ./apps/api/.env.local prisma migrate dev --schema=./apps/api/prisma/schema.prisma",
     "db:data-migrate": "npx env-cmd -f ./apps/api/.env.local npx ts-node ./scripts/migrate-data",
     "db:reset": "npx env-cmd -f ./apps/api/.env.local npx prisma migrate reset --schema=./apps/api/prisma/schema.prisma --force"
   },

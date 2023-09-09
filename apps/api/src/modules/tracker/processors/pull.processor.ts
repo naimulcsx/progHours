@@ -1,10 +1,13 @@
-import { Processor, Process, InjectQueue } from "@nestjs/bull";
-import { SubmissionsService } from "~/modules/submissions/services/submissions.service";
-import { OJStatisticsParser } from "@proghours/oj-statistics-parser";
+import { InjectQueue, Process, Processor } from "@nestjs/bull";
 import { Job, Queue } from "bull";
-import { InjectTrackerPushQueue } from "./push.processor";
+
 import { PrismaService } from "~/modules/prisma/services/prisma.service";
 import { ProblemsService } from "~/modules/problems/services/problems.service";
+import { SubmissionsService } from "~/modules/submissions/services/submissions.service";
+
+import { InjectTrackerPushQueue } from "./push.processor";
+
+import { OJStatisticsParser } from "@proghours/oj-statistics-parser";
 
 export const TRACKER_PULL_QUEUE = "tracker_pull";
 export const InjectTrackerPullQueue = (): ParameterDecorator =>
