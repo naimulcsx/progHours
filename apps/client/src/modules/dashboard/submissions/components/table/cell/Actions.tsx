@@ -32,7 +32,8 @@ export function ActionsCell(cell: CellContext<SubmissionRow, unknown>) {
           color: "green",
           title: "Success",
           message: `Refetched ${pid}`,
-          icon: <IconCheck />
+          icon: <IconCheck />,
+          loading: false
         });
 
         const submissions: SubmissionRow[] =

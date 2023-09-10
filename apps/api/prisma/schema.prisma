@@ -113,6 +113,7 @@ model UserHandle {
   type   HandleType
   handle String
 
+  @@unique([userId, type])
   @@map("user_handles")
 }
 

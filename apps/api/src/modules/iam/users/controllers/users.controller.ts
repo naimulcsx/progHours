@@ -7,7 +7,6 @@ import {
   Post,
   UseGuards
 } from "@nestjs/common";
-import { UsersService } from "../services/users.service";
 import {
   ApiBearerAuth,
   ApiCreatedResponse,
@@ -18,16 +17,20 @@ import {
   ApiTags,
   ApiUnauthorizedResponse
 } from "@nestjs/swagger";
+
 import { Auth, AuthType } from "~/modules/iam/auth/decorators/auth.decorator";
+import { Roles } from "~/modules/iam/auth/decorators/roles.decorator";
 import {
   ActiveUserData,
   User
 } from "~/modules/iam/auth/decorators/user.decorator";
-import { Roles } from "~/modules/iam/auth/decorators/roles.decorator";
 import { Role } from "~/modules/iam/auth/enums/role.enum";
-import { UpdateUserDto } from "../dto/update-user.dto";
+
 import { CreateUserDto } from "../dto/create-user.dto";
-import { UpdateUserGuard } from "../guards/update-user.guard";
+import { UpdateHandlesDto } from "../dto/update-handles.dto";
+import { UpdateUserDto } from "../dto/update-user.dto";
+import { UserAccessGuard } from "../guards/user-access.guard";
+import { UsersService } from "../services/users.service";
 
 @ApiTags("Users")
 @Controller("users")
@@ -95,7 +98,7 @@ export class UsersController {
   }
 
   @Patch(":username")
-  @UseGuards(UpdateUserGuard)
+  @UseGuards(UserAccessGuard)
   @ApiBearerAuth("JWT")
   @ApiOperation({ summary: "Update user by username" })
   @ApiParam({
@@ -114,5 +117,22 @@ export class UsersController {
     @Body() updateUserDto: UpdateUserDto
   ) {
     return this.usersService.updateUser(username, updateUserDto);
+  }
+
+  @Patch("/:username/handles")
+  @UseGuards(UserAccessGuard)
+  @ApiBearerAuth("JWT")
+  @ApiParam({
+    name: "username",
+    required: true,
+    example: "c181065"
+  })
+  @ApiOperation({ summary: "Update user handles" })
+  @ApiOkResponse({ description: "User handles updated" })
+  async updateHandles(
+    @Param("username") username: string,
+    @Body() updateHandlesDto: UpdateHandlesDto
+  ) {
+    return this.usersService.updateUserHandles(username, updateHandlesDto);
   }
 }

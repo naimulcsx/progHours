@@ -1,10 +1,12 @@
-import { Injectable, CanActivate, ExecutionContext } from "@nestjs/common";
+import { CanActivate, ExecutionContext, Injectable } from "@nestjs/common";
+
 import { ActiveUserData } from "~/modules/iam/auth/decorators/user.decorator";
 import { PrismaService } from "~/modules/prisma/services/prisma.service";
+
 import { Role } from "../../auth/enums/role.enum";
 
 @Injectable()
-export class UpdateUserGuard implements CanActivate {
+export class UserAccessGuard implements CanActivate {
   constructor(private readonly prisma: PrismaService) {}
 
   async canActivate(context: ExecutionContext): Promise<boolean> {

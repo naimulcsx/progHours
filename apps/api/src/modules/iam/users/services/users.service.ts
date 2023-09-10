@@ -3,10 +3,13 @@ import {
   NotFoundException,
   UnauthorizedException
 } from "@nestjs/common";
+
 import { PrismaService } from "~/modules/prisma/services/prisma.service";
-import { UpdateUserDto } from "../dto/update-user.dto";
-import { CreateUserDto } from "../dto/create-user.dto";
+
 import { HashingService } from "../../auth/hashing/hashing.service";
+import { CreateUserDto } from "../dto/create-user.dto";
+import { UpdateHandlesDto } from "../dto/update-handles.dto";
+import { UpdateUserDto } from "../dto/update-user.dto";
 
 @Injectable()
 export class UsersService {
@@ -77,5 +80,25 @@ export class UsersService {
     });
     delete foundUser.password;
     return foundUser;
+  }
+
+  async updateUserHandles(
+    username: string,
+    updateHandlesDto: UpdateHandlesDto
+  ) {
+    const user = await this.prisma.user.findUnique({ where: { username } });
+    if (!user) {
+      throw new NotFoundException();
+    }
+    await this.prisma.userHandle.deleteMany({ where: { userId: user.id } });
+    const result = await this.prisma.userHandle.createMany({
+      data: updateHandlesDto.handles
+        .filter((el) => el.handle.length > 0)
+        .map((el) => ({
+          ...el,
+          userId: user.id
+        }))
+    });
+    return result;
   }
 }
