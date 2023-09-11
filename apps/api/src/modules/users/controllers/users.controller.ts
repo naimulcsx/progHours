@@ -27,7 +27,7 @@ import { CreateUserDto } from "../dto/create-user.dto";
 import { UpdateHandlesDto } from "../dto/update-handles.dto";
 import { UpdateUserDto } from "../dto/update-user.dto";
 import { UserAccessGuard } from "../guards/user-access.guard";
-import { UsersService } from "../services/users.service";
+import { UsersService } from "../providers/users.service";
 
 @ApiTags("Users")
 @Controller("users")

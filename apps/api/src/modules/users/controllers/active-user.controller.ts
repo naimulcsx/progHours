@@ -8,7 +8,7 @@ import {
 } from "@nestjs/swagger";
 
 import { ActiveUserData, User } from "../../auth/decorators/user.decorator";
-import { UsersService } from "../services/users.service";
+import { UsersService } from "../providers/users.service";
 
 @ApiTags("Active User")
 @Controller("users/me")
@@ -25,7 +25,6 @@ export class ActiveUserController {
     description: "Unauthorized user"
   })
   async getActiveUser(@User() user: ActiveUserData) {
-    console.log(user);
     return this.usersService.getUser(user.username);
   }
 }

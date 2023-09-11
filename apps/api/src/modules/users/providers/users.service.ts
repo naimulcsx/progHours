@@ -10,19 +10,23 @@ import { HashingService } from "../../auth/hashing/hashing.service";
 import { CreateUserDto } from "../dto/create-user.dto";
 import { UpdateHandlesDto } from "../dto/update-handles.dto";
 import { UpdateUserDto } from "../dto/update-user.dto";
+import { UsersRepository } from "./users.repository";
 
 @Injectable()
 export class UsersService {
   constructor(
     private readonly prisma: PrismaService,
-    private readonly hashingService: HashingService
+    private readonly hashingService: HashingService,
+    private readonly usersRepository: UsersRepository
   ) {}
 
   async createUser(createUserDto: CreateUserDto) {
+    // convert plain password into hash
     const hashedPassword = await this.hashingService.hash(
       createUserDto.password
     );
-    return this.prisma.user.create({
+    // create user
+    return this.usersRepository.create({
       data: {
         ...createUserDto,
         password: hashedPassword,
@@ -32,14 +36,13 @@ export class UsersService {
   }
 
   async getUsers() {
-    // TODO: add pagination and filtering
-    return this.prisma.user.findMany();
+    return this.usersRepository.getAll();
   }
 
   async getUser(username: string) {
-    const user = await this.prisma.user.findUnique({
-      where: { username: username.toLowerCase() }
-    });
+    // convert username into lowercase
+    username = username.toLowerCase();
+    const user = await this.usersRepository.getByUsername(username);
     if (!user) {
       throw new NotFoundException();
     }
@@ -49,9 +52,7 @@ export class UsersService {
 
   async updateUser(username: string, updateUserDto: UpdateUserDto) {
     username = username.toLowerCase();
-    const user = await this.prisma.user.findUnique({
-      where: { username }
-    });
+    const user = await this.usersRepository.getByUsername(username);
 
     if (!user) {
       throw new NotFoundException();
@@ -71,19 +72,20 @@ export class UsersService {
       hashedPassword = await this.hashingService.hash(newPassword);
     }
 
-    const foundUser = await this.prisma.user.update({
+    const updatedUser = await this.usersRepository.update({
       where: { username },
       data: {
         ...rest,
         password: hashedPassword
       }
     });
-    delete foundUser.password;
-    return foundUser;
+    delete updatedUser.password;
+    return updatedUser;
   }
 
   async getUserHandles(username: string) {
-    const user = await this.prisma.user.findUnique({ where: { username } });
+    username = username.toLowerCase();
+    const user = await this.usersRepository.getByUsername(username);
     return this.prisma.userHandle.findMany({
       where: { userId: user.id },
       select: { handle: true, type: true }
@@ -94,7 +96,8 @@ export class UsersService {
     username: string,
     updateHandlesDto: UpdateHandlesDto
   ) {
-    const user = await this.prisma.user.findUnique({ where: { username } });
+    username = username.toLowerCase();
+    const user = await this.usersRepository.getByUsername(username);
     if (!user) {
       throw new NotFoundException();
     }
