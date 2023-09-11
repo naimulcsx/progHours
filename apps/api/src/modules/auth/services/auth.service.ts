@@ -9,7 +9,7 @@ import {
 import { ConfigService } from "@nestjs/config";
 import { JwtService } from "@nestjs/jwt";
 
-import { PrismaService } from "~/modules/prisma/services/prisma.service";
+import { UsersService } from "~/modules/users/providers/users.service";
 
 import { SignInDto } from "../dto/sign-in.dto";
 import { SignUpDto } from "../dto/sign-up.dto";
@@ -18,7 +18,7 @@ import { HashingService } from "../hashing/hashing.service";
 @Injectable()
 export class AuthService {
   constructor(
-    private readonly prisma: PrismaService,
+    private readonly usersService: UsersService,
     private readonly hashingService: HashingService,
     private readonly jwtService: JwtService,
     private readonly configService: ConfigService
@@ -27,12 +27,10 @@ export class AuthService {
   async signUp(signUpDto: SignUpDto): Promise<Omit<User, "password">> {
     try {
       const hashedPassword = await this.hashingService.hash(signUpDto.password);
-      const user = await this.prisma.user.create({
-        data: {
-          ...signUpDto,
-          password: hashedPassword,
-          username: signUpDto.username.toLowerCase()
-        }
+      const user = await this.usersService.createUser({
+        ...signUpDto,
+        password: hashedPassword,
+        username: signUpDto.username.toLowerCase()
       });
       delete user.password;
       return user;
@@ -46,11 +44,9 @@ export class AuthService {
   }
 
   async signIn(signInDto: SignInDto) {
-    const user = await this.prisma.user.findUnique({
-      where: {
-        username: signInDto.username.toLowerCase()
-      }
-    });
+    const user = await this.usersService.getUser(
+      signInDto.username.toLowerCase()
+    );
     if (!user) {
       throw new UnauthorizedException("Invalid UID or password");
     }

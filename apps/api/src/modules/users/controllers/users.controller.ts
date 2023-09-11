@@ -71,8 +71,10 @@ export class UsersController {
   @ApiUnauthorizedResponse({
     description: "Unauthorized user"
   })
-  async getActiveUser(@User() user: ActiveUserData) {
-    return this.usersService.getUser(user.username);
+  async getActiveUser(@User() activeUser: ActiveUserData) {
+    const user = await this.usersService.getUser(activeUser.username);
+    delete user.password;
+    return user;
   }
 
   @Get(":username")

@@ -1,8 +1,9 @@
-import { Module } from "@nestjs/common";
+import { Module, forwardRef } from "@nestjs/common";
 import { ConfigService } from "@nestjs/config";
 import { APP_GUARD } from "@nestjs/core";
 import { JwtModule } from "@nestjs/jwt";
 
+import { UsersModule } from "../users/users.module";
 import { AuthController } from "./controllers/auth.controller";
 import { AccessTokenGuard } from "./guards/access-token.guard";
 import { AuthenticationGuard } from "./guards/authentication.guard";
@@ -13,6 +14,7 @@ import { AuthService } from "./services/auth.service";
 
 @Module({
   imports: [
+    forwardRef(() => UsersModule),
     JwtModule.registerAsync({
       useFactory: async (configService: ConfigService) => {
         return {

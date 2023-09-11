@@ -21,11 +21,9 @@ export class UsersService {
   ) {}
 
   async createUser(createUserDto: CreateUserDto) {
-    // convert plain password into hash
     const hashedPassword = await this.hashingService.hash(
       createUserDto.password
     );
-    // create user
     return this.usersRepository.create({
       data: {
         ...createUserDto,
@@ -40,13 +38,11 @@ export class UsersService {
   }
 
   async getUser(username: string) {
-    // convert username into lowercase
     username = username.toLowerCase();
     const user = await this.usersRepository.getByUsername(username);
     if (!user) {
       throw new NotFoundException();
     }
-    delete user.password;
     return user;
   }
 
