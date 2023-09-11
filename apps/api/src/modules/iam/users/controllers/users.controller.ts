@@ -119,7 +119,21 @@ export class UsersController {
     return this.usersService.updateUser(username, updateUserDto);
   }
 
-  @Patch("/:username/handles")
+  @Get(":username/handles")
+  @UseGuards(UserAccessGuard)
+  @ApiBearerAuth("JWT")
+  @ApiParam({
+    name: "username",
+    required: true,
+    example: "c181065"
+  })
+  @ApiOperation({ summary: "Update user handles" })
+  @ApiOkResponse({ description: "User handles updated" })
+  async getUserHandles(@Param("username") username: string) {
+    return this.usersService.getUserHandles(username);
+  }
+
+  @Patch(":username/handles")
   @UseGuards(UserAccessGuard)
   @ApiBearerAuth("JWT")
   @ApiParam({

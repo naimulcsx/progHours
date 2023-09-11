@@ -82,6 +82,14 @@ export class UsersService {
     return foundUser;
   }
 
+  async getUserHandles(username: string) {
+    const user = await this.prisma.user.findUnique({ where: { username } });
+    return this.prisma.userHandle.findMany({
+      where: { userId: user.id },
+      select: { handle: true, type: true }
+    });
+  }
+
   async updateUserHandles(
     username: string,
     updateHandlesDto: UpdateHandlesDto
