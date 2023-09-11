@@ -10,7 +10,14 @@
   "endOfLine": "auto",
   "trailingComma": "none",
   "plugins": ["@trivago/prettier-plugin-sort-imports"],
-  "importOrder": ["^@mantine/(.*)$", "^~/(.*)$", "^[./]", "^@proghours/(.*)$"],
+  "importOrder": [
+    "^@mantine/(.*)$",
+    "^@nestjs/(.*)$",
+    "^@proghours/(.*)$",
+    "^~/config(.*)$",
+    "^~/(.*)$",
+    "^[./]"
+  ],
   "importOrderSeparation": true,
   "importOrderSortSpecifiers": true,
   "importOrderParserPlugins": ["jsx", "typescript", "decorators-legacy"]

@@ -7,11 +7,13 @@ import {
   Patch,
   Post
 } from "@nestjs/common";
-import { CreateProblemDto } from "../dto/create-problem.dto";
 import { ApiBearerAuth, ApiOperation, ApiTags } from "@nestjs/swagger";
+
+import { Roles } from "~/modules/auth/decorators/roles.decorator";
+import { Role } from "~/modules/auth/enums/role.enum";
+
+import { CreateProblemDto } from "../dto/create-problem.dto";
 import { ProblemsService } from "../services/problems.service";
-import { Roles } from "~/modules/iam/auth/decorators/roles.decorator";
-import { Role } from "~/modules/iam/auth/enums/role.enum";
 
 @Controller("problems")
 @ApiTags("Problems")
