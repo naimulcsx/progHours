@@ -1,13 +1,17 @@
-import {
-  Processor,
-  Process,
-  InjectQueue,
-  OnQueueCompleted
-} from "@nestjs/bull";
-import { SubmissionsService } from "~/modules/submissions/services/submissions.service";
-import { OJStatisticsParser } from "@proghours/oj-statistics-parser";
 import { Job } from "bull";
+
+import {
+  InjectQueue,
+  OnQueueCompleted,
+  Process,
+  Processor
+} from "@nestjs/bull";
+import { Inject, forwardRef } from "@nestjs/common";
+
+import { OJStatisticsParser } from "@proghours/oj-statistics-parser";
+
 import { PrismaService } from "~/modules/prisma/services/prisma.service";
+import { SubmissionsService } from "~/modules/submissions/services/submissions.service";
 
 export const TRACKER_PUSH_QUEUE = "tracker_push";
 export const InjectTrackerPushQueue = (): ParameterDecorator =>
@@ -29,6 +33,7 @@ export class TrackerPushProcessor {
 
   constructor(
     private readonly prisma: PrismaService,
+    @Inject(forwardRef(() => SubmissionsService))
     private readonly submissionsService: SubmissionsService
   ) {
     this.parser = new OJStatisticsParser();

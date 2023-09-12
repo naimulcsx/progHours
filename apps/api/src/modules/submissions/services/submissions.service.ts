@@ -1,13 +1,17 @@
+import moment from "moment";
+
 import {
   BadRequestException,
+  Inject,
   Injectable,
-  InternalServerErrorException
+  InternalServerErrorException,
+  forwardRef
 } from "@nestjs/common";
-import moment from "moment";
 
 import { ParserService } from "~/modules/parser/services/parser.service";
 import { PrismaService } from "~/modules/prisma/services/prisma.service";
 import { ProblemsService } from "~/modules/problems/services/problems.service";
+import { TrackerService } from "~/modules/tracker/services/tracker.service";
 
 import { CreateSubmissionDto } from "../dto/create-submission.dto";
 import { UpdateSubmissionDto } from "../dto/update-sumission.dto";
@@ -15,6 +19,9 @@ import { UpdateSubmissionDto } from "../dto/update-sumission.dto";
 @Injectable()
 export class SubmissionsService {
   constructor(
+    @Inject(forwardRef(() => TrackerService))
+    private readonly trackerService: TrackerService,
+
     private readonly prisma: PrismaService,
     private readonly parserService: ParserService,
     private readonly problemsService: ProblemsService
@@ -110,6 +117,18 @@ export class SubmissionsService {
           }
         }
       });
+
+      // add submission to verify queue
+      const _url = new URL(url);
+      if (_url.host === "codeforces.com") {
+        await this.trackerService.verifySingle({
+          submissionId: newSubmission.id,
+          userId,
+          url,
+          judge: "CODEFORCES"
+        });
+      }
+
       return newSubmission;
     } catch (error) {
       const uniqueConstraintErrorCode = "P2002";

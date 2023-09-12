@@ -1,12 +1,13 @@
-import { Injectable } from "@nestjs/common";
 import { Queue } from "bull";
+
+import { Injectable } from "@nestjs/common";
+
+import { OJStatisticsParser } from "@proghours/oj-statistics-parser";
 
 import { PrismaService } from "~/modules/prisma/services/prisma.service";
 
 import { InjectTrackerPullQueue } from "../processors/pull.processor";
 import { InjectTrackerVerifyQueue } from "../processors/verify.processor";
-
-import { OJStatisticsParser } from "@proghours/oj-statistics-parser";
 
 @Injectable()
 export class TrackerService {
@@ -51,5 +52,25 @@ export class TrackerService {
     return {
       status: "ok"
     };
+  }
+
+  async verifySingle({
+    submissionId,
+    userId,
+    url,
+    judge
+  }: {
+    submissionId: number;
+    userId: number;
+    url: string;
+    judge: "CODEFORCES";
+  }) {
+    return this.trackerVerifyQueue.add({
+      url,
+      type: "SINGLE",
+      userId,
+      judge,
+      submissionId
+    });
   }
 }

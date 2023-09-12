@@ -1,14 +1,16 @@
 import { createBullBoard } from "@bull-board/api";
 import { BullAdapter } from "@bull-board/api/bullAdapter";
 import { ExpressAdapter } from "@bull-board/express";
+import { Queue } from "bull";
+
 import { BullModule } from "@nestjs/bull";
 import {
   DynamicModule,
+  Global,
   MiddlewareConsumer,
   Module,
   NestModule
 } from "@nestjs/common";
-import { Queue } from "bull";
 
 import { SubmissionsModule } from "~/modules/submissions/submissions.module";
 
@@ -32,6 +34,7 @@ import {
 } from "./processors/verify.processor";
 import { TrackerService } from "./services/tracker.service";
 
+@Global()
 @Module({})
 export class TrackerModule implements NestModule {
   static register(): DynamicModule {
@@ -79,7 +82,12 @@ export class TrackerModule implements NestModule {
         ...trackerPushQueue.providers,
         ...trackerVerifyQueue.providers
       ],
-      exports: [...trackerPullQueue.exports, ...trackerPushQueue.exports]
+      exports: [
+        TrackerService,
+        ...trackerPullQueue.exports,
+        ...trackerPushQueue.exports,
+        ...trackerVerifyQueue.exports
+      ]
     };
   }
 

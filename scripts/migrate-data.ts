@@ -43,6 +43,7 @@ const pool = new Pool({
   await prisma.problemTag.deleteMany({});
   await prisma.problem.deleteMany({});
   await prisma.tag.deleteMany({});
+  await prisma.userHandle.deleteMany({});
   await prisma.user.deleteMany({});
 
   /**
@@ -87,7 +88,7 @@ const pool = new Pool({
     (prev, curr) => Math.max(prev, curr.id),
     0
   );
-  const usersSeqQuery = `ALTER SEQUENCE users_id_seq RESTART WITH ${maxId}`;
+  const usersSeqQuery = `ALTER SEQUENCE users_id_seq RESTART WITH ${maxId + 1}`;
   await prisma.$queryRaw`${Prisma.raw(usersSeqQuery)}`;
 
   console.time(`users (${usersQuery.rowCount})`);
@@ -116,7 +117,9 @@ const pool = new Pool({
     (prev, curr) => Math.max(prev, curr.id),
     0
   );
-  const tagsSeqQuery = `ALTER SEQUENCE tags_id_seq RESTART WITH ${tagsMaxId}`;
+  const tagsSeqQuery = `ALTER SEQUENCE tags_id_seq RESTART WITH ${
+    tagsMaxId + 1
+  }`;
   await prisma.$queryRaw`${Prisma.raw(tagsSeqQuery)}`;
 
   console.time(`tags (${tagsQuery.rowCount})`);
@@ -145,11 +148,14 @@ const pool = new Pool({
   });
 
   // update sequence
-  const problemsMaxId = tagsQuery.rows.reduce(
+  const problemsMaxId = problemsQuery.rows.reduce(
     (prev, curr) => Math.max(prev, curr.id),
     0
   );
-  const problemsSeqQuery = `ALTER SEQUENCE problems_id_seq RESTART WITH ${problemsMaxId}`;
+  console.log(problemsMaxId);
+  const problemsSeqQuery = `ALTER SEQUENCE problems_id_seq RESTART WITH ${
+    problemsMaxId + 1
+  }`;
   await prisma.$queryRaw`${Prisma.raw(problemsSeqQuery)}`;
 
   console.time(`problems (${problemsQuery.rowCount})`);
@@ -203,7 +209,9 @@ const pool = new Pool({
     (prev, curr) => Math.max(prev, curr.id),
     0
   );
-  const submissionsSeqQuery = `ALTER SEQUENCE submissions_id_seq RESTART WITH ${submissionsMaxId}`;
+  const submissionsSeqQuery = `ALTER SEQUENCE submissions_id_seq RESTART WITH ${
+    submissionsMaxId + 1
+  }`;
   await prisma.$queryRaw`${Prisma.raw(submissionsSeqQuery)}`;
 
   console.time(`submissions (${submissionsQuery.rowCount})`);
