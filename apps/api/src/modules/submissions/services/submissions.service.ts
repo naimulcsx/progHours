@@ -42,12 +42,12 @@ export class SubmissionsService {
         }
       },
       orderBy: {
-        solvedAt: "desc"
+        createdAt: "desc"
       }
     });
   }
 
-  async getByUserIdAndUrl(userId: number, url: string) {
+  async getByUserAndUrl(userId: number, url: string) {
     const problem = await this.prisma.problem.findUnique({
       where: { url }
     });
@@ -58,9 +58,6 @@ export class SubmissionsService {
           userId,
           problemId: problem.id
         }
-      },
-      select: {
-        id: true
       }
     });
     if (!submission) return null;

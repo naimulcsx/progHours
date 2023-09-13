@@ -45,6 +45,9 @@ export function CreateSubmissionRow({ ...props }: TableTrProps): JSX.Element {
           queryFn: getSubmissions
         });
         client.setQueryData(["submissions"], [res, ...submissions]);
+        setTimeout(() => {
+          client.invalidateQueries(["submissions"]);
+        }, 5000);
       }
     }
   });

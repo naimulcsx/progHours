@@ -51,7 +51,7 @@ export class TrackerPullProcessor {
 
     // Optimizing for Codeforces API, where we are getting all the problem data
     // So we don't need to make API requests to get the problem information
-    if (data.type === "full") {
+    if (data.judge === "CODEFORCES") {
       for (const { pid, name, difficulty, url, tags } of data.solvedProblems) {
         await this.problemsService.createProblem({
           pid,

@@ -16,11 +16,4 @@ export class TrackerController {
   async pullSubmissions(@User() user: ActiveUserData) {
     return this.trackerService.pull(user.sub);
   }
-
-  @Get("verify")
-  @ApiBearerAuth("JWT")
-  @ApiOperation({ summary: "Verify user submissions" })
-  async verifySubmissions(@User() user: ActiveUserData) {
-    return this.trackerService.verify(user.sub);
-  }
 }

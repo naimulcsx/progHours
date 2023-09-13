@@ -15,13 +15,20 @@ export const TRACKER_VERIFY_QUEUE = "tracker_verify";
 export const InjectTrackerVerifyQueue = (): ParameterDecorator =>
   InjectQueue(TRACKER_VERIFY_QUEUE);
 
-type VerifyJob = Job<{
+type VerifySingleData = {
+  jobType: "VERIFY_SINGLE";
   url: string;
-  type: "SINGLE";
   userId: number;
   judge: "CODEFORCES";
   submissionId: number;
-}>;
+};
+
+type VerifyAllData = {
+  jobType: "VERIFY_ALL";
+  userId: number;
+};
+
+type VerifyJob = Job<VerifySingleData | VerifyAllData>;
 
 @Processor(TRACKER_VERIFY_QUEUE)
 export class TrackerVerifyProcessor {
@@ -36,7 +43,29 @@ export class TrackerVerifyProcessor {
 
   @Process()
   async verify(job: VerifyJob) {
-    const { userId, url, judge, submissionId } = job.data;
+    const { jobType } = job.data;
+
+    // verify single user submission
+    if (jobType === "VERIFY_SINGLE") {
+      const result = await this.verifySingle(job.data);
+      job.progress(100);
+      return result;
+    }
+
+    // verify all user sumbissions
+    else if (jobType === "VERIFY_ALL") {
+      const result = await this.verifyAll(job.data);
+      job.progress(100);
+      return result;
+    }
+
+    return {
+      status: "_OK_"
+    };
+  }
+
+  async verifySingle(data: VerifySingleData) {
+    const { userId, url, judge, submissionId } = data;
 
     const userHandle = await this.prisma.userHandle.findUnique({
       where: {
@@ -88,7 +117,75 @@ export class TrackerVerifyProcessor {
       }
     }
 
-    job.progress(100);
+    return {
+      status: "OK"
+    };
+  }
+
+  async verifyAll(data: VerifyAllData) {
+    const { userId } = data;
+
+    // make all submissions unverified
+    await this.prisma.submission.updateMany({
+      where: { userId },
+      data: { isVerified: false, metaData: {} }
+    });
+
+    // cfUserHandle
+    const cfUserHandle = await this.prisma.userHandle.findUnique({
+      where: {
+        userId_type: {
+          userId,
+          type: "CODEFORCES"
+        }
+      }
+    });
+
+    if (!cfUserHandle) {
+      return {
+        status: "HANDLE_NOT_FOUND"
+      };
+    }
+
+    const cfData = await this.statisticsParser.parse({
+      judge: "codeforces",
+      handle: cfUserHandle.handle
+    });
+
+    if (cfData.judge === "CODEFORCES") {
+      for (const el of cfData.solvedProblems) {
+        const { url, contestId, id } = el;
+        const problem = await this.prisma.problem.findUnique({
+          where: { url }
+        });
+        if (!problem) continue; // skip if the problem is not found
+        const submission = await this.prisma.submission.findUnique({
+          where: {
+            userId_problemId: {
+              userId,
+              problemId: problem.id
+            }
+          }
+        });
+        if (submission) {
+          await this.prisma.submission.update({
+            where: {
+              userId_problemId: {
+                userId,
+                problemId: problem.id
+              }
+            },
+            data: {
+              isVerified: true,
+              metaData: {
+                submissionUrl: `https://codeforces.com/contest/${contestId}/submission/${id}`
+              }
+            }
+          });
+        }
+      }
+    }
+
     return {
       status: "OK"
     };

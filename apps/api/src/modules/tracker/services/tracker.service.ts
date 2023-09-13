@@ -45,13 +45,11 @@ export class TrackerService {
     };
   }
 
-  async verify(userId: number) {
-    await this.trackerVerifyQueue.add({
+  async verifyAll(userId: number) {
+    return this.trackerVerifyQueue.add({
+      jobType: "VERIFY_ALL",
       userId
     });
-    return {
-      status: "ok"
-    };
   }
 
   async verifySingle({
@@ -67,7 +65,7 @@ export class TrackerService {
   }) {
     return this.trackerVerifyQueue.add({
       url,
-      type: "SINGLE",
+      jobType: "VERIFY_SINGLE",
       userId,
       judge,
       submissionId

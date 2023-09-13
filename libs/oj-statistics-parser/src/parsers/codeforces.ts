@@ -1,12 +1,13 @@
 import axios from "axios";
 import * as _ from "lodash";
 import * as moment from "moment";
+
 import {
   StatisticsParser,
   StatisticsParserOpts
 } from "../interfaces/StatisticsParser";
-import { ParseResult } from "../types/ParseResult";
 import { CodeforcesApiResponse } from "../types/ApiResponse";
+import { ParseResult } from "../types/ParseResult";
 
 export class CodeforcesParser implements StatisticsParser {
   private handle: string;
@@ -30,17 +31,21 @@ export class CodeforcesParser implements StatisticsParser {
     );
 
     const result: ParseResult = {
-      type: "full",
+      judge: "CODEFORCES",
       totalSolved: acceptedSubmissions.length,
       solvedProblems: _.uniqWith(
-        acceptedSubmissions.map(({ problem, creationTimeSeconds }) => ({
-          pid: `CF-${problem.contestId}${problem.index}`,
-          name: problem.name,
-          url: `https://codeforces.com/contest/${problem.contestId}/problem/${problem.index}`,
-          solvedAt: moment.unix(creationTimeSeconds).toDate(),
-          difficulty: problem.rating || 0,
-          tags: problem.tags
-        })),
+        acceptedSubmissions.map(
+          ({ id, problem, creationTimeSeconds, contestId }) => ({
+            id,
+            contestId,
+            pid: `CF-${problem.contestId}${problem.index}`,
+            name: problem.name,
+            url: `https://codeforces.com/contest/${problem.contestId}/problem/${problem.index}`,
+            solvedAt: moment.unix(creationTimeSeconds).toDate(),
+            difficulty: problem.rating || 0,
+            tags: problem.tags
+          })
+        ),
         (a, b) => a.pid === b.pid
       )
     };

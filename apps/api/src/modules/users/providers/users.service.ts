@@ -5,6 +5,7 @@ import {
 } from "@nestjs/common";
 
 import { PrismaService } from "~/modules/prisma/services/prisma.service";
+import { TrackerService } from "~/modules/tracker/services/tracker.service";
 
 import { HashingService } from "../../auth/hashing/hashing.service";
 import { CreateUserDto } from "../dto/create-user.dto";
@@ -17,7 +18,8 @@ export class UsersService {
   constructor(
     private readonly prisma: PrismaService,
     private readonly hashingService: HashingService,
-    private readonly usersRepository: UsersRepository
+    private readonly usersRepository: UsersRepository,
+    private readonly trackerService: TrackerService
   ) {}
 
   async createUser(createUserDto: CreateUserDto) {
@@ -109,6 +111,7 @@ export class UsersService {
           userId: user.id
         }))
     });
+    await this.trackerService.verifyAll(user.id);
     return result;
   }
 }
