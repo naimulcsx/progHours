@@ -4,6 +4,8 @@ import { ReactNode } from "react";
 
 import { Box, Group, Text, Title } from "@mantine/core";
 
+import { SubmissionRow } from "@proghours/data-access";
+
 import {
   ACIcon,
   BCIcon,
@@ -22,8 +24,6 @@ import {
   TophIcon,
   UVAIcon
 } from "~/assets/oj-icons";
-
-import { SubmissionRow } from "@proghours/data-access";
 
 const iconMap = [
   { prefix: "Gym-", icon: <CFIcon /> },
@@ -72,7 +72,7 @@ export const ProblemName = (cell: CellContext<SubmissionRow, unknown>) => {
             {pid}
           </Title>
           {isVerified && (
-            <IconChecks size={16} color="green" style={{ marginRight: 4 }} />
+            <IconChecks size={18} color="#22c55e" style={{ marginRight: 16 }} />
           )}
         </Group>
         <Text
