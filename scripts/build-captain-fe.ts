@@ -1,4 +1,4 @@
-import { exists, copyFile, readJson, writeJson } from "fs-extra";
+import { copyFile, exists, readJson, writeJson } from "fs-extra";
 import { exec } from "node:child_process";
 import { join } from "node:path";
 
@@ -26,17 +26,6 @@ import { join } from "node:path";
     );
     console.log("🗸 Copied captain-definition");
   }
-
-  /**
-   * Add missing dependencies
-   */
-  const packageJsonOrigin = join(__dirname, `../dist/apps/client/package.json`);
-  const rootPackageJsonOrigin = join(__dirname, `../package.json`);
-  const json = await readJson(packageJsonOrigin);
-  const rootJson = await readJson(rootPackageJsonOrigin);
-
-  json.dependencies["@emotion/react"] = rootJson.dependencies["@emotion/react"];
-  await writeJson(packageJsonOrigin, json, { spaces: 2 });
 
   /**
    * Build tarball

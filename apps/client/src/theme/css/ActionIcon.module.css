@@ -1,0 +1,13 @@
+.root {
+  &[data-variant="proghours-ui"] {
+    --ai-size-xs: rem(22px);
+    --ai-size-sm: rem(28px);
+    --ai-size-md: rem(36px);
+    --ai-size-lg: rem(40px);
+    --ai-size-xl: rem(44px);
+    transition: all 0.15s;
+    &:hover {
+      background: hsl(var(--accent));
+    }
+  }
+}

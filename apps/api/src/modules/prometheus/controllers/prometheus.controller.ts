@@ -1,8 +1,10 @@
 import { PrometheusController as PC } from "@willsoto/nestjs-prometheus";
-import { Controller, Get, Res } from "@nestjs/common";
 import { Response } from "express";
-import { Auth, AuthType } from "~/modules/iam/auth/decorators/auth.decorator";
+
+import { Controller, Get, Res } from "@nestjs/common";
 import { ApiOperation, ApiTags } from "@nestjs/swagger";
+
+import { Auth, AuthType } from "~/modules/auth/decorators/auth.decorator";
 
 @Controller()
 @ApiTags("Metrics")

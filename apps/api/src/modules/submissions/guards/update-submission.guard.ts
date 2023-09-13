@@ -1,11 +1,12 @@
 import {
-  Injectable,
   CanActivate,
   ExecutionContext,
+  Injectable,
   NotFoundException,
   UnauthorizedException
 } from "@nestjs/common";
-import { ActiveUserData } from "~/modules/iam/auth/decorators/user.decorator";
+
+import { ActiveUserData } from "~/modules/auth/decorators/user.decorator";
 import { PrismaService } from "~/modules/prisma/services/prisma.service";
 
 @Injectable()

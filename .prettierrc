@@ -8,5 +8,17 @@
   "bracketSameLine": false,
   "arrowParens": "always",
   "endOfLine": "auto",
-  "trailingComma": "none"
+  "trailingComma": "none",
+  "plugins": ["@trivago/prettier-plugin-sort-imports"],
+  "importOrder": [
+    "^@mantine/(.*)$",
+    "^@nestjs/(.*)$",
+    "^@proghours/(.*)$",
+    "^~/config(.*)$",
+    "^~/(.*)$",
+    "^[./]"
+  ],
+  "importOrderSeparation": true,
+  "importOrderSortSpecifiers": true,
+  "importOrderParserPlugins": ["jsx", "typescript", "decorators-legacy"]
 }

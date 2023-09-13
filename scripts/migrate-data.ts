@@ -14,9 +14,8 @@
  * Author: Naimul Haaque
  * Date: 29th July 2023
  */
-
-import { Pool } from "pg";
 import {
+  Prisma,
   PrismaClient,
   Problem,
   ProblemTag,
@@ -25,6 +24,7 @@ import {
   Tag,
   User
 } from "@prisma/client";
+import { Pool } from "pg";
 
 const pool = new Pool({
   max: 5,
@@ -43,6 +43,7 @@ const pool = new Pool({
   await prisma.problemTag.deleteMany({});
   await prisma.problem.deleteMany({});
   await prisma.tag.deleteMany({});
+  await prisma.userHandle.deleteMany({});
   await prisma.user.deleteMany({});
 
   /**
@@ -82,6 +83,14 @@ const pool = new Pool({
     );
   });
 
+  // update sequence
+  const maxId = usersQuery.rows.reduce(
+    (prev, curr) => Math.max(prev, curr.id),
+    0
+  );
+  const usersSeqQuery = `ALTER SEQUENCE users_id_seq RESTART WITH ${maxId + 1}`;
+  await prisma.$queryRaw`${Prisma.raw(usersSeqQuery)}`;
+
   console.time(`users (${usersQuery.rowCount})`);
   await Promise.all(userCreatePromises);
   console.timeEnd(`users (${usersQuery.rowCount})`);
@@ -102,6 +111,17 @@ const pool = new Pool({
       })
     );
   });
+
+  // update sequence
+  const tagsMaxId = tagsQuery.rows.reduce(
+    (prev, curr) => Math.max(prev, curr.id),
+    0
+  );
+  const tagsSeqQuery = `ALTER SEQUENCE tags_id_seq RESTART WITH ${
+    tagsMaxId + 1
+  }`;
+  await prisma.$queryRaw`${Prisma.raw(tagsSeqQuery)}`;
+
   console.time(`tags (${tagsQuery.rowCount})`);
   await Promise.all(tagCreatePromises);
   console.timeEnd(`tags (${tagsQuery.rowCount})`);
@@ -126,6 +146,18 @@ const pool = new Pool({
       })
     );
   });
+
+  // update sequence
+  const problemsMaxId = problemsQuery.rows.reduce(
+    (prev, curr) => Math.max(prev, curr.id),
+    0
+  );
+  console.log(problemsMaxId);
+  const problemsSeqQuery = `ALTER SEQUENCE problems_id_seq RESTART WITH ${
+    problemsMaxId + 1
+  }`;
+  await prisma.$queryRaw`${Prisma.raw(problemsSeqQuery)}`;
+
   console.time(`problems (${problemsQuery.rowCount})`);
   await Promise.all(problemCreatePromises);
   console.timeEnd(`problems (${problemsQuery.rowCount})`);
@@ -171,6 +203,16 @@ const pool = new Pool({
       })
     );
   });
+
+  // update sequence
+  const submissionsMaxId = submissionsQuery.rows.reduce(
+    (prev, curr) => Math.max(prev, curr.id),
+    0
+  );
+  const submissionsSeqQuery = `ALTER SEQUENCE submissions_id_seq RESTART WITH ${
+    submissionsMaxId + 1
+  }`;
+  await prisma.$queryRaw`${Prisma.raw(submissionsSeqQuery)}`;
 
   console.time(`submissions (${submissionsQuery.rowCount})`);
   await Promise.all(submissionCreatePromises);

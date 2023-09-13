@@ -28,6 +28,7 @@ axios.interceptors.response.use(
         window.location.reload();
         return;
       }
+      console.log(error?.response?.data);
       // show alert messages through mantine notifications
       notifications.show({
         icon: React.createElement(IconAlertCircle),

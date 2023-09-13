@@ -1,10 +1,15 @@
-import { Processor, Process, InjectQueue } from "@nestjs/bull";
-import { SubmissionsService } from "~/modules/submissions/services/submissions.service";
-import { OJStatisticsParser } from "@proghours/oj-statistics-parser";
 import { Job, Queue } from "bull";
-import { InjectTrackerPushQueue } from "./push.processor";
+
+import { InjectQueue, Process, Processor } from "@nestjs/bull";
+import { Inject, forwardRef } from "@nestjs/common";
+
+import { OJStatisticsParser } from "@proghours/oj-statistics-parser";
+
 import { PrismaService } from "~/modules/prisma/services/prisma.service";
 import { ProblemsService } from "~/modules/problems/services/problems.service";
+import { SubmissionsService } from "~/modules/submissions/services/submissions.service";
+
+import { InjectTrackerPushQueue } from "./push.processor";
 
 export const TRACKER_PULL_QUEUE = "tracker_pull";
 export const InjectTrackerPullQueue = (): ParameterDecorator =>
@@ -24,6 +29,8 @@ export class TrackerPullProcessor {
   constructor(
     private readonly prisma: PrismaService,
     private readonly problemsService: ProblemsService,
+
+    @Inject(forwardRef(() => SubmissionsService))
     private readonly submissionsService: SubmissionsService,
     @InjectTrackerPushQueue() private trackerPushQueue: Queue
   ) {
@@ -44,7 +51,7 @@ export class TrackerPullProcessor {
 
     // Optimizing for Codeforces API, where we are getting all the problem data
     // So we don't need to make API requests to get the problem information
-    if (data.type === "full") {
+    if (data.judge === "CODEFORCES") {
       for (const { pid, name, difficulty, url, tags } of data.solvedProblems) {
         await this.problemsService.createProblem({
           pid,

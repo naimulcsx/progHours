@@ -1,0 +1,35 @@
+/**
+ * --button-radius
+ */
+.root {
+  &[data-variant="msu-primary"] {
+    font-weight: 500;
+    --button-bg: hsl(var(--primary));
+    --button-color: hsl(var(--primary-foreground));
+    --button-hover: hsl(var(--primary) / 0.9);
+  }
+
+  &[data-variant="msu-secondary"] {
+    font-weight: 500;
+    --button-bg: hsl(var(--secondary));
+    --button-color: hsl(var(--secondary-foreground));
+  }
+
+  &[data-variant="msu-destructive"] {
+    font-weight: 500;
+    --button-bg: hsl(var(--destructive));
+    --button-color: hsl(var(--destructive-foreground));
+  }
+
+  &[data-variant="msu-outline"] {
+    font-weight: 500;
+    --button-bg: hsl(var(--background));
+    --button-bd: calc(0.0625rem * var(--mantine-scale)) solid hsl(var(--input));
+  }
+
+  &[data-variant="msu-ghost"] {
+    font-weight: 500;
+    --button-bg: hsl(var(--background));
+    --button-hover: hsl(var(--accent));
+  }
+}

@@ -1,8 +1,10 @@
 import { Body, Controller, Post } from "@nestjs/common";
+import { ApiOperation, ApiTags } from "@nestjs/swagger";
+
+import { Auth, AuthType } from "~/modules/auth/decorators/auth.decorator";
+
 import { ParseProblemDto } from "../dto/parse-problem.dto";
 import { ParserService } from "../services/parser.service";
-import { ApiOperation, ApiTags } from "@nestjs/swagger";
-import { Auth, AuthType } from "~/modules/iam/auth/decorators/auth.decorator";
 
 @ApiTags("Parser")
 @Controller("parser")

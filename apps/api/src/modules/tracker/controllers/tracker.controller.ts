@@ -1,10 +1,9 @@
 import { Controller, Get } from "@nestjs/common";
 import { ApiBearerAuth, ApiOperation, ApiTags } from "@nestjs/swagger";
+
+import { ActiveUserData, User } from "~/modules/auth/decorators/user.decorator";
+
 import { TrackerService } from "../services/tracker.service";
-import {
-  ActiveUserData,
-  User
-} from "~/modules/iam/auth/decorators/user.decorator";
 
 @Controller("tracker")
 @ApiTags("Tracker")

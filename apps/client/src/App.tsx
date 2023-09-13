@@ -1,21 +1,31 @@
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { useEffect } from "react";
+import { HelmetProvider } from "react-helmet-async";
+import { BrowserRouter, useLocation, useRoutes } from "react-router-dom";
+
 import {
   Box,
-  ColorScheme,
   MantineProvider,
-  ColorSchemeProvider,
-  useMantineTheme
+  localStorageColorSchemeManager,
+  useMantineColorScheme
 } from "@mantine/core";
-import { Notifications } from "@mantine/notifications";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { useLocation, useRoutes } from "react-router-dom";
-import theme from "~/styles/theme";
-import { getRoutes } from "./routes";
-import { useUser } from "./hooks/useUser";
-import { useLocalStorage } from "@mantine/hooks";
-import { useColorAccent } from "./contexts/ColorAccentContext";
-import { NavigationProgress, nprogress } from "@mantine/nprogress";
+import "@mantine/core/styles.css";
+import "@mantine/dates/styles.css";
 import { ModalsProvider } from "@mantine/modals";
-import { useEffect } from "react";
+import { Notifications } from "@mantine/notifications";
+import "@mantine/notifications/styles.css";
+import { NavigationProgress, nprogress } from "@mantine/nprogress";
+import "@mantine/nprogress/styles.css";
+
+import { useUser } from "./modules/auth/hooks/useUser";
+import { useAccentColor } from "./modules/common/contexts/AccentColorContext";
+import { getRoutes } from "./routes";
+import { resolvers, theme } from "./theme";
+import "./theme/global.css";
+
+const colorSchemeManager = localStorageColorSchemeManager({
+  key: "proghours-color-scheme"
+});
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -25,63 +35,41 @@ const queryClient = new QueryClient({
   }
 });
 
-function Entry() {
-  const { user } = useUser();
-  const theme = useMantineTheme();
-  const page = useRoutes(getRoutes(!!user));
+function App() {
+  const { accentColor } = useAccentColor();
   return (
-    <Box
-      component="main"
-      sx={{
-        minHeight: "100vh",
-        background:
-          theme.colorScheme === "dark" ? theme.colors.dark[9] : theme.white
-      }}
-      className={theme.colorScheme}
-    >
-      {page}
-    </Box>
+    <BrowserRouter>
+      <MantineProvider
+        theme={theme}
+        defaultColorScheme="dark"
+        colorSchemeManager={colorSchemeManager}
+        cssVariablesResolver={resolvers[accentColor]}
+      >
+        <QueryClientProvider client={queryClient}>
+          <HelmetProvider>
+            <ModalsProvider>
+              <Entry />
+            </ModalsProvider>
+            <Notifications position="top-center" />
+            <NavigationProgress />
+          </HelmetProvider>
+        </QueryClientProvider>
+      </MantineProvider>
+    </BrowserRouter>
   );
 }
 
-export function App() {
-  const [colorScheme, setColorScheme] = useLocalStorage<ColorScheme>({
-    key: "mantine-color-scheme",
-    defaultValue: "dark",
-    getInitialValueInEffect: false
-  });
-
-  const toggleColorScheme = (value?: ColorScheme) =>
-    setColorScheme(value || (colorScheme === "dark" ? "light" : "dark"));
-
-  const { accentColor } = useColorAccent();
-
+function Entry() {
+  const { user } = useUser();
+  const { colorScheme } = useMantineColorScheme();
+  const children = useRoutes(getRoutes(!!user));
   const location = useLocation();
 
   useEffect(() => {
     nprogress.complete();
   }, [location.pathname]);
 
-  return (
-    <ColorSchemeProvider
-      colorScheme={colorScheme}
-      toggleColorScheme={toggleColorScheme}
-    >
-      <MantineProvider
-        withGlobalStyles
-        withNormalizeCSS
-        theme={{ ...theme, colorScheme, primaryColor: accentColor }}
-      >
-        <ModalsProvider>
-          <NavigationProgress autoReset={true} />
-          <QueryClientProvider client={queryClient}>
-            <Entry />
-            <Notifications position="top-right" transitionDuration={400} />
-          </QueryClientProvider>
-        </ModalsProvider>
-      </MantineProvider>
-    </ColorSchemeProvider>
-  );
+  return <Box className={colorScheme}>{children}</Box>;
 }
 
 export default App;

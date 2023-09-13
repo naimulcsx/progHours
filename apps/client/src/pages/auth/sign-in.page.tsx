@@ -1,8 +1,12 @@
+import { IconAt, IconCheck, IconLock } from "@tabler/icons-react";
+import { Helmet } from "react-helmet-async";
+import { Link, useNavigate } from "react-router-dom";
+import { z } from "zod";
+
 import {
   Anchor,
   Box,
   Button,
-  Paper,
   PasswordInput,
   Stack,
   Text,
@@ -10,15 +14,12 @@ import {
   Title,
   useMantineTheme
 } from "@mantine/core";
-import { Helmet } from "react-helmet-async";
-import { z } from "zod";
 import { useForm, zodResolver } from "@mantine/form";
-import { IconAt, IconLock, IconCheck } from "@tabler/icons-react";
-import { Link, useNavigate } from "react-router-dom";
-import { AppLogo } from "~/assets/AppLogo";
-import { Footer } from "~/components/common/Footer";
-import { storage, useLoginMutation } from "@proghours/data-access";
 import { notifications } from "@mantine/notifications";
+
+import { Layout } from "~/modules/common/components/Layout";
+
+import { storage, useLoginMutation } from "@proghours/data-access";
 
 const signInSchema = z.object({
   username: z
@@ -55,68 +56,72 @@ export default function SignInPage() {
     validate: zodResolver(signInSchema)
   });
   return (
-    <>
+    <Layout>
       <Helmet>
-        <title>Sign In</title>
+        <title>Sign In | progHours</title>
       </Helmet>
       <Box
-        sx={{
+        mt="xl"
+        style={{
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
-          height: "calc(100vh - 56px)",
           paddingLeft: theme.spacing.sm,
           paddingRight: theme.spacing.sm
         }}
       >
-        <Box sx={{ maxWidth: "480px", flexGrow: 1 }}>
-          <Paper p="xl" shadow="sm">
-            <Stack>
-              <Box>
-                <AppLogo size="lg" mb="xs" />
-                <Title order={2} mb="4px">
-                  Sign in to your account
-                </Title>
-                <Text>
-                  Don&apos;t have an account?{" "}
-                  <Anchor component={Link} to="/auth/sign-up">
-                    Sign Up
-                  </Anchor>
+        <Box style={{ maxWidth: "440px", flexGrow: 1 }}>
+          <Stack>
+            <Box>
+              <Title order={2} mb="4px">
+                Sign in to your account
+              </Title>
+              <Text>
+                Don&apos;t have an account?{" "}
+                <Anchor
+                  underline="always"
+                  style={{
+                    color: "hsl(var(--primary))",
+                    textUnderlineOffset: 2
+                  }}
+                  component={Link}
+                  to="/auth/sign-up"
+                >
+                  Sign Up
+                </Anchor>
+              </Text>
+            </Box>
+            <form
+              onSubmit={form.onSubmit((values) => {
+                mutate(values);
+              })}
+            >
+              <Stack>
+                <TextInput
+                  label="University ID"
+                  placeholder="Enter your University ID"
+                  leftSection={<IconAt size={16} />}
+                  withAsterisk
+                  {...form.getInputProps("username")}
+                />
+                <PasswordInput
+                  label="Password"
+                  leftSection={<IconLock size={16} />}
+                  placeholder="Enter your password"
+                  withAsterisk
+                  {...form.getInputProps("password")}
+                />
+                <Text size="sm">
+                  By signing in, you agree to our Terms and Conditions
                 </Text>
-              </Box>
-              <form
-                onSubmit={form.onSubmit((values) => {
-                  mutate(values);
-                })}
-              >
-                <Stack>
-                  <TextInput
-                    label="University ID"
-                    placeholder="Enter your University ID"
-                    icon={<IconAt size={16} />}
-                    withAsterisk
-                    {...form.getInputProps("username")}
-                  />
-                  <PasswordInput
-                    label="Password"
-                    icon={<IconLock size={16} />}
-                    placeholder="Enter your password"
-                    withAsterisk
-                    {...form.getInputProps("password")}
-                  />
-                  <Text size="sm">
-                    By signing in, you agree to our Terms and Conditions
-                  </Text>
-                  <Button size="md" type="submit">
-                    Sign In
-                  </Button>
-                </Stack>
-              </form>
-            </Stack>
-          </Paper>
+                <Button size="md" type="submit">
+                  Sign In
+                </Button>
+              </Stack>
+            </form>
+          </Stack>
         </Box>
       </Box>
-      <Footer />
-    </>
+    </Layout>
   );
 }

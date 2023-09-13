@@ -1,8 +1,13 @@
-import { Injectable } from "@nestjs/common";
 import { Queue } from "bull";
+
+import { Injectable } from "@nestjs/common";
+
 import { OJStatisticsParser } from "@proghours/oj-statistics-parser";
-import { InjectTrackerPullQueue } from "../processors/pull.processor";
+
 import { PrismaService } from "~/modules/prisma/services/prisma.service";
+
+import { InjectTrackerPullQueue } from "../processors/pull.processor";
+import { InjectTrackerVerifyQueue } from "../processors/verify.processor";
 
 @Injectable()
 export class TrackerService {
@@ -10,7 +15,8 @@ export class TrackerService {
 
   constructor(
     private readonly prisma: PrismaService,
-    @InjectTrackerPullQueue() private trackerPullQueue: Queue
+    @InjectTrackerPullQueue() private trackerPullQueue: Queue,
+    @InjectTrackerVerifyQueue() private trackerVerifyQueue: Queue
   ) {
     this.statisticParser = new OJStatisticsParser();
   }
@@ -37,5 +43,32 @@ export class TrackerService {
       status: "OK",
       pullHistoryId: pullHistory.id
     };
+  }
+
+  async verifyAll(userId: number) {
+    return this.trackerVerifyQueue.add({
+      jobType: "VERIFY_ALL",
+      userId
+    });
+  }
+
+  async verifySingle({
+    submissionId,
+    userId,
+    url,
+    judge
+  }: {
+    submissionId: number;
+    userId: number;
+    url: string;
+    judge: "CODEFORCES";
+  }) {
+    return this.trackerVerifyQueue.add({
+      url,
+      jobType: "VERIFY_SINGLE",
+      userId,
+      judge,
+      submissionId
+    });
   }
 }
