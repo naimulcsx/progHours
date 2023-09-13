@@ -1,21 +1,21 @@
-import { UserHandle } from "@prisma/client";
+import { HandleType } from "@prisma/client";
 import { UseQueryOptions, useQuery } from "@tanstack/react-query";
 
 import { axios } from "../../lib/axios";
 
 export type UserHandlesResponse = Array<{
-  type: UserHandle;
+  type: HandleType;
   handle: string;
 }>;
 
 const getUserHandles = async (
-  username: string
+  username?: string
 ): Promise<UserHandlesResponse> => {
   return axios.get(`/users/${username}/handles`).then((res) => res.data);
 };
 
 type UseUserHandlesOptions = {
-  username: string;
+  username?: string;
   config?: UseQueryOptions<UserHandlesResponse>;
 };
 

@@ -1,5 +1,13 @@
-import { Body, Controller, HttpCode, HttpStatus, Post } from "@nestjs/common";
 import {
+  Body,
+  Controller,
+  Get,
+  HttpCode,
+  HttpStatus,
+  Post
+} from "@nestjs/common";
+import {
+  ApiBearerAuth,
   ApiBody,
   ApiConflictResponse,
   ApiCreatedResponse,
@@ -9,7 +17,10 @@ import {
   ApiUnauthorizedResponse
 } from "@nestjs/swagger";
 
+import { UsersService } from "~/modules/users/providers/users.service";
+
 import { Auth, AuthType } from "../decorators/auth.decorator";
+import { ActiveUserData, User } from "../decorators/user.decorator";
 import { SignInDto } from "../dto/sign-in.dto";
 import { SignUpDto } from "../dto/sign-up.dto";
 import { AuthService } from "../services/auth.service";
@@ -18,7 +29,26 @@ import { AuthService } from "../services/auth.service";
 @Controller("auth")
 @Auth(AuthType.None)
 export class AuthController {
-  constructor(private readonly authService: AuthService) {}
+  constructor(
+    private readonly authService: AuthService,
+    private readonly usersService: UsersService
+  ) {}
+
+  @Get("me")
+  @Auth(AuthType.Bearer)
+  @ApiBearerAuth("JWT")
+  @ApiOperation({ summary: "Get active user" })
+  @ApiOkResponse({
+    description: "Active user"
+  })
+  @ApiUnauthorizedResponse({
+    description: "Unauthorized user"
+  })
+  async getActiveUser(@User() user: ActiveUserData) {
+    const activeUser = await this.usersService.getUser(user.username);
+    delete activeUser.password;
+    return activeUser;
+  }
 
   @Post("sign-up")
   @ApiOperation({ summary: "User sign up" })

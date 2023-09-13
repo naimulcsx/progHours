@@ -20,7 +20,6 @@ import {
 
 import { Auth, AuthType } from "~/modules/auth/decorators/auth.decorator";
 import { Roles } from "~/modules/auth/decorators/roles.decorator";
-import { ActiveUserData, User } from "~/modules/auth/decorators/user.decorator";
 import { Role } from "~/modules/auth/enums/role.enum";
 
 import { CreateUserDto } from "../dto/create-user.dto";
@@ -62,21 +61,6 @@ export class UsersController {
     return this.usersService.createUser(createUserDto);
   }
 
-  @Get("whoami")
-  @ApiBearerAuth("JWT")
-  @ApiOperation({ summary: "Get active user" })
-  @ApiOkResponse({
-    description: "Active user"
-  })
-  @ApiUnauthorizedResponse({
-    description: "Unauthorized user"
-  })
-  async getActiveUser(@User() activeUser: ActiveUserData) {
-    const user = await this.usersService.getUser(activeUser.username);
-    delete user.password;
-    return user;
-  }
-
   @Get(":username")
   @Auth(AuthType.None)
   @ApiOperation({ summary: "Get user by username" })
@@ -94,6 +78,19 @@ export class UsersController {
   async getUser(@Param("username") username: string) {
     const user = await this.usersService.getUser(username);
     return user;
+  }
+
+  @Get(":username/handles")
+  @Auth(AuthType.None)
+  @ApiParam({
+    name: "username",
+    required: true,
+    example: "c181065"
+  })
+  @ApiOperation({ summary: "Get user handles" })
+  @ApiOkResponse({ description: "User handles retrieved" })
+  async getUserHandles(@Param("username") username: string) {
+    return this.usersService.getUserHandles(username);
   }
 
   @Patch(":username")
@@ -116,20 +113,6 @@ export class UsersController {
     @Body() updateUserDto: UpdateUserDto
   ) {
     return this.usersService.updateUser(username, updateUserDto);
-  }
-
-  @Get(":username/handles")
-  @UseGuards(UserAccessGuard)
-  @ApiBearerAuth("JWT")
-  @ApiParam({
-    name: "username",
-    required: true,
-    example: "c181065"
-  })
-  @ApiOperation({ summary: "Update user handles" })
-  @ApiOkResponse({ description: "User handles updated" })
-  async getUserHandles(@Param("username") username: string) {
-    return this.usersService.getUserHandles(username);
   }
 
   @Patch(":username/handles")

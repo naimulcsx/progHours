@@ -8,6 +8,6 @@
 .navbar {
   &[data-variant="proghours-ui"] {
     background-color: hsl(var(--background));
-    border-color: hsl(var(--border) / 0.5);
+    border-color: hsl(var(--border));
   }
 }

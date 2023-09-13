@@ -4,13 +4,12 @@ import { ApiProperty, OmitType, PartialType } from "@nestjs/swagger";
 
 import { CreateUserDto } from "./create-user.dto";
 
-class CreateUserDtoWithoutPasswordAndUsername extends OmitType(CreateUserDto, [
+class _UserUserDto extends OmitType(CreateUserDto, [
   "password",
   "username"
 ] as const) {}
-export class UpdateUserDto extends PartialType(
-  CreateUserDtoWithoutPasswordAndUsername
-) {
+
+export class UpdateUserDto extends PartialType(_UserUserDto) {
   @ApiProperty({
     description: "User phone number",
     example: "+8801625644843",

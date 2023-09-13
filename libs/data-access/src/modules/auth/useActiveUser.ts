@@ -13,7 +13,7 @@ export type ActiveUserResponse = Omit<User, "password" | "metaData"> & {
 };
 
 const getActiveUser = async (): Promise<ActiveUserResponse> => {
-  return axios.get("/users/me").then((res) => res.data);
+  return axios.get("/auth/me").then((res) => res.data);
 };
 
 type UseUserOptions = {

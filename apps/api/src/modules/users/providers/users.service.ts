@@ -82,6 +82,9 @@ export class UsersService {
   async getUserHandles(username: string) {
     username = username.toLowerCase();
     const user = await this.usersRepository.getByUsername(username);
+    if (!user) {
+      throw new NotFoundException();
+    }
     return this.prisma.userHandle.findMany({
       where: { userId: user.id },
       select: { handle: true, type: true }
