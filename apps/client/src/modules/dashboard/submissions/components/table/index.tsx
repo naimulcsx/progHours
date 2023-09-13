@@ -7,6 +7,7 @@ import {
 
 import { Group, Pagination, ScrollArea, Table, Text } from "@mantine/core";
 
+import { CreateSubmissionRow } from "./CreateSubmissionRow";
 import { columns } from "./columns";
 
 import { SubmissionRow } from "@proghours/data-access";
@@ -60,6 +61,7 @@ export function SubmissionsDataTable({ data }: DataTableProps) {
           ))}
         </Table.Thead>
         <Table.Tbody>
+          <CreateSubmissionRow />
           {table.getRowModel().rows?.length ? (
             table.getRowModel().rows.map((row, index) => (
               <Table.Tr

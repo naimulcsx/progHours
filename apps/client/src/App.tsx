@@ -11,6 +11,7 @@ import {
 } from "@mantine/core";
 import "@mantine/core/styles.css";
 import "@mantine/dates/styles.css";
+import { ModalsProvider } from "@mantine/modals";
 import { Notifications } from "@mantine/notifications";
 import "@mantine/notifications/styles.css";
 import { NavigationProgress, nprogress } from "@mantine/nprogress";
@@ -46,7 +47,9 @@ function App() {
       >
         <QueryClientProvider client={queryClient}>
           <HelmetProvider>
-            <Entry />
+            <ModalsProvider>
+              <Entry />
+            </ModalsProvider>
             <Notifications position="top-center" />
             <NavigationProgress />
           </HelmetProvider>

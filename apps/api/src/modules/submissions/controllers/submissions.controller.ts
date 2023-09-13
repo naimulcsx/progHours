@@ -18,14 +18,13 @@ import {
   ApiTags,
   ApiUnauthorizedResponse
 } from "@nestjs/swagger";
-import {
-  ActiveUserData,
-  User
-} from "~/modules/iam/auth/decorators/user.decorator";
-import { SubmissionsService } from "../services/submissions.service";
+
+import { ActiveUserData, User } from "~/modules/auth/decorators/user.decorator";
+
 import { CreateSubmissionDto } from "../dto/create-submission.dto";
 import { UpdateSubmissionDto } from "../dto/update-sumission.dto";
 import { UpdateSubmissionGuard } from "../guards/update-submission.guard";
+import { SubmissionsService } from "../services/submissions.service";
 
 @Controller("submissions")
 @ApiTags("Submissions")

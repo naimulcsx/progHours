@@ -1,7 +1,10 @@
+import { IconChecks } from "@tabler/icons-react";
 import { CellContext } from "@tanstack/react-table";
 import { ReactNode } from "react";
 
 import { Box, Group, Text, Title } from "@mantine/core";
+
+import { SubmissionRow } from "@proghours/data-access";
 
 import {
   ACIcon,
@@ -21,8 +24,6 @@ import {
   TophIcon,
   UVAIcon
 } from "~/assets/oj-icons";
-
-import { SubmissionRow } from "@proghours/data-access";
 
 const iconMap = [
   { prefix: "Gym-", icon: <CFIcon /> },
@@ -47,7 +48,8 @@ const iconMap = [
 
 export const ProblemName = (cell: CellContext<SubmissionRow, unknown>) => {
   const {
-    problem: { pid, name }
+    problem: { pid, name },
+    isVerified
   } = cell.row.original;
   return (
     <Group gap="md" style={{ width: "100%" }}>
@@ -64,11 +66,14 @@ export const ProblemName = (cell: CellContext<SubmissionRow, unknown>) => {
         {(iconMap.filter((item, i) => pid.includes(item.prefix)).at(0)
           ?.icon as ReactNode) ?? undefined}
       </Box>
-      <Box>
-        <Group gap="xs" align="center">
+      <Box style={{ flex: 1 }}>
+        <Group gap="xs" align="center" justify="space-between" w="100%">
           <Title order={6} style={{ fontWeight: 500 }}>
             {pid}
           </Title>
+          {isVerified && (
+            <IconChecks size={18} color="#22c55e" style={{ marginRight: 16 }} />
+          )}
         </Group>
         <Text
           size="sm"

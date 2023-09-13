@@ -36,9 +36,9 @@ model User {
   updatedAt DateTime @updatedAt @map("updated_at") @db.Timestamp(0)
   metaData  Json?    @default("{}") @map("metadata")
 
-  submissions Submission[]
-  UserHandle  UserHandle[]
-  PullHistory PullHistory[]
+  submissions   Submission[]
+  userHandles   UserHandle[]
+  pullHistories PullHistory[]
 
   @@map("users")
 }
@@ -79,15 +79,16 @@ model ProblemTag {
 }
 
 model Submission {
-  id        Int      @id @default(autoincrement())
-  solveTime Int      @map("solve_time")
-  verdict   Verdict
-  solvedAt  DateTime @map("solved_at") @db.Date
-  createdAt DateTime @default(now()) @map("created_at") @db.Timestamp(0)
-  updatedAt DateTime @updatedAt @map("updated_at") @db.Timestamp(0)
-  userId    Int      @map("user_id")
-  problemId Int      @map("problem_id")
-  metaData  Json?    @default("{}") @map("metadata")
+  id         Int      @id @default(autoincrement())
+  solveTime  Int      @map("solve_time")
+  verdict    Verdict
+  solvedAt   DateTime @map("solved_at") @db.Date
+  createdAt  DateTime @default(now()) @map("created_at") @db.Timestamp(0)
+  updatedAt  DateTime @updatedAt @map("updated_at") @db.Timestamp(0)
+  userId     Int      @map("user_id")
+  problemId  Int      @map("problem_id")
+  metaData   Json?    @default("{}") @map("metadata")
+  isVerified Boolean  @default(false) @map("is_verified")
 
   user    User    @relation(fields: [userId], references: [id])
   problem Problem @relation(fields: [problemId], references: [id])
@@ -112,6 +113,7 @@ model UserHandle {
   type   HandleType
   handle String
 
+  @@unique([userId, type])
   @@map("user_handles")
 }
 

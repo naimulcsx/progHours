@@ -4,12 +4,20 @@
   "sourceRoot": "apps/client/src",
   "projectType": "application",
   "targets": {
+    "build-captain": {
+      "executor": "nx:run-commands",
+      "options": {
+        "commands": ["nx build client", "ts-node scripts/build-captain-fe.ts"],
+        "parallel": false
+      }
+    },
     "build": {
       "executor": "@nx/vite:build",
       "outputs": ["{options.outputPath}"],
       "defaultConfiguration": "production",
       "options": {
-        "outputPath": "dist/apps/client"
+        "outputPath": "dist/apps/client",
+        "generatePackageJson": true
       },
       "configurations": {
         "development": {

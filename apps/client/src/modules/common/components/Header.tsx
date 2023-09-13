@@ -14,6 +14,8 @@ import {
 } from "@mantine/core";
 
 import { AppLogo } from "~/assets/AppLogo";
+import { IconHome, IconSettings } from "~/assets/icons";
+import { IconLogout } from "~/assets/icons/IconLogout";
 import { useLogout } from "~/modules/auth/hooks/useLogout";
 import { useUser } from "~/modules/auth/hooks/useUser";
 
@@ -85,13 +87,26 @@ export function Header() {
                   </Button>
                 </Menu.Target>
                 <Menu.Dropdown>
-                  <Menu.Item component={Link} to="/overview">
+                  <Menu.Item
+                    leftSection={<IconHome width={18} height={18} />}
+                    component={Link}
+                    to="/overview"
+                  >
                     Dashboard
                   </Menu.Item>
-                  <Menu.Item component={Link} to="/settings/appearance">
+                  <Menu.Item
+                    leftSection={<IconSettings width={18} height={18} />}
+                    component={Link}
+                    to="/settings/appearance"
+                  >
                     Settings
                   </Menu.Item>
-                  <Menu.Item onClick={handleLogout}>Logout</Menu.Item>
+                  <Menu.Item
+                    leftSection={<IconLogout width={18} height={18} />}
+                    onClick={handleLogout}
+                  >
+                    Logout
+                  </Menu.Item>
                 </Menu.Dropdown>
               </Menu>
             )}

@@ -1,18 +1,22 @@
+import { createBullBoard } from "@bull-board/api";
+import { BullAdapter } from "@bull-board/api/bullAdapter";
+import { ExpressAdapter } from "@bull-board/express";
+import { Queue } from "bull";
+
+import { BullModule } from "@nestjs/bull";
 import {
   DynamicModule,
+  Global,
   MiddlewareConsumer,
   Module,
   NestModule
 } from "@nestjs/common";
-import { TrackerService } from "./services/tracker.service";
-import { TrackerController } from "./controllers/tracker.controller";
-import { BullModule } from "@nestjs/bull";
-import { ExpressAdapter } from "@bull-board/express";
-import { createBullBoard } from "@bull-board/api";
-import { BullAdapter } from "@bull-board/api/bullAdapter";
-import { BasicAuthMiddleware } from "./middlewares/basic-auth.middleware";
-import { Queue } from "bull";
+
 import { SubmissionsModule } from "~/modules/submissions/submissions.module";
+
+import { ProblemsModule } from "../problems/problems.module";
+import { TrackerController } from "./controllers/tracker.controller";
+import { BasicAuthMiddleware } from "./middlewares/basic-auth.middleware";
 import {
   InjectTrackerPullQueue,
   TRACKER_PULL_QUEUE,
@@ -23,8 +27,14 @@ import {
   TRACKER_PUSH_QUEUE,
   TrackerPushProcessor
 } from "./processors/push.processor";
-import { ProblemsModule } from "../problems/problems.module";
+import {
+  InjectTrackerVerifyQueue,
+  TRACKER_VERIFY_QUEUE,
+  TrackerVerifyProcessor
+} from "./processors/verify.processor";
+import { TrackerService } from "./services/tracker.service";
 
+@Global()
 @Module({})
 export class TrackerModule implements NestModule {
   static register(): DynamicModule {
@@ -34,11 +44,16 @@ export class TrackerModule implements NestModule {
     const trackerPushQueue = BullModule.registerQueue({
       name: TRACKER_PUSH_QUEUE
     });
+    const trackerVerifyQueue = BullModule.registerQueue({
+      name: TRACKER_VERIFY_QUEUE
+    });
     if (
       !trackerPullQueue.providers ||
       !trackerPullQueue.exports ||
       !trackerPushQueue.providers ||
-      !trackerPushQueue.exports
+      !trackerPushQueue.exports ||
+      !trackerVerifyQueue.providers ||
+      !trackerVerifyQueue.exports
     ) {
       throw new Error("Unable to build queue");
     }
@@ -53,6 +68,7 @@ export class TrackerModule implements NestModule {
         }),
         trackerPullQueue,
         trackerPushQueue,
+        trackerVerifyQueue,
         SubmissionsModule,
         ProblemsModule
       ],
@@ -61,16 +77,24 @@ export class TrackerModule implements NestModule {
         TrackerService,
         TrackerPullProcessor,
         TrackerPushProcessor,
+        TrackerVerifyProcessor,
         ...trackerPullQueue.providers,
-        ...trackerPushQueue.providers
+        ...trackerPushQueue.providers,
+        ...trackerVerifyQueue.providers
       ],
-      exports: [...trackerPullQueue.exports, ...trackerPushQueue.exports]
+      exports: [
+        TrackerService,
+        ...trackerPullQueue.exports,
+        ...trackerPushQueue.exports,
+        ...trackerVerifyQueue.exports
+      ]
     };
   }
 
   constructor(
     @InjectTrackerPullQueue() private readonly trackerPullQueue: Queue,
-    @InjectTrackerPushQueue() private readonly trackerPushQueue: Queue
+    @InjectTrackerPushQueue() private readonly trackerPushQueue: Queue,
+    @InjectTrackerVerifyQueue() private readonly trackerVerifyQueue: Queue
   ) {}
 
   configure(consumer: MiddlewareConsumer) {
@@ -79,7 +103,8 @@ export class TrackerModule implements NestModule {
     createBullBoard({
       queues: [
         new BullAdapter(this.trackerPullQueue),
-        new BullAdapter(this.trackerPushQueue)
+        new BullAdapter(this.trackerPushQueue),
+        new BullAdapter(this.trackerVerifyQueue)
       ],
       serverAdapter
     });

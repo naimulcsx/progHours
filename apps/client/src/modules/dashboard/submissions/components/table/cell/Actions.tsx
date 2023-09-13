@@ -1,11 +1,13 @@
 import {
   IconCheck,
   IconDots,
+  IconPaperclip,
   IconReload,
   IconTrash
 } from "@tabler/icons-react";
 import { useQueryClient } from "@tanstack/react-query";
 import { CellContext } from "@tanstack/react-table";
+import { Link } from "react-router-dom";
 
 import { ActionIcon, Menu, Text, Title } from "@mantine/core";
 import { modals } from "@mantine/modals";
@@ -20,7 +22,8 @@ import {
 export function ActionsCell(cell: CellContext<SubmissionRow, unknown>) {
   const {
     id: submissionId,
-    problem: { id, pid }
+    problem: { id, pid },
+    metaData
   } = cell.row.original;
   const client = useQueryClient();
 
@@ -32,7 +35,8 @@ export function ActionsCell(cell: CellContext<SubmissionRow, unknown>) {
           color: "green",
           title: "Success",
           message: `Refetched ${pid}`,
-          icon: <IconCheck />
+          icon: <IconCheck />,
+          loading: false
         });
 
         const submissions: SubmissionRow[] =
@@ -92,6 +96,8 @@ export function ActionsCell(cell: CellContext<SubmissionRow, unknown>) {
       }
     });
 
+  const _metaData = metaData as { submissionUrl?: string };
+
   return (
     <Menu shadow="md" width={200}>
       <Menu.Target>
@@ -100,6 +106,17 @@ export function ActionsCell(cell: CellContext<SubmissionRow, unknown>) {
         </ActionIcon>
       </Menu.Target>
       <Menu.Dropdown>
+        {_metaData.submissionUrl && (
+          <Menu.Item
+            component={Link}
+            leftSection={<IconPaperclip size={14} />}
+            closeMenuOnClick={false}
+            to={_metaData.submissionUrl}
+            target="_blank"
+          >
+            Code
+          </Menu.Item>
+        )}
         <Menu.Item
           leftSection={<IconReload size={14} />}
           onClick={() => {

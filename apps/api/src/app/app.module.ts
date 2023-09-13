@@ -1,19 +1,23 @@
+import { PrometheusModule } from "@willsoto/nestjs-prometheus";
+import { redisStore } from "cache-manager-redis-yet";
+import Joi from "joi";
+
+import { CacheModule } from "@nestjs/cache-manager";
 import { Module } from "@nestjs/common";
 import { ConfigModule } from "@nestjs/config";
+
 import appConfig from "~/config/app.config";
-import { PrismaModule } from "~/modules/prisma/prisma.module";
-import { AuthModule } from "~/modules/iam/auth/auth.module";
-import { UsersModule } from "~/modules/iam/users/users.module";
-import { ParserModule } from "~/modules/parser/parser.module";
-import { SubmissionsModule } from "~/modules/submissions/submissions.module";
-import { ProblemsModule } from "~/modules/problems/problems.module";
-import { PrometheusModule } from "@willsoto/nestjs-prometheus";
-import { PrometheusController } from "~/modules/prometheus/controllers/prometheus.controller";
-import { TrackerModule } from "~/modules/tracker/tracker.module";
-import Joi from "joi";
+import jwtConfig from "~/config/jwt.config";
+
+import { AuthModule } from "~/modules/auth/auth.module";
 import { LeaderboardModule } from "~/modules/leaderboard/leaderboard.module";
-import { CacheModule } from "@nestjs/cache-manager";
-import { redisStore } from "cache-manager-redis-yet";
+import { ParserModule } from "~/modules/parser/parser.module";
+import { PrismaModule } from "~/modules/prisma/prisma.module";
+import { ProblemsModule } from "~/modules/problems/problems.module";
+import { PrometheusController } from "~/modules/prometheus/controllers/prometheus.controller";
+import { SubmissionsModule } from "~/modules/submissions/submissions.module";
+import { TrackerModule } from "~/modules/tracker/tracker.module";
+import { UsersModule } from "~/modules/users/users.module";
 
 @Module({
   imports: [
@@ -22,7 +26,7 @@ import { redisStore } from "cache-manager-redis-yet";
     }),
     ConfigModule.forRoot({
       isGlobal: true,
-      load: [appConfig],
+      load: [appConfig, jwtConfig],
       validationSchema: Joi.object({
         NODE_ENV: Joi.string().valid("development", "production"),
         PORT: Joi.number(),
@@ -34,7 +38,6 @@ import { redisStore } from "cache-manager-redis-yet";
       isGlobal: true,
       useFactory: async () => ({
         store: await redisStore({
-          // TODO: need to replace these with config read from env
           socket: {
             host: "localhost",
             port: 6379
@@ -48,8 +51,8 @@ import { redisStore } from "cache-manager-redis-yet";
     ProblemsModule,
     SubmissionsModule,
     ParserModule,
-    TrackerModule.register(),
-    LeaderboardModule
+    LeaderboardModule,
+    TrackerModule.register()
   ],
   controllers: [],
   providers: []

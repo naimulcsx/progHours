@@ -40,7 +40,6 @@ export function AppearanceSettings() {
         <Group>
           {accentColors.map((color) => {
             const bg = resolvers[color](theme).light["--primary"];
-            console.log(bg);
             return (
               <Tooltip
                 key={color}

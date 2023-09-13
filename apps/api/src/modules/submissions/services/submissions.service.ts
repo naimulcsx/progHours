@@ -1,18 +1,27 @@
+import moment from "moment";
+
 import {
   BadRequestException,
+  Inject,
   Injectable,
-  InternalServerErrorException
+  InternalServerErrorException,
+  forwardRef
 } from "@nestjs/common";
+
 import { ParserService } from "~/modules/parser/services/parser.service";
 import { PrismaService } from "~/modules/prisma/services/prisma.service";
 import { ProblemsService } from "~/modules/problems/services/problems.service";
+import { TrackerService } from "~/modules/tracker/services/tracker.service";
+
 import { CreateSubmissionDto } from "../dto/create-submission.dto";
 import { UpdateSubmissionDto } from "../dto/update-sumission.dto";
-import moment from "moment";
 
 @Injectable()
 export class SubmissionsService {
   constructor(
+    @Inject(forwardRef(() => TrackerService))
+    private readonly trackerService: TrackerService,
+
     private readonly prisma: PrismaService,
     private readonly parserService: ParserService,
     private readonly problemsService: ProblemsService
@@ -33,9 +42,26 @@ export class SubmissionsService {
         }
       },
       orderBy: {
-        solvedAt: "desc"
+        createdAt: "desc"
       }
     });
+  }
+
+  async getByUserAndUrl(userId: number, url: string) {
+    const problem = await this.prisma.problem.findUnique({
+      where: { url }
+    });
+    if (!problem) return null;
+    const submission = await this.prisma.submission.findUnique({
+      where: {
+        userId_problemId: {
+          userId,
+          problemId: problem.id
+        }
+      }
+    });
+    if (!submission) return null;
+    return submission;
   }
 
   async exists(userId: number, url: string) {
@@ -88,6 +114,18 @@ export class SubmissionsService {
           }
         }
       });
+
+      // add submission to verify queue
+      const _url = new URL(url);
+      if (_url.host === "codeforces.com") {
+        await this.trackerService.verifySingle({
+          submissionId: newSubmission.id,
+          userId,
+          url,
+          judge: "CODEFORCES"
+        });
+      }
+
       return newSubmission;
     } catch (error) {
       const uniqueConstraintErrorCode = "P2002";
@@ -109,6 +147,13 @@ export class SubmissionsService {
       }
     });
     return updatedSubmission;
+  }
+
+  async markVerified(id: number) {
+    return this.prisma.submission.update({
+      where: { id },
+      data: { isVerified: true }
+    });
   }
 
   async delete(id: number) {
