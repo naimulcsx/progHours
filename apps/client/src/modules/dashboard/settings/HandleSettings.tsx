@@ -3,7 +3,7 @@ import { IconCheck } from "@tabler/icons-react";
 import { useEffect } from "react";
 import { z } from "zod";
 
-import { Box, Button, Grid, Text, TextInput } from "@mantine/core";
+import { Box, Button, Grid, Notification, TextInput } from "@mantine/core";
 import { useForm, zodResolver } from "@mantine/form";
 import { notifications } from "@mantine/notifications";
 
@@ -56,11 +56,11 @@ export function HandlesSettings() {
   }, [userHandles]);
   return (
     <Box>
-      <Text mb="lg">
+      <Notification title="WARNING!" withCloseButton={false} mb="lg">
         When you update your handles, all of your previous submissions will be
         temporarily unverified. All of your submissions will be subject to
         re-verification against your new handle.
-      </Text>
+      </Notification>
       {isSuccess && (
         <form
           onSubmit={form.onSubmit((values) => {

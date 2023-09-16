@@ -1,7 +1,10 @@
-import { Injectable } from "@nestjs/common";
-import { PrismaService } from "~/modules/prisma/services/prisma.service";
-import { LeaderboardEntry } from "../types";
 import { Prisma } from "@prisma/client";
+
+import { Injectable } from "@nestjs/common";
+
+import { PrismaService } from "~/modules/prisma/services/prisma.service";
+
+import { LeaderboardEntry } from "../types";
 
 // issue: https://github.com/prisma/studio/issues/614
 /* eslint-disable @typescript-eslint/no-explicit-any */

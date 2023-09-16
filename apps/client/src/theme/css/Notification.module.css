@@ -1,7 +1,6 @@
 .root {
   &[data-variant="proghours-ui"] {
     border: 1px solid hsl(var(--foreground) / 0.05);
-
     @mixin dark {
       background: hsl(var(--secondary));
     }
@@ -10,13 +9,15 @@
     }
   }
 }
+
 .title {
   &[data-variant="proghours-ui"] {
-    color: hsl(var(--foreground));
-  }
-}
-.description {
-  &[data-variant="proghours-ui"] {
-    color: hsl(var(--muted-foreground));
+    /* workaround to make the rule more specific */
+    @mixin dark {
+      color: hsl(var(--foreground));
+    }
+    @mixin light {
+      color: hsl(var(--foreground));
+    }
   }
 }
