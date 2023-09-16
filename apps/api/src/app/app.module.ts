@@ -14,6 +14,7 @@ import { LeaderboardModule } from "~/modules/leaderboard/leaderboard.module";
 import { ParserModule } from "~/modules/parser/parser.module";
 import { PrismaModule } from "~/modules/prisma/prisma.module";
 import { ProblemsModule } from "~/modules/problems/problems.module";
+import { ProfilesModule } from "~/modules/profiles/profiles.module";
 import { PrometheusController } from "~/modules/prometheus/controllers/prometheus.controller";
 import { SubmissionsModule } from "~/modules/submissions/submissions.module";
 import { TrackerModule } from "~/modules/tracker/tracker.module";
@@ -48,6 +49,7 @@ import { UsersModule } from "~/modules/users/users.module";
     PrismaModule,
     AuthModule,
     UsersModule,
+    ProfilesModule,
     ProblemsModule,
     SubmissionsModule,
     ParserModule,

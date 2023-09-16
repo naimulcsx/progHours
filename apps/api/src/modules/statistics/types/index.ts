@@ -13,3 +13,15 @@ export type LeaderboardEntry = {
   totalSolved: bigint;
   totalSolvedWithDifficulty: bigint;
 };
+
+export type UserStatistics = {
+  totalSolveTime: bigint;
+  totalDifficulty: bigint;
+  totalSolved: bigint;
+  totalSolvedWithDifficulty: bigint;
+};
+
+export type TagsFrequency = Array<{
+  name: string;
+  count: number;
+}>;
