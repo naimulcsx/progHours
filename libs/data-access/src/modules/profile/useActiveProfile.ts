@@ -12,6 +12,10 @@ export type ActiveProfileResponse = {
     section?: string;
     department?: string;
   };
+  totalSolveTime: number;
+  totalDifficulty: number;
+  totalSolved: number;
+  totalSolvedWithDifficulty: number;
   solveCountByTags: Array<{
     tag: string;
     count: number;

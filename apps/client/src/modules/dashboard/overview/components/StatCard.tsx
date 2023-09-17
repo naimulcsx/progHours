@@ -1,11 +1,11 @@
 import { ReactNode } from "react";
 
-import { Box, Group, Paper, Text, Title } from "@mantine/core";
+import { Box, Group, Paper, Text } from "@mantine/core";
 
 export interface StatCardProps {
   icon: ReactNode;
   label: string;
-  value: string;
+  value: string | number;
 }
 
 export function StatCard({ icon, label, value }: StatCardProps) {
@@ -14,10 +14,10 @@ export function StatCard({ icon, label, value }: StatCardProps) {
       <Group>
         {icon}
         <Box>
-          <Title order={5} fw={700}>
+          <Text size="sm" fw={400} variant="proghours-ui-strong">
             {label}
-          </Title>
-          <Text fw={400} size="xl" variant="proghours-ui-secondary">
+          </Text>
+          <Text fw={600} variant="proghours-ui-strong" fz={24}>
             {value}
           </Text>
         </Box>

@@ -11,11 +11,16 @@ import {
   useMantineTheme
 } from "@mantine/core";
 
+import { ActiveProfileResponse } from "@proghours/data-access";
+
 import { useAccentColor } from "~/modules/common/contexts/AccentColorContext";
 import { resolvers } from "~/theme";
 
-export const WeeklySolvedChart = () => {
-  const totalItems = 20;
+interface WeeklySolvedChartProps {
+  data: ActiveProfileResponse["weeklyStatistics"];
+}
+
+export const WeeklySolvedChart = ({ data }: WeeklySolvedChartProps) => {
   const theme = useMantineTheme();
   const { colorScheme } = useMantineColorScheme();
   const viewport = useRef<HTMLDivElement>(null);
@@ -34,12 +39,11 @@ export const WeeklySolvedChart = () => {
     });
   }, []);
 
+  const solvedData = data.filter((el) => el.solved > 0);
   const series = [
     {
       name: "Solved",
-      data: Array.from({ length: totalItems }, () =>
-        Math.floor(Math.random() * 10)
-      )
+      data: solvedData.map((el) => el.solved)
     }
   ];
   const options: ApexOptions = {
@@ -83,7 +87,7 @@ export const WeeklySolvedChart = () => {
       curve: "smooth"
     },
     xaxis: {
-      categories: Array.from({ length: 200 }, () => 0).map((e, i) => "W" + i),
+      categories: solvedData.map((el) => el.label),
       tooltip: {
         enabled: false
       }
@@ -96,16 +100,20 @@ export const WeeklySolvedChart = () => {
     <>
       <Text
         size="sm"
+        variant="proghours-ui-strong"
         style={{
-          fontWeight: 500,
-          color: colorScheme === "dark" ? theme.white : theme.colors.dark[4],
+          fontStyle: "italic",
           textAlign: "center"
         }}
       >
         Problems solved per week
       </Text>
       <ScrollArea h={350} viewportRef={viewport}>
-        <Box style={{ width: totalItems <= 10 ? "100%" : totalItems * 50 }}>
+        <Box
+          style={{
+            width: solvedData.length <= 10 ? "100%" : solvedData.length * 50
+          }}
+        >
           <Chart options={options} series={series} type="area" height={330} />
         </Box>
       </ScrollArea>
