@@ -1,14 +1,19 @@
+import { Helmet } from "react-helmet-async";
+
 import { Box, Group, Loader, Stack, Title, Transition } from "@mantine/core";
+
+import { useSubmissions } from "@proghours/data-access";
 
 import { DashboardLayout } from "~/modules/common/components/DashboardLayout";
 import { SubmissionsDataTable } from "~/modules/dashboard/submissions/components/table";
-
-import { useSubmissions } from "@proghours/data-access";
 
 export default function SubmissionsPage() {
   const { data, isFetching, isSuccess } = useSubmissions();
   return (
     <DashboardLayout>
+      <Helmet>
+        <title>Submissions - progHours</title>
+      </Helmet>
       <Group style={{ alignItems: "center" }}>
         <Title order={3}>Submissions</Title>
         <Transition mounted={isFetching} transition="fade" duration={800}>

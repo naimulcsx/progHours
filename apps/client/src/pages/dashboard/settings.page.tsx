@@ -1,3 +1,4 @@
+import { Helmet } from "react-helmet-async";
 import { useNavigate, useParams } from "react-router-dom";
 
 import { Container, Group, Tabs, Title } from "@mantine/core";
@@ -20,6 +21,9 @@ export default function SettingsPage() {
     : "appearance";
   return (
     <DashboardLayout>
+      <Helmet>
+        <title>Settings - progHours</title>
+      </Helmet>
       <Container size="md">
         <Group>
           <Title order={3}>Settings</Title>

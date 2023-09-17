@@ -1,3 +1,6 @@
+import { IconInfoCircle } from "@tabler/icons-react";
+import { Helmet } from "react-helmet-async";
+
 import {
   Box,
   Group,
@@ -11,7 +14,6 @@ import {
 
 import { useActiveProfile } from "@proghours/data-access";
 
-import { IconInfoCircle } from "~/assets/icons";
 import { IconEnergy, IconFlag, IconPoints, IconTime } from "~/assets/icons";
 import { DashboardLayout } from "~/modules/common/components/DashboardLayout";
 import { formatSolveTime } from "~/modules/common/utils/formatSolveTime";
@@ -22,10 +24,13 @@ export default function OverviewPage() {
   const { data, isFetching } = useActiveProfile();
   return (
     <DashboardLayout>
-      <Group>
+      <Helmet>
+        <title>Overview - progHours</title>
+      </Helmet>
+      <Group gap="xs">
         <Title order={3}>Overview </Title>
         <Tooltip label="Latest data may experience a delay of up to 5 minutes.">
-          <IconInfoCircle width={16} height={16} />
+          <IconInfoCircle size={22} />
         </Tooltip>
         <Transition mounted={isFetching} transition="fade" duration={800}>
           {(styles) => (

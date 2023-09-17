@@ -1,6 +1,7 @@
 import { IconInfoCircle } from "@tabler/icons-react";
 import { AnimatePresence } from "framer-motion";
 import { useState } from "react";
+import { Helmet } from "react-helmet-async";
 
 import {
   Flex,
@@ -12,12 +13,12 @@ import {
   Transition
 } from "@mantine/core";
 
+import { LeaderboardType, useLeaderboard } from "@proghours/data-access";
+
 import { FadeInTransition } from "~/modules/common/components/FadeInTransition";
 import { Layout } from "~/modules/common/components/Layout";
 import { LeaderboardDataTable } from "~/modules/leaderboard/components/table";
 import { TopPerformers } from "~/modules/leaderboard/components/top-performers/TopPerformers";
-
-import { LeaderboardType, useLeaderboard } from "@proghours/data-access";
 
 export default function LeaderboardPage() {
   const [type, setType] = useState<LeaderboardType>("full");
@@ -25,6 +26,9 @@ export default function LeaderboardPage() {
   const topUsers = data?.slice(0, 3);
   return (
     <Layout>
+      <Helmet>
+        <title>Leaderboard - progHours</title>
+      </Helmet>
       <Group justify="space-between">
         <Group style={{ alignItems: "center" }}>
           <Flex align="center" gap="xs">
