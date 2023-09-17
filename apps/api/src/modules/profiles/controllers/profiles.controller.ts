@@ -7,6 +7,7 @@ import {
 } from "@nestjs/swagger";
 
 import { Auth, AuthType } from "~/modules/auth/decorators/auth.decorator";
+import { ActiveUserData, User } from "~/modules/auth/decorators/user.decorator";
 
 import { ProfilesService } from "../providers/profiles.service";
 
@@ -18,8 +19,8 @@ export class ProfilesController {
   @Get("me")
   @ApiOperation({ summary: "Get current user profile" })
   @ApiBearerAuth("JWT")
-  getMyProfile() {
-    return [];
+  getMyProfile(@User() user: ActiveUserData) {
+    return this.profilesService.getUserProfile(user.username);
   }
 
   @Get(":username")

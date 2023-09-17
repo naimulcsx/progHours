@@ -25,3 +25,11 @@ export type TagsFrequency = Array<{
   name: string;
   count: number;
 }>;
+
+export type WeeklyStatisticsRow = {
+  weekStartDate: Date;
+  solved: number;
+  averageDifficulty: number;
+};
+
+export type WeeklyStatistics = Array<WeeklyStatisticsRow>;

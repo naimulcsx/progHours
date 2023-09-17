@@ -1,10 +1,17 @@
 import { Prisma } from "@prisma/client";
+import moment from "moment";
 
 import { Injectable } from "@nestjs/common";
 
 import { PrismaService } from "~/modules/prisma/services/prisma.service";
 
-import { LeaderboardEntry, TagsFrequency, UserStatistics } from "../types";
+import {
+  LeaderboardEntry,
+  TagsFrequency,
+  UserStatistics,
+  WeeklyStatistics,
+  WeeklyStatisticsRow
+} from "../types";
 
 // issue: https://github.com/prisma/studio/issues/614
 /* eslint-disable @typescript-eslint/no-explicit-any */
@@ -139,7 +146,7 @@ export class StatisticsService {
 
   async getWeeklyStatistics(id: number) {
     const userId = Prisma.sql`${id}`;
-    const result = await this.prisma.$queryRaw`
+    const result: WeeklyStatistics = await this.prisma.$queryRaw`
       SELECT 
           date_trunc('WEEK', (s.solved_at + interval '2 day')) - interval '2 day' AS "weekStartDate",
           COUNT(s.id) AS solved,
@@ -159,6 +166,52 @@ export class StatisticsService {
       ORDER BY
         "weekStartDate"
     `;
-    return result;
+
+    if (result.length === 0) {
+      return result;
+    }
+
+    const firstWeekDate = result[0].weekStartDate;
+
+    let maxWeek = 0;
+    const resultWithWeekNumber = result.map((el) => {
+      const weekNumber =
+        (new Date(el.weekStartDate).getTime() -
+          new Date(firstWeekDate).getTime()) /
+        (1000 * 604800);
+      maxWeek = Math.max(maxWeek, weekNumber + 1);
+      return {
+        ...el,
+        weekNumber: weekNumber + 1
+      };
+    });
+
+    const resultWithEmptyWeeks: Array<
+      WeeklyStatisticsRow & {
+        weekNumber: number;
+        label: string;
+      }
+    > = [];
+
+    for (let week = 1, currentIndex = 0; week < maxWeek; week++) {
+      const el = resultWithWeekNumber[currentIndex];
+      if (week === el.weekNumber) {
+        resultWithEmptyWeeks.push({
+          ...resultWithWeekNumber[currentIndex],
+          label: "W" + el.weekNumber
+        });
+        currentIndex++;
+      } else {
+        resultWithEmptyWeeks.push({
+          label: "W" + week,
+          weekNumber: week,
+          weekStartDate: moment(firstWeekDate).add(week, "weeks").toDate(),
+          solved: 0,
+          averageDifficulty: 0
+        });
+      }
+    }
+
+    return resultWithEmptyWeeks;
   }
 }
