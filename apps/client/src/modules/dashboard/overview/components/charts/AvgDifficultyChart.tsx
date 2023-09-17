@@ -15,25 +15,17 @@ import { ActiveProfileResponse } from "@proghours/data-access";
 
 // import convert from "color-convert";
 
-interface WeeklySolvedChartProps {
+interface AvgDifficultyChartProps {
   data: ActiveProfileResponse["weeklyStatistics"];
 }
 
-export const WeeklySolvedChart = ({ data }: WeeklySolvedChartProps) => {
+export const AvgDifficultyChart = ({ data }: AvgDifficultyChartProps) => {
   const { colorScheme } = useMantineColorScheme();
-  // const { accentColor } = useAccentColor();
-  // const primary = resolvers[accentColor](theme).light["--primary"];
-  // const hsl = primary.split(" ").map((n) => parseFloat(n)) as [
-  //   number,
-  //   number,
-  //   number
-  // ];
-  // const __color = "#" + convert.hsl.hex(hsl);
   const viewport = useRef<HTMLDivElement>(null);
 
   const [value, setValue] = useState("default");
   const solvedData =
-    value === "default" ? data.filter((el) => el.solved > 0) : data;
+    value === "default" ? data.filter((el) => el.averageDifficulty > 0) : data;
 
   useEffect(() => {
     viewport?.current?.scrollTo({
@@ -44,19 +36,18 @@ export const WeeklySolvedChart = ({ data }: WeeklySolvedChartProps) => {
 
   const series = [
     {
-      name: "Solved",
-      data: solvedData.map((el) => el.solved)
+      name: "avg_difficulty",
+      data: solvedData.map((el) => el.averageDifficulty)
     }
   ];
   const options: ApexOptions = {
     chart: {
-      type: "donut",
       toolbar: {
         show: true,
         export: {
           csv: {
             headerCategory: "week",
-            headerValue: "total_solved"
+            headerValue: "avg_difficulty"
           }
         },
         tools: {
@@ -82,10 +73,11 @@ export const WeeklySolvedChart = ({ data }: WeeklySolvedChartProps) => {
       }
     },
     theme: {
-      mode: colorScheme === "dark" ? "dark" : "light"
+      mode: colorScheme === "dark" ? "dark" : "light",
+      palette: "palette3"
     },
     dataLabels: {
-      enabled: true
+      enabled: false
     },
     stroke: {
       curve: "smooth"
@@ -94,6 +86,27 @@ export const WeeklySolvedChart = ({ data }: WeeklySolvedChartProps) => {
       categories: solvedData.map((el) => el.label),
       tooltip: {
         enabled: false
+      }
+    },
+    markers: {
+      size: 6,
+      colors: undefined,
+      strokeColors: "#fff",
+      strokeWidth: 2,
+      strokeOpacity: 0.9,
+      strokeDashArray: 0,
+      fillOpacity: 1,
+      discrete: [],
+      shape: "circle",
+      radius: 2,
+      offsetX: 0,
+      offsetY: 0,
+      onClick: undefined,
+      onDblClick: undefined,
+      showNullDataPoints: true,
+      hover: {
+        size: undefined,
+        sizeOffset: 3
       }
     }
   };
@@ -109,7 +122,7 @@ export const WeeklySolvedChart = ({ data }: WeeklySolvedChartProps) => {
             textAlign: "center"
           }}
         >
-          Problems solved per week
+          Average difficulty per week
         </Text>
         <SegmentedControl
           variant="proghours-ui-secondary"
@@ -128,7 +141,7 @@ export const WeeklySolvedChart = ({ data }: WeeklySolvedChartProps) => {
             width: solvedData.length <= 10 ? "100%" : solvedData.length * 50
           }}
         >
-          <Chart options={options} series={series} type="area" height={330} />
+          <Chart options={options} series={series} type="line" height={330} />
         </Box>
       </ScrollArea>
     </>

@@ -9,4 +9,15 @@
       --sc-color: hsl(var(--secondary));
     }
   }
+
+  &[data-variant="proghours-ui-secondary"] {
+    @mixin light {
+      background: hsl(var(--background));
+      --sc-color: hsl(var(--background));
+    }
+    @mixin dark {
+      background: hsl(var(--background) / 0.4);
+      --sc-color: hsl(var(--secondary));
+    }
+  }
 }
