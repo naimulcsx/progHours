@@ -8,6 +8,7 @@ import { PrismaService } from "~/modules/prisma/services/prisma.service";
 import {
   LeaderboardEntry,
   TagsFrequency,
+  TagsSolveTime,
   UserStatistics,
   WeeklyStatistics,
   WeeklyStatisticsRow
@@ -102,7 +103,7 @@ export class StatisticsService {
     const userId = Prisma.sql`${id}`;
     const result: TagsFrequency = await this.prisma.$queryRaw`
       SELECT
-          t.name,
+          t.name AS tag,
           COUNT(t.name)
       FROM 
           problem_tags AS ptags
@@ -124,10 +125,10 @@ export class StatisticsService {
 
   async getTagsSolveTime(id: number) {
     const userId = Prisma.sql`${id}`;
-    const result = await this.prisma.$queryRaw`
+    const result: TagsSolveTime = await this.prisma.$queryRaw`
       SELECT
         t.name AS tag,
-        SUM(s.solve_time) AS "totalSolveTime"
+        SUM(s.solve_time) AS sum
       FROM
         submissions AS s
       LEFT JOIN problems AS p ON s.problem_id = p.id
@@ -139,7 +140,7 @@ export class StatisticsService {
       GROUP BY
         t.name
       ORDER BY
-        "totalSolveTime"
+        sum
     `;
     return result;
   }

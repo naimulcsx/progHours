@@ -22,8 +22,13 @@ export type UserStatistics = {
 };
 
 export type TagsFrequency = Array<{
-  name: string;
+  tag: string;
   count: number;
+}>;
+
+export type TagsSolveTime = Array<{
+  tag: string;
+  sum: number;
 }>;
 
 export type WeeklyStatisticsRow = {
