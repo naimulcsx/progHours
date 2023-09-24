@@ -1,4 +1,6 @@
-import { PropsWithChildren, createContext, useContext, useState } from "react";
+import { PropsWithChildren, createContext, useContext } from "react";
+
+import { useLocalStorage } from "@mantine/hooks";
 
 const SidebarContext = createContext<
   | {
@@ -9,14 +11,18 @@ const SidebarContext = createContext<
 >(undefined);
 
 export function SidebarProvider({ children }: PropsWithChildren) {
-  const [collapsed, setCollapsed] = useState(false);
+  const [collapsed, setCollapsed] = useLocalStorage({
+    key: "ph__sidebar-collapsed",
+    defaultValue: false,
+    getInitialValueInEffect: false
+  });
 
   const toggleCollapse = () => {
     setCollapsed(!collapsed);
   };
 
   return (
-    <SidebarContext.Provider value={{ collapsed, toggleCollapse }}>
+    <SidebarContext.Provider value={{ collapsed: !!collapsed, toggleCollapse }}>
       {children}
     </SidebarContext.Provider>
   );
