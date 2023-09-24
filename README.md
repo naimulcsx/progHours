@@ -1,4 +1,4 @@
-![progHours](./docs/assets/cover.png)
+![progHours](./docs/assets/cover.png?)
 
 # progHours
 
