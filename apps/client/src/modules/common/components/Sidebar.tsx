@@ -9,7 +9,8 @@ import {
   NavLink,
   SegmentedControl,
   Stack,
-  Text
+  Text,
+  Tooltip
 } from "@mantine/core";
 import { useLocalStorage } from "@mantine/hooks";
 
@@ -60,7 +61,7 @@ export function Sidebar() {
         )}
         <Stack mt="lg" gap={6}>
           {links.map((link, index) => {
-            return (
+            const child = (
               <NavLink
                 key={index}
                 component={Link}
@@ -70,6 +71,14 @@ export function Sidebar() {
                 leftSection={<link.Icon />}
               />
             );
+            if (collapsed) {
+              return (
+                <Tooltip position="right" label={link.label}>
+                  {child}
+                </Tooltip>
+              );
+            }
+            return child;
           })}
         </Stack>
       </AppShell.Section>
