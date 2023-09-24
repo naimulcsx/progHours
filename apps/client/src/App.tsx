@@ -19,6 +19,7 @@ import "@mantine/nprogress/styles.css";
 
 import { useUser } from "./modules/auth/hooks/useUser";
 import { useAccentColor } from "./modules/common/contexts/AccentColorContext";
+import { SidebarProvider } from "./modules/common/contexts/SidebarContext";
 import { getRoutes } from "./routes";
 import { resolvers, theme } from "./theme";
 import "./theme/global.css";
@@ -48,7 +49,9 @@ function App() {
         <QueryClientProvider client={queryClient}>
           <HelmetProvider>
             <ModalsProvider>
-              <Entry />
+              <SidebarProvider>
+                <Entry />
+              </SidebarProvider>
             </ModalsProvider>
             <Notifications position="top-center" />
             <NavigationProgress />

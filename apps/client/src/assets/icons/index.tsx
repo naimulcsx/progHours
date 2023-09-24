@@ -16,3 +16,8 @@ export * from "./IconInfoCircle";
 export * from "./IconSearch";
 export * from "./IconInfoSquare";
 export * from "./IconCheckVerified";
+export * from "./Icon100Solved";
+export * from "./Icon200Solved";
+export * from "./Icon500Solved";
+export * from "./Icon750Solved";
+export * from "./Icon1000Solved";

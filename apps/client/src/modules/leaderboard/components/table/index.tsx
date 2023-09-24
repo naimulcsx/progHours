@@ -16,9 +16,9 @@ import { memo, useState } from "react";
 import { Group, Pagination, ScrollArea, Table, Text } from "@mantine/core";
 import { useLocalStorage } from "@mantine/hooks";
 
-import { columns } from "./columns";
-
 import { LeaderboardEntry } from "@proghours/data-access";
+
+import { columns } from "./columns";
 
 interface DataTableProps {
   data: LeaderboardEntry[];
@@ -66,7 +66,7 @@ export const LeaderboardDataTable = memo(function ({ data }: DataTableProps) {
   });
   return (
     <ScrollArea>
-      <Table>
+      <Table verticalSpacing="xs">
         <Table.Thead>
           {table.getHeaderGroups().map((headerGroup) => (
             <Table.Tr key={headerGroup.id}>

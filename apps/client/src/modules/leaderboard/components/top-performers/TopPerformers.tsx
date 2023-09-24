@@ -9,6 +9,8 @@ import {
   useMantineTheme
 } from "@mantine/core";
 
+import { LeaderboardEntry } from "@proghours/data-access";
+
 import {
   IconFirstPlace,
   IconSecondPlace,
@@ -17,8 +19,6 @@ import {
 
 import { Countdown } from "../Countdown";
 import classes from "./TopPerformers.module.css";
-
-import { LeaderboardEntry } from "@proghours/data-access";
 
 export const TopPerformers = memo(function ({
   topUsers

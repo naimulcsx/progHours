@@ -78,7 +78,7 @@ export class StatisticsService {
     AND s.solved_at <= TO_TIMESTAMP(${query.toDate}, 'YYYY-MM-DD')
   `
         : Prisma.sql``;
-    const result: UserStatistics = await this.prisma.$queryRaw`
+    const result: UserStatistics[] = await this.prisma.$queryRaw`
     SELECT
         Sum(s.solve_time) AS "totalSolveTime",
         Sum(p.difficulty) AS "totalDifficulty",

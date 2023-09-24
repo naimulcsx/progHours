@@ -1,17 +1,28 @@
 import { PropsWithChildren } from "react";
 
-import { AppShell, Container } from "@mantine/core";
+import { AppShell, Box, Container } from "@mantine/core";
 
 import { Header } from "./Header";
 
-export function Layout({ children }: PropsWithChildren) {
+export interface LayoutProps {
+  withContainer?: boolean;
+}
+
+export function Layout({
+  children,
+  withContainer = true
+}: PropsWithChildren<LayoutProps>) {
   return (
     <AppShell header={{ height: 56 }} padding="md">
       <Header />
       <AppShell.Main>
-        <Container size="xl" mt="xs">
-          {children}
-        </Container>
+        {withContainer ? (
+          <Container size="xl" mt="xs">
+            {children}
+          </Container>
+        ) : (
+          <Box m="-16px">{children}</Box>
+        )}
       </AppShell.Main>
     </AppShell>
   );

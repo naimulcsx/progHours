@@ -3,6 +3,7 @@ import { Navigate, RouteObject } from "react-router-dom";
 
 import SignInPage from "~/pages/auth/sign-in.page";
 import SignUpPage from "~/pages/auth/sign-up.page";
+import GroupActivityPage from "~/pages/dashboard/groups/activity.page";
 import DashboardLeaderboardPage from "~/pages/dashboard/leaderboard.page";
 import OverviewPage from "~/pages/dashboard/overview.page";
 import SettingsPage from "~/pages/dashboard/settings.page";
@@ -47,5 +48,6 @@ export const getRoutes = (isLoggedIn: boolean): RouteObject[] => [
     "/settings/:tabValue",
     isLoggedIn ? <SettingsPage /> : <Navigate to="/auth/sign-in" />
   ),
-  defineRoute("/@/:username", <UserProfilePage />)
+  defineRoute("/@/:username", <UserProfilePage />),
+  defineRoute("/groups/table", <GroupActivityPage />)
 ];

@@ -1,13 +1,15 @@
+import { Cache } from "cache-manager";
+import moment, { Moment } from "moment";
+
+import { CACHE_MANAGER } from "@nestjs/cache-manager";
 import { Inject, Injectable } from "@nestjs/common";
+
 import { StatisticsService } from "~/modules/statistics/services/statistics.service";
+
 import {
   LeaderboardQueryDto,
   LeaderboardTypeEnum
 } from "../dto/leaderboard-query.dto";
-import moment, { Moment } from "moment";
-import { LeaderboardEntry } from "~/modules/statistics/types";
-import { CACHE_MANAGER } from "@nestjs/cache-manager";
-import { Cache } from "cache-manager";
 
 @Injectable()
 export class LeaderboardService {
@@ -50,7 +52,12 @@ export class LeaderboardService {
     return cachedData;
   }
 
-  private calculatePointsAndAvgDifficulty(entry: LeaderboardEntry) {
+  calculatePointsAndAvgDifficulty(entry: {
+    totalSolveTime: bigint;
+    totalDifficulty: bigint;
+    totalSolved: bigint;
+    totalSolvedWithDifficulty: bigint;
+  }) {
     let averageDifficulty =
       entry.totalSolvedWithDifficulty > 0
         ? Number(entry.totalDifficulty) /

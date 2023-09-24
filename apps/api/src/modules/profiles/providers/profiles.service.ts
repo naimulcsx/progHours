@@ -1,5 +1,6 @@
 import { Injectable, NotFoundException } from "@nestjs/common";
 
+import { LeaderboardService } from "~/modules/leaderboard/services/leaderboard.service";
 import { StatisticsService } from "~/modules/statistics/services/statistics.service";
 import { UsersService } from "~/modules/users/providers/users.service";
 
@@ -7,7 +8,8 @@ import { UsersService } from "~/modules/users/providers/users.service";
 export class ProfilesService {
   constructor(
     private readonly statisticsService: StatisticsService,
-    private readonly usersService: UsersService
+    private readonly usersService: UsersService,
+    private readonly leaderboardService: LeaderboardService
   ) {}
 
   async getUserProfile(username: string) {
@@ -28,14 +30,22 @@ export class ProfilesService {
       user.id
     );
     return {
+      // user data
       userId: user.id,
       fullName: user.fullName,
       userName: user.username,
       metaData: user.metaData,
+
+      // totalSolveTime, totalDifficulty, totalSolved, totalSolvedWithDifficulty
+      ...result,
+
+      // points and average difficulty
+      ...this.leaderboardService.calculatePointsAndAvgDifficulty(result),
+
+      // statistics
       solveCountByTags,
       weeklyStatistics,
-      solveTimeByTags,
-      ...result
+      solveTimeByTags
     };
   }
 }

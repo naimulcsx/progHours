@@ -7,10 +7,10 @@ import {
 
 import { Group, Pagination, ScrollArea, Table, Text } from "@mantine/core";
 
+import { SubmissionRow } from "@proghours/data-access";
+
 import { CreateSubmissionRow } from "./CreateSubmissionRow";
 import { columns } from "./columns";
-
-import { SubmissionRow } from "@proghours/data-access";
 
 interface DataTableProps {
   data: SubmissionRow[];
@@ -34,7 +34,7 @@ export function SubmissionsDataTable({ data }: DataTableProps) {
 
   return (
     <ScrollArea>
-      <Table>
+      <Table verticalSpacing="xs">
         <Table.Thead>
           {table.getHeaderGroups().map((headerGroup) => (
             <Table.Tr key={headerGroup.id}>
