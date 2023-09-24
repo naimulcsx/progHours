@@ -49,5 +49,6 @@ export const getRoutes = (isLoggedIn: boolean): RouteObject[] => [
     isLoggedIn ? <SettingsPage /> : <Navigate to="/auth/sign-in" />
   ),
   defineRoute("/@/:username", <UserProfilePage />),
+  defineRoute("/@/:username/:tabValue", <UserProfilePage />),
   defineRoute("/groups/table", <GroupActivityPage />)
 ];

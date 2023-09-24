@@ -28,13 +28,13 @@ export default function GroupActivityPage() {
                     <Text lineClamp={1} size="sm" variant="proghours-ui-strong">
                       {faker.person.fullName()}
                     </Text>
-                    <Text lineClamp={1} size="sm">
+                    {/* <Text lineClamp={1} size="sm">
                       C
                       {faker.number.int({
                         max: 181120,
                         min: 181001
                       })}
-                    </Text>
+                    </Text> */}
                   </Table.Td>
                   {Array(30)
                     .fill(0)

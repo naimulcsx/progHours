@@ -1,6 +1,6 @@
 import { IconAt, IconBuildingCommunity } from "@tabler/icons-react";
 import { AnimatePresence } from "framer-motion";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
 import {
   Box,
@@ -38,7 +38,8 @@ import { TopSolvedTagsChart } from "~/modules/dashboard/overview/components/char
 import { WeeklySolvedChart } from "~/modules/dashboard/overview/components/charts/WeeklySolvedChart";
 
 export function UserProfilePage() {
-  const { username } = useParams();
+  const navigate = useNavigate();
+  const { username, tabValue } = useParams();
   const { data } = useUserProfile({
     username: username!,
     config: { enabled: !!username }
@@ -91,10 +92,18 @@ export function UserProfilePage() {
                 </Box>
               </Container>
               <Container size="xl">
-                <Tabs defaultValue="statistics">
+                <Tabs
+                  value={tabValue ?? "profile"}
+                  onChange={(value) => {
+                    if (value !== "profile")
+                      navigate(`/@/${username}/${value}`);
+                    else navigate(`/@/${username}`);
+                  }}
+                >
                   <Tabs.List>
+                    <Tabs.Tab value="profile">Profile</Tabs.Tab>
                     <Tabs.Tab value="statistics">Statistics</Tabs.Tab>
-                    <Tabs.Tab value="solved">Solved</Tabs.Tab>
+                    <Tabs.Tab value="activity">Activity</Tabs.Tab>
                     <Tabs.Tab value="medals">Medals</Tabs.Tab>
                   </Tabs.List>
                   <Tabs.Panel value="statistics">
@@ -148,6 +157,7 @@ function HeaderStats({ data }: { data: UserProfileResponse }) {
       {stats.map((stat) => {
         return (
           <Box
+            key={stat.label}
             p="lg"
             style={{
               textAlign: "center"

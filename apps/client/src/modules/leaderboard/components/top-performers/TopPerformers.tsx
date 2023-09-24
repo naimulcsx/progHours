@@ -1,7 +1,9 @@
+import { IconAt } from "@tabler/icons-react";
 import { memo } from "react";
 
 import {
   Box,
+  Flex,
   Group,
   SimpleGrid,
   Text,
@@ -32,10 +34,15 @@ export const TopPerformers = memo(function ({
       <Box style={{ position: "relative" }}>
         <Group justify="space-between" align="start">
           <Box>
-            <Title mb={2} order={3} variant="proghours-ui-primary">
+            <Title
+              style={{ color: "hsl(var(--primary-foreground))" }}
+              className={classes.heading}
+              mb={2}
+              order={3}
+            >
               Top Performers
             </Title>
-            <Text variant="proghours-ui-primary">
+            <Text style={{ color: "hsl(var(--primary-foreground))" }}>
               The stage is set, and the world is watching. It's time to shine!
             </Text>
           </Box>
@@ -52,7 +59,7 @@ export const TopPerformers = memo(function ({
           const _rank = ["1st", "2nd", "3rd"];
           return (
             <Box
-              p="xl"
+              p="lg"
               className={classes.card}
               style={{ order: _order[idx] }}
               key={user.userId}
@@ -62,28 +69,38 @@ export const TopPerformers = memo(function ({
                 {idx === 1 && <IconSecondPlace />}
                 {idx === 2 && <IconThirdPlace />}
                 <Box>
-                  <Title fw={600} order={5} variant="proghours-ui-primary">
+                  <Title
+                    fw={600}
+                    order={5}
+                    style={{ color: "hsl(var(--primary-foreground))" }}
+                  >
                     {user.fullName}
                   </Title>
                   <Text
                     fw={700}
                     lineClamp={1}
-                    variant="proghours-ui-primary"
                     fz={theme.headings.sizes.h3.fontSize}
+                    style={{ color: "hsl(var(--primary-foreground))" }}
                   >
                     {user.points.toFixed(2)}
                   </Text>
                   <Text
-                    variant="proghours-ui-primary"
                     className={classes.rank}
                     size="xl"
                     fw={700}
+                    style={{ color: "hsl(var(--primary-foreground))" }}
                   >
                     {_rank[idx]}
                   </Text>
-                  <Text size="sm" variant="proghours-ui-primary">
-                    @{user.username.toUpperCase()}
-                  </Text>
+                  <Flex gap={4} align="center">
+                    <IconAt size={16} />
+                    <Text
+                      size="sm"
+                      style={{ color: "hsl(var(--primary-foreground))" }}
+                    >
+                      {user.username.toUpperCase()}
+                    </Text>
+                  </Flex>
                 </Box>
               </Box>
             </Box>

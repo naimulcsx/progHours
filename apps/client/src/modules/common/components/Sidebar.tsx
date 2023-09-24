@@ -45,7 +45,12 @@ export function Sidebar() {
   return (
     <AppShell.Navbar p="md">
       <AppShell.Section grow>
-        <AppLogo align="center" style={{ flex: 1 }} size="md" />
+        <AppLogo
+          iconOnly={collapsed}
+          align="center"
+          style={{ flex: 1 }}
+          size="md"
+        />
         {!collapsed && (
           <SegmentedControl
             mt="lg"
@@ -96,8 +101,8 @@ export function Sidebar() {
 
           {/* logout button */}
           {!collapsed && (
-            <ActionIcon size="lg" onClick={handleLogout}>
-              <IconLogout width={18} height={18} />
+            <ActionIcon size="md" onClick={handleLogout}>
+              <IconLogout width={14} height={14} />
             </ActionIcon>
           )}
         </Group>
@@ -113,9 +118,9 @@ export function Sidebar() {
           onClick={toggleCollapse}
         >
           {collapsed ? (
-            <IconChevronRight width={14} height={14} />
+            <IconChevronRight stroke={2.25} width={14} height={14} />
           ) : (
-            <IconChevronLeft width={14} height={14} />
+            <IconChevronLeft stroke={2.25} width={14} height={14} />
           )}
         </ActionIcon>
       </AppShell.Section>

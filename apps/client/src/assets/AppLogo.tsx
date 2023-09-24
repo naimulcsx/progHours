@@ -2,8 +2,6 @@ import { SVGProps } from "react";
 
 import { Badge, Flex, Group, GroupProps, Text } from "@mantine/core";
 
-import { useSidebar } from "~/modules/common/contexts/SidebarContext";
-
 export function AppIcon(props: SVGProps<SVGSVGElement>) {
   return (
     <svg
@@ -30,9 +28,9 @@ export function AppIcon(props: SVGProps<SVGSVGElement>) {
 
 export function AppLogo({
   size = "md",
+  iconOnly = false,
   ...props
-}: GroupProps & { size?: "sm" | "md" | "lg" }) {
-  const { collapsed } = useSidebar();
+}: GroupProps & { size?: "sm" | "md" | "lg"; iconOnly?: boolean }) {
   const styles = {
     sm: {
       logoSize: "30px",
@@ -55,10 +53,10 @@ export function AppLogo({
       }}
       {...props}
     >
-      <Flex style={{ margin: collapsed ? "0 auto" : 0 }}>
+      <Flex style={{ margin: iconOnly ? "0 auto" : 0 }}>
         <AppIcon width={styles[size].logoSize} height={styles[size].logoSize} />
       </Flex>
-      {!collapsed && (
+      {!iconOnly && (
         <>
           <Text
             style={{
