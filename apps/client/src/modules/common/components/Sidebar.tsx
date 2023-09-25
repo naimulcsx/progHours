@@ -1,3 +1,4 @@
+import { IconChevronLeft, IconChevronRight } from "@tabler/icons-react";
 import { Link, useLocation } from "react-router-dom";
 
 import {
@@ -8,7 +9,8 @@ import {
   NavLink,
   SegmentedControl,
   Stack,
-  Text
+  Text,
+  Tooltip
 } from "@mantine/core";
 import { useLocalStorage } from "@mantine/hooks";
 
@@ -26,6 +28,7 @@ import { IconLogout } from "~/assets/icons/IconLogout";
 import { useLogout } from "~/modules/auth/hooks/useLogout";
 import { useUser } from "~/modules/auth/hooks/useUser";
 
+import { useSidebar } from "../contexts/SidebarContext";
 import { Avatar } from "./Avatar";
 import SpotlightButton from "./SpotlightButton";
 
@@ -37,57 +40,89 @@ export function Sidebar() {
   });
   const { handleLogout } = useLogout();
   const links = userLinks;
+
+  const { collapsed, toggleCollapse } = useSidebar();
   return (
     <AppShell.Navbar p="md">
       <AppShell.Section grow>
-        <AppLogo size="md" mb="lg" />
-        <SegmentedControl
-          mt="xs"
-          fullWidth
-          value={selected}
-          onChange={setSelected}
-          transitionDuration={0}
-          data={[
-            { label: "User", value: "REGULAR" },
-            { label: "Admin", value: "ADMIN" }
-          ]}
+        <AppLogo
+          iconOnly={collapsed}
+          align="center"
+          style={{ flex: 1 }}
+          size="md"
         />
-        <Stack mt="xl" gap={6}>
+        {!collapsed && (
+          <SegmentedControl
+            mt="lg"
+            fullWidth
+            value={selected}
+            onChange={setSelected}
+            transitionDuration={0}
+            data={[
+              { label: "User", value: "REGULAR" },
+              { label: "Admin", value: "ADMIN" }
+            ]}
+          />
+        )}
+        <Stack mt="lg" gap={6}>
           {links.map((link, index) => {
-            return (
+            const child = (
               <NavLink
                 key={index}
                 component={Link}
                 to={link.to}
-                label={link.label}
-                active={
-                  pathname.includes("/settings")
-                    ? link.to.includes("/settings")
-                    : pathname === link.to
-                }
+                label={collapsed ? "" : link.label}
+                active={pathname.includes(link.to)}
                 leftSection={<link.Icon />}
               />
             );
+            if (collapsed) {
+              return (
+                <Tooltip position="right" label={link.label}>
+                  {child}
+                </Tooltip>
+              );
+            }
+            return child;
           })}
         </Stack>
       </AppShell.Section>
       <AppShell.Section>
         <SpotlightButton />
 
-        <Group gap="xs" mt="lg">
+        <Group gap="xs" mt="sm" justify="center">
           {/* user avatar */}
           <Avatar variant="filled" fullName="Naimul Haque" size="md">
             NH
           </Avatar>
 
           {/* user details */}
-          <UserDetails />
+          {!collapsed && <UserDetails />}
 
           {/* logout button */}
-          <ActionIcon onClick={handleLogout}>
-            <IconLogout />
-          </ActionIcon>
+          {!collapsed && (
+            <ActionIcon size="md" onClick={handleLogout}>
+              <IconLogout width={14} height={14} />
+            </ActionIcon>
+          )}
         </Group>
+
+        <ActionIcon
+          mt="xs"
+          size="xs"
+          style={{
+            position: "absolute",
+            top: 0,
+            right: -10
+          }}
+          onClick={toggleCollapse}
+        >
+          {collapsed ? (
+            <IconChevronRight stroke={2.25} width={14} height={14} />
+          ) : (
+            <IconChevronLeft stroke={2.25} width={14} height={14} />
+          )}
+        </ActionIcon>
       </AppShell.Section>
     </AppShell.Navbar>
   );
@@ -108,20 +143,13 @@ export function UserDetails() {
             color: "hsl(var(--foreground))"
           }}
           lineClamp={1}
-          size="md"
+          lh={1.5}
+          size="sm"
           fw={500}
         >
           {user?.fullName}
         </Text>
-        <Text
-          size="sm"
-          style={{
-            overflow: "hidden",
-            textOverflow: "ellipsis",
-            whiteSpace: "nowrap",
-            maxWidth: 130
-          }}
-        >
+        <Text size="xs" lineClamp={1}>
           {user?.username.toUpperCase()}
         </Text>
       </Box>

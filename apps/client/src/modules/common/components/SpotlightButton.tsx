@@ -8,7 +8,7 @@ export default function SpotlightButton() {
   const textStyles = { color: "hsl(var(--muted-foreground))", fontWeight: 400 };
   return (
     <Button
-      leftSection={<IconSearch height={20} width={20} />}
+      leftSection={<IconSearch height={18} width={18} />}
       variant="outline"
       color="gray"
       onClick={() => openSpotlight()}
@@ -27,10 +27,10 @@ export default function SpotlightButton() {
         }
       }}
     >
-      <Text mr="xl" style={textStyles}>
+      <Text size="sm" mr="xl" style={textStyles}>
         Search...
       </Text>
-      <Text ml="xl" style={textStyles}>
+      <Text size="sm" ml="lg" style={textStyles}>
         Ctrl + K
       </Text>
     </Button>

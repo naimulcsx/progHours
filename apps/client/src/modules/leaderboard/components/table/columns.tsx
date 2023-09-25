@@ -4,12 +4,13 @@ import {
   IconSelector
 } from "@tabler/icons-react";
 import { ColumnDef } from "@tanstack/react-table";
+import { Link } from "react-router-dom";
 
-import { ActionIcon, Avatar, Box, Group, Text } from "@mantine/core";
-
-import { NumberFilter } from "~/modules/common/components/NumberFilter";
+import { ActionIcon, Anchor, Avatar, Box, Group, Text } from "@mantine/core";
 
 import { LeaderboardEntry } from "@proghours/data-access";
+
+import { NumberFilter } from "~/modules/common/components/NumberFilter";
 
 export const columns: ColumnDef<LeaderboardEntry>[] = [
   {
@@ -31,29 +32,31 @@ export const columns: ColumnDef<LeaderboardEntry>[] = [
         .join("");
       const { bg, color } = getAvatarColors(fullName);
       return (
-        <Group gap="xs">
-          <Avatar
-            styles={{
-              placeholder: { backgroundColor: bg, color }
-            }}
-            radius="xl"
-          >
-            {avatarName}
-          </Avatar>
-          <Box>
-            <Text
-              maw={210}
-              lineClamp={1}
-              variant="proghours-ui-strong"
-              size="sm"
+        <Anchor component={Link} to={`/@/${username}`} underline="never">
+          <Group gap="xs">
+            <Avatar
+              styles={{
+                placeholder: { backgroundColor: bg, color }
+              }}
+              radius="xl"
             >
-              {fullName}
-            </Text>
-            <Text style={{ fontWeight: 400 }} size="sm">
-              {username.toUpperCase()}
-            </Text>
-          </Box>
-        </Group>
+              {avatarName}
+            </Avatar>
+            <Box>
+              <Text
+                maw={210}
+                lineClamp={1}
+                variant="proghours-ui-strong"
+                size="sm"
+              >
+                {fullName}
+              </Text>
+              <Text style={{ fontWeight: 400 }} size="sm">
+                {username.toUpperCase()}
+              </Text>
+            </Box>
+          </Group>
+        </Anchor>
       );
     }
   },

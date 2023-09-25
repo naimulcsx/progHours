@@ -1,6 +1,6 @@
 import { SVGProps } from "react";
 
-import { Badge, Group, GroupProps, Text } from "@mantine/core";
+import { Badge, Flex, Group, GroupProps, Text } from "@mantine/core";
 
 export function AppIcon(props: SVGProps<SVGSVGElement>) {
   return (
@@ -28,8 +28,9 @@ export function AppIcon(props: SVGProps<SVGSVGElement>) {
 
 export function AppLogo({
   size = "md",
+  iconOnly = false,
   ...props
-}: GroupProps & { size?: "sm" | "md" | "lg" }) {
+}: GroupProps & { size?: "sm" | "md" | "lg"; iconOnly?: boolean }) {
   const styles = {
     sm: {
       logoSize: "30px",
@@ -52,17 +53,23 @@ export function AppLogo({
       }}
       {...props}
     >
-      <AppIcon width={styles[size].logoSize} height={styles[size].logoSize} />
-      <Text
-        style={{
-          fontSize: styles[size].fontSize,
-          fontWeight: 600,
-          color: "hsl(var(--accent-foreground))"
-        }}
-      >
-        progHours
-      </Text>
-      <Badge>beta</Badge>
+      <Flex style={{ margin: iconOnly ? "0 auto" : 0 }}>
+        <AppIcon width={styles[size].logoSize} height={styles[size].logoSize} />
+      </Flex>
+      {!iconOnly && (
+        <>
+          <Text
+            style={{
+              fontSize: styles[size].fontSize,
+              fontWeight: 600,
+              color: "hsl(var(--accent-foreground))"
+            }}
+          >
+            progHours
+          </Text>
+          <Badge>beta</Badge>
+        </>
+      )}
     </Group>
   );
 }

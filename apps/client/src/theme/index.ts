@@ -7,6 +7,7 @@ import {
   Badge,
   Button,
   CSSVariablesResolver,
+  Container,
   Divider,
   Input,
   Menu,
@@ -33,6 +34,7 @@ import anchorClasses from "./css/Anchor.module.css";
 import appShellClasses from "./css/AppShell.module.css";
 import badgeClasses from "./css/Badge.module.css";
 import buttonClasses from "./css/Button.module.css";
+import containerClasses from "./css/Container.module.css";
 import dividerClasses from "./css/Divider.module.css";
 import inputClasses from "./css/Input.module.css";
 import menuClasses from "./css/Menu.module.css";
@@ -320,6 +322,10 @@ export const theme = createTheme({
     xl: "87.5em"
   },
   components: {
+    Container: Container.extend({
+      defaultProps: { variant: "proghours-ui" },
+      classNames: containerClasses
+    }),
     Title: Title.extend({
       classNames: titleClasses
     }),

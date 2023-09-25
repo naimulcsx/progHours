@@ -1,5 +1,5 @@
 .root {
-  border-radius: var(--mantine-radius-md);
+  border-radius: var(--mantine-radius-lg);
   background: hsl(var(--primary) / 0.95);
   position: relative;
   overflow: hidden;
@@ -10,6 +10,7 @@
   background: hsl(var(--secondary) / 0.1);
   border-radius: var(--mantine-radius-md);
   backdrop-filter: blur(4px);
+  color: hsl(var(--primary-foreground));
 }
 
 .rank {
