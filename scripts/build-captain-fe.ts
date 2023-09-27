@@ -7,6 +7,7 @@ import { join } from "node:path";
    * Dockerfile
    */
   const dockerfileOrigin = join(__dirname, "../apps/client/Dockerfile");
+
   if (await exists(dockerfileOrigin)) {
     await copyFile(
       dockerfileOrigin,
@@ -14,6 +15,12 @@ import { join } from "node:path";
     );
     console.log("🗸 Copied Dockerfile");
   }
+  /**
+   * Copy nginx config
+   */
+  const nginxConfOrigin = join(__dirname, `../apps/client/nginx.conf`);
+  const nginxDestination = join(__dirname, `../dist/apps/client/nginx.conf`);
+  await copyFile(nginxConfOrigin, nginxDestination);
 
   /**
    * captain-definition

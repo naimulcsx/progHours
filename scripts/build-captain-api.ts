@@ -1,4 +1,4 @@
-import { exists, copyFile } from "fs-extra";
+import { copy, copyFile, exists } from "fs-extra";
 import { exec } from "node:child_process";
 import { join } from "node:path";
 
@@ -26,6 +26,20 @@ import { join } from "node:path";
     );
     console.log("🗸 Copied captain-definition");
   }
+
+  /**
+   * Copy prisma
+   */
+  const prismaOrigin = join(__dirname, `../apps/api/prisma`);
+  const prismaDestination = join(__dirname, `../dist/apps/api/prisma`);
+  await copy(prismaOrigin, prismaDestination);
+
+  /**
+   * Copy Scripts
+   */
+  const scriptsOrigin = join(__dirname, `../scripts`);
+  const scriptsDestination = join(__dirname, `../dist/apps/api/scripts`);
+  await copy(scriptsOrigin, scriptsDestination);
 
   /**
    * Build tarball
