@@ -42,8 +42,6 @@ services:
       - 6379:6379
     volumes:
       - /var/lib/redis/data
-    networks:
-      - proghours
 
 networks:
   proghours:

@@ -4,10 +4,11 @@ import Joi from "joi";
 
 import { CacheModule } from "@nestjs/cache-manager";
 import { Module } from "@nestjs/common";
-import { ConfigModule } from "@nestjs/config";
+import { ConfigModule, ConfigService } from "@nestjs/config";
 
 import appConfig from "~/config/app.config";
 import jwtConfig from "~/config/jwt.config";
+import redisConfig from "~/config/redis.config";
 
 import { AuthModule } from "~/modules/auth/auth.module";
 import { LeaderboardModule } from "~/modules/leaderboard/leaderboard.module";
@@ -27,24 +28,29 @@ import { UsersModule } from "~/modules/users/users.module";
     }),
     ConfigModule.forRoot({
       isGlobal: true,
-      load: [appConfig, jwtConfig],
+      load: [appConfig, jwtConfig, redisConfig],
       validationSchema: Joi.object({
         NODE_ENV: Joi.string().valid("development", "production"),
         PORT: Joi.number(),
         TZ: Joi.string(),
-        JWT_SECRET: Joi.string().required()
+        JWT_SECRET: Joi.string().required(),
+        REDIS_PORT: Joi.number().required(),
+        REDIS_HOST: Joi.string().required(),
+        REDIS_PASSWORD: Joi.string()
       })
     }),
     CacheModule.registerAsync({
       isGlobal: true,
-      useFactory: async () => ({
+      useFactory: async (configService: ConfigService) => ({
         store: await redisStore({
           socket: {
-            host: "localhost",
-            port: 6379
-          }
+            host: configService.get<string>("redis.host"),
+            port: configService.get<number>("redis.port")
+          },
+          password: configService.get<string>("redis.password")
         })
-      })
+      }),
+      inject: [ConfigService]
     }),
     PrismaModule,
     AuthModule,

@@ -1,9 +1,11 @@
+import helmet from "helmet";
+import { SwaggerTheme } from "swagger-themes";
+
 import { Logger, ValidationPipe, VersioningType } from "@nestjs/common";
 import { NestFactory } from "@nestjs/core";
-import { SwaggerModule, DocumentBuilder } from "@nestjs/swagger";
-import { SwaggerTheme } from "swagger-themes";
+import { DocumentBuilder, SwaggerModule } from "@nestjs/swagger";
+
 import { AppModule } from "./app/app.module";
-import helmet from "helmet";
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
