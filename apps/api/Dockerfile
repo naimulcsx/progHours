@@ -1,7 +1,13 @@
-FROM node:18-alpine
-ENV NODE_ENV production
-WORKDIR /usr/src/app
-COPY package.json yarn.lock ./
-RUN yarn install --frozen-lockfile
-COPY . .
-CMD [ "node", "main.js" ]
+FROM node:18.16.0-alpine
+
+WORKDIR /api
+
+COPY --chown=node:node package*.json ./
+
+RUN npm install
+
+COPY --chown=node:node . .
+
+RUN npx prisma generate
+
+CMD [ "node", "./main.js" ]
