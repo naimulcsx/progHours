@@ -1,4 +1,5 @@
 import {
+  Accordion,
   ActionIcon,
   Anchor,
   AppShell,
@@ -29,6 +30,7 @@ import {
 
 import { AccentColor } from "~/modules/common/contexts/AccentColorContext";
 
+import accordionClasses from "./css/Accordion.module.css";
 import actionIconClasses from "./css/ActionIcon.module.css";
 import anchorClasses from "./css/Anchor.module.css";
 import appShellClasses from "./css/AppShell.module.css";
@@ -322,6 +324,10 @@ export const theme = createTheme({
     xl: "87.5em"
   },
   components: {
+    Accordion: Accordion.extend({
+      defaultProps: { variant: "proghours-ui" },
+      classNames: accordionClasses
+    }),
     Container: Container.extend({
       defaultProps: { variant: "proghours-ui" },
       classNames: containerClasses
