@@ -194,13 +194,28 @@ const faq = [
     description: `Since our platform is all about programming and problem-solving. The first name that came to our mind was "programming hours". We decided to tweak it a bit and came up with "progHours". We liked it and it stuck.`
   },
   {
-    value: "When is it coming out",
+    value: "How does the leaderboard work?",
     description:
-      "We are working hard to get the first public version of progHours out as soon as possible"
+      "The leaderboard ranks users based on how many problems they've solved and the difficulty of those problems."
   },
   {
-    value: "Will I be given access",
+    value: "How can progHours help educators?",
+    description:
+      "progHours offers tools for coaches and educators to monitor students' progress, assess their performance."
+  },
+  {
+    value: "When is it coming out?",
+    description:
+      "We are working hard to get the first public version of progHours out as soon as possible."
+  },
+  {
+    value: "Will I be given access?",
     description:
       "Yes, we will onboard the people on our waitlist based on a first come first serve basis, with a 1000 user limit for our initial version."
+  },
+  {
+    value: "Is there a mobile app for progHours?",
+    description:
+      "Currently, progHours is accessible through web browsers. However, we've plans to work on a mobile app in the future."
   }
 ];
