@@ -13,6 +13,9 @@
     font-weight: 500;
     --button-bg: hsl(var(--secondary));
     --button-color: hsl(var(--secondary-foreground));
+    &:hover {
+      background-color: hsl(var(--foreground) / 0.1);
+    }
   }
 
   &[data-variant="msu-destructive"] {
@@ -23,8 +26,12 @@
 
   &[data-variant="msu-outline"] {
     font-weight: 500;
+    color: hsl(var(--foreground));
     --button-bg: hsl(var(--background));
     --button-bd: calc(0.0625rem * var(--mantine-scale)) solid hsl(var(--input));
+    &:hover {
+      background-color: hsl(var(--secondary));
+    }
   }
 
   &[data-variant="msu-ghost"] {
