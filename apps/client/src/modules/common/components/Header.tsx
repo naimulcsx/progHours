@@ -1,7 +1,13 @@
-import { IconChevronDown, IconMoonStars, IconSun } from "@tabler/icons-react";
+import {
+  IconChevronDown,
+  IconMoonStars,
+  IconSun,
+  IconSunMoon
+} from "@tabler/icons-react";
 import { Link } from "react-router-dom";
 
 import {
+  ActionIcon,
   Anchor,
   AppShellHeader,
   Button,
@@ -9,7 +15,6 @@ import {
   Flex,
   Group,
   Menu,
-  Switch,
   useMantineColorScheme
 } from "@mantine/core";
 
@@ -22,7 +27,7 @@ import { useUser } from "~/modules/auth/hooks/useUser";
 export function Header() {
   const { user } = useUser();
   const { handleLogout } = useLogout();
-  const { colorScheme, toggleColorScheme } = useMantineColorScheme();
+  const { colorScheme, setColorScheme } = useMantineColorScheme();
 
   return (
     <AppShellHeader style={{ display: "flex", alignItems: "center" }}>
@@ -55,14 +60,37 @@ export function Header() {
             </Flex>
           </Group>
           <Group>
-            <Switch
-              checked={colorScheme === "dark"}
-              color="yellow"
-              onChange={() => toggleColorScheme()}
-              size="lg"
-              onLabel={<IconSun size={16} stroke={1.5} />}
-              offLabel={<IconMoonStars size={16} stroke={1.5} />}
-            />
+            <Menu width={120}>
+              <Menu.Target>
+                <ActionIcon size="lg" style={{ border: 0 }}>
+                  {colorScheme === "dark" && (
+                    <IconMoonStars color="#fcc419" size={16} />
+                  )}
+                  {colorScheme === "light" && <IconSun size={16} />}
+                  {colorScheme === "auto" && <IconSunMoon size={16} />}
+                </ActionIcon>
+              </Menu.Target>
+              <Menu.Dropdown>
+                <Menu.Item
+                  leftSection={<IconSun size={16} />}
+                  onClick={() => setColorScheme("light")}
+                >
+                  Light
+                </Menu.Item>
+                <Menu.Item
+                  leftSection={<IconMoonStars size={16} />}
+                  onClick={() => setColorScheme("dark")}
+                >
+                  Dark
+                </Menu.Item>
+                <Menu.Item
+                  leftSection={<IconSunMoon size={16} />}
+                  onClick={() => setColorScheme("auto")}
+                >
+                  Auto
+                </Menu.Item>
+              </Menu.Dropdown>
+            </Menu>
             {!user ? (
               <>
                 <Button

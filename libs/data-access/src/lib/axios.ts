@@ -1,8 +1,10 @@
-import Axios, { AxiosError, InternalAxiosRequestConfig } from "axios";
-import { notifications } from "@mantine/notifications";
 import { IconAlertCircle } from "@tabler/icons-react";
-import { storage } from "./storage";
+import Axios, { AxiosError, InternalAxiosRequestConfig } from "axios";
 import React from "react";
+
+import { notifications } from "@mantine/notifications";
+
+import { storage } from "./storage";
 
 export const axios = Axios.create({
   baseURL: "http://localhost:4200/api/v1"

@@ -401,7 +401,10 @@ export const theme = createTheme({
       classNames: dividerClasses
     }),
     Menu: Menu.extend({
-      defaultProps: { variant: "proghours-ui" },
+      defaultProps: {
+        variant: "proghours-ui",
+        transitionProps: { transition: "pop", duration: 150 }
+      },
       classNames: menuClasses
     }),
     Notification: Notification.extend({

@@ -1,4 +1,5 @@
 import { IconArrowDown, IconArrowRight } from "@tabler/icons-react";
+import { Helmet } from "react-helmet-async";
 
 import {
   Box,
@@ -21,6 +22,9 @@ export default function HomePage() {
 
   return (
     <Layout withContainer={false}>
+      <Helmet>
+        <title>progHours - Code. Compete. Conquer!</title>
+      </Helmet>
       <Box component="section" py={64}>
         <Container size="xl">
           <Stack
@@ -52,7 +56,7 @@ export default function HomePage() {
         <Container style={{ marginTop: 64 }}>
           <Image
             src={
-              computedColorScheme === "light" ? "cover-light.png" : "/cover.png"
+              computedColorScheme === "light" ? "cover-light.jpg" : "/cover.jpg"
             }
             style={{
               borderRadius: "12px",

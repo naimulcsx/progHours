@@ -12,6 +12,15 @@ async function bootstrap() {
   app.use(helmet());
   app.setGlobalPrefix("api");
   app.useGlobalPipes(new ValidationPipe({ whitelist: true }));
+
+  if (process.env.NODE_ENV === "production") {
+    app.enableCors({
+      origin: "https://ph-fe.apps.naimulhaque.com",
+      methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
+      optionsSuccessStatus: 204 // Some legacy browsers (IE11, various SmartTVs) choke on 204
+    });
+  }
+
   app.enableVersioning({
     type: VersioningType.URI,
     defaultVersion: "1"
