@@ -46,13 +46,15 @@ export class LeaderboardService {
           ...entry
         }));
 
-      const rankObject: Record<string, string> = {};
-      for (let i = 0; i < leaderboard.length; ++i) {
-        const username = leaderboard[i].username;
-        rankObject[username] = `#${i + 1}`;
+      // keep user ranks in a hash
+      if (leaderboardQueryDto.type === LeaderboardTypeEnum.Full) {
+        const rankObject: Record<string, string> = {};
+        for (let i = 0; i < leaderboard.length; ++i) {
+          const username = leaderboard[i].username;
+          rankObject[username] = `#${i + 1}`;
+        }
+        await this.cacheManager.store.client.hSet("ranks", rankObject);
       }
-
-      await this.cacheManager.store.client.hSet("ranks", rankObject);
 
       await this.cacheManager.set(cacheKey, leaderboard, 5 * 60000);
       return leaderboard;
