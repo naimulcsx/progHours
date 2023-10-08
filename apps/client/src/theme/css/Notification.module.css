@@ -1,11 +1,15 @@
 .root {
   &[data-variant="proghours-ui"] {
-    border: 1px solid hsl(var(--foreground) / 0.05);
+    border: 1px solid hsl(var(--border));
+    box-shadow: none;
     @mixin dark {
       background: hsl(var(--secondary));
     }
     @mixin light {
       background: hsl(var(--background));
+    }
+    .description {
+      color: hsl(var(--muted-foreground));
     }
   }
 }

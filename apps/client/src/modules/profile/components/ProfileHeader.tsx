@@ -66,7 +66,7 @@ export function ProfileHeader() {
                 </Box>
               </Flex>
             </Box>
-            <HeaderStats data={{ ...data, rank: "#1" }} />
+            <HeaderStats data={data} />
           </Flex>
         </Box>
       )}

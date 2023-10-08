@@ -2,7 +2,7 @@ import moment from "moment";
 import { useEffect, useState } from "react";
 import { useParams, useSearchParams } from "react-router-dom";
 
-import { Box, Flex, Text, Title, Transition } from "@mantine/core";
+import { Box, Flex, Paper, Text, Title, Transition } from "@mantine/core";
 import { DatePickerInput } from "@mantine/dates";
 
 import {
@@ -47,17 +47,18 @@ export function SubmissionsTab() {
   }, [data, value]);
 
   return (
-    <Box mt="md">
+    <Box mt="lg">
       <Flex justify="space-between">
         <Title order={4}>Submissions</Title>
         <Flex align="center" gap="xs">
-          <Text size="xs">Filter by Date: </Text>
+          <Text size="xs">Filter by Date:</Text>
           <DatePickerInput
             size="xs"
             placeholder="Pick date"
             value={value}
             onChange={setValue}
             miw={140}
+            h={30}
           />
         </Flex>
       </Flex>
@@ -65,10 +66,9 @@ export function SubmissionsTab() {
         {(styles) => (
           <Box style={{ ...styles, transitionDelay: "250ms" }}>
             {isSuccess && (
-              <Box
+              <Paper
                 mt="md"
                 style={{
-                  border: "1px solid hsl(var(--border))",
                   borderRadius: "var(--mantine-radius-md)",
                   background: "hsl(var(--secondary) / 0.5)"
                 }}
@@ -80,7 +80,7 @@ export function SubmissionsTab() {
                     .map((el, i) => ({ ...el, serial: i + 1 }))
                     .reverse()}
                 />
-              </Box>
+              </Paper>
             )}
           </Box>
         )}

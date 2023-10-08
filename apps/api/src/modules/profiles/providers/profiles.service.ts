@@ -1,4 +1,4 @@
-import { Cache } from "cache-manager";
+import { RedisCache } from "cache-manager-redis-yet";
 
 import { CACHE_MANAGER } from "@nestjs/cache-manager";
 import { Inject, Injectable, NotFoundException } from "@nestjs/common";
@@ -15,7 +15,7 @@ export class ProfilesService {
     private readonly usersService: UsersService,
     private readonly leaderboardService: LeaderboardService,
     private readonly submissionsService: SubmissionsService,
-    @Inject(CACHE_MANAGER) private cacheManager: Cache
+    @Inject(CACHE_MANAGER) private cacheManager: RedisCache
   ) {}
 
   async getUserProfile(username: string) {
@@ -35,7 +35,13 @@ export class ProfilesService {
     const weeklyStatistics = await this.statisticsService.getWeeklyStatistics(
       user.id
     );
+    const rank = await this.cacheManager.store.client.hGet(
+      "ranks",
+      user.username
+    );
     return {
+      rank,
+
       // user data
       userId: user.id,
       fullName: user.fullName,

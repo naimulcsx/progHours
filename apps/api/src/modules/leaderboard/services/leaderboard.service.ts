@@ -1,4 +1,4 @@
-import { Cache } from "cache-manager";
+import { RedisCache } from "cache-manager-redis-yet";
 import moment, { Moment } from "moment";
 
 import { CACHE_MANAGER } from "@nestjs/cache-manager";
@@ -15,7 +15,7 @@ import {
 export class LeaderboardService {
   constructor(
     private readonly statisticsService: StatisticsService,
-    @Inject(CACHE_MANAGER) private cacheManager: Cache
+    @Inject(CACHE_MANAGER) private cacheManager: RedisCache
   ) {}
 
   async getLeaderboard(leaderboardQueryDto: LeaderboardQueryDto) {
@@ -45,6 +45,15 @@ export class LeaderboardService {
           id: i + 1,
           ...entry
         }));
+
+      const rankObject: Record<string, string> = {};
+      for (let i = 0; i < leaderboard.length; ++i) {
+        const username = leaderboard[i].username;
+        rankObject[username] = `#${i + 1}`;
+      }
+
+      await this.cacheManager.store.client.hSet("ranks", rankObject);
+
       await this.cacheManager.set(cacheKey, leaderboard, 5 * 60000);
       return leaderboard;
     }

@@ -18,6 +18,7 @@ import {
   Grid,
   Group,
   Paper,
+  Select,
   SimpleGrid,
   Stack,
   Tabs,
@@ -36,6 +37,7 @@ import { AvgDifficultyChart } from "~/modules/dashboard/overview/components/char
 import { TimeSpentChart } from "~/modules/dashboard/overview/components/charts/TimeSpentChart";
 import { TopSolvedTagsChart } from "~/modules/dashboard/overview/components/charts/TopSolvedTagsChart";
 import { WeeklySolvedChart } from "~/modules/dashboard/overview/components/charts/WeeklySolvedChart";
+import { HandlesSettings } from "~/modules/dashboard/settings/HandleSettings";
 import { ProfileHeader } from "~/modules/profile/components/ProfileHeader";
 import { SubmissionsTab } from "~/modules/profile/components/SubmissionsTab";
 import { UpdateProfileForm } from "~/modules/profile/components/UpdateProfileForm";
@@ -67,8 +69,20 @@ export function UserProfilePage() {
       children: <UpdateProfileForm />
     });
 
+  const openHandleSettingsModal = () =>
+    modals.open({
+      size: "lg",
+      title: "Update handles",
+      children: <HandlesSettings />
+    });
   const updateProfileButton = (
     <ActionIcon ml="xs" size="sm" onClick={openModal}>
+      <IconEdit size={12} />
+    </ActionIcon>
+  );
+
+  const updateHandlesButton = (
+    <ActionIcon ml="xs" size="sm" onClick={openHandleSettingsModal}>
       <IconEdit size={12} />
     </ActionIcon>
   );
@@ -98,7 +112,7 @@ export function UserProfilePage() {
 
                   {/* profile tab  */}
                   <Tabs.Panel value="profile">
-                    <Grid mt="md" gutter="xl" style={{ overflow: "initial" }}>
+                    <Grid mt="lg" gutter="xl" style={{ overflow: "initial" }}>
                       <Grid.Col span={8}>
                         <Stack gap="md">
                           <Title order={4}>
@@ -107,9 +121,11 @@ export function UserProfilePage() {
                           </Title>
                           <Stack gap="xs">
                             {data?.metaData?.about ? (
-                              data.metaData.about
-                                .split("\n")
-                                .map((part, i) => <Text key={i}>{part}</Text>)
+                              data.metaData.about.split("\n").map((part, i) => (
+                                <Text variant="proghours-ui-secondary" key={i}>
+                                  {part}
+                                </Text>
+                              ))
                             ) : (
                               <Text>&mdash;</Text>
                             )}
@@ -133,7 +149,9 @@ export function UserProfilePage() {
                               <Text>&mdash;</Text>
                             )}
                           </Group>
-                          <Title order={4}>Profiles</Title>
+                          <Title order={4}>
+                            Profiles {ownProfile && updateHandlesButton}
+                          </Title>
                           <SimpleGrid cols={2}>
                             {userHandles?.map(({ type, handle }) => {
                               const handleTypeIcon: Record<
@@ -179,9 +197,21 @@ export function UserProfilePage() {
 
                   {/* overview tab */}
                   <Tabs.Panel value="overview">
-                    <Title mt="md" order={4}>
-                      Overview
-                    </Title>
+                    <Flex mt="lg" align="center" justify="space-between">
+                      <Title order={4}>Overview</Title>
+                      <Select
+                        size="xs"
+                        // value={type}
+                        withCheckIcon={false}
+                        defaultValue="full"
+                        // onChange={(type) => {}}
+                        data={[
+                          { label: "All time", value: "full" },
+                          { label: "Current week", value: "currentWeek" },
+                          { label: "Last Week", value: "lastWeek" }
+                        ]}
+                      />
+                    </Flex>
                     <SimpleGrid mt="md" cols={2}>
                       <Paper p="lg">
                         <WeeklySolvedChart data={data.weeklyStatistics} />
@@ -204,7 +234,9 @@ export function UserProfilePage() {
                   </Tabs.Panel>
 
                   {/* medals tab */}
-                  <Tabs.Panel value="medals">Test</Tabs.Panel>
+                  <Tabs.Panel value="medals">
+                    <Box></Box>
+                  </Tabs.Panel>
                 </Tabs>
               </Container>
             </Box>
