@@ -12,6 +12,7 @@ import {
   Divider,
   Input,
   Menu,
+  Modal,
   NavLink,
   Notification,
   Paper,
@@ -21,6 +22,7 @@ import {
   Select,
   Table,
   Tabs,
+  TagsInput,
   Text,
   TextInput,
   Title,
@@ -40,6 +42,7 @@ import containerClasses from "./css/Container.module.css";
 import dividerClasses from "./css/Divider.module.css";
 import inputClasses from "./css/Input.module.css";
 import menuClasses from "./css/Menu.module.css";
+import modalClasses from "./css/Modal.module.css";
 import navlinkClasses from "./css/NavLink.module.css";
 import notificationClasses from "./css/Notification.module.css";
 import paperClasses from "./css/Paper.module.css";
@@ -49,6 +52,7 @@ import segmentedControlClasses from "./css/SegmentedControl.module.css";
 import selectClasses from "./css/Select.module.css";
 import tableClasses from "./css/Table.module.css";
 import tabsClasses from "./css/Tabs.module.css";
+import tagsInputClasses from "./css/TagsInput.module.css";
 import textClasses from "./css/Text.module.css";
 import textInputClasses from "./css/TextInput.module.css";
 import titleClasses from "./css/Title.module.css";
@@ -419,6 +423,14 @@ export const theme = createTheme({
         closeButtonProps: { variant: "proghours-ui" }
       },
       classNames: notificationClasses
+    }),
+    Modal: Modal.extend({
+      defaultProps: { variant: "proghours-ui", overlayProps: { blur: 8 } },
+      classNames: modalClasses
+    }),
+    TagsInput: TagsInput.extend({
+      defaultProps: { variant: "proghours-ui" },
+      classNames: tagsInputClasses
     })
   }
 });

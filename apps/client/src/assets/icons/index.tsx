@@ -21,3 +21,4 @@ export * from "./Icon200Solved";
 export * from "./Icon500Solved";
 export * from "./Icon750Solved";
 export * from "./Icon1000Solved";
+export * from "./IconRank";

@@ -14,7 +14,10 @@ function IsValidUserMetaData() {
               department: z.string().optional(),
               section: z.string().optional(),
               batch: z.number().optional(),
-              cgpa: z.number().optional()
+              cgpa: z.number().optional(),
+              about: z.string().max(1024).optional(),
+              website: z.string().url().optional(),
+              skills: z.array(z.string()).optional()
             })
             .strict();
           const validationResult = metadataSchema.safeParse(value);

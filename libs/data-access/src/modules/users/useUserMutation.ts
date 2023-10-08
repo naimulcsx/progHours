@@ -1,16 +1,19 @@
 import { UseMutationOptions, useMutation } from "@tanstack/react-query";
+
 import { axios } from "../../lib/axios";
 
 export type UpdateUserPayload = {
-  username: string;
-  fullName: string;
-  email: string;
+  username?: string;
+  fullName?: string;
+  email?: string;
   phone?: string;
   metaData: {
     department?: string;
     section?: string;
     batch?: number;
     cgpa?: number;
+    about?: string;
+    skills?: string[];
   };
 };
 export type UpdateUserResponse = {

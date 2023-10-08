@@ -194,7 +194,7 @@ export class StatisticsService {
       }
     > = [];
 
-    for (let week = 1, currentIndex = 0; week < maxWeek; week++) {
+    for (let week = 1, currentIndex = 0; week <= maxWeek; week++) {
       const el = resultWithWeekNumber[currentIndex];
       if (week === el.weekNumber) {
         resultWithEmptyWeeks.push({

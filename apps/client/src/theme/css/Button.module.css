@@ -27,8 +27,8 @@
   &[data-variant="msu-outline"] {
     font-weight: 500;
     color: hsl(var(--foreground));
-    --button-bg: hsl(var(--background));
-    --button-bd: calc(0.0625rem * var(--mantine-scale)) solid hsl(var(--input));
+    --button-bg: transparent;
+    --button-bd: calc(0.0625rem * var(--mantine-scale)) solid hsl(var(--border));
     &:hover {
       background-color: hsl(var(--secondary));
     }

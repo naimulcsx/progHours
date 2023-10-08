@@ -1,4 +1,3 @@
-import { useLocalStorage } from "@mantine/hooks";
 import {
   Dispatch,
   PropsWithChildren,
@@ -6,6 +5,8 @@ import {
   createContext,
   useContext
 } from "react";
+
+import { useLocalStorage } from "@mantine/hooks";
 
 export type AccentColor = "blue" | "violet" | "green" | "orange" | "rose";
 

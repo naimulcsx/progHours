@@ -6,11 +6,15 @@ export type UserProfileResponse = {
   userId: number;
   fullName: string;
   userName: string;
+  rank: string;
   metaData: {
     cgpa?: number;
     batch?: number;
     section?: string;
     department?: string;
+    about?: string;
+    skills?: string[];
+    website?: string;
   };
   totalSolveTime: number;
   totalDifficulty: number;
@@ -51,7 +55,7 @@ export function useUserProfile({
   config = {}
 }: UseActiveProifleOptions) {
   return useQuery({
-    queryKey: ["profiles", username],
+    queryKey: ["profile", username],
     queryFn: () => getUserProfile(username),
     ...config
   });

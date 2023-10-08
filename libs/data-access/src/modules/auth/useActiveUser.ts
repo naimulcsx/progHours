@@ -9,6 +9,9 @@ export type ActiveUserResponse = Omit<User, "password" | "metaData"> & {
     section?: string;
     batch?: number;
     cgpa?: number;
+    about?: string;
+    website?: string;
+    skills?: string[];
   };
 };
 

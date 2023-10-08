@@ -150,7 +150,7 @@ export default function HomePage() {
       <Box component="footer" my={96}>
         <Container size="xl" style={{ textAlign: "center" }}>
           <Title order={2}>
-            Made with love in Bangladesh{" "}
+            Made with love in{" "}
             <span role="img" aria-label="bangladesh-flag">
               🇧🇩
             </span>

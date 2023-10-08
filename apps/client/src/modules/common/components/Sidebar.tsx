@@ -3,6 +3,7 @@ import { Link, useLocation } from "react-router-dom";
 
 import {
   ActionIcon,
+  Anchor,
   AppShell,
   Box,
   Group,
@@ -33,6 +34,7 @@ import { Avatar } from "./Avatar";
 import SpotlightButton from "./SpotlightButton";
 
 export function Sidebar() {
+  const { user } = useUser();
   const { pathname } = useLocation();
   const [selected, setSelected] = useLocalStorage({
     key: "panel",
@@ -90,22 +92,42 @@ export function Sidebar() {
       <AppShell.Section>
         <SpotlightButton />
 
-        <Group gap="xs" mt="sm" justify="center">
-          {/* user avatar */}
-          <Avatar variant="filled" fullName="Naimul Haque" size="md">
-            NH
-          </Avatar>
+        {user && (
+          <Group gap="xs" mt="sm" justify="center">
+            {/* user avatar */}
+            <Anchor
+              component={Link}
+              underline="never"
+              to={`/@/${user.username}`}
+            >
+              <Avatar variant="filled" fullName={user.fullName} size="md">
+                NH
+              </Avatar>
+            </Anchor>
 
-          {/* user details */}
-          {!collapsed && <UserDetails />}
+            {/* user details */}
 
-          {/* logout button */}
-          {!collapsed && (
-            <ActionIcon size="md" onClick={handleLogout}>
-              <IconLogout width={14} height={14} />
-            </ActionIcon>
-          )}
-        </Group>
+            {!collapsed && (
+              <Anchor
+                component={Link}
+                underline="never"
+                to={`/@/${user.username}`}
+                style={{
+                  flexGrow: 1
+                }}
+              >
+                <UserDetails />
+              </Anchor>
+            )}
+
+            {/* logout button */}
+            {!collapsed && (
+              <ActionIcon size="md" onClick={handleLogout}>
+                <IconLogout width={14} height={14} />
+              </ActionIcon>
+            )}
+          </Group>
+        )}
 
         <ActionIcon
           mt="xs"
@@ -131,11 +153,7 @@ export function Sidebar() {
 export function UserDetails() {
   const { user } = useUser();
   return (
-    <Stack
-      style={{
-        flexGrow: 1
-      }}
-    >
+    <Stack>
       <Box>
         <Text
           style={{
