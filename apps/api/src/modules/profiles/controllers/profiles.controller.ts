@@ -34,4 +34,16 @@ export class ProfilesController {
   getUserProfile(@Param("username") username: string) {
     return this.profilesService.getUserProfile(username);
   }
+
+  @Get(":username/submissions")
+  @Auth(AuthType.None)
+  @ApiOperation({ summary: "Get user submissions by username" })
+  @ApiParam({
+    name: "username",
+    description: "Username of the user to retrieve submissions",
+    example: "C181065"
+  })
+  getUserSubmissions(@Param("username") username: string) {
+    return this.profilesService.getUserSubmissions(username);
+  }
 }

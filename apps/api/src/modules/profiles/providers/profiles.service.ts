@@ -1,7 +1,11 @@
-import { Injectable, NotFoundException } from "@nestjs/common";
+import { Cache } from "cache-manager";
+
+import { CACHE_MANAGER } from "@nestjs/cache-manager";
+import { Inject, Injectable, NotFoundException } from "@nestjs/common";
 
 import { LeaderboardService } from "~/modules/leaderboard/services/leaderboard.service";
 import { StatisticsService } from "~/modules/statistics/services/statistics.service";
+import { SubmissionsService } from "~/modules/submissions/services/submissions.service";
 import { UsersService } from "~/modules/users/providers/users.service";
 
 @Injectable()
@@ -9,7 +13,9 @@ export class ProfilesService {
   constructor(
     private readonly statisticsService: StatisticsService,
     private readonly usersService: UsersService,
-    private readonly leaderboardService: LeaderboardService
+    private readonly leaderboardService: LeaderboardService,
+    private readonly submissionsService: SubmissionsService,
+    @Inject(CACHE_MANAGER) private cacheManager: Cache
   ) {}
 
   async getUserProfile(username: string) {
@@ -47,5 +53,21 @@ export class ProfilesService {
       weeklyStatistics,
       solveTimeByTags
     };
+  }
+
+  async getUserSubmissions(username: string) {
+    const user = await this.usersService.getUser(username);
+    if (!user) {
+      throw new NotFoundException();
+    }
+    const cacheTtl = 120 * 60000; // 2h
+    const cacheKey = "submissions/" + username;
+    const cachedData = await this.cacheManager.get(cacheKey);
+    if (!cachedData) {
+      const submissions = this.submissionsService.getByUser(user.id);
+      await this.cacheManager.set(cacheKey, submissions, cacheTtl);
+      return submissions;
+    }
+    return cachedData;
   }
 }
