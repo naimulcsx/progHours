@@ -1,8 +1,7 @@
-import { IconAt, IconEdit } from "@tabler/icons-react";
+import { IconAt } from "@tabler/icons-react";
 import { useParams } from "react-router-dom";
 
-import { ActionIcon, Box, Container, Flex, Text, Title } from "@mantine/core";
-import { modals } from "@mantine/modals";
+import { Box, Container, Flex, Text, Title } from "@mantine/core";
 
 import { UserProfileResponse, useUserProfile } from "@proghours/data-access";
 
@@ -16,13 +15,9 @@ import {
   IconPoints,
   IconRank
 } from "~/assets/icons";
-import { useUser } from "~/modules/auth/hooks/useUser";
 import { Avatar } from "~/modules/common/components/Avatar";
 
-import { UpdateProfileForm } from "./UpdateProfileForm";
-
 export function ProfileHeader() {
-  const { user } = useUser();
   const { username } = useParams();
 
   // get user profiles
@@ -30,15 +25,6 @@ export function ProfileHeader() {
     username: username!,
     config: { enabled: !!username }
   });
-
-  const ownProfile = user && data && user.username === data.userName;
-
-  const openModal = () =>
-    modals.open({
-      size: "lg",
-      title: "Update profile",
-      children: <UpdateProfileForm />
-    });
 
   return (
     <Container size="xl">
@@ -53,11 +39,6 @@ export function ProfileHeader() {
                     <Title order={2} mb={4}>
                       {data.fullName}
                     </Title>
-                    {ownProfile && (
-                      <ActionIcon onClick={openModal}>
-                        <IconEdit size={16} />
-                      </ActionIcon>
-                    )}
                   </Flex>
 
                   <Flex align="center" gap={4}>

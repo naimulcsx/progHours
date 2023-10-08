@@ -49,7 +49,7 @@ export function SubmissionsTab() {
   return (
     <Box mt="md">
       <Flex justify="space-between">
-        <Title order={3}>Submissions</Title>
+        <Title order={4}>Submissions</Title>
         <Flex align="center" gap="xs">
           <Text size="xs">Filter by Date: </Text>
           <DatePickerInput
@@ -57,7 +57,7 @@ export function SubmissionsTab() {
             placeholder="Pick date"
             value={value}
             onChange={setValue}
-            maw={300}
+            miw={140}
           />
         </Flex>
       </Flex>
