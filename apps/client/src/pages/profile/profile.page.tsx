@@ -1,13 +1,18 @@
+import { HandleType } from "@prisma/client";
+import { IconBrandGithub, IconExternalLink } from "@tabler/icons-react";
 import { AnimatePresence } from "framer-motion";
-import { useNavigate, useParams, useSearchParams } from "react-router-dom";
+import { ReactNode } from "react";
+import { Link, useNavigate, useParams } from "react-router-dom";
 
 import {
   Badge,
   Box,
+  Button,
   Container,
   Grid,
   Group,
   Paper,
+  SimpleGrid,
   Stack,
   Tabs,
   Text,
@@ -16,6 +21,7 @@ import {
 
 import { useUserHandles, useUserProfile } from "@proghours/data-access";
 
+import { CFIcon } from "~/assets/oj-icons";
 import { FadeInTransition } from "~/modules/common/components/FadeInTransition";
 import { Layout } from "~/modules/common/components/Layout";
 import { AvgDifficultyChart } from "~/modules/dashboard/overview/components/charts/AvgDifficultyChart";
@@ -23,6 +29,7 @@ import { TimeSpentChart } from "~/modules/dashboard/overview/components/charts/T
 import { TopSolvedTagsChart } from "~/modules/dashboard/overview/components/charts/TopSolvedTagsChart";
 import { WeeklySolvedChart } from "~/modules/dashboard/overview/components/charts/WeeklySolvedChart";
 import { ProfileHeader } from "~/modules/profile/components/ProfileHeader";
+import { SubmissionsTab } from "~/modules/profile/components/SubmissionsTab";
 
 export function UserProfilePage() {
   const navigate = useNavigate();
@@ -40,31 +47,28 @@ export function UserProfilePage() {
     config: { enabled: !!username }
   });
 
-  console.log(userHandles);
-  const [searchParams] = useSearchParams();
-  console.log(searchParams.get("date"));
   return (
     <Layout withContainer={false}>
       <AnimatePresence>
         {data && (
           <FadeInTransition>
-            <Box pt={40} pb={8}>
+            <Box py={40}>
               <ProfileHeader />
               <Container size="xl">
                 <Tabs
-                  value={tabValue ?? "profile"}
+                  value={tabValue ?? "overview"}
                   onChange={(value) => {
-                    if (value !== "profile")
+                    if (value !== "overview")
                       navigate(`/@/${username}/${value}`);
                     else navigate(`/@/${username}`);
                   }}
                 >
                   <Tabs.List>
-                    <Tabs.Tab value="profile">Profile</Tabs.Tab>
+                    <Tabs.Tab value="overview">Overview</Tabs.Tab>
                     <Tabs.Tab value="submissions">Submissions</Tabs.Tab>
                     <Tabs.Tab value="medals">Medals</Tabs.Tab>
                   </Tabs.List>
-                  <Tabs.Panel value="profile">
+                  <Tabs.Panel value="overview">
                     <Grid mt="md" gutter="xl" style={{ overflow: "initial" }}>
                       <Grid.Col span={8}>
                         <Stack gap="md">
@@ -106,9 +110,40 @@ export function UserProfilePage() {
                                 </Badge>
                               ))
                             ) : (
-                              <Text>—</Text>
+                              <Text>&mdash;</Text>
                             )}
                           </Group>
+                          <Title order={3}>Profiles</Title>
+                          <SimpleGrid cols={2}>
+                            {userHandles?.map(({ type, handle }) => {
+                              const handleTypeIcon: Record<
+                                HandleType,
+                                ReactNode
+                              > = {
+                                CODEFORCES: <CFIcon height={24} width={24} />,
+                                CODECHEF: (
+                                  <IconBrandGithub height={24} width={24} />
+                                ),
+                                SPOJ: <IconBrandGithub />,
+                                ATCODER: <IconBrandGithub />,
+                                GITHUB: <IconBrandGithub />
+                              };
+                              return (
+                                <Button
+                                  key={type}
+                                  component={Link}
+                                  target="_blank"
+                                  to={`https://codeforces.com/profile/${handle}`}
+                                  variant="msu-secondary"
+                                  leftSection={handleTypeIcon[type]}
+                                  rightSection={<IconExternalLink size={16} />}
+                                >
+                                  {handle}
+                                </Button>
+                              );
+                            })}
+                          </SimpleGrid>
+
                           <Title order={3}>Education</Title>
                           <Text>
                             International Islamic University Chittagong
@@ -117,7 +152,9 @@ export function UserProfilePage() {
                       </Grid.Col>
                     </Grid>
                   </Tabs.Panel>
-                  <Tabs.Panel value="activity">Activity</Tabs.Panel>
+                  <Tabs.Panel value="submissions">
+                    <SubmissionsTab />
+                  </Tabs.Panel>
                   <Tabs.Panel value="medals">Test</Tabs.Panel>
                 </Tabs>
               </Container>

@@ -33,7 +33,6 @@ export function NumberFilter<TData>({
     setOpened(false);
     return table.getColumn(columnId)?.setFilterValue(filterValue);
   };
-  console.log(opened);
   return (
     <Menu shadow="md" width={200} opened={opened} onChange={setOpened}>
       <Menu.Target>

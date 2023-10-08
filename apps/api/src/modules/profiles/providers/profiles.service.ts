@@ -56,6 +56,7 @@ export class ProfilesService {
   }
 
   async getUserSubmissions(username: string) {
+    username = username.toLowerCase();
     const user = await this.usersService.getUser(username);
     if (!user) {
       throw new NotFoundException();
@@ -64,7 +65,7 @@ export class ProfilesService {
     const cacheKey = "submissions/" + username;
     const cachedData = await this.cacheManager.get(cacheKey);
     if (!cachedData) {
-      const submissions = this.submissionsService.getByUser(user.id);
+      const submissions = await this.submissionsService.getByUser(user.id);
       await this.cacheManager.set(cacheKey, submissions, cacheTtl);
       return submissions;
     }

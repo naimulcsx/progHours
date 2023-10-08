@@ -152,7 +152,6 @@ const pool = new Pool({
     (prev, curr) => Math.max(prev, curr.id),
     0
   );
-  console.log(problemsMaxId);
   const problemsSeqQuery = `ALTER SEQUENCE problems_id_seq RESTART WITH ${
     problemsMaxId + 1
   }`;

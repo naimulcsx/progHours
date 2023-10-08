@@ -11,16 +11,21 @@ import { SubmissionRow } from "@proghours/data-access";
 
 import { CreateSubmissionRow } from "./CreateSubmissionRow";
 import { columns } from "./columns";
+import { columnsPublic } from "./columns-public";
 
 interface DataTableProps {
+  editable?: boolean;
   data: SubmissionRow[];
 }
 
-export function SubmissionsDataTable({ data }: DataTableProps) {
+export function SubmissionsDataTable({
+  editable = true,
+  data
+}: DataTableProps) {
   const PAGE_SIZE = 10;
   const table = useReactTable({
     data,
-    columns,
+    columns: editable ? columns : columnsPublic,
     getCoreRowModel: getCoreRowModel(),
     // pagination
     getPaginationRowModel: getPaginationRowModel(),
@@ -61,7 +66,7 @@ export function SubmissionsDataTable({ data }: DataTableProps) {
           ))}
         </Table.Thead>
         <Table.Tbody>
-          <CreateSubmissionRow />
+          {editable && <CreateSubmissionRow />}
           {table.getRowModel().rows?.length ? (
             table.getRowModel().rows.map((row, index) => (
               <Table.Tr
