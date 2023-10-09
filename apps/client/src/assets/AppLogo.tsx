@@ -61,7 +61,7 @@ export function AppLogo({
           <Text
             style={{
               fontSize: styles[size].fontSize,
-              fontWeight: 600,
+              fontWeight: 700,
               color: "hsl(var(--accent-foreground))"
             }}
           >
