@@ -8,7 +8,7 @@ import { notifications } from "@mantine/notifications";
 
 import { useActiveUser, useUserMutation } from "@proghours/data-access";
 
-export function UpdateProfileForm() {
+export function AboutSkillsSettings() {
   const client = useQueryClient();
 
   const form = useForm({

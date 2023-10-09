@@ -3,7 +3,7 @@
     color: hsl(var(--muted-foreground));
     border-radius: var(--mantine-radius-md);
     background: transparent;
-    font-weight: 500;
+    font-weight: 600;
     &[data-active="true"] {
       @mixin light {
         background: hsl(var(--primary) / 0.1);
