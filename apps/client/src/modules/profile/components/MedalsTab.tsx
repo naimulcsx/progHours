@@ -107,6 +107,7 @@ export function MedalsTab() {
                 <Anchor
                   size="sm"
                   fw={500}
+                  style={{ color: "hsl(var(--foreground))" }}
                   onClick={() => {
                     modals.open({
                       size: "md",
@@ -136,6 +137,7 @@ export function MedalsTab() {
                               / {medal.solvedRequired} solved
                             </Text>
                             <Progress
+                              size="lg"
                               striped
                               animated={!unlocked}
                               color="green"

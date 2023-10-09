@@ -66,13 +66,7 @@ export function SubmissionsTab() {
         {(styles) => (
           <Box style={{ ...styles, transitionDelay: "250ms" }}>
             {isSuccess && (
-              <Paper
-                mt="md"
-                style={{
-                  borderRadius: "var(--mantine-radius-md)",
-                  background: "hsl(var(--secondary) / 0.5)"
-                }}
-              >
+              <Paper mt="md">
                 <SubmissionsDataTable
                   editable={false}
                   data={[...filteredData]

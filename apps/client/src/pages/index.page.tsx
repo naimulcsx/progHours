@@ -212,10 +212,10 @@ const faq = [
     value: "Will I be given access?",
     description:
       "Yes, we will onboard the people on our waitlist based on a first come first serve basis, with a 1000 user limit for our initial version."
-  },
-  {
-    value: "Is there a mobile app for progHours?",
-    description:
-      "Currently, progHours is accessible through web browsers. However, we've plans to work on a mobile app in the future."
   }
+  // {
+  //   value: "Is there a mobile app for progHours?",
+  //   description:
+  //     "Currently, progHours is accessible through web browsers. However, we've plans to work on a mobile app in the future."
+  // }
 ];
