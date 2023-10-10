@@ -39,6 +39,7 @@ export function TimeSpentChart({ data }: TimeSpentChartProps) {
 
   const options: ApexOptions = {
     chart: {
+      fontFamily: "Onest",
       type: "donut",
       background: "transparent",
       toolbar: {

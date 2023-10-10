@@ -13,7 +13,7 @@ export function Layout({
   withContainer = true
 }: PropsWithChildren<LayoutProps>) {
   return (
-    <AppShell header={{ height: 56 }} padding="md">
+    <AppShell header={{ height: 60 }} padding="md">
       <Header />
       <AppShell.Main>
         {withContainer ? (

@@ -31,6 +31,7 @@ export function TopSolvedTagsChart({ data }: TopSolvedTagsChartProps) {
 
   const options: ApexOptions = {
     chart: {
+      fontFamily: "Onest",
       toolbar: {
         show: true,
         export: {

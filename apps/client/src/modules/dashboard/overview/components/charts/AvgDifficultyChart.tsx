@@ -42,6 +42,7 @@ export const AvgDifficultyChart = ({ data }: AvgDifficultyChartProps) => {
   ];
   const options: ApexOptions = {
     chart: {
+      fontFamily: "Onest",
       toolbar: {
         show: true,
         export: {

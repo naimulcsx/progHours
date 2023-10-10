@@ -11,6 +11,7 @@ import {
   Container,
   Divider,
   Input,
+  Loader,
   Menu,
   Modal,
   NavLink,
@@ -41,6 +42,7 @@ import buttonClasses from "./css/Button.module.css";
 import containerClasses from "./css/Container.module.css";
 import dividerClasses from "./css/Divider.module.css";
 import inputClasses from "./css/Input.module.css";
+import loaderClasses from "./css/Loader.module.css";
 import menuClasses from "./css/Menu.module.css";
 import modalClasses from "./css/Modal.module.css";
 import navlinkClasses from "./css/NavLink.module.css";
@@ -112,7 +114,7 @@ export const resolvers: Record<AccentColor, CSSVariablesResolver> = {
       "--card-foreground": "240 10% 3.9%",
       "--popover": "0 0% 100%",
       "--popover-foreground": "240 10% 3.9%",
-      "--primary": "142.1 76.2% 36.3%",
+      "--primary": "142.1 76.2% 33.3%",
       "--primary-foreground": "355.7 100% 97.3%",
       "--secondary": "240 4.8% 95.9%",
       "--secondary-foreground": "240 5.9% 10%",
@@ -191,6 +193,51 @@ export const resolvers: Record<AccentColor, CSSVariablesResolver> = {
       "--border": "215 27.9% 16.9%",
       "--input": "215 27.9% 16.9%",
       "--ring": "263.4 70% 50.4%"
+    }
+  }),
+  yellow: () => ({
+    variables: { "--radius": "0.5rem" },
+    light: {
+      "--background": "0 0% 100%",
+      "--foreground": "20 14.3% 4.1%",
+      "--card": "0 0% 100%",
+      "--card-foreground": "20 14.3% 4.1%",
+      "--popover": "0 0% 100%",
+      "--popover-foreground": "20 14.3% 4.1%",
+      "--primary": "47 100% 47%",
+      "--primary-foreground": "26 83.3% 14.1%",
+      "--secondary": "60 4.8% 95.9%",
+      "--secondary-foreground": "24 9.8% 10%",
+      "--muted": "60 4.8% 95.9%",
+      "--muted-foreground": "25 5.3% 44.7%",
+      "--accent": "60 4.8% 95.9%",
+      "--accent-foreground": "24 9.8% 10%",
+      "--destructive": "0 84.2% 60.2%",
+      "--destructive-foreground": "60 9.1% 97.8%",
+      "--border": "20 5.9% 90%",
+      "--input": "20 5.9% 90%",
+      "--ring": "20 14.3% 4.1%"
+    },
+    dark: {
+      "--background": "20 14.3% 4.1%",
+      "--foreground": "60 9.1% 97.8%",
+      "--card": "20 14.3% 4.1%",
+      "--card-foreground": "60 9.1% 97.8%",
+      "--popover": "20 14.3% 4.1%",
+      "--popover-foreground": "60 9.1% 97.8%",
+      "--primary": "47.9 95.8% 53.1%",
+      "--primary-foreground": "26 83.3% 14.1%",
+      "--secondary": "12 6.5% 15.1%",
+      "--secondary-foreground": "60 9.1% 97.8%",
+      "--muted": "12 6.5% 15.1%",
+      "--muted-foreground": "24 5.4% 63.9%",
+      "--accent": "12 6.5% 15.1%",
+      "--accent-foreground": "60 9.1% 97.8%",
+      "--destructive": "0 62.8% 30.6%",
+      "--destructive-foreground": "60 9.1% 97.8%",
+      "--border": "12 6.5% 15.1%",
+      "--input": "12 6.5% 15.1%",
+      "--ring": "35.5 91.7% 32.9%"
     }
   }),
   orange: () => ({
@@ -287,7 +334,7 @@ export const resolvers: Record<AccentColor, CSSVariablesResolver> = {
 };
 
 export const theme = createTheme({
-  fontFamily: "Plus Jakarta Sans, sans-serif",
+  fontFamily: "Onest, sans-serif",
   defaultRadius: "md",
   shadows: {
     xs: "0 1px 2px 0 rgba(0,0,0,.05)"
@@ -431,6 +478,10 @@ export const theme = createTheme({
     TagsInput: TagsInput.extend({
       defaultProps: { variant: "proghours-ui" },
       classNames: tagsInputClasses
+    }),
+    Loader: Loader.extend({
+      defaultProps: { variant: "proghours-ui", size: "xs" },
+      classNames: loaderClasses
     })
   }
 });

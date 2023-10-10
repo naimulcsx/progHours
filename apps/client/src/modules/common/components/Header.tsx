@@ -38,10 +38,17 @@ export function Header() {
               <AppLogo size="sm" />
             </Anchor>
             <Flex ml="lg" gap="md">
-              <Anchor component={Link} to="/" size="sm" underline="never">
+              <Anchor
+                fw={600}
+                component={Link}
+                to="/"
+                size="sm"
+                underline="never"
+              >
                 Home
               </Anchor>
               <Anchor
+                fw={600}
                 component={Link}
                 to="/leaderboard"
                 size="sm"
@@ -50,6 +57,7 @@ export function Header() {
                 Leaderboard
               </Anchor>
               <Anchor
+                fw={600}
                 href="https://github.com/naimulcsx/progHours"
                 target="_blank"
                 size="sm"
@@ -108,6 +116,7 @@ export function Header() {
               <Menu width={200}>
                 <Menu.Target>
                   <Button
+                    fw={600}
                     variant="msu-secondary"
                     rightSection={<IconChevronDown size={16} />}
                   >

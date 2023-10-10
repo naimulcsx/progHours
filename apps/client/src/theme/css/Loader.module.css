@@ -1,0 +1,5 @@
+.root {
+  &[data-variant="proghours-ui"] {
+    --loader-color: hsl(var(--primary));
+  }
+}

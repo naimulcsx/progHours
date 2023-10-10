@@ -44,7 +44,7 @@ export default function DashboardLeaderboardPage() {
                 <div
                   style={{ ...styles, display: "flex", alignItems: "center" }}
                 >
-                  <Loader size="xs" />
+                  <Loader />
                 </div>
               )}
             </Transition>

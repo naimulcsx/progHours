@@ -8,7 +8,13 @@ import {
 
 import { useLocalStorage } from "@mantine/hooks";
 
-export type AccentColor = "blue" | "violet" | "green" | "orange" | "rose";
+export type AccentColor =
+  | "blue"
+  | "violet"
+  | "green"
+  | "orange"
+  | "rose"
+  | "yellow";
 
 const AccentColorContext = createContext<
   | {

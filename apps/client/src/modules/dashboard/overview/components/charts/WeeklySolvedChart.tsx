@@ -50,7 +50,7 @@ export const WeeklySolvedChart = ({ data }: WeeklySolvedChartProps) => {
   ];
   const options: ApexOptions = {
     chart: {
-      type: "donut",
+      fontFamily: "Onest",
       toolbar: {
         show: true,
         export: {

@@ -15,6 +15,7 @@ import { SubmissionsTab } from "~/modules/profile/components/SubmissionsTab";
 
 export function UserProfilePage() {
   const navigate = useNavigate();
+
   const { username, tabValue } = useParams();
 
   const { isSuccess } = useUserProfile({
