@@ -28,9 +28,10 @@ const accentColors: AccentColor[] = [
 ];
 
 export function AppearanceSettings() {
-  const { colorScheme, toggleColorScheme } = useMantineColorScheme();
+  const { colorScheme, setColorScheme } = useMantineColorScheme();
   const { accentColor, setAccentColor } = useAccentColor();
   const theme = useMantineTheme();
+
   return (
     <Stack>
       <SettingsItem
@@ -80,15 +81,15 @@ export function AppearanceSettings() {
         <Select
           placeholder="Pick one"
           maw={160}
+          allowDeselect={false}
           defaultValue={colorScheme}
-          onChange={(val) => {
-            if (val !== colorScheme) {
-              toggleColorScheme();
-            }
+          onChange={(val: "auto" | "dark" | "light") => {
+            setColorScheme(val);
           }}
           data={[
             { value: "dark", label: "Dark" },
-            { value: "light", label: "Light" }
+            { value: "light", label: "Light" },
+            { value: "auto", label: "Auto" }
           ]}
         />
       </SettingsItem>
