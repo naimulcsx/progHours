@@ -1,9 +1,11 @@
+import { Institution } from "@prisma/client";
 import { RedisCache } from "cache-manager-redis-yet";
 
 import { CACHE_MANAGER } from "@nestjs/cache-manager";
 import { Inject, Injectable, NotFoundException } from "@nestjs/common";
 
 import { LeaderboardService } from "~/modules/leaderboard/services/leaderboard.service";
+import { PrismaService } from "~/modules/prisma/services/prisma.service";
 import { StatisticsService } from "~/modules/statistics/services/statistics.service";
 import { SubmissionsService } from "~/modules/submissions/services/submissions.service";
 import { UsersService } from "~/modules/users/providers/users.service";
@@ -11,6 +13,7 @@ import { UsersService } from "~/modules/users/providers/users.service";
 @Injectable()
 export class ProfilesService {
   constructor(
+    private readonly prisma: PrismaService,
     private readonly statisticsService: StatisticsService,
     private readonly usersService: UsersService,
     private readonly leaderboardService: LeaderboardService,
@@ -22,6 +25,12 @@ export class ProfilesService {
     const user = await this.usersService.getUser(username);
     if (!user) {
       throw new NotFoundException();
+    }
+    let institution: Institution | null = null;
+    if (user.institutionId) {
+      institution = await this.prisma.institution.findUnique({
+        where: { id: user.institutionId }
+      });
     }
     const result = await this.statisticsService.getUserStatistics(user.id, {
       type: "full"
@@ -47,6 +56,7 @@ export class ProfilesService {
       fullName: user.fullName,
       userName: user.username,
       metaData: user.metaData,
+      institution,
 
       // totalSolveTime, totalDifficulty, totalSolved, totalSolvedWithDifficulty
       ...result,

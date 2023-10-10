@@ -15,6 +15,7 @@
  * Date: 29th July 2023
  */
 import {
+  Institution,
   Prisma,
   PrismaClient,
   Problem,
@@ -24,6 +25,7 @@ import {
   Tag,
   User
 } from "@prisma/client";
+import axios from "axios";
 import { Pool } from "pg";
 
 const pool = new Pool({
@@ -45,6 +47,7 @@ const pool = new Pool({
   await prisma.tag.deleteMany({});
   await prisma.userHandle.deleteMany({});
   await prisma.user.deleteMany({});
+  await prisma.institution.deleteMany({});
 
   /**
    * Migrate users
@@ -216,4 +219,34 @@ const pool = new Pool({
   console.time(`submissions (${submissionsQuery.rowCount})`);
   await Promise.all(submissionCreatePromises);
   console.timeEnd(`submissions (${submissionsQuery.rowCount})`);
+
+  /**
+   * Add institutions
+   */
+  const { data } = await axios.get<
+    Array<{
+      name: string;
+      alpha_two_code: string;
+      country: string;
+      web_pages: string[];
+    }>
+  >("http://universities.hipolabs.com/search?country=bangladesh");
+
+  const institutionCreatePromises: Promise<Institution>[] = [];
+  data.map((el) => {
+    institutionCreatePromises.push(
+      prisma.institution.create({
+        data: {
+          name: el.name,
+          url: el.web_pages.length > 0 ? el.web_pages[0] : null,
+          countryCode: el.alpha_two_code,
+          country: el.country
+        }
+      })
+    );
+  });
+
+  console.time(`institutions (${data.length})`);
+  await Promise.all(institutionCreatePromises);
+  console.timeEnd(`institutions (${data.length})`);
 })();

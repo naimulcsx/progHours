@@ -36,6 +36,9 @@ model User {
   updatedAt DateTime @updatedAt @map("updated_at") @db.Timestamp(0)
   metaData  Json?    @default("{}") @map("metadata")
 
+  institutionId Int?
+  institution   Institution? @relation(fields: [institutionId], references: [id])
+
   submissions   Submission[]
   userHandles   UserHandle[]
   pullHistories PullHistory[]
@@ -57,6 +60,17 @@ model Problem {
   PullHistoryItem PullHistoryItem[]
 
   @@map("problems")
+}
+
+model Institution {
+  id          Int     @id @default(autoincrement())
+  name        String
+  url         String?
+  country     String?
+  countryCode String? @map("country_code")
+  users       User[]
+
+  @@map("institutions")
 }
 
 model Tag {

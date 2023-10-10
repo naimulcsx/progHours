@@ -1,4 +1,4 @@
-import { IconAt } from "@tabler/icons-react";
+import { IconAt, IconBuildingCommunity } from "@tabler/icons-react";
 import { useParams } from "react-router-dom";
 
 import { Box, Container, Flex, Text, Title } from "@mantine/core";
@@ -42,9 +42,22 @@ export function ProfileHeader() {
                   </Flex>
 
                   <Flex align="center" gap={4}>
-                    <IconAt size={18} stroke={1.5} />
-                    <Text>{data.userName.toUpperCase()}</Text>
+                    <IconAt
+                      size={16}
+                      style={{ color: "hsl(var(--muted-foreground))" }}
+                    />
+                    <Text size="sm">{data.userName.toUpperCase()}</Text>
                   </Flex>
+
+                  {data.institution && (
+                    <Flex align="center" gap={4}>
+                      <IconBuildingCommunity
+                        size={16}
+                        style={{ color: "hsl(var(--muted-foreground))" }}
+                      />
+                      <Text size="sm">{data.institution.name}</Text>
+                    </Flex>
+                  )}
 
                   <Flex gap="xs" mt="sm">
                     {data.totalSolved >= 100 && (

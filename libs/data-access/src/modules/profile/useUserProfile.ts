@@ -7,6 +7,13 @@ export type UserProfileResponse = {
   fullName: string;
   userName: string;
   rank: string;
+  institution?: {
+    id: number;
+    name: string;
+    url?: string;
+    countryCode?: string;
+    country?: string;
+  };
   metaData: {
     cgpa?: number;
     batch?: number;

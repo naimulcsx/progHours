@@ -12,7 +12,6 @@ import {
   Badge,
   Box,
   Button,
-  Flex,
   Grid,
   Group,
   SimpleGrid,
@@ -143,13 +142,6 @@ export function ProfileTab() {
                 })}
                 {userHandles.length === 0 && <Text>&mdash;</Text>}
               </SimpleGrid>
-
-              {/* education */}
-              <Title order={4}>Education</Title>
-              <Flex align="center" gap={6}>
-                <Text>{/* <IconBuildingCommunity size={20} /> */}</Text>
-                <Text>&mdash; </Text>
-              </Flex>
             </Stack>
           </Grid.Col>
         </Grid>
