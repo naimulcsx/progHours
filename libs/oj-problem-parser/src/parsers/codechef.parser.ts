@@ -24,7 +24,7 @@ export class CodechefParser extends OJParser<CcUrlParams> {
   ] as const;
 
   getUrlParams(): CcUrlParams {
-    // check the given url if it falls into a valid URL pattern
+    // check if the given url falls into a valid URL pattern
     for (const pattern of CodechefParser.urlPatterns) {
       const match = pattern.regexp.exec(this.url);
       if (!match) continue;
