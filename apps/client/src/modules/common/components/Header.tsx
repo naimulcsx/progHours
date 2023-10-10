@@ -1,8 +1,8 @@
 import {
   IconChevronDown,
+  IconDeviceDesktop,
   IconMoonStars,
-  IconSun,
-  IconSunMoon
+  IconSun
 } from "@tabler/icons-react";
 import { Link } from "react-router-dom";
 
@@ -75,7 +75,7 @@ export function Header() {
                     <IconMoonStars color="#fcc419" size={16} />
                   )}
                   {colorScheme === "light" && <IconSun size={16} />}
-                  {colorScheme === "auto" && <IconSunMoon size={16} />}
+                  {colorScheme === "auto" && <IconDeviceDesktop size={16} />}
                 </ActionIcon>
               </Menu.Target>
               <Menu.Dropdown>
@@ -92,7 +92,7 @@ export function Header() {
                   Dark
                 </Menu.Item>
                 <Menu.Item
-                  leftSection={<IconSunMoon size={16} />}
+                  leftSection={<IconDeviceDesktop size={16} />}
                   onClick={() => setColorScheme("auto")}
                 >
                   Auto
