@@ -1,28 +1,28 @@
 import { OJProblemParser } from "../core/OJProblemParser";
 import { ParseResult } from "../types/ParseResult";
 
-describe("Toph parser", () => {
+describe("SPOJ parser", () => {
   let parser: OJProblemParser;
 
   beforeEach(() => {
     parser = new OJProblemParser();
   });
 
-  it("should parse toph problem - cash-change", async () => {
-    const result = await parser.parse("https://toph.co/p/cash-change");
+  it("should parse spoj problem - BACTERIA", async () => {
+    const result = await parser.parse("https://www.spoj.com/problems/BACTERIA");
     const expectedResult: ParseResult = {
-      pid: "Toph-cash-change",
-      name: "Cash Change",
+      pid: "SPOJ-BACTERIA",
+      name: "SPOJ Custom Test",
       difficulty: 0,
-      tags: ["greedy", "implementation"],
-      url: "https://toph.co/p/cash-change"
+      tags: [],
+      url: "https://www.spoj.com/problems/BACTERIA"
     };
     expect(result).toEqual(expectedResult);
   });
 
   it("should throw an error with invalid problem id", async () => {
     try {
-      await parser.parse("https://toph.co/p/cashing-changing");
+      await parser.parse("https://www.spoj.com/problems/BACTERIAS");
     } catch (err) {
       expect(err).toBeInstanceOf(Error);
     }

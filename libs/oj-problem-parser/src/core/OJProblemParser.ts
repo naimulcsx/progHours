@@ -4,6 +4,7 @@ import {
   CsesParser,
   TophParser
 } from "../parsers";
+import { SpojParser } from "../parsers/spoj.parser";
 import { ParseResult } from "../types/ParseResult";
 
 const INVALID_URL_ERROR = "Invalid URL";
@@ -54,7 +55,7 @@ export class OJProblemParser {
     // codeforces
     if (hostname.endsWith("codeforces.com")) {
       const parser = new CodeforcesParser();
-      return parser.parse(this.removeWWWFromURL(url));
+      return parser.parse(url);
     }
     // codechef
     else if (hostname.endsWith("codechef.com")) {
@@ -69,6 +70,11 @@ export class OJProblemParser {
     // toph
     else if (hostname.endsWith("toph.co")) {
       const parser = new TophParser();
+      return parser.parse(url);
+    }
+    // spoj
+    else if (hostname.endsWith("spoj.com")) {
+      const parser = new SpojParser();
       return parser.parse(url);
     }
 

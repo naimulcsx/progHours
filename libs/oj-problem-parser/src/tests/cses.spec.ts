@@ -1,7 +1,7 @@
 import { OJProblemParser } from "../core/OJProblemParser";
 import { ParseResult } from "../types/ParseResult";
 
-describe("OJProblemParser", () => {
+describe("CSES parser", () => {
   let parser: OJProblemParser;
 
   beforeEach(() => {
