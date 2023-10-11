@@ -2,9 +2,10 @@ import {
   CodechefParser,
   CodeforcesParser,
   CsesParser,
-  TophParser
+  SpojParser,
+  TophParser,
+  UvaParser
 } from "../parsers";
-import { SpojParser } from "../parsers/spoj.parser";
 import { ParseResult } from "../types/ParseResult";
 
 const INVALID_URL_ERROR = "Invalid URL";
@@ -75,6 +76,11 @@ export class OJProblemParser {
     // spoj
     else if (hostname.endsWith("spoj.com")) {
       const parser = new SpojParser();
+      return parser.parse(url);
+    }
+    // uva
+    else if (hostname.endsWith("onlinejudge.org")) {
+      const parser = new UvaParser();
       return parser.parse(url);
     }
 
