@@ -1,6 +1,9 @@
-import { CodechefParser } from "../parsers/codechef.parser";
-import { CodeforcesParser } from "../parsers/codeforces.parser";
-import { CsesParser } from "../parsers/cses.parser";
+import {
+  CodechefParser,
+  CodeforcesParser,
+  CsesParser,
+  TophParser
+} from "../parsers";
 import { ParseResult } from "../types/ParseResult";
 
 const INVALID_URL_ERROR = "Invalid URL";
@@ -61,6 +64,11 @@ export class OJProblemParser {
     // cses
     else if (hostname.endsWith("cses.fi")) {
       const parser = new CsesParser();
+      return parser.parse(url);
+    }
+    // toph
+    else if (hostname.endsWith("toph.co")) {
+      const parser = new TophParser();
       return parser.parse(url);
     }
 

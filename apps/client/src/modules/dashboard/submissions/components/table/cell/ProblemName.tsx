@@ -2,7 +2,7 @@ import { IconChecks } from "@tabler/icons-react";
 import { CellContext } from "@tanstack/react-table";
 import { ReactNode } from "react";
 
-import { Box, Group, Text, Title } from "@mantine/core";
+import { Box, Group, Text } from "@mantine/core";
 
 import { SubmissionRow } from "@proghours/data-access";
 
@@ -54,36 +54,31 @@ export const ProblemName = (cell: CellContext<SubmissionRow, unknown>) => {
   return (
     <Group gap="md" style={{ width: "100%" }}>
       <Box
-        style={(theme) => ({
+        style={{
           width: 32,
           height: 32,
           border: "1px solid",
-          padding: 2,
+          padding: 4,
           borderRadius: "50%",
           borderColor: "hsl(var(--border))"
-        })}
+        }}
       >
         {(iconMap.filter((item, i) => pid.includes(item.prefix)).at(0)
           ?.icon as ReactNode) ?? undefined}
       </Box>
       <Box style={{ flex: 1 }}>
         <Group gap="xs" align="center" justify="space-between" w="100%">
-          <Title order={6} style={{ fontWeight: 500 }}>
+          <Text
+            style={{ color: "hsl(var(--foreground))", fontWeight: 600 }}
+            lineClamp={1}
+          >
             {pid}
-          </Title>
+          </Text>
           {isVerified && (
             <IconChecks size={18} color="#22c55e" style={{ marginRight: 16 }} />
           )}
         </Group>
-        <Text
-          size="sm"
-          style={{
-            maxWidth: 200,
-            whiteSpace: "nowrap",
-            overflow: "hidden",
-            textOverflow: "ellipsis"
-          }}
-        >
+        <Text size="sm" lineClamp={1}>
           {name}
         </Text>
       </Box>
