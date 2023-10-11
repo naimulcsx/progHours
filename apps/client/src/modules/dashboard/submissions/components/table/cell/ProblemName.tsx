@@ -58,7 +58,7 @@ export const ProblemName = (cell: CellContext<SubmissionRow, unknown>) => {
           width: 32,
           height: 32,
           border: "1px solid",
-          padding: 4,
+          padding: 2,
           borderRadius: "50%",
           borderColor: "hsl(var(--border))"
         }}

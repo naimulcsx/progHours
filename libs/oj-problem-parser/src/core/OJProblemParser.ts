@@ -6,6 +6,7 @@ import {
   TophParser,
   UvaParser
 } from "../parsers";
+import { AtCoderParser } from "../parsers/atcoder.parser";
 import { ParseResult } from "../types/ParseResult";
 
 const INVALID_URL_ERROR = "Invalid URL";
@@ -81,6 +82,11 @@ export class OJProblemParser {
     // uva
     else if (hostname.endsWith("onlinejudge.org")) {
       const parser = new UvaParser();
+      return parser.parse(url);
+    }
+    // atcoder
+    else if (hostname.endsWith("atcoder.jp")) {
+      const parser = new AtCoderParser();
       return parser.parse(url);
     }
 
