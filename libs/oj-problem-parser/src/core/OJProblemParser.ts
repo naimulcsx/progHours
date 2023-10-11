@@ -7,6 +7,7 @@ import {
   UvaParser
 } from "../parsers";
 import { AtCoderParser } from "../parsers/atcoder.parser";
+import { LightOjParser } from "../parsers/lightoj.parser";
 import { ParseResult } from "../types/ParseResult";
 
 const INVALID_URL_ERROR = "Invalid URL";
@@ -87,6 +88,11 @@ export class OJProblemParser {
     // atcoder
     else if (hostname.endsWith("atcoder.jp")) {
       const parser = new AtCoderParser();
+      return parser.parse(url);
+    }
+    // lightoj
+    else if (hostname.endsWith("lightoj.com")) {
+      const parser = new LightOjParser();
       return parser.parse(url);
     }
 
