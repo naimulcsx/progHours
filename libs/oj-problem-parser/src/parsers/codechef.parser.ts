@@ -10,23 +10,23 @@ export type CcUrlParams = {
   problemId: string;
 };
 
-export class CodechefParser extends OJParser<CcUrlParams> {
+export class CodechefParser implements OJParser<CcUrlParams> {
   // define valid URL patterns of a CodeChef problem
   static urlPatterns = [
     {
       type: "submit_url",
-      regexp: pathToRegexp("https\\://codechef.com/submit/:problemId")
+      regexp: pathToRegexp("https\\://www.codechef.com/submit/:problemId")
     },
     {
       type: "problem_url",
-      regexp: pathToRegexp("https\\://codechef.com/problems/:problemId")
+      regexp: pathToRegexp("https\\://www.codechef.com/problems/:problemId")
     }
   ] as const;
 
-  getUrlParams(): CcUrlParams {
+  getUrlParams(url: string): CcUrlParams {
     // check if the given url falls into a valid URL pattern
     for (const pattern of CodechefParser.urlPatterns) {
-      const match = pattern.regexp.exec(this.url);
+      const match = pattern.regexp.exec(url);
       if (!match) continue;
       return {
         type: pattern.type,
@@ -39,8 +39,8 @@ export class CodechefParser extends OJParser<CcUrlParams> {
     throw new Error(INVALID_PROBLEM_URL_ERROR);
   }
 
-  async parse() {
-    const result = this.getUrlParams();
+  async parse(url: string) {
+    const result = this.getUrlParams(url);
     try {
       const { data } = await axios.get(
         `https://www.codechef.com/api/contests/PRACTICE/problems/${result.problemId}`

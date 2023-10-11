@@ -20,7 +20,7 @@ export type CfUrlParams =
       problemId: string;
     };
 
-export class CodeforcesParser extends OJParser<CfUrlParams> {
+export class CodeforcesParser implements OJParser<CfUrlParams> {
   // define valid URL patterns of a Codeforces problem
   static urlPatterns = [
     {
@@ -49,10 +49,10 @@ export class CodeforcesParser extends OJParser<CfUrlParams> {
     }
   ] as const;
 
-  getUrlParams(): CfUrlParams {
+  getUrlParams(url: string): CfUrlParams {
     // check if the given url falls into a valid URL pattern
     for (const pattern of CodeforcesParser.urlPatterns) {
-      const match = pattern.regexp.exec(this.url);
+      const match = pattern.regexp.exec(url);
       if (!match) continue;
       if (
         pattern.type === "contest_url" ||
@@ -79,20 +79,19 @@ export class CodeforcesParser extends OJParser<CfUrlParams> {
     throw new Error(INVALID_PROBLEM_URL_ERROR);
   }
 
-  getPid(result: CfUrlParams) {
+  private getPid(result: CfUrlParams) {
     const { contestId, problemId } = result;
-    if (this.url.includes("gym")) {
+    if (result.type === "gym_url") {
       return `Gym-${contestId}${problemId}`;
-    } else {
-      return `CF-${contestId}${problemId}`;
     }
+    return `CF-${contestId}${problemId}`;
   }
 
-  async parse() {
-    const result = this.getUrlParams();
+  async parse(url: string) {
+    const result = this.getUrlParams(url);
 
     if (result.type === "group_url") {
-      const { data } = await axios.get(this.url);
+      const { data } = await axios.get(url);
       const _ = cheerio.load(data);
 
       const pid = this.getPid(result);
@@ -126,7 +125,7 @@ export class CodeforcesParser extends OJParser<CfUrlParams> {
         name,
         difficulty,
         tags,
-        url: this.url
+        url
       };
     } else {
       type CfApiResponse = {

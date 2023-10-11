@@ -2,6 +2,9 @@ import { CodechefParser } from "../parsers/codechef.parser";
 import { CodeforcesParser } from "../parsers/codeforces.parser";
 import { ParseResult } from "../types/ParseResult";
 
+const INVALID_URL_ERROR = "Invalid URL";
+const UNSUPPORTED_ONLINE_JUDGE_ERROR = "Unsupported Online Judge";
+
 export class OJProblemParser {
   private isValidLink(link: string) {
     let url: URL;
@@ -13,10 +16,15 @@ export class OJProblemParser {
     return url.protocol === "http:" || url.protocol === "https:";
   }
 
-  private formatLink(url: string) {
+  // convert non-https url to https
+  private toHttps(url: string) {
     const _ = new URL(url);
     if (_.protocol === "http:") url = `https:` + url.substring(5);
-    return url.replace(/\/$/, "");
+    return url;
+  }
+
+  private removeTrailingSlash(url: string) {
+    return url.replace(/\/$/, ""); // removing trailing slash
   }
 
   private removeWWWFromURL(url: string) {
@@ -27,24 +35,25 @@ export class OJProblemParser {
   }
 
   async parse(url: string): Promise<ParseResult> {
-    url = this.formatLink(url);
+    url = this.toHttps(url);
+    url = this.removeTrailingSlash(url);
 
     if (!this.isValidLink(url)) {
-      throw new Error("Invalid URL");
+      throw new Error(INVALID_URL_ERROR);
     }
 
     const { hostname } = new URL(url);
 
     if (hostname.endsWith("codeforces.com")) {
-      const parser = new CodeforcesParser(this.removeWWWFromURL(url));
-      return parser.parse();
+      const parser = new CodeforcesParser();
+      return parser.parse(this.removeWWWFromURL(url));
     }
 
     if (hostname.endsWith("codechef.com")) {
-      const parser = new CodechefParser(this.removeWWWFromURL(url));
-      return parser.parse();
+      const parser = new CodechefParser();
+      return parser.parse(url);
     }
 
-    throw new Error("Unknown online judge");
+    throw new Error(UNSUPPORTED_ONLINE_JUDGE_ERROR);
   }
 }

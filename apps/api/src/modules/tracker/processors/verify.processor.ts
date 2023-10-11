@@ -82,8 +82,8 @@ export class TrackerVerifyProcessor {
       };
     }
 
-    const cfParser = new CodeforcesParser(url);
-    const params = cfParser.getUrlParams();
+    const cfParser = new CodeforcesParser();
+    const params = cfParser.getUrlParams(url);
 
     if (!("groupId" in params)) {
       const response = await axios.get<{
