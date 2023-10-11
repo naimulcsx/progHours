@@ -1,5 +1,6 @@
 import { CodechefParser } from "../parsers/codechef.parser";
 import { CodeforcesParser } from "../parsers/codeforces.parser";
+import { CsesParser } from "../parsers/cses.parser";
 import { ParseResult } from "../types/ParseResult";
 
 const INVALID_URL_ERROR = "Invalid URL";
@@ -23,10 +24,12 @@ export class OJProblemParser {
     return url;
   }
 
+  // remove trailing slash from url
   private removeTrailingSlash(url: string) {
-    return url.replace(/\/$/, ""); // removing trailing slash
+    return url.replace(/\/$/, "");
   }
 
+  // remove www from url
   private removeWWWFromURL(url: string) {
     if (url.startsWith("https://www.")) {
       url = url.replace("https://www.", "https://");
@@ -37,6 +40,7 @@ export class OJProblemParser {
   async parse(url: string): Promise<ParseResult> {
     url = this.toHttps(url);
     url = this.removeTrailingSlash(url);
+    url = this.removeWWWFromURL(url);
 
     if (!this.isValidLink(url)) {
       throw new Error(INVALID_URL_ERROR);
@@ -44,13 +48,19 @@ export class OJProblemParser {
 
     const { hostname } = new URL(url);
 
+    // codeforces
     if (hostname.endsWith("codeforces.com")) {
       const parser = new CodeforcesParser();
       return parser.parse(this.removeWWWFromURL(url));
     }
-
-    if (hostname.endsWith("codechef.com")) {
+    // codechef
+    else if (hostname.endsWith("codechef.com")) {
       const parser = new CodechefParser();
+      return parser.parse(url);
+    }
+    // cses
+    else if (hostname.endsWith("cses.fi")) {
+      const parser = new CsesParser();
       return parser.parse(url);
     }
 

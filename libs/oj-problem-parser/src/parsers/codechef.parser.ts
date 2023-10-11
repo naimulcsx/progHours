@@ -15,11 +15,11 @@ export class CodechefParser implements OJParser<CcUrlParams> {
   static urlPatterns = [
     {
       type: "submit_url",
-      regexp: pathToRegexp("https\\://www.codechef.com/submit/:problemId")
+      regexp: pathToRegexp("https\\://codechef.com/submit/:problemId")
     },
     {
       type: "problem_url",
-      regexp: pathToRegexp("https\\://www.codechef.com/problems/:problemId")
+      regexp: pathToRegexp("https\\://codechef.com/problems/:problemId")
     }
   ] as const;
 
