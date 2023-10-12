@@ -17,7 +17,7 @@ describe("LeetCode parser", () => {
       name: "Jump Game II",
       difficulty: 0,
       url: "https://leetcode.com/problems/jump-game-ii",
-      tags: []
+      tags: ["array", "dynamic programming", "greedy"]
     };
     expect(result).toEqual(expectedResult);
   });
@@ -31,7 +31,7 @@ describe("LeetCode parser", () => {
       name: "Find in Mountain Array",
       difficulty: 0,
       url: "https://leetcode.com/problems/find-in-mountain-array",
-      tags: []
+      tags: ["array", "binary search", "interactive"]
     };
     expect(result).toEqual(expectedResult);
   });
