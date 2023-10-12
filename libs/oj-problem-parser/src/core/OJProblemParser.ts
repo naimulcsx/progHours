@@ -10,6 +10,7 @@ import {
   TophParser,
   UvaParser
 } from "../parsers";
+import { LeetCodeParser } from "../parsers/leetcode.parser";
 import { ParseResult } from "../types/ParseResult";
 
 const INVALID_URL_ERROR = "Invalid URL";
@@ -105,6 +106,11 @@ export class OJProblemParser {
     // timus
     else if (hostname.endsWith("timus.ru")) {
       const parser = new TimusParser();
+      return parser.parse(url);
+    }
+    // leetcode
+    else if (hostname.endsWith("leetcode.com")) {
+      const parser = new LeetCodeParser();
       return parser.parse(url);
     }
 
