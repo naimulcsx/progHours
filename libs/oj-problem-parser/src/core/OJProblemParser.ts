@@ -7,6 +7,7 @@ import {
   UvaParser
 } from "../parsers";
 import { AtCoderParser } from "../parsers/atcoder.parser";
+import { HackerRankParser } from "../parsers/hackerrank.parser";
 import { LightOjParser } from "../parsers/lightoj.parser";
 import { ParseResult } from "../types/ParseResult";
 
@@ -93,6 +94,11 @@ export class OJProblemParser {
     // lightoj
     else if (hostname.endsWith("lightoj.com")) {
       const parser = new LightOjParser();
+      return parser.parse(url);
+    }
+    // hackerrank
+    else if (hostname.endsWith("hackerrank.com")) {
+      const parser = new HackerRankParser();
       return parser.parse(url);
     }
 

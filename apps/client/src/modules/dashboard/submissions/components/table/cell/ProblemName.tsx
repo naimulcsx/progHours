@@ -78,7 +78,7 @@ export const ProblemName = (cell: CellContext<SubmissionRow, unknown>) => {
             <IconChecks size={18} color="#22c55e" style={{ marginRight: 16 }} />
           )}
         </Group>
-        <Text size="sm" lineClamp={1}>
+        <Text size="xs" lineClamp={1}>
           {name}
         </Text>
       </Box>
