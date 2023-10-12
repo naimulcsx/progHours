@@ -11,6 +11,7 @@ import {
   UvaParser
 } from "../parsers";
 import { CodeToWinParser } from "../parsers/codetowin.parser";
+import { KattisParser } from "../parsers/kattis.parser";
 import { LeetCodeParser } from "../parsers/leetcode.parser";
 import { ParseResult } from "../types/ParseResult";
 
@@ -117,6 +118,11 @@ export class OJProblemParser {
     // codetowin
     else if (hostname.endsWith("codeto.win")) {
       const parser = new CodeToWinParser();
+      return parser.parse(url);
+    }
+    // kattis
+    else if (hostname.endsWith("open.kattis.com")) {
+      const parser = new KattisParser();
       return parser.parse(url);
     }
 
