@@ -1,60 +1,50 @@
-import { pathToRegexp } from "path-to-regexp";
-import { OJParser } from "../core/OJParser";
 import axios from "axios";
+import { pathToRegexp } from "path-to-regexp";
 
-export type CcUrlParams =
-  | {
-      problemId: string;
+import { OJParser } from "../core/OJParser";
+
+const INVALID_PROBLEM_URL_ERROR = "Invalid CodeChef problem URL";
+
+export type CcUrlParams = {
+  type: "problem_url" | "submit_url";
+  problemId: string;
+};
+
+export class CodechefParser implements OJParser<CcUrlParams> {
+  // define valid URL patterns of a CodeChef problem
+  static urlPatterns = [
+    {
+      type: "submit_url",
+      regexp: pathToRegexp("https\\://codechef.com/submit/:problemId")
+    },
+    {
+      type: "problem_url",
+      regexp: pathToRegexp("https\\://codechef.com/problems/:problemId")
     }
-  | {
-      contestId: string;
-      problemId: string;
-    };
+  ] as const;
 
-export class CodechefParser extends OJParser<CcUrlParams> {
-  getUrlParams(): CcUrlParams {
-    const patterns = [
-      {
-        type: "submit_url",
-        regexp: pathToRegexp("https\\://codechef.com/submit/:problemId")
-      },
-      {
-        type: "problem_url",
-        regexp: pathToRegexp("https\\://codechef.com/problems/:problemId")
-      },
-      {
-        type: "contest_url",
-        regexp: pathToRegexp(
-          "https\\://codechef.com/:contestId/problems/:problemId"
-        )
-      }
-    ];
-    for (const pattern of patterns) {
-      const match = pattern.regexp.exec(this.url);
+  getUrlParams(url: string): CcUrlParams {
+    // check if the given url falls into a valid URL pattern
+    for (const pattern of CodechefParser.urlPatterns) {
+      const match = pattern.regexp.exec(url);
       if (!match) continue;
-
-      if (pattern.type === "contest_url") {
-        return {
-          contestId: match[1],
-          problemId: match[2]
-        };
-      } else {
-        return {
-          problemId: match[1]
-        };
-      }
+      return {
+        type: pattern.type,
+        problemId: match[1]
+      };
     }
-    throw new Error("Invalid Codechef URL");
+
+    // when it doesn't match any of the given pattern
+    // the link is invalid, hence throwing an error
+    throw new Error(INVALID_PROBLEM_URL_ERROR);
   }
 
-  async parse() {
-    const result = this.getUrlParams();
-
+  async parse(url: string) {
+    const result = this.getUrlParams(url);
     try {
       const { data } = await axios.get(
         `https://www.codechef.com/api/contests/PRACTICE/problems/${result.problemId}`
       );
-
       return {
         pid: `CC-${data.problem_code}`.trim(),
         name: data.problem_name.trim(),
@@ -69,7 +59,7 @@ export class CodechefParser extends OJParser<CcUrlParams> {
       /**
        * ? This error is thrown by axios
        */
-      throw new Error("Invalid Codechef problem!");
+      throw new Error(INVALID_PROBLEM_URL_ERROR);
     }
   }
 }

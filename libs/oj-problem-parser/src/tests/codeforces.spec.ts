@@ -1,7 +1,7 @@
 import { OJProblemParser } from "../core/OJProblemParser";
 import { ParseResult } from "../types/ParseResult";
 
-describe("OJProblemParser", () => {
+describe("Codeforces parser", () => {
   let parser: OJProblemParser;
 
   beforeEach(() => {
@@ -15,7 +15,7 @@ describe("OJProblemParser", () => {
     const expectedResult: ParseResult = {
       pid: "CF-1826B",
       name: "Lunatic Never Content",
-      difficulty: 1000,
+      difficulty: 1100,
       tags: ["math", "number theory"],
       url: "https://codeforces.com/contest/1826/problem/B"
     };
@@ -29,7 +29,7 @@ describe("OJProblemParser", () => {
     const expectedResult: ParseResult = {
       pid: "CF-1826C",
       name: "Dreaming of Freedom",
-      difficulty: 1500,
+      difficulty: 1300,
       tags: ["greedy", "math", "number theory"],
       url: "https://codeforces.com/contest/1826/problem/C"
     };
@@ -71,7 +71,7 @@ describe("OJProblemParser", () => {
     const expectedResult: ParseResult = {
       pid: "CF-1826D",
       name: "Running Miles",
-      difficulty: 2000,
+      difficulty: 1700,
       tags: ["brute force", "dp", "greedy"],
       url: "https://codeforces.com/contest/1826/problem/D"
     };
@@ -85,7 +85,7 @@ describe("OJProblemParser", () => {
     const expectedResult: ParseResult = {
       pid: "CF-1826E",
       name: "Walk the Runway",
-      difficulty: 2500,
+      difficulty: 2400,
       tags: [
         "bitmasks",
         "brute force",

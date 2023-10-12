@@ -1,6 +1,23 @@
-import { CodechefParser } from "../parsers/codechef.parser";
-import { CodeforcesParser } from "../parsers/codeforces.parser";
+import {
+  AtCoderParser,
+  CodechefParser,
+  CodeforcesParser,
+  CsesParser,
+  HackerRankParser,
+  LightOjParser,
+  SpojParser,
+  TimusParser,
+  TophParser,
+  UvaParser
+} from "../parsers";
+import { CodeToWinParser } from "../parsers/codetowin.parser";
+import { EolympParser } from "../parsers/eolymp.parser";
+import { KattisParser } from "../parsers/kattis.parser";
+import { LeetCodeParser } from "../parsers/leetcode.parser";
 import { ParseResult } from "../types/ParseResult";
+
+const INVALID_URL_ERROR = "Invalid URL";
+const UNSUPPORTED_ONLINE_JUDGE_ERROR = "Unsupported Online Judge";
 
 export class OJProblemParser {
   private isValidLink(link: string) {
@@ -13,12 +30,19 @@ export class OJProblemParser {
     return url.protocol === "http:" || url.protocol === "https:";
   }
 
-  private formatLink(url: string) {
+  // convert non-https url to https
+  private toHttps(url: string) {
     const _ = new URL(url);
     if (_.protocol === "http:") url = `https:` + url.substring(5);
+    return url;
+  }
+
+  // remove trailing slash from url
+  private removeTrailingSlash(url: string) {
     return url.replace(/\/$/, "");
   }
 
+  // remove www from url
   private removeWWWFromURL(url: string) {
     if (url.startsWith("https://www.")) {
       url = url.replace("https://www.", "https://");
@@ -27,24 +51,87 @@ export class OJProblemParser {
   }
 
   async parse(url: string): Promise<ParseResult> {
-    url = this.formatLink(url);
+    url = this.toHttps(url);
+    url = this.removeTrailingSlash(url);
+    url = this.removeWWWFromURL(url);
 
     if (!this.isValidLink(url)) {
-      throw new Error("Invalid URL");
+      throw new Error(INVALID_URL_ERROR);
     }
 
     const { hostname } = new URL(url);
 
+    // codeforces
     if (hostname.endsWith("codeforces.com")) {
-      const parser = new CodeforcesParser(this.removeWWWFromURL(url));
-      return parser.parse();
+      const parser = new CodeforcesParser();
+      return parser.parse(url);
+    }
+    // codechef
+    else if (hostname.endsWith("codechef.com")) {
+      const parser = new CodechefParser();
+      return parser.parse(url);
+    }
+    // cses
+    else if (hostname.endsWith("cses.fi")) {
+      const parser = new CsesParser();
+      return parser.parse(url);
+    }
+    // toph
+    else if (hostname.endsWith("toph.co")) {
+      const parser = new TophParser();
+      return parser.parse(url);
+    }
+    // spoj
+    else if (hostname.endsWith("spoj.com")) {
+      const parser = new SpojParser();
+      return parser.parse(url);
+    }
+    // uva
+    else if (hostname.endsWith("onlinejudge.org")) {
+      const parser = new UvaParser();
+      return parser.parse(url);
+    }
+    // atcoder
+    else if (hostname.endsWith("atcoder.jp")) {
+      const parser = new AtCoderParser();
+      return parser.parse(url);
+    }
+    // lightoj
+    else if (hostname.endsWith("lightoj.com")) {
+      const parser = new LightOjParser();
+      return parser.parse(url);
+    }
+    // hackerrank
+    else if (hostname.endsWith("hackerrank.com")) {
+      const parser = new HackerRankParser();
+      return parser.parse(url);
+    }
+    // timus
+    else if (hostname.endsWith("timus.ru")) {
+      const parser = new TimusParser();
+      return parser.parse(url);
+    }
+    // leetcode
+    else if (hostname.endsWith("leetcode.com")) {
+      const parser = new LeetCodeParser();
+      return parser.parse(url);
+    }
+    // codetowin
+    else if (hostname.endsWith("codeto.win")) {
+      const parser = new CodeToWinParser();
+      return parser.parse(url);
+    }
+    // kattis
+    else if (hostname.endsWith("open.kattis.com")) {
+      const parser = new KattisParser();
+      return parser.parse(url);
+    }
+    // eolymp
+    else if (hostname.endsWith("eolymp.com")) {
+      const parser = new EolympParser();
+      return parser.parse(url);
     }
 
-    if (hostname.endsWith("codechef.com")) {
-      const parser = new CodechefParser(this.removeWWWFromURL(url));
-      return parser.parse();
-    }
-
-    throw new Error("Unknown online judge");
+    throw new Error(UNSUPPORTED_ONLINE_JUDGE_ERROR);
   }
 }
