@@ -1,15 +1,15 @@
 import {
+  AtCoderParser,
   CodechefParser,
   CodeforcesParser,
   CsesParser,
+  HackerRankParser,
+  LightOjParser,
   SpojParser,
+  TimusParser,
   TophParser,
   UvaParser
 } from "../parsers";
-import { AtCoderParser } from "../parsers/atcoder.parser";
-import { HackerRankParser } from "../parsers/hackerrank.parser";
-import { LightOjParser } from "../parsers/lightoj.parser";
-import { TimusParser } from "../parsers/timus.parser";
 import { ParseResult } from "../types/ParseResult";
 
 const INVALID_URL_ERROR = "Invalid URL";
