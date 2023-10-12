@@ -10,6 +10,7 @@ import {
   TophParser,
   UvaParser
 } from "../parsers";
+import { CodeToWinParser } from "../parsers/codetowin.parser";
 import { LeetCodeParser } from "../parsers/leetcode.parser";
 import { ParseResult } from "../types/ParseResult";
 
@@ -111,6 +112,11 @@ export class OJProblemParser {
     // leetcode
     else if (hostname.endsWith("leetcode.com")) {
       const parser = new LeetCodeParser();
+      return parser.parse(url);
+    }
+    // codetowin
+    else if (hostname.endsWith("codeto.win")) {
+      const parser = new CodeToWinParser();
       return parser.parse(url);
     }
 
