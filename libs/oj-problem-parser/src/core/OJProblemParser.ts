@@ -9,6 +9,7 @@ import {
 import { AtCoderParser } from "../parsers/atcoder.parser";
 import { HackerRankParser } from "../parsers/hackerrank.parser";
 import { LightOjParser } from "../parsers/lightoj.parser";
+import { TimusParser } from "../parsers/timus.parser";
 import { ParseResult } from "../types/ParseResult";
 
 const INVALID_URL_ERROR = "Invalid URL";
@@ -99,6 +100,11 @@ export class OJProblemParser {
     // hackerrank
     else if (hostname.endsWith("hackerrank.com")) {
       const parser = new HackerRankParser();
+      return parser.parse(url);
+    }
+    // timus
+    else if (hostname.endsWith("timus.ru")) {
+      const parser = new TimusParser();
       return parser.parse(url);
     }
 
