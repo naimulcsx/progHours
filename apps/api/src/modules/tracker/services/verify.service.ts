@@ -67,11 +67,12 @@ export class VerifyService {
             isVerified: true,
             metaData: {
               submissions: submissions.map(
-                ({ id, pid, verdict, createdAt }) => ({
+                ({ id, pid, contestId, verdict, createdAt }) => ({
                   id,
                   pid,
                   verdict,
-                  createdAt
+                  createdAt,
+                  url: `https://codeforces.com/contest/${contestId}/submission/${id}`
                 })
               )
             }
