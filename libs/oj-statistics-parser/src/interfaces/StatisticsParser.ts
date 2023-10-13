@@ -6,6 +6,6 @@ export type StatisticsParserOpts = {
 
 export interface StatisticsParser {
   getHandle(): string;
-  set(opt: StatisticsParserOpts): StatisticsParser;
+  setHandle(opt: StatisticsParserOpts): StatisticsParser;
   fetch(): Promise<ParseResult>;
 }

@@ -33,6 +33,7 @@ import {
   TrackerVerifyProcessor
 } from "./processors/verify.processor";
 import { TrackerService } from "./services/tracker.service";
+import { VerifyService } from "./services/verify.service";
 
 @Global()
 @Module({})
@@ -74,6 +75,7 @@ export class TrackerModule implements NestModule {
       ],
       controllers: [TrackerController],
       providers: [
+        VerifyService,
         TrackerService,
         TrackerPullProcessor,
         TrackerPushProcessor,

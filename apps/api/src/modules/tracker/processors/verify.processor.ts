@@ -11,6 +11,8 @@ import { OJStatisticsParser } from "@proghours/oj-statistics-parser";
 import { PrismaService } from "~/modules/prisma/services/prisma.service";
 import { SubmissionsService } from "~/modules/submissions/services/submissions.service";
 
+import { VerifyService } from "../services/verify.service";
+
 export const TRACKER_VERIFY_QUEUE = "tracker_verify";
 export const InjectTrackerVerifyQueue = (): ParameterDecorator =>
   InjectQueue(TRACKER_VERIFY_QUEUE);
@@ -34,6 +36,7 @@ type VerifyJob = Job<VerifySingleData | VerifyAllData>;
 export class TrackerVerifyProcessor {
   public statisticsParser: OJStatisticsParser;
   constructor(
+    private readonly verifyService: VerifyService,
     @Inject(forwardRef(() => SubmissionsService))
     private readonly submissionsService: SubmissionsService,
     private readonly prisma: PrismaService
@@ -103,7 +106,6 @@ export class TrackerVerifyProcessor {
       );
       if (solvedIndex !== -1) {
         const { id, creationTimeSeconds } = response.data.result[solvedIndex];
-
         await this.prisma.submission.update({
           where: { id: submissionId },
           data: {
@@ -153,37 +155,7 @@ export class TrackerVerifyProcessor {
     });
 
     if (cfData.judge === "CODEFORCES") {
-      for (const el of cfData.solvedProblems) {
-        const { url, contestId, id } = el;
-        const problem = await this.prisma.problem.findUnique({
-          where: { url }
-        });
-        if (!problem) continue; // skip if the problem is not found
-        const submission = await this.prisma.submission.findUnique({
-          where: {
-            userId_problemId: {
-              userId,
-              problemId: problem.id
-            }
-          }
-        });
-        if (submission) {
-          await this.prisma.submission.update({
-            where: {
-              userId_problemId: {
-                userId,
-                problemId: problem.id
-              }
-            },
-            data: {
-              isVerified: true,
-              metaData: {
-                submissionUrl: `https://codeforces.com/contest/${contestId}/submission/${id}`
-              }
-            }
-          });
-        }
-      }
+      await this.verifyService.verifyCodeforcesSubmissions(userId, cfData);
     }
 
     return {

@@ -17,12 +17,6 @@ enum Role {
   ADMIN
 }
 
-enum Verdict {
-  AC
-  WA
-  TLE
-}
-
 model User {
   id        Int      @id @default(autoincrement())
   fullName  String   @map("full_name")
@@ -92,6 +86,19 @@ model ProblemTag {
   @@map("problem_tags")
 }
 
+enum Verdict {
+  AC
+  PS
+  WA
+  TLE
+  MLE
+  RE
+  CE
+  SK
+  OTH
+  HCK
+}
+
 model Submission {
   id         Int      @id @default(autoincrement())
   solveTime  Int      @map("solve_time")
@@ -101,8 +108,20 @@ model Submission {
   updatedAt  DateTime @updatedAt @map("updated_at") @db.Timestamp(0)
   userId     Int      @map("user_id")
   problemId  Int      @map("problem_id")
-  metaData   Json?    @default("{}") @map("metadata")
   isVerified Boolean  @default(false) @map("is_verified")
+
+  acCount  Int @default(0) @map("ac_count") // AC - Accepted
+  psCount  Int @default(0) @map("ps_count") // PS - Partially solved
+  waCount  Int @default(0) @map("wa_count") // WA - Wrong answer
+  tleCount Int @default(0) @map("tle_count") // TLE - Time limit exceeded
+  mleCount Int @default(0) @map("mle_count") // MLE - Memory limit exceeded
+  reCount  Int @default(0) @map("re_count") // RE - Runtime error
+  ceCount  Int @default(0) @map("ce_count") // CE - Compile error
+  skCount  Int @default(0) @map("sk_count") // SK - Skipped
+  hckCount Int @default(0) @map("hck_count") // HCK - Hacked
+  othCount Int @default(0) @map("oth_count") // OTH - Others
+
+  metaData Json? @default("{}") @map("metadata")
 
   user    User    @relation(fields: [userId], references: [id])
   problem Problem @relation(fields: [problemId], references: [id])
