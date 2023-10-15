@@ -5,10 +5,16 @@ import { OJParser } from "../core/OJParser";
 
 const INVALID_PROBLEM_URL_ERROR = "Invalid CodeChef problem URL";
 
-export type CcUrlParams = {
-  type: "problem_url" | "submit_url";
-  problemId: string;
-};
+export type CcUrlParams =
+  | {
+      type: "problem_url" | "submit_url";
+      problemId: string;
+    }
+  | {
+      type: "contest_url";
+      contestId: string;
+      problemId: string;
+    };
 
 export class CodechefParser implements OJParser<CcUrlParams> {
   // define valid URL patterns of a CodeChef problem
@@ -20,6 +26,12 @@ export class CodechefParser implements OJParser<CcUrlParams> {
     {
       type: "problem_url",
       regexp: pathToRegexp("https\\://codechef.com/problems/:problemId")
+    },
+    {
+      type: "contest_url",
+      regexp: pathToRegexp(
+        "https\\://codechef.com/:contestId/problems/:problemId"
+      )
     }
   ] as const;
 
@@ -28,6 +40,13 @@ export class CodechefParser implements OJParser<CcUrlParams> {
     for (const pattern of CodechefParser.urlPatterns) {
       const match = pattern.regexp.exec(url);
       if (!match) continue;
+      if (pattern.type === "contest_url") {
+        return {
+          type: "contest_url",
+          contestId: match[1],
+          problemId: match[2]
+        };
+      }
       return {
         type: pattern.type,
         problemId: match[1]

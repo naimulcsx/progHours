@@ -115,16 +115,16 @@ export class SubmissionsService {
         }
       });
 
-      // add submission to verify queue
-      const _url = new URL(url);
-      if (_url.host === "codeforces.com") {
-        await this.trackerService.verifySingle({
-          submissionId: newSubmission.id,
-          userId,
-          url,
-          judge: "CODEFORCES"
-        });
-      }
+      // Add to VERIFY_QUEUE
+      // const _url = new URL(url);
+      // if (_url.host === "codeforces.com") {
+      //   await this.trackerService.verifySingle({
+      //     submissionId: newSubmission.id,
+      //     userId,
+      //     url,
+      //     judge: "CODEFORCES"
+      //   });
+      // }
 
       return newSubmission;
     } catch (error) {

@@ -111,7 +111,9 @@ export class UsersService {
           userId: user.id
         }))
     });
+    // Add to VERIFY_QUEUE
     await this.trackerService.verifyAll(user.id);
+
     return result;
   }
 }

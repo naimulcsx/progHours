@@ -3,30 +3,40 @@ import axios from "axios";
 import * as _ from "lodash";
 import * as moment from "moment";
 
-import {
-  StatisticsParser,
-  StatisticsParserOpts
-} from "../interfaces/StatisticsParser";
+import { StatisticsParser } from "../interfaces/StatisticsParser";
 import { CodeforcesApiResponse } from "../types/ApiResponse";
-import { ParseResult } from "../types/ParseResult";
 
-export class CodeforcesParser implements StatisticsParser {
-  private handle: string;
+export type CodeforcesParseResult = {
+  judge: "CODEFORCES";
+  totalSolved: number;
+  solvedProblems: Array<{
+    id: number;
+    pid: string;
+    name: string;
+    url: string;
+    contestId: number;
+    difficulty: number;
+    tags: string[];
+    solvedAt: Date;
+  }>;
+  submissions: Array<{
+    id: number;
+    pid: string;
+    name: string;
+    url: string;
+    contestId: number;
+    difficulty: number;
+    tags: string[];
+    createdAt: Date;
+    verdict: Verdict;
+  }>;
+};
 
-  setHandle({ handle }: StatisticsParserOpts): CodeforcesParser {
-    this.handle = handle;
-    return this;
-  }
-
-  getHandle() {
-    return this.handle;
-  }
-
-  async fetch() {
+export class CodeforcesParser extends StatisticsParser<CodeforcesParseResult> {
+  async parse() {
     const { data } = await axios.get<CodeforcesApiResponse>(
       `https://codeforces.com/api/user.status?handle=${this.handle}&from=1&count=10000`
     );
-
     const submissions = data.result.map(
       ({ id, problem, creationTimeSeconds, contestId, verdict }) => {
         let _verdict: Verdict = "AC";
@@ -76,7 +86,7 @@ export class CodeforcesParser implements StatisticsParser {
 
     const acceptedSubmissions = submissions.filter((s) => s.verdict === "AC");
 
-    const result: ParseResult = {
+    const result: CodeforcesParseResult = {
       judge: "CODEFORCES",
       totalSolved: acceptedSubmissions.length,
       submissions,

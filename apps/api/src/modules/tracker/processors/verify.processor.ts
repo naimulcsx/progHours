@@ -1,15 +1,20 @@
 import axios from "axios";
 import { Job } from "bull";
+import { RedisCache } from "cache-manager-redis-yet";
 import moment from "moment";
 
 import { InjectQueue, Process, Processor } from "@nestjs/bull";
-import { Inject, forwardRef } from "@nestjs/common";
+import { CACHE_MANAGER } from "@nestjs/cache-manager";
+import { Inject } from "@nestjs/common";
+import { ConfigService } from "@nestjs/config";
 
 import { CodeforcesParser } from "@proghours/oj-problem-parser";
-import { OJStatisticsParser } from "@proghours/oj-statistics-parser";
+import {
+  CodeChefParser as CodeChefStatisticsParser,
+  CodeforcesParser as CodeforcesStatisticsParser
+} from "@proghours/oj-statistics-parser";
 
 import { PrismaService } from "~/modules/prisma/services/prisma.service";
-import { SubmissionsService } from "~/modules/submissions/services/submissions.service";
 
 import { VerifyService } from "../services/verify.service";
 
@@ -34,15 +39,12 @@ type VerifyJob = Job<VerifySingleData | VerifyAllData>;
 
 @Processor(TRACKER_VERIFY_QUEUE)
 export class TrackerVerifyProcessor {
-  public statisticsParser: OJStatisticsParser;
   constructor(
     private readonly verifyService: VerifyService,
-    @Inject(forwardRef(() => SubmissionsService))
-    private readonly submissionsService: SubmissionsService,
-    private readonly prisma: PrismaService
-  ) {
-    this.statisticsParser = new OJStatisticsParser();
-  }
+    private readonly prisma: PrismaService,
+    private readonly configService: ConfigService,
+    @Inject(CACHE_MANAGER) private cacheManager: RedisCache
+  ) {}
 
   @Process()
   async verify(job: VerifyJob) {
@@ -88,7 +90,7 @@ export class TrackerVerifyProcessor {
     const cfParser = new CodeforcesParser();
     const params = cfParser.getUrlParams(url);
 
-    if (!("groupId" in params)) {
+    if (params.type !== "group_url") {
       const response = await axios.get<{
         result: Array<{
           id: number;
@@ -133,29 +135,48 @@ export class TrackerVerifyProcessor {
       data: { isVerified: false, metaData: {} }
     });
 
-    // cfUserHandle
-    const cfUserHandle = await this.prisma.userHandle.findUnique({
+    // get user handles
+    const userHandles = await this.prisma.userHandle.findMany({
       where: {
-        userId_type: {
-          userId,
-          type: "CODEFORCES"
-        }
+        userId: data.userId
       }
     });
 
-    if (!cfUserHandle) {
-      return {
-        status: "HANDLE_NOT_FOUND"
-      };
-    }
+    for (const userHandle of userHandles) {
+      // codeforces
+      if (userHandle.type === "CODEFORCES") {
+        const parser = new CodeforcesStatisticsParser();
+        parser.setHandle(userHandle.handle);
+        const data = await parser.parse();
+        await this.verifyService.verifyCodeforcesSubmissions(userId, data);
+      }
 
-    const cfData = await this.statisticsParser.parse({
-      judge: "codeforces",
-      handle: cfUserHandle.handle
-    });
+      // codechef
+      else if (userHandle.type === "CODECHEF") {
+        const parser = new CodeChefStatisticsParser();
+        parser.setHandle(userHandle.handle);
 
-    if (cfData.judge === "CODEFORCES") {
-      await this.verifyService.verifyCodeforcesSubmissions(userId, cfData);
+        // set api keys
+        parser.setApiKey({
+          clientId: this.configService.getOrThrow("codechef.clientId"),
+          secret: this.configService.getOrThrow("codechef.secret")
+        });
+
+        // get token
+        let token: string = await this.cacheManager.get("codechef_token");
+        if (!token) {
+          token = await parser.getToken();
+          const CACHE_TTL = 15 * 60 * 1000; // 15 min
+          await this.cacheManager.set("codechef_token", token, CACHE_TTL);
+        }
+
+        // set token
+        parser.setToken(token);
+
+        // get data
+        const data = await parser.parse();
+        await this.verifyService.verifyCodeChefSubmissions(userId, data);
+      }
     }
 
     return {

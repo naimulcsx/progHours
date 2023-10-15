@@ -1,11 +1,14 @@
-import { ParseResult } from "../types/ParseResult";
+export abstract class StatisticsParser<TResult> {
+  protected handle: string;
 
-export type StatisticsParserOpts = {
-  handle: string;
-};
+  getHandle() {
+    return this.handle;
+  }
 
-export interface StatisticsParser {
-  getHandle(): string;
-  setHandle(opt: StatisticsParserOpts): StatisticsParser;
-  fetch(): Promise<ParseResult>;
+  setHandle(handle: string) {
+    this.handle = handle;
+    return this;
+  }
+
+  abstract parse(): Promise<TResult>;
 }
