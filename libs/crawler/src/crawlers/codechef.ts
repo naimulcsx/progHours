@@ -1,7 +1,7 @@
 import axios from "axios";
 import { pathToRegexp } from "path-to-regexp";
 
-import { Crawler } from "../base/Crawler";
+import { Crawler, ExtendedCrawler } from "../base/Crawler";
 import { Verdict } from "../interfaces";
 import { unifyUrl } from "../utils";
 
@@ -31,7 +31,9 @@ export type CcSubmissions = {
   }>;
 };
 
-export class CodeChefCrawler implements Crawler<CcUrlParams> {
+export class CodeChefCrawler
+  implements Crawler<CcUrlParams>, ExtendedCrawler<CcSubmissions>
+{
   private API_CLIENT_ID: string;
   private API_SECRET: string;
   static API_ENDPOINT = "https://api.codechef.com";
