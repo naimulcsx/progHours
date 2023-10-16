@@ -1,35 +1,35 @@
 {
-  "name": "parser",
+  "name": "crawler",
   "$schema": "../../node_modules/nx/schemas/project-schema.json",
-  "sourceRoot": "libs/parser/src",
+  "sourceRoot": "libs/crawler/src",
   "projectType": "library",
   "targets": {
     "build": {
       "executor": "@nx/js:tsc",
       "outputs": ["{options.outputPath}"],
       "options": {
-        "outputPath": "dist/libs/parser",
-        "main": "libs/parser/src/index.ts",
-        "tsConfig": "libs/parser/tsconfig.lib.json",
-        "assets": ["libs/parser/*.md"]
+        "outputPath": "dist/libs/crawler",
+        "main": "libs/crawler/src/index.ts",
+        "tsConfig": "libs/crawler/tsconfig.lib.json",
+        "assets": ["libs/crawler/*.md"]
       }
     },
     "publish": {
-      "command": "node tools/scripts/publish.mjs parser {args.ver} {args.tag}",
+      "command": "node tools/scripts/publish.mjs crawler {args.ver} {args.tag}",
       "dependsOn": ["build"]
     },
     "lint": {
       "executor": "@nx/linter:eslint",
       "outputs": ["{options.outputFile}"],
       "options": {
-        "lintFilePatterns": ["libs/parser/**/*.ts"]
+        "lintFilePatterns": ["libs/crawler/**/*.ts"]
       }
     },
     "test": {
       "executor": "@nx/jest:jest",
       "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
       "options": {
-        "jestConfig": "libs/parser/jest.config.ts",
+        "jestConfig": "libs/crawler/jest.config.ts",
         "passWithNoTests": true
       },
       "configurations": {
