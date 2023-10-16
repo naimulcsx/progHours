@@ -1,11 +1,8 @@
 import axios from "axios";
 import { Job } from "bull";
-import { RedisCache } from "cache-manager-redis-yet";
 import moment from "moment";
 
 import { InjectQueue, Process, Processor } from "@nestjs/bull";
-import { CACHE_MANAGER } from "@nestjs/cache-manager";
-import { Inject } from "@nestjs/common";
 import { ConfigService } from "@nestjs/config";
 
 import { CodeforcesParser } from "@proghours/oj-problem-parser";
@@ -42,8 +39,7 @@ export class TrackerVerifyProcessor {
   constructor(
     private readonly verifyService: VerifyService,
     private readonly prisma: PrismaService,
-    private readonly configService: ConfigService,
-    @Inject(CACHE_MANAGER) private cacheManager: RedisCache
+    private readonly configService: ConfigService
   ) {}
 
   @Process()
@@ -163,12 +159,7 @@ export class TrackerVerifyProcessor {
         });
 
         // get token
-        let token: string = await this.cacheManager.get("codechef_token");
-        if (!token) {
-          token = await parser.getToken();
-          const CACHE_TTL = 15 * 60 * 1000; // 15 min
-          await this.cacheManager.set("codechef_token", token, CACHE_TTL);
-        }
+        const token = await parser.getToken();
 
         // set token
         parser.setToken(token);
