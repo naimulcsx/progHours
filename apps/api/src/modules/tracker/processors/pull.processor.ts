@@ -3,7 +3,7 @@ import { Job, Queue } from "bull";
 import { InjectQueue, Process, Processor } from "@nestjs/bull";
 import { Inject, forwardRef } from "@nestjs/common";
 
-import { CodeforcesParser } from "@proghours/oj-statistics-parser";
+import { fetchUserSubmissions } from "@proghours/crawler";
 
 import { PrismaService } from "~/modules/prisma/services/prisma.service";
 import { ProblemsService } from "~/modules/problems/services/problems.service";
@@ -25,8 +25,6 @@ export type PullJob = Job<{
 
 @Processor(TRACKER_PULL_QUEUE)
 export class TrackerPullProcessor {
-  public codeforcesStatsParser: CodeforcesParser;
-
   constructor(
     private readonly prisma: PrismaService,
     private readonly problemsService: ProblemsService,
@@ -34,9 +32,7 @@ export class TrackerPullProcessor {
     @Inject(forwardRef(() => SubmissionsService))
     private readonly submissionsService: SubmissionsService,
     @InjectTrackerPushQueue() private trackerPushQueue: Queue
-  ) {
-    this.codeforcesStatsParser = new CodeforcesParser();
-  }
+  ) {}
 
   /**
    * Pull user submissions (accepted) using online judge handle
@@ -47,14 +43,19 @@ export class TrackerPullProcessor {
     const { userId, pullHistoryId, judge, handle } = job.data;
 
     if (judge === "CODEFORCES") {
-      const parser = new CodeforcesParser();
-      parser.setHandle(handle);
+      const { data, judge } = await fetchUserSubmissions({
+        handle: handle,
+        judge: "CODEFORCES"
+      });
 
-      const data = await parser.parse();
+      if (judge !== "CODEFORCES") return; // this will never be true
+
+      const solvedProblems = data.submissions.filter((s) => s.verdict === "AC");
+      console.log(solvedProblems);
 
       // Optimizing for Codeforces API, where we are getting all the problem data
       // So we don't need to make API requests to get the problem information
-      for (const { pid, name, difficulty, url, tags } of data.solvedProblems) {
+      for (const { pid, name, difficulty, url, tags } of solvedProblems) {
         await this.problemsService.createProblem({
           pid,
           name,
@@ -66,14 +67,13 @@ export class TrackerPullProcessor {
 
       // Find new submissions that needs to be pushed into the database
       const items: Array<{ pid: string; url: string; solvedAt: Date }> = [];
-
-      for (const el of data.solvedProblems) {
+      for (const el of solvedProblems) {
         const exists = await this.submissionsService.exists(userId, el.url);
         if (!exists) {
           items.push({
             pid: el.pid,
             url: el.url,
-            solvedAt: el.solvedAt
+            solvedAt: el.createdAt
           });
         }
       }
@@ -110,7 +110,6 @@ export class TrackerPullProcessor {
         );
       }
     }
-
     job.progress(100);
     return {
       status: "OK"
