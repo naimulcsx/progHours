@@ -3,7 +3,7 @@ import { Job, Queue } from "bull";
 import { InjectQueue, Process, Processor } from "@nestjs/bull";
 import { Inject, forwardRef } from "@nestjs/common";
 
-import { OJStatisticsParser } from "@proghours/oj-statistics-parser";
+import { fetchUserSubmissions } from "@proghours/crawler";
 
 import { PrismaService } from "~/modules/prisma/services/prisma.service";
 import { ProblemsService } from "~/modules/problems/services/problems.service";
@@ -12,20 +12,19 @@ import { SubmissionsService } from "~/modules/submissions/services/submissions.s
 import { InjectTrackerPushQueue } from "./push.processor";
 
 export const TRACKER_PULL_QUEUE = "tracker_pull";
+
 export const InjectTrackerPullQueue = (): ParameterDecorator =>
   InjectQueue(TRACKER_PULL_QUEUE);
 
 export type PullJob = Job<{
   userId: number;
   pullHistoryId: string;
-  judge: string;
+  judge: "CODEFORCES" | "CODECHEF";
   handle: string;
 }>;
 
 @Processor(TRACKER_PULL_QUEUE)
 export class TrackerPullProcessor {
-  public statisticsParser: OJStatisticsParser;
-
   constructor(
     private readonly prisma: PrismaService,
     private readonly problemsService: ProblemsService,
@@ -33,9 +32,7 @@ export class TrackerPullProcessor {
     @Inject(forwardRef(() => SubmissionsService))
     private readonly submissionsService: SubmissionsService,
     @InjectTrackerPushQueue() private trackerPushQueue: Queue
-  ) {
-    this.statisticsParser = new OJStatisticsParser();
-  }
+  ) {}
 
   /**
    * Pull user submissions (accepted) using online judge handle
@@ -44,15 +41,21 @@ export class TrackerPullProcessor {
   @Process()
   async pull(job: PullJob) {
     const { userId, pullHistoryId, judge, handle } = job.data;
-    const data = await this.statisticsParser.parse({
-      judge,
-      handle
-    });
 
-    // Optimizing for Codeforces API, where we are getting all the problem data
-    // So we don't need to make API requests to get the problem information
-    if (data.judge === "CODEFORCES") {
-      for (const { pid, name, difficulty, url, tags } of data.solvedProblems) {
+    if (judge === "CODEFORCES") {
+      const { data, judge } = await fetchUserSubmissions({
+        handle: handle,
+        judge: "CODEFORCES"
+      });
+
+      if (judge !== "CODEFORCES") return; // this will never be true
+
+      const solvedProblems = data.submissions.filter((s) => s.verdict === "AC");
+      console.log(solvedProblems);
+
+      // Optimizing for Codeforces API, where we are getting all the problem data
+      // So we don't need to make API requests to get the problem information
+      for (const { pid, name, difficulty, url, tags } of solvedProblems) {
         await this.problemsService.createProblem({
           pid,
           name,
@@ -61,54 +64,52 @@ export class TrackerPullProcessor {
           tags
         });
       }
-    }
 
-    // Find new submissions that needs to be pushed into the database
-    const items: Array<{ pid: string; url: string; solvedAt: Date }> = [];
-
-    for (const el of data.solvedProblems) {
-      const exists = await this.submissionsService.exists(userId, el.url);
-      if (!exists) {
-        items.push({
-          pid: el.pid,
-          url: el.url,
-          solvedAt: el.solvedAt
-        });
+      // Find new submissions that needs to be pushed into the database
+      const items: Array<{ pid: string; url: string; solvedAt: Date }> = [];
+      for (const el of solvedProblems) {
+        const exists = await this.submissionsService.exists(userId, el.url);
+        if (!exists) {
+          items.push({
+            pid: el.pid,
+            url: el.url,
+            solvedAt: el.createdAt
+          });
+        }
       }
-    }
 
-    await this.prisma.pullHistory.update({
-      where: {
-        id: pullHistoryId
-      },
-      data: {
-        totalItems: items.length,
-        status: items.length === 0 ? "OK" : "STARTED"
-      }
-    });
-
-    // add to the push queue
-    for (const el of items) {
-      const pullHistoryItem = await this.prisma.pullHistoryItem.create({
+      await this.prisma.pullHistory.update({
+        where: {
+          id: pullHistoryId
+        },
         data: {
-          problemUrl: el.url,
-          pullHistoryId
+          totalItems: items.length,
+          status: items.length === 0 ? "OK" : "STARTED"
         }
       });
-      await this.trackerPushQueue.add(
-        {
-          userId,
-          pullHistoryId,
-          pullHistoryItemId: pullHistoryItem.id,
-          ...el
-        },
-        {
-          attempts: 5,
-          backoff: 5000
-        }
-      );
-    }
 
+      // add to the push queue
+      for (const el of items) {
+        const pullHistoryItem = await this.prisma.pullHistoryItem.create({
+          data: {
+            problemUrl: el.url,
+            pullHistoryId
+          }
+        });
+        await this.trackerPushQueue.add(
+          {
+            userId,
+            pullHistoryId,
+            pullHistoryItemId: pullHistoryItem.id,
+            ...el
+          },
+          {
+            attempts: 5,
+            backoff: 5000
+          }
+        );
+      }
+    }
     job.progress(100);
     return {
       status: "OK"

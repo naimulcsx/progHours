@@ -1,16 +1,14 @@
-import { BadRequestException, Injectable } from "@nestjs/common";
-import { OJProblemParser } from "@proghours/oj-problem-parser";
 import { pathToRegexp } from "path-to-regexp";
+
+import { BadRequestException, Injectable } from "@nestjs/common";
+
+import { fetchProblem } from "@proghours/crawler";
 
 @Injectable()
 export class ParserService {
-  private problemParser: OJProblemParser;
-  constructor() {
-    this.problemParser = new OJProblemParser();
-  }
   async parse(url: string) {
     try {
-      const data = await this.problemParser.parse(url);
+      const data = fetchProblem(url);
       return data;
     } catch (error) {
       throw new BadRequestException(error?.message);

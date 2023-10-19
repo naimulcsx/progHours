@@ -115,7 +115,7 @@ export class SubmissionsService {
         }
       });
 
-      // add submission to verify queue
+      // Add to VERIFY_QUEUE
       const _url = new URL(url);
       if (_url.host === "codeforces.com") {
         await this.trackerService.verifySingle({

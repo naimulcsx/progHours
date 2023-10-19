@@ -8,8 +8,6 @@ import {
 } from "@nestjs/bull";
 import { Inject, forwardRef } from "@nestjs/common";
 
-import { OJStatisticsParser } from "@proghours/oj-statistics-parser";
-
 import { PrismaService } from "~/modules/prisma/services/prisma.service";
 import { SubmissionsService } from "~/modules/submissions/services/submissions.service";
 
@@ -29,15 +27,11 @@ export type PushJob = Job<{
 
 @Processor(TRACKER_PUSH_QUEUE)
 export class TrackerPushProcessor {
-  public parser: OJStatisticsParser;
-
   constructor(
     private readonly prisma: PrismaService,
     @Inject(forwardRef(() => SubmissionsService))
     private readonly submissionsService: SubmissionsService
-  ) {
-    this.parser = new OJStatisticsParser();
-  }
+  ) {}
 
   /**
    * Responsible for pushing (storing) individual submission into the database

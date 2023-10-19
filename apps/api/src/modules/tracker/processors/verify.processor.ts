@@ -1,15 +1,18 @@
-import axios from "axios";
 import { Job } from "bull";
-import moment from "moment";
 
 import { InjectQueue, Process, Processor } from "@nestjs/bull";
-import { Inject, forwardRef } from "@nestjs/common";
+import { ConfigService } from "@nestjs/config";
 
-import { CodeforcesParser } from "@proghours/oj-problem-parser";
-import { OJStatisticsParser } from "@proghours/oj-statistics-parser";
+import {
+  CcSubmissions,
+  CfSubmissions,
+  CodeforcesCrawler,
+  fetchUserSubmissions
+} from "@proghours/crawler";
 
 import { PrismaService } from "~/modules/prisma/services/prisma.service";
-import { SubmissionsService } from "~/modules/submissions/services/submissions.service";
+
+import { VerifyService } from "../services/verify.service";
 
 export const TRACKER_VERIFY_QUEUE = "tracker_verify";
 export const InjectTrackerVerifyQueue = (): ParameterDecorator =>
@@ -19,7 +22,7 @@ type VerifySingleData = {
   jobType: "VERIFY_SINGLE";
   url: string;
   userId: number;
-  judge: "CODEFORCES";
+  judge: "CODEFORCES" | "CODECHEF";
   submissionId: number;
 };
 
@@ -32,14 +35,11 @@ type VerifyJob = Job<VerifySingleData | VerifyAllData>;
 
 @Processor(TRACKER_VERIFY_QUEUE)
 export class TrackerVerifyProcessor {
-  public statisticsParser: OJStatisticsParser;
   constructor(
-    @Inject(forwardRef(() => SubmissionsService))
-    private readonly submissionsService: SubmissionsService,
-    private readonly prisma: PrismaService
-  ) {
-    this.statisticsParser = new OJStatisticsParser();
-  }
+    private readonly verifyService: VerifyService,
+    private readonly prisma: PrismaService,
+    private readonly configService: ConfigService
+  ) {}
 
   @Process()
   async verify(job: VerifyJob) {
@@ -49,14 +49,20 @@ export class TrackerVerifyProcessor {
     if (jobType === "VERIFY_SINGLE") {
       const result = await this.verifySingle(job.data);
       job.progress(100);
-      return result;
+      return {
+        ...result,
+        duration: `${((Date.now() - job.processedOn) / 1000).toFixed(2)}s`
+      };
     }
 
     // verify all user sumbissions
     else if (jobType === "VERIFY_ALL") {
       const result = await this.verifyAll(job.data);
       job.progress(100);
-      return result;
+      return {
+        ...result,
+        duration: `${((Date.now() - job.processedOn) / 1000).toFixed(2)}s`
+      };
     }
 
     return {
@@ -82,39 +88,25 @@ export class TrackerVerifyProcessor {
       };
     }
 
-    const cfParser = new CodeforcesParser();
-    const params = cfParser.getUrlParams(url);
-
-    if (!("groupId" in params)) {
-      const response = await axios.get<{
-        result: Array<{
-          id: number;
-          creationTimeSeconds: number;
-          problem: { index: string };
-          author: { participantType: string };
-          verdict: string;
-        }>;
-      }>(
-        `https://codeforces.com/api/contest.status?contestId=${params.contestId}&handle=${userHandle.handle}`
-      );
-      response.data.result.reverse();
-      const solvedIndex = response.data.result.findIndex(
-        (el) => el.problem.index === params.problemId && el.verdict === "OK"
-      );
-      if (solvedIndex !== -1) {
-        const { id, creationTimeSeconds } = response.data.result[solvedIndex];
-
-        await this.prisma.submission.update({
-          where: { id: submissionId },
-          data: {
-            isVerified: true,
-            solvedAt: moment.unix(creationTimeSeconds).toDate(),
-            metaData: {
-              submissionUrl: `https://codeforces.com/contest/${params.contestId}/submission/${id}`
-            }
-          }
-        });
+    if (judge === "CODEFORCES") {
+      const crawler = new CodeforcesCrawler();
+      const { type, contestId, problemId } = crawler.getUrlParams(url);
+      const pid = `CF-${contestId}${problemId}`;
+      if (type === "group_url") {
+        return {
+          status: "SKIPPED"
+        };
       }
+      const { data } = await fetchUserSubmissions({
+        judge,
+        handle: userHandle.handle,
+        contestId
+      });
+      await this.verifyService.verifyCodeforcesSubmission(
+        submissionId,
+        pid,
+        data as CfSubmissions
+      );
     }
 
     return {
@@ -131,58 +123,40 @@ export class TrackerVerifyProcessor {
       data: { isVerified: false, metaData: {} }
     });
 
-    // cfUserHandle
-    const cfUserHandle = await this.prisma.userHandle.findUnique({
+    // get user handles
+    const userHandles = await this.prisma.userHandle.findMany({
       where: {
-        userId_type: {
-          userId,
-          type: "CODEFORCES"
-        }
+        userId: data.userId
       }
     });
 
-    if (!cfUserHandle) {
-      return {
-        status: "HANDLE_NOT_FOUND"
-      };
-    }
+    for (const userHandle of userHandles) {
+      const handle = userHandle.handle;
 
-    const cfData = await this.statisticsParser.parse({
-      judge: "codeforces",
-      handle: cfUserHandle.handle
-    });
-
-    if (cfData.judge === "CODEFORCES") {
-      for (const el of cfData.solvedProblems) {
-        const { url, contestId, id } = el;
-        const problem = await this.prisma.problem.findUnique({
-          where: { url }
+      if (userHandle.type === "CODEFORCES") {
+        const { data } = await fetchUserSubmissions({
+          judge: "CODEFORCES",
+          handle
         });
-        if (!problem) continue; // skip if the problem is not found
-        const submission = await this.prisma.submission.findUnique({
-          where: {
-            userId_problemId: {
-              userId,
-              problemId: problem.id
-            }
+        await this.verifyService.verifyCodeforcesSubmissions(
+          userId,
+          data as CfSubmissions
+        );
+      } else if (userHandle.type === "CODECHEF") {
+        const res = await fetchUserSubmissions(
+          {
+            judge: "CODECHEF",
+            handle
+          },
+          {
+            clientId: this.configService.getOrThrow("codechef.clientId"),
+            secret: this.configService.getOrThrow("codechef.secret")
           }
-        });
-        if (submission) {
-          await this.prisma.submission.update({
-            where: {
-              userId_problemId: {
-                userId,
-                problemId: problem.id
-              }
-            },
-            data: {
-              isVerified: true,
-              metaData: {
-                submissionUrl: `https://codeforces.com/contest/${contestId}/submission/${id}`
-              }
-            }
-          });
-        }
+        );
+        await this.verifyService.verifyCodeChefSubmissions(
+          userId,
+          res.data as CcSubmissions
+        );
       }
     }
 

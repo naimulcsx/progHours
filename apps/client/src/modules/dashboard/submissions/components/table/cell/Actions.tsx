@@ -1,15 +1,14 @@
 import {
   IconCheck,
   IconDots,
-  IconPaperclip,
+  IconListDetails,
   IconReload,
   IconTrash
 } from "@tabler/icons-react";
 import { useQueryClient } from "@tanstack/react-query";
 import { CellContext } from "@tanstack/react-table";
-import { Link } from "react-router-dom";
 
-import { ActionIcon, Menu, Text, Title } from "@mantine/core";
+import { ActionIcon, Anchor, Menu, Table, Text, Title } from "@mantine/core";
 import { modals } from "@mantine/modals";
 import { notifications } from "@mantine/notifications";
 
@@ -96,7 +95,15 @@ export function ActionsCell(cell: CellContext<SubmissionRow, unknown>) {
       }
     });
 
-  const _metaData = metaData as { submissionUrl?: string };
+  const _metaData = metaData as {
+    submissions?: Array<{
+      id: string;
+      pid: string;
+      verdict: string;
+      createdAt: string;
+      url: string;
+    }>;
+  };
 
   return (
     <Menu shadow="md" width={200}>
@@ -106,15 +113,48 @@ export function ActionsCell(cell: CellContext<SubmissionRow, unknown>) {
         </ActionIcon>
       </Menu.Target>
       <Menu.Dropdown>
-        {_metaData.submissionUrl && (
+        {_metaData.submissions && (
           <Menu.Item
-            component={Link}
-            leftSection={<IconPaperclip size={14} />}
-            closeMenuOnClick={false}
-            to={_metaData.submissionUrl}
-            target="_blank"
+            leftSection={<IconListDetails size={14} />}
+            onClick={() => {
+              modals.open({
+                size: "lg",
+                title: `Details for ${pid}`,
+                children: (
+                  <Table>
+                    <Table.Thead>
+                      <Table.Tr>
+                        <Table.Th>Id</Table.Th>
+                        <Table.Th>Verdict</Table.Th>
+                        <Table.Th>Created at</Table.Th>
+                      </Table.Tr>
+                    </Table.Thead>
+                    <Table.Tbody>
+                      {_metaData.submissions?.map(
+                        ({ id, verdict, createdAt, url }) => (
+                          <Table.Tr key={id}>
+                            <Table.Td>
+                              <Anchor
+                                size="sm"
+                                style={{ color: "var(--mantine-color-blue-5)" }}
+                                target="_blank"
+                                href={url}
+                              >
+                                {id}
+                              </Anchor>
+                            </Table.Td>
+                            <Table.Td>{verdict}</Table.Td>
+                            <Table.Td>{createdAt}</Table.Td>
+                          </Table.Tr>
+                        )
+                      )}
+                    </Table.Tbody>
+                  </Table>
+                )
+              });
+            }}
           >
-            Code
+            Details
           </Menu.Item>
         )}
         <Menu.Item

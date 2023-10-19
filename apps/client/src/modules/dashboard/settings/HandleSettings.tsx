@@ -18,10 +18,12 @@ const handlesSchema = z.object({
 
 export function HandlesSettings() {
   const { user } = useUser();
+
   const { data: userHandles, isSuccess } = useUserHandles({
     username: user?.username,
     config: { enabled: !!user }
   });
+
   const { mutate } = useHandlesMutation({
     config: {
       onSuccess(res) {
@@ -35,16 +37,15 @@ export function HandlesSettings() {
       }
     }
   });
+
   const form = useForm({
     initialValues: {
       CODEFORCES: "",
-      CODECHEF: "",
-      SPOJ: "",
-      ATCODER: "",
-      GITHUB: ""
+      CODECHEF: ""
     },
     validate: zodResolver(handlesSchema)
   });
+
   // Using effect because onSuccess is going to be deprecated
   useEffect(() => {
     if (userHandles) {
@@ -64,6 +65,16 @@ export function HandlesSettings() {
       {isSuccess && (
         <form
           onSubmit={form.onSubmit((values) => {
+            console.log(
+              Object.keys(values).map((key) => {
+                const type = key as HandleType;
+                return {
+                  type,
+                  handle: values[key as keyof typeof form.values]
+                };
+              })
+            );
+
             if (user?.username) {
               mutate({
                 username: user.username,

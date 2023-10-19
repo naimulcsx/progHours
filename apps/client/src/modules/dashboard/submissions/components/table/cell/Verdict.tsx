@@ -18,6 +18,13 @@ import {
   useUpdateSubmissionMutation
 } from "@proghours/data-access";
 
+const getCommonStyle = (theme: MantineTheme) => {
+  return {
+    background: theme.colors.yellow[9],
+    color: theme.colors.yellow[0]
+  };
+};
+
 const getStyles = (theme: MantineTheme) => ({
   AC: {
     background: theme.colors.green[9],
@@ -27,10 +34,14 @@ const getStyles = (theme: MantineTheme) => ({
     background: theme.colors.red[9],
     color: theme.colors.red[0]
   },
-  TLE: {
-    background: theme.colors.yellow[9],
-    color: theme.colors.yellow[0]
-  }
+  TLE: getCommonStyle(theme),
+  PS: getCommonStyle(theme),
+  MLE: getCommonStyle(theme),
+  RE: getCommonStyle(theme),
+  CE: getCommonStyle(theme),
+  SK: getCommonStyle(theme),
+  OTH: getCommonStyle(theme),
+  HCK: getCommonStyle(theme)
 });
 
 const getLightStyles = (theme: MantineTheme) => ({
@@ -42,10 +53,14 @@ const getLightStyles = (theme: MantineTheme) => ({
     background: theme.colors.red[1],
     color: theme.colors.red[9]
   },
-  TLE: {
-    background: theme.colors.orange[1],
-    color: theme.colors.orange[9]
-  }
+  TLE: getCommonStyle(theme),
+  PS: getCommonStyle(theme),
+  MLE: getCommonStyle(theme),
+  RE: getCommonStyle(theme),
+  CE: getCommonStyle(theme),
+  SK: getCommonStyle(theme),
+  OTH: getCommonStyle(theme),
+  HCK: getCommonStyle(theme)
 });
 
 export const VerdictCell = (cell: CellContext<SubmissionRow, unknown>) => {

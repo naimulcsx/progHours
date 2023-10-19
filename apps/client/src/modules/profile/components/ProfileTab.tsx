@@ -121,10 +121,7 @@ export function ProfileTab() {
                 {userHandles.map(({ type, handle }) => {
                   const handleTypeIcon: Record<HandleType, ReactNode> = {
                     CODEFORCES: <CFIcon height={24} width={24} />,
-                    CODECHEF: <IconBrandGithub height={24} width={24} />,
-                    SPOJ: <IconBrandGithub />,
-                    ATCODER: <IconBrandGithub />,
-                    GITHUB: <IconBrandGithub />
+                    CODECHEF: <IconBrandGithub height={24} width={24} />
                   };
                   return (
                     <Button

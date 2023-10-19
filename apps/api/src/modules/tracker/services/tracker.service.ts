@@ -2,8 +2,6 @@ import { Queue } from "bull";
 
 import { Injectable } from "@nestjs/common";
 
-import { OJStatisticsParser } from "@proghours/oj-statistics-parser";
-
 import { PrismaService } from "~/modules/prisma/services/prisma.service";
 
 import { InjectTrackerPullQueue } from "../processors/pull.processor";
@@ -11,15 +9,11 @@ import { InjectTrackerVerifyQueue } from "../processors/verify.processor";
 
 @Injectable()
 export class TrackerService {
-  public statisticParser: OJStatisticsParser;
-
   constructor(
     private readonly prisma: PrismaService,
     @InjectTrackerPullQueue() private trackerPullQueue: Queue,
     @InjectTrackerVerifyQueue() private trackerVerifyQueue: Queue
-  ) {
-    this.statisticParser = new OJStatisticsParser();
-  }
+  ) {}
 
   async pull(userId: number) {
     const pullHistory = await this.prisma.pullHistory.create({
@@ -64,8 +58,8 @@ export class TrackerService {
     judge: "CODEFORCES";
   }) {
     return this.trackerVerifyQueue.add({
-      url,
       jobType: "VERIFY_SINGLE",
+      url,
       userId,
       judge,
       submissionId

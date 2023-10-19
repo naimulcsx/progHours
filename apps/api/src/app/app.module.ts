@@ -7,6 +7,7 @@ import { Module } from "@nestjs/common";
 import { ConfigModule, ConfigService } from "@nestjs/config";
 
 import appConfig from "~/config/app.config";
+import codechefConfig from "~/config/codechef.config";
 import jwtConfig from "~/config/jwt.config";
 import redisConfig from "~/config/redis.config";
 
@@ -28,7 +29,7 @@ import { UsersModule } from "~/modules/users/users.module";
     }),
     ConfigModule.forRoot({
       isGlobal: true,
-      load: [appConfig, jwtConfig, redisConfig],
+      load: [appConfig, jwtConfig, redisConfig, codechefConfig],
       validationSchema: Joi.object({
         NODE_ENV: Joi.string().valid("development", "production"),
         PORT: Joi.number(),
@@ -36,7 +37,9 @@ import { UsersModule } from "~/modules/users/users.module";
         JWT_SECRET: Joi.string().required(),
         REDIS_PORT: Joi.number().required(),
         REDIS_HOST: Joi.string().required(),
-        REDIS_PASSWORD: Joi.string()
+        REDIS_PASSWORD: Joi.string(),
+        CODECHEF_CLIENT_ID: Joi.string(),
+        CODECHEF_SECRET: Joi.string()
       })
     }),
     CacheModule.registerAsync({

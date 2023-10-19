@@ -13,13 +13,11 @@
     "lib": ["es2020", "dom"],
     "skipLibCheck": true,
     "skipDefaultLibCheck": true,
+    "strictPropertyInitialization": false,
     "baseUrl": ".",
     "paths": {
-      "@proghours/data-access": ["libs/data-access/src/index.ts"],
-      "@proghours/oj-problem-parser": ["libs/oj-problem-parser/src/index.ts"],
-      "@proghours/oj-statistics-parser": [
-        "libs/oj-statistics-parser/src/index.ts"
-      ]
+      "@proghours/crawler": ["libs/crawler/src/index.ts"],
+      "@proghours/data-access": ["libs/data-access/src/index.ts"]
     }
   },
   "exclude": ["node_modules", "tmp"]
