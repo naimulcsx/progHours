@@ -3,7 +3,7 @@ import { UseQueryOptions, useQuery } from "@tanstack/react-query";
 
 import { axios } from "../../lib/axios";
 
-export type SubmissionRow = Submission & {
+export type UserSubmissionRow = Submission & {
   problem: Problem & {
     problemTags: Array<
       ProblemTag & {
@@ -13,7 +13,7 @@ export type SubmissionRow = Submission & {
   };
 };
 
-export type UserSubmissionsResponse = Array<SubmissionRow>;
+export type UserSubmissionsResponse = Array<UserSubmissionRow>;
 
 export const getUserSubmissions = async (
   username: string

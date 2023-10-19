@@ -50,7 +50,7 @@ export async function fetchUserSubmissions(
     if (options.clientId && options.secret) {
       crawler.setApiKey({
         clientId: options.clientId,
-        secret: options.clientId
+        secret: options.secret
       });
     }
 

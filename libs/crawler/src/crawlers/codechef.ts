@@ -34,8 +34,9 @@ export type CcSubmissions = {
 export class CodeChefCrawler
   implements Crawler<CcUrlParams>, ExtendedCrawler<CcSubmissions>
 {
-  private API_CLIENT_ID: string;
-  private API_SECRET: string;
+  API_CLIENT_ID: string;
+  API_SECRET: string;
+
   static API_ENDPOINT = "https://api.codechef.com";
   static urlPatterns = [
     {
@@ -68,6 +69,7 @@ export class CodeChefCrawler
   }
 
   setApiKey({ clientId, secret }: { clientId: string; secret: string }) {
+    console.log(clientId, secret);
     this.API_CLIENT_ID = clientId;
     this.API_SECRET = secret;
   }

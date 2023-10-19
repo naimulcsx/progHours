@@ -2,10 +2,7 @@ import { groupBy } from "lodash";
 
 import { Injectable } from "@nestjs/common";
 
-import {
-  CodeChefParseResult,
-  CodeforcesParseResult
-} from "@proghours/oj-statistics-parser";
+import { CcSubmissions, CfSubmissions } from "@proghours/crawler";
 
 import { PrismaService } from "~/modules/prisma/services/prisma.service";
 
@@ -13,10 +10,62 @@ import { PrismaService } from "~/modules/prisma/services/prisma.service";
 export class VerifyService {
   constructor(private readonly prisma: PrismaService) {}
 
-  async verifyCodeforcesSubmissions(
-    userId: number,
-    data: CodeforcesParseResult
+  async verifyCodeforcesSubmission(
+    submissionId: number,
+    pid: string,
+    data: CfSubmissions
   ) {
+    const groupedData = groupBy(data.submissions, (s) => s.pid);
+    const submissions = groupedData[pid];
+
+    // prettier-ignore
+    let acCount = 0, waCount = 0, ceCount = 0, tleCount = 0, skCount = 0, 
+    reCount = 0, mleCount = 0, hckCount = 0, othCount = 0;
+
+    for (const s of submissions) {
+      if (s.verdict === "AC") acCount++;
+      else if (s.verdict === "WA") waCount++;
+      else if (s.verdict === "CE") ceCount++;
+      else if (s.verdict === "TLE") tleCount++;
+      else if (s.verdict === "SK") skCount++;
+      else if (s.verdict === "RE") reCount++;
+      else if (s.verdict === "MLE") mleCount++;
+      else if (s.verdict === "HCK") hckCount++;
+      else othCount++;
+    }
+
+    await this.prisma.submission.update({
+      where: {
+        id: submissionId
+      },
+      data: {
+        acCount,
+        waCount,
+        ceCount,
+        tleCount,
+        skCount,
+        reCount,
+        mleCount,
+        hckCount,
+        othCount,
+        verdict: acCount > 0 ? "AC" : "WA",
+        isVerified: true,
+        metaData: {
+          submissions: submissions.map(
+            ({ id, pid, contestId, verdict, createdAt }) => ({
+              id,
+              pid,
+              verdict,
+              createdAt,
+              url: `https://codeforces.com/contest/${contestId}/submission/${id}`
+            })
+          )
+        }
+      }
+    });
+  }
+
+  async verifyCodeforcesSubmissions(userId: number, data: CfSubmissions) {
     const groupedData = groupBy(data.submissions, (s) => s.pid);
 
     for (const pid in groupedData) {
@@ -85,7 +134,58 @@ export class VerifyService {
     }
   }
 
-  async verifyCodeChefSubmissions(userId: number, data: CodeChefParseResult) {
+  async verifyCodeChefSubmission(
+    submissionId: number,
+    pid: string,
+    data: CcSubmissions
+  ) {
+    const groupedData = groupBy(data.submissions, (s) => s.pid);
+    const submissions = groupedData[pid];
+
+    // prettier-ignore
+    let acCount = 0, waCount = 0, ceCount = 0, tleCount = 0, skCount = 0, 
+    reCount = 0, mleCount = 0, hckCount = 0, othCount = 0;
+
+    for (const s of submissions) {
+      if (s.verdict === "AC") acCount++;
+      else if (s.verdict === "WA") waCount++;
+      else if (s.verdict === "CE") ceCount++;
+      else if (s.verdict === "TLE") tleCount++;
+      else if (s.verdict === "SK") skCount++;
+      else if (s.verdict === "RE") reCount++;
+      else if (s.verdict === "MLE") mleCount++;
+      else if (s.verdict === "HCK") hckCount++;
+      else othCount++;
+    }
+
+    await this.prisma.submission.update({
+      where: { id: submissionId },
+      data: {
+        acCount,
+        waCount,
+        ceCount,
+        tleCount,
+        skCount,
+        reCount,
+        mleCount,
+        hckCount,
+        othCount,
+        verdict: acCount > 0 ? "AC" : "WA",
+        isVerified: true,
+        metaData: {
+          submissions: submissions.map(({ id, pid, verdict, createdAt }) => ({
+            id,
+            pid,
+            verdict,
+            createdAt,
+            url: `https://www.codechef.com/viewsolution/${id}`
+          }))
+        }
+      }
+    });
+  }
+
+  async verifyCodeChefSubmissions(userId: number, data: CcSubmissions) {
     const groupedData = groupBy(data.submissions, (s) => s.pid);
 
     for (const pid in groupedData) {

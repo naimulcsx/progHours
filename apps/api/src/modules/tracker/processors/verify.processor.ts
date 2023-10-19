@@ -1,15 +1,14 @@
-import axios from "axios";
 import { Job } from "bull";
-import moment from "moment";
 
 import { InjectQueue, Process, Processor } from "@nestjs/bull";
 import { ConfigService } from "@nestjs/config";
 
-import { CodeforcesParser } from "@proghours/oj-problem-parser";
 import {
-  CodeChefParser as CodeChefStatisticsParser,
-  CodeforcesParser as CodeforcesStatisticsParser
-} from "@proghours/oj-statistics-parser";
+  CcSubmissions,
+  CfSubmissions,
+  CodeforcesCrawler,
+  fetchUserSubmissions
+} from "@proghours/crawler";
 
 import { PrismaService } from "~/modules/prisma/services/prisma.service";
 
@@ -23,7 +22,7 @@ type VerifySingleData = {
   jobType: "VERIFY_SINGLE";
   url: string;
   userId: number;
-  judge: "CODEFORCES";
+  judge: "CODEFORCES" | "CODECHEF";
   submissionId: number;
 };
 
@@ -50,14 +49,20 @@ export class TrackerVerifyProcessor {
     if (jobType === "VERIFY_SINGLE") {
       const result = await this.verifySingle(job.data);
       job.progress(100);
-      return result;
+      return {
+        ...result,
+        duration: `${((Date.now() - job.processedOn) / 1000).toFixed(2)}s`
+      };
     }
 
     // verify all user sumbissions
     else if (jobType === "VERIFY_ALL") {
       const result = await this.verifyAll(job.data);
       job.progress(100);
-      return result;
+      return {
+        ...result,
+        duration: `${((Date.now() - job.processedOn) / 1000).toFixed(2)}s`
+      };
     }
 
     return {
@@ -83,38 +88,25 @@ export class TrackerVerifyProcessor {
       };
     }
 
-    const cfParser = new CodeforcesParser();
-    const params = cfParser.getUrlParams(url);
-
-    if (params.type !== "group_url") {
-      const response = await axios.get<{
-        result: Array<{
-          id: number;
-          creationTimeSeconds: number;
-          problem: { index: string };
-          author: { participantType: string };
-          verdict: string;
-        }>;
-      }>(
-        `https://codeforces.com/api/contest.status?contestId=${params.contestId}&handle=${userHandle.handle}`
-      );
-      response.data.result.reverse();
-      const solvedIndex = response.data.result.findIndex(
-        (el) => el.problem.index === params.problemId && el.verdict === "OK"
-      );
-      if (solvedIndex !== -1) {
-        const { id, creationTimeSeconds } = response.data.result[solvedIndex];
-        await this.prisma.submission.update({
-          where: { id: submissionId },
-          data: {
-            isVerified: true,
-            solvedAt: moment.unix(creationTimeSeconds).toDate(),
-            metaData: {
-              submissionUrl: `https://codeforces.com/contest/${params.contestId}/submission/${id}`
-            }
-          }
-        });
+    if (judge === "CODEFORCES") {
+      const crawler = new CodeforcesCrawler();
+      const { type, contestId, problemId } = crawler.getUrlParams(url);
+      const pid = `CF-${contestId}${problemId}`;
+      if (type === "group_url") {
+        return {
+          status: "SKIPPED"
+        };
       }
+      const { data } = await fetchUserSubmissions({
+        judge,
+        handle: userHandle.handle,
+        contestId
+      });
+      await this.verifyService.verifyCodeforcesSubmission(
+        submissionId,
+        pid,
+        data as CfSubmissions
+      );
     }
 
     return {
@@ -139,34 +131,32 @@ export class TrackerVerifyProcessor {
     });
 
     for (const userHandle of userHandles) {
-      // codeforces
+      const handle = userHandle.handle;
+
       if (userHandle.type === "CODEFORCES") {
-        const parser = new CodeforcesStatisticsParser();
-        parser.setHandle(userHandle.handle);
-        const data = await parser.parse();
-        await this.verifyService.verifyCodeforcesSubmissions(userId, data);
-      }
-
-      // codechef
-      else if (userHandle.type === "CODECHEF") {
-        const parser = new CodeChefStatisticsParser();
-        parser.setHandle(userHandle.handle);
-
-        // set api keys
-        parser.setApiKey({
-          clientId: this.configService.getOrThrow("codechef.clientId"),
-          secret: this.configService.getOrThrow("codechef.secret")
+        const { data } = await fetchUserSubmissions({
+          judge: "CODEFORCES",
+          handle
         });
-
-        // get token
-        const token = await parser.getToken();
-
-        // set token
-        parser.setToken(token);
-
-        // get data
-        const data = await parser.parse();
-        await this.verifyService.verifyCodeChefSubmissions(userId, data);
+        await this.verifyService.verifyCodeforcesSubmissions(
+          userId,
+          data as CfSubmissions
+        );
+      } else if (userHandle.type === "CODECHEF") {
+        const res = await fetchUserSubmissions(
+          {
+            judge: "CODECHEF",
+            handle
+          },
+          {
+            clientId: this.configService.getOrThrow("codechef.clientId"),
+            secret: this.configService.getOrThrow("codechef.secret")
+          }
+        );
+        await this.verifyService.verifyCodeChefSubmissions(
+          userId,
+          res.data as CcSubmissions
+        );
       }
     }
 
