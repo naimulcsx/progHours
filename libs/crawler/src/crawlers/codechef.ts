@@ -26,7 +26,7 @@ export type CcSubmissions = {
     url: string;
     contestId: string;
     createdAt: Date;
-    verdict: string;
+    verdict: Verdict;
     solvedDuringContest: boolean;
   }>;
 };

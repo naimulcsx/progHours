@@ -4,6 +4,108 @@
 
 In cases where an API is not available, `@proghours/crawler` utilizes web crawling techniques to gather the necessary data. By integrating `@proghours/crawler` with `progHours`, we are able to easily extract the necessary data we needed for the system.
 
+### Installation
+
+The library is available online and can be installed via npm
+
+```bash
+npm i @proghours/crawler
+```
+
+### Basic Usage
+
+#### Fetch information about a problem
+
+```js
+import { fetchProblem } from "@proghours/crawler";
+
+async function main() {
+  const problemData = await fetchProblem(
+    "https://codeforces.com/problemset/problem/1879/D"
+  );
+
+  // do something with the problemData
+  console.log(problemData);
+}
+
+main();
+```
+
+If you are using CommonJS modules, you can also use the `require` function to import the library. The returned object from `fetchProblem` will satisfy the following interface.
+
+```ts
+interface ProblemData {
+  pid: string;
+  name: string;
+  url: string;
+  tags: string[];
+  difficulty: number;
+}
+```
+
+#### Fetch Submissions of an User
+
+```js
+import { fetchUserSubmissions } from "@proghours/crawler";
+
+async function main() {
+  const { data } = await fetchUserSubmissions({
+    handle: "naimul_haque",
+    judge: "CODEFORCES"
+  });
+
+  // do something with the data
+  console.log(data.totalSolved);
+  console.log(data.submissions);
+}
+
+main();
+```
+
+Currently, `fetchUserSubmissions` only supports Codeforces and CodeChef. The returned object from `fetchUserSubmissions` will satisfy the following interface. Note that, the response can be different based on different online judge, because every online judge is different.
+
+```ts
+type FetchUserSubmissionsResult =
+  | {
+      judge: "CODEFORCES";
+      data: CfSubmissions;
+    }
+  | {
+      judge: "CODECHEF";
+      data: CcSubmissions;
+    };
+
+type CfSubmissions = {
+  totalSolved: number;
+  submissions: Array<{
+    id: number;
+    pid: string;
+    name: string;
+    url: string;
+    contestId: number;
+    difficulty: number;
+    tags: string[];
+    createdAt: Date;
+    verdict: Verdict;
+  }>;
+};
+
+type CcSubmissions = {
+  totalSolved: number;
+  submissions: Array<{
+    id: number;
+    pid: string;
+    url: string;
+    contestId: string;
+    createdAt: Date;
+    verdict: Verdict;
+    solvedDuringContest: boolean;
+  }>;
+};
+```
+
+### Online Judge Support
+
 The library currently supports 14 different online judges.
 
 1. [Codeforces](https://codeforces.com)
