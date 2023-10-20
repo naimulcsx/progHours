@@ -22,6 +22,10 @@ export class UsersService {
     private readonly trackerService: TrackerService
   ) {}
 
+  async getUsers() {
+    return this.usersRepository.list();
+  }
+
   async createUser(createUserDto: CreateUserDto) {
     const hashedPassword = await this.hashingService.hash(
       createUserDto.password
@@ -33,10 +37,6 @@ export class UsersService {
         username: createUserDto.username.toLowerCase()
       }
     });
-  }
-
-  async getUsers() {
-    return this.usersRepository.getAll();
   }
 
   async getUser(username: string) {
