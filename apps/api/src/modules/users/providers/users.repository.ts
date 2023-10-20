@@ -13,7 +13,7 @@ export class UsersRepository {
     return this.prisma.user.create({ data });
   }
 
-  async list(): Promise<User[]> {
+  async getAll(): Promise<User[]> {
     return this.prisma.user.findMany();
   }
 
@@ -31,11 +31,7 @@ export class UsersRepository {
     return this.prisma.user.findUnique({ where: { email } });
   }
 
-  async update(params: {
-    where: Prisma.UserWhereUniqueInput;
-    data: Prisma.UserUpdateInput;
-  }) {
-    const { where, data } = params;
-    return this.prisma.user.update({ where, data });
+  async updateById(id: number, data: Prisma.UserUpdateInput) {
+    return this.prisma.user.update({ where: { id }, data });
   }
 }

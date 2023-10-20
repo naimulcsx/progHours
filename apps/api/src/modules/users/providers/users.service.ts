@@ -4,26 +4,26 @@ import {
   UnauthorizedException
 } from "@nestjs/common";
 
-import { PrismaService } from "~/modules/prisma/services/prisma.service";
+import { HashingService } from "~/modules/auth/hashing/hashing.service";
 import { TrackerService } from "~/modules/tracker/services/tracker.service";
 
-import { HashingService } from "../../auth/hashing/hashing.service";
 import { CreateUserDto } from "../dto/create-user.dto";
 import { UpdateHandlesDto } from "../dto/update-handles.dto";
 import { UpdateUserDto } from "../dto/update-user.dto";
+import { HandlesRepository } from "./handles.repository";
 import { UsersRepository } from "./users.repository";
 
 @Injectable()
 export class UsersService {
   constructor(
-    private readonly prisma: PrismaService,
     private readonly hashingService: HashingService,
     private readonly usersRepository: UsersRepository,
-    private readonly trackerService: TrackerService
+    private readonly trackerService: TrackerService,
+    private readonly handlesRepository: HandlesRepository
   ) {}
 
   async getUsers() {
-    return this.usersRepository.list();
+    return this.usersRepository.getAll();
   }
 
   async createUser(createUserDto: CreateUserDto) {
@@ -70,13 +70,11 @@ export class UsersService {
       hashedPassword = await this.hashingService.hash(newPassword);
     }
 
-    const updatedUser = await this.usersRepository.update({
-      where: { username },
-      data: {
-        ...rest,
-        password: hashedPassword
-      }
+    const updatedUser = await this.usersRepository.updateById(user.id, {
+      ...rest,
+      password: hashedPassword
     });
+
     delete updatedUser.password;
     return updatedUser;
   }
@@ -87,10 +85,7 @@ export class UsersService {
     if (!user) {
       throw new NotFoundException();
     }
-    return this.prisma.userHandle.findMany({
-      where: { userId: user.id },
-      select: { handle: true, type: true }
-    });
+    return this.handlesRepository.getByCriteria({ userId: user.id });
   }
 
   async updateUserHandles(
@@ -102,18 +97,17 @@ export class UsersService {
     if (!user) {
       throw new NotFoundException();
     }
-    await this.prisma.userHandle.deleteMany({ where: { userId: user.id } });
-    const result = await this.prisma.userHandle.createMany({
-      data: updateHandlesDto.handles
+    await this.handlesRepository.deleteByCriteria({ userId: user.id });
+    const result = await this.handlesRepository.createBulk(
+      updateHandlesDto.handles
         .filter((el) => el.handle.length > 0)
         .map((el) => ({
           ...el,
           userId: user.id
         }))
-    });
+    );
     // Add to VERIFY_QUEUE
     await this.trackerService.verifyAll(user.id);
-
     return result;
   }
 }
