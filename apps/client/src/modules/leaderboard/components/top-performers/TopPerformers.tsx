@@ -34,15 +34,10 @@ export const TopPerformers = memo(function ({
       <Box style={{ position: "relative" }}>
         <Group justify="space-between" align="start">
           <Box>
-            <Title
-              style={{ color: "hsl(var(--primary-foreground))" }}
-              className={classes.heading}
-              mb={2}
-              order={3}
-            >
+            <Title className={classes.text} mb={2} order={3}>
               Top Performers
             </Title>
-            <Text style={{ color: "hsl(var(--primary-foreground))" }}>
+            <Text className={classes.text} variant="text">
               The stage is set, and the world is watching. It's time to shine!
             </Text>
           </Box>
@@ -69,18 +64,15 @@ export const TopPerformers = memo(function ({
                 {idx === 1 && <IconSecondPlace />}
                 {idx === 2 && <IconThirdPlace />}
                 <Box>
-                  <Title
-                    fw={600}
-                    order={5}
-                    style={{ color: "hsl(var(--primary-foreground))" }}
-                  >
+                  <Title fw={600} order={5} className={classes.text}>
                     {user.fullName}
                   </Title>
                   <Text
                     fw={700}
                     lineClamp={1}
                     fz={theme.headings.sizes.h3.fontSize}
-                    style={{ color: "hsl(var(--primary-foreground))" }}
+                    className={classes.text}
+                    variant="text"
                   >
                     {user.points.toFixed(2)}
                   </Text>
@@ -88,16 +80,13 @@ export const TopPerformers = memo(function ({
                     className={classes.rank}
                     size="xl"
                     fw={700}
-                    style={{ color: "hsl(var(--primary-foreground))" }}
+                    variant="text"
                   >
                     {_rank[idx]}
                   </Text>
                   <Flex gap={4} align="center">
                     <IconAt size={16} />
-                    <Text
-                      size="sm"
-                      style={{ color: "hsl(var(--primary-foreground))" }}
-                    >
+                    <Text size="sm" className={classes.text} variant="text">
                       {user.username.toUpperCase()}
                     </Text>
                   </Flex>
@@ -140,7 +129,7 @@ function BgPattern() {
           ></circle>
         </mask>
         <g mask="url(#mask0_2_2343)">
-          <path fill="hsl(var(--primary))" d="M0 -15H360V225H0z"></path>
+          <path className={classes.bgPath} d="M0 -15H360V225H0z"></path>
         </g>
       </g>
       <defs>
