@@ -57,7 +57,7 @@ git clone git@github.com:naimulcsx/progHours.git
 Install the dependencies.
 
 ```bash
-yarn install
+npm install
 ```
 
 #### Step 3: Run necessary components
