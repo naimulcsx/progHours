@@ -1,6 +1,5 @@
 import axios from "axios";
 import * as cheerio from "cheerio";
-import { isUppercase } from "class-validator";
 import { pathToRegexp } from "path-to-regexp";
 
 import { Crawler } from "../base/Crawler";
@@ -53,7 +52,7 @@ export class TophCrawler implements Crawler<TophUrlParams> {
     function convertTagNames(tag: string) {
       let result = "";
       for (const ch of tag) {
-        if (isUppercase(ch)) result += " ";
+        if (ch === ch.toUpperCase()) result += " ";
         result += ch.toLowerCase();
       }
       return result.trim();

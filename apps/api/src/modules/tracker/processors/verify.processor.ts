@@ -3,12 +3,7 @@ import { Job } from "bull";
 import { InjectQueue, Process, Processor } from "@nestjs/bull";
 import { ConfigService } from "@nestjs/config";
 
-import {
-  CcSubmissions,
-  CfSubmissions,
-  CodeforcesCrawler,
-  fetchUserSubmissions
-} from "@proghours/crawler";
+import { CodeforcesCrawler, fetchUserSubmissions } from "@proghours/crawler";
 
 import { PrismaService } from "~/modules/prisma/services/prisma.service";
 
@@ -97,15 +92,14 @@ export class TrackerVerifyProcessor {
           status: "SKIPPED"
         };
       }
-      const { data } = await fetchUserSubmissions({
-        judge,
+      const data = await fetchUserSubmissions("CODEFORCES", {
         handle: userHandle.handle,
         contestId
       });
       await this.verifyService.verifyCodeforcesSubmission(
         submissionId,
         pid,
-        data as CfSubmissions
+        data
       );
     }
 
@@ -134,29 +128,17 @@ export class TrackerVerifyProcessor {
       const handle = userHandle.handle;
 
       if (userHandle.type === "CODEFORCES") {
-        const { data } = await fetchUserSubmissions({
-          judge: "CODEFORCES",
+        const data = await fetchUserSubmissions("CODEFORCES", {
           handle
         });
-        await this.verifyService.verifyCodeforcesSubmissions(
-          userId,
-          data as CfSubmissions
-        );
+        await this.verifyService.verifyCodeforcesSubmissions(userId, data);
       } else if (userHandle.type === "CODECHEF") {
-        const res = await fetchUserSubmissions(
-          {
-            judge: "CODECHEF",
-            handle
-          },
-          {
-            clientId: this.configService.getOrThrow("codechef.clientId"),
-            secret: this.configService.getOrThrow("codechef.secret")
-          }
-        );
-        await this.verifyService.verifyCodeChefSubmissions(
-          userId,
-          res.data as CcSubmissions
-        );
+        const data = await fetchUserSubmissions("CODECHEF", {
+          handle,
+          clientId: this.configService.getOrThrow("codechef.clientId"),
+          secret: this.configService.getOrThrow("codechef.secret")
+        });
+        await this.verifyService.verifyCodeChefSubmissions(userId, data);
       }
     }
 

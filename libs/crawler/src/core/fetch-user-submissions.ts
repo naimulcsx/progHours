@@ -7,57 +7,33 @@ import {
 
 const UNSUPPORTED_ONLINE_JUDGE_ERROR = "Unsupported Online Judge";
 
-export type FetchUserSubmissionsResult =
-  | {
-      judge: "CODEFORCES";
-      data: CfSubmissions;
-    }
-  | {
-      judge: "CODECHEF";
-      data: CcSubmissions;
-    };
-
-export type FetchUserSubmissionQuery = {
-  judge: "CODEFORCES" | "CODECHEF";
+export type UserSubmissionsOptions = {
   handle: string;
   contestId?: string;
 };
 
-export type FetchUserSubmissionsOptions = {
-  clientId?: string;
-  secret?: string;
-};
+export async function fetchUserSubmissions<T extends "CODEFORCES" | "CODECHEF">(
+  ...args: T extends "CODECHEF"
+    ? [T, UserSubmissionsOptions & { clientId: string; secret: string }]
+    : [T, UserSubmissionsOptions]
+): Promise<T extends "CODEFORCES" ? CfSubmissions : CcSubmissions> {
+  const [judge, options] = args;
+  const { handle, contestId } = options;
 
-export async function fetchUserSubmissions(
-  query: FetchUserSubmissionQuery,
-  options: FetchUserSubmissionsOptions = {}
-): Promise<FetchUserSubmissionsResult> {
-  const { judge, handle, contestId } = query;
-
-  // codeforces
   if (judge === "CODEFORCES") {
     const crawler = new CodeforcesCrawler();
-    return {
-      judge: "CODEFORCES",
-      data: await crawler.fetchUserSubmissions(handle, contestId)
-    };
+    /* eslint-disable @typescript-eslint/no-explicit-any */
+    return crawler.fetchUserSubmissions(handle, contestId) as any;
   }
 
-  // codechef
   if (judge === "CODECHEF") {
     const crawler = new CodeChefCrawler();
-
-    if (options.clientId && options.secret) {
-      crawler.setApiKey({
-        clientId: options.clientId,
-        secret: options.secret
-      });
-    }
-
-    return {
-      judge: "CODECHEF",
-      data: await crawler.fetchUserSubmissions(handle, contestId)
-    };
+    crawler.setApiKey({
+      clientId: options.clientId,
+      secret: options.secret
+    });
+    /* eslint-disable @typescript-eslint/no-explicit-any */
+    return crawler.fetchUserSubmissions(handle, contestId) as any;
   }
 
   throw new Error(UNSUPPORTED_ONLINE_JUDGE_ERROR);

@@ -20,12 +20,12 @@ npm i @proghours/crawler
 import { fetchProblem } from "@proghours/crawler";
 
 async function main() {
-  const problemData = await fetchProblem(
+  const data = await fetchProblem(
     "https://codeforces.com/problemset/problem/1879/D"
   );
 
-  // do something with the problemData
-  console.log(problemData);
+  // do something with the data
+  console.log(data);
 }
 
 main();
@@ -49,11 +49,11 @@ interface ProblemData {
 import { fetchUserSubmissions } from "@proghours/crawler";
 
 async function main() {
-  const { data } = await fetchUserSubmissions({
-    handle: "naimul_haque",
-    judge: "CODEFORCES"
+  const data = await fetchUserSubmissions("CODEFORCES", {
+    handle: "naimul_haque"
   });
 
+  // data is of type CfSubmissions
   // do something with the data
   console.log(data.totalSolved);
   console.log(data.submissions);
@@ -62,19 +62,50 @@ async function main() {
 main();
 ```
 
-Currently, `fetchUserSubmissions` only supports Codeforces and CodeChef. The returned object from `fetchUserSubmissions` will satisfy the following interface. Note that, the response can be different based on different online judge, because every online judge is different.
+In order to fetch submissions from CodeChef, we need to pass in the 2 extra properties `clientId` and `secret`, so that our crawler can talk with the CodeChef APIs.
+
+```js
+import { fetchUserSubmissions } from "@proghours/crawler";
+
+async function main() {
+  const data = await fetchUserSubmissions("CODECHEF", {
+    handle: "naimul_haque",
+    clientID: "CODECHEF_API_CLIENT_ID",
+    secret: "CODECHEF_API_SECRET"
+  });
+
+  // data is of type CcSubmissions
+  // do something with the data
+  console.log(data.totalSolved);
+  console.log(data.submissions);
+}
+
+main();
+```
+
+Additionally, you can also pass an optional `contestId` to fetch user submissions from only that contestId. This works simillarly for CodeChef as well.
+
+```js
+import { fetchUserSubmissions } from "@proghours/crawler";
+
+async function main() {
+  const data = await fetchUserSubmissions("CODEFORCES", {
+    handle: "naimul_haque",
+    contestId: "1742"
+  });
+
+  // data is of type CfSubmissions
+  // do something with the data
+  console.log(data.totalSolved);
+  console.log(data.submissions);
+}
+
+main();
+```
+
+Currently, `fetchUserSubmissions` only supports Codeforces and CodeChef. The returned object from `fetchUserSubmissions` will return one of the following interfaces. TypeScript will map the proper return type, based on the first parameter.
 
 ```ts
-type FetchUserSubmissionsResult =
-  | {
-      judge: "CODEFORCES";
-      data: CfSubmissions;
-    }
-  | {
-      judge: "CODECHEF";
-      data: CcSubmissions;
-    };
-
 type CfSubmissions = {
   totalSolved: number;
   submissions: Array<{
@@ -82,9 +113,9 @@ type CfSubmissions = {
     pid: string;
     name: string;
     url: string;
-    contestId: number;
     difficulty: number;
     tags: string[];
+    contestId: number;
     createdAt: Date;
     verdict: Verdict;
   }>;
@@ -125,9 +156,9 @@ The library currently supports 14 different online judges.
 
 ### Test Coverage
 
-We have 100% test coverage for the `oj-problem-parser` library, ensuring the accuracy and reliability of the code. Note that, the tests could break if the 3rd party APIs or web pages changes.
+We have 100% test coverage for the library, the tests could break if the 3rd party APIs or web pages changes.
 
-Each online judge is covered by individual test files. For example, the `codeforces.spec.ts` file contains test cases specifically designed for the Codeforces online judge. Similarly, we have `.spec.ts` files for all other online judges.
+Each online judge is covered by individual test files. For example, the `codeforces.spec.ts` file contains test cases specifically designed for the Codeforces crawler. Similarly, we have `.spec.ts` files for all other crawlers.
 
 #### Running All Tests
 
@@ -142,9 +173,9 @@ nx run crawler:test
 If you wish to run tests for a specific online judge, you can use the following command:
 
 ```bash
-nx run crawler:test --testFile=libs/oj-problem-parser/src/tests/codeforces.spec.ts
+nx run crawler:test --testFile=libs/crawler/src/tests/codeforces.spec.ts
 ```
 
 Simply replace `codeforces.spec.ts` with the desired test file for the corresponding online judge. This command will execute the specified test file and provide the results.
 
-By running the tests, you can ensure that the `@proghours/crwaler` library functions as expected and handles various scenarios encountered on different online judges effectively.
+By running the tests, you can ensure that the library functions as expected and handles various scenarios encountered on different online judges effectively.

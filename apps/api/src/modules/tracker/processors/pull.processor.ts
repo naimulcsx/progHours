@@ -43,15 +43,11 @@ export class TrackerPullProcessor {
     const { userId, pullHistoryId, judge, handle } = job.data;
 
     if (judge === "CODEFORCES") {
-      const { data, judge } = await fetchUserSubmissions({
-        handle: handle,
-        judge: "CODEFORCES"
+      const data = await fetchUserSubmissions("CODEFORCES", {
+        handle: handle
       });
 
-      if (judge !== "CODEFORCES") return; // this will never be true
-
       const solvedProblems = data.submissions.filter((s) => s.verdict === "AC");
-      console.log(solvedProblems);
 
       // Optimizing for Codeforces API, where we are getting all the problem data
       // So we don't need to make API requests to get the problem information
@@ -110,6 +106,7 @@ export class TrackerPullProcessor {
         );
       }
     }
+
     job.progress(100);
     return {
       status: "OK"
