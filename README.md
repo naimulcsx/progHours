@@ -4,34 +4,32 @@
 
 # progHours
 
-**_A platform based on gamification to engage students in competitve programming_**
+**_A gamification-driven platform for competitive programmers._**
 
 ![GitHub Repo stars](https://img.shields.io/github/stars/naimulcsx/proghours?style=social)
 ![GitHub issues](https://img.shields.io/github/issues/naimulcsx/progHours)
 
 ## What is progHours?
 
-progHours is an effort to combine problem-solving and gamification techniques to build a platform that will motivate users to keep improving their skills and compete with each other. It also helps coaches by offering valuable insights through comprehensive analytics to monitor and assess student progress.
+progHours is an effort to combine problem-solving and gamification techniques to create a platform tailored for competitive programmers. This platform offers valuable analytics to foster user engagement and encourages them to compete with one another. It also helps coaches by offering valuable insights through comprehensive analytics to monitor and assess student progress.
 
 ## Motivation and Goals
-
-We noticed that motivating students to engage in problem-solving is challenging. To solve this, we took the initiative to develop a platform that integrates gamification techniques, aiming to boost student engagement with problem-solving and foster peer competition within a community.
 
 This project is experimental and we are working to define and refine our goals. However, we have settled on the following common goals for the project:
 
 - To provide comprehensive analytics on your problem-solving journey.
-
-- To use gamification techniques, such as leaderboard, points and rewards, to motivate students to learn and compete with others.
-
+- To use gamification techniques, such as leaderboard, points and rewards, to engage students in competitive programming and compete with others.
 - To provide coaches with valuable insights through comprehensive analytics to monitor and assess student progress.
-
 - To foster a sense of community and shared accomplishment among students.
+- To provide users with the opportunity to showcase their problem-solving skills to the recruiters.
 
-- To provide students with the opportunity to showcase their profile and skillls to tech recruiters.
+## Online Judge Support
+
+Currently, we provide support for 14 Online Judges. Users can only track problems from supported online judges. We've created this library called `@proghours/crawler`, which is responsible for collecting problem and submissions data data from supported Online Judges. To learn more about it please explore the details [here](https://github.com/naimulcsx/progHours/tree/development/libs/crawler).
 
 ## Tech Stack
 
-- TypeScript, React, React Router, Mantine, TanStack Query
+- Nx, TypeScript, React, React Router, Mantine, TanStack Query
 - NestJS, PostgreSQL, Prisma, Redis, BullMQ, Bull Board
 - Docker, Docker Compose, Pino, Prometheus, Grafana, Loki
 
