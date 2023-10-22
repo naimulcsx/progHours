@@ -5,7 +5,6 @@ import {
 } from "@nestjs/common";
 
 import { HashingService } from "~/modules/auth/hashing/hashing.service";
-import { TrackerService } from "~/modules/tracker/services/tracker.service";
 
 import { CreateUserDto } from "../dto/create-user.dto";
 import { UpdateHandlesDto } from "../dto/update-handles.dto";
@@ -18,7 +17,6 @@ export class UsersService {
   constructor(
     private readonly hashingService: HashingService,
     private readonly usersRepository: UsersRepository,
-    private readonly trackerService: TrackerService,
     private readonly handlesRepository: HandlesRepository
   ) {}
 
@@ -106,8 +104,6 @@ export class UsersService {
           userId: user.id
         }))
     );
-    // Add to VERIFY_QUEUE
-    await this.trackerService.verifyAll(user.id);
     return result;
   }
 }
