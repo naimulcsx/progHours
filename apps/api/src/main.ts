@@ -13,13 +13,16 @@ async function bootstrap() {
   app.setGlobalPrefix("api");
   app.useGlobalPipes(new ValidationPipe({ whitelist: true }));
 
-  if (process.env.NODE_ENV === "production") {
-    app.enableCors({
-      origin: "https://ph-fe.apps.naimulhaque.com",
-      methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
-      optionsSuccessStatus: 204 // Some legacy browsers (IE11, various SmartTVs) choke on 204
-    });
-  }
+  const allowedOrigins =
+    process.env.NODE_ENV === "production"
+      ? "https://ph-fe.apps.naimulhaque.com"
+      : ["http://localhost:4200", "http://localhost:4300"];
+
+  app.enableCors({
+    origin: allowedOrigins,
+    methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
+    optionsSuccessStatus: 204
+  });
 
   app.enableVersioning({
     type: VersioningType.URI,
