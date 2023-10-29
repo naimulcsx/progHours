@@ -8,9 +8,10 @@
     "build:client": "nx run client:build-captain",
     "build:api": "nx run api:build-captain",
     "build": "run-p build:*",
-    "db:migrate": "env-cmd -f ./apps/api/.env.local prisma migrate dev --schema=./apps/api/prisma/schema.prisma",
-    "db:data-migrate": "npx env-cmd -f ./apps/api/.env.local npx ts-node ./scripts/migrate-data",
-    "db:reset": "npx env-cmd -f ./apps/api/.env.local npx prisma migrate reset --schema=./apps/api/prisma/schema.prisma --force"
+    "prisma:migrate": "env-cmd -f ./apps/api/.env.local prisma migrate dev --schema=./apps/api/prisma/schema.prisma",
+    "prisma:reset": "npx env-cmd -f ./apps/api/.env.local npx prisma migrate reset --schema=./apps/api/prisma/schema.prisma --force",
+    "prisma:generate": "npx env-cmd -f ./apps/api/.env.local npx prisma generate --schema=./apps/api/prisma/schema.prisma --force",
+    "data-migrate": "npx env-cmd -f ./apps/api/.env.local npx ts-node ./scripts/migrate-data"
   },
   "private": true,
   "dependencies": {
@@ -36,7 +37,7 @@
     "@prisma/client": "5.2.0",
     "@swc/helpers": "~0.5.0",
     "@tabler/icons-react": "^2.22.0",
-    "@tanstack/react-query": "^4.29.12",
+    "@tanstack/react-query": "^4.36.1",
     "@tanstack/react-table": "8.6.0",
     "@willsoto/nestjs-prometheus": "^5.1.2",
     "apexcharts": "^3.41.1",
