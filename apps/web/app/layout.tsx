@@ -1,4 +1,5 @@
 import localFont from "next/font/local";
+import { cookies } from "next/headers";
 
 import { ColorSchemeScript } from "@mantine/core";
 import "@mantine/core/styles.css";
@@ -6,6 +7,7 @@ import "@mantine/dates/styles.css";
 import "@mantine/notifications/styles.css";
 import "@mantine/nprogress/styles.css";
 
+import { Layout } from "../libs/ui";
 import "../styles/global.css";
 import { Providers } from "./providers";
 
@@ -25,13 +27,21 @@ export default function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
+  const cookiesStore = cookies();
+  const colorSchemeValue = cookiesStore.get("color-scheme");
+
+  let colorScheme: "light" | "dark" = "light";
+  if (colorSchemeValue?.value === "dark") colorScheme = "dark";
+
   return (
     <html lang="en" className={onest.className}>
       <head>
-        <ColorSchemeScript forceColorScheme="light" />
+        <ColorSchemeScript forceColorScheme={colorScheme} />
       </head>
       <body>
-        <Providers>{children}</Providers>
+        <Providers colorScheme={colorScheme}>
+          <Layout>{children}</Layout>
+        </Providers>
       </body>
     </html>
   );

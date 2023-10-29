@@ -51,6 +51,7 @@
     "class-transformer": "^0.5.1",
     "class-validator": "^0.14.0",
     "color-convert": "^2.0.1",
+    "cookies-next": "^4.0.0",
     "dayjs": "^1.11.8",
     "framer-motion": "^10.15.0",
     "helmet": "^7.0.0",

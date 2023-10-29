@@ -8,14 +8,17 @@ import { MantineProvider } from "@mantine/core";
 
 import { cssVariablesResolver, theme } from "@proghours/ui";
 
-export function Providers(props: { children: React.ReactNode }) {
+export function Providers(props: {
+  children: React.ReactNode;
+  colorScheme: "light" | "dark";
+}) {
   const [queryClient] = React.useState(() => new QueryClient());
 
   return (
     <MantineProvider
       theme={theme}
       cssVariablesResolver={cssVariablesResolver}
-      forceColorScheme="light"
+      forceColorScheme={props.colorScheme}
     >
       <QueryClientProvider client={queryClient}>
         <ReactQueryStreamedHydration>
