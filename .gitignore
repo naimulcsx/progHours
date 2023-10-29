@@ -44,3 +44,6 @@ Thumbs.db
 
 # env
 .env.local
+
+# Next.js
+.next
