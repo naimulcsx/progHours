@@ -157,7 +157,7 @@ export const theme = createTheme({
       classNames: titleClasses
     }),
     Button: Button.extend({
-      defaultProps: { variant: "msu-primary" },
+      defaultProps: { variant: "proghours-ui" },
       classNames: buttonClasses
     }),
     Text: Text.extend({

@@ -1,5 +1,6 @@
 import localFont from "next/font/local";
 import { cookies } from "next/headers";
+import NextTopLoader from "nextjs-toploader";
 
 import { ColorSchemeScript } from "@mantine/core";
 import "@mantine/core/styles.css";
@@ -39,6 +40,7 @@ export default function RootLayout({
         <ColorSchemeScript forceColorScheme={colorScheme} />
       </head>
       <body>
+        <NextTopLoader color="hsl(var(--primary))" showSpinner={false} />
         <Providers colorScheme={colorScheme}>
           <Layout>{children}</Layout>
         </Providers>

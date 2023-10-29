@@ -6,6 +6,7 @@ import {
   ActionIcon,
   Anchor,
   AppShellHeader,
+  Button,
   Container,
   Flex,
   Group,
@@ -95,6 +96,16 @@ export function Header() {
                 </Menu.Item>
               </Menu.Dropdown>
             </Menu>
+            <Button
+              component={Link}
+              href="/auth/sign-in"
+              variant="proghours-ui-light"
+            >
+              Sign In
+            </Button>
+            <Button component={Link} href="/auth/sign-up">
+              Sign Up
+            </Button>
             {/* {!user ? (
               <>
                 <Button

@@ -2,14 +2,21 @@
  * --button-radius
  */
 .root {
-  &[data-variant="msu-primary"] {
+  &[data-variant="proghours-ui"] {
     font-weight: 500;
     --button-bg: hsl(var(--primary));
     --button-color: hsl(var(--primary-foreground));
     --button-hover: hsl(var(--primary) / 0.9);
   }
 
-  &[data-variant="msu-secondary"] {
+  &[data-variant="proghours-ui-light"] {
+    font-weight: 500;
+    --button-bg: hsl(var(--primary) / 0.1);
+    --button-color: hsl(var(--primary));
+    --button-hover: hsl(var(--primary) / 0.2);
+  }
+
+  &[data-variant="proghours-ui-secondary"] {
     font-weight: 500;
     --button-bg: hsl(var(--secondary));
     --button-color: hsl(var(--secondary-foreground));
@@ -18,13 +25,13 @@
     }
   }
 
-  &[data-variant="msu-destructive"] {
+  &[data-variant="proghours-ui-destructive"] {
     font-weight: 500;
     --button-bg: hsl(var(--destructive));
     --button-color: hsl(var(--destructive-foreground));
   }
 
-  &[data-variant="msu-outline"] {
+  &[data-variant="proghours-ui-outline"] {
     font-weight: 500;
     color: hsl(var(--foreground));
     --button-bg: transparent;
@@ -34,7 +41,7 @@
     }
   }
 
-  &[data-variant="msu-ghost"] {
+  &[data-variant="proghours-ui-ghost"] {
     font-weight: 500;
     --button-bg: hsl(var(--background));
     --button-hover: hsl(var(--accent));
