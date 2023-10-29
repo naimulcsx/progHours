@@ -1,0 +1,10 @@
+.root {
+}
+
+.item {
+  border-bottom: 1px solid hsl(var(--border));
+}
+
+.label {
+  color: hsl(var(--foreground));
+}
