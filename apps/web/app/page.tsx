@@ -1,3 +1,11 @@
+import { FAQ, Features, Hero } from "../libs/ui";
+
 export default async function Index() {
-  return <div>Hello world</div>;
+  return (
+    <>
+      <Hero />
+      <Features />
+      <FAQ />
+    </>
+  );
 }

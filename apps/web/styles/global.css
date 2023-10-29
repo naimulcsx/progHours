@@ -1,3 +1,20 @@
 html {
   scroll-behavior: smooth;
 }
+
+body {
+  background-color: hsl(var(--background));
+  color: hsl(var(--foreground));
+}
+
+.dark .apexcharts-tooltip {
+  background: hsl(var(--background)) !important;
+  color: white !important;
+  box-shadow: none !important;
+  border: 1px solid hsl(var(--border));
+}
+
+.dark .apexcharts-tooltip-title {
+  background: hsl(var(--background)) !important;
+  border-bottom: 1px solid hsl(var(--border)) !important;
+}

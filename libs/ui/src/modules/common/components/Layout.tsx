@@ -2,7 +2,8 @@ import { PropsWithChildren } from "react";
 
 import { AppShell, Box, Container } from "@mantine/core";
 
-import { Header } from "../header";
+import { Footer } from "./Footer";
+import { Header } from "./Header";
 
 export interface LayoutProps {
   withContainer?: boolean;
@@ -24,6 +25,7 @@ export function Layout({
           <Box m="-16px">{children}</Box>
         )}
       </AppShell.Main>
+      <Footer />
     </AppShell>
   );
 }
