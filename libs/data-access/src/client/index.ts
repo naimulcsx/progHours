@@ -1,0 +1,25 @@
+import * as auth from "./modules/auth";
+import * as leaderboard from "./modules/leaderboard";
+
+export const client = {
+  auth: {
+    signUp: {
+      useMutation: auth.useSignUpMutation,
+      mutationFn: auth.signUp
+    },
+    signIn: {
+      useMutation: auth.useSignInMutation,
+      mutationFn: auth.signIn
+    },
+    getActiveUser: {
+      useSuspenseQuery: auth.useActiveUserQuery,
+      queryFn: auth.getActiveUser
+    }
+  },
+  leaderboard: {
+    getAll: {
+      useSuspenseQuery: leaderboard.useLeaderboard,
+      queryFn: leaderboard.getLeaderboard
+    }
+  }
+};

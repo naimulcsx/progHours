@@ -1,4 +1,4 @@
-import "./global.css";
+import { Providers } from "./providers";
 
 export const metadata = {
   title: "Welcome to web",
@@ -12,7 +12,9 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body>{children}</body>
+      <body>
+        <Providers>{children}</Providers>
+      </body>
     </html>
   );
 }

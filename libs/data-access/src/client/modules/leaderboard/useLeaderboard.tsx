@@ -1,0 +1,50 @@
+import {
+  UseSuspenseQueryOptions,
+  useSuspenseQuery
+} from "@tanstack/react-query";
+
+import { axios } from "../../../lib/axios";
+
+export type LeaderboardType = "full" | "currentWeek" | "lastWeek";
+
+export type LeaderboardEntry = {
+  id: number;
+  userId: number;
+  fullName: string;
+  username: string;
+  metaData: {
+    cgpa?: number;
+    batch?: number;
+    section?: string;
+    department?: string;
+  };
+  totalSolveTime: number;
+  totalDifficulty: number;
+  totalSolved: number;
+  totalSolvedWithDifficulty: number;
+  points: number;
+  averageDifficulty: number;
+};
+
+export type UseLeaderboardResponse = Array<LeaderboardEntry>;
+
+export type UseLeaderboardOptions = {
+  type: LeaderboardType;
+  config?: UseSuspenseQueryOptions<UseLeaderboardResponse>;
+};
+
+export async function getLeaderboard(
+  type: LeaderboardType
+): Promise<UseLeaderboardResponse> {
+  return axios.get(`/leaderboard?type=${type}`).then((res) => res.data);
+}
+
+export function useLeaderboard(
+  { type, config }: UseLeaderboardOptions = { type: "full" }
+) {
+  return useSuspenseQuery({
+    queryKey: ["leaderboard", type],
+    queryFn: () => getLeaderboard(type),
+    ...config
+  });
+}
