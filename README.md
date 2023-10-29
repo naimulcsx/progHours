@@ -29,8 +29,8 @@ Currently, we provide support for 14 Online Judges. Users can only track problem
 
 ## Tech Stack
 
-- Nx, TypeScript, React, React Router, Mantine, TanStack Query
-- NestJS, PostgreSQL, Prisma, Redis, BullMQ, Bull Board
+- Nx, TypeScript, React, Mantine, TanStack Query, Playwright
+- NestJS, PostgreSQL, Prisma, Redis, BullMQ, Bull Board, Jest
 - Docker, Docker Compose, Pino, Prometheus, Grafana, Loki
 
 ## Local development
@@ -81,4 +81,18 @@ Launch the project by running the following command.
 
 ```bash
 npm run dev
+```
+
+### Running E2E Tests
+
+You can execute the end-to-end (E2E) tests using Playwright by running the following command in your terminal. The tests will run in a headless browser environment, and the test results will be displayed in the console.
+
+```bash
+nx run client:e2e
+```
+
+If you want to explore, run and debug tests with a time travel experience, you can use the Playwright's UI mode. o open UI mode, run the following command in your terminal:
+
+```bash
+nx run client:e2e --ui
 ```
