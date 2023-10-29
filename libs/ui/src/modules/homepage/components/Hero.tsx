@@ -16,7 +16,7 @@ import {
 export function Hero() {
   const computedColorScheme = useComputedColorScheme("light");
   return (
-    <Box component="section" my={72}>
+    <Box component="section" my={60}>
       <Container size="xl">
         <Stack
           maw={600}
