@@ -22,7 +22,7 @@ export const client = {
   },
   leaderboard: {
     getAll: {
-      useSuspenseQuery: leaderboard.useLeaderboard,
+      useQuery: leaderboard.useLeaderboard,
       queryFn: leaderboard.getLeaderboard
     }
   }

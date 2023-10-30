@@ -14,7 +14,7 @@ import {
 } from "@mantine/core";
 
 export function Hero() {
-  const computedColorScheme = useComputedColorScheme("light");
+  const colorScheme = useComputedColorScheme("light");
   return (
     <Box component="section" my={60}>
       <Container size="xl">
@@ -59,14 +59,14 @@ export function Hero() {
       <Container style={{ marginTop: 64 }}>
         <Image
           src={
-            computedColorScheme === "light"
+            colorScheme === "light"
               ? "/images/cover-light.jpg"
               : "/images/cover.jpg"
           }
           style={{
-            borderRadius: "12px",
+            borderRadius: 12,
             border: "1px solid hsl(var(--border))",
-            boxShadow: "0 0 12px 1px hsl(var(--primary)/0.1)"
+            boxShadow: "0 0 12px 4px hsl(var(--primary)/0.1)"
           }}
         />
       </Container>

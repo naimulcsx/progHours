@@ -57,10 +57,7 @@ type UseActiveProifleOptions = {
   config?: UseQueryOptions<UserProfileResponse>;
 };
 
-export function useUserProfile({
-  username,
-  config = {}
-}: UseActiveProifleOptions) {
+export function useUserProfile({ username, config }: UseActiveProifleOptions) {
   return useQuery({
     queryKey: ["profile", username],
     queryFn: () => getUserProfile(username),

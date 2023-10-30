@@ -1,4 +1,5 @@
 import { UseQueryOptions, useQuery } from "@tanstack/react-query";
+
 import { axios } from "../../lib/axios";
 
 export type LeaderboardType = "full" | "currentWeek" | "lastWeek";
@@ -36,7 +37,7 @@ export async function getLeaderboard(
 }
 
 export function useLeaderboard(
-  { type, config }: UseLeaderboardOptions = { config: {}, type: "full" }
+  { type, config }: UseLeaderboardOptions = { type: "full" }
 ) {
   console.log("from hook", type);
   return useQuery({

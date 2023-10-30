@@ -19,7 +19,16 @@ export function Providers(props: {
   colorScheme: "light" | "dark";
   user?: JwtPayload;
 }) {
-  const [queryClient] = React.useState(() => new QueryClient());
+  const [queryClient] = React.useState(
+    () =>
+      new QueryClient({
+        defaultOptions: {
+          queries: {
+            refetchOnWindowFocus: false
+          }
+        }
+      })
+  );
   return (
     <MantineProvider
       theme={theme}

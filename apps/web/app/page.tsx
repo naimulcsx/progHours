@@ -1,4 +1,8 @@
-import { FAQ, Features, Hero } from "../libs/ui";
+"use client";
+
+import { FAQ, Features, Hero } from "@proghours/ui";
+
+import { Footer } from "~/modules/common/components/footer/Footer";
 
 export default async function Index() {
   return (
@@ -6,6 +10,7 @@ export default async function Index() {
       <Hero />
       <Features />
       <FAQ />
+      <Footer />
     </>
   );
 }

@@ -1,7 +1,4 @@
-import {
-  UseSuspenseQueryOptions,
-  useSuspenseQuery
-} from "@tanstack/react-query";
+import { UseQueryOptions, useQuery } from "@tanstack/react-query";
 
 import { axios } from "../../../lib/axios";
 
@@ -30,7 +27,7 @@ export type UseLeaderboardResponse = Array<LeaderboardEntry>;
 
 export type UseLeaderboardOptions = {
   type: LeaderboardType;
-  config?: UseSuspenseQueryOptions<UseLeaderboardResponse>;
+  config?: UseQueryOptions<UseLeaderboardResponse>;
 };
 
 export async function getLeaderboard(
@@ -42,7 +39,7 @@ export async function getLeaderboard(
 export function useLeaderboard(
   { type, config }: UseLeaderboardOptions = { type: "full" }
 ) {
-  return useSuspenseQuery({
+  return useQuery({
     queryKey: ["leaderboard", type],
     queryFn: () => getLeaderboard(type),
     ...config
