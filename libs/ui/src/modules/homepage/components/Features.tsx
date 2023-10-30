@@ -5,7 +5,7 @@ import {
   IconUser
 } from "@tabler/icons-react";
 
-import { Box, Container, Grid, Stack, Text, Title } from "@mantine/core";
+import { Box, Container, SimpleGrid, Stack, Text, Title } from "@mantine/core";
 
 export function Features() {
   return (
@@ -20,25 +20,26 @@ export function Features() {
         </Stack>
       </Container>
       <Box mt={40}>
-        <Grid gutter="xl">
-          {services.map((service, i) => (
-            <Grid.Col span={3} key={i}>
-              <Stack
-                p="lg"
-                style={{
-                  border: "1px solid hsl(var(--border))",
-                  borderRadius: "var(--radius)"
-                }}
-              >
-                {service.icon}
-                <Title order={4} lh={1.25}>
-                  {service.title}
-                </Title>
-                <Text>{service.desc}</Text>
-              </Stack>
-            </Grid.Col>
+        <SimpleGrid cols={4}>
+          {services.map((service) => (
+            <Stack
+              key={service.id}
+              p="lg"
+              style={{
+                border: "1px solid hsl(var(--border))",
+                borderRadius: "var(--radius)"
+              }}
+            >
+              {service.icon}
+              <Title order={4} lh={1.25}>
+                {service.title.map((el, i) => (
+                  <span key={i}>{el}</span>
+                ))}
+              </Title>
+              <Text>{service.desc}</Text>
+            </Stack>
           ))}
-        </Grid>
+        </SimpleGrid>
       </Box>
     </Box>
   );
@@ -46,21 +47,25 @@ export function Features() {
 
 const services = [
   {
+    id: 1,
     icon: <IconChartPie size={40} stroke={1.7} color="hsl(var(--primary))" />,
     title: ["Comprehensive", <br />, "Analytics"],
     desc: "Track your problem-solving journey with precision using our platform's in-depth analytics."
   },
   {
+    id: 2,
     icon: <IconChartLine size={40} stroke={1.7} color="hsl(var(--primary))" />,
     title: ["Coach", <br />, "Insights"],
     desc: "Empower coaches with valuable insights to monitor and assess student progress."
   },
   {
+    id: 3,
     icon: <IconChartBar size={40} stroke={1.7} color="hsl(var(--primary))" />,
     title: ["Rewards &", <br />, "Leaderboard"],
     desc: "Climb the leaderboard, earn points, and unlock rewarding achievements."
   },
   {
+    id: 4,
     icon: <IconUser size={40} stroke={1.7} color="hsl(var(--primary))" />,
     title: ["Profile", <br />, "Showcase"],
     desc: "Stand out to tech recruiters by creating a profile that highlights your problem-solving skills."

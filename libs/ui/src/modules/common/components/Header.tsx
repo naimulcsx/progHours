@@ -99,61 +99,13 @@ export function Header() {
             <Button
               component={Link}
               href="/auth/sign-in"
-              variant="proghours-ui-light"
+              variant="proghours-ui-secondary"
             >
               Sign In
             </Button>
             <Button component={Link} href="/auth/sign-up">
               Sign Up
             </Button>
-            {/* {!user ? (
-              <>
-                <Button
-                  component={Link}
-                  to="/auth/sign-in"
-                  variant="msu-secondary"
-                >
-                  Sign In
-                </Button>
-                <Button component={Link} to="/auth/sign-up">
-                  Sign Up
-                </Button>
-              </>
-            ) : (
-              <Menu width={200}>
-                <Menu.Target>
-                  <Button
-                    fw={600}
-                    variant="msu-secondary"
-                    rightSection={<IconChevronDown size={16} />}
-                  >
-                    {user.fullName}
-                  </Button>
-                </Menu.Target>
-                <Menu.Dropdown>
-                  <Menu.Item
-                    leftSection={<IconHome width={18} height={18} />}
-                    component={Link}
-                    to="/overview"
-                  >
-                    Dashboard
-                  </Menu.Item>
-                  <Menu.Item
-                    leftSection={<IconSettings width={18} height={18} />}
-                    component={Link}
-                    to="/settings/appearance"
-                  >
-                    Settings
-                  </Menu.Item>
-                  <Menu.Item
-                    leftSection={<IconLogout width={18} height={18} />}
-                    onClick={handleLogout}
-                  >
-                    Logout
-                  </Menu.Item>
-                </Menu.Dropdown>
-              </Menu>
-            )} */}
           </Group>
         </Flex>
       </Container>
