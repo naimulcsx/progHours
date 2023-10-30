@@ -16,7 +16,13 @@
         "name": "next"
       }
     ],
-    "types": ["jest", "node"]
+    "types": ["jest", "node"],
+    "baseUrl": ".",
+    "paths": {
+      "~/*": ["./*"],
+      "@proghours/data-access": ["../../libs/data-access/src/index.ts"],
+      "@proghours/ui": ["../../libs/ui/src/index.ts"]
+    }
   },
   "include": [
     "**/*.ts",

@@ -1,8 +1,6 @@
-"use client";
+import { Box, Stack } from "@mantine/core";
 
-import Link from "next/link";
-
-import { Anchor, Box, Stack, Text, Title } from "@mantine/core";
+import { SignUpHeader } from "~/modules/auth/components/SignUpHeader";
 
 import { SignUpSection } from "./sign-up-section";
 
@@ -21,25 +19,7 @@ export default function SignUpPage() {
       >
         <Box style={{ maxWidth: "440px", flexGrow: 1 }}>
           <Stack>
-            <Box>
-              <Title order={2} mb="4px">
-                Sign up for an account
-              </Title>
-              <Text>
-                Already have an account?{" "}
-                <Anchor
-                  underline="always"
-                  style={{
-                    color: "hsl(var(--primary))",
-                    textUnderlineOffset: 2
-                  }}
-                  component={Link}
-                  href="/auth/sign-in"
-                >
-                  Sign In
-                </Anchor>
-              </Text>
-            </Box>
+            <SignUpHeader />
             <SignUpSection />
           </Stack>
         </Box>

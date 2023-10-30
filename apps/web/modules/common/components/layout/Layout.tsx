@@ -1,9 +1,11 @@
+"use client";
+
 import { PropsWithChildren } from "react";
 
 import { AppShell, Box, Container } from "@mantine/core";
 
-import { Footer } from "./Footer";
-import { Header } from "./Header";
+import { Footer } from "../footer/Footer";
+import { Header } from "../header/Header";
 
 export interface LayoutProps {
   withContainer?: boolean;

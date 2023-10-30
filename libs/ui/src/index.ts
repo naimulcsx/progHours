@@ -5,5 +5,4 @@ export * from "./assets/icons-oj";
 export * from "./theme";
 
 export * from "./modules/auth";
-export * from "./modules/common";
 export * from "./modules/homepage";

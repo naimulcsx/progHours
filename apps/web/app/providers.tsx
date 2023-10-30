@@ -5,15 +5,21 @@ import { ReactQueryStreamedHydration } from "@tanstack/react-query-next-experime
 import * as React from "react";
 
 import { MantineProvider } from "@mantine/core";
+import { Notifications } from "@mantine/notifications";
 
-import { cssVariablesResolver, theme } from "@proghours/ui";
+import {
+  JwtPayload,
+  UserProvider,
+  cssVariablesResolver,
+  theme
+} from "@proghours/ui";
 
 export function Providers(props: {
   children: React.ReactNode;
   colorScheme: "light" | "dark";
+  user?: JwtPayload;
 }) {
   const [queryClient] = React.useState(() => new QueryClient());
-
   return (
     <MantineProvider
       theme={theme}
@@ -21,9 +27,12 @@ export function Providers(props: {
       forceColorScheme={props.colorScheme}
     >
       <QueryClientProvider client={queryClient}>
-        <ReactQueryStreamedHydration>
-          {props.children}
-        </ReactQueryStreamedHydration>
+        <UserProvider user={props.user}>
+          <Notifications position="top-center" />
+          <ReactQueryStreamedHydration>
+            {props.children}
+          </ReactQueryStreamedHydration>
+        </UserProvider>
       </QueryClientProvider>
     </MantineProvider>
   );

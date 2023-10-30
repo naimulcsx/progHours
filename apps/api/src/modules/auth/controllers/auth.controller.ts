@@ -1,10 +1,13 @@
+import { Response } from "express";
+
 import {
   Body,
   Controller,
   Get,
   HttpCode,
   HttpStatus,
-  Post
+  Post,
+  Res
 } from "@nestjs/common";
 import {
   ApiBearerAuth,
@@ -51,6 +54,7 @@ export class AuthController {
   }
 
   @Post("sign-up")
+  @HttpCode(HttpStatus.OK)
   @ApiOperation({ summary: "User sign up" })
   @ApiBody({
     type: SignUpDto,
@@ -75,7 +79,28 @@ export class AuthController {
   @ApiUnauthorizedResponse({
     description: "Invalid UID or password"
   })
-  async signIn(@Body() signInDto: SignInDto) {
-    return this.authService.signIn(signInDto);
+  async signIn(
+    @Body() signInDto: SignInDto,
+    @Res({ passthrough: true }) res: Response
+  ) {
+    const { accessToken } = await this.authService.signIn(signInDto);
+    res.cookie("access-token", accessToken, {
+      maxAge: 24 * 60 * 60 * 1000, // 24h,
+      httpOnly: true
+    });
+    return {
+      accessToken
+    };
+  }
+
+  @Post("/sign-out")
+  @HttpCode(HttpStatus.OK)
+  @ApiOperation({ summary: "User sign out" })
+  @ApiOkResponse({ description: "User sign out success" })
+  async signOut(@Res({ passthrough: true }) res: Response) {
+    res.clearCookie("access-token");
+    return {
+      statusCode: HttpStatus.OK
+    };
   }
 }

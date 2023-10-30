@@ -21,6 +21,7 @@ export function SignInSection() {
           title: "Success",
           message: "Successfully logged in!"
         });
+        router.refresh();
         router.push("/");
       }
     }

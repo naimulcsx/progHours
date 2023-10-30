@@ -11,6 +11,10 @@ export const client = {
       useMutation: auth.useSignInMutation,
       mutationFn: auth.signIn
     },
+    signOut: {
+      useMutation: auth.useSignOutMutation,
+      mutationFn: auth.signOut
+    },
     getActiveUser: {
       useSuspenseQuery: auth.useActiveUserQuery,
       queryFn: auth.getActiveUser
