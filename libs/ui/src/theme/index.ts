@@ -61,7 +61,7 @@ export const cssVariablesResolver: CSSVariablesResolver = () => ({
   variables: { "--radius": "0.5rem" },
   light: {
     "--background": "0 0% 100%",
-    "--foreground": "222.2 84% 4.9%",
+    "--foreground": "221 72% 15%",
     "--card": "0 0% 100%",
     "--card-foreground": "222.2 84% 4.9%",
     "--popover": "0 0% 100%",
@@ -71,7 +71,7 @@ export const cssVariablesResolver: CSSVariablesResolver = () => ({
     "--secondary": "210 40% 96.1%",
     "--secondary-foreground": "222.2 47.4% 11.2%",
     "--muted": "210 40% 96.1%",
-    "--muted-foreground": "215.4 16.3% 45%",
+    "--muted-foreground": "235 22% 29%",
     "--accent": "210 40% 96.1%",
     "--accent-foreground": "222.2 47.4% 11.2%",
     "--destructive": "0 84.2% 60.2%",
@@ -104,7 +104,6 @@ export const cssVariablesResolver: CSSVariablesResolver = () => ({
 });
 
 export const theme = createTheme({
-  fontFamily: "Onest, sans-serif",
   defaultRadius: "md",
   shadows: {
     xs: "0 1px 2px 0 rgba(0,0,0,.05)"

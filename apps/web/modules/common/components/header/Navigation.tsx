@@ -6,7 +6,6 @@ export function Navigation() {
   return (
     <Flex ml="lg" gap="md">
       <Anchor
-        fw={600}
         className="headerLink"
         component={Link}
         href="/"
@@ -16,7 +15,6 @@ export function Navigation() {
         Home
       </Anchor>
       <Anchor
-        fw={600}
         className="headerLink"
         component={Link}
         href="/leaderboard"
@@ -26,7 +24,6 @@ export function Navigation() {
         Leaderboard
       </Anchor>
       <Anchor
-        fw={600}
         className="headerLink"
         href="https://github.com/naimulcsx/progHours"
         target="_blank"

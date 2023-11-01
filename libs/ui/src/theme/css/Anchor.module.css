@@ -1,7 +1,7 @@
 .root {
   &[data-variant="proghours-ui"] {
     font-weight: 500;
-    color: hsl(var(--foreground) / 0.6);
+    color: hsl(var(--muted-foreground));
     transition: color 0.15s;
     &:hover {
       color: hsl(var(--foreground) / 0.8);

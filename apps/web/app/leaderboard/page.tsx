@@ -5,6 +5,7 @@ import { AnimatePresence } from "framer-motion";
 import { useState } from "react";
 
 import {
+  Container,
   Flex,
   Group,
   Loader,
@@ -26,7 +27,7 @@ export default function LeaderboardPage() {
   const { data, isFetching } = client.leaderboard.getAll.useQuery({ type });
   const topUsers = data?.slice(0, 3);
   return (
-    <>
+    <Container size="xl" mt="lg">
       <Group justify="space-between">
         <Group style={{ alignItems: "center" }}>
           <Flex align="center" gap="xs">
@@ -68,6 +69,6 @@ export default function LeaderboardPage() {
           </FadeInTransition>
         )}
       </AnimatePresence>
-    </>
+    </Container>
   );
 }

@@ -1,6 +1,5 @@
 import { Role } from "@prisma/client";
 import jwt from "jsonwebtoken";
-import localFont from "next/font/local";
 import { cookies } from "next/headers";
 import NextTopLoader from "nextjs-toploader";
 
@@ -15,10 +14,10 @@ import { Layout } from "~/modules/common/components/layout/Layout";
 import "../styles/global.css";
 import { Providers } from "./providers";
 
-const onest = localFont({
-  src: "../styles/fonts/onest.woff2",
-  variable: "--proghours-font"
-});
+// const onest = localFont({
+//   src: "../styles/fonts/onest.woff2",
+//   variable: "--proghours-font"
+// });
 
 export const metadata = {
   title: "progHours - Code. Compete. Conquer!",
@@ -62,14 +61,14 @@ export default function RootLayout({
   }
 
   return (
-    <html lang="en" className={onest.className}>
+    <html lang="en">
       <head>
         <ColorSchemeScript forceColorScheme={colorScheme} />
       </head>
       <body>
         <NextTopLoader color="hsl(var(--primary))" showSpinner={false} />
         <Providers colorScheme={colorScheme} user={user}>
-          <Layout>{children}</Layout>
+          <Layout withContainer={false}>{children}</Layout>
         </Providers>
       </body>
     </html>
