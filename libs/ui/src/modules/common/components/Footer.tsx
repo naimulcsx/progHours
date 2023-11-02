@@ -1,8 +1,8 @@
-import { Box, Container, Text, Title } from "@mantine/core";
+import { Box, BoxComponentProps, Container, Text, Title } from "@mantine/core";
 
-export function Footer() {
+export function Footer(props: BoxComponentProps) {
   return (
-    <Box component="footer" pb="xl">
+    <Box component="footer" pb="xl" {...props}>
       <Container size="xl" style={{ textAlign: "center" }}>
         <Title order={3}>
           Made with{" "}
