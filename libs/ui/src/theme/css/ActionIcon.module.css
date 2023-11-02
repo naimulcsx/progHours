@@ -1,0 +1,11 @@
+.root {
+  &[data-variant="proghours-ui"] {
+    transition: all 0.15s;
+    background: hsl(var(--secondary));
+    color: hsl(var(--foreground));
+    border: 1px solid hsl(var(--border));
+    &:hover {
+      background: hsl(var(--accent));
+    }
+  }
+}

@@ -19,10 +19,7 @@ type UseUserHandlesOptions = {
   config?: UseQueryOptions<UserHandlesResponse>;
 };
 
-export function useUserHandles({
-  config = {},
-  username
-}: UseUserHandlesOptions) {
+export function useUserHandles({ config, username }: UseUserHandlesOptions) {
   return useQuery({
     queryKey: ["handles"],
     queryFn: () => getUserHandles(username),

@@ -28,7 +28,7 @@ type UseUserSubmissionsOptions = {
 
 export function useUserSubmissions({
   username,
-  config = {}
+  config
 }: UseUserSubmissionsOptions) {
   return useQuery({
     queryKey: ["submissions", username],

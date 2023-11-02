@@ -1,0 +1,43 @@
+.root {
+  border-radius: var(--mantine-radius-lg);
+  background: hsl(var(--primary) / 0.95);
+  position: relative;
+  overflow: hidden;
+  @mixin dark {
+    background: hsl(var(--secondary));
+  }
+}
+
+.text {
+  @mixin light {
+    color: hsl(var(--primary-foreground));
+  }
+  @mixin dark {
+    color: hsl(var(--foreground));
+  }
+}
+
+.card {
+  position: relative;
+  background: hsl(var(--secondary) / 0.1);
+  border-radius: var(--mantine-radius-md);
+  backdrop-filter: blur(8px);
+  color: hsl(var(--primary-foreground));
+  @mixin dark {
+    color: hsl(var(--foreground));
+    background: hsl(var(--card) / 0.25);
+  }
+}
+
+.rank {
+  position: absolute;
+  top: 16px;
+  right: 24px;
+}
+
+.bgPath {
+  fill: hsl(var(--primary));
+  @mixin dark {
+    fill: color-mix(in srgb, hsl(var(--secondary)) 98%, white);
+  }
+}

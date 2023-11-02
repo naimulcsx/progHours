@@ -17,7 +17,8 @@
     "baseUrl": ".",
     "paths": {
       "@proghours/crawler": ["libs/crawler/src/index.ts"],
-      "@proghours/data-access": ["libs/data-access/src/index.ts"]
+      "@proghours/data-access": ["libs/data-access/src/index.ts"],
+      "@proghours/ui": ["libs/ui/src/index.ts"]
     }
   },
   "exclude": ["node_modules", "tmp"]

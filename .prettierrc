@@ -11,6 +11,7 @@
   "trailingComma": "none",
   "plugins": ["@trivago/prettier-plugin-sort-imports"],
   "importOrder": [
+    "^react(.*)$",
     "^@mantine/(.*)$",
     "^@nestjs/(.*)$",
     "^@proghours/(.*)$",
@@ -19,6 +20,6 @@
     "^[./]"
   ],
   "importOrderSeparation": true,
-  "importOrderSortSpecifiers": true,
+  "importOrderSortSpecifiers": false,
   "importOrderParserPlugins": ["jsx", "typescript", "decorators-legacy"]
 }
