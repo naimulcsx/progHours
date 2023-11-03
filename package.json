@@ -5,9 +5,9 @@
   "scripts": {
     "prepare": "husky install",
     "dev": "nx run-many --target=serve --all",
-    "build:client": "nx run client:build-captain",
+    "build:client": "NODE_ENV=production && nx run client:build-captain",
     "build:api": "nx run api:build-captain",
-    "build": "run-p build:*",
+    "build": "NODE_ENV=production && run-p build:*",
     "prisma:migrate": "env-cmd -f ./apps/api/.env.local prisma migrate dev --schema=./apps/api/prisma/schema.prisma",
     "prisma:reset": "npx env-cmd -f ./apps/api/.env.local npx prisma migrate reset --schema=./apps/api/prisma/schema.prisma --force",
     "prisma:generate": "npx env-cmd -f ./apps/api/.env.local npx prisma generate --schema=./apps/api/prisma/schema.prisma --force",

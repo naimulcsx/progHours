@@ -16,7 +16,6 @@ import {
 import { useActiveProfile } from "@proghours/data-access";
 
 import { IconEnergy, IconFlag, IconPoints, IconTime } from "~/assets/icons";
-import { DashboardLayout } from "~/modules/common/components/DashboardLayout";
 import { FadeInTransition } from "~/modules/common/components/FadeInTransition";
 import { formatSolveTime } from "~/modules/common/utils/formatSolveTime";
 import { StatCard } from "~/modules/dashboard/overview/components/StatCard";
@@ -28,7 +27,7 @@ import { WeeklySolvedChart } from "~/modules/dashboard/overview/components/chart
 export default function OverviewPage() {
   const { data, isFetching } = useActiveProfile();
   return (
-    <DashboardLayout>
+    <>
       <Helmet>
         <title>Overview - progHours</title>
       </Helmet>
@@ -93,6 +92,6 @@ export default function OverviewPage() {
           )}
         </AnimatePresence>
       </Container>
-    </DashboardLayout>
+    </>
   );
 }

@@ -12,13 +12,12 @@ import {
 
 import { useSubmissions } from "@proghours/data-access";
 
-import { DashboardLayout } from "~/modules/common/components/DashboardLayout";
 import { SubmissionsDataTable } from "~/modules/dashboard/submissions/components/table";
 
 export default function SubmissionsPage() {
   const { data, isFetching, isSuccess } = useSubmissions();
   return (
-    <DashboardLayout>
+    <>
       <Helmet>
         <title>Submissions - progHours</title>
       </Helmet>
@@ -45,6 +44,6 @@ export default function SubmissionsPage() {
           )}
         </Transition>
       </Container>
-    </DashboardLayout>
+    </>
   );
 }

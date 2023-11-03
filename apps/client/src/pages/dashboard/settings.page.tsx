@@ -3,7 +3,6 @@ import { useNavigate, useParams } from "react-router-dom";
 
 import { Container, Group, Tabs, Title } from "@mantine/core";
 
-import { DashboardLayout } from "~/modules/common/components/DashboardLayout";
 import { AppearanceSettings } from "~/modules/dashboard/settings/AppearanceSettings";
 import { HandlesSettings } from "~/modules/dashboard/settings/HandleSettings";
 import { ProfileSettings } from "~/modules/dashboard/settings/ProfileSettings";
@@ -20,7 +19,7 @@ export default function SettingsPage() {
     ? tabValue
     : "appearance";
   return (
-    <DashboardLayout>
+    <>
       <Helmet>
         <title>Settings - progHours</title>
       </Helmet>
@@ -53,6 +52,6 @@ export default function SettingsPage() {
           </Tabs.Panel>
         </Tabs>
       </Container>
-    </DashboardLayout>
+    </>
   );
 }

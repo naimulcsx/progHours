@@ -1,9 +1,9 @@
 import { IconInfoCircle } from "@tabler/icons-react";
-import { AnimatePresence } from "framer-motion";
 import { useState } from "react";
 import { Helmet } from "react-helmet-async";
 
 import {
+  Box,
   Flex,
   Group,
   Loader,
@@ -15,8 +15,6 @@ import {
 
 import { LeaderboardType, useLeaderboard } from "@proghours/data-access";
 
-import { FadeInTransition } from "~/modules/common/components/FadeInTransition";
-import { Layout } from "~/modules/common/components/Layout";
 import { LeaderboardDataTable } from "~/modules/leaderboard/components/table";
 import { TopPerformers } from "~/modules/leaderboard/components/top-performers/TopPerformers";
 
@@ -25,7 +23,7 @@ export default function LeaderboardPage() {
   const { data, isFetching } = useLeaderboard({ type });
   const topUsers = data?.slice(0, 3);
   return (
-    <Layout>
+    <>
       <Helmet>
         <title>Leaderboard - progHours</title>
       </Helmet>
@@ -37,7 +35,7 @@ export default function LeaderboardPage() {
               <IconInfoCircle size={22} />
             </Tooltip>
           </Flex>
-          <Transition mounted={isFetching} transition="fade" duration={800}>
+          <Transition mounted={isFetching} transition="fade" duration={500}>
             {(styles) => (
               <div style={{ ...styles, display: "flex", alignItems: "center" }}>
                 <Loader size="xs" />
@@ -60,16 +58,21 @@ export default function LeaderboardPage() {
           ]}
         />
       </Group>
-      <AnimatePresence>
-        {!isFetching && data && (
-          <FadeInTransition mt="md">
+      <Transition
+        mounted={!isFetching}
+        transition="fade"
+        duration={500}
+        exitDuration={500}
+      >
+        {(styles) => (
+          <Box mt="lg" style={styles}>
             {topUsers && topUsers.length === 3 && (
               <TopPerformers topUsers={topUsers} />
             )}
-            <LeaderboardDataTable data={data} />
-          </FadeInTransition>
+            {data && <LeaderboardDataTable data={data} />}
+          </Box>
         )}
-      </AnimatePresence>
-    </Layout>
+      </Transition>
+    </>
   );
 }

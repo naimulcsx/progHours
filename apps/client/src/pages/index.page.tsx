@@ -23,15 +23,13 @@ import {
   useComputedColorScheme
 } from "@mantine/core";
 
-import { Layout } from "~/modules/common/components/Layout";
-
 export default function HomePage() {
   const computedColorScheme = useComputedColorScheme("light", {
     getInitialValueInEffect: true
   });
 
   return (
-    <Layout withContainer={false}>
+    <>
       <Helmet>
         <title>progHours - Code. Compete. Conquer!</title>
       </Helmet>
@@ -161,7 +159,7 @@ export default function HomePage() {
           </Text>
         </Container>
       </Box>
-    </Layout>
+    </>
   );
 }
 
