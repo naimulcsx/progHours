@@ -7,7 +7,7 @@ import { notifications } from "@mantine/notifications";
 import { storage } from "./storage";
 
 export const axios = Axios.create({
-  baseURL: "http://localhost:3333/api/v1"
+  baseURL: "https://ph-api.apps.naimulhaque.com/api/v1"
 });
 
 axios.interceptors.request.use((config: InternalAxiosRequestConfig) => {

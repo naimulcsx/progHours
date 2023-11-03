@@ -1,6 +1,7 @@
 /// <reference types="vitest" />
 import react from "@vitejs/plugin-react";
-import { defineConfig } from "vite";
+import { visualizer } from "rollup-plugin-visualizer";
+import { type PluginOption, defineConfig, splitVendorChunkPlugin } from "vite";
 import viteTsConfigPaths from "vite-tsconfig-paths";
 
 export default defineConfig({
@@ -16,7 +17,12 @@ export default defineConfig({
     host: "localhost"
   },
 
-  plugins: [react(), viteTsConfigPaths()]
+  plugins: [
+    react(),
+    viteTsConfigPaths(),
+    splitVendorChunkPlugin(),
+    visualizer() as PluginOption
+  ]
 
   // Uncomment this if you are using workers.
   // worker: {

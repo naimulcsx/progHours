@@ -13,7 +13,7 @@ import { ProfileHeader } from "~/modules/profile/components/ProfileHeader";
 import { ProfileTab } from "~/modules/profile/components/ProfileTab";
 import { SubmissionsTab } from "~/modules/profile/components/SubmissionsTab";
 
-export function UserProfilePage() {
+export default function UserProfilePage() {
   const navigate = useNavigate();
 
   const { username, tabValue } = useParams();

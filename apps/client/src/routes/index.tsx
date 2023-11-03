@@ -1,40 +1,86 @@
-import { ReactNode } from "react";
+import React, { ReactNode, Suspense } from "react";
 import { Navigate, RouteObject } from "react-router-dom";
 
-import SignInPage from "~/pages/auth/sign-in.page";
-import SignUpPage from "~/pages/auth/sign-up.page";
-import GroupActivityPage from "~/pages/dashboard/groups/activity.page";
-import DashboardLeaderboardPage from "~/pages/dashboard/leaderboard.page";
-import OverviewPage from "~/pages/dashboard/overview.page";
-import SettingsPage from "~/pages/dashboard/settings.page";
-import SubmissionsPage from "~/pages/dashboard/submissions.page";
-import HomePage from "~/pages/index.page";
-import LeaderboardPage from "~/pages/leaderboard.page";
-import { UserProfilePage } from "~/pages/profile/profile.page";
+const DashboardLeaderboardPage = React.lazy(
+  () => import("~/pages/dashboard/leaderboard.page")
+);
+const UserProfilePage = React.lazy(
+  () => import("~/pages/profile/profile.page")
+);
+const SignInPage = React.lazy(() => import("~/pages/auth/sign-in.page"));
+const SignUpPage = React.lazy(() => import("~/pages/auth/sign-up.page"));
+const HomePage = React.lazy(() => import("~/pages/index.page"));
+const OverviewPage = React.lazy(
+  () => import("~/pages/dashboard/overview.page")
+);
+const SettingsPage = React.lazy(
+  () => import("~/pages/dashboard/settings.page")
+);
+const SubmissionsPage = React.lazy(
+  () => import("~/pages/dashboard/submissions.page")
+);
+const LeaderboardPage = React.lazy(() => import("~/pages/leaderboard.page"));
 
 const defineRoute = (path: string, element: ReactNode) => ({ path, element });
 
 export const getRoutes = (isLoggedIn: boolean): RouteObject[] => [
-  defineRoute("/", isLoggedIn ? <HomePage /> : <HomePage />),
+  defineRoute(
+    "/",
+    <Suspense>
+      <HomePage />
+    </Suspense>
+  ),
   defineRoute(
     "/leaderboard",
-    isLoggedIn ? <DashboardLeaderboardPage /> : <LeaderboardPage />
+    isLoggedIn ? (
+      <Suspense>
+        <DashboardLeaderboardPage />
+      </Suspense>
+    ) : (
+      <Suspense>
+        <LeaderboardPage />
+      </Suspense>
+    )
   ),
   defineRoute(
     "/auth/sign-in",
-    isLoggedIn ? <Navigate to="/" /> : <SignInPage />
+    isLoggedIn ? (
+      <Navigate to="/" />
+    ) : (
+      <Suspense>
+        <SignInPage />
+      </Suspense>
+    )
   ),
   defineRoute(
     "/auth/sign-up",
-    isLoggedIn ? <Navigate to="/" /> : <SignUpPage />
+    isLoggedIn ? (
+      <Navigate to="/" />
+    ) : (
+      <Suspense>
+        <SignUpPage />
+      </Suspense>
+    )
   ),
   defineRoute(
     "/overview",
-    isLoggedIn ? <OverviewPage /> : <Navigate to="/auth/login" />
+    isLoggedIn ? (
+      <Suspense>
+        <OverviewPage />
+      </Suspense>
+    ) : (
+      <Navigate to="/auth/login" />
+    )
   ),
   defineRoute(
     "/submissions",
-    isLoggedIn ? <SubmissionsPage /> : <Navigate to="/auth/login" />
+    isLoggedIn ? (
+      <Suspense>
+        <SubmissionsPage />
+      </Suspense>
+    ) : (
+      <Navigate to="/auth/login" />
+    )
   ),
   defineRoute(
     "/settings",
@@ -46,9 +92,24 @@ export const getRoutes = (isLoggedIn: boolean): RouteObject[] => [
   ),
   defineRoute(
     "/settings/:tabValue",
-    isLoggedIn ? <SettingsPage /> : <Navigate to="/auth/sign-in" />
+    isLoggedIn ? (
+      <Suspense>
+        <SettingsPage />
+      </Suspense>
+    ) : (
+      <Navigate to="/auth/sign-in" />
+    )
   ),
-  defineRoute("/@/:username", <UserProfilePage />),
-  defineRoute("/@/:username/:tabValue", <UserProfilePage />),
-  defineRoute("/groups/table", <GroupActivityPage />)
+  defineRoute(
+    "/@/:username",
+    <Suspense>
+      <UserProfilePage />
+    </Suspense>
+  ),
+  defineRoute(
+    "/@/:username/:tabValue",
+    <Suspense>
+      <UserProfilePage />
+    </Suspense>
+  )
 ];
