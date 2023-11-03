@@ -17,8 +17,6 @@ import {
 import { useForm, zodResolver } from "@mantine/form";
 import { notifications } from "@mantine/notifications";
 
-import { Layout } from "~/modules/common/components/Layout";
-
 import { useSignUpMutation } from "@proghours/data-access";
 
 const signUpSchema = z.object({
@@ -57,7 +55,7 @@ export default function SignUpPage() {
     }
   });
   return (
-    <Layout>
+    <>
       <Helmet>
         <title>Sign Up | progHours</title>
       </Helmet>
@@ -137,6 +135,6 @@ export default function SignUpPage() {
           </Stack>
         </Box>
       </Box>
-    </Layout>
+    </>
   );
 }

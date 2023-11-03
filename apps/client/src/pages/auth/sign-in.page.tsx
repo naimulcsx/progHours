@@ -19,8 +19,6 @@ import { notifications } from "@mantine/notifications";
 
 import { storage, useLoginMutation } from "@proghours/data-access";
 
-import { Layout } from "~/modules/common/components/Layout";
-
 const signInSchema = z.object({
   username: z
     .string()
@@ -56,7 +54,7 @@ export default function SignInPage() {
     validate: zodResolver(signInSchema)
   });
   return (
-    <Layout>
+    <>
       <Helmet>
         <title>Sign In | progHours</title>
       </Helmet>
@@ -122,6 +120,6 @@ export default function SignInPage() {
           </Stack>
         </Box>
       </Box>
-    </Layout>
+    </>
   );
 }
