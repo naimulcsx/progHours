@@ -76,6 +76,7 @@ export class AuthController {
     description: "Invalid UID or password"
   })
   async signIn(@Body() signInDto: SignInDto) {
+    console.log(signInDto);
     return this.authService.signIn(signInDto);
   }
 }

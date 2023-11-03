@@ -132,7 +132,9 @@ export default function HomePage() {
                 >
                   {service.icon}
                   <Title order={4} lh={1.25}>
-                    {service.title}
+                    {service.title.map((s, i) => (
+                      <span key={i}>{s}</span>
+                    ))}
                   </Title>
                   <Text>{service.desc}</Text>
                 </Stack>

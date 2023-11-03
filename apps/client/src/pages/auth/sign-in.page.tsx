@@ -20,10 +20,7 @@ import { notifications } from "@mantine/notifications";
 import { storage, useLoginMutation } from "@proghours/data-access";
 
 const signInSchema = z.object({
-  username: z
-    .string()
-    .trim()
-    .regex(/^(c|C|e|E|et|ET|cce|CCE)[0-9]{6}$/, "Invalid University ID"),
+  username: z.string().min(6),
   password: z.string().trim().min(8, "Password is required")
 });
 
@@ -96,8 +93,8 @@ export default function SignInPage() {
             >
               <Stack>
                 <TextInput
-                  label="University ID"
-                  placeholder="Enter your University ID"
+                  label="Username"
+                  placeholder="Enter your Username"
                   leftSection={<IconAt size={16} />}
                   withAsterisk
                   {...form.getInputProps("username")}

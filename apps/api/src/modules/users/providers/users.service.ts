@@ -40,9 +40,7 @@ export class UsersService {
   async getUser(username: string) {
     username = username.toLowerCase();
     const user = await this.usersRepository.getByUsername(username);
-    if (!user) {
-      throw new NotFoundException();
-    }
+    if (!user) return null;
     return user;
   }
 

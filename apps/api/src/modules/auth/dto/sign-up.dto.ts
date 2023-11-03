@@ -1,4 +1,4 @@
-import { IsEmail, IsString, Matches, MinLength } from "class-validator";
+import { IsEmail, IsString, MinLength } from "class-validator";
 
 import { ApiProperty } from "@nestjs/swagger";
 
@@ -12,10 +12,10 @@ export class SignUpDto {
 
   @ApiProperty({
     description: "User username",
-    example: "C181065",
-    pattern: "^(c|C|e|E|et|ET|cce|CCE)[0-9]{6}$"
+    example: "C181065"
   })
-  @Matches(/^(c|C|e|E|et|ET|cce|CCE)[0-9]{6}$/, { message: "Invalid UID" })
+  @IsString()
+  @MinLength(6)
   username: string;
 
   @ApiProperty({
@@ -30,6 +30,7 @@ export class SignUpDto {
     example: "YQ3jwr6ycN",
     minLength: 8
   })
+  @IsString()
   @MinLength(8)
   password: string;
 }
