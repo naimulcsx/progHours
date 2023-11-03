@@ -129,7 +129,7 @@ export function ProfileTab() {
                       component={Link}
                       target="_blank"
                       to={`https://codeforces.com/profile/${handle}`}
-                      variant="msu-secondary"
+                      variant="proghours-ui-secondary"
                       leftSection={handleTypeIcon[type]}
                       rightSection={<IconExternalLink size={16} />}
                     >

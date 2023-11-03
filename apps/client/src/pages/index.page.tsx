@@ -39,7 +39,7 @@ export default function HomePage() {
     "--hex-bg-image":
       'url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPjxkZWZzPjxwYXR0ZXJuIGlkPSJhIiBwYXR0ZXJuVW5pdHM9InVzZXJTcGFjZU9uVXNlIiB3aWR0aD0iMjkiIGhlaWdodD0iNTAuMTE1IiBwYXR0ZXJuVHJhbnNmb3JtPSJzY2FsZSgyKSI+PHJlY3Qgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgZmlsbD0iaHNsYSgwLDAlLDEwMCUsMSkiLz48cGF0aCBkPSJNMTQuNDk4IDE2Ljg1OCAwIDguNDg4LjAwMi04LjI1N2wxNC41LTguMzc0TDI5LTguMjZsLS4wMDIgMTYuNzQ1em0wIDUwLjA2TDAgNTguNTQ4bC4wMDItMTYuNzQ1IDE0LjUtOC4zNzNMMjkgNDEuOGwtLjAwMiAxNi43NDR6TTI4Ljk5NiA0MS44bC0xNC40OTgtOC4zNy4wMDItMTYuNzQ0TDI5IDguMzEybDE0LjQ5OCA4LjM3LS4wMDIgMTYuNzQ1em0tMjkgMC0xNC40OTgtOC4zNy4wMDItMTYuNzQ0TDAgOC4zMTJsMTQuNDk4IDguMzctLjAwMiAxNi43NDV6IiBzdHJva2Utd2lkdGg9Ii41IiBzdHJva2U9ImhzbGEoMjE2LCAyMyUsIDQzJSwgMSkiIGZpbGw9Im5vbmUiLz48L3BhdHRlcm4+PC9kZWZzPjxyZWN0IHdpZHRoPSI4MDAlIiBoZWlnaHQ9IjgwMCUiIHRyYW5zZm9ybT0idHJhbnNsYXRlKC0zOCAtNi40NikiIGZpbGw9InVybCgjYSkiLz48L3N2Zz4=")',
     backgroundSize: "100%",
-    background: `linear-gradient(180deg, hsl(var(--secondary) / 0.98), hsl(var(--secondary) / 0.95)), var(--hex-bg-image)`
+    background: `linear-gradient(180deg, hsl(var(--secondary) / 0.99) 40%, hsl(var(--background) / 0.925)), var(--hex-bg-image)`
   };
 
   return (

@@ -117,7 +117,7 @@ export function Header() {
                 <Menu.Target>
                   <Button
                     fw={600}
-                    variant="msu-secondary"
+                    variant="proghours-ui-secondary"
                     rightSection={<IconChevronDown size={16} />}
                   >
                     {user.fullName}
@@ -142,7 +142,7 @@ export function Header() {
                     leftSection={<IconLogout width={18} height={18} />}
                     onClick={handleLogout}
                   >
-                    Logout
+                    Log Out
                   </Menu.Item>
                 </Menu.Dropdown>
               </Menu>

@@ -84,7 +84,11 @@ export function AboutSkillsSettings() {
             form.setFieldValue("skills", values as never);
           }}
         />
-        <Button disabled={isLoading} type="submit" variant="msu-secondary">
+        <Button
+          disabled={isLoading}
+          type="submit"
+          variant="proghours-ui-secondary"
+        >
           Update
         </Button>
       </Stack>
