@@ -47,7 +47,7 @@ const withSuspenseDashboardLayout = (PageComonent: React.FC): ReactNode => {
 };
 
 export const getRoutes = (isLoggedIn: boolean): RouteObject[] => [
-  defineRoute("/", withSuspenseLayout(HomePage)),
+  defineRoute("/", withSuspenseLayout(HomePage, { withContainer: false })),
   defineRoute(
     "/leaderboard",
     isLoggedIn
@@ -94,6 +94,12 @@ export const getRoutes = (isLoggedIn: boolean): RouteObject[] => [
       <Navigate to="/auth/sign-in" />
     )
   ),
-  defineRoute("/@/:username", withSuspenseLayout(UserProfilePage)),
-  defineRoute("/@/:username/:tabValue", withSuspenseLayout(UserProfilePage))
+  defineRoute(
+    "/@/:username",
+    withSuspenseLayout(UserProfilePage, { withContainer: false })
+  ),
+  defineRoute(
+    "/@/:username/:tabValue",
+    withSuspenseLayout(UserProfilePage, { withContainer: false })
+  )
 ];

@@ -104,7 +104,7 @@ export function Header() {
                 <Button
                   component={Link}
                   to="/auth/sign-in"
-                  variant="msu-secondary"
+                  variant="proghours-ui-secondary"
                 >
                   Sign In
                 </Button>

@@ -74,7 +74,7 @@ export const resolvers: Record<AccentColor, CSSVariablesResolver> = {
       "--secondary": "210 40% 96.1%",
       "--secondary-foreground": "222.2 47.4% 11.2%",
       "--muted": "210 40% 96.1%",
-      "--muted-foreground": "215.4 16.3% 45%",
+      "--muted-foreground": "215.4 16.3% 35%",
       "--accent": "210 40% 96.1%",
       "--accent-foreground": "222.2 47.4% 11.2%",
       "--destructive": "0 84.2% 60.2%",
@@ -387,7 +387,7 @@ export const theme = createTheme({
       classNames: titleClasses
     }),
     Button: Button.extend({
-      defaultProps: { variant: "msu-primary" },
+      defaultProps: { variant: "proghours-ui" },
       classNames: buttonClasses
     }),
     Text: Text.extend({

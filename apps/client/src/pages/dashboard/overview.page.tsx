@@ -1,5 +1,4 @@
 import { IconInfoCircle } from "@tabler/icons-react";
-import { AnimatePresence } from "framer-motion";
 import { Helmet } from "react-helmet-async";
 
 import {
@@ -16,7 +15,6 @@ import {
 import { useActiveProfile } from "@proghours/data-access";
 
 import { IconEnergy, IconFlag, IconPoints, IconTime } from "~/assets/icons";
-import { FadeInTransition } from "~/modules/common/components/FadeInTransition";
 import { formatSolveTime } from "~/modules/common/utils/formatSolveTime";
 import { StatCard } from "~/modules/dashboard/overview/components/StatCard";
 import { AvgDifficultyChart } from "~/modules/dashboard/overview/components/charts/AvgDifficultyChart";
@@ -47,50 +45,59 @@ export default function OverviewPage() {
           </Transition>
         </Group>
 
-        <AnimatePresence>
-          {!isFetching && data && (
-            <FadeInTransition>
-              <SimpleGrid mt="lg" cols={4}>
-                <StatCard
-                  icon={<IconPoints width={40} height={40} />}
-                  label="Points"
-                  value="778.22"
-                />
-                <StatCard
-                  icon={<IconFlag width={40} height={40} />}
-                  label="Problem Solved"
-                  value={data.totalSolved}
-                />
-                <StatCard
-                  icon={<IconTime width={40} height={40} />}
-                  label="Solve Time"
-                  value={formatSolveTime(data.totalSolveTime)}
-                />
-                <StatCard
-                  icon={<IconEnergy width={40} height={40} />}
-                  label="Average Difficulty"
-                  value={(
-                    data.totalDifficulty / data.totalSolvedWithDifficulty
-                  ).toFixed(2)}
-                />
-              </SimpleGrid>
-              <SimpleGrid mt="md" cols={2}>
-                <Paper p="lg">
-                  <WeeklySolvedChart data={data.weeklyStatistics} />
-                </Paper>
-                <Paper p="lg">
-                  <TopSolvedTagsChart data={data.solveCountByTags} />
-                </Paper>
-                <Paper p="lg">
-                  <TimeSpentChart data={data.solveTimeByTags} />
-                </Paper>
-                <Paper p="lg">
-                  <AvgDifficultyChart data={data.weeklyStatistics} />
-                </Paper>
-              </SimpleGrid>
-            </FadeInTransition>
+        <Transition
+          mounted={!isFetching}
+          transition="fade"
+          duration={400}
+          exitDuration={400}
+        >
+          {(styles) => (
+            <div style={styles}>
+              {data && (
+                <>
+                  <SimpleGrid mt="lg" cols={4}>
+                    <StatCard
+                      icon={<IconPoints width={40} height={40} />}
+                      label="Points"
+                      value="778.22"
+                    />
+                    <StatCard
+                      icon={<IconFlag width={40} height={40} />}
+                      label="Problem Solved"
+                      value={data.totalSolved}
+                    />
+                    <StatCard
+                      icon={<IconTime width={40} height={40} />}
+                      label="Solve Time"
+                      value={formatSolveTime(data.totalSolveTime)}
+                    />
+                    <StatCard
+                      icon={<IconEnergy width={40} height={40} />}
+                      label="Average Difficulty"
+                      value={(
+                        data.totalDifficulty / data.totalSolvedWithDifficulty
+                      ).toFixed(2)}
+                    />
+                  </SimpleGrid>
+                  <SimpleGrid mt="md" cols={2}>
+                    <Paper p="lg">
+                      <WeeklySolvedChart data={data.weeklyStatistics} />
+                    </Paper>
+                    <Paper p="lg">
+                      <TopSolvedTagsChart data={data.solveCountByTags} />
+                    </Paper>
+                    <Paper p="lg">
+                      <TimeSpentChart data={data.solveTimeByTags} />
+                    </Paper>
+                    <Paper p="lg">
+                      <AvgDifficultyChart data={data.weeklyStatistics} />
+                    </Paper>
+                  </SimpleGrid>
+                </>
+              )}
+            </div>
           )}
-        </AnimatePresence>
+        </Transition>
       </Container>
     </>
   );
