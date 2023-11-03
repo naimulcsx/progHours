@@ -9,7 +9,7 @@ import { Anchor, Box, Center, Stack, Text, Title } from "@mantine/core";
 import { useForm, zodResolver } from "@mantine/form";
 import { notifications } from "@mantine/notifications";
 
-import { client } from "@proghours/data-access";
+import { client, storage } from "@proghours/data-access";
 import { SignInForm, SignInSchema, signInSchema } from "@proghours/ui";
 
 export const action = () => null;
@@ -33,6 +33,7 @@ export default function SignInPage() {
           title: "Success",
           message: "Successfully logged in!"
         });
+        storage.setToken({ accessToken: res.accessToken });
         Cookies.set("accessToken", res.accessToken);
         if (dummyFormRef.current) submit(dummyFormRef.current);
         navigate("/");

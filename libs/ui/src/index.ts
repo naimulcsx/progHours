@@ -8,3 +8,4 @@ export * from "./modules/auth";
 export * from "./modules/homepage";
 export * from "./modules/leaderboard";
 export * from "./modules/common";
+export * from "./modules/dashboard";

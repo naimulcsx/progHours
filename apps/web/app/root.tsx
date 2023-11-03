@@ -27,6 +27,7 @@ import "@mantine/dates/styles.css";
 import { ModalsProvider } from "@mantine/modals";
 import { Notifications } from "@mantine/notifications";
 import "@mantine/notifications/styles.css";
+import "@mantine/nprogress/styles.css";
 
 import {
   JwtPayload,
