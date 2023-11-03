@@ -33,4 +33,11 @@ export class SignUpDto {
   @IsString()
   @MinLength(8)
   password: string;
+
+  @ApiProperty({
+    description: "Invitation Code",
+    example: "YOUR_INVITATION_CODE"
+  })
+  @IsString()
+  invitationCode: string;
 }

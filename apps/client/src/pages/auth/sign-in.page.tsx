@@ -20,7 +20,7 @@ import { notifications } from "@mantine/notifications";
 import { storage, useLoginMutation } from "@proghours/data-access";
 
 const signInSchema = z.object({
-  username: z.string().min(6),
+  username: z.string().trim().min(6),
   password: z.string().trim().min(8, "Password is required")
 });
 

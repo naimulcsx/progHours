@@ -1,6 +1,7 @@
 import { User } from "@prisma/client";
 
 import {
+  BadRequestException,
   ConflictException,
   Injectable,
   InternalServerErrorException,
@@ -24,7 +25,16 @@ export class AuthService {
     private readonly configService: ConfigService
   ) {}
 
-  async signUp(signUpDto: SignUpDto): Promise<Omit<User, "password">> {
+  async signUp({
+    invitationCode,
+    ...signUpDto
+  }: SignUpDto): Promise<Omit<User, "password">> {
+    const validCodes = process.env.INVITATION_CODES.split(",");
+
+    if (!validCodes.includes(invitationCode)) {
+      throw new BadRequestException("Invalid invitation code!");
+    }
+
     try {
       const hashedPassword = await this.hashingService.hash(signUpDto.password);
       const user = await this.usersService.createUser({

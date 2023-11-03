@@ -39,7 +39,8 @@ import { UsersModule } from "~/modules/users/users.module";
         REDIS_HOST: Joi.string().required(),
         REDIS_PASSWORD: Joi.string(),
         CODECHEF_CLIENT_ID: Joi.string(),
-        CODECHEF_SECRET: Joi.string()
+        CODECHEF_SECRET: Joi.string(),
+        INVITATION_CODES: Joi.string().required()
       })
     }),
     CacheModule.registerAsync({
