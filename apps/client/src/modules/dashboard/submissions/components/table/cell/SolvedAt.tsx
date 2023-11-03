@@ -1,7 +1,7 @@
 import { IconCheck } from "@tabler/icons-react";
 import { useQueryClient } from "@tanstack/react-query";
 import { CellContext } from "@tanstack/react-table";
-import moment from "moment";
+import dayjs from "dayjs";
 import { useState } from "react";
 
 import { DatePickerInput } from "@mantine/dates";
@@ -41,13 +41,7 @@ export function SolvedAtCell(cell: CellContext<SubmissionRow, unknown>) {
         setSolvedAt(value);
         mutate({
           id: cell.row.original.id,
-          solvedAt: moment
-            .utc({
-              year: value?.getFullYear(),
-              date: value.getDate(),
-              month: value.getMonth()
-            })
-            .toDate()
+          solvedAt: dayjs(value).startOf("day").toDate()
         });
       }}
     />

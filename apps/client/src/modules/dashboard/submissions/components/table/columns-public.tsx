@@ -1,5 +1,5 @@
 import { ColumnDef } from "@tanstack/react-table";
-import moment from "moment";
+import dayjs from "dayjs";
 
 import { Badge, Group } from "@mantine/core";
 
@@ -58,7 +58,7 @@ export const columnsPublic: ColumnDef<SubmissionRow>[] = [
   },
   {
     accessorKey: "solvedAt",
-    cell: (cell) => moment(cell.row.original.createdAt).format("DD-MM-YYYY"),
+    cell: (cell) => dayjs(cell.row.original.createdAt).format("DD-MM-YYYY"),
     size: 120,
     header: "Solved at"
   }

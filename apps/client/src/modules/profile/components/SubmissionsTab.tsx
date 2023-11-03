@@ -1,4 +1,4 @@
-import moment from "moment";
+import dayjs from "dayjs";
 import { useEffect, useState } from "react";
 import { useParams, useSearchParams } from "react-router-dom";
 
@@ -30,18 +30,19 @@ export function SubmissionsTab() {
   useEffect(() => {
     const date = searchParams.get("date");
     if (date) {
-      setValue(moment(date, "DD-MM-YYYY").toDate());
+      setValue(dayjs(date, "DD-MM-YYYY").toDate());
     }
   }, [searchParams]);
 
   useEffect(() => {
     if (value && data) {
       setFilteredData(
-        data.filter(
-          (el) =>
-            moment(el.solvedAt).utcOffset(0).format("DD-MM-YYYY") ===
-            moment(value).utcOffset(0).format("DD-MM-YYYY")
-        )
+        data.filter((el) => {
+          return (
+            dayjs(el.solvedAt).format("DD-MM-YYYY") ===
+            dayjs(value).format("DD-MM-YYYY")
+          );
+        })
       );
     }
   }, [data, value]);
