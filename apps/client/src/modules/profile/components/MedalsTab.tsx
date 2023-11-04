@@ -69,7 +69,7 @@ export function MedalsTab() {
   return (
     <Box mt="lg">
       {data && (
-        <SimpleGrid cols={6}>
+        <SimpleGrid cols={{ base: 2, md: 6 }}>
           {medals.map((medal, i) => {
             const unlocked = data.totalSolved >= medal.solvedRequired;
             return (

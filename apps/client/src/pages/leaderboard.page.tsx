@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Helmet } from "react-helmet-async";
 
-import { Box, Group, Select, Title, Transition } from "@mantine/core";
+import { Box, Group, Loader, Select, Title, Transition } from "@mantine/core";
 
 import { LeaderboardType, useLeaderboard } from "@proghours/data-access";
 
@@ -20,6 +20,13 @@ export default function LeaderboardPage() {
       <Group justify="space-between">
         <Group style={{ alignItems: "center" }}>
           <Title order={4}>Leaderboard</Title>
+          <Transition mounted={isFetching} transition="fade" duration={800}>
+            {(styles) => (
+              <div style={{ ...styles, display: "flex", alignItems: "center" }}>
+                <Loader size="xs" />
+              </div>
+            )}
+          </Transition>
         </Group>
         <Select
           size="xs"
@@ -29,6 +36,7 @@ export default function LeaderboardPage() {
           onChange={(type) => {
             if (type) setType(type as LeaderboardType);
           }}
+          maw={120}
           data={[
             { label: "All time", value: "full" },
             { label: "Current week", value: "currentWeek" },

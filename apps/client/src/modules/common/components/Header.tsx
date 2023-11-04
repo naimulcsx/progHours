@@ -31,7 +31,6 @@ import { useUser } from "~/modules/auth/hooks/useUser";
 export function Header() {
   const { user } = useUser();
   const { handleLogout } = useLogout();
-  const { colorScheme, setColorScheme } = useMantineColorScheme();
   const [opened, { toggle, close }] = useDisclosure();
 
   return (
@@ -73,37 +72,7 @@ export function Header() {
             </Flex>
           </Group>
           <Group visibleFrom="sm">
-            <Menu width={120}>
-              <Menu.Target>
-                <ActionIcon size="lg" style={{ border: 0 }}>
-                  {colorScheme === "dark" && (
-                    <IconMoonStars color="#fcc419" size={16} />
-                  )}
-                  {colorScheme === "light" && <IconSun size={16} />}
-                  {colorScheme === "auto" && <IconDeviceDesktop size={16} />}
-                </ActionIcon>
-              </Menu.Target>
-              <Menu.Dropdown>
-                <Menu.Item
-                  leftSection={<IconSun size={16} />}
-                  onClick={() => setColorScheme("light")}
-                >
-                  Light
-                </Menu.Item>
-                <Menu.Item
-                  leftSection={<IconMoonStars size={16} />}
-                  onClick={() => setColorScheme("dark")}
-                >
-                  Dark
-                </Menu.Item>
-                <Menu.Item
-                  leftSection={<IconDeviceDesktop size={16} />}
-                  onClick={() => setColorScheme("auto")}
-                >
-                  Auto
-                </Menu.Item>
-              </Menu.Dropdown>
-            </Menu>
+            <ColorSchemeSwitcher />
             {!user ? (
               <>
                 <Button
@@ -154,6 +123,7 @@ export function Header() {
             )}
           </Group>
           <Group hiddenFrom="sm">
+            <ColorSchemeSwitcher />
             <Burger
               opened={opened}
               onClick={toggle}
@@ -221,5 +191,42 @@ export function Header() {
         </Flex>
       </Container>
     </AppShellHeader>
+  );
+}
+
+function ColorSchemeSwitcher() {
+  const { colorScheme, setColorScheme } = useMantineColorScheme();
+  return (
+    <Menu width={120}>
+      <Menu.Target>
+        <ActionIcon size="lg" style={{ border: 0 }}>
+          {colorScheme === "dark" && (
+            <IconMoonStars color="#fcc419" size={16} />
+          )}
+          {colorScheme === "light" && <IconSun size={16} />}
+          {colorScheme === "auto" && <IconDeviceDesktop size={16} />}
+        </ActionIcon>
+      </Menu.Target>
+      <Menu.Dropdown>
+        <Menu.Item
+          leftSection={<IconSun size={16} />}
+          onClick={() => setColorScheme("light")}
+        >
+          Light
+        </Menu.Item>
+        <Menu.Item
+          leftSection={<IconMoonStars size={16} />}
+          onClick={() => setColorScheme("dark")}
+        >
+          Dark
+        </Menu.Item>
+        <Menu.Item
+          leftSection={<IconDeviceDesktop size={16} />}
+          onClick={() => setColorScheme("auto")}
+        >
+          Auto
+        </Menu.Item>
+      </Menu.Dropdown>
+    </Menu>
   );
 }

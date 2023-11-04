@@ -14,14 +14,16 @@
 
 .card {
   position: relative;
-  background: hsl(var(--secondary) / 0.1);
+  background: #467bed;
   border-radius: var(--mantine-radius-md);
-  backdrop-filter: blur(8px);
   color: hsl(var(--primary-foreground));
   padding: var(--mantine-spacing-lg);
   @mixin dark {
     color: hsl(var(--foreground));
-    background: hsl(var(--card) / 0.25);
+    background: #1a2435;
+    @media (max-width: $mantine-breakpoint-md) {
+      background: #2a374c;
+    }
   }
   @media (max-width: $mantine-breakpoint-md) {
     display: flex;

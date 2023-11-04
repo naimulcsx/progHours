@@ -25,7 +25,7 @@ export default function SettingsPage() {
       </Helmet>
       <Container size="md">
         <Group>
-          <Title order={3}>Settings</Title>
+          <Title order={4}>Settings</Title>
         </Group>
         <Tabs
           mt="md"

@@ -2,7 +2,7 @@ import dayjs from "dayjs";
 import { useEffect, useState } from "react";
 import { useParams, useSearchParams } from "react-router-dom";
 
-import { Box, Flex, Paper, Text, Title, Transition } from "@mantine/core";
+import { Box, Flex, Paper, Title, Transition } from "@mantine/core";
 import { DatePickerInput } from "@mantine/dates";
 
 import {
@@ -52,10 +52,9 @@ export function SubmissionsTab() {
       <Flex justify="space-between">
         <Title order={4}>Submissions</Title>
         <Flex align="center" gap="xs">
-          <Text size="xs">Filter by Date:</Text>
           <DatePickerInput
             size="xs"
-            placeholder="Pick date"
+            placeholder="Filter by date"
             value={value}
             onChange={setValue}
             miw={140}

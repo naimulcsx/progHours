@@ -23,7 +23,7 @@ export default function SubmissionsPage() {
       </Helmet>
       <Container size="xl" px={0}>
         <Group style={{ alignItems: "center" }}>
-          <Title order={3}>Submissions</Title>
+          <Title order={4}>Submissions</Title>
           <Transition mounted={isFetching} transition="fade" duration={800}>
             {(styles) => (
               <div style={{ ...styles, display: "flex", alignItems: "center" }}>

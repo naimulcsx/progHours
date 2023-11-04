@@ -29,7 +29,7 @@ export const TopPerformers = memo(function ({
 }) {
   const theme = useMantineTheme();
   return (
-    <Box mb="xl" p={{ base: 24, sm: "lg" }} className={classes.root}>
+    <Box mb="xl" p={{ base: 16, sm: "lg" }} className={classes.root}>
       <Box visibleFrom="sm">
         <BgPattern />
       </Box>
@@ -59,10 +59,10 @@ export const TopPerformers = memo(function ({
               {idx === 2 && <IconThirdPlace className={classes.icon} />}
               <Box>
                 <Text
-                  fw={600}
+                  fw={{ base: 500, md: 600 }}
                   lineClamp={1}
                   className={classes.text}
-                  fz={theme.fontSizes.lg}
+                  fz={{ base: theme.fontSizes.sm, md: theme.fontSizes.lg }}
                 >
                   {user.fullName}
                 </Text>

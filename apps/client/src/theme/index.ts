@@ -10,6 +10,7 @@ import {
   CSSVariablesResolver,
   Container,
   Divider,
+  Drawer,
   Input,
   Loader,
   Menu,
@@ -41,6 +42,7 @@ import badgeClasses from "./css/Badge.module.css";
 import buttonClasses from "./css/Button.module.css";
 import containerClasses from "./css/Container.module.css";
 import dividerClasses from "./css/Divider.module.css";
+import drawerClasses from "./css/Drawer.module.css";
 import inputClasses from "./css/Input.module.css";
 import loaderClasses from "./css/Loader.module.css";
 import menuClasses from "./css/Menu.module.css";
@@ -389,6 +391,10 @@ export const theme = createTheme({
     Button: Button.extend({
       defaultProps: { variant: "proghours-ui" },
       classNames: buttonClasses
+    }),
+    Drawer: Drawer.extend({
+      defaultProps: { variant: "proghours-ui" },
+      classNames: drawerClasses
     }),
     Text: Text.extend({
       defaultProps: { variant: "proghours-ui" },

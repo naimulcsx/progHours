@@ -172,15 +172,20 @@ export default function HomePage() {
         </Container>
       </Box>
 
-      <Box component="footer" mt={56} mb={24}>
+      <Box
+        component="footer"
+        mt={56}
+        py={24}
+        style={{ background: "hsl(var(--secondary))" }}
+      >
         <Container size="xl" style={{ textAlign: "center" }}>
-          <Title order={4}>
+          <Text size="lg" style={{ color: "hsl(var(--foreground))" }}>
             Made with{" "}
             <span role="img" aria-label="love emoji">
               ❤️
             </span>{" "}
             in Bangladesh
-          </Title>
+          </Text>
           <Text mt="sm">
             &copy; Copyright Naimul Haque {new Date().getFullYear()}. All Rights
             Reserved.

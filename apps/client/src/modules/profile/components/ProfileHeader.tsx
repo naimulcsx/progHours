@@ -1,7 +1,7 @@
 import { IconAt, IconBuildingCommunity } from "@tabler/icons-react";
 import { useParams } from "react-router-dom";
 
-import { Box, Container, Flex, Text, Title } from "@mantine/core";
+import { Box, Container, Flex, SimpleGrid, Text, Title } from "@mantine/core";
 
 import { UserProfileResponse, useUserProfile } from "@proghours/data-access";
 
@@ -17,6 +17,8 @@ import {
 } from "~/assets/icons";
 import { Avatar } from "~/modules/common/components/Avatar";
 
+import classes from "./ProfileHeader.module.css";
+
 export function ProfileHeader() {
   const { username } = useParams();
 
@@ -30,13 +32,16 @@ export function ProfileHeader() {
     <Container size="xl">
       {data && (
         <Box>
-          <Flex justify="space-between">
+          <Flex
+            direction={{ base: "column", lg: "row" }}
+            justify="space-between"
+          >
             <Box>
               <Flex gap="lg" py="md">
                 <Avatar fullName={data.fullName} size="xl" />
                 <Box>
                   <Flex align="center" gap="xs">
-                    <Title order={2} mb={4}>
+                    <Title order={3} mb={4}>
                       {data.fullName}
                     </Title>
                   </Flex>
@@ -107,7 +112,7 @@ const stats = [
 
 function HeaderStats({ data }: { data: UserProfileResponse }) {
   return (
-    <Flex>
+    <SimpleGrid cols={3} spacing={0} className={classes.stats}>
       {stats.map((stat) => {
         return (
           <Box
@@ -127,6 +132,6 @@ function HeaderStats({ data }: { data: UserProfileResponse }) {
           </Box>
         );
       })}
-    </Flex>
+    </SimpleGrid>
   );
 }

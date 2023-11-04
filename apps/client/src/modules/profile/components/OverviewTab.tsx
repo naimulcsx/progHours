@@ -36,7 +36,7 @@ export function OverviewTab() {
         />
       </Flex>
       {data && (
-        <SimpleGrid mt="md" cols={2}>
+        <SimpleGrid mt="md" cols={{ base: 1, sm: 2 }}>
           <Paper p="lg">
             <WeeklySolvedChart data={data.weeklyStatistics} />
           </Paper>

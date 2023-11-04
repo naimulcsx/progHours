@@ -1,9 +1,5 @@
 import { HandleType } from "@prisma/client";
-import {
-  IconBrandGithub,
-  IconEdit,
-  IconExternalLink
-} from "@tabler/icons-react";
+import { IconEdit, IconExternalLink } from "@tabler/icons-react";
 import { ReactNode } from "react";
 import { Link, useParams } from "react-router-dom";
 
@@ -23,7 +19,7 @@ import { modals } from "@mantine/modals";
 
 import { useUserHandles, useUserProfile } from "@proghours/data-access";
 
-import { CFIcon } from "~/assets/oj-icons";
+import { CCIcon, CFIcon } from "~/assets/oj-icons";
 import { useUser } from "~/modules/auth/hooks/useUser";
 import { HandlesSettings } from "~/modules/dashboard/settings/HandleSettings";
 
@@ -77,7 +73,7 @@ export function ProfileTab() {
     <Box>
       {data && userHandles && (
         <Grid mt="lg" gutter="xl" style={{ overflow: "initial" }}>
-          <Grid.Col span={8}>
+          <Grid.Col span={{ base: 12, md: 8 }}>
             <Stack gap="md">
               <Title order={4}>
                 About
@@ -96,7 +92,7 @@ export function ProfileTab() {
               </Stack>
             </Stack>
           </Grid.Col>
-          <Grid.Col span={4}>
+          <Grid.Col span={{ base: 12, md: 4 }}>
             <Stack style={{ position: "sticky", top: 80 }}>
               {/* skills */}
               <Title order={4}>
@@ -121,14 +117,23 @@ export function ProfileTab() {
                 {userHandles.map(({ type, handle }) => {
                   const handleTypeIcon: Record<HandleType, ReactNode> = {
                     CODEFORCES: <CFIcon height={24} width={24} />,
-                    CODECHEF: <IconBrandGithub height={24} width={24} />
+                    CODECHEF: <CCIcon height={24} width={24} />
                   };
+
+                  const getUrl = (handleType: HandleType, handle: string) => {
+                    if (handleType === "CODEFORCES")
+                      return `https://codeforces.com/profile/${handle}`;
+                    if (handleType === "CODECHEF")
+                      return `https://www.codechef.com/users/${handle}`;
+                    return "";
+                  };
+
                   return (
                     <Button
                       key={type}
                       component={Link}
                       target="_blank"
-                      to={`https://codeforces.com/profile/${handle}`}
+                      to={getUrl(type, handle)}
                       variant="proghours-ui-secondary"
                       leftSection={handleTypeIcon[type]}
                       rightSection={<IconExternalLink size={16} />}

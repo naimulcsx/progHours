@@ -32,7 +32,7 @@ export default function OverviewPage() {
 
       <Container size="xl" px={0}>
         <Group gap="xs">
-          <Title order={3}>Overview </Title>
+          <Title order={4}>Overview </Title>
           <Tooltip label="Latest data may experience a delay of up to 5 minutes.">
             <IconInfoCircle size={22} />
           </Tooltip>
