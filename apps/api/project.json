@@ -7,7 +7,11 @@
     "build-captain": {
       "executor": "nx:run-commands",
       "options": {
-        "commands": ["nx build api", "ts-node scripts/build-captain-api.ts"],
+        "commands": [
+          "ts-node scripts/generate-app-info",
+          "nx build api",
+          "ts-node scripts/build-captain-api.ts"
+        ],
         "parallel": false
       }
     },

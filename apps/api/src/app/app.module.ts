@@ -22,6 +22,8 @@ import { SubmissionsModule } from "~/modules/submissions/submissions.module";
 import { TrackerModule } from "~/modules/tracker/tracker.module";
 import { UsersModule } from "~/modules/users/users.module";
 
+import { AppController } from "./controllers/app.controller";
+
 @Module({
   imports: [
     PrometheusModule.register({
@@ -66,7 +68,7 @@ import { UsersModule } from "~/modules/users/users.module";
     LeaderboardModule,
     TrackerModule.register()
   ],
-  controllers: [],
+  controllers: [AppController],
   providers: []
 })
 export class AppModule {}

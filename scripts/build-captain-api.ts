@@ -2,7 +2,14 @@ import { copy, copyFile, exists } from "fs-extra";
 import { exec } from "node:child_process";
 import { join } from "node:path";
 
+import { computeMetaHash } from "./compute-meta-hash";
+
 (async function build() {
+  /**
+   * Compute hash
+   */
+  const buildHash = computeMetaHash([join(__dirname, "../apps/api")]);
+
   /**
    * Dockerfile
    */
