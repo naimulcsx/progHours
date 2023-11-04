@@ -30,7 +30,7 @@ export default function LeaderboardPage() {
       <Group justify="space-between">
         <Group style={{ alignItems: "center" }}>
           <Flex align="center" gap="xs">
-            <Title order={3}>Leaderboard</Title>
+            <Title order={4}>Leaderboard</Title>
             <Tooltip label="Latest data may experience a delay of up to 5 minutes.">
               <IconInfoCircle size={22} />
             </Tooltip>

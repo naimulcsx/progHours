@@ -11,10 +11,9 @@ import {
   getSortedRowModel,
   useReactTable
 } from "@tanstack/react-table";
-import { memo, useState } from "react";
+import { memo, useEffect, useState } from "react";
 
 import { Group, Pagination, ScrollArea, Table, Text } from "@mantine/core";
-import { useLocalStorage } from "@mantine/hooks";
 
 import { LeaderboardEntry } from "@proghours/data-access";
 
@@ -25,14 +24,11 @@ interface DataTableProps {
 }
 
 export const LeaderboardDataTable = memo(function ({ data }: DataTableProps) {
-  const PAGE_SIZE = 25;
+  const PAGE_SIZE = 10;
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
   const [sorting, setSorting] = useState<SortingState>([]);
-  const [columnVisibility, setColumnVisibility] =
-    useLocalStorage<VisibilityState>({
-      key: "leaderboaard_columns",
-      defaultValue: {}
-    });
+  const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
+
   const table = useReactTable({
     data,
     columns,
@@ -64,6 +60,17 @@ export const LeaderboardDataTable = memo(function ({ data }: DataTableProps) {
       sorting
     }
   });
+
+  useEffect(() => {
+    if (window.innerWidth < 960) {
+      table.getColumn("id")?.toggleVisibility(false);
+      table.getColumn("totalSolved")?.toggleVisibility(false);
+      table.getColumn("totalSolveTime")?.toggleVisibility(false);
+      table.getColumn("averageDifficulty")?.toggleVisibility(false);
+    }
+    // eslint-disable-next-line
+  }, []);
+
   return (
     <ScrollArea>
       <Table verticalSpacing="xs">

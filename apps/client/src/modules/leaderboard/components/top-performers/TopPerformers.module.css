@@ -8,6 +8,35 @@
   }
 }
 
+.card {
+  position: relative;
+  background: hsl(var(--secondary) / 0.1);
+  border-radius: var(--mantine-radius-md);
+  backdrop-filter: blur(8px);
+  color: hsl(var(--primary-foreground));
+  padding: var(--mantine-spacing-lg);
+  @mixin dark {
+    color: hsl(var(--foreground));
+    background: hsl(var(--card) / 0.25);
+  }
+  @media (max-width: $mantine-breakpoint-md) {
+    display: flex;
+    gap: var(--mantine-spacing-xs);
+    padding: var(--mantine-spacing-xs);
+  }
+}
+
+.icon {
+  height: 80px;
+  width: 80px;
+  @media (max-width: $mantine-breakpoint-lg) {
+    height: 60px;
+    width: 60px;
+    max-width: 60px;
+    flex-shrink: 0;
+  }
+}
+
 .text {
   @mixin light {
     color: hsl(var(--primary-foreground));
@@ -17,22 +46,11 @@
   }
 }
 
-.card {
-  position: relative;
-  background: hsl(var(--secondary) / 0.1);
-  border-radius: var(--mantine-radius-md);
-  backdrop-filter: blur(8px);
-  color: hsl(var(--primary-foreground));
-  @mixin dark {
-    color: hsl(var(--foreground));
-    background: hsl(var(--card) / 0.25);
+.points {
+  font-size: 24px;
+  @media (max-width: $mantine-breakpoint-md) {
+    font-size: 20px;
   }
-}
-
-.rank {
-  position: absolute;
-  top: 16px;
-  right: 24px;
 }
 
 .bgPath {

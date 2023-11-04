@@ -21,4 +21,7 @@
       font-size: 28px;
     }
   }
+  &[data-order="4"] {
+    font-size: 24px;
+  }
 }

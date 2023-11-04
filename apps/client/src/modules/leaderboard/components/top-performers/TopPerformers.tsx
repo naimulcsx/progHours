@@ -29,68 +29,57 @@ export const TopPerformers = memo(function ({
 }) {
   const theme = useMantineTheme();
   return (
-    <Box mb="xl" p="lg" className={classes.root}>
-      <BgPattern />
+    <Box mb="xl" p={{ base: 24, sm: "lg" }} className={classes.root}>
+      <Box visibleFrom="sm">
+        <BgPattern />
+      </Box>
       <Box style={{ position: "relative" }}>
         <Group justify="space-between" align="start">
           <Box>
-            <Title className={classes.text} mb={2} order={3}>
+            <Title className={classes.text} mb={4} order={4}>
               Top Performers
             </Title>
-            <Text className={classes.text} variant="text">
+            <Text className={classes.text} variant="text" mb="xs">
               The stage is set, and the world is watching. It's time to shine!
             </Text>
           </Box>
-          <Countdown />
+          <Countdown visibleFrom="sm" />
         </Group>
       </Box>
       <SimpleGrid
         mt="sm"
-        cols={3}
+        cols={{ base: 1, md: 3 }}
         style={{ position: "relative", alignItems: "flex-end" }}
       >
         {topUsers?.map((user, idx) => {
-          const _order = [1, 0, 2];
-          const _rank = ["1st", "2nd", "3rd"];
           return (
-            <Box
-              p="lg"
-              className={classes.card}
-              style={{ order: _order[idx] }}
-              key={user.userId}
-            >
+            <Box className={classes.card} key={user.userId}>
+              {idx === 0 && <IconFirstPlace className={classes.icon} />}
+              {idx === 1 && <IconSecondPlace className={classes.icon} />}
+              {idx === 2 && <IconThirdPlace className={classes.icon} />}
               <Box>
-                {idx === 0 && <IconFirstPlace />}
-                {idx === 1 && <IconSecondPlace />}
-                {idx === 2 && <IconThirdPlace />}
-                <Box>
-                  <Title fw={600} order={5} className={classes.text}>
-                    {user.fullName}
-                  </Title>
-                  <Text
-                    fw={700}
-                    lineClamp={1}
-                    fz={theme.headings.sizes.h3.fontSize}
-                    className={classes.text}
-                    variant="text"
-                  >
-                    {user.points.toFixed(2)}
+                <Text
+                  fw={600}
+                  lineClamp={1}
+                  className={classes.text}
+                  fz={theme.fontSizes.lg}
+                >
+                  {user.fullName}
+                </Text>
+                <Text
+                  fw={700}
+                  lineClamp={1}
+                  className={classes.points}
+                  variant="text"
+                >
+                  {user.points.toFixed(2)}
+                </Text>
+                <Flex gap={4} align="center">
+                  <IconAt size={16} />
+                  <Text size="sm" className={classes.text} variant="text">
+                    {user.username.toUpperCase()}
                   </Text>
-                  <Text
-                    className={classes.rank}
-                    size="xl"
-                    fw={700}
-                    variant="text"
-                  >
-                    {_rank[idx]}
-                  </Text>
-                  <Flex gap={4} align="center">
-                    <IconAt size={16} />
-                    <Text size="sm" className={classes.text} variant="text">
-                      {user.username.toUpperCase()}
-                    </Text>
-                  </Flex>
-                </Box>
+                </Flex>
               </Box>
             </Box>
           );

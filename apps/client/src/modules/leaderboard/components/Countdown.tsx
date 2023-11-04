@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
 
-import { Flex, Text, Title } from "@mantine/core";
+import { Flex, FlexProps, Text, Title } from "@mantine/core";
 
-export const Countdown = () => {
+export const Countdown = (props: FlexProps) => {
   const [countdown, setCountdown] = useState({
     days: 0,
     hours: 0,
@@ -40,7 +40,7 @@ export const Countdown = () => {
   }, []);
 
   return (
-    <Flex align="end" direction="column">
+    <Flex align="end" direction="column" {...props}>
       <Title order={5} style={{ color: "hsl(var(--primary-foreground)" }}>
         Week Ends in
       </Title>
