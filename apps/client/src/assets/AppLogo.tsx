@@ -34,7 +34,7 @@ export function AppLogo({
   const styles = {
     sm: {
       logoSize: "30px",
-      fontSize: "20px"
+      fontSize: "18px"
     },
     md: {
       logoSize: "2rem",
@@ -67,7 +67,7 @@ export function AppLogo({
           >
             progHours
           </Text>
-          <Badge>beta</Badge>
+          <Badge size="sm">beta</Badge>
         </>
       )}
     </Group>

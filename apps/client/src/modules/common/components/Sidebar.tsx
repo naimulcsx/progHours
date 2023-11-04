@@ -130,6 +130,7 @@ export function Sidebar() {
         )}
 
         <ActionIcon
+          visibleFrom="sm"
           mt="xs"
           size="xs"
           style={{

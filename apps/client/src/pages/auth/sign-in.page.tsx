@@ -7,12 +7,12 @@ import {
   Anchor,
   Box,
   Button,
+  Center,
   PasswordInput,
   Stack,
   Text,
   TextInput,
-  Title,
-  useMantineTheme
+  Title
 } from "@mantine/core";
 import { useForm, zodResolver } from "@mantine/form";
 import { notifications } from "@mantine/notifications";
@@ -27,7 +27,6 @@ const signInSchema = z.object({
 type SignInSchema = z.infer<typeof signInSchema>;
 
 export default function SignInPage() {
-  const theme = useMantineTheme();
   const navigate = useNavigate();
   const { mutate } = useLoginMutation({
     config: {
@@ -55,20 +54,11 @@ export default function SignInPage() {
       <Helmet>
         <title>Sign In | progHours</title>
       </Helmet>
-      <Box
-        mt="xl"
-        style={{
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-          paddingLeft: theme.spacing.sm,
-          paddingRight: theme.spacing.sm
-        }}
-      >
+      <Center mt="md">
         <Box style={{ maxWidth: "440px", flexGrow: 1 }}>
           <Stack>
             <Box>
-              <Title order={2} mb="4px">
+              <Title order={3} mb="4px">
                 Sign in to your account
               </Title>
               <Text>
@@ -116,7 +106,7 @@ export default function SignInPage() {
             </form>
           </Stack>
         </Box>
-      </Box>
+      </Center>
     </>
   );
 }

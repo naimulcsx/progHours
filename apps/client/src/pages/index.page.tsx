@@ -59,6 +59,7 @@ export default function HomePage() {
             align="center"
             style={{ margin: "0 auto", textAlign: "center" }}
             gap="lg"
+            px="md"
           >
             <Button
               component={Link}
@@ -74,7 +75,7 @@ export default function HomePage() {
               Star us on Github
             </Button>
             <Title>Code. Compete. Conquer!</Title>
-            <Text size="xl" lh={1.5}>
+            <Text size="xl">
               Track your progress with comprehensive analytics on your problem
               solving journey. Climb the leaderboard with every problem you
               solve.
@@ -108,10 +109,12 @@ export default function HomePage() {
           />
         </Container>
       </Box>
-      <Box component="section" my={96}>
+
+      {/* features section */}
+      <Box component="section" my={{ base: 56, lg: 96 }}>
         <Container size="xs" style={{ textAlign: "center" }}>
           <Stack gap="sm">
-            <Title>Features</Title>
+            <Title order={2}>Features</Title>
             <Text>
               Discover how progHours is revolutionizing the way students engage
               in competitive programming and problem-solving with these key
@@ -122,7 +125,7 @@ export default function HomePage() {
         <Container size="xl" mt={40}>
           <Grid gutter="xl">
             {services.map((service, i) => (
-              <Grid.Col span={3} key={i}>
+              <Grid.Col span={{ base: 12, sm: 6, lg: 3 }} key={i}>
                 <Stack
                   p="lg"
                   style={{
@@ -144,11 +147,12 @@ export default function HomePage() {
         </Container>
       </Box>
 
-      <Box component="section" my={96}>
+      {/* FAQ section */}
+      <Box component="section" my={{ base: 56, lg: 96 }}>
         <Container size="xs" style={{ textAlign: "center" }}>
           <Stack gap="lg">
-            <Title>You probably got many questions</Title>
-            <Text size="lg" lh={1.35}>
+            <Title order={2}>You probably got many questions</Title>
+            <Text size="lg">
               So here's a list of things we think you might be wondering about
               when it comes to progHours.
             </Text>
@@ -168,15 +172,16 @@ export default function HomePage() {
         </Container>
       </Box>
 
-      <Box component="footer" my={48}>
+      <Box component="footer" mt={56} mb={24}>
         <Container size="xl" style={{ textAlign: "center" }}>
-          <Title order={2}>
-            Made with love in{" "}
-            <span role="img" aria-label="bangladesh-flag">
-              🇧🇩
-            </span>
+          <Title order={4}>
+            Made with{" "}
+            <span role="img" aria-label="love emoji">
+              ❤️
+            </span>{" "}
+            in Bangladesh
           </Title>
-          <Text mt="sm" size="lg">
+          <Text mt="sm">
             &copy; Copyright Naimul Haque {new Date().getFullYear()}. All Rights
             Reserved.
           </Text>

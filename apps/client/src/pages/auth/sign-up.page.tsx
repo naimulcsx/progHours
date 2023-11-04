@@ -64,18 +64,15 @@ export default function SignUpPage() {
       <Helmet>
         <title>Sign Up | progHours</title>
       </Helmet>
-      <Center>
+      <Center mt="md">
         <Box style={{ maxWidth: "440px", flexGrow: 1 }}>
           <Stack>
-            <Notification title="We want to notify you that">
-              <span role="img" aria-label="lock emoji">
-                🔐
-              </span>{" "}
-              progHours is currently in private beta! You'll need an invitation
-              code to join. Stay tuned for more updates!
+            <Notification title="🔐 We're currently in private beta">
+              You'll need an invitation code to join. However, we plan to make
+              the platform open to everyone very soon.
             </Notification>
             <Box>
-              <Title order={2} mb="4px">
+              <Title order={3} mb="4px">
                 Sign up for an account
               </Title>
               <Text>

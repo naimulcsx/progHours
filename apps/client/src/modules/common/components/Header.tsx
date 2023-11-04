@@ -10,13 +10,17 @@ import {
   ActionIcon,
   Anchor,
   AppShellHeader,
+  Burger,
   Button,
   Container,
+  Drawer,
   Flex,
   Group,
   Menu,
+  Stack,
   useMantineColorScheme
 } from "@mantine/core";
+import { useDisclosure } from "@mantine/hooks";
 
 import { AppLogo } from "~/assets/AppLogo";
 import { IconHome, IconSettings } from "~/assets/icons";
@@ -28,6 +32,7 @@ export function Header() {
   const { user } = useUser();
   const { handleLogout } = useLogout();
   const { colorScheme, setColorScheme } = useMantineColorScheme();
+  const [opened, { toggle, close }] = useDisclosure();
 
   return (
     <AppShellHeader style={{ display: "flex", alignItems: "center" }}>
@@ -37,7 +42,7 @@ export function Header() {
             <Anchor component={Link} to="/" underline="never">
               <AppLogo size="sm" />
             </Anchor>
-            <Flex ml="lg" gap="md">
+            <Flex ml="lg" gap="md" visibleFrom="sm">
               <Anchor
                 fw={600}
                 component={Link}
@@ -67,7 +72,7 @@ export function Header() {
               </Anchor>
             </Flex>
           </Group>
-          <Group>
+          <Group visibleFrom="sm">
             <Menu width={120}>
               <Menu.Target>
                 <ActionIcon size="lg" style={{ border: 0 }}>
@@ -147,6 +152,69 @@ export function Header() {
                 </Menu.Dropdown>
               </Menu>
             )}
+          </Group>
+          <Group hiddenFrom="sm">
+            <Burger
+              opened={opened}
+              onClick={toggle}
+              aria-label="Toggle navigation"
+            />
+            <Drawer
+              size={280}
+              opened={opened}
+              onClose={close}
+              title={<AppLogo size="sm" />}
+              transitionProps={{ duration: 400 }}
+              overlayProps={{ backgroundOpacity: 0.25, blur: 2 }}
+            >
+              <Stack mt="lg">
+                <Anchor
+                  fw={600}
+                  component={Link}
+                  to="/"
+                  size="sm"
+                  underline="never"
+                  onClick={() => toggle()}
+                >
+                  Home
+                </Anchor>
+                <Anchor
+                  fw={600}
+                  component={Link}
+                  to="/leaderboard"
+                  size="sm"
+                  underline="never"
+                  onClick={() => toggle()}
+                >
+                  Leaderboard
+                </Anchor>
+                <Anchor
+                  fw={600}
+                  href="https://github.com/naimulcsx/progHours"
+                  target="_blank"
+                  size="sm"
+                  underline="never"
+                  onClick={() => toggle()}
+                >
+                  Github
+                </Anchor>
+                <Button
+                  component={Link}
+                  to="/auth/sign-in"
+                  variant="proghours-ui-secondary"
+                  style={{ flexGrow: 1 }}
+                >
+                  Sign In
+                </Button>
+                <Button
+                  component={Link}
+                  to="/auth/sign-up"
+                  style={{ flexGrow: 1 }}
+                >
+                  Sign Up
+                </Button>
+              </Stack>
+            </Drawer>
           </Group>
         </Flex>
       </Container>

@@ -55,7 +55,7 @@ export default function OverviewPage() {
             <div style={styles}>
               {data && (
                 <>
-                  <SimpleGrid mt="lg" cols={4}>
+                  <SimpleGrid mt="lg" cols={{ base: 1, sm: 2, md: 4 }}>
                     <StatCard
                       icon={<IconPoints width={40} height={40} />}
                       label="Points"
@@ -79,7 +79,7 @@ export default function OverviewPage() {
                       ).toFixed(2)}
                     />
                   </SimpleGrid>
-                  <SimpleGrid mt="md" cols={2}>
+                  <SimpleGrid mt="md" cols={{ sm: 1, md: 2 }}>
                     <Paper p="lg">
                       <WeeklySolvedChart data={data.weeklyStatistics} />
                     </Paper>

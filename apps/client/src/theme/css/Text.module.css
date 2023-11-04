@@ -1,4 +1,5 @@
 .root {
+  line-height: 1.5;
   &[data-variant="proghours-ui"] {
     color: hsl(var(--muted-foreground));
   }
@@ -10,5 +11,10 @@
   }
   &[data-variant="proghours-ui-primary"] {
     color: hsl(var(--primary-foreground));
+  }
+  &[data-size="xl"] {
+    @media (max-width: $mantine-breakpoint-lg) {
+      font-size: var(--mantine-font-size-lg);
+    }
   }
 }
