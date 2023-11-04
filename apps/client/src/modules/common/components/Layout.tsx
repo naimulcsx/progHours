@@ -17,7 +17,7 @@ export function Layout({
       <Header />
       <AppShell.Main>
         {withContainer ? (
-          <Container px={0} size="xl" mt="xs">
+          <Container size="xl" mt="xs">
             {children}
           </Container>
         ) : (

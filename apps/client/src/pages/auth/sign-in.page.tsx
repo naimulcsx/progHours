@@ -50,7 +50,7 @@ export default function SignInPage() {
     validate: zodResolver(signInSchema)
   });
   return (
-    <>
+    <Box mx={{ base: -16, sm: 0 }}>
       <Helmet>
         <title>Sign In | progHours</title>
       </Helmet>
@@ -107,6 +107,6 @@ export default function SignInPage() {
           </Stack>
         </Box>
       </Center>
-    </>
+    </Box>
   );
 }

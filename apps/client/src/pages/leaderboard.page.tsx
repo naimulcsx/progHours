@@ -1,17 +1,7 @@
-import { IconInfoCircle } from "@tabler/icons-react";
 import { useState } from "react";
 import { Helmet } from "react-helmet-async";
 
-import {
-  Box,
-  Flex,
-  Group,
-  Loader,
-  Select,
-  Title,
-  Tooltip,
-  Transition
-} from "@mantine/core";
+import { Box, Group, Select, Title, Transition } from "@mantine/core";
 
 import { LeaderboardType, useLeaderboard } from "@proghours/data-access";
 
@@ -23,25 +13,13 @@ export default function LeaderboardPage() {
   const { data, isFetching } = useLeaderboard({ type });
   const topUsers = data?.slice(0, 3);
   return (
-    <>
+    <Box mx={{ base: -16, sm: 0 }}>
       <Helmet>
         <title>Leaderboard - progHours</title>
       </Helmet>
       <Group justify="space-between">
         <Group style={{ alignItems: "center" }}>
-          <Flex align="center" gap="xs">
-            <Title order={4}>Leaderboard</Title>
-            <Tooltip label="Latest data may experience a delay of up to 5 minutes.">
-              <IconInfoCircle size={22} />
-            </Tooltip>
-          </Flex>
-          <Transition mounted={isFetching} transition="fade" duration={500}>
-            {(styles) => (
-              <div style={{ ...styles, display: "flex", alignItems: "center" }}>
-                <Loader size="xs" />
-              </div>
-            )}
-          </Transition>
+          <Title order={4}>Leaderboard</Title>
         </Group>
         <Select
           size="xs"
@@ -73,6 +51,6 @@ export default function LeaderboardPage() {
           </Box>
         )}
       </Transition>
-    </>
+    </Box>
   );
 }

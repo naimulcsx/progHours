@@ -1,6 +1,10 @@
 .root {
   border-radius: var(--mantine-radius-lg);
-  background: hsl(var(--primary) / 0.95);
+  background: linear-gradient(
+    180deg,
+    hsl(var(--primary) / 0.95),
+    hsl(var(--primary) / 0.9)
+  );
   position: relative;
   overflow: hidden;
   @mixin dark {

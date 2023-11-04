@@ -203,6 +203,7 @@ export function Header() {
                   to="/auth/sign-in"
                   variant="proghours-ui-secondary"
                   style={{ flexGrow: 1 }}
+                  onClick={() => toggle()}
                 >
                   Sign In
                 </Button>
@@ -210,6 +211,7 @@ export function Header() {
                   component={Link}
                   to="/auth/sign-up"
                   style={{ flexGrow: 1 }}
+                  onClick={() => toggle()}
                 >
                   Sign Up
                 </Button>
