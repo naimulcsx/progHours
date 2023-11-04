@@ -48,6 +48,7 @@ export function Header() {
                 to="/"
                 size="sm"
                 underline="never"
+                className="headerLink"
               >
                 Home
               </Anchor>
@@ -57,6 +58,7 @@ export function Header() {
                 to="/leaderboard"
                 size="sm"
                 underline="never"
+                className="headerLink"
               >
                 Leaderboard
               </Anchor>
@@ -66,6 +68,7 @@ export function Header() {
                 target="_blank"
                 size="sm"
                 underline="never"
+                className="headerLink"
               >
                 Github
               </Anchor>
