@@ -1,5 +1,5 @@
 export type LeaderboardEntry = {
-  userId: number;
+  userId: string;
   fullName: string;
   username: string;
   metaData: {

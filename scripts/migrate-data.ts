@@ -26,6 +26,7 @@ import {
   User
 } from "@prisma/client";
 import axios from "axios";
+import * as ksuid from "ns-ksuid";
 import { Pool } from "pg";
 
 const pool = new Pool({
@@ -54,6 +55,12 @@ const pool = new Pool({
    */
   const userCreatePromises: Promise<User>[] = [];
   const usersQuery = await client.query(`SELECT * FROM "User"`);
+  const userIds: number[] = usersQuery.rows.map((user) => user.id);
+
+  const userIdMap: Record<string, string> = {};
+  userIds.forEach((userId) => {
+    userIdMap[userId] = ksuid.create("user");
+  });
 
   usersQuery.rows.forEach((user) => {
     let role: Role = "REGULAR";
@@ -67,7 +74,7 @@ const pool = new Pool({
     if (user.section) metaData.section = user.section;
 
     const userData = {
-      id: user.id,
+      id: userIdMap[user.id],
       fullName: user.name,
       email: user.email,
       username: user.username,
@@ -87,12 +94,12 @@ const pool = new Pool({
   });
 
   // update sequence
-  const maxId = usersQuery.rows.reduce(
-    (prev, curr) => Math.max(prev, curr.id),
-    0
-  );
-  const usersSeqQuery = `ALTER SEQUENCE users_id_seq RESTART WITH ${maxId + 1}`;
-  await prisma.$queryRaw`${Prisma.raw(usersSeqQuery)}`;
+  // const maxId = usersQuery.rows.reduce(
+  //   (prev, curr) => Math.max(prev, curr.id),
+  //   0
+  // );
+  // const usersSeqQuery = `ALTER SEQUENCE users_id_seq RESTART WITH ${maxId + 1}`;
+  // await prisma.$queryRaw`${Prisma.raw(usersSeqQuery)}`;
 
   console.time(`users (${usersQuery.rowCount})`);
   await Promise.all(userCreatePromises);
@@ -195,7 +202,7 @@ const pool = new Pool({
       prisma.submission.create({
         data: {
           id: submission.id,
-          userId: submission.userId,
+          userId: userIdMap[submission.userId],
           problemId: submission.problemId,
           solveTime: submission.solveTime,
           verdict: submission.verdict,

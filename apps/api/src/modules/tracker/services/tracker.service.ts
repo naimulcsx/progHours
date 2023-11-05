@@ -15,7 +15,7 @@ export class TrackerService {
     @InjectTrackerVerifyQueue() private trackerVerifyQueue: Queue
   ) {}
 
-  async pull(userId: number) {
+  async pull(userId: string) {
     const pullHistory = await this.prisma.pullHistory.create({
       data: {
         userId
@@ -39,7 +39,7 @@ export class TrackerService {
     };
   }
 
-  async verifyAll(userId: number) {
+  async verifyAll(userId: string) {
     return this.trackerVerifyQueue.add({
       jobType: "VERIFY_ALL",
       userId
@@ -53,7 +53,7 @@ export class TrackerService {
     judge
   }: {
     submissionId: number;
-    userId: number;
+    userId: string;
     url: string;
     judge: "CODEFORCES";
   }) {

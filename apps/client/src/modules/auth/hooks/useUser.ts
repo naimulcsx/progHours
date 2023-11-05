@@ -6,7 +6,7 @@ type User = {
   email: string;
   username: string;
   fullName: string;
-  id: number;
+  id: string;
   role: string;
 };
 
@@ -19,7 +19,7 @@ export function useUser() {
         exp: number;
         username: string;
         fullName: string;
-        sub: number;
+        sub: string;
         role: string;
         email: string;
       }>(token);

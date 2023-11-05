@@ -27,7 +27,7 @@ export class SubmissionsService {
     private readonly problemsService: ProblemsService
   ) {}
 
-  getByUser(userId: number) {
+  getByUser(userId: string) {
     return this.prisma.submission.findMany({
       where: { userId },
       include: {
@@ -47,7 +47,7 @@ export class SubmissionsService {
     });
   }
 
-  async getByUserAndUrl(userId: number, url: string) {
+  async getByUserAndUrl(userId: string, url: string) {
     const problem = await this.prisma.problem.findUnique({
       where: { url }
     });
@@ -64,7 +64,7 @@ export class SubmissionsService {
     return submission;
   }
 
-  async exists(userId: number, url: string) {
+  async exists(userId: string, url: string) {
     const problem = await this.prisma.problem.findUnique({
       where: { url }
     });
@@ -80,7 +80,7 @@ export class SubmissionsService {
     return submission ? true : false;
   }
 
-  async create(userId: number, createSubmissionDto: CreateSubmissionDto) {
+  async create(userId: string, createSubmissionDto: CreateSubmissionDto) {
     const url = this.parserService.getUnifiedUrl(createSubmissionDto.url);
     let problemId: number;
     const problem = await this.prisma.problem.findUnique({

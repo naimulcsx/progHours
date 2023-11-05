@@ -65,7 +65,7 @@ export class VerifyService {
     });
   }
 
-  async verifyCodeforcesSubmissions(userId: number, data: CfSubmissions) {
+  async verifyCodeforcesSubmissions(userId: string, data: CfSubmissions) {
     const groupedData = groupBy(data.submissions, (s) => s.pid);
 
     for (const pid in groupedData) {
@@ -185,7 +185,7 @@ export class VerifyService {
     });
   }
 
-  async verifyCodeChefSubmissions(userId: number, data: CcSubmissions) {
+  async verifyCodeChefSubmissions(userId: string, data: CcSubmissions) {
     const groupedData = groupBy(data.submissions, (s) => s.pid);
 
     for (const pid in groupedData) {

@@ -1,3 +1,5 @@
+import * as ksuid from "ns-ksuid";
+
 import {
   Injectable,
   NotFoundException,
@@ -30,6 +32,7 @@ export class UsersService {
     );
     return this.usersRepository.create({
       data: {
+        id: ksuid.create("user"),
         ...createUserDto,
         password: hashedPassword,
         username: createUserDto.username.toLowerCase()

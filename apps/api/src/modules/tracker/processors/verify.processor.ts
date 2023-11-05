@@ -16,14 +16,14 @@ export const InjectTrackerVerifyQueue = (): ParameterDecorator =>
 type VerifySingleData = {
   jobType: "VERIFY_SINGLE";
   url: string;
-  userId: number;
+  userId: string;
   judge: "CODEFORCES" | "CODECHEF";
   submissionId: number;
 };
 
 type VerifyAllData = {
   jobType: "VERIFY_ALL";
-  userId: number;
+  userId: string;
 };
 
 type VerifyJob = Job<VerifySingleData | VerifyAllData>;

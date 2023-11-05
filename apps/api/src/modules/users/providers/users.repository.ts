@@ -17,7 +17,7 @@ export class UsersRepository {
     return this.prisma.user.findMany();
   }
 
-  async getById(id: number): Promise<User> {
+  async getById(id: string): Promise<User> {
     return this.prisma.user.findUnique({ where: { id } });
   }
 
@@ -31,7 +31,7 @@ export class UsersRepository {
     return this.prisma.user.findUnique({ where: { email } });
   }
 
-  async updateById(id: number, data: Prisma.UserUpdateInput) {
+  async updateById(id: string, data: Prisma.UserUpdateInput) {
     return this.prisma.user.update({ where: { id }, data });
   }
 }

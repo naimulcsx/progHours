@@ -1,11 +1,12 @@
 import { UseQueryOptions, useQuery } from "@tanstack/react-query";
+
 import { axios } from "../../lib/axios";
 
 export type LeaderboardType = "full" | "currentWeek" | "lastWeek";
 
 export type LeaderboardEntry = {
   id: number;
-  userId: number;
+  userId: string;
   fullName: string;
   username: string;
   metaData: {

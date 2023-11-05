@@ -18,12 +18,12 @@ enum Role {
 }
 
 model User {
-  id        Int      @id @default(autoincrement())
-  fullName  String   @map("full_name")
-  email     String   @unique
-  username  String   @unique
-  password  String
-  phone     String?
+  id        String   @id @db.VarChar(50)
+  fullName  String   @map("full_name") @db.VarChar(50)
+  email     String   @unique @db.VarChar(50)
+  username  String   @unique @db.VarChar(25)
+  password  String   @db.VarChar(60)
+  phone     String?  @db.VarChar(25)
   role      Role     @default(REGULAR)
   lastSeen  DateTime @default(now()) @map("last_seen") @db.Timestamp(0)
   createdAt DateTime @default(now()) @map("created_at") @db.Timestamp(0)
@@ -106,7 +106,7 @@ model Submission {
   solvedAt   DateTime @map("solved_at") @db.Date
   createdAt  DateTime @default(now()) @map("created_at") @db.Timestamp(0)
   updatedAt  DateTime @updatedAt @map("updated_at") @db.Timestamp(0)
-  userId     Int      @map("user_id")
+  userId     String   @map("user_id") @db.VarChar(50)
   problemId  Int      @map("problem_id")
   isVerified Boolean  @default(false) @map("is_verified")
 
@@ -139,7 +139,7 @@ enum HandleType {
 model UserHandle {
   id     String     @id @default(cuid())
   user   User       @relation(fields: [userId], references: [id])
-  userId Int        @map("user_id")
+  userId String     @map("user_id") @db.VarChar(50)
   type   HandleType
   handle String
 
@@ -157,7 +157,7 @@ enum PullHistoryStatus {
 model PullHistory {
   id             String            @id @default(cuid())
   user           User              @relation(fields: [userId], references: [id])
-  userId         Int               @map("user_id")
+  userId         String            @map("user_id") @db.VarChar(50)
   status         PullHistoryStatus @default(PENDING)
   totalCompleted Int               @default(0) @map("total_completed")
   totalItems     Int               @default(0) @map("total_items")

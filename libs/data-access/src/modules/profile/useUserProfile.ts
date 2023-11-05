@@ -3,7 +3,7 @@ import { UseQueryOptions, useQuery } from "@tanstack/react-query";
 import { axios } from "../../lib/axios";
 
 export type UserProfileResponse = {
-  userId: number;
+  userId: string;
   fullName: string;
   userName: string;
   rank: string;

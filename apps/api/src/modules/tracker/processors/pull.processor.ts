@@ -17,7 +17,7 @@ export const InjectTrackerPullQueue = (): ParameterDecorator =>
   InjectQueue(TRACKER_PULL_QUEUE);
 
 export type PullJob = Job<{
-  userId: number;
+  userId: string;
   pullHistoryId: string;
   judge: "CODEFORCES" | "CODECHEF";
   handle: string;

@@ -16,7 +16,7 @@ export const InjectTrackerPushQueue = (): ParameterDecorator =>
   InjectQueue(TRACKER_PUSH_QUEUE);
 
 export type PushJob = Job<{
-  userId: number;
+  userId: string;
   pullHistoryId: string;
   pullHistoryItemId: number;
   pid: string;

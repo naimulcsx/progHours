@@ -65,12 +65,12 @@ export class StatisticsService {
   }
 
   async getUserStatistics(
-    id: number,
+    userId: string,
     query:
       | { type: "full" }
       | { type: "range"; fromDate: string; toDate: string }
   ) {
-    const userId = Prisma.sql`${id}`;
+    const _userId = Prisma.sql`${userId}`;
     const timeFilter =
       query.type === "range"
         ? Prisma.sql`
@@ -94,13 +94,13 @@ export class StatisticsService {
         LEFT JOIN problems AS p ON s.problem_id = p.id
         LEFT JOIN users AS u ON u.id = s.user_id
     WHERE
-        s.user_id = ${userId} AND s.verdict = 'AC' ${timeFilter}
+        s.user_id = ${_userId} AND s.verdict = 'AC' ${timeFilter}
     `;
     return result[0];
   }
 
-  async getTagsFrequency(id: number) {
-    const userId = Prisma.sql`${id}`;
+  async getTagsFrequency(userId: string) {
+    const _userId = Prisma.sql`${userId}`;
     const result: TagsFrequency = await this.prisma.$queryRaw`
       SELECT
           t.name AS tag,
@@ -115,7 +115,7 @@ export class StatisticsService {
             FROM
                 submissions AS s
             LEFT JOIN problems AS p ON s.problem_id = p.id
-            WHERE s.user_id = ${userId} AND s.verdict = 'AC'
+            WHERE s.user_id = ${_userId} AND s.verdict = 'AC'
           )
       GROUP BY
           t.name;
@@ -123,8 +123,8 @@ export class StatisticsService {
     return result;
   }
 
-  async getTagsSolveTime(id: number) {
-    const userId = Prisma.sql`${id}`;
+  async getTagsSolveTime(userId: string) {
+    const _userId = Prisma.sql`${userId}`;
     const result: TagsSolveTime = await this.prisma.$queryRaw`
       SELECT
         t.name AS tag,
@@ -136,7 +136,7 @@ export class StatisticsService {
       LEFT JOIN tags AS t ON ptags.tag_id = t.id
       
       WHERE
-        s.user_id = ${userId} AND s.verdict = 'AC'
+        s.user_id = ${_userId} AND s.verdict = 'AC'
       GROUP BY
         t.name
       ORDER BY
@@ -145,8 +145,8 @@ export class StatisticsService {
     return result;
   }
 
-  async getWeeklyStatistics(id: number) {
-    const userId = Prisma.sql`${id}`;
+  async getWeeklyStatistics(userId: string) {
+    const _userId = Prisma.sql`${userId}`;
     const result: WeeklyStatistics = await this.prisma.$queryRaw`
       SELECT 
           date_trunc('WEEK', (s.solved_at + interval '2 day')) - interval '2 day' AS "weekStartDate",
@@ -161,7 +161,7 @@ export class StatisticsService {
         submissions AS s 
       LEFT JOIN problems as p ON s.problem_id = p.id
       WHERE
-        s.user_id = ${userId} AND s.verdict = 'AC'
+        s.user_id = ${_userId} AND s.verdict = 'AC'
       GROUP BY 
         date_trunc('WEEK',(s.solved_at + interval '2 day')) - interval '2 day'
       ORDER BY
