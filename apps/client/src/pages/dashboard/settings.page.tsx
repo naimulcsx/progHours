@@ -23,7 +23,7 @@ export default function SettingsPage() {
       <Helmet>
         <title>Settings - progHours</title>
       </Helmet>
-      <Container size="md">
+      <Container size="md" px={0}>
         <Group>
           <Title order={4}>Settings</Title>
         </Group>

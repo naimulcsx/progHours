@@ -60,7 +60,7 @@ export default function SignUpPage() {
     }
   });
   return (
-    <Box mx={{ base: -16, sm: 0 }}>
+    <Box p="md">
       <Helmet>
         <title>Sign Up | progHours</title>
       </Helmet>

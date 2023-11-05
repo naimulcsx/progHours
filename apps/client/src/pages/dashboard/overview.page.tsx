@@ -29,8 +29,7 @@ export default function OverviewPage() {
       <Helmet>
         <title>Overview - progHours</title>
       </Helmet>
-
-      <Container size="xl" px={0}>
+      <Container size="xl" px={0} pb={66}>
         <Group gap="xs">
           <Title order={4}>Overview </Title>
           <Tooltip label="Latest data may experience a delay of up to 5 minutes.">
@@ -44,7 +43,6 @@ export default function OverviewPage() {
             )}
           </Transition>
         </Group>
-
         <Transition
           mounted={!isFetching}
           transition="fade"
@@ -79,7 +77,7 @@ export default function OverviewPage() {
                       ).toFixed(2)}
                     />
                   </SimpleGrid>
-                  <SimpleGrid mt="md" cols={{ sm: 1, md: 2 }}>
+                  <SimpleGrid mt="md" cols={{ base: 1, sm: 2 }}>
                     <Paper p="lg">
                       <WeeklySolvedChart data={data.weeklyStatistics} />
                     </Paper>

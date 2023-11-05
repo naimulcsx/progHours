@@ -56,11 +56,19 @@ export const getRoutes = (isLoggedIn: boolean): RouteObject[] => [
   ),
   defineRoute(
     "/auth/sign-in",
-    isLoggedIn ? <Navigate to="/" /> : withSuspenseLayout(SignInPage)
+    isLoggedIn ? (
+      <Navigate to="/" />
+    ) : (
+      withSuspenseLayout(SignInPage, { withContainer: false })
+    )
   ),
   defineRoute(
     "/auth/sign-up",
-    isLoggedIn ? <Navigate to="/" /> : withSuspenseLayout(SignUpPage)
+    isLoggedIn ? (
+      <Navigate to="/" />
+    ) : (
+      withSuspenseLayout(SignUpPage, { withContainer: false })
+    )
   ),
   defineRoute(
     "/overview",

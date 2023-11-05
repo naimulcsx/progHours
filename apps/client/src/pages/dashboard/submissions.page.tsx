@@ -21,7 +21,7 @@ export default function SubmissionsPage() {
       <Helmet>
         <title>Submissions - progHours</title>
       </Helmet>
-      <Container size="xl" px={0}>
+      <Container size="xl" px={0} pb={66}>
         <Group style={{ alignItems: "center" }}>
           <Title order={4}>Submissions</Title>
           <Transition mounted={isFetching} transition="fade" duration={800}>

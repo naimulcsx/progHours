@@ -5,15 +5,17 @@ import { Box, Group, Loader, Select, Title, Transition } from "@mantine/core";
 
 import { LeaderboardType, useLeaderboard } from "@proghours/data-access";
 
+import { useUser } from "~/modules/auth/hooks/useUser";
 import { LeaderboardDataTable } from "~/modules/leaderboard/components/table";
 import { TopPerformers } from "~/modules/leaderboard/components/top-performers/TopPerformers";
 
 export default function LeaderboardPage() {
+  const { user } = useUser();
   const [type, setType] = useState<LeaderboardType>("full");
   const { data, isFetching } = useLeaderboard({ type });
   const topUsers = data?.slice(0, 3);
   return (
-    <Box mx={{ base: -16, sm: 0 }}>
+    <Box px={user ? "md" : 0} mx={{ base: -16, lg: 0 }} pb={66}>
       <Helmet>
         <title>Leaderboard - progHours</title>
       </Helmet>
