@@ -6,7 +6,11 @@ import { Box, Button, Divider, Grid, Select, TextInput } from "@mantine/core";
 import { useForm, zodResolver } from "@mantine/form";
 import { notifications } from "@mantine/notifications";
 
-import { useActiveUser, useUserMutation } from "@proghours/data-access";
+import {
+  useActiveUser,
+  useInstitutions,
+  useUserMutation
+} from "@proghours/data-access";
 
 const userUpdateSchema = z.object({
   fullName: z.string().min(8),
@@ -15,7 +19,8 @@ const userUpdateSchema = z.object({
   department: z.string().optional(),
   section: z.string().optional(),
   batch: z.coerce.number().optional(),
-  cgpa: z.coerce.number().min(0).max(4).optional()
+  cgpa: z.coerce.number().min(0).max(4).optional(),
+  institutionId: z.string()
 });
 
 export function ProfileSettings() {
@@ -33,6 +38,9 @@ export function ProfileSettings() {
       }
     }
   });
+
+  const { data: institutions } = useInstitutions();
+
   const form = useForm({
     initialValues: {
       fullName: "",
@@ -42,7 +50,8 @@ export function ProfileSettings() {
       department: "",
       batch: "",
       section: "",
-      cgpa: ""
+      cgpa: "",
+      institutionId: ""
     },
     validate: zodResolver(userUpdateSchema)
   });
@@ -55,18 +64,29 @@ export function ProfileSettings() {
         department: user.metaData?.department || "",
         section: user.metaData?.section || "",
         batch: user.metaData?.batch?.toString() || "",
-        cgpa: user.metaData?.cgpa?.toString() || ""
+        cgpa: user.metaData?.cgpa?.toString() || "",
+        institutionId: user.institutionId ? user.institutionId.toString() : ""
       });
     }
     /* eslint-disable react-hooks/exhaustive-deps */
   }, [user]);
 
   const handleSubmit = form.onSubmit((values) => {
-    const { fullName, email, phone, department, batch, section, cgpa } = values;
+    const {
+      fullName,
+      email,
+      phone,
+      department,
+      batch,
+      section,
+      cgpa,
+      institutionId
+    } = values;
     const data = {
       fullName,
       email,
       ...(phone !== "" && { phone }),
+      ...(institutionId !== "" && { institutionId }),
       metaData: {
         ...(department !== "" && { department }),
         ...(batch !== "" && { batch: parseInt(batch) }),
@@ -84,7 +104,7 @@ export function ProfileSettings() {
 
   return (
     <Box>
-      {user && (
+      {user && institutions && (
         <form onSubmit={handleSubmit}>
           <Grid>
             <Grid.Col span={6}>
@@ -103,8 +123,32 @@ export function ProfileSettings() {
               />
             </Grid.Col>
 
+            <Grid.Col span={6}>
+              <TextInput
+                label="Email"
+                {...form.getInputProps("email")}
+                withAsterisk
+              />
+            </Grid.Col>
+            <Grid.Col span={6}>
+              <TextInput label="Phone" {...form.getInputProps("phone")} />
+            </Grid.Col>
+
             <Grid.Col span={12}>
-              <Divider labelPosition="left" label="University Details" />
+              <Divider labelPosition="left" label="Institution Details" />
+            </Grid.Col>
+
+            <Grid.Col span={6}>
+              <Select
+                label="Institution Name"
+                placeholder="Select your College / University"
+                data={institutions.map((i) => ({
+                  value: i.id.toString(),
+                  label: i.name
+                }))}
+                searchable
+                {...form.getInputProps("institutionId")}
+              />
             </Grid.Col>
 
             <Grid.Col span={6}>
@@ -126,54 +170,13 @@ export function ProfileSettings() {
                 {...form.getInputProps("batch")}
               />
             </Grid.Col>
-            <Grid.Col span={6}>
-              <Select
-                label="Section"
-                {...form.getInputProps("section")}
-                placeholder="Select"
-                data={[
-                  { value: "AM", label: "AM" },
-                  { value: "BM", label: "BM" },
-                  { value: "CM", label: "CM" },
-                  { value: "DM", label: "DM" },
-                  { value: "EM", label: "EM" },
-                  { value: "FM", label: "FM" },
-                  { value: "AF", label: "AF" },
-                  { value: "BF", label: "BF" },
-                  { value: "CF", label: "CF" }
-                ]}
-              />
-            </Grid.Col>
+
             <Grid.Col span={6}>
               <TextInput
                 type="number"
                 label="CGPA"
                 {...form.getInputProps("cgpa")}
               />
-            </Grid.Col>
-            <Grid.Col span={12}>
-              <Divider labelPosition="left" label="Contact Details" />
-            </Grid.Col>
-            <Grid.Col span={6}>
-              <TextInput
-                label="Email"
-                {...form.getInputProps("email")}
-                withAsterisk
-              />
-            </Grid.Col>
-            <Grid.Col span={6}>
-              <TextInput label="Phone" {...form.getInputProps("phone")} />
-            </Grid.Col>
-
-            <Grid.Col span={12}>
-              <Divider labelPosition="left" label="Social" />
-            </Grid.Col>
-
-            <Grid.Col span={6}>
-              <TextInput label="Facebook" placeholder="Facebook URL" />
-            </Grid.Col>
-            <Grid.Col span={6}>
-              <TextInput label="Whatsapp" placeholder="Whatsapp number" />
             </Grid.Col>
 
             <Grid.Col span={12}>

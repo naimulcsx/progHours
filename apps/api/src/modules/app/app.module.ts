@@ -12,6 +12,7 @@ import jwtConfig from "~/config/jwt.config";
 import redisConfig from "~/config/redis.config";
 
 import { AuthModule } from "~/modules/auth/auth.module";
+import { InstitutionsModule } from "~/modules/institutions/institutions.module";
 import { LeaderboardModule } from "~/modules/leaderboard/leaderboard.module";
 import { ParserModule } from "~/modules/parser/parser.module";
 import { PrismaModule } from "~/modules/prisma/prisma.module";
@@ -66,6 +67,7 @@ import { AppController } from "./controllers/app.controller";
     SubmissionsModule,
     ParserModule,
     LeaderboardModule,
+    InstitutionsModule,
     TrackerModule.register()
   ],
   controllers: [AppController],
