@@ -1,11 +1,12 @@
 import { Problem } from "@prisma/client";
-import { axios } from "../../lib/axios";
 import { UseMutationOptions, useMutation } from "@tanstack/react-query";
+
+import { axios } from "../../lib/axios";
 
 export type RefetchProblemResponse = Problem;
 
 export type RefetchProblemPayload = {
-  id: number;
+  id: string;
 };
 
 export const refetchProblem = async ({

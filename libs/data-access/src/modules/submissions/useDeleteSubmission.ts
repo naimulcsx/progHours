@@ -1,9 +1,10 @@
 import { Submission } from "@prisma/client";
 import { UseMutationOptions, useMutation } from "@tanstack/react-query";
+
 import { axios } from "../../lib/axios";
 
 type DeleteSubmissionPayload = {
-  id: number;
+  id: string;
 };
 
 type DeleteSubmissionResponse = Submission;

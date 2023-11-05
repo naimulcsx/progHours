@@ -1,11 +1,12 @@
 import { Submission, Verdict } from "@prisma/client";
-import { axios } from "../../lib/axios";
 import { UseMutationOptions, useMutation } from "@tanstack/react-query";
+
+import { axios } from "../../lib/axios";
 
 export type UpdateSubmissionResponse = Submission;
 
 export type UpdateSubmissionPayload = {
-  id: number;
+  id: string;
   solveTime?: number;
   verdict?: Verdict;
   solvedAt?: Date;
