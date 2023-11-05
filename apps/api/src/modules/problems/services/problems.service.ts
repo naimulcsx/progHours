@@ -1,7 +1,11 @@
+import * as ksuid from "ns-ksuid";
+
 import { Injectable, NotFoundException } from "@nestjs/common";
-import { PrismaService } from "~/modules/prisma/services/prisma.service";
-import { CreateProblemDto } from "../dto/create-problem.dto";
+
 import { ParserService } from "~/modules/parser/services/parser.service";
+import { PrismaService } from "~/modules/prisma/services/prisma.service";
+
+import { CreateProblemDto } from "../dto/create-problem.dto";
 
 @Injectable()
 export class ProblemsService {
@@ -10,9 +14,9 @@ export class ProblemsService {
     private readonly parserService: ParserService
   ) {}
 
-  async getById(id: number) {
+  async getById(problemId: string) {
     return this.prisma.problem.findUnique({
-      where: { id },
+      where: { id: problemId },
       include: { problemTags: { include: { tag: true } } }
     });
   }
@@ -33,6 +37,7 @@ export class ProblemsService {
     }
     const createdProblem = await this.prisma.problem.create({
       data: {
+        id: ksuid.create("problem"),
         ...problemData,
         problemTags: {
           create: [...new Set(tags)].map((tagName) => {
@@ -43,6 +48,7 @@ export class ProblemsService {
                     name: tagName
                   },
                   create: {
+                    id: ksuid.create("tag"),
                     name: tagName
                   }
                 }
@@ -62,8 +68,10 @@ export class ProblemsService {
     return createdProblem;
   }
 
-  async refetchById(id: number) {
-    const problem = await this.prisma.problem.findUnique({ where: { id } });
+  async refetchById(problemId: string) {
+    const problem = await this.prisma.problem.findUnique({
+      where: { id: problemId }
+    });
     if (!problem) {
       throw new NotFoundException("Problem not found");
     }
@@ -72,9 +80,9 @@ export class ProblemsService {
     );
     /* eslint-disable @typescript-eslint/no-unused-vars */
     const [_, updatedProblem] = await this.prisma.$transaction([
-      this.prisma.problemTag.deleteMany({ where: { problemId: id } }),
+      this.prisma.problemTag.deleteMany({ where: { problemId } }),
       this.prisma.problem.update({
-        where: { id },
+        where: { id: problemId },
         data: {
           ...problemData,
           problemTags: {
@@ -86,6 +94,7 @@ export class ProblemsService {
                       name: tagName
                     },
                     create: {
+                      id: ksuid.create("tag"),
                       name: tagName
                     }
                   }

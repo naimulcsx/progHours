@@ -15,7 +15,7 @@ export class UpdateSubmissionGuard implements CanActivate {
 
   async canActivate(context: ExecutionContext): Promise<boolean> {
     const request = context.switchToHttp().getRequest();
-    const submissionId = parseInt(request.params.id as string);
+    const submissionId = request.params.id as string;
     const submission = await this.prisma.submission.findUnique({
       where: { id: submissionId }
     });

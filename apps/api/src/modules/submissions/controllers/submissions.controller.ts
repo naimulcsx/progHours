@@ -4,7 +4,6 @@ import {
   Delete,
   Get,
   Param,
-  ParseIntPipe,
   Patch,
   Post,
   UseGuards
@@ -64,7 +63,7 @@ export class SubmissionsController {
   @ApiUnauthorizedResponse({ description: "Unauthorized user" })
   @UseGuards(UpdateSubmissionGuard)
   async updateSubmission(
-    @Param("id", ParseIntPipe) id: number,
+    @Param("id") id: string,
     @Body() updateSubmissionDto: UpdateSubmissionDto
   ) {
     return this.submissionsService.update(id, updateSubmissionDto);
@@ -75,7 +74,7 @@ export class SubmissionsController {
   @ApiOperation({ summary: "Delete a submission" })
   @ApiOkResponse({ description: "Submission deleted" })
   @ApiUnauthorizedResponse({ description: "Unauthorized user" })
-  async deleteSubmission(@Param("id", ParseIntPipe) id: number) {
+  async deleteSubmission(@Param("id") id: string) {
     return this.submissionsService.delete(id);
   }
 }

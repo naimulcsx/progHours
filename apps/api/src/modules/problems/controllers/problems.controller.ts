@@ -1,12 +1,4 @@
-import {
-  Body,
-  Controller,
-  Get,
-  Param,
-  ParseIntPipe,
-  Patch,
-  Post
-} from "@nestjs/common";
+import { Body, Controller, Get, Param, Patch, Post } from "@nestjs/common";
 import { ApiBearerAuth, ApiOperation, ApiTags } from "@nestjs/swagger";
 
 import { Roles } from "~/modules/auth/decorators/roles.decorator";
@@ -31,14 +23,14 @@ export class ProblemsController {
   @Get(":id")
   @ApiBearerAuth("JWT")
   @ApiOperation({ summary: "Get problem by Id" })
-  async getProblemById(@Param("id", ParseIntPipe) id: number) {
+  async getProblemById(@Param("id") id: string) {
     return this.problemsService.getById(id);
   }
 
   @Patch(":id/refetch")
   @ApiBearerAuth("JWT")
   @ApiOperation({ summary: "Refetch problem by Id" })
-  async refetchProblem(@Param("id", ParseIntPipe) id: number) {
+  async refetchProblem(@Param("id") id: string) {
     return this.problemsService.refetchById(id);
   }
 }

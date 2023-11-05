@@ -18,7 +18,7 @@ type VerifySingleData = {
   url: string;
   userId: string;
   judge: "CODEFORCES" | "CODECHEF";
-  submissionId: number;
+  submissionId: string;
 };
 
 type VerifyAllData = {

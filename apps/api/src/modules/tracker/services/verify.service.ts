@@ -11,7 +11,7 @@ export class VerifyService {
   constructor(private readonly prisma: PrismaService) {}
 
   async verifyCodeforcesSubmission(
-    submissionId: number,
+    submissionId: string,
     pid: string,
     data: CfSubmissions
   ) {
@@ -135,7 +135,7 @@ export class VerifyService {
   }
 
   async verifyCodeChefSubmission(
-    submissionId: number,
+    submissionId: string,
     pid: string,
     data: CcSubmissions
   ) {

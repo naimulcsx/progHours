@@ -52,7 +52,7 @@ export class TrackerService {
     url,
     judge
   }: {
-    submissionId: number;
+    submissionId: string;
     userId: string;
     url: string;
     judge: "CODEFORCES";

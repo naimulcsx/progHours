@@ -1,4 +1,5 @@
 import moment from "moment";
+import * as ksuid from "ns-ksuid";
 
 import {
   BadRequestException,
@@ -82,7 +83,7 @@ export class SubmissionsService {
 
   async create(userId: string, createSubmissionDto: CreateSubmissionDto) {
     const url = this.parserService.getUnifiedUrl(createSubmissionDto.url);
-    let problemId: number;
+    let problemId: string;
     const problem = await this.prisma.problem.findUnique({
       where: { url }
     });
@@ -96,6 +97,7 @@ export class SubmissionsService {
     try {
       const newSubmission = await this.prisma.submission.create({
         data: {
+          id: ksuid.create("sub"),
           solveTime: createSubmissionDto.solveTime,
           verdict: createSubmissionDto.verdict,
           problemId,
@@ -136,9 +138,9 @@ export class SubmissionsService {
     }
   }
 
-  async update(id: number, updateSubmissionDto: UpdateSubmissionDto) {
+  async update(submissionId: string, updateSubmissionDto: UpdateSubmissionDto) {
     const updatedSubmission = await this.prisma.submission.update({
-      where: { id },
+      where: { id: submissionId },
       data: {
         ...updateSubmissionDto,
         ...(updateSubmissionDto.solvedAt && {
@@ -149,15 +151,17 @@ export class SubmissionsService {
     return updatedSubmission;
   }
 
-  async markVerified(id: number) {
+  async markVerified(submissionId: string) {
     return this.prisma.submission.update({
-      where: { id },
+      where: { id: submissionId },
       data: { isVerified: true }
     });
   }
 
-  async delete(id: number) {
-    const result = await this.prisma.submission.delete({ where: { id } });
+  async delete(submissionId: string) {
+    const result = await this.prisma.submission.delete({
+      where: { id: submissionId }
+    });
     return result;
   }
 }

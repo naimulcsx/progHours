@@ -16,7 +16,6 @@
  */
 import {
   Institution,
-  Prisma,
   PrismaClient,
   Problem,
   ProblemTag,
@@ -55,11 +54,14 @@ const pool = new Pool({
    */
   const userCreatePromises: Promise<User>[] = [];
   const usersQuery = await client.query(`SELECT * FROM "User"`);
-  const userIds: number[] = usersQuery.rows.map((user) => user.id);
+  const userIds: [number, string][] = usersQuery.rows.map((user) => [
+    user.id,
+    user.createdAt
+  ]);
 
   const userIdMap: Record<string, string> = {};
-  userIds.forEach((userId) => {
-    userIdMap[userId] = ksuid.create("user");
+  userIds.forEach(([userId, createdAt]) => {
+    userIdMap[userId] = ksuid.create("user", new Date(createdAt));
   });
 
   usersQuery.rows.forEach((user) => {
@@ -111,11 +113,18 @@ const pool = new Pool({
   const tagCreatePromises: Promise<Tag>[] = [];
   const tagsQuery = await client.query(`SELECT * FROM "Tag"`);
 
+  const tagIds: number[] = tagsQuery.rows.map((tag) => tag.id);
+
+  const tagIdMap: Record<string, string> = {};
+  tagIds.forEach((tagId) => {
+    tagIdMap[tagId] = ksuid.create("tag");
+  });
+
   tagsQuery.rows.forEach((tag) => {
     tagCreatePromises.push(
       prisma.tag.create({
         data: {
-          id: tag.id,
+          id: tagIdMap[tag.id],
           name: tag.name
         }
       })
@@ -123,14 +132,14 @@ const pool = new Pool({
   });
 
   // update sequence
-  const tagsMaxId = tagsQuery.rows.reduce(
-    (prev, curr) => Math.max(prev, curr.id),
-    0
-  );
-  const tagsSeqQuery = `ALTER SEQUENCE tags_id_seq RESTART WITH ${
-    tagsMaxId + 1
-  }`;
-  await prisma.$queryRaw`${Prisma.raw(tagsSeqQuery)}`;
+  // const tagsMaxId = tagsQuery.rows.reduce(
+  //   (prev, curr) => Math.max(prev, curr.id),
+  //   0
+  // );
+  // const tagsSeqQuery = `ALTER SEQUENCE tags_id_seq RESTART WITH ${
+  //   tagsMaxId + 1
+  // }`;
+  // await prisma.$queryRaw`${Prisma.raw(tagsSeqQuery)}`;
 
   console.time(`tags (${tagsQuery.rowCount})`);
   await Promise.all(tagCreatePromises);
@@ -141,12 +150,21 @@ const pool = new Pool({
    */
   const problemCreatePromises: Promise<Problem>[] = [];
   const problemsQuery = await client.query(`SELECT * FROM "Problem"`);
+  const problemIds: [number, string][] = problemsQuery.rows.map((p) => [
+    p.id,
+    p.createdAt
+  ]);
+
+  const problemIdMap: Record<string, string> = {};
+  problemIds.forEach(([problemId, createdAt]) => {
+    problemIdMap[problemId] = ksuid.create("problem", new Date(createdAt));
+  });
 
   problemsQuery.rows.forEach((problem) => {
     problemCreatePromises.push(
       prisma.problem.create({
         data: {
-          id: problem.id,
+          id: problemIdMap[problem.id],
           pid: problem.pid,
           name: problem.name,
           difficulty: problem.difficulty,
@@ -158,14 +176,14 @@ const pool = new Pool({
   });
 
   // update sequence
-  const problemsMaxId = problemsQuery.rows.reduce(
-    (prev, curr) => Math.max(prev, curr.id),
-    0
-  );
-  const problemsSeqQuery = `ALTER SEQUENCE problems_id_seq RESTART WITH ${
-    problemsMaxId + 1
-  }`;
-  await prisma.$queryRaw`${Prisma.raw(problemsSeqQuery)}`;
+  // const problemsMaxId = problemsQuery.rows.reduce(
+  //   (prev, curr) => Math.max(prev, curr.id),
+  //   0
+  // );
+  // const problemsSeqQuery = `ALTER SEQUENCE problems_id_seq RESTART WITH ${
+  //   problemsMaxId + 1
+  // }`;
+  // await prisma.$queryRaw`${Prisma.raw(problemsSeqQuery)}`;
 
   console.time(`problems (${problemsQuery.rowCount})`);
   await Promise.all(problemCreatePromises);
@@ -181,8 +199,8 @@ const pool = new Pool({
     problemTagCreatePromises.push(
       prisma.problemTag.create({
         data: {
-          problemId: problemTag.problemId,
-          tagId: problemTag.tagId
+          problemId: problemIdMap[problemTag.problemId],
+          tagId: tagIdMap[problemTag.tagId]
         }
       })
     );
@@ -197,13 +215,22 @@ const pool = new Pool({
   const submissionCreatePromises: Promise<Submission>[] = [];
   const submissionsQuery = await client.query(`SELECT * FROM "Submission"`);
 
+  const subIds: [number, string][] = submissionsQuery.rows.map((s) => [
+    s.id,
+    s.solvedAt
+  ]);
+  const subIdMap: Record<string, string> = {};
+  subIds.forEach(([subId, createdAt]) => {
+    subIdMap[subId] = ksuid.create("sub", new Date(createdAt));
+  });
+
   submissionsQuery.rows.forEach((submission) => {
     submissionCreatePromises.push(
       prisma.submission.create({
         data: {
-          id: submission.id,
+          id: subIdMap[submission.id],
           userId: userIdMap[submission.userId],
-          problemId: submission.problemId,
+          problemId: problemIdMap[submission.problemId],
           solveTime: submission.solveTime,
           verdict: submission.verdict,
           solvedAt: submission.solvedAt,
@@ -214,14 +241,14 @@ const pool = new Pool({
   });
 
   // update sequence
-  const submissionsMaxId = submissionsQuery.rows.reduce(
-    (prev, curr) => Math.max(prev, curr.id),
-    0
-  );
-  const submissionsSeqQuery = `ALTER SEQUENCE submissions_id_seq RESTART WITH ${
-    submissionsMaxId + 1
-  }`;
-  await prisma.$queryRaw`${Prisma.raw(submissionsSeqQuery)}`;
+  // const submissionsMaxId = submissionsQuery.rows.reduce(
+  //   (prev, curr) => Math.max(prev, curr.id),
+  //   0
+  // );
+  // const submissionsSeqQuery = `ALTER SEQUENCE submissions_id_seq RESTART WITH ${
+  //   submissionsMaxId + 1
+  // }`;
+  // await prisma.$queryRaw`${Prisma.raw(submissionsSeqQuery)}`;
 
   console.time(`submissions (${submissionsQuery.rowCount})`);
   await Promise.all(submissionCreatePromises);
