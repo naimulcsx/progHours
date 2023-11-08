@@ -1,7 +1,9 @@
 import { Job, Queue } from "bull";
+import { uniqBy } from "lodash";
 
 import { InjectQueue, Process, Processor } from "@nestjs/bull";
 import { Inject, forwardRef } from "@nestjs/common";
+import { ConfigService } from "@nestjs/config";
 
 import { fetchUserSubmissions } from "@proghours/crawler";
 
@@ -9,7 +11,7 @@ import { PrismaService } from "~/modules/prisma/services/prisma.service";
 import { ProblemsService } from "~/modules/problems/services/problems.service";
 import { SubmissionsService } from "~/modules/submissions/services/submissions.service";
 
-import { InjectTrackerPushQueue } from "./push.processor";
+import { InjectTrackerVerifyQueue } from "./verify.processor";
 
 export const TRACKER_PULL_QUEUE = "tracker_pull";
 
@@ -19,8 +21,6 @@ export const InjectTrackerPullQueue = (): ParameterDecorator =>
 export type PullJob = Job<{
   userId: string;
   pullHistoryId: string;
-  judge: "CODEFORCES" | "CODECHEF";
-  handle: string;
 }>;
 
 @Processor(TRACKER_PULL_QUEUE)
@@ -28,10 +28,11 @@ export class TrackerPullProcessor {
   constructor(
     private readonly prisma: PrismaService,
     private readonly problemsService: ProblemsService,
+    private readonly configService: ConfigService,
 
     @Inject(forwardRef(() => SubmissionsService))
     private readonly submissionsService: SubmissionsService,
-    @InjectTrackerPushQueue() private trackerPushQueue: Queue
+    @InjectTrackerVerifyQueue() private verifyQueue: Queue
   ) {}
 
   /**
@@ -40,14 +41,47 @@ export class TrackerPullProcessor {
    */
   @Process()
   async pull(job: PullJob) {
-    const { userId, pullHistoryId, judge, handle } = job.data;
+    const { userId, pullHistoryId } = job.data;
 
-    if (judge === "CODEFORCES") {
-      const data = await fetchUserSubmissions("CODEFORCES", {
-        handle: handle
+    // Submissions that are new for this pull history
+    const items: Array<{
+      url: string;
+      createdAt: string;
+      problemName: string;
+      judge: "CODEFORCES" | "CODECHEF";
+    }> = [];
+
+    // If for any reason the submission fails
+    const failedItems: string[] = [];
+
+    // Pull started
+    await this.prisma.pullHistory.update({
+      where: { id: pullHistoryId },
+      data: { status: "STARTED" }
+    });
+
+    // Get User Handles
+    const userHandles = await this.prisma.userHandle.findMany({
+      where: {
+        userId
+      }
+    });
+
+    // Find Codeforces Handle
+    const codeforcesHandle = userHandles.find(
+      (userHandle) => userHandle.type === "CODEFORCES"
+    );
+
+    if (codeforcesHandle) {
+      const { submissions } = await fetchUserSubmissions("CODEFORCES", {
+        handle: codeforcesHandle.handle
       });
 
-      const solvedProblems = data.submissions.filter((s) => s.verdict === "AC");
+      // Find out the solved problems
+      const solvedProblems = uniqBy(
+        submissions.filter((s) => s.verdict === "AC"),
+        (s) => s.url
+      );
 
       // Optimizing for Codeforces API, where we are getting all the problem data
       // So we don't need to make API requests to get the problem information
@@ -61,55 +95,142 @@ export class TrackerPullProcessor {
         });
       }
 
-      // Find new submissions that needs to be pushed into the database
-      const items: Array<{ pid: string; url: string; solvedAt: Date }> = [];
+      // Find out problems that were not solved previosuly by the user
+      const newItems: Array<{
+        url: string;
+        createdAt: string;
+      }> = [];
+
       for (const el of solvedProblems) {
-        const exists = await this.submissionsService.exists(userId, el.url);
-        if (!exists) {
-          items.push({
-            pid: el.pid,
+        const sub = await this.submissionsService.getByUserAndUrl(
+          userId,
+          el.url
+        );
+        if (!sub) {
+          newItems.push({
             url: el.url,
-            solvedAt: el.createdAt
+            createdAt: el.createdAt.toISOString()
           });
         }
       }
 
+      // Create submissions for the user
+      for (const { url, createdAt } of newItems) {
+        try {
+          const sub = await this.submissionsService.create(userId, {
+            url,
+            solveTime: 0,
+            verdict: "AC",
+            solvedAt: new Date(createdAt).toISOString()
+          });
+          items.push({
+            url,
+            createdAt,
+            problemName: sub.problem.name,
+            judge: "CODEFORCES"
+          });
+        } catch {
+          failedItems.push(url);
+        }
+      }
+
+      // Pull finished
       await this.prisma.pullHistory.update({
         where: {
           id: pullHistoryId
         },
         data: {
+          totalCompleted: items.length - failedItems.length,
           totalItems: items.length,
-          status: items.length === 0 ? "OK" : "STARTED"
+          items: items,
+          status: "PULLED"
         }
       });
+    }
 
-      // add to the push queue
-      for (const el of items) {
-        const pullHistoryItem = await this.prisma.pullHistoryItem.create({
-          data: {
-            problemUrl: el.url,
-            pullHistoryId
-          }
-        });
-        await this.trackerPushQueue.add(
-          {
-            userId,
-            pullHistoryId,
-            pullHistoryItemId: pullHistoryItem.id,
-            ...el
-          },
-          {
-            attempts: 5,
-            backoff: 5000
-          }
+    // Find CodeChef Handle
+    const codeChefHandle = userHandles.find(
+      (userHandle) => userHandle.type === "CODECHEF"
+    );
+
+    // For CodeChef
+    if (codeChefHandle) {
+      const { submissions } = await fetchUserSubmissions("CODECHEF", {
+        handle: codeChefHandle.handle,
+        clientId: this.configService.get("codechef.clientId"),
+        secret: this.configService.get("codechef.secret")
+      });
+
+      // Find out the solved problems
+      const solvedProblems = uniqBy(
+        submissions.filter((s) => s.verdict === "AC"),
+        (s) => s.url
+      );
+
+      const newItems: Array<{
+        url: string;
+        createdAt: string;
+      }> = [];
+
+      for (const el of solvedProblems) {
+        const sub = await this.submissionsService.getByUserAndUrl(
+          userId,
+          el.url
         );
+        if (!sub) {
+          newItems.push({
+            url: el.url,
+            createdAt: el.createdAt.toISOString()
+          });
+        }
+      }
+
+      for (const { url, createdAt } of newItems) {
+        // If the problem is not in our database, we don't need to worry
+        // it'll be automatically created by the submissions service
+        try {
+          const sub = await this.submissionsService.create(userId, {
+            url,
+            solveTime: 0,
+            verdict: "AC",
+            solvedAt: new Date(createdAt).toISOString()
+          });
+          items.push({
+            url,
+            createdAt,
+            problemName: sub.problem.name,
+            judge: "CODECHEF"
+          });
+        } catch {
+          failedItems.push(url);
+        }
       }
     }
 
+    // add verify task to verify queue
+    await this.verifyQueue.add(
+      { jobType: "VERIFY_ALL", userId },
+      { delay: 30000 }
+    );
+
+    // Pull finished
+    await this.prisma.pullHistory.update({
+      where: {
+        id: pullHistoryId
+      },
+      data: {
+        totalCompleted: items.length - items.length,
+        totalItems: items.length,
+        items: items,
+        status: "PULLED"
+      }
+    });
+
     job.progress(100);
     return {
-      status: "OK"
+      status: "OK",
+      failedItems,
+      duration: `${((Date.now() - job.processedOn) / 1000).toFixed(2)}s`
     };
   }
 }

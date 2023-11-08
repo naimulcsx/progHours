@@ -15,7 +15,11 @@ export default function LeaderboardPage() {
   const { data, isFetching } = useLeaderboard({ type });
   const topUsers = data?.slice(0, 3);
   return (
-    <Box px={user ? "md" : 0} mx={{ base: -16, lg: 0 }} pb={66}>
+    <Box
+      px={user ? "md" : 0}
+      mx={{ base: -16, lg: 0 }}
+      pb={{ base: 66, md: 0 }}
+    >
       <Helmet>
         <title>Leaderboard - progHours</title>
       </Helmet>

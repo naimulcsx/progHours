@@ -30,7 +30,7 @@ model User {
   updatedAt DateTime @updatedAt @map("updated_at") @db.Timestamp(0)
   metaData  Json?    @default("{}") @map("metadata")
 
-  institutionId Int?
+  institutionId String?
   institution   Institution? @relation(fields: [institutionId], references: [id])
 
   submissions   Submission[]
@@ -41,23 +41,22 @@ model User {
 }
 
 model Problem {
-  id              String            @id
-  pid             String            @unique
-  name            String
-  url             String            @unique
-  difficulty      Int
-  createdAt       DateTime          @default(now()) @map("created_at") @db.Timestamp(0)
-  updatedAt       DateTime          @updatedAt @map("updated_at") @db.Timestamp(0)
-  metaData        Json?             @default("{}") @map("metadata")
-  problemTags     ProblemTag[]
-  submissions     Submission[]
-  PullHistoryItem PullHistoryItem[]
+  id          String       @id
+  pid         String       @unique
+  name        String
+  url         String       @unique
+  difficulty  Int
+  createdAt   DateTime     @default(now()) @map("created_at") @db.Timestamp(0)
+  updatedAt   DateTime     @updatedAt @map("updated_at") @db.Timestamp(0)
+  metaData    Json?        @default("{}") @map("metadata")
+  problemTags ProblemTag[]
+  submissions Submission[]
 
   @@map("problems")
 }
 
 model Institution {
-  id          Int     @id @default(autoincrement())
+  id          String  @id
   name        String
   url         String?
   country     String?
@@ -137,7 +136,7 @@ enum HandleType {
 }
 
 model UserHandle {
-  id     String     @id @default(cuid())
+  id     String     @id
   user   User       @relation(fields: [userId], references: [id])
   userId String     @map("user_id")
   type   HandleType
@@ -150,37 +149,21 @@ model UserHandle {
 enum PullHistoryStatus {
   PENDING // the pull history has been created
   STARTED // the job is started, totalItems is available
-  OK // all items has been fetched
+  PULLED // all items has been pulled
   ERROR // failed
 }
 
 model PullHistory {
-  id             String            @id @default(cuid())
+  id             String            @id
   user           User              @relation(fields: [userId], references: [id])
   userId         String            @map("user_id")
   status         PullHistoryStatus @default(PENDING)
   totalCompleted Int               @default(0) @map("total_completed")
   totalItems     Int               @default(0) @map("total_items")
-  items          PullHistoryItem[]
+  items          Json?             @default("[]")
   createdAt      DateTime          @default(now()) @map("created_at") @db.Timestamp(0)
   updatedAt      DateTime          @updatedAt @map("updated_at") @db.Timestamp(0)
   processingTime BigInt            @default(0) @map("processing_time")
 
   @@map("pull_histories")
-}
-
-model PullHistoryItem {
-  id             Int               @id @default(autoincrement())
-  problem        Problem?          @relation(fields: [problemId], references: [id])
-  problemId      String?           @map("problem_id")
-  problemUrl     String            @map("problem_url")
-  status         PullHistoryStatus @default(PENDING)
-  processingTime BigInt            @default(0) @map("processing_time")
-  pullHistory    PullHistory       @relation(fields: [pullHistoryId], references: [id], onDelete: Cascade)
-  pullHistoryId  String            @map("pull_history_id")
-  createdAt      DateTime          @default(now()) @map("created_at") @db.Timestamp(0)
-  updatedAt      DateTime          @updatedAt @map("updated_at") @db.Timestamp(0)
-
-  @@index([pullHistoryId])
-  @@map("pull_history_items")
 }

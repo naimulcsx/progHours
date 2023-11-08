@@ -29,7 +29,7 @@ export default function OverviewPage() {
       <Helmet>
         <title>Overview - progHours</title>
       </Helmet>
-      <Container size="xl" px={0} pb={66}>
+      <Container size="xl" px={0} pb={{ base: 66, md: 0 }}>
         <Group gap="xs">
           <Title order={4}>Overview </Title>
           <Tooltip label="Latest data may experience a delay of up to 5 minutes.">

@@ -1,3 +1,4 @@
+import { createId } from "@paralleldrive/cuid2";
 import { Queue } from "bull";
 
 import { Injectable } from "@nestjs/common";
@@ -16,25 +17,29 @@ export class TrackerService {
   ) {}
 
   async pull(userId: string) {
+    // create a pull history
     const pullHistory = await this.prisma.pullHistory.create({
       data: {
+        id: createId(),
         userId
       }
     });
+
     await this.trackerPullQueue.add(
       {
         userId,
-        pullHistoryId: pullHistory.id,
-        handle: "naimulcsx",
-        judge: "codeforces"
+        pullHistoryId: pullHistory.id
       },
       {
-        attempts: 5,
-        backoff: 5000
+        attempts: 3,
+        backoff: {
+          type: "exponential",
+          delay: 15000
+        }
       }
     );
+
     return {
-      status: "OK",
       pullHistoryId: pullHistory.id
     };
   }

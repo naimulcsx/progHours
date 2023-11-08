@@ -1,5 +1,5 @@
+import { createId } from "@paralleldrive/cuid2";
 import moment from "moment";
-import * as ksuid from "ns-ksuid";
 
 import {
   BadRequestException,
@@ -81,7 +81,11 @@ export class SubmissionsService {
     return submission ? true : false;
   }
 
-  async create(userId: string, createSubmissionDto: CreateSubmissionDto) {
+  async create(
+    userId: string,
+    createSubmissionDto: CreateSubmissionDto,
+    withVerification = false
+  ) {
     const url = this.parserService.getUnifiedUrl(createSubmissionDto.url);
     let problemId: string;
     const problem = await this.prisma.problem.findUnique({
@@ -97,7 +101,7 @@ export class SubmissionsService {
     try {
       const newSubmission = await this.prisma.submission.create({
         data: {
-          id: ksuid.create("sub"),
+          id: createId(),
           solveTime: createSubmissionDto.solveTime,
           verdict: createSubmissionDto.verdict,
           problemId,
@@ -118,14 +122,16 @@ export class SubmissionsService {
       });
 
       // Add to VERIFY_QUEUE
-      const _url = new URL(url);
-      if (_url.host === "codeforces.com") {
-        await this.trackerService.verifySingle({
-          submissionId: newSubmission.id,
-          userId,
-          url,
-          judge: "CODEFORCES"
-        });
+      if (withVerification) {
+        const _url = new URL(url);
+        if (_url.host === "codeforces.com") {
+          await this.trackerService.verifySingle({
+            submissionId: newSubmission.id,
+            userId,
+            url,
+            judge: "CODEFORCES"
+          });
+        }
       }
 
       return newSubmission;

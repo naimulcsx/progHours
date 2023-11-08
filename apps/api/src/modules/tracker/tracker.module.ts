@@ -23,11 +23,6 @@ import {
   TrackerPullProcessor
 } from "./processors/pull.processor";
 import {
-  InjectTrackerPushQueue,
-  TRACKER_PUSH_QUEUE,
-  TrackerPushProcessor
-} from "./processors/push.processor";
-import {
   InjectTrackerVerifyQueue,
   TRACKER_VERIFY_QUEUE,
   TrackerVerifyProcessor
@@ -42,17 +37,12 @@ export class TrackerModule implements NestModule {
     const trackerPullQueue = BullModule.registerQueue({
       name: TRACKER_PULL_QUEUE
     });
-    const trackerPushQueue = BullModule.registerQueue({
-      name: TRACKER_PUSH_QUEUE
-    });
     const trackerVerifyQueue = BullModule.registerQueue({
       name: TRACKER_VERIFY_QUEUE
     });
     if (
       !trackerPullQueue.providers ||
       !trackerPullQueue.exports ||
-      !trackerPushQueue.providers ||
-      !trackerPushQueue.exports ||
       !trackerVerifyQueue.providers ||
       !trackerVerifyQueue.exports
     ) {
@@ -68,7 +58,6 @@ export class TrackerModule implements NestModule {
           }
         }),
         trackerPullQueue,
-        trackerPushQueue,
         trackerVerifyQueue,
         SubmissionsModule,
         ProblemsModule
@@ -78,16 +67,13 @@ export class TrackerModule implements NestModule {
         VerifyService,
         TrackerService,
         TrackerPullProcessor,
-        TrackerPushProcessor,
         TrackerVerifyProcessor,
         ...trackerPullQueue.providers,
-        ...trackerPushQueue.providers,
         ...trackerVerifyQueue.providers
       ],
       exports: [
         TrackerService,
         ...trackerPullQueue.exports,
-        ...trackerPushQueue.exports,
         ...trackerVerifyQueue.exports
       ]
     };
@@ -95,7 +81,6 @@ export class TrackerModule implements NestModule {
 
   constructor(
     @InjectTrackerPullQueue() private readonly trackerPullQueue: Queue,
-    @InjectTrackerPushQueue() private readonly trackerPushQueue: Queue,
     @InjectTrackerVerifyQueue() private readonly trackerVerifyQueue: Queue
   ) {}
 
@@ -105,7 +90,6 @@ export class TrackerModule implements NestModule {
     createBullBoard({
       queues: [
         new BullAdapter(this.trackerPullQueue),
-        new BullAdapter(this.trackerPushQueue),
         new BullAdapter(this.trackerVerifyQueue)
       ],
       serverAdapter

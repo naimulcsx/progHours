@@ -51,7 +51,7 @@ export class TrackerVerifyProcessor {
     }
 
     // verify all user sumbissions
-    else if (jobType === "VERIFY_ALL") {
+    if (jobType === "VERIFY_ALL") {
       const result = await this.verifyAll(job.data);
       job.progress(100);
       return {
@@ -61,7 +61,7 @@ export class TrackerVerifyProcessor {
     }
 
     return {
-      status: "_OK_"
+      status: "OK"
     };
   }
 
@@ -127,12 +127,16 @@ export class TrackerVerifyProcessor {
     for (const userHandle of userHandles) {
       const handle = userHandle.handle;
 
+      // For Codeforces
       if (userHandle.type === "CODEFORCES") {
         const data = await fetchUserSubmissions("CODEFORCES", {
           handle
         });
         await this.verifyService.verifyCodeforcesSubmissions(userId, data);
-      } else if (userHandle.type === "CODECHEF") {
+      }
+
+      // For CodeChef
+      else if (userHandle.type === "CODECHEF") {
         const data = await fetchUserSubmissions("CODECHEF", {
           handle,
           clientId: this.configService.getOrThrow("codechef.clientId"),

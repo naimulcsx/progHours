@@ -1,4 +1,4 @@
-import * as ksuid from "ns-ksuid";
+import { createId } from "@paralleldrive/cuid2";
 
 import { Injectable, NotFoundException } from "@nestjs/common";
 
@@ -13,6 +13,10 @@ export class ProblemsService {
     private readonly prisma: PrismaService,
     private readonly parserService: ParserService
   ) {}
+
+  async getByUrl(url: string) {
+    return this.prisma.problem.findUnique({ where: { url } });
+  }
 
   async getById(problemId: string) {
     return this.prisma.problem.findUnique({
@@ -37,7 +41,7 @@ export class ProblemsService {
     }
     const createdProblem = await this.prisma.problem.create({
       data: {
-        id: ksuid.create("problem"),
+        id: createId(),
         ...problemData,
         problemTags: {
           create: [...new Set(tags)].map((tagName) => {
@@ -48,7 +52,7 @@ export class ProblemsService {
                     name: tagName
                   },
                   create: {
-                    id: ksuid.create("tag"),
+                    id: createId(),
                     name: tagName
                   }
                 }
@@ -94,7 +98,7 @@ export class ProblemsService {
                       name: tagName
                     },
                     create: {
-                      id: ksuid.create("tag"),
+                      id: createId(),
                       name: tagName
                     }
                   }

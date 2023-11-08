@@ -14,6 +14,7 @@
  * Author: Naimul Haaque
  * Date: 29th July 2023
  */
+import { createId } from "@paralleldrive/cuid2";
 import {
   Institution,
   PrismaClient,
@@ -25,7 +26,6 @@ import {
   User
 } from "@prisma/client";
 import axios from "axios";
-import * as ksuid from "ns-ksuid";
 import { Pool } from "pg";
 
 const pool = new Pool({
@@ -46,6 +46,7 @@ const pool = new Pool({
   await prisma.problem.deleteMany({});
   await prisma.tag.deleteMany({});
   await prisma.userHandle.deleteMany({});
+  await prisma.pullHistory.deleteMany({});
   await prisma.user.deleteMany({});
   await prisma.institution.deleteMany({});
 
@@ -54,14 +55,11 @@ const pool = new Pool({
    */
   const userCreatePromises: Promise<User>[] = [];
   const usersQuery = await client.query(`SELECT * FROM "User"`);
-  const userIds: [number, string][] = usersQuery.rows.map((user) => [
-    user.id,
-    user.createdAt
-  ]);
+  const userIds: number[] = usersQuery.rows.map((user) => user.id);
 
   const userIdMap: Record<string, string> = {};
-  userIds.forEach(([userId, createdAt]) => {
-    userIdMap[userId] = ksuid.create("user", new Date(createdAt));
+  userIds.forEach((userId) => {
+    userIdMap[userId] = createId();
   });
 
   usersQuery.rows.forEach((user) => {
@@ -117,7 +115,7 @@ const pool = new Pool({
 
   const tagIdMap: Record<string, string> = {};
   tagIds.forEach((tagId) => {
-    tagIdMap[tagId] = ksuid.create("tag");
+    tagIdMap[tagId] = createId();
   });
 
   tagsQuery.rows.forEach((tag) => {
@@ -150,14 +148,11 @@ const pool = new Pool({
    */
   const problemCreatePromises: Promise<Problem>[] = [];
   const problemsQuery = await client.query(`SELECT * FROM "Problem"`);
-  const problemIds: [number, string][] = problemsQuery.rows.map((p) => [
-    p.id,
-    p.createdAt
-  ]);
+  const problemIds: number[] = problemsQuery.rows.map((p) => p.id);
 
   const problemIdMap: Record<string, string> = {};
-  problemIds.forEach(([problemId, createdAt]) => {
-    problemIdMap[problemId] = ksuid.create("problem", new Date(createdAt));
+  problemIds.forEach((problemId) => {
+    problemIdMap[problemId] = createId();
   });
 
   problemsQuery.rows.forEach((problem) => {
@@ -215,13 +210,10 @@ const pool = new Pool({
   const submissionCreatePromises: Promise<Submission>[] = [];
   const submissionsQuery = await client.query(`SELECT * FROM "Submission"`);
 
-  const subIds: [number, string][] = submissionsQuery.rows.map((s) => [
-    s.id,
-    s.solvedAt
-  ]);
+  const subIds: number[] = submissionsQuery.rows.map((s) => s.id);
   const subIdMap: Record<string, string> = {};
-  subIds.forEach(([subId, createdAt]) => {
-    subIdMap[subId] = ksuid.create("sub", new Date(createdAt));
+  subIds.forEach((subId) => {
+    subIdMap[subId] = createId();
   });
 
   submissionsQuery.rows.forEach((submission) => {
@@ -271,6 +263,7 @@ const pool = new Pool({
     institutionCreatePromises.push(
       prisma.institution.create({
         data: {
+          id: createId(),
           name: el.name,
           url: el.web_pages.length > 0 ? el.web_pages[0] : null,
           countryCode: el.alpha_two_code,

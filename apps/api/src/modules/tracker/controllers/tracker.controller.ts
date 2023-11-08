@@ -12,7 +12,7 @@ export class TrackerController {
 
   @Get("pull")
   @ApiBearerAuth("JWT")
-  @ApiOperation({ summary: "Pull user submissions" })
+  @ApiOperation({ summary: "Pull and verify user submissions" })
   async pullSubmissions(@User() user: ActiveUserData) {
     return this.trackerService.pull(user.sub);
   }
