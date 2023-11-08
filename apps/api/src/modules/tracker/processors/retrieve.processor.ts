@@ -13,18 +13,18 @@ import { SubmissionsService } from "~/modules/submissions/services/submissions.s
 
 import { InjectTrackerVerifyQueue } from "./verify.processor";
 
-export const TRACKER_PULL_QUEUE = "tracker_pull";
+export const TRACKER_RETRIEVE_QUEUE = "tracker_retrieve";
 
-export const InjectTrackerPullQueue = (): ParameterDecorator =>
-  InjectQueue(TRACKER_PULL_QUEUE);
+export const InjectTrackerRetrieveQueue = (): ParameterDecorator =>
+  InjectQueue(TRACKER_RETRIEVE_QUEUE);
 
-export type PullJob = Job<{
+export type RetrieveJob = Job<{
   userId: string;
-  pullHistoryId: string;
+  retrieveHistoryId: string;
 }>;
 
-@Processor(TRACKER_PULL_QUEUE)
-export class TrackerPullProcessor {
+@Processor(TRACKER_RETRIEVE_QUEUE)
+export class TrackerRetrieveProcessor {
   constructor(
     private readonly prisma: PrismaService,
     private readonly problemsService: ProblemsService,
@@ -36,12 +36,12 @@ export class TrackerPullProcessor {
   ) {}
 
   /**
-   * Pull user submissions (accepted) using online judge handle
+   * Retrieve user submissions (accepted) using online judge handle
    * For each submission, we'll add a new job on the `Tracker_push` queue
    */
   @Process()
-  async pull(job: PullJob) {
-    const { userId, pullHistoryId } = job.data;
+  async pull(job: RetrieveJob) {
+    const { userId, retrieveHistoryId } = job.data;
 
     // Submissions that are new for this pull history
     const items: Array<{
@@ -54,9 +54,9 @@ export class TrackerPullProcessor {
     // If for any reason the submission fails
     const failedItems: string[] = [];
 
-    // Pull started
-    await this.prisma.pullHistory.update({
-      where: { id: pullHistoryId },
+    // Retrieve started
+    await this.prisma.retrieveHistory.update({
+      where: { id: retrieveHistoryId },
       data: { status: "STARTED" }
     });
 
@@ -134,10 +134,10 @@ export class TrackerPullProcessor {
         }
       }
 
-      // Pull finished
-      await this.prisma.pullHistory.update({
+      // Retrieve finished
+      await this.prisma.retrieveHistory.update({
         where: {
-          id: pullHistoryId
+          id: retrieveHistoryId
         },
         data: {
           totalCompleted: items.length - failedItems.length,
@@ -213,10 +213,10 @@ export class TrackerPullProcessor {
       { delay: 30000 }
     );
 
-    // Pull finished
-    await this.prisma.pullHistory.update({
+    // Retrieve finished
+    await this.prisma.retrieveHistory.update({
       where: {
-        id: pullHistoryId
+        id: retrieveHistoryId
       },
       data: {
         totalCompleted: items.length - items.length,

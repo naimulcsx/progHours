@@ -69,7 +69,6 @@ export class CodeChefCrawler
   }
 
   setApiKey({ clientId, secret }: { clientId: string; secret: string }) {
-    console.log(clientId, secret);
     this.API_CLIENT_ID = clientId;
     this.API_SECRET = secret;
   }

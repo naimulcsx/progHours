@@ -18,10 +18,10 @@ import { ProblemsModule } from "../problems/problems.module";
 import { TrackerController } from "./controllers/tracker.controller";
 import { BasicAuthMiddleware } from "./middlewares/basic-auth.middleware";
 import {
-  InjectTrackerPullQueue,
-  TRACKER_PULL_QUEUE,
-  TrackerPullProcessor
-} from "./processors/pull.processor";
+  InjectTrackerRetrieveQueue,
+  TRACKER_RETRIEVE_QUEUE,
+  TrackerRetrieveProcessor
+} from "./processors/retrieve.processor";
 import {
   InjectTrackerVerifyQueue,
   TRACKER_VERIFY_QUEUE,
@@ -34,15 +34,15 @@ import { VerifyService } from "./services/verify.service";
 @Module({})
 export class TrackerModule implements NestModule {
   static register(): DynamicModule {
-    const trackerPullQueue = BullModule.registerQueue({
-      name: TRACKER_PULL_QUEUE
+    const trackerRetrieveQueue = BullModule.registerQueue({
+      name: TRACKER_RETRIEVE_QUEUE
     });
     const trackerVerifyQueue = BullModule.registerQueue({
       name: TRACKER_VERIFY_QUEUE
     });
     if (
-      !trackerPullQueue.providers ||
-      !trackerPullQueue.exports ||
+      !trackerRetrieveQueue.providers ||
+      !trackerRetrieveQueue.exports ||
       !trackerVerifyQueue.providers ||
       !trackerVerifyQueue.exports
     ) {
@@ -57,7 +57,7 @@ export class TrackerModule implements NestModule {
             port: 6379
           }
         }),
-        trackerPullQueue,
+        trackerRetrieveQueue,
         trackerVerifyQueue,
         SubmissionsModule,
         ProblemsModule
@@ -66,21 +66,21 @@ export class TrackerModule implements NestModule {
       providers: [
         VerifyService,
         TrackerService,
-        TrackerPullProcessor,
+        TrackerRetrieveProcessor,
         TrackerVerifyProcessor,
-        ...trackerPullQueue.providers,
+        ...trackerRetrieveQueue.providers,
         ...trackerVerifyQueue.providers
       ],
       exports: [
         TrackerService,
-        ...trackerPullQueue.exports,
+        ...trackerRetrieveQueue.exports,
         ...trackerVerifyQueue.exports
       ]
     };
   }
 
   constructor(
-    @InjectTrackerPullQueue() private readonly trackerPullQueue: Queue,
+    @InjectTrackerRetrieveQueue() private readonly trackerRetrieveQueue: Queue,
     @InjectTrackerVerifyQueue() private readonly trackerVerifyQueue: Queue
   ) {}
 
@@ -89,7 +89,7 @@ export class TrackerModule implements NestModule {
     serverAdapter.setBasePath("/api/queues");
     createBullBoard({
       queues: [
-        new BullAdapter(this.trackerPullQueue),
+        new BullAdapter(this.trackerRetrieveQueue),
         new BullAdapter(this.trackerVerifyQueue)
       ],
       serverAdapter

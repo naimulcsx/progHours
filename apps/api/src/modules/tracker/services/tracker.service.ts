@@ -5,30 +5,28 @@ import { Injectable } from "@nestjs/common";
 
 import { PrismaService } from "~/modules/prisma/services/prisma.service";
 
-import { InjectTrackerPullQueue } from "../processors/pull.processor";
+import { InjectTrackerRetrieveQueue } from "../processors/retrieve.processor";
 import { InjectTrackerVerifyQueue } from "../processors/verify.processor";
 
 @Injectable()
 export class TrackerService {
   constructor(
     private readonly prisma: PrismaService,
-    @InjectTrackerPullQueue() private trackerPullQueue: Queue,
+    @InjectTrackerRetrieveQueue() private trackerRetrieveQueue: Queue,
     @InjectTrackerVerifyQueue() private trackerVerifyQueue: Queue
   ) {}
 
-  async pull(userId: string) {
-    // create a pull history
-    const pullHistory = await this.prisma.pullHistory.create({
+  async retrieve(userId: string) {
+    const retrieveHistory = await this.prisma.retrieveHistory.create({
       data: {
         id: createId(),
         userId
       }
     });
-
-    await this.trackerPullQueue.add(
+    await this.trackerRetrieveQueue.add(
       {
         userId,
-        pullHistoryId: pullHistory.id
+        retrieveHistoryId: retrieveHistory.id
       },
       {
         attempts: 3,
@@ -38,9 +36,8 @@ export class TrackerService {
         }
       }
     );
-
     return {
-      pullHistoryId: pullHistory.id
+      retrieveHistoryId: retrieveHistory.id
     };
   }
 

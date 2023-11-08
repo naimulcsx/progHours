@@ -35,7 +35,7 @@ model User {
 
   submissions   Submission[]
   userHandles   UserHandle[]
-  pullHistories PullHistory[]
+  pullHistories RetrieveHistory[]
 
   @@map("users")
 }
@@ -146,24 +146,24 @@ model UserHandle {
   @@map("user_handles")
 }
 
-enum PullHistoryStatus {
+enum RetrieveStatusEnum {
   PENDING // the pull history has been created
   STARTED // the job is started, totalItems is available
   PULLED // all items has been pulled
   ERROR // failed
 }
 
-model PullHistory {
-  id             String            @id
-  user           User              @relation(fields: [userId], references: [id])
-  userId         String            @map("user_id")
-  status         PullHistoryStatus @default(PENDING)
-  totalCompleted Int               @default(0) @map("total_completed")
-  totalItems     Int               @default(0) @map("total_items")
-  items          Json?             @default("[]")
-  createdAt      DateTime          @default(now()) @map("created_at") @db.Timestamp(0)
-  updatedAt      DateTime          @updatedAt @map("updated_at") @db.Timestamp(0)
-  processingTime BigInt            @default(0) @map("processing_time")
+model RetrieveHistory {
+  id             String             @id
+  user           User               @relation(fields: [userId], references: [id])
+  userId         String             @map("user_id")
+  status         RetrieveStatusEnum @default(PENDING)
+  totalCompleted Int                @default(0) @map("total_completed")
+  totalItems     Int                @default(0) @map("total_items")
+  items          Json?              @default("[]")
+  createdAt      DateTime           @default(now()) @map("created_at") @db.Timestamp(0)
+  updatedAt      DateTime           @updatedAt @map("updated_at") @db.Timestamp(0)
+  processingTime BigInt             @default(0) @map("processing_time")
 
   @@map("pull_histories")
 }

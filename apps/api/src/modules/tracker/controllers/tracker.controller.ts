@@ -1,4 +1,4 @@
-import { Controller, Get } from "@nestjs/common";
+import { Controller, Post } from "@nestjs/common";
 import { ApiBearerAuth, ApiOperation, ApiTags } from "@nestjs/swagger";
 
 import { ActiveUserData, User } from "~/modules/auth/decorators/user.decorator";
@@ -10,10 +10,10 @@ import { TrackerService } from "../services/tracker.service";
 export class TrackerController {
   constructor(private readonly trackerService: TrackerService) {}
 
-  @Get("pull")
+  @Post("retrieve")
   @ApiBearerAuth("JWT")
-  @ApiOperation({ summary: "Pull and verify user submissions" })
-  async pullSubmissions(@User() user: ActiveUserData) {
-    return this.trackerService.pull(user.sub);
+  @ApiOperation({ summary: "Retrieve and verify user submissions" })
+  async retrieveSubmissions(@User() user: ActiveUserData) {
+    return this.trackerService.retrieve(user.sub);
   }
 }

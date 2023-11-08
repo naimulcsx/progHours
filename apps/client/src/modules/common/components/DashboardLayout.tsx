@@ -13,11 +13,12 @@ export function DashboardLayout({ children }: AppShellProps) {
         breakpoint: "sm",
         collapsed: { mobile: true }
       }}
+      p={16}
     >
       <Sidebar />
       <BottomBar />
       <AppShell.Main>
-        <Box p={16}>{children}</Box>
+        <Box>{children}</Box>
       </AppShell.Main>
     </AppShell>
   );
