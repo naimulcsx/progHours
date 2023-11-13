@@ -86,13 +86,21 @@ export class TrackerRetrieveProcessor {
       // Optimizing for Codeforces API, where we are getting all the problem data
       // So we don't need to make API requests to get the problem information
       for (const { pid, name, difficulty, url, tags } of solvedProblems) {
-        await this.problemsService.createProblem({
-          pid,
-          name,
-          difficulty,
-          url,
-          tags
-        });
+        const problem = await this.problemsService.getByUrl(url);
+        if (!problem) {
+          try {
+            await this.problemsService.createProblem({
+              pid,
+              name,
+              difficulty,
+              url,
+              tags
+            });
+          } catch {
+            // Find out the failed problems
+            job.log(`${pid}`);
+          }
+        }
       }
 
       // Find out problems that were not solved previosuly by the user
