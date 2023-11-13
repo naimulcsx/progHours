@@ -23,7 +23,8 @@ import {
   Role,
   Submission,
   Tag,
-  User
+  User,
+  UserHandle
 } from "@prisma/client";
 import axios from "axios";
 import { Pool } from "pg";
@@ -46,7 +47,7 @@ const pool = new Pool({
   await prisma.problem.deleteMany({});
   await prisma.tag.deleteMany({});
   await prisma.userHandle.deleteMany({});
-  await prisma.pullHistory.deleteMany({});
+  await prisma.retrieveHistory.deleteMany({});
   await prisma.user.deleteMany({});
   await prisma.institution.deleteMany({});
 
@@ -93,17 +94,34 @@ const pool = new Pool({
     );
   });
 
-  // update sequence
-  // const maxId = usersQuery.rows.reduce(
-  //   (prev, curr) => Math.max(prev, curr.id),
-  //   0
-  // );
-  // const usersSeqQuery = `ALTER SEQUENCE users_id_seq RESTART WITH ${maxId + 1}`;
-  // await prisma.$queryRaw`${Prisma.raw(usersSeqQuery)}`;
-
   console.time(`users (${usersQuery.rowCount})`);
   await Promise.all(userCreatePromises);
   console.timeEnd(`users (${usersQuery.rowCount})`);
+
+  /**
+   * Migrate user handles
+   */
+
+  const handlesQuery = await client.query(`SELECT * FROM "Handle"`);
+  const userHandleCreatePromises: Promise<UserHandle>[] = [];
+
+  handlesQuery.rows.forEach((handle) => {
+    if (handle.onlineJudgeId > 2) return;
+    userHandleCreatePromises.push(
+      prisma.userHandle.create({
+        data: {
+          id: createId(),
+          userId: userIdMap[handle.userId],
+          type: handle.onlineJudgeId == 1 ? "CODEFORCES" : "CODECHEF",
+          handle: handle.handle
+        }
+      })
+    );
+  });
+
+  console.time(`user handles (${handlesQuery.rowCount})`);
+  await Promise.all(userHandleCreatePromises);
+  console.timeEnd(`user handles (${handlesQuery.rowCount})`);
 
   /**
    * Migrate tags data
@@ -128,16 +146,6 @@ const pool = new Pool({
       })
     );
   });
-
-  // update sequence
-  // const tagsMaxId = tagsQuery.rows.reduce(
-  //   (prev, curr) => Math.max(prev, curr.id),
-  //   0
-  // );
-  // const tagsSeqQuery = `ALTER SEQUENCE tags_id_seq RESTART WITH ${
-  //   tagsMaxId + 1
-  // }`;
-  // await prisma.$queryRaw`${Prisma.raw(tagsSeqQuery)}`;
 
   console.time(`tags (${tagsQuery.rowCount})`);
   await Promise.all(tagCreatePromises);
@@ -169,16 +177,6 @@ const pool = new Pool({
       })
     );
   });
-
-  // update sequence
-  // const problemsMaxId = problemsQuery.rows.reduce(
-  //   (prev, curr) => Math.max(prev, curr.id),
-  //   0
-  // );
-  // const problemsSeqQuery = `ALTER SEQUENCE problems_id_seq RESTART WITH ${
-  //   problemsMaxId + 1
-  // }`;
-  // await prisma.$queryRaw`${Prisma.raw(problemsSeqQuery)}`;
 
   console.time(`problems (${problemsQuery.rowCount})`);
   await Promise.all(problemCreatePromises);
