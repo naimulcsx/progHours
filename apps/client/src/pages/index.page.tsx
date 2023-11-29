@@ -24,6 +24,8 @@ import {
   useComputedColorScheme
 } from "@mantine/core";
 
+import { AnalyticsSection } from "~/modules/homepage/AnalyticsSection";
+
 export default function HomePage() {
   const computedColorScheme = useComputedColorScheme("light", {
     getInitialValueInEffect: true
@@ -77,7 +79,7 @@ export default function HomePage() {
             </Group>
           </Stack>
         </Box>
-        <Container style={{ marginTop: -140 }}>
+        <Container size="lg" style={{ marginTop: -140 }}>
           <Image
             src={
               computedColorScheme === "light"
@@ -105,7 +107,7 @@ export default function HomePage() {
             </Text>
           </Stack>
         </Container>
-        <Container size="xl" mt={40}>
+        <Container size="lg" mt={40}>
           <Grid gutter="xl">
             {services.map((service, i) => (
               <Grid.Col span={{ base: 12, sm: 6, lg: 3 }} key={i}>
@@ -117,7 +119,7 @@ export default function HomePage() {
                         <span key={i}>{s}</span>
                       ))}
                     </Title>
-                    <Text>{service.desc}</Text>
+                    <Text size="sm">{service.desc}</Text>
                   </Stack>
                 </Paper>
               </Grid.Col>
@@ -125,6 +127,8 @@ export default function HomePage() {
           </Grid>
         </Container>
       </Box>
+
+      <AnalyticsSection />
 
       {/* FAQ section */}
       <Box component="section" my={{ base: 56, lg: 96 }}>
@@ -223,9 +227,4 @@ const faq = [
     description:
       "Yes, we will onboard the people on our waitlist based on a first come first serve basis, with a 1000 user limit for our initial version."
   }
-  // {
-  //   value: "Is there a mobile app for progHours?",
-  //   description:
-  //     "Currently, progHours is accessible through web browsers. However, we've plans to work on a mobile app in the future."
-  // }
 ];

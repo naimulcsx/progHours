@@ -16,10 +16,14 @@ import { ActiveProfileResponse } from "@proghours/data-access";
 // import convert from "color-convert";
 
 interface WeeklySolvedChartProps {
+  height?: number;
   data: ActiveProfileResponse["weeklyStatistics"];
 }
 
-export const WeeklySolvedChart = ({ data }: WeeklySolvedChartProps) => {
+export const WeeklySolvedChart = ({
+  height = 330,
+  data
+}: WeeklySolvedChartProps) => {
   const { colorScheme } = useMantineColorScheme();
   // const { accentColor } = useAccentColor();
   // const primary = resolvers[accentColor](theme).light["--primary"];
@@ -122,13 +126,18 @@ export const WeeklySolvedChart = ({ data }: WeeklySolvedChartProps) => {
           ]}
         />
       </Group>
-      <ScrollArea mt="sm" h={350} viewportRef={viewport}>
+      <ScrollArea mt="sm" h={height + 20} viewportRef={viewport}>
         <Box
           style={{
             width: solvedData.length <= 10 ? "100%" : solvedData.length * 50
           }}
         >
-          <Chart options={options} series={series} type="area" height={330} />
+          <Chart
+            options={options}
+            series={series}
+            type="area"
+            height={height}
+          />
         </Box>
       </ScrollArea>
     </>

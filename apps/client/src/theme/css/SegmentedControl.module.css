@@ -1,5 +1,6 @@
 .root {
   &[data-variant="proghours-ui"] {
+    --separator-color: red;
     @mixin light {
       background: hsl(var(--secondary));
       --sc-color: hsl(var(--background));
@@ -7,6 +8,15 @@
     @mixin dark {
       background: hsl(var(--secondary) / 0.4);
       --sc-color: hsl(var(--secondary));
+    }
+    .label {
+      color: hsl(var(--muted-foreground));
+    }
+    .label[data-active="true"] {
+      color: hsl(var(--foreground));
+    }
+    .control:before {
+      background-color: transparent;
     }
   }
 
