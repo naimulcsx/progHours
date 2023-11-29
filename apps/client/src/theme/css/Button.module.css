@@ -13,7 +13,12 @@
     font-weight: 500;
     --button-bg: hsl(var(--primary) / 0.1);
     --button-color: hsl(var(--primary));
-    --button-hover: hsl(var(--primary) / 0.2);
+    --button-hover: hsl(var(--primary) / 0.15);
+
+    @mixin dark {
+      --button-bg: hsl(var(--primary) / 0.15);
+      --button-hover: hsl(var(--primary) / 0.2);
+    }
   }
 
   &[data-variant="proghours-ui-white"] {

@@ -24,7 +24,7 @@ interface DataTableProps {
 }
 
 export const LeaderboardDataTable = memo(function ({ data }: DataTableProps) {
-  const PAGE_SIZE = 10;
+  const PAGE_SIZE = 25;
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
   const [sorting, setSorting] = useState<SortingState>([]);
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});

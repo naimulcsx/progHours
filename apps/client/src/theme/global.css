@@ -7,7 +7,7 @@ html {
 body {
   background-color: hsl(var(--background));
   color: hsl(var(--foreground));
-  overflow-x: hidden;
+  /* overflow-x: hidden; */
 }
 
 .dark .apexcharts-tooltip {
