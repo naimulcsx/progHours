@@ -13,18 +13,18 @@ import {
 } from "@mantine/core";
 import { useMediaQuery } from "@mantine/hooks";
 
-import { AvgDifficultyChart } from "../dashboard/overview/components/charts/AvgDifficultyChart";
-import { TimeSpentChart } from "../dashboard/overview/components/charts/TimeSpentChart";
-import { TopSolvedTagsChart } from "../dashboard/overview/components/charts/TopSolvedTagsChart";
-import { WeeklySolvedChart } from "../dashboard/overview/components/charts/WeeklySolvedChart";
+import { AvgDifficultyChart } from "~/modules/dashboard/overview/components/charts/AvgDifficultyChart";
+import { TimeSpentChart } from "~/modules/dashboard/overview/components/charts/TimeSpentChart";
+import { TopSolvedTagsChart } from "~/modules/dashboard/overview/components/charts/TopSolvedTagsChart";
+import { WeeklySolvedChart } from "~/modules/dashboard/overview/components/charts/WeeklySolvedChart";
+
+type Analytics =
+  | "weeklyInsights"
+  | "topSolvedTags"
+  | "timeDistribution"
+  | "averageDifficultyAnalysis";
 
 export function AnalyticsSection() {
-  type Analytics =
-    | "weeklyInsights"
-    | "topSolvedTags"
-    | "timeDistribution"
-    | "averageDifficultyAnalysis";
-
   const matches = useMediaQuery("(max-width: 640px)");
   const [value, setValue] = useState<Analytics>("weeklyInsights");
 
@@ -43,6 +43,7 @@ export function AnalyticsSection() {
       <Container size="lg" mt={40}>
         <Flex justify="center">
           <SegmentedControl
+            size="xs"
             w={matches ? "100%" : "auto"}
             orientation={matches ? "vertical" : "horizontal"}
             value={value}
@@ -67,17 +68,17 @@ export function AnalyticsSection() {
             ]}
           />
         </Flex>
-      </Container>
 
-      <Container size="lg" mt={40}>
-        <Grid gutter={{ base: 32, md: 64 }} align="center">
-          <Grid.Col span={{ base: 12, md: 6 }}>
-            {analyticsData[value].content}
-          </Grid.Col>
-          <Grid.Col span={{ base: 12, md: 6 }}>
-            <Paper p="lg">{analyticsData[value].chart}</Paper>
-          </Grid.Col>
-        </Grid>
+        <Paper p="xl" mt="xl">
+          <Grid gutter={{ base: 32, md: 64 }} align="center">
+            <Grid.Col span={{ base: 12, md: 6 }}>
+              {analyticsData[value].content}
+            </Grid.Col>
+            <Grid.Col span={{ base: 12, md: 6 }}>
+              {analyticsData[value].chart}
+            </Grid.Col>
+          </Grid>
+        </Paper>
       </Container>
     </Box>
   );
@@ -223,7 +224,7 @@ const analyticsData = {
         <Text>
           It's also about spotting areas that might need a bit more attention.
           You can also use the information to strategically target and improve
-          upon your weaknesses, fostering continuous development.
+          upon your weaknesses.
         </Text>
       </Stack>
     ),
@@ -303,9 +304,8 @@ const analyticsData = {
         </Text>
         <Text>
           The visual breakdown of time spent on various tags can also act as a
-          compass for balancing your focus. It dicourages focus in a single
-          category, encouraging you to explore a diverse set of problems with
-          different techniques.
+          compass for balancing your focus. It encourages you to explore a
+          diverse set of problems with different techniques.
         </Text>
       </Stack>
     ),
@@ -376,9 +376,9 @@ const analyticsData = {
         </Box>
         <Text>
           Explore the average difficulty level of problems you are solving. The
-          upward trend in this chart (among the problems you solve) over time
-          becomes a powerful indicator of personal growth. It will push you to
-          take on increasingly challenging tasks than previous week.
+          upward trend in this chart over time becomes a powerful indicator of
+          personal growth. It will push you to take on increasingly challenging
+          tasks than previous week.
         </Text>
         <Text>
           Remember, you're not just learning for yourself, bring your friends,

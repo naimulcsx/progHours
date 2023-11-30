@@ -15,10 +15,14 @@ import {
 import { ActiveProfileResponse } from "@proghours/data-access";
 
 interface TopSolvedTagsChartProps {
+  height?: number;
   data: ActiveProfileResponse["solveCountByTags"];
 }
 
-export function TopSolvedTagsChart({ data }: TopSolvedTagsChartProps) {
+export function TopSolvedTagsChart({
+  height = 310,
+  data
+}: TopSolvedTagsChartProps) {
   const { colorScheme } = useMantineColorScheme();
   const slicedData = data.slice(0, 10).reverse();
 
@@ -104,10 +108,15 @@ export function TopSolvedTagsChart({ data }: TopSolvedTagsChartProps) {
         />
       </Group>
 
-      <ScrollArea h={350} mt="sm">
+      <ScrollArea h={height + 40} mt="sm">
         {value === "chart" && (
           <Box>
-            <Chart type="bar" series={series} options={options} height={310} />
+            <Chart
+              type="bar"
+              series={series}
+              options={options}
+              height={height}
+            />
           </Box>
         )}
         {value === "table" && (

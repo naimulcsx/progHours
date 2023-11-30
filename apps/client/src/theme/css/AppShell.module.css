@@ -1,7 +1,7 @@
 .header {
   &[data-variant="proghours-ui"] {
     background-color: hsl(var(--background));
-    border-color: hsl(var(--border));
+    border-color: hsl(var(--border) / 0.75);
   }
 }
 
