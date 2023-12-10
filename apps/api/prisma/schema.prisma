@@ -36,6 +36,7 @@ model User {
   submissions   Submission[]
   userHandles   UserHandle[]
   pullHistories RetrieveHistory[]
+  GroupUser     GroupUser[]
 
   @@map("users")
 }
@@ -166,4 +167,36 @@ model RetrieveHistory {
   processingTime BigInt             @default(0) @map("processing_time")
 
   @@map("pull_histories")
+}
+
+model Group {
+  id         String      @id
+  name       String
+  slug       String      @unique
+  accessCode String      @map("access_code")
+  createdAt  DateTime    @default(now()) @map("created_at") @db.Timestamp(0)
+  updatedAt  DateTime    @updatedAt @map("updated_at") @db.Timestamp(0)
+  isPrivate  Boolean     @default(false) @map("is_private")
+  GroupUser  GroupUser[]
+
+  @@map("groups")
+}
+
+enum GroupUserRole {
+  ADMIN
+  MEMBER
+}
+
+model GroupUser {
+  id       String        @id
+  groupId  String        @map("group_id")
+  userId   String
+  role     GroupUserRole @default(MEMBER)
+  joinedAt DateTime      @default(now())
+
+  user  User  @relation(fields: [userId], references: [id])
+  group Group @relation(fields: [groupId], references: [id])
+
+  @@index(groupId)
+  @@map("group_users")
 }

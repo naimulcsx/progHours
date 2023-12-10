@@ -1,8 +1,9 @@
 .root {
   &[data-variant="proghours-ui"] {
     .header {
-      background-color: hsl(var(--background));
+      background-color: hsl(var(--background) / 0.85);
       border-color: hsl(var(--border) / 0.75);
+      backdrop-filter: blur(12px);
     }
 
     .navbar {
