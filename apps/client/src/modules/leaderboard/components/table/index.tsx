@@ -11,11 +11,14 @@ import {
   getSortedRowModel,
   useReactTable
 } from "@tanstack/react-table";
-import { memo, useEffect, useState } from "react";
+import { createElement, memo, useEffect, useState } from "react";
 
 import { Group, Pagination, ScrollArea, Table, Text } from "@mantine/core";
+import { useMediaQuery } from "@mantine/hooks";
 
 import { LeaderboardEntry } from "@proghours/data-access";
+
+import { useUser } from "~/modules/auth/hooks/useUser";
 
 import { columns } from "./columns";
 
@@ -24,6 +27,8 @@ interface DataTableProps {
 }
 
 export const LeaderboardDataTable = memo(function ({ data }: DataTableProps) {
+  const { user } = useUser();
+
   const PAGE_SIZE = 25;
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
   const [sorting, setSorting] = useState<SortingState>([]);
@@ -71,9 +76,19 @@ export const LeaderboardDataTable = memo(function ({ data }: DataTableProps) {
     // eslint-disable-next-line
   }, []);
 
-  return (
-    <ScrollArea>
-      <Table verticalSpacing="xs">
+  const matches = useMediaQuery("(min-width: 56.25em)");
+
+  return createElement(
+    // rendering ScrollArea only for smaller screens
+    // it disables the sticky header functionality on the table header
+    matches ? "div" : ScrollArea,
+    null,
+    <>
+      <Table
+        verticalSpacing="xs"
+        stickyHeader
+        stickyHeaderOffset={user ? 0 : 60}
+      >
         <Table.Thead>
           {table.getHeaderGroups().map((headerGroup) => (
             <Table.Tr key={headerGroup.id}>
@@ -151,6 +166,6 @@ export const LeaderboardDataTable = memo(function ({ data }: DataTableProps) {
           onChange={(value) => table.setPageIndex(value - 1)}
         />
       </Group>
-    </ScrollArea>
+    </>
   );
 });

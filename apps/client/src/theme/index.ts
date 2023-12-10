@@ -3,8 +3,6 @@ import {
   ActionIcon,
   Anchor,
   AppShell,
-  AppShellHeader,
-  AppShellNavbar,
   Badge,
   Button,
   CSSVariablesResolver,
@@ -17,6 +15,7 @@ import {
   Modal,
   NavLink,
   Notification,
+  Pagination,
   Paper,
   PasswordInput,
   Popover,
@@ -49,6 +48,7 @@ import menuClasses from "./css/Menu.module.css";
 import modalClasses from "./css/Modal.module.css";
 import navlinkClasses from "./css/NavLink.module.css";
 import notificationClasses from "./css/Notification.module.css";
+import paginationClasses from "./css/Pagination.module.css";
 import paperClasses from "./css/Paper.module.css";
 import passwordInputClasses from "./css/PasswordInput.module.css";
 import popoverClasses from "./css/Popover.module.css";
@@ -404,12 +404,6 @@ export const theme = createTheme({
       defaultProps: { variant: "proghours-ui" },
       classNames: appShellClasses
     }),
-    AppShellHeader: AppShellHeader.extend({
-      defaultProps: { variant: "proghours-ui" }
-    }),
-    AppShellNavbar: AppShellNavbar.extend({
-      defaultProps: { variant: "proghours-ui" }
-    }),
     Anchor: Anchor.extend({
       defaultProps: { variant: "proghours-ui" },
       classNames: anchorClasses
@@ -488,6 +482,10 @@ export const theme = createTheme({
     Loader: Loader.extend({
       defaultProps: { variant: "proghours-ui", size: "xs" },
       classNames: loaderClasses
+    }),
+    Pagination: Pagination.extend({
+      defaultProps: { variant: "proghours-ui", size: "xs" },
+      classNames: paginationClasses
     })
   }
 });

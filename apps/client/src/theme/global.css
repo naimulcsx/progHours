@@ -7,7 +7,22 @@ html {
 body {
   background-color: hsl(var(--background));
   color: hsl(var(--foreground));
-  /* overflow-x: hidden; */
+}
+
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: hsl(var(--secondary));
+}
+
+::-webkit-scrollbar-thumb {
+  background: #99999966;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #55555566;
 }
 
 .dark .apexcharts-tooltip {

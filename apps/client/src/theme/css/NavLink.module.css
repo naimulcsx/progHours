@@ -10,13 +10,13 @@
         color: hsl(var(--primary));
       }
       @mixin dark {
-        background: hsl(var(--secondary));
+        background: hsl(var(--secondary) / 0.75);
         color: hsl(var(--foreground));
       }
     }
     &:hover {
       color: hsl(var(--foreground));
-      background: hsl(var(--secondary));
+      background: hsl(var(--secondary) / 0.75);
     }
     transition: all 0.2s;
   }

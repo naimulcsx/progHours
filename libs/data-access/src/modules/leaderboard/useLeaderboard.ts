@@ -39,7 +39,6 @@ export async function getLeaderboard(
 export function useLeaderboard(
   { type, config }: UseLeaderboardOptions = { config: {}, type: "full" }
 ) {
-  console.log("from hook", type);
   return useQuery({
     queryKey: ["leaderboard", type],
     queryFn: () => getLeaderboard(type),

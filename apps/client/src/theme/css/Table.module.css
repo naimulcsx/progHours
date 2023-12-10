@@ -1,5 +1,28 @@
 .table {
   &[data-variant="proghours-ui"] {
     --table-border-color: hsl(var(--border));
+
+    .thead {
+      background: hsl(var(--background));
+      z-index: 100;
+
+      tr {
+        border-bottom: 0;
+      }
+
+      th {
+        font-weight: 600;
+      }
+
+      th:first-child {
+        border-top-left-radius: var(--mantine-radius-md);
+        border-bottom-left-radius: var(--mantine-radius-md);
+      }
+
+      th:last-child {
+        border-top-right-radius: var(--mantine-radius-md);
+        border-bottom-right-radius: var(--mantine-radius-md);
+      }
+    }
   }
 }

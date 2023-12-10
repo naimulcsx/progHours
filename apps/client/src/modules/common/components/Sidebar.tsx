@@ -80,7 +80,7 @@ export function Sidebar() {
             );
             if (collapsed) {
               return (
-                <Tooltip position="right" label={link.label}>
+                <Tooltip key={index} position="right" label={link.label}>
                   {child}
                 </Tooltip>
               );

@@ -2,27 +2,14 @@ import jwtDecode from "jwt-decode";
 
 import { storage } from "@proghours/data-access";
 
-type User = {
-  email: string;
-  username: string;
-  fullName: string;
-  id: string;
-  role: string;
-};
+import { JwtPayload, User } from "../types";
 
 export function useUser() {
   const token = storage.getToken();
   let user: User | null = null;
   if (token) {
     try {
-      const decoded = jwtDecode<{
-        exp: number;
-        username: string;
-        fullName: string;
-        sub: string;
-        role: string;
-        email: string;
-      }>(token);
+      const decoded = jwtDecode<JwtPayload>(token);
       const currentTimestamp = Math.floor(Date.now() / 1000);
       if (currentTimestamp < decoded.exp) {
         user = {

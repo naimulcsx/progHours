@@ -1,5 +1,12 @@
-import React, { ReactNode, Suspense } from "react";
-import { Navigate, RouteObject } from "react-router-dom";
+import React, {
+  PropsWithChildren,
+  ReactNode,
+  Suspense,
+  useLayoutEffect
+} from "react";
+import { Navigate, RouteObject, useLocation } from "react-router-dom";
+
+import { AppShellProps } from "@mantine/core";
 
 import { DashboardLayout } from "~/modules/common/components/DashboardLayout";
 import { Layout } from "~/modules/common/components/Layout";
@@ -23,43 +30,58 @@ const LeaderboardPage = React.lazy(() => import("~/pages/leaderboard.page"));
 
 const defineRoute = (path: string, element: ReactNode) => ({ path, element });
 
-const withSuspenseLayout = (
+const Wrapper = ({ children }: PropsWithChildren) => {
+  const location = useLocation();
+  useLayoutEffect(() => {
+    document.documentElement.scrollTo(0, 0);
+  }, [location.pathname]);
+  return children;
+};
+
+const WithSuspenseLayout = (
   PageComponent: React.FC,
   props?: { withContainer: boolean }
 ): ReactNode => {
   return (
-    <Layout {...props}>
-      <Suspense>
-        <PageComponent />
-      </Suspense>
-    </Layout>
+    <Wrapper>
+      <Layout {...props}>
+        <Suspense>
+          <PageComponent />
+        </Suspense>
+      </Layout>
+    </Wrapper>
   );
 };
 
-const withSuspenseDashboardLayout = (PageComonent: React.FC): ReactNode => {
+const WithSuspenseDashboardLayout = (
+  PageComonent: React.FC,
+  props?: AppShellProps
+): ReactNode => {
   return (
-    <DashboardLayout>
-      <Suspense>
-        <PageComonent />
-      </Suspense>
-    </DashboardLayout>
+    <Wrapper>
+      <DashboardLayout {...props}>
+        <Suspense>
+          <PageComonent />
+        </Suspense>
+      </DashboardLayout>
+    </Wrapper>
   );
 };
 
 export const getRoutes = (isLoggedIn: boolean): RouteObject[] => [
-  defineRoute("/", withSuspenseLayout(HomePage, { withContainer: false })),
+  defineRoute("/", WithSuspenseLayout(HomePage, { withContainer: false })),
   defineRoute(
     "/leaderboard",
     isLoggedIn
-      ? withSuspenseDashboardLayout(LeaderboardPage)
-      : withSuspenseLayout(LeaderboardPage, { withContainer: true })
+      ? WithSuspenseDashboardLayout(LeaderboardPage)
+      : WithSuspenseLayout(LeaderboardPage, { withContainer: true })
   ),
   defineRoute(
     "/auth/sign-in",
     isLoggedIn ? (
       <Navigate to="/" />
     ) : (
-      withSuspenseLayout(SignInPage, { withContainer: false })
+      WithSuspenseLayout(SignInPage, { withContainer: false })
     )
   ),
   defineRoute(
@@ -67,13 +89,13 @@ export const getRoutes = (isLoggedIn: boolean): RouteObject[] => [
     isLoggedIn ? (
       <Navigate to="/" />
     ) : (
-      withSuspenseLayout(SignUpPage, { withContainer: false })
+      WithSuspenseLayout(SignUpPage, { withContainer: false })
     )
   ),
   defineRoute(
     "/overview",
     isLoggedIn ? (
-      withSuspenseDashboardLayout(OverviewPage)
+      WithSuspenseDashboardLayout(OverviewPage)
     ) : (
       <Navigate to="/auth/login" />
     )
@@ -81,7 +103,7 @@ export const getRoutes = (isLoggedIn: boolean): RouteObject[] => [
   defineRoute(
     "/submissions",
     isLoggedIn ? (
-      withSuspenseDashboardLayout(SubmissionsPage)
+      WithSuspenseDashboardLayout(SubmissionsPage)
     ) : (
       <Navigate to="/auth/login" />
     )
@@ -97,17 +119,17 @@ export const getRoutes = (isLoggedIn: boolean): RouteObject[] => [
   defineRoute(
     "/settings/:tabValue",
     isLoggedIn ? (
-      withSuspenseDashboardLayout(SettingsPage)
+      WithSuspenseDashboardLayout(SettingsPage)
     ) : (
       <Navigate to="/auth/sign-in" />
     )
   ),
   defineRoute(
     "/@/:username",
-    withSuspenseLayout(UserProfilePage, { withContainer: false })
+    WithSuspenseLayout(UserProfilePage, { withContainer: false })
   ),
   defineRoute(
     "/@/:username/:tabValue",
-    withSuspenseLayout(UserProfilePage, { withContainer: false })
+    WithSuspenseLayout(UserProfilePage, { withContainer: false })
   )
 ];

@@ -4,8 +4,10 @@ import {
   getPaginationRowModel,
   useReactTable
 } from "@tanstack/react-table";
+import { createElement } from "react";
 
 import { Group, Pagination, ScrollArea, Table, Text } from "@mantine/core";
+import { useMediaQuery } from "@mantine/hooks";
 
 import { SubmissionRow } from "@proghours/data-access";
 
@@ -22,7 +24,7 @@ export function SubmissionsDataTable({
   editable = true,
   data
 }: DataTableProps) {
-  const PAGE_SIZE = 10;
+  const PAGE_SIZE = 25;
   const table = useReactTable({
     data,
     columns: editable ? columns : columnsPublic,
@@ -37,9 +39,15 @@ export function SubmissionsDataTable({
     }
   });
 
-  return (
-    <ScrollArea>
-      <Table verticalSpacing="xs">
+  const matches = useMediaQuery("(min-width: 56.25em)");
+
+  return createElement(
+    // rendering ScrollArea only for smaller screens
+    // it disables the sticky header functionality on the table header
+    matches ? "div" : ScrollArea,
+    null,
+    <>
+      <Table verticalSpacing="xs" stickyHeader>
         <Table.Thead>
           {table.getHeaderGroups().map((headerGroup) => (
             <Table.Tr key={headerGroup.id}>
@@ -118,6 +126,6 @@ export function SubmissionsDataTable({
           onChange={(value) => table.setPageIndex(value - 1)}
         />
       </Group>
-    </ScrollArea>
+    </>
   );
 }

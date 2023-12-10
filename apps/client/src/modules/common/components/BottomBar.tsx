@@ -37,6 +37,7 @@ export function BottomBar() {
                   <Text
                     mt={4}
                     size="xs"
+                    fw={600}
                     className={isActive ? classes.active : ""}
                   >
                     {link.label}
@@ -55,22 +56,22 @@ export const userLinks = [
   {
     label: "Overview",
     to: "/overview",
-    Icon: () => <IconHome />
+    Icon: () => <IconHome width={20} height={20} />
   },
   {
     label: "Submissions",
     to: "/submissions",
-    Icon: () => <IconTable />
+    Icon: () => <IconTable width={20} height={20} />
   },
   {
     label: "Leaderboard",
     to: "/leaderboard",
-    Icon: () => <IconBarChart />
+    Icon: () => <IconBarChart width={20} height={20} />
   },
   {
     label: "Settings",
     to: "/settings/appearance",
     activePath: "/settings",
-    Icon: () => <IconSettings />
+    Icon: () => <IconSettings width={20} height={20} />
   }
 ];
