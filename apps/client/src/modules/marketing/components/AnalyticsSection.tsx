@@ -17,17 +17,11 @@ import { AvgDifficultyChart } from "~/modules/dashboard/overview/components/char
 import { TimeSpentChart } from "~/modules/dashboard/overview/components/charts/TimeSpentChart";
 import { TopSolvedTagsChart } from "~/modules/dashboard/overview/components/charts/TopSolvedTagsChart";
 import { WeeklySolvedChart } from "~/modules/dashboard/overview/components/charts/WeeklySolvedChart";
-
-type Analytics =
-  | "weeklyInsights"
-  | "topSolvedTags"
-  | "timeDistribution"
-  | "averageDifficultyAnalysis";
+import { Analytics } from "~/modules/marketing/types";
 
 export function AnalyticsSection() {
   const matches = useMediaQuery("(max-width: 640px)");
   const [value, setValue] = useState<Analytics>("weeklyInsights");
-
   return (
     <Box component="section" my={{ base: 56, lg: 96 }}>
       <Container size="xs" style={{ textAlign: "center" }}>
@@ -50,19 +44,19 @@ export function AnalyticsSection() {
             onChange={(val) => setValue(val as Analytics)}
             data={[
               {
-                label: analyticsData["weeklyInsights"].title,
+                label: analytics["weeklyInsights"].title,
                 value: "weeklyInsights"
               },
               {
-                label: analyticsData["topSolvedTags"].title,
+                label: analytics["topSolvedTags"].title,
                 value: "topSolvedTags"
               },
               {
-                label: analyticsData["timeDistribution"].title,
+                label: analytics["timeDistribution"].title,
                 value: "timeDistribution"
               },
               {
-                label: analyticsData["averageDifficultyAnalysis"].title,
+                label: analytics["averageDifficultyAnalysis"].title,
                 value: "averageDifficultyAnalysis"
               }
             ]}
@@ -72,10 +66,10 @@ export function AnalyticsSection() {
         <Paper p="xl" mt="xl">
           <Grid gutter={{ base: 32, md: 64 }} align="center">
             <Grid.Col span={{ base: 12, md: 6 }}>
-              {analyticsData[value].content}
+              {analytics[value].content}
             </Grid.Col>
             <Grid.Col span={{ base: 12, md: 6 }}>
-              {analyticsData[value].chart}
+              {analytics[value].chart}
             </Grid.Col>
           </Grid>
         </Paper>
@@ -84,7 +78,7 @@ export function AnalyticsSection() {
   );
 }
 
-const analyticsData = {
+const analytics = {
   weeklyInsights: {
     title: "Weekly Activity Insights",
     content: (
