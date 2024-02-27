@@ -1,9 +1,9 @@
 .root {
+  letter-spacing: -1px;
   &[data-variant="proghours-ui-primary"] {
     color: hsl(var(--primary-foreground));
   }
   &[data-order="1"] {
-    line-height: 1.1;
     font-size: 48px;
     @media (max-width: $mantine-breakpoint-lg) {
       font-size: 40px;

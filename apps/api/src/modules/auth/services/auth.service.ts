@@ -36,10 +36,8 @@ export class AuthService {
     }
 
     try {
-      const hashedPassword = await this.hashingService.hash(signUpDto.password);
       const user = await this.usersService.createUser({
         ...signUpDto,
-        password: hashedPassword,
         username: signUpDto.username.toLowerCase()
       });
       delete user.password;
@@ -64,6 +62,8 @@ export class AuthService {
       signInDto.password,
       user.password
     );
+    console.log(signInDto.password, user.password, "wrong password");
+
     if (!isEqual) {
       throw new UnauthorizedException("Invalid UID or password");
     }
