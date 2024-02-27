@@ -227,10 +227,11 @@ export class TrackerRetrieveProcessor {
         id: retrieveHistoryId
       },
       data: {
-        totalCompleted: items.length - items.length,
+        totalCompleted: items.length - failedItems.length,
         totalItems: items.length,
         items: items,
-        status: "PULLED"
+        status: "PULLED",
+        processingTime: Date.now() - job.processedOn
       }
     });
 
@@ -238,7 +239,7 @@ export class TrackerRetrieveProcessor {
     return {
       status: "OK",
       failedItems,
-      duration: `${((Date.now() - job.processedOn) / 1000).toFixed(2)}s`
+      duration: `${(-job.processedOn / 1000).toFixed(2)}s`
     };
   }
 }
