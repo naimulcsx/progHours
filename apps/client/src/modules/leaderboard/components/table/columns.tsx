@@ -72,6 +72,7 @@ export const columns: ColumnDef<LeaderboardEntry>[] = [
           </Text>
           <Group gap={4}>
             <ActionIcon
+              variant="proghours-ui-outline"
               size="xs"
               onClick={() => {
                 column.toggleSorting(column.getIsSorted() === "asc");
@@ -104,6 +105,7 @@ export const columns: ColumnDef<LeaderboardEntry>[] = [
           </Text>
           <Group gap={4}>
             <ActionIcon
+              variant="proghours-ui-outline"
               size="xs"
               onClick={() => {
                 column.toggleSorting(column.getIsSorted() === "asc");
@@ -142,6 +144,7 @@ export const columns: ColumnDef<LeaderboardEntry>[] = [
           </Text>
           <Group gap={4}>
             <ActionIcon
+              variant="proghours-ui-outline"
               size="xs"
               onClick={() => {
                 column.toggleSorting(column.getIsSorted() === "asc");
@@ -167,6 +170,7 @@ export const columns: ColumnDef<LeaderboardEntry>[] = [
           </Text>
           <Group gap={4}>
             <ActionIcon
+              variant="proghours-ui-outline"
               size="xs"
               onClick={() => {
                 column.toggleSorting(column.getIsSorted() === "asc");

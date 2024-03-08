@@ -122,7 +122,11 @@ export function Sidebar() {
 
             {/* logout button */}
             {!collapsed && (
-              <ActionIcon size="md" onClick={handleLogout}>
+              <ActionIcon
+                size="md"
+                onClick={handleLogout}
+                variant="proghours-ui-outline"
+              >
                 <IconLogout width={14} height={14} />
               </ActionIcon>
             )}
@@ -139,6 +143,7 @@ export function Sidebar() {
             right: -10
           }}
           onClick={toggleCollapse}
+          variant="proghours-ui-outline"
         >
           {collapsed ? (
             <IconChevronRight stroke={2.25} width={14} height={14} />

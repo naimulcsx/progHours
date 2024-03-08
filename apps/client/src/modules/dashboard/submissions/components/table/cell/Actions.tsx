@@ -108,7 +108,7 @@ export function ActionsCell(cell: CellContext<SubmissionRow, unknown>) {
   return (
     <Menu shadow="md" width={200}>
       <Menu.Target>
-        <ActionIcon>
+        <ActionIcon variant="proghours-ui-outline">
           <IconDots size={18} stroke={1.5} />
         </ActionIcon>
       </Menu.Target>

@@ -3,12 +3,9 @@
     --table-border-color: hsl(var(--border));
 
     .thead {
-      background: hsl(var(--background));
       z-index: 100;
-
-      tr {
-        border-bottom: 0;
-      }
+      background: hsl(var(--background));
+      border-bottom: 2px solid hsl(var(--border));
 
       th {
         font-weight: 600;

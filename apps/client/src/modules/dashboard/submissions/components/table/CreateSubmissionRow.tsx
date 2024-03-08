@@ -118,7 +118,7 @@ export function CreateSubmissionRow({ ...props }: TableTrProps): JSX.Element {
         <Select
           style={{ maxWidth: 70 }}
           value={selected}
-          onChange={handleSelected}
+          onChange={(value) => handleSelected(value as string)}
           size="xs"
           data={[
             { value: "AC", label: "AC" },
@@ -157,7 +157,11 @@ export function CreateSubmissionRow({ ...props }: TableTrProps): JSX.Element {
 
       {/* actions */}
       <TableTd role="cell">
-        <ActionIcon type="submit" form="add-submission">
+        <ActionIcon
+          type="submit"
+          form="add-submission"
+          variant="proghours-ui-outline"
+        >
           <IconCirclePlus size={18} stroke={1.5} />
         </ActionIcon>
       </TableTd>

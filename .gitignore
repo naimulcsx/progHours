@@ -35,6 +35,7 @@ testem.log
 /typings
 
 # System Files
+.nx
 .DS_Store
 Thumbs.db
 

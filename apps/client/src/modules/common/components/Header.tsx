@@ -202,7 +202,11 @@ function ColorSchemeSwitcher() {
   return (
     <Menu width={120}>
       <Menu.Target>
-        <ActionIcon size="lg" style={{ border: 0 }}>
+        <ActionIcon
+          size="lg"
+          style={{ border: 0 }}
+          variant="proghours-ui-outline"
+        >
           {colorScheme === "dark" && (
             <IconMoonStars color="#fcc419" size={16} />
           )}

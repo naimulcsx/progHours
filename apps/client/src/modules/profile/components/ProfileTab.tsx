@@ -58,13 +58,23 @@ export function ProfileTab() {
     });
 
   const updateProfileButton = (
-    <ActionIcon ml="xs" size="sm" onClick={openModal}>
+    <ActionIcon
+      ml="xs"
+      size="sm"
+      onClick={openModal}
+      variant="proghours-ui-outline"
+    >
       <IconEdit size={12} />
     </ActionIcon>
   );
 
   const updateHandlesButton = (
-    <ActionIcon ml="xs" size="sm" onClick={openHandleSettingsModal}>
+    <ActionIcon
+      ml="xs"
+      size="sm"
+      onClick={openHandleSettingsModal}
+      variant="proghours-ui-outline"
+    >
       <IconEdit size={12} />
     </ActionIcon>
   );

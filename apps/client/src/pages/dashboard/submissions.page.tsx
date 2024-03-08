@@ -2,8 +2,8 @@ import { IconCheck, IconRefresh } from "@tabler/icons-react";
 import { Helmet } from "react-helmet-async";
 
 import {
+  ActionIcon,
   Box,
-  Button,
   Container,
   Group,
   Loader,
@@ -19,7 +19,7 @@ import { SubmissionsDataTable } from "~/modules/dashboard/submissions/components
 
 export default function SubmissionsPage() {
   const { data, isFetching, isSuccess } = useSubmissions();
-  const { mutate } = useRetrieve({
+  const { mutate: retrieveSubmissions } = useRetrieve({
     config: {
       onSuccess() {
         notifications.show({
@@ -52,13 +52,9 @@ export default function SubmissionsPage() {
               )}
             </Transition>
           </Group>
-          <Button
-            size="xs"
-            leftSection={<IconRefresh size={16} />}
-            onClick={() => mutate()}
-          >
-            Retrieve
-          </Button>
+          <ActionIcon onClick={() => retrieveSubmissions()}>
+            <IconRefresh size={16} />
+          </ActionIcon>
         </Group>
         <Transition mounted={!isFetching} transition="fade" duration={300}>
           {(styles) => (

@@ -6,7 +6,7 @@
     font-weight: 600;
     &[data-active="true"] {
       @mixin light {
-        background: hsl(var(--primary) / 0.1);
+        background: hsl(var(--primary) / 0.075);
         color: hsl(var(--primary));
       }
       @mixin dark {

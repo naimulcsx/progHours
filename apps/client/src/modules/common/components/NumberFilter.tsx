@@ -36,7 +36,7 @@ export function NumberFilter<TData>({
   return (
     <Menu shadow="md" width={200} opened={opened} onChange={setOpened}>
       <Menu.Target>
-        <ActionIcon size="xs">
+        <ActionIcon size="xs" variant="proghours-ui-outline">
           <IconFilter size={14} />
         </ActionIcon>
       </Menu.Target>
