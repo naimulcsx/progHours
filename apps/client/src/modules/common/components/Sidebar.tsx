@@ -1,4 +1,8 @@
-import { IconChevronLeft, IconChevronRight } from "@tabler/icons-react";
+import {
+  IconChevronLeft,
+  IconChevronRight,
+  IconLock
+} from "@tabler/icons-react";
 import { Link, useLocation } from "react-router-dom";
 
 import {
@@ -8,13 +12,12 @@ import {
   Box,
   Group,
   NavLink,
-  SegmentedControl,
   Stack,
   Text,
   Tooltip
 } from "@mantine/core";
-import { useLocalStorage } from "@mantine/hooks";
 
+// import { useLocalStorage } from "@mantine/hooks";
 import { AppLogo } from "~/assets/AppLogo";
 import {
   IconBarChart,
@@ -36,10 +39,10 @@ import SpotlightButton from "./SpotlightButton";
 export function Sidebar() {
   const { user } = useUser();
   const { pathname } = useLocation();
-  const [selected, setSelected] = useLocalStorage({
-    key: "panel",
-    defaultValue: "REGULAR"
-  });
+  // const [selected, setSelected] = useLocalStorage({
+  //   key: "panel",
+  //   defaultValue: "REGULAR"
+  // });
   const { handleLogout } = useLogout();
   const links = userLinks;
 
@@ -53,7 +56,11 @@ export function Sidebar() {
           style={{ flex: 1 }}
           size="md"
         />
-        {!collapsed && (
+        <Box mt="lg">
+          <SpotlightButton />
+        </Box>
+
+        {/* {!collapsed && (
           <SegmentedControl
             mt="lg"
             fullWidth
@@ -65,7 +72,8 @@ export function Sidebar() {
               { label: "Admin", value: "ADMIN" }
             ]}
           />
-        )}
+        )} */}
+
         <Stack mt="lg" gap={6}>
           {links.map((link, index) => {
             const child = (
@@ -76,6 +84,10 @@ export function Sidebar() {
                 label={collapsed ? "" : link.label}
                 active={pathname.includes(link.to)}
                 leftSection={<link.Icon />}
+                disabled={link.isLocked}
+                rightSection={
+                  link.isLocked && !collapsed ? <IconLock height={18} /> : null
+                }
               />
             );
             if (collapsed) {
@@ -90,8 +102,6 @@ export function Sidebar() {
         </Stack>
       </AppShell.Section>
       <AppShell.Section>
-        <SpotlightButton />
-
         {user && (
           <Group gap="xs" mt="sm" justify="center">
             {/* user avatar */}
@@ -185,37 +195,44 @@ export const userLinks = [
   {
     label: "Overview",
     to: "/overview",
-    Icon: () => <IconHome />
+    Icon: () => <IconHome />,
+    isLocked: false
   },
   {
     label: "Submissions",
     to: "/submissions",
-    Icon: () => <IconTable />
+    Icon: () => <IconTable />,
+    isLocked: false
   },
   {
     label: "Study List",
     to: "/study",
-    Icon: () => <IconBookOpen />
+    Icon: () => <IconBookOpen />,
+    isLocked: true
   },
   {
     label: "Groups",
     to: "/groups",
-    Icon: () => <IconUsers />
+    Icon: () => <IconUsers />,
+    isLocked: true
   },
   {
     label: "Leaderboard",
     to: "/leaderboard",
-    Icon: () => <IconBarChart />
+    Icon: () => <IconBarChart />,
+    isLocked: false
   },
   {
     label: "Activities",
     to: "/activities",
-    Icon: () => <IconLayoutAlt />
+    Icon: () => <IconLayoutAlt />,
+    isLocked: true
   },
   {
     label: "Settings",
     to: "/settings/appearance",
     activePath: "/settings",
-    Icon: () => <IconSettings />
+    Icon: () => <IconSettings />,
+    isLocked: false
   }
 ];
