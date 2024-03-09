@@ -53,7 +53,9 @@ export class LeaderboardService {
           const username = leaderboard[i].username;
           rankObject[username] = `#${i + 1}`;
         }
-        await this.cacheManager.store.client.hSet("ranks", rankObject);
+        if (leaderboard.length) {
+          await this.cacheManager.store.client.hSet("ranks", rankObject);
+        }
       }
 
       await this.cacheManager.set(cacheKey, leaderboard, 5 * 60000);
