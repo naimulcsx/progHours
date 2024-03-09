@@ -3,7 +3,7 @@ import { ApiOperation, ApiTags } from "@nestjs/swagger";
 
 import { Auth, AuthType } from "~/modules/auth/decorators/auth.decorator";
 
-import info from "./info.json";
+import info from "./appinfo.json";
 
 @ApiTags("App")
 @Controller("app")

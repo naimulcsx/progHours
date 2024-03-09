@@ -29,5 +29,5 @@ export function computeMetaHash(paths: string[], inputHash?: Hash) {
   if (!inputHash) {
     return hash.digest().toString("hex");
   }
-  return;
+  return "";
 }

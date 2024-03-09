@@ -45,3 +45,6 @@ Thumbs.db
 
 # env
 .env.local
+
+# app info
+appinfo.json

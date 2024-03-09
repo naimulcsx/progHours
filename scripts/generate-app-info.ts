@@ -9,9 +9,14 @@ import { computeMetaHash } from "./compute-meta-hash";
    * Compute hash
    */
   const packageJson = readJsonSync(join(__dirname, "../package.json"));
-  const json = readJsonSync(
-    join(__dirname, "../apps/api/src/modules/app/controllers/info.json")
-  );
+
+  let json: Record<string, string> = {};
+  try {
+    json = readJsonSync(
+      join(__dirname, "../apps/api/src/modules/app/controllers/appinfo.json")
+    );
+  } catch {}
+
   json.version = packageJson.version;
 
   const commitHash = execSync("git rev-parse HEAD").toString("utf8");
@@ -22,9 +27,7 @@ import { computeMetaHash } from "./compute-meta-hash";
 
   json.buildTime = new Date().toISOString();
   writeJsonSync(
-    join(__dirname, "../apps/api/src/modules/app/controllers/info.json"),
+    join(__dirname, "../apps/api/src/modules/app/controllers/appinfo.json"),
     json
   );
-
-  console.log(json);
 })();
