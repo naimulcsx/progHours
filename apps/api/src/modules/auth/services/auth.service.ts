@@ -58,11 +58,18 @@ export class AuthService {
     if (!user) {
       throw new UnauthorizedException("Invalid UID or password");
     }
+    if (process.env.MAINATINANCE_MODE === "true") {
+      if (user.role !== "ADMIN") {
+        throw new BadRequestException(
+          "Login is disabled in Maintainance Mode."
+        );
+      }
+    }
+
     const isEqual = await this.hashingService.compare(
       signInDto.password,
       user.password
     );
-    console.log(signInDto.password, user.password, "wrong password");
 
     if (!isEqual) {
       throw new UnauthorizedException("Invalid UID or password");

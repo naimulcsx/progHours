@@ -83,8 +83,8 @@ export function AppearanceSettings() {
           maw={160}
           allowDeselect={false}
           defaultValue={colorScheme}
-          onChange={(val: "auto" | "dark" | "light") => {
-            setColorScheme(val);
+          onChange={(val) => {
+            setColorScheme(val as "auto" | "dark" | "light");
           }}
           data={[
             { value: "dark", label: "Dark" },

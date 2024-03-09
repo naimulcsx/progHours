@@ -122,7 +122,7 @@ export const VerdictCell = (cell: CellContext<SubmissionRow, unknown>) => {
         }
       }}
       value={selected}
-      onChange={handleSelect}
+      onChange={(val) => handleSelect(val as Verdict)}
       rightSection={
         <IconSelector
           size={16}

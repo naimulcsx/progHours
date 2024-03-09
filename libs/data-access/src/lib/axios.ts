@@ -9,7 +9,7 @@ import { storage } from "./storage";
 export const axios = Axios.create({
   baseURL:
     process.env.NODE_ENV === "production"
-      ? "https://ph-api.apps.naimulhaque.com/api/v1"
+      ? "https://api.proghours.com/api/v1"
       : "http://localhost:3333/api/v1"
 });
 

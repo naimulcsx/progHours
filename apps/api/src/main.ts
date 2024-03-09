@@ -15,7 +15,7 @@ async function bootstrap() {
 
   const allowedOrigins =
     process.env.NODE_ENV === "production"
-      ? "https://ph-fe.apps.naimulhaque.com"
+      ? "https://api.proghours.com"
       : ["http://localhost:4200", "http://localhost:4300"];
 
   app.enableCors({

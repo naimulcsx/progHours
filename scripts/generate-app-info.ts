@@ -10,7 +10,7 @@ import { computeMetaHash } from "./compute-meta-hash";
    */
   const packageJson = readJsonSync(join(__dirname, "../package.json"));
   const json = readJsonSync(
-    join(__dirname, "../apps/api/src/app/controllers/info.json")
+    join(__dirname, "../apps/api/src/modules/app/controllers/info.json")
   );
   json.version = packageJson.version;
 
@@ -22,7 +22,7 @@ import { computeMetaHash } from "./compute-meta-hash";
 
   json.buildTime = new Date().toISOString();
   writeJsonSync(
-    join(__dirname, "../apps/api/src/app/controllers/info.json"),
+    join(__dirname, "../apps/api/src/modules/app/controllers/info.json"),
     json
   );
 
