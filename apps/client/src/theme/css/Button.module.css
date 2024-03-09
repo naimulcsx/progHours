@@ -44,8 +44,9 @@
   &[data-variant="proghours-ui-outline"] {
     font-weight: 500;
     color: hsl(var(--foreground));
-    --button-bg: transparent;
+    --button-bg: hsl(var(--background));
     --button-bd: calc(0.0625rem * var(--mantine-scale)) solid hsl(var(--border));
+    box-shadow: var(--mantine-shadow-xs);
     &:hover {
       background-color: hsl(var(--secondary));
     }

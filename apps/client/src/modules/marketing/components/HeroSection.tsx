@@ -19,12 +19,26 @@ export function HeroSection() {
   });
 
   return (
-    <Box component="section">
+    <Box component="section" pos="relative">
+      <Box
+        style={{
+          position: "absolute",
+          inset: 0,
+          top: -1,
+          maskImage: "linear-gradient(180deg,#fff 5%,transparent 80%)",
+          backgroundImage:
+            "url(\"data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32' width='32' height='32' fill='none' stroke='rgb(0 0 0 / 0.04)'%3e%3cpath d='M0 .5H31.5V32'/%3e%3c/svg%3e\")"
+        }}
+      />
       <Box pt={60} pb={200} size="xl">
         <Stack
           maw={640}
           align="center"
-          style={{ margin: "0 auto", textAlign: "center" }}
+          style={{
+            margin: "0 auto",
+            textAlign: "center",
+            position: "relative"
+          }}
           gap="lg"
           px="md"
         >

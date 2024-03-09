@@ -49,7 +49,7 @@ const featuresData: FeatureItem[] = [
     icon: <IconChartPie size={40} stroke={1.7} color="hsl(var(--primary))" />,
     title: ["Comprehensive", <br />, "Analytics"],
     description:
-      "Track your problem-solving journey with precision using our platform's in-depth analytics."
+      "Track your journey with precision using our platform's in-depth analytics."
   },
   {
     icon: <IconChartLine size={40} stroke={1.7} color="hsl(var(--primary))" />,
