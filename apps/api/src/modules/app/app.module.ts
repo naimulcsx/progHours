@@ -23,6 +23,7 @@ import { SubmissionsModule } from "~/modules/submissions/submissions.module";
 import { TrackerModule } from "~/modules/tracker/tracker.module";
 import { UsersModule } from "~/modules/users/users.module";
 
+import { UserStudiesModule } from "../user-studies/user-studies.module";
 import { AppController } from "./controllers/app.controller";
 
 @Module({
@@ -68,6 +69,7 @@ import { AppController } from "./controllers/app.controller";
     ParserModule,
     LeaderboardModule,
     InstitutionsModule,
+    UserStudiesModule,
     TrackerModule.register()
   ],
   controllers: [AppController],

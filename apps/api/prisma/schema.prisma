@@ -17,6 +17,24 @@ enum Role {
   ADMIN
 }
 
+enum HandleType {
+  CODEFORCES
+  CODECHEF
+}
+
+enum Verdict {
+  AC
+  PS
+  WA
+  TLE
+  MLE
+  RE
+  CE
+  SK
+  OTH
+  HCK
+}
+
 model User {
   id        String   @id
   fullName  String   @map("full_name")
@@ -36,6 +54,7 @@ model User {
   submissions   Submission[]
   userHandles   UserHandle[]
   pullHistories RetrieveHistory[]
+  userStudies   UserStudy[]
 
   @@map("users")
 }
@@ -55,6 +74,17 @@ model Problem {
   @@map("problems")
 }
 
+model ProblemTag {
+  problemId String  @map("problem_id")
+  problem   Problem @relation(fields: [problemId], references: [id], onDelete: Cascade)
+
+  tagId String @map("tag_id")
+  tag   Tag    @relation(fields: [tagId], references: [id])
+
+  @@id([problemId, tagId])
+  @@map("problem_tags")
+}
+
 model Institution {
   id          String  @id
   name        String
@@ -67,35 +97,12 @@ model Institution {
 }
 
 model Tag {
-  id          String       @id
-  name        String       @unique
-  problemTags ProblemTag[]
+  id            String         @id
+  name          String         @unique
+  problemTags   ProblemTag[]
+  userStudyTags UserStudyTag[]
 
   @@map("tags")
-}
-
-model ProblemTag {
-  problemId String  @map("problem_id")
-  problem   Problem @relation(fields: [problemId], references: [id], onDelete: Cascade)
-
-  tagId String @map("tag_id")
-  tag   Tag    @relation(fields: [tagId], references: [id])
-
-  @@id([problemId, tagId])
-  @@map("problem_tags")
-}
-
-enum Verdict {
-  AC
-  PS
-  WA
-  TLE
-  MLE
-  RE
-  CE
-  SK
-  OTH
-  HCK
 }
 
 model Submission {
@@ -130,11 +137,6 @@ model Submission {
   @@map("submissions")
 }
 
-enum HandleType {
-  CODEFORCES
-  CODECHEF
-}
-
 model UserHandle {
   id     String     @id
   user   User       @relation(fields: [userId], references: [id])
@@ -166,4 +168,54 @@ model RetrieveHistory {
   processingTime BigInt             @default(0) @map("processing_time")
 
   @@map("pull_histories")
+}
+
+enum StudyTypeEnum {
+  ARTICLE
+  VIDEO
+  OTHER
+}
+
+enum StudyDifficultyEnum {
+  BEGINNER
+  INTERMEDIATE
+  ADVANCED
+}
+
+enum StudyLanguageEnum {
+  BENGALI
+  ENGLISH
+  HINDI
+}
+
+model UserStudy {
+  id String @id
+
+  title        String
+  resourceLink String              @map("resource_link")
+  type         StudyTypeEnum
+  difficulty   StudyDifficultyEnum
+  language     StudyLanguageEnum
+  duration     Int
+  studyDate    DateTime            @map("study_date") @db.Date
+  notes        String
+
+  metaData Json? @default("{}") @map("metadata")
+
+  user          User           @relation(fields: [userId], references: [id])
+  userId        String         @map("user_id")
+  userStudyTags UserStudyTag[]
+
+  @@map("user_studies")
+}
+
+model UserStudyTag {
+  userStudy   UserStudy @relation(fields: [userStudyId], references: [id], onDelete: Cascade)
+  userStudyId String    @map("user_study_id")
+
+  tag   Tag    @relation(fields: [tagId], references: [id])
+  tagId String @map("tag_id")
+
+  @@id([userStudyId, tagId])
+  @@map("user_study_tags")
 }
