@@ -11,7 +11,7 @@ import { FeatureItem } from "../types";
 
 export function FeaturesSection() {
   return (
-    <Box component="section" my={{ base: 56, lg: 96 }}>
+    <Box id="features" component="section" my={{ base: 56, lg: 96 }}>
       <Container size="xs" style={{ textAlign: "center" }}>
         <Stack gap="sm">
           <Title order={2}>Features</Title>

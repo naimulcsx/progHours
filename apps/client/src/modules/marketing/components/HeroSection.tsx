@@ -56,7 +56,7 @@ export function HeroSection() {
             Star us on Github
           </Button>
           <Title>Code. Compete. Conquer!</Title>
-          <Text size="xl">
+          <Text size="lg">
             Track your progress with comprehensive analytics on your problem
             solving journey. Climb the leaderboard with every problem you solve.
           </Text>
@@ -65,6 +65,19 @@ export function HeroSection() {
               size="md"
               variant="proghours-ui-outline"
               rightSection={<IconArrowDown />}
+              onClick={() => {
+                const element = document.getElementById("features");
+                if (element) {
+                  window.scrollTo({
+                    top:
+                      element.getBoundingClientRect().top +
+                      window.scrollY -
+                      100,
+                    left: 0,
+                    behavior: "smooth"
+                  });
+                }
+              }}
             >
               Features
             </Button>

@@ -1,18 +1,18 @@
 .root {
-  letter-spacing: -1px;
+  letter-spacing: -0.75px;
   &[data-variant="proghours-ui-primary"] {
     color: hsl(var(--primary-foreground));
   }
   &[data-order="1"] {
-    font-size: 48px;
+    font-size: 44px;
     @media (max-width: $mantine-breakpoint-lg) {
       font-size: 40px;
     }
   }
   &[data-order="2"] {
-    font-size: 40px;
+    font-size: 36px;
     @media (max-width: $mantine-breakpoint-lg) {
-      font-size: 36px;
+      font-size: 32px;
     }
   }
   &[data-order="3"] {

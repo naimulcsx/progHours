@@ -11,7 +11,11 @@ export function Footer() {
       <Container size="xl" style={{ textAlign: "center" }}>
         <Text size="lg" style={{ color: "hsl(var(--foreground))" }}>
           Made with{" "}
-          <span role="img" aria-label="love emoji">
+          <span
+            style={{ color: "var(--mantine-color-red-6)" }}
+            role="img"
+            aria-label="love emoji"
+          >
             ❤️
           </span>{" "}
           in Bangladesh

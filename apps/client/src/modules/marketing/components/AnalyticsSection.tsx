@@ -27,17 +27,17 @@ export function AnalyticsSection() {
       <Container size="xs" style={{ textAlign: "center" }}>
         <Stack gap="lg">
           <Title order={2}>Insightful Analytics</Title>
-          <Text size="lg">
+          <Text>
             Discover how these analytics can help you see where you're
             excelling, where you can improve.
           </Text>
         </Stack>
       </Container>
 
-      <Container size="lg" mt={40}>
+      <Container size="lg" mt="xl">
         <Flex justify="center">
           <SegmentedControl
-            size="xs"
+            size="sm"
             w={matches ? "100%" : "auto"}
             orientation={matches ? "vertical" : "horizontal"}
             value={value}
@@ -84,8 +84,10 @@ const analytics = {
     content: (
       <Stack>
         <Box>
-          <Title order={3}>Weekly Activity Insights</Title>
-          <Text size="xl" mt="xs">
+          <Title order={4} fw={600}>
+            Weekly Activity Insights
+          </Title>
+          <Text size="lg" mt="xs">
             Explore Your Coding Consistency
           </Text>
         </Box>
@@ -204,8 +206,10 @@ const analytics = {
     content: (
       <Stack>
         <Box>
-          <Title order={3}>Top Solved Tags</Title>
-          <Text size="xl" mt="xs">
+          <Title order={4} fw={600}>
+            Top Solved Tags
+          </Title>
+          <Text size="lg" mt="xs">
             Discover Your Strength and Weakness
           </Text>
         </Box>
@@ -286,8 +290,10 @@ const analytics = {
     content: (
       <Stack>
         <Box>
-          <Title order={3}>Time Distribution by Tag</Title>
-          <Text size="xl" mt="xs">
+          <Title order={4} fw={600}>
+            Time Distribution by Tag
+          </Title>
+          <Text size="lg" mt="xs">
             Mastering Time Management
           </Text>
         </Box>
@@ -363,8 +369,10 @@ const analytics = {
     content: (
       <Stack>
         <Box>
-          <Title order={3}>Average Difficulty Analysis</Title>
-          <Text size="xl" mt="xs">
+          <Title order={4} fw={600}>
+            Average Difficulty Analysis
+          </Title>
+          <Text size="lg" mt="xs">
             Navigating the Challenge Spectrum
           </Text>
         </Box>
