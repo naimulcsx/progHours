@@ -1,5 +1,3 @@
-import { createId } from "@paralleldrive/cuid2";
-
 import { Injectable, NotFoundException } from "@nestjs/common";
 
 import { PrismaService } from "~/modules/prisma/services/prisma.service";
@@ -21,7 +19,6 @@ export class UserStudiesService {
     return this.userStudiesRepository.create({
       data: {
         ...createUserStudyDto,
-        id: createId(),
         user: { connect: { id: userId } },
         userStudyTags: {
           createMany: {

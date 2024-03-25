@@ -1,5 +1,3 @@
-import { createId } from "@paralleldrive/cuid2";
-
 import {
   Injectable,
   NotFoundException,
@@ -32,7 +30,6 @@ export class UsersService {
     );
     return this.usersRepository.create({
       data: {
-        id: createId(),
         ...createUserDto,
         password: hashedPassword,
         username: createUserDto.username.toLowerCase()
@@ -101,7 +98,6 @@ export class UsersService {
       updateHandlesDto.handles
         .filter((el) => el.handle.length > 0)
         .map((el) => ({
-          id: createId(),
           ...el,
           userId: user.id
         }))

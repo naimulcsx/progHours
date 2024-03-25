@@ -1,4 +1,3 @@
-import { createId } from "@paralleldrive/cuid2";
 import moment from "moment";
 
 import {
@@ -101,7 +100,6 @@ export class SubmissionsService {
     try {
       const newSubmission = await this.prisma.submission.create({
         data: {
-          id: createId(),
           solveTime: createSubmissionDto.solveTime,
           verdict: createSubmissionDto.verdict,
           problemId,
