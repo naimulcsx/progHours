@@ -8,21 +8,28 @@ import { PrismaService } from "~/modules/prisma/services/prisma.service";
 export class UserStudiesRepository {
   constructor(private readonly prisma: PrismaService) {}
 
-  async create(args: Prisma.UserStudyCreateArgs): Promise<UserStudy> {
-    return this.prisma.userStudy.create(args);
+  async create(params: {
+    data: Prisma.UserStudyCreateInput;
+  }): Promise<UserStudy> {
+    const { data } = params;
+    return this.prisma.userStudy.create({ data });
   }
 
-  async getAll(userId: string): Promise<UserStudy[]> {
+  async getById(id: string): Promise<UserStudy> {
+    return this.prisma.userStudy.findUnique({ where: { id } });
+  }
+
+  async getAll(): Promise<UserStudy[]> {
+    return this.prisma.userStudy.findMany({ include: { userStudyTags: true } });
+  }
+
+  async getAllByUserId(userId: string): Promise<UserStudy[]> {
     return this.prisma.userStudy.findMany({
       where: { userId },
       include: {
         userStudyTags: true
       }
     });
-  }
-
-  async getById(id: string): Promise<UserStudy> {
-    return this.prisma.userStudy.findUnique({ where: { id } });
   }
 
   async updateById(

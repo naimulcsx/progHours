@@ -1,16 +1,7 @@
-import {
-  Body,
-  Controller,
-  Delete,
-  Get,
-  Param,
-  Patch,
-  Post
-} from "@nestjs/common";
+import { Body, Controller, Delete, Get, Param, Post } from "@nestjs/common";
 import {
   ApiBearerAuth,
   ApiCreatedResponse,
-  ApiForbiddenResponse,
   ApiNotFoundResponse,
   ApiOkResponse,
   ApiOperation,
@@ -19,77 +10,56 @@ import {
 
 import { ActiveUserData, User } from "~/modules/auth/decorators/user.decorator";
 
-import { CreateUserStudyDto, UpdateUserStudyDto } from "../dto";
+import { CreateUserStudyDto } from "../dto";
 import { UserStudiesService } from "../providers/user-studies.service";
 
-@Controller("/studies")
+@Controller("/user-studies")
 @ApiTags("User Studies")
 export class UserStudiesController {
   constructor(private readonly userStudiesService: UserStudiesService) {}
 
-  /**
-   * @Post /api/studies
-   * Create a new study
-   */
   @Post("/")
   @ApiBearerAuth("JWT")
-  @ApiOperation({ summary: "Create a new study" })
-  @ApiCreatedResponse({ description: "Created." })
-  @ApiForbiddenResponse({ description: "Forbidden." })
+  @ApiOperation({ summary: "Create a new user study." })
+  @ApiCreatedResponse({ description: "User study created." })
   async createUserStudy(
-    @Body() body: CreateUserStudyDto,
+    @Body() createUserStudyDto: CreateUserStudyDto,
     @User() user: ActiveUserData
   ) {
-    return await this.userStudiesService.createUserStudy(body, user.sub);
+    return await this.userStudiesService.createUserStudy(
+      user.sub,
+      createUserStudyDto
+    );
   }
 
-  /**
-   * @Get /api/studies
-   * Get all user studies
-   */
-  @Get()
-  @ApiOperation({ summary: "Get all user studies" })
+  @Get("/")
   @ApiBearerAuth("JWT")
+  @ApiOperation({ summary: "Get all user studies" })
   @ApiOkResponse({
-    description: "All user studies"
+    description: "User studies retrieved successfully"
   })
   async getUserStudies(@User() user: ActiveUserData) {
     return this.userStudiesService.getUserStudies(user.sub);
   }
 
-  /**
-   * @Get /api/studies/:id
-   * Get user study by id
-   */
   @Get(":id")
   @ApiBearerAuth("JWT")
-  @ApiOperation({ summary: "Get user study by id" })
+  @ApiOperation({ summary: "Get an user study by ID" })
   @ApiOkResponse({
     description: "Study data retrieved successfully"
   })
   @ApiNotFoundResponse({
-    description: "Study data not found"
+    description: "User study not found"
   })
   async getUser(@Param("id") id: string) {
     return this.userStudiesService.getUserStudy(id);
   }
 
-  @Patch(":id")
-  @ApiBearerAuth("JWT")
-  @ApiOperation({ summary: "Update user study" })
-  @ApiOkResponse({ description: "User study updated" })
-  async updateUserStudies(
-    @Param("id") id: string,
-    @Body() updateUserStudyDto: UpdateUserStudyDto
-  ) {
-    return this.userStudiesService.updateUserStudy(id, updateUserStudyDto);
-  }
-
   @Delete(":id")
   @ApiBearerAuth("JWT")
-  @ApiOperation({ summary: "Delete study data" })
-  @ApiOkResponse({ description: "Study data deleted" })
-  async deletUserStudy(@Param("id") id: string) {
+  @ApiOperation({ summary: "Delete an user study" })
+  @ApiOkResponse({ description: "User study deleted" })
+  async deleteUserStudy(@Param("id") id: string) {
     return this.userStudiesService.deleteUserStudy(id);
   }
 }

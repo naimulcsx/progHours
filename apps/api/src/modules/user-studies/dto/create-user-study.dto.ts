@@ -11,24 +11,16 @@ import {
   IsString
 } from "class-validator";
 
-import { ApiProperty } from "@nestjs/swagger";
+import { ApiProperty, ApiPropertyOptional } from "@nestjs/swagger";
 
 export class CreateUserStudyDto {
   @ApiProperty({
-    description: "Study title",
+    description: "User study title",
     example: "Prime Numbers - Sieve of Eratosthenes",
     type: "string"
   })
   @IsString()
   title: string;
-
-  @ApiProperty({
-    description: "Study notes",
-    example: "Notes about prime number",
-    type: "string"
-  })
-  @IsString()
-  notes: string;
 
   @ApiProperty({
     description: "Study type",
@@ -51,7 +43,7 @@ export class CreateUserStudyDto {
     example: "2024-03-10"
   })
   @IsISO8601()
-  studyDate: Date;
+  studyDate: string;
 
   @ApiProperty({
     description: "Total time(minutes) spent on study",
@@ -82,4 +74,12 @@ export class CreateUserStudyDto {
   })
   @IsEnum(StudyLanguageEnum)
   language: StudyLanguageEnum;
+
+  @ApiPropertyOptional({
+    description: "User study notes",
+    example: "Notes about prime number",
+    type: "string"
+  })
+  @IsString()
+  notes: string;
 }

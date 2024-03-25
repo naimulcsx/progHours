@@ -191,19 +191,17 @@ enum StudyLanguageEnum {
 model UserStudy {
   id String @id
 
-  title        String
-  resourceLink String              @map("resource_link")
-  type         StudyTypeEnum
-  difficulty   StudyDifficultyEnum
-  language     StudyLanguageEnum
-  duration     Int
-  studyDate    DateTime            @map("study_date") @db.Date
-  notes        String
-
-  metaData Json? @default("{}") @map("metadata")
-
-  user          User           @relation(fields: [userId], references: [id])
-  userId        String         @map("user_id")
+  title         String
+  resourceLink  String              @map("resource_link")
+  type          StudyTypeEnum
+  difficulty    StudyDifficultyEnum
+  language      StudyLanguageEnum
+  duration      Int
+  studyDate     DateTime            @map("study_date") @db.Date
+  notes         String
+  metaData      Json?               @default("{}") @map("metadata")
+  user          User                @relation(fields: [userId], references: [id])
+  userId        String              @map("user_id")
   userStudyTags UserStudyTag[]
 
   @@map("user_studies")
