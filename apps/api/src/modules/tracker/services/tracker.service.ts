@@ -1,4 +1,3 @@
-import { createId } from "@paralleldrive/cuid2";
 import { Queue } from "bull";
 
 import { Injectable } from "@nestjs/common";
@@ -19,7 +18,6 @@ export class TrackerService {
   async retrieve(userId: string) {
     const retrieveHistory = await this.prisma.retrieveHistory.create({
       data: {
-        id: createId(),
         userId
       }
     });

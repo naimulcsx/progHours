@@ -1,5 +1,3 @@
-import { createId } from "@paralleldrive/cuid2";
-
 import { Injectable, NotFoundException } from "@nestjs/common";
 
 import { ParserService } from "~/modules/parser/services/parser.service";
@@ -41,7 +39,6 @@ export class ProblemsService {
     }
     const createdProblem = await this.prisma.problem.create({
       data: {
-        id: createId(),
         ...problemData,
         problemTags: {
           create: [...new Set(tags)].map((tagName) => {
@@ -52,7 +49,6 @@ export class ProblemsService {
                     name: tagName
                   },
                   create: {
-                    id: createId(),
                     name: tagName
                   }
                 }
@@ -98,7 +94,6 @@ export class ProblemsService {
                       name: tagName
                     },
                     create: {
-                      id: createId(),
                       name: tagName
                     }
                   }

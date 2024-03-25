@@ -14,7 +14,6 @@
  * Author: Naimul Haaque
  * Date: 29th July 2023
  */
-import { createId } from "@paralleldrive/cuid2";
 import {
   Institution,
   PrismaClient,
@@ -28,6 +27,7 @@ import {
 } from "@prisma/client";
 import axios from "axios";
 import { Pool } from "pg";
+import { v4 as uuidv4 } from "uuid";
 
 const pool = new Pool({
   max: 5,
@@ -60,7 +60,7 @@ const pool = new Pool({
 
   const userIdMap: Record<string, string> = {};
   userIds.forEach((userId) => {
-    userIdMap[userId] = createId();
+    userIdMap[userId] = uuidv4();
   });
 
   usersQuery.rows.forEach((user) => {
@@ -95,7 +95,7 @@ const pool = new Pool({
   });
 
   console.time(`users (${usersQuery.rowCount})`);
-  await Promise.all(userCreatePromises);
+  const users = await Promise.all(userCreatePromises);
   console.timeEnd(`users (${usersQuery.rowCount})`);
 
   /**
@@ -110,7 +110,7 @@ const pool = new Pool({
     userHandleCreatePromises.push(
       prisma.userHandle.create({
         data: {
-          id: createId(),
+          id: uuidv4(),
           userId: userIdMap[handle.userId],
           type: handle.onlineJudgeId == 1 ? "CODEFORCES" : "CODECHEF",
           handle: handle.handle
@@ -133,7 +133,7 @@ const pool = new Pool({
 
   const tagIdMap: Record<string, string> = {};
   tagIds.forEach((tagId) => {
-    tagIdMap[tagId] = createId();
+    tagIdMap[tagId] = uuidv4();
   });
 
   tagsQuery.rows.forEach((tag) => {
@@ -160,7 +160,7 @@ const pool = new Pool({
 
   const problemIdMap: Record<string, string> = {};
   problemIds.forEach((problemId) => {
-    problemIdMap[problemId] = createId();
+    problemIdMap[problemId] = uuidv4();
   });
 
   problemsQuery.rows.forEach((problem) => {
@@ -211,7 +211,7 @@ const pool = new Pool({
   const subIds: number[] = submissionsQuery.rows.map((s) => s.id);
   const subIdMap: Record<string, string> = {};
   subIds.forEach((subId) => {
-    subIdMap[subId] = createId();
+    subIdMap[subId] = uuidv4();
   });
 
   submissionsQuery.rows.forEach((submission) => {
@@ -261,7 +261,7 @@ const pool = new Pool({
     institutionCreatePromises.push(
       prisma.institution.create({
         data: {
-          id: createId(),
+          id: uuidv4(),
           name: el.name,
           url: el.web_pages.length > 0 ? el.web_pages[0] : null,
           countryCode: el.alpha_two_code,
