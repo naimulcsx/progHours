@@ -97,8 +97,10 @@ export async function getSubmissionStats(
       AC: sum(submissions.acCount),
       WA: sum(submissions.waCount),
       TLE: sum(submissions.tleCount),
+      totalDifficulty: sum(problems.difficulty),
     })
     .from(submissions)
+    .leftJoin(problems, eq(submissions.problemId, problems.id))
     .where(
       query.type === 'range'
         ? and(
@@ -118,6 +120,7 @@ export async function getSubmissionStats(
       AC: Number(stat.AC) || 0,
       WA: Number(stat.WA) || 0,
       TLE: Number(stat.TLE) || 0,
+      totalDifficulty: Number(stat.totalDifficulty) || 0,
     }))
     .sort((a, b) => a.date.localeCompare(b.date));
 

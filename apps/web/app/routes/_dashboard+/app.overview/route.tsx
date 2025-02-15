@@ -1,4 +1,4 @@
-import { BarChart, LineChart } from '@mantine/charts';
+import { AreaChart, BarChart, DonutChart, LineChart } from '@mantine/charts';
 import { Card, Text } from '@mantine/core';
 import { LoaderFunctionArgs } from '@remix-run/node';
 import { useLoaderData } from '@remix-run/react';
@@ -8,6 +8,7 @@ import {
   Clock01Icon,
   Medal01Icon,
 } from 'hugeicons-react';
+import { Legend } from 'recharts';
 
 import { AppBreadcrumbs } from '~/components/app-breadcrumbs';
 import { PageHeader } from '~/components/page-header';
@@ -77,20 +78,20 @@ export default function Dashboard() {
         />
         <Card className="col-span-2 !bg-white shadow-none">
           <Text fw={500}>Submissions Status</Text>
-          <LineChart
+          <AreaChart
             h={300}
             strokeWidth={2.5}
             data={stats.dailySubmissions}
             dataKey="date"
             series={[
-              { name: 'AC', color: 'primary.5' },
+              { name: 'AC', color: 'lime.7' },
               { name: 'WA', color: 'red.4' },
               { name: 'TLE', color: 'orange.3' },
             ]}
             withDots={false}
+            withLegend
             tooltipAnimationDuration={200}
             valueFormatter={(value) => value.toLocaleString()}
-            withLegend
             legendProps={{ verticalAlign: 'top', height: 50 }}
           />
         </Card>
@@ -114,6 +115,59 @@ export default function Dashboard() {
             withLegend
             legendProps={{ verticalAlign: 'top', height: 50 }}
             barProps={{ radius: 6, barSize: 40 }}
+          />
+        </Card>
+
+        <Card className="col-span-2 !bg-white shadow-none">
+          <Text fw={500}>Time spent by tag</Text>
+          <DonutChart
+            h={320}
+            thickness={28}
+            strokeWidth={2}
+            className="mx-auto w-full"
+            data={stats.tagStats
+              .sort((a, b) => b.solveTime - a.solveTime)
+              .slice(0, 10)
+              .map((item) => ({
+                name: item.tag,
+                value: item.solveTime,
+                color: item.color,
+              }))}
+            labelsType="value"
+            withLabels
+            withTooltip={false}
+            valueFormatter={(value) => {
+              return `${Math.round(value / 60)}h`;
+            }}
+            children={
+              <Legend
+                align="center"
+                wrapperStyle={{
+                  fontSize: '0.75rem',
+                  padding: '10px',
+                  fontWeight: '500',
+                }}
+              />
+            }
+          />
+        </Card>
+
+        <Card className="col-span-2 flex flex-col justify-between !bg-white shadow-none">
+          <Text fw={500}>Average Difficulty</Text>
+          <LineChart
+            h={280}
+            strokeWidth={2.5}
+            data={stats.dailySubmissions.map((item) => ({
+              date: item.date,
+              avgDifficulty: item.totalDifficulty / item.AC,
+            }))}
+            dataKey="date"
+            series={[{ name: 'avgDifficulty', color: 'primary.6' }]}
+            withDots={false}
+            tooltipAnimationDuration={200}
+            lineChartProps={{ margin: { bottom: 10 } }}
+            valueFormatter={(value) => value.toFixed(2)}
+            gridAxis="x"
           />
         </Card>
       </div>
