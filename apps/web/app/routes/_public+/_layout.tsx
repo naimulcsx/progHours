@@ -1,4 +1,4 @@
-import { Anchor, Button, Container, Group } from '@mantine/core';
+import { Anchor, Button, Container, Group, Text } from '@mantine/core';
 import { Link, Outlet } from '@remix-run/react';
 
 import { AppLogo } from '~/assets/app-logo';
@@ -57,6 +57,21 @@ export default function PublicLayout() {
       <main className="p-md">
         <Outlet />
       </main>
+      <footer className="border-t border-gray-100 pt-8">
+        <Container size="xl" style={{ textAlign: 'center' }}>
+          <Text size="lg">
+            Made with{' '}
+            <span className="text-red-500" role="img" aria-label="love emoji">
+              ❤️
+            </span>{' '}
+            in Bangladesh
+          </Text>
+          <Text mt="sm" c="dimmed" size="sm">
+            &copy; Copyright Naimul Haque {new Date().getFullYear()}. All Rights
+            Reserved.
+          </Text>
+        </Container>
+      </footer>
     </div>
   );
 }
